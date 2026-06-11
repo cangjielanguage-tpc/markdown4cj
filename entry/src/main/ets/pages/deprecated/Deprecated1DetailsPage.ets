@@ -2,7 +2,7 @@ import { titleComponent } from '../../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown,
   GlobalTheme,
-  MarkdownConfiguration, MarkdownPlugin, MarkdownScroller, MarkdownTextDecorationStyle, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownConfiguration, MarkdownPlugin, MarkdownScroller, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { DeprecatedData } from '../../model/DeprecatedData'
@@ -34,7 +34,7 @@ struct Deprecated1DetailsPage {
   @State bannerImage: Resource | undefined = undefined
   @State isLineBreak: boolean = false
   @State underlineColor: number = 0xFF191919
-  @State underlineStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  @State underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   @State isLinkStyle: boolean = false
   @State isListLinkStyle: boolean = false

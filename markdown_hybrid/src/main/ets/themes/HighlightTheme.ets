@@ -69,8 +69,9 @@ export class HighlightTheme {
    *
    * @param color 高亮文本颜色
    */
-  setHighlightTextFontColor(color: number): void {
+  setHighlightTextFontColor(color: number): HighlightTheme {
     this.highlightTextFontColor = color
+    return this
   }
 
   /**
@@ -78,8 +79,9 @@ export class HighlightTheme {
    *
    * @param size 高亮文本尺寸
    */
-  setHighlightTextFontSize(size: number): void {
+  setHighlightTextFontSize(size: number): HighlightTheme {
     this.highlightTextFontSize = size
+    return this
   }
 
   /**
@@ -87,8 +89,9 @@ export class HighlightTheme {
    *
    * @param style 高亮文本字体样式
    */
-  setHighlightTextFontStyle(style: FontStyle): void {
+  setHighlightTextFontStyle(style: FontStyle): HighlightTheme {
     this.highlightTextFontStyle = style
+    return this
   }
 
   /**
@@ -96,8 +99,9 @@ export class HighlightTheme {
    *
    * @param weight 高亮文本字体粗细
    */
-  setHighlightTextFontWeight(weight: FontWeight): void {
+  setHighlightTextFontWeight(weight: FontWeight): HighlightTheme {
     this.highlightTextFontWeight = weight
+    return this
   }
 
   /**
@@ -105,8 +109,9 @@ export class HighlightTheme {
    *
    * @param family 高亮文本字体
    */
-  setHighlightTextFontFamily(family: string): void {
+  setHighlightTextFontFamily(family: string): HighlightTheme {
     this.highlightTextFontFamily = family
+    return this
   }
 
   /**
@@ -114,8 +119,9 @@ export class HighlightTheme {
    *
    * @param lineHeight 高亮文本行高
    */
-  setHighlightTextLineHeight(lineHeight: number): void {
+  setHighlightTextLineHeight(lineHeight: number): HighlightTheme {
     this.highlightTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -123,8 +129,9 @@ export class HighlightTheme {
    *
    * @param spacing 高亮文本字符间距
    */
-  setHighlightTextLetterSpacing(spacing: number): void {
+  setHighlightTextLetterSpacing(spacing: number): HighlightTheme {
     this.highlightTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -132,8 +139,9 @@ export class HighlightTheme {
    *
    * @param color 高亮文本背景颜色
    */
-  setHighlightTextBackgroundColor(color: number): void {
+  setHighlightTextBackgroundColor(color: number): HighlightTheme {
     this.highlightTextBackgroundColor = color
+    return this
   }
 
   /**
@@ -143,7 +151,7 @@ export class HighlightTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setHighlightTextBackgroundRadius(options: MarkdownRadiusOptions | number): void {
+  setHighlightTextBackgroundRadius(options: MarkdownRadiusOptions | number): HighlightTheme {
     if (typeof options === 'number') {
       this.highlightTextBackgroundRadiusTopLeft = options
       this.highlightTextBackgroundRadiusTopRight = options
@@ -163,6 +171,7 @@ export class HighlightTheme {
         this.highlightTextBackgroundRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**

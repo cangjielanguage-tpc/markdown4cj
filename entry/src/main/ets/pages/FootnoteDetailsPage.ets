@@ -4,7 +4,6 @@ import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTextDecorationStyle,
   MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
@@ -138,7 +137,7 @@ struct FootnoteDetailsPage {
   footnoteRefTextDecorationColor: number | undefined = undefined
   // 脚注引用文本装饰线样式
   @State
-  footnoteRefTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  footnoteRefTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   // 脚注引用文本背景颜色
   @State
   footnoteRefTextBackgroundColor: number | undefined = undefined

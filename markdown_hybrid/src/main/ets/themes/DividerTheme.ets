@@ -66,7 +66,7 @@ export class DividerTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setDividerMargin(options: MarkdownMarginOptions | number): void {
+  setDividerMargin(options: MarkdownMarginOptions | number): DividerTheme {
     if (typeof options === "number") {
       this.dividerMarginTop = options
       this.dividerMarginRight = options
@@ -86,6 +86,7 @@ export class DividerTheme {
         this.dividerMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -95,7 +96,7 @@ export class DividerTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setDividerPadding(options: MarkdownPaddingOptions | number): void {
+  setDividerPadding(options: MarkdownPaddingOptions | number): DividerTheme {
     if (typeof options === "number") {
       this.dividerPaddingTop = options
       this.dividerPaddingRight = options
@@ -115,6 +116,7 @@ export class DividerTheme {
         this.dividerPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -122,8 +124,9 @@ export class DividerTheme {
    *
    * @param color 分割线颜色
    */
-  setDividerColor(color: number): void {
+  setDividerColor(color: number): DividerTheme {
     this.dividerColor = color
+    return this
   }
 
   /**
@@ -131,8 +134,9 @@ export class DividerTheme {
    *
    * @param strokeWidth 分割线宽度
    */
-  setDividerStrokeWidth(strokeWidth: number): void {
+  setDividerStrokeWidth(strokeWidth: number): DividerTheme {
     this.dividerStrokeWidth = strokeWidth
+    return this
   }
 
   /**
@@ -140,8 +144,9 @@ export class DividerTheme {
    *
    * @param style 分割线端点样式
    */
-  setDividerStyle(style: LineCapStyle): void {
+  setDividerStyle(style: LineCapStyle): DividerTheme {
     this.dividerStyle = style
+    return this
   }
 
   /**

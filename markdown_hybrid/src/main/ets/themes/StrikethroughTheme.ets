@@ -1,5 +1,3 @@
-import { MarkdownTextDecorationStyle } from "./MarkdownTheme"
-
 /**
  * Markdown用户可设置的样式-删除线文本样式
  */
@@ -47,15 +45,16 @@ export class StrikethroughTheme {
   /**
    * 删除线文本装饰线样式
    */
-  private strikethroughTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
+  private strikethroughTextDecorationStyle?: TextDecorationStyle = undefined
 
   /**
    * 设置删除线文本颜色
    *
    * @param color 删除线文本颜色
    */
-  setStrikethroughTextFontColor(color: number): void {
+  setStrikethroughTextFontColor(color: number): StrikethroughTheme {
     this.strikethroughTextFontColor = color
+    return this
   }
 
   /**
@@ -63,8 +62,9 @@ export class StrikethroughTheme {
    *
    * @param size 删除线文本字号
    */
-  setStrikethroughTextFontSize(size: number): void {
+  setStrikethroughTextFontSize(size: number): StrikethroughTheme {
     this.strikethroughTextFontSize = size
+    return this
   }
 
   /**
@@ -72,8 +72,9 @@ export class StrikethroughTheme {
    *
    * @param style 删除线文本字体样式
    */
-  setStrikethroughTextFontStyle(style: FontStyle): void {
+  setStrikethroughTextFontStyle(style: FontStyle): StrikethroughTheme {
     this.strikethroughTextFontStyle = style
+    return this
   }
 
   /**
@@ -81,8 +82,9 @@ export class StrikethroughTheme {
    *
    * @param weight 删除线文本字体粗细
    */
-  setStrikethroughTextFontWeight(weight: FontWeight): void {
+  setStrikethroughTextFontWeight(weight: FontWeight): StrikethroughTheme {
     this.strikethroughTextFontWeight = weight
+    return this
   }
 
   /**
@@ -90,8 +92,9 @@ export class StrikethroughTheme {
    *
    * @param family 删除线文本字体
    */
-  setStrikethroughTextFontFamily(family: string): void {
+  setStrikethroughTextFontFamily(family: string): StrikethroughTheme {
     this.strikethroughTextFontFamily = family
+    return this
   }
 
   /**
@@ -99,8 +102,9 @@ export class StrikethroughTheme {
    *
    * @param lineHeight 删除线文本行高
    */
-  setStrikethroughTextLineHeight(lineHeight: number): void {
+  setStrikethroughTextLineHeight(lineHeight: number): StrikethroughTheme {
     this.strikethroughTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -108,8 +112,9 @@ export class StrikethroughTheme {
    *
    * @param spacing 删除线文本字符间距
    */
-  setStrikethroughTextLetterSpacing(spacing: number): void {
+  setStrikethroughTextLetterSpacing(spacing: number): StrikethroughTheme {
     this.strikethroughTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -117,8 +122,9 @@ export class StrikethroughTheme {
    *
    * @param color 删除线文本装饰线颜色
    */
-  setStrikethroughTextDecorationColor(color: number): void {
+  setStrikethroughTextDecorationColor(color: number): StrikethroughTheme {
     this.strikethroughTextDecorationColor = color
+    return this
   }
 
   /**
@@ -126,8 +132,9 @@ export class StrikethroughTheme {
    *
    * @param style 删除线文本装饰线样式
    */
-  setStrikethroughTextDecorationStyle(style: MarkdownTextDecorationStyle): void {
+  setStrikethroughTextDecorationStyle(style: TextDecorationStyle): StrikethroughTheme {
     this.strikethroughTextDecorationStyle = style
+    return this
   }
 
   /**
@@ -207,7 +214,7 @@ export class StrikethroughTheme {
    *
    * @returns strikethroughTextDecorationStyle
    */
-  getStrikethroughTextDecorationStyle(): MarkdownTextDecorationStyle | undefined {
+  getStrikethroughTextDecorationStyle(): TextDecorationStyle | undefined {
     return this.strikethroughTextDecorationStyle
   }
 }

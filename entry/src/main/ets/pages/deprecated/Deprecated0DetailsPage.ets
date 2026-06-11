@@ -4,7 +4,6 @@ import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTextDecorationStyle,
   MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../../utils/FileUtils'
 import hilog from '@ohos.hilog'
@@ -55,7 +54,7 @@ struct Deprecated0DetailsPage {
   @State // 删除线颜色
   strikethroughColor: number = 0xFF191919
   @State // 删除线样式
-  strikethroughStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   @State // 定义列表定义行缩进
   descListTermAndDefMargins: number = 8
   @State // 定义列表定义行缩进

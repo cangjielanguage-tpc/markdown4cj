@@ -89,8 +89,9 @@ export class ParagraphTheme {
    *
    * @param color 段落背景颜色
    */
-  setParagraphBackgroundColor(color: number): void {
+  setParagraphBackgroundColor(color: number): ParagraphTheme {
     this.paragraphBackgroundColor = color
+    return this
   }
 
   /**
@@ -100,7 +101,7 @@ export class ParagraphTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setParagraphMargin(options: MarkdownMarginOptions | number): void {
+  setParagraphMargin(options: MarkdownMarginOptions | number): ParagraphTheme {
     if (typeof options === "number") {
       this.paragraphMarginTop = options
       this.paragraphMarginRight = options
@@ -120,6 +121,7 @@ export class ParagraphTheme {
         this.paragraphMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -129,7 +131,7 @@ export class ParagraphTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setParagraphPadding(options: MarkdownPaddingOptions | number): void {
+  setParagraphPadding(options: MarkdownPaddingOptions | number): ParagraphTheme {
     if (typeof options === "number") {
       this.paragraphPaddingTop = options
       this.paragraphPaddingRight = options
@@ -149,6 +151,7 @@ export class ParagraphTheme {
         this.paragraphPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -156,8 +159,9 @@ export class ParagraphTheme {
    *
    * @param color 段落文本颜色
    */
-  setParagraphTextFontColor(color: number): void {
+  setParagraphTextFontColor(color: number): ParagraphTheme {
     this.paragraphTextFontColor = color
+    return this
   }
 
   /**
@@ -165,8 +169,9 @@ export class ParagraphTheme {
    *
    * @param size 段落文本尺寸
    */
-  setParagraphTextFontSize(size: number): void {
+  setParagraphTextFontSize(size: number): ParagraphTheme {
     this.paragraphTextFontSize = size
+    return this
   }
 
   /**
@@ -174,8 +179,9 @@ export class ParagraphTheme {
    *
    * @param style 段落文本字体样式
    */
-  setParagraphTextFontStyle(style: FontStyle): void {
+  setParagraphTextFontStyle(style: FontStyle): ParagraphTheme {
     this.paragraphTextFontStyle = style
+    return this
   }
 
   /**
@@ -183,8 +189,9 @@ export class ParagraphTheme {
    *
    * @param weight 段落文本字体粗细
    */
-  setParagraphTextFontWeight(weight: FontWeight): void {
+  setParagraphTextFontWeight(weight: FontWeight): ParagraphTheme {
     this.paragraphTextFontWeight = weight
+    return this
   }
 
   /**
@@ -192,8 +199,9 @@ export class ParagraphTheme {
    *
    * @param family 段落文本字体
    */
-  setParagraphTextFontFamily(family: string): void {
+  setParagraphTextFontFamily(family: string): ParagraphTheme {
     this.paragraphTextFontFamily = family
+    return this
   }
 
   /**
@@ -201,8 +209,9 @@ export class ParagraphTheme {
    *
    * @param lineHeight 段落文本行高
    */
-  setParagraphTextLineHeight(lineHeight: number): void {
+  setParagraphTextLineHeight(lineHeight: number): ParagraphTheme {
     this.paragraphTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -210,8 +219,9 @@ export class ParagraphTheme {
    *
    * @param spacing 段落文本字符间距
    */
-  setParagraphTextLetterSpacing(spacing: number): void {
+  setParagraphTextLetterSpacing(spacing: number): ParagraphTheme {
     this.paragraphTextLetterSpacing = spacing
+    return this
   }
 
   /**

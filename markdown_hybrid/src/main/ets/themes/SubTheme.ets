@@ -42,8 +42,9 @@ export class SubTheme {
    *
    * @param color 下标文本颜色
    */
-  setSubTextFontColor(color: number): void {
+  setSubTextFontColor(color: number): SubTheme {
     this.subTextFontColor = color
+    return this
   }
 
   /**
@@ -51,8 +52,9 @@ export class SubTheme {
    *
    * @param size 下标文本尺寸
    */
-  setSubTextFontSize(size: number): void {
+  setSubTextFontSize(size: number): SubTheme {
     this.subTextFontSize = size
+    return this
   }
 
   /**
@@ -60,8 +62,9 @@ export class SubTheme {
    *
    * @param style 下标文本字体样式
    */
-  setSubTextFontStyle(style: FontStyle): void {
+  setSubTextFontStyle(style: FontStyle): SubTheme {
     this.subTextFontStyle = style
+    return this
   }
 
   /**
@@ -69,8 +72,9 @@ export class SubTheme {
    *
    * @param weight 下标文本字体粗细
    */
-  setSubTextFontWeight(weight: FontWeight): void {
+  setSubTextFontWeight(weight: FontWeight): SubTheme {
     this.subTextFontWeight = weight
+    return this
   }
 
   /**
@@ -78,8 +82,9 @@ export class SubTheme {
    *
    * @param family 下标文本字体
    */
-  setSubTextFontFamily(family: string): void {
+  setSubTextFontFamily(family: string): SubTheme {
     this.subTextFontFamily = family
+    return this
   }
 
   /**
@@ -87,8 +92,9 @@ export class SubTheme {
    *
    * @param spacing 下标文本字符间距
    */
-  setSubTextLetterSpacing(spacing: number): void {
+  setSubTextLetterSpacing(spacing: number): SubTheme {
     this.subTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -96,8 +102,9 @@ export class SubTheme {
    *
    * @param offset 下标文本基线的偏移量
    */
-  setSubTextBaselineOffset(offset: number): void {
+  setSubTextBaselineOffset(offset: number): SubTheme {
     this.subTextBaselineOffset = offset
+    return this
   }
 
   /**

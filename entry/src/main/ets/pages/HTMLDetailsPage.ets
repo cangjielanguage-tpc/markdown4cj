@@ -3,7 +3,6 @@ import { CJMarkdown,
   HtmlUnderlineTheme,
   MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTextDecorationStyle,
   MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
@@ -107,7 +106,7 @@ struct HTMLDetailsPage {
   htmlUnderlineTextDecorationColor: number | undefined = undefined
   // HTML下划线文本装饰线样式
   @State
-  htmlUnderlineTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  htmlUnderlineTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()

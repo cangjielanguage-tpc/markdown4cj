@@ -81,7 +81,7 @@ export class DefinitionListTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setDefinitionListMargin(options: MarkdownMarginOptions | number): void {
+  setDefinitionListMargin(options: MarkdownMarginOptions | number): DefinitionListTheme {
     if (typeof options === "number") {
       this.definitionListMarginTop = options
       this.definitionListMarginRight = options
@@ -101,6 +101,7 @@ export class DefinitionListTheme {
         this.definitionListMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -110,7 +111,7 @@ export class DefinitionListTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setDefinitionListPadding(options: MarkdownPaddingOptions | number): void {
+  setDefinitionListPadding(options: MarkdownPaddingOptions | number): DefinitionListTheme {
     if (typeof options === "number") {
       this.definitionListPaddingTop = options
       this.definitionListPaddingRight = options
@@ -130,6 +131,7 @@ export class DefinitionListTheme {
         this.definitionListPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -137,8 +139,9 @@ export class DefinitionListTheme {
    *
    * @param color 定义列表背景颜色
    */
-  setDefinitionListBackgroundColor(color: number): void {
+  setDefinitionListBackgroundColor(color: number): DefinitionListTheme {
     this.definitionListBackgroundColor = color
+    return this
   }
 
   /**
@@ -146,8 +149,9 @@ export class DefinitionListTheme {
    *
    * @param spacing 间距
    */
-  setDefinitionListTermToDescriptionSpacing(spacing: number): void {
+  setDefinitionListTermToDescriptionSpacing(spacing: number): DefinitionListTheme {
     this.definitionListTermToDescriptionSpacing = spacing
+    return this
   }
 
   /**
@@ -155,8 +159,9 @@ export class DefinitionListTheme {
    *
    * @param weight 文本字体粗细
    */
-  setDefinitionListTermTextFontWeight(weight: FontWeight): void {
+  setDefinitionListTermTextFontWeight(weight: FontWeight): DefinitionListTheme {
     this.definitionListTermTextFontWeight = weight
+    return this
   }
 
   /**
@@ -164,8 +169,9 @@ export class DefinitionListTheme {
    *
    * @param style 定义列表术语文本字体样式
    */
-  setDefinitionListTermTextFontStyle(style: FontStyle): void {
+  setDefinitionListTermTextFontStyle(style: FontStyle): DefinitionListTheme {
     this.definitionListTermTextFontStyle = style
+    return this
   }
 
   /**
@@ -173,8 +179,9 @@ export class DefinitionListTheme {
    *
    * @param spacing 间距
    */
-  setDefinitionListDescriptionItemSpacing(spacing: number): void {
+  setDefinitionListDescriptionItemSpacing(spacing: number): DefinitionListTheme {
     this.definitionListDescriptionItemSpacing = spacing
+    return this
   }
 
   /**
@@ -182,8 +189,9 @@ export class DefinitionListTheme {
    *
    * @param indent 左缩进距离
    */
-  setDefinitionListDescriptionIndent(indent: number): void {
+  setDefinitionListDescriptionIndent(indent: number): DefinitionListTheme {
     this.definitionListDescriptionIndent = indent
+    return this
   }
 
   /**

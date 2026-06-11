@@ -1,4 +1,4 @@
-import { MarkdownRadiusOptions, MarkdownTextDecorationStyle } from "./MarkdownTheme"
+import { MarkdownRadiusOptions } from "./MarkdownTheme"
 
 /**
  * Markdown用户可设置的样式-脚注引用样式
@@ -52,7 +52,7 @@ export class FootnoteRefTheme {
   /**
    * 脚注引用文本装饰线样式
    */
-  private footnoteRefTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
+  private footnoteRefTextDecorationStyle?: TextDecorationStyle = undefined
 
   /**
    * 脚注引用文本背景颜色
@@ -84,8 +84,9 @@ export class FootnoteRefTheme {
    *
    * @param color 脚注引用文本颜色
    */
-  setFootnoteRefTextFontColor(color: number): void {
+  setFootnoteRefTextFontColor(color: number): FootnoteRefTheme {
     this.footnoteRefTextFontColor = color
+    return this
   }
 
   /**
@@ -93,8 +94,9 @@ export class FootnoteRefTheme {
    *
    * @param size 脚注引用文本尺寸
    */
-  setFootnoteRefTextFontSize(size: number): void {
+  setFootnoteRefTextFontSize(size: number): FootnoteRefTheme {
     this.footnoteRefTextFontSize = size
+    return this
   }
 
   /**
@@ -102,8 +104,9 @@ export class FootnoteRefTheme {
    *
    * @param style 脚注引用文本字体样式
    */
-  setFootnoteRefTextFontStyle(style: FontStyle): void {
+  setFootnoteRefTextFontStyle(style: FontStyle): FootnoteRefTheme {
     this.footnoteRefTextFontStyle = style
+    return this
   }
 
   /**
@@ -111,8 +114,9 @@ export class FootnoteRefTheme {
    *
    * @param weight 脚注引用文本字体粗细
    */
-  setFootnoteRefTextFontWeight(weight: FontWeight): void {
+  setFootnoteRefTextFontWeight(weight: FontWeight): FootnoteRefTheme {
     this.footnoteRefTextFontWeight = weight
+    return this
   }
 
   /**
@@ -120,8 +124,9 @@ export class FootnoteRefTheme {
    *
    * @param family 脚注引用文本字体
    */
-  setFootnoteRefTextFontFamily(family: string): void {
+  setFootnoteRefTextFontFamily(family: string): FootnoteRefTheme {
     this.footnoteRefTextFontFamily = family
+    return this
   }
 
   /**
@@ -129,8 +134,9 @@ export class FootnoteRefTheme {
    *
    * @param lineHeight 脚注引用文本行高
    */
-  setFootnoteRefTextLineHeight(lineHeight: number): void {
+  setFootnoteRefTextLineHeight(lineHeight: number): FootnoteRefTheme {
     this.footnoteRefTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -138,8 +144,9 @@ export class FootnoteRefTheme {
    *
    * @param spacing 脚注引用文本字符间距
    */
-  setFootnoteRefTextLetterSpacing(spacing: number): void {
+  setFootnoteRefTextLetterSpacing(spacing: number): FootnoteRefTheme {
     this.footnoteRefTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -147,8 +154,9 @@ export class FootnoteRefTheme {
    *
    * @param decorationType 脚注引用文本装饰线类型
    */
-  setFootnoteRefTextDecorationType(decorationType: TextDecorationType): void {
+  setFootnoteRefTextDecorationType(decorationType: TextDecorationType): FootnoteRefTheme {
     this.footnoteRefTextDecorationType = decorationType
+    return this
   }
 
   /**
@@ -156,8 +164,9 @@ export class FootnoteRefTheme {
    *
    * @param color 脚注引用文本装饰线颜色
    */
-  setFootnoteRefTextDecorationColor(color: number): void {
+  setFootnoteRefTextDecorationColor(color: number): FootnoteRefTheme {
     this.footnoteRefTextDecorationColor = color
+    return this
   }
 
   /**
@@ -165,8 +174,9 @@ export class FootnoteRefTheme {
    *
    * @param style 脚注引用文本装饰线样式
    */
-  setFootnoteRefTextDecorationStyle(style: MarkdownTextDecorationStyle): void {
+  setFootnoteRefTextDecorationStyle(style: TextDecorationStyle): FootnoteRefTheme {
     this.footnoteRefTextDecorationStyle = style
+    return this
   }
 
   /**
@@ -174,8 +184,9 @@ export class FootnoteRefTheme {
    *
    * @param color 脚注引用文本背景颜色
    */
-  setFootnoteRefTextBackgroundColor(color: number): void {
+  setFootnoteRefTextBackgroundColor(color: number): FootnoteRefTheme {
     this.footnoteRefTextBackgroundColor = color
+    return this
   }
 
   /**
@@ -185,7 +196,7 @@ export class FootnoteRefTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setFootnoteRefTextBackgroundRadius(options: MarkdownRadiusOptions | number): void {
+  setFootnoteRefTextBackgroundRadius(options: MarkdownRadiusOptions | number): FootnoteRefTheme {
     if (typeof options === "number") {
       this.footnoteRefTextBackgroundRadiusTopLeft = options
       this.footnoteRefTextBackgroundRadiusTopRight = options
@@ -205,6 +216,7 @@ export class FootnoteRefTheme {
         this.footnoteRefTextBackgroundRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -293,7 +305,7 @@ export class FootnoteRefTheme {
    *
    * @returns footnoteRefTextDecorationStyle
    */
-  getFootnoteRefTextDecorationStyle(): MarkdownTextDecorationStyle | undefined {
+  getFootnoteRefTextDecorationStyle(): TextDecorationStyle | undefined {
     return this.footnoteRefTextDecorationStyle
   }
 

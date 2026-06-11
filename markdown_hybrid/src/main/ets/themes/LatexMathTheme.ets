@@ -109,8 +109,9 @@ export class LatexMathTheme {
    *
    * @param showDefaultText 是否显示文字
    */
-  setLatexMathDefaultText(showDefaultText: boolean): void {
+  setLatexMathDefaultText(showDefaultText: boolean): LatexMathTheme {
     this.latexMathDefaultText = showDefaultText
+    return this
   }
 
   /**
@@ -118,8 +119,9 @@ export class LatexMathTheme {
    *
    * @param color 文本颜色
    */
-  setLatexMathDefaultTextFontColor(color: number): void {
+  setLatexMathDefaultTextFontColor(color: number): LatexMathTheme {
     this.latexMathDefaultTextFontColor = color
+    return this
   }
 
   /**
@@ -127,8 +129,9 @@ export class LatexMathTheme {
    *
    * @param size 文本尺寸
    */
-  setLatexMathDefaultTextFontSize(size: number): void {
+  setLatexMathDefaultTextFontSize(size: number): LatexMathTheme {
     this.latexMathDefaultTextFontSize = size
+    return this
   }
 
   /**
@@ -136,8 +139,9 @@ export class LatexMathTheme {
    *
    * @param style 字体样式
    */
-  setLatexMathDefaultTextFontStyle(style: FontStyle): void {
+  setLatexMathDefaultTextFontStyle(style: FontStyle): LatexMathTheme {
     this.latexMathDefaultTextFontStyle = style
+    return this
   }
 
   /**
@@ -145,8 +149,9 @@ export class LatexMathTheme {
    *
    * @param weight 字体粗细
    */
-  setLatexMathDefaultTextFontWeight(weight: FontWeight): void {
+  setLatexMathDefaultTextFontWeight(weight: FontWeight): LatexMathTheme {
     this.latexMathDefaultTextFontWeight = weight
+    return this
   }
 
   /**
@@ -154,8 +159,9 @@ export class LatexMathTheme {
    *
    * @param family 字体
    */
-  setLatexMathDefaultTextFontFamily(family: string): void {
+  setLatexMathDefaultTextFontFamily(family: string): LatexMathTheme {
     this.latexMathDefaultTextFontFamily = family
+    return this
   }
 
   /**
@@ -163,8 +169,9 @@ export class LatexMathTheme {
    *
    * @param size 文本大小
    */
-  setLatexMathTextSize(size: number): void {
+  setLatexMathTextSize(size: number): LatexMathTheme {
     this.latexMathTextSize = size
+    return this
   }
 
   /**
@@ -172,8 +179,9 @@ export class LatexMathTheme {
    *
    * @param color 背景色
    */
-  setLatexMathBackgroundColor(color: number): void {
+  setLatexMathBackgroundColor(color: number): LatexMathTheme {
     this.latexMathBackgroundColor = color
+    return this
   }
 
   /**
@@ -181,8 +189,9 @@ export class LatexMathTheme {
    *
    * @param color 文本颜色
    */
-  setLatexMathTextColor(color: number): void {
+  setLatexMathTextColor(color: number): LatexMathTheme {
     this.latexMathTextColor = color
+    return this
   }
 
   /**
@@ -190,8 +199,9 @@ export class LatexMathTheme {
    *
    * @param format 生成图片格式
    */
-  setLatexMathColorFormat(format: LatexMathColorFormat): void {
+  setLatexMathColorFormat(format: LatexMathColorFormat): LatexMathTheme {
     this.latexMathColorFormat = format
+    return this
   }
 
   /**
@@ -199,8 +209,9 @@ export class LatexMathTheme {
    *
    * @param center 是否居中
    */
-  setLatexMathBlockCenter(center: boolean): void {
+  setLatexMathBlockCenter(center: boolean): LatexMathTheme {
     this.latexMathBlockCenter = center
+    return this
   }
 
   /**
@@ -208,8 +219,9 @@ export class LatexMathTheme {
    *
    * @param path 字体路径
    */
-  setLatexMathResPath(path: string): void {
+  setLatexMathResPath(path: string): LatexMathTheme {
     this.latexMathResPath = path
+    return this
   }
 
   /**
@@ -219,7 +231,7 @@ export class LatexMathTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setLatexMathMargin(options: MarkdownMarginOptions | number): void {
+  setLatexMathMargin(options: MarkdownMarginOptions | number): LatexMathTheme {
     if (typeof options === "number") {
       this.latexMathMarginTop = options
       this.latexMathMarginRight = options
@@ -239,6 +251,7 @@ export class LatexMathTheme {
         this.latexMathMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -248,7 +261,7 @@ export class LatexMathTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setLatexMathPadding(options: MarkdownPaddingOptions | number): void {
+  setLatexMathPadding(options: MarkdownPaddingOptions | number): LatexMathTheme {
     if (typeof options === "number") {
       this.latexMathPaddingTop = options
       this.latexMathPaddingRight = options
@@ -268,6 +281,7 @@ export class LatexMathTheme {
         this.latexMathPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**

@@ -2,7 +2,6 @@ import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTextDecorationStyle,
   MarkdownTheme,
   StrikethroughTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
@@ -80,7 +79,7 @@ struct StrikethroughDetailsPage {
   @State // 删除线文本装饰线颜色
   strikethroughTextDecorationColor: number | undefined = undefined
   @State // 删除线文本装饰线样式
-  strikethroughTextDecorationStyle: MarkdownTextDecorationStyle | undefined = undefined
+  strikethroughTextDecorationStyle: TextDecorationStyle | undefined = undefined
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()

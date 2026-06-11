@@ -9,7 +9,6 @@ import {
   fontStyleListGeneraData,
   fontWeightListGeneraData,
   marginListGeneralData,
-  markdownTextDecorationStyleListGeneralData,
   textDecorationStyleListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
@@ -19,7 +18,6 @@ import {
   timeListGeneralData
 } from '../model/GeneralData'
 import { StrikethroughData } from '../model/StrikethroughData'
-import { MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -128,9 +126,9 @@ struct StrikethroughPage {
   @State // 删除线文本装饰线颜色
   strikethroughTextDecorationColor: number | undefined = undefined
   // 删除线文本装饰线样式列表
-  strikethroughTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = markdownTextDecorationStyleListGeneralData
+  strikethroughTextDecorationStyleList: Array<TextDecorationStyle> = textDecorationStyleListGeneralData
   @State // 删除线文本装饰线样式
-  strikethroughTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  strikethroughTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   @State // 配置数据内容
   strikethroughData: StrikethroughData = new StrikethroughData()

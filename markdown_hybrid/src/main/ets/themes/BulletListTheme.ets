@@ -129,8 +129,9 @@ export class BulletListTheme {
    *
    * @param color 无序/任务背景颜色
    */
-  setBulletListBackgroundColor(color: number): void {
+  setBulletListBackgroundColor(color: number): BulletListTheme {
     this.bulletListBackgroundColor = color
+    return this
   }
 
   /**
@@ -140,7 +141,7 @@ export class BulletListTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setBulletListMargin(options: MarkdownMarginOptions | number): void {
+  setBulletListMargin(options: MarkdownMarginOptions | number): BulletListTheme {
     if (typeof options === "number") {
       this.bulletListMarginTop = options
       this.bulletListMarginRight = options
@@ -160,6 +161,7 @@ export class BulletListTheme {
         this.bulletListMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -169,7 +171,7 @@ export class BulletListTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setBulletListPadding(options: MarkdownPaddingOptions | number): void {
+  setBulletListPadding(options: MarkdownPaddingOptions | number): BulletListTheme {
     if (typeof options === "number") {
       this.bulletListPaddingTop = options
       this.bulletListPaddingRight = options
@@ -189,6 +191,7 @@ export class BulletListTheme {
         this.bulletListPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -196,8 +199,9 @@ export class BulletListTheme {
    *
    * @param spacing 无序/任务子模块上下间距
    */
-  setBulletListChildSpacing(spacing: number): void {
+  setBulletListChildSpacing(spacing: number): BulletListTheme {
     this.bulletListChildSpacing = spacing
+    return this
   }
 
   /**
@@ -205,8 +209,9 @@ export class BulletListTheme {
    *
    * @param spacing 无序/任务子模块中子模块上下间距
    */
-  setBulletListChildChildSpacing(spacing: number): void {
+  setBulletListChildChildSpacing(spacing: number): BulletListTheme {
     this.bulletListChildChildSpacing = spacing
+    return this
   }
 
   /**
@@ -214,8 +219,9 @@ export class BulletListTheme {
    *
    * @param spacing 无序列表列表符号和列表内容间距
    */
-  setBulletListBulletSpacing(spacing: number): void {
+  setBulletListBulletSpacing(spacing: number): BulletListTheme {
     this.bulletListBulletSpacing = spacing
+    return this
   }
 
   /**
@@ -223,8 +229,9 @@ export class BulletListTheme {
    *
    * @param isCircle 无序列表列表符号是否全部是实心圆型
    */
-  setBulletListBulletIsCircle(isCircle: boolean): void {
+  setBulletListBulletIsCircle(isCircle: boolean): BulletListTheme {
     this.bulletListBulletIsCircle = isCircle
+    return this
   }
 
   /**
@@ -232,8 +239,9 @@ export class BulletListTheme {
    *
    * @param color 无序列表列表符号文本颜色
    */
-  setBulletListBulletTextFontColor(color: number): void {
+  setBulletListBulletTextFontColor(color: number): BulletListTheme {
     this.bulletListBulletTextFontColor = color
+    return this
   }
 
   /**
@@ -241,8 +249,9 @@ export class BulletListTheme {
    *
    * @param size 无序列表列表符号文本尺寸
    */
-  setBulletListBulletTextFontSize(size: number): void {
+  setBulletListBulletTextFontSize(size: number): BulletListTheme {
     this.bulletListBulletTextFontSize = size
+    return this
   }
 
   /**
@@ -250,8 +259,9 @@ export class BulletListTheme {
    *
    * @param style 无序列表列表符号文本字体样式
    */
-  setBulletListBulletTextFontStyle(style: FontStyle): void {
+  setBulletListBulletTextFontStyle(style: FontStyle): BulletListTheme {
     this.bulletListBulletTextFontStyle = style
+    return this
   }
 
   /**
@@ -259,8 +269,9 @@ export class BulletListTheme {
    *
    * @param weight 无序列表列表符号文本字体粗细
    */
-  setBulletListBulletTextFontWeight(weight: FontWeight): void {
+  setBulletListBulletTextFontWeight(weight: FontWeight): BulletListTheme {
     this.bulletListBulletTextFontWeight = weight
+    return this
   }
 
   /**
@@ -268,8 +279,9 @@ export class BulletListTheme {
    *
    * @param family 无序列表列表符号文本字体
    */
-  setBulletListBulletTextFontFamily(family: string): void {
+  setBulletListBulletTextFontFamily(family: string): BulletListTheme {
     this.bulletListBulletTextFontFamily = family
+    return this
   }
 
   /**
@@ -277,8 +289,9 @@ export class BulletListTheme {
    *
    * @param lineHeight 无序列表列表符号文本行高
    */
-  setBulletListBulletTextLineHeight(lineHeight: number): void {
+  setBulletListBulletTextLineHeight(lineHeight: number): BulletListTheme {
     this.bulletListBulletTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -286,8 +299,9 @@ export class BulletListTheme {
    *
    * @param spacing 任务列表多选框和列表内容间距
    */
-  setBulletListCheckboxSpacing(spacing: number): void {
+  setBulletListCheckboxSpacing(spacing: number): BulletListTheme {
     this.bulletListCheckboxSpacing = spacing
+    return this
   }
 
   /**
@@ -295,8 +309,9 @@ export class BulletListTheme {
    *
    * @param width 任务列表多选框宽度
    */
-  setBulletListCheckboxWidth(width: number): void {
+  setBulletListCheckboxWidth(width: number): BulletListTheme {
     this.bulletListCheckboxWidth = width
+    return this
   }
 
   /**
@@ -304,8 +319,9 @@ export class BulletListTheme {
    *
    * @param height 任务列表多选框高度
    */
-  setBulletListCheckboxHeight(height: number): void {
+  setBulletListCheckboxHeight(height: number): BulletListTheme {
     this.bulletListCheckboxHeight = height
+    return this
   }
 
   /**
@@ -313,8 +329,9 @@ export class BulletListTheme {
    *
    * @param color 任务列表多选框选中颜色
    */
-  setBulletListCheckboxSelectedColor(color: number): void {
+  setBulletListCheckboxSelectedColor(color: number): BulletListTheme {
     this.bulletListCheckboxSelectedColor = color
+    return this
   }
 
   /**
@@ -322,8 +339,9 @@ export class BulletListTheme {
    *
    * @param shape 任务列表多选框形状
    */
-  setBulletListCheckboxShape(shape: CheckBoxShape): void {
+  setBulletListCheckboxShape(shape: CheckBoxShape): BulletListTheme {
     this.bulletListCheckboxShape = shape
+    return this
   }
 
   /**

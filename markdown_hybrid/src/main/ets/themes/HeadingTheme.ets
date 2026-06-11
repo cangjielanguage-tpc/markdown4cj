@@ -521,13 +521,14 @@ export class HeadingTheme {
    *
    * @param color 背景颜色
    */
-  setBackgroundColorForAllHeading(color: number): void {
+  setBackgroundColorForAllHeading(color: number): HeadingTheme {
     this.heading1BackgroundColor = color
     this.heading2BackgroundColor = color
     this.heading3BackgroundColor = color
     this.heading4BackgroundColor = color
     this.heading5BackgroundColor = color
     this.heading6BackgroundColor = color
+    return this
   }
 
   /**
@@ -535,12 +536,13 @@ export class HeadingTheme {
    *
    * @param colorList 背景颜色集合
    */
-  setBackgroundColorForEachHeading(colorList: number[]): void {
+  setBackgroundColorForEachHeading(colorList: number[]): HeadingTheme {
     let level = 1
     for (const color of colorList) {
       this.setBackgroundColorForDesignateHeading(level, color)
       level += 1
     }
+    return this
   }
 
   /**
@@ -549,7 +551,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param color 背景颜色
    */
-  setBackgroundColorForDesignateHeading(level: number, color: number): void {
+  setBackgroundColorForDesignateHeading(level: number, color: number): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1BackgroundColor = color
@@ -572,6 +574,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -581,13 +584,14 @@ export class HeadingTheme {
    *                  入参 number 类型时所有外边距设为相同值
    *                  入参 MarkdownMarginOptions 类型时设置H1-H6级的top（right, bottom, left）外边距为统一值
    */
-  setMarginForAllHeadingEachLevel(options: MarkdownMarginOptions | number): void {
+  setMarginForAllHeadingEachLevel(options: MarkdownMarginOptions | number): HeadingTheme {
     this.setMarginForDesignateHeading(1, options)
     this.setMarginForDesignateHeading(2, options)
     this.setMarginForDesignateHeading(3, options)
     this.setMarginForDesignateHeading(4, options)
     this.setMarginForDesignateHeading(5, options)
     this.setMarginForDesignateHeading(6, options)
+    return this
   }
 
   /**
@@ -595,12 +599,13 @@ export class HeadingTheme {
    *
    * @param marginList 外边距集合
    */
-  setMarginForEachHeading(marginList: number[]): void {
+  setMarginForEachHeading(marginList: number[]): HeadingTheme {
     let level = 1
     for (const margin of marginList) {
       this.setMarginForDesignateHeading(level, margin)
       level += 1
     }
+    return this
   }
 
   /**
@@ -608,27 +613,28 @@ export class HeadingTheme {
    *
    * @param options MarkdownMarginArrayOptions 类型，包含四个外边距的H1-H6的数值集合
    */
-  setMarginForEachHeadingDetail(options: MarkdownMarginArrayOptions): void {
+  setMarginForEachHeadingDetail(options: MarkdownMarginArrayOptions): HeadingTheme {
     if (options.top !== undefined) {
       for (let index = 0; index < options.top.length; index++) {
-        this.setMarginForDesignateHeading((index + 1), {top: options.top[index]})
+        this.setMarginForDesignateHeading((index + 1), { top: options.top[index] })
       }
     }
     if (options.right !== undefined) {
       for (let index = 0; index < options.right.length; index++) {
-        this.setMarginForDesignateHeading((index + 1), {right: options.right[index]})
+        this.setMarginForDesignateHeading((index + 1), { right: options.right[index] })
       }
     }
     if (options.bottom !== undefined) {
       for (let index = 0; index < options.bottom.length; index++) {
-        this.setMarginForDesignateHeading((index + 1), {bottom: options.bottom[index]})
+        this.setMarginForDesignateHeading((index + 1), { bottom: options.bottom[index] })
       }
     }
     if (options.left !== undefined) {
       for (let index = 0; index < options.left.length; index++) {
-        this.setMarginForDesignateHeading((index + 1), {left: options.left[index]})
+        this.setMarginForDesignateHeading((index + 1), { left: options.left[index] })
       }
     }
+    return this
   }
 
   /**
@@ -639,7 +645,7 @@ export class HeadingTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setMarginForDesignateHeading(level: number, options: MarkdownMarginOptions | number): void {
+  setMarginForDesignateHeading(level: number, options: MarkdownMarginOptions | number): HeadingTheme {
     switch (level) {
       case 1:
         if (typeof options === 'number') {
@@ -722,6 +728,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -731,13 +738,14 @@ export class HeadingTheme {
    *                  入参 number 类型时所有内边距设为相同值
    *                  入参 MarkdownPaddingOptions 类型时设置H1-H6级的top（right, bottom, left）内边距为统一值
    */
-  setPaddingForAllHeadingEachLevel(options: MarkdownPaddingOptions | number): void {
+  setPaddingForAllHeadingEachLevel(options: MarkdownPaddingOptions | number): HeadingTheme {
     this.setPaddingForDesignateHeading(1, options)
     this.setPaddingForDesignateHeading(2, options)
     this.setPaddingForDesignateHeading(3, options)
     this.setPaddingForDesignateHeading(4, options)
     this.setPaddingForDesignateHeading(5, options)
     this.setPaddingForDesignateHeading(6, options)
+    return this
   }
 
   /**
@@ -745,12 +753,13 @@ export class HeadingTheme {
    *
    * @param paddingList 内边距集合
    */
-  setPaddingForEachHeading(paddingList: number[]): void {
+  setPaddingForEachHeading(paddingList: number[]): HeadingTheme {
     let level = 1
     for (const padding of paddingList) {
       this.setPaddingForDesignateHeading(level, padding)
       level += 1
     }
+    return this
   }
 
   /**
@@ -758,27 +767,28 @@ export class HeadingTheme {
    *
    * @param options MarkdownPaddingArrayOptions 类型，包含四个内边距的H1-H6的数值集合
    */
-  setPaddingForEachHeadingDetail(options: MarkdownPaddingArrayOptions): void {
+  setPaddingForEachHeadingDetail(options: MarkdownPaddingArrayOptions): HeadingTheme {
     if (options.top !== undefined) {
       for (let index = 0; index < options.top.length; index++) {
-        this.setPaddingForDesignateHeading((index + 1), {top: options.top[index]})
+        this.setPaddingForDesignateHeading((index + 1), { top: options.top[index] })
       }
     }
     if (options.right !== undefined) {
       for (let index = 0; index < options.right.length; index++) {
-        this.setPaddingForDesignateHeading((index + 1), {right: options.right[index]})
+        this.setPaddingForDesignateHeading((index + 1), { right: options.right[index] })
       }
     }
     if (options.bottom !== undefined) {
       for (let index = 0; index < options.bottom.length; index++) {
-        this.setPaddingForDesignateHeading((index + 1), {bottom: options.bottom[index]})
+        this.setPaddingForDesignateHeading((index + 1), { bottom: options.bottom[index] })
       }
     }
     if (options.left !== undefined) {
       for (let index = 0; index < options.left.length; index++) {
-        this.setPaddingForDesignateHeading((index + 1), {left: options.left[index]})
+        this.setPaddingForDesignateHeading((index + 1), { left: options.left[index] })
       }
     }
+    return this
   }
 
   /**
@@ -789,7 +799,7 @@ export class HeadingTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setPaddingForDesignateHeading(level: number, options: MarkdownPaddingOptions | number): void {
+  setPaddingForDesignateHeading(level: number, options: MarkdownPaddingOptions | number): HeadingTheme {
     switch (level) {
       case 1:
         if (typeof options === 'number') {
@@ -872,6 +882,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -879,13 +890,14 @@ export class HeadingTheme {
    *
    * @param color 文本颜色
    */
-  setTextFontColorForAllHeading(color: number): void {
+  setTextFontColorForAllHeading(color: number): HeadingTheme {
     this.heading1TextFontColor = color
     this.heading2TextFontColor = color
     this.heading3TextFontColor = color
     this.heading4TextFontColor = color
     this.heading5TextFontColor = color
     this.heading6TextFontColor = color
+    return this
   }
 
   /**
@@ -893,12 +905,13 @@ export class HeadingTheme {
    *
    * @param colorList 文本颜色集合
    */
-  setTextFontColorForEachHeading(colorList: number[]): void {
+  setTextFontColorForEachHeading(colorList: number[]): HeadingTheme {
     let level = 1
     for (const color of colorList) {
       this.setTextFontColorForDesignateHeading(level, color)
       level += 1
     }
+    return this
   }
 
   /**
@@ -907,7 +920,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param color 文本颜色
    */
-  setTextFontColorForDesignateHeading(level: number, color: number): void {
+  setTextFontColorForDesignateHeading(level: number, color: number): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1TextFontColor = color
@@ -930,6 +943,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -937,13 +951,14 @@ export class HeadingTheme {
    *
    * @param size 文本尺寸
    */
-  setTextFontSizeForAllHeading(size: number): void {
+  setTextFontSizeForAllHeading(size: number): HeadingTheme {
     this.heading1TextFontSize = size
     this.heading2TextFontSize = size
     this.heading3TextFontSize = size
     this.heading4TextFontSize = size
     this.heading5TextFontSize = size
     this.heading6TextFontSize = size
+    return this
   }
 
   /**
@@ -951,12 +966,13 @@ export class HeadingTheme {
    *
    * @param sizeList 文本尺寸集合
    */
-  setTextFontSizeForEachHeading(sizeList: number[]): void {
+  setTextFontSizeForEachHeading(sizeList: number[]): HeadingTheme {
     let level = 1
     for (const size of sizeList) {
       this.setTextFontSizeForDesignateHeading(level, size)
       level += 1
     }
+    return this
   }
 
   /**
@@ -965,7 +981,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param size 文本尺寸
    */
-  setTextFontSizeForDesignateHeading(level: number, size: number): void {
+  setTextFontSizeForDesignateHeading(level: number, size: number): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1TextFontSize = size
@@ -988,6 +1004,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -995,13 +1012,14 @@ export class HeadingTheme {
    *
    * @param style 文本字体样式
    */
-  setTextFontStyleForAllHeading(style: FontStyle): void {
+  setTextFontStyleForAllHeading(style: FontStyle): HeadingTheme {
     this.heading1TextFontStyle = style
     this.heading2TextFontStyle = style
     this.heading3TextFontStyle = style
     this.heading4TextFontStyle = style
     this.heading5TextFontStyle = style
     this.heading6TextFontStyle = style
+    return this
   }
 
   /**
@@ -1009,12 +1027,13 @@ export class HeadingTheme {
    *
    * @param styleList 文本字体样式集合
    */
-  setTextFontStyleForEachHeading(styleList: FontStyle[]): void {
+  setTextFontStyleForEachHeading(styleList: FontStyle[]): HeadingTheme {
     let level = 1
     for (const style of styleList) {
       this.setTextFontStyleForDesignateHeading(level, style)
       level += 1
     }
+    return this
   }
 
   /**
@@ -1023,7 +1042,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param style 文本字体样式
    */
-  setTextFontStyleForDesignateHeading(level: number, style: FontStyle): void {
+  setTextFontStyleForDesignateHeading(level: number, style: FontStyle): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1TextFontStyle = style
@@ -1046,6 +1065,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -1053,13 +1073,14 @@ export class HeadingTheme {
    *
    * @param weight 文本字体粗细
    */
-  setTextFontWeightForAllHeading(weight: FontWeight): void {
+  setTextFontWeightForAllHeading(weight: FontWeight): HeadingTheme {
     this.heading1TextFontWeight = weight
     this.heading2TextFontWeight = weight
     this.heading3TextFontWeight = weight
     this.heading4TextFontWeight = weight
     this.heading5TextFontWeight = weight
     this.heading6TextFontWeight = weight
+    return this
   }
 
   /**
@@ -1067,12 +1088,13 @@ export class HeadingTheme {
    *
    * @param weightList 文本字体粗细集合
    */
-  setTextFontWeightForEachHeading(weightList: FontWeight[]): void {
+  setTextFontWeightForEachHeading(weightList: FontWeight[]): HeadingTheme {
     let level = 1
     for (const weight of weightList) {
       this.setTextFontWeightForDesignateHeading(level, weight)
       level += 1
     }
+    return this
   }
 
   /**
@@ -1081,7 +1103,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param weight 文本字体粗细
    */
-  setTextFontWeightForDesignateHeading(level: number, weight: FontWeight): void {
+  setTextFontWeightForDesignateHeading(level: number, weight: FontWeight): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1TextFontWeight = weight
@@ -1104,6 +1126,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -1111,13 +1134,14 @@ export class HeadingTheme {
    *
    * @param family 文本字体
    */
-  setTextFontFamilyForAllHeading(family: string): void {
+  setTextFontFamilyForAllHeading(family: string): HeadingTheme {
     this.heading1TextFontFamily = family
     this.heading2TextFontFamily = family
     this.heading3TextFontFamily = family
     this.heading4TextFontFamily = family
     this.heading5TextFontFamily = family
     this.heading6TextFontFamily = family
+    return this
   }
 
   /**
@@ -1125,12 +1149,13 @@ export class HeadingTheme {
    *
    * @param familyList 文本字体集合
    */
-  setTextFontFamilyForEachHeading(familyList: string[]): void {
+  setTextFontFamilyForEachHeading(familyList: string[]): HeadingTheme {
     let level = 1
     for (const family of familyList) {
       this.setTextFontFamilyForDesignateHeading(level, family)
       level += 1
     }
+    return this
   }
 
   /**
@@ -1139,7 +1164,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param family 文本字体
    */
-  setTextFontFamilyForDesignateHeading(level: number, family: string): void {
+  setTextFontFamilyForDesignateHeading(level: number, family: string): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1TextFontFamily = family
@@ -1162,6 +1187,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -1169,13 +1195,14 @@ export class HeadingTheme {
    *
    * @param lineHeight 文本行高
    */
-  setTextLineHeightForAllHeading(lineHeight: number): void {
+  setTextLineHeightForAllHeading(lineHeight: number): HeadingTheme {
     this.heading1TextLineHeight = lineHeight
     this.heading2TextLineHeight = lineHeight
     this.heading3TextLineHeight = lineHeight
     this.heading4TextLineHeight = lineHeight
     this.heading5TextLineHeight = lineHeight
     this.heading6TextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -1183,12 +1210,13 @@ export class HeadingTheme {
    *
    * @param lineHeightList 文本行高集合
    */
-  setTextLineHeightForEachHeading(lineHeightList: number[]): void {
+  setTextLineHeightForEachHeading(lineHeightList: number[]): HeadingTheme {
     let level = 1
     for (const lineHeight of lineHeightList) {
       this.setTextLineHeightForDesignateHeading(level, lineHeight)
       level += 1
     }
+    return this
   }
 
   /**
@@ -1197,7 +1225,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param lineHeight 文本行高
    */
-  setTextLineHeightForDesignateHeading(level: number, lineHeight: number): void {
+  setTextLineHeightForDesignateHeading(level: number, lineHeight: number): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1TextLineHeight = lineHeight
@@ -1220,6 +1248,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -1227,13 +1256,14 @@ export class HeadingTheme {
    *
    * @param spacing 文本字符间距
    */
-  setTextLetterSpacingForAllHeading(spacing: number): void {
+  setTextLetterSpacingForAllHeading(spacing: number): HeadingTheme {
     this.heading1TextLetterSpacing = spacing
     this.heading2TextLetterSpacing = spacing
     this.heading3TextLetterSpacing = spacing
     this.heading4TextLetterSpacing = spacing
     this.heading5TextLetterSpacing = spacing
     this.heading6TextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -1241,12 +1271,13 @@ export class HeadingTheme {
    *
    * @param spacingList 文本字符间距集合
    */
-  setTextLetterSpacingForEachHeading(spacingList: number[]): void {
+  setTextLetterSpacingForEachHeading(spacingList: number[]): HeadingTheme {
     let level = 1
     for (const spacing of spacingList) {
       this.setTextLetterSpacingForDesignateHeading(level, spacing)
       level += 1
     }
+    return this
   }
 
   /**
@@ -1255,7 +1286,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param spacing 文本字符间距
    */
-  setTextLetterSpacingForDesignateHeading(level: number, spacing: number): void {
+  setTextLetterSpacingForDesignateHeading(level: number, spacing: number): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1TextLetterSpacing = spacing
@@ -1278,6 +1309,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -1285,9 +1317,10 @@ export class HeadingTheme {
    *
    * @param height 下划线高度
    */
-  setUnderlineHeightForAllHeading(height: number): void {
+  setUnderlineHeightForAllHeading(height: number): HeadingTheme {
     this.heading1UnderlineHeight = height
     this.heading2UnderlineHeight = height
+    return this
   }
 
   /**
@@ -1296,7 +1329,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param height 下划线高度
    */
-  setUnderlineHeightForDesignateHeading(level: number, height: number): void {
+  setUnderlineHeightForDesignateHeading(level: number, height: number): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1UnderlineHeight = height
@@ -1307,6 +1340,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -1314,9 +1348,10 @@ export class HeadingTheme {
    *
    * @param color 下划线颜色
    */
-  setUnderlineColorForAllHeading(color: number): void {
+  setUnderlineColorForAllHeading(color: number): HeadingTheme {
     this.heading1UnderlineColor = color
     this.heading2UnderlineColor = color
+    return this
   }
 
   /**
@@ -1325,7 +1360,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param color 下划线颜色
    */
-  setUnderlineColorForDesignateHeading(level: number, color: number): void {
+  setUnderlineColorForDesignateHeading(level: number, color: number): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1UnderlineColor = color
@@ -1336,6 +1371,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**
@@ -1343,9 +1379,10 @@ export class HeadingTheme {
    *
    * @param spacing 下划线间距
    */
-  setUnderlineSpacingForAllHeading(spacing: number): void {
+  setUnderlineSpacingForAllHeading(spacing: number): HeadingTheme {
     this.heading1UnderlineSpacing = spacing
     this.heading2UnderlineSpacing = spacing
+    return this
   }
 
   /**
@@ -1354,7 +1391,7 @@ export class HeadingTheme {
    * @param level 标题等级
    * @param spacing 下划线间距
    */
-  setUnderlineSpacingForDesignateHeading(level: number, spacing: number): void {
+  setUnderlineSpacingForDesignateHeading(level: number, spacing: number): HeadingTheme {
     switch (level) {
       case 1:
         this.heading1UnderlineSpacing = spacing
@@ -1365,6 +1402,7 @@ export class HeadingTheme {
       default:
         break
     }
+    return this
   }
 
   /**

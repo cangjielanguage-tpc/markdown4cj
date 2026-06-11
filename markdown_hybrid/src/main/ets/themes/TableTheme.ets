@@ -216,7 +216,7 @@ export class TableTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setTableMargin(options: MarkdownMarginOptions | number): void {
+  setTableMargin(options: MarkdownMarginOptions | number): TableTheme {
     if (typeof options === "number") {
       this.tableMarginTop = options
       this.tableMarginRight = options
@@ -236,6 +236,7 @@ export class TableTheme {
         this.tableMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -245,7 +246,7 @@ export class TableTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setTablePadding(options: MarkdownPaddingOptions | number): void {
+  setTablePadding(options: MarkdownPaddingOptions | number): TableTheme {
     if (typeof options === "number") {
       this.tablePaddingTop = options
       this.tablePaddingRight = options
@@ -265,6 +266,7 @@ export class TableTheme {
         this.tablePaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -274,7 +276,7 @@ export class TableTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setTableCellPadding(options: MarkdownPaddingOptions | number): void {
+  setTableCellPadding(options: MarkdownPaddingOptions | number): TableTheme {
     if (typeof options === "number") {
       this.tableCellPaddingTop = options
       this.tableCellPaddingRight = options
@@ -294,6 +296,7 @@ export class TableTheme {
         this.tableCellPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -301,8 +304,9 @@ export class TableTheme {
    *
    * @param color 表格标题背景颜色
    */
-  setTableTitleBackgroundColor(color: number): void {
+  setTableTitleBackgroundColor(color: number): TableTheme {
     this.tableTitleBackgroundColor = color
+    return this
   }
 
   /**
@@ -310,8 +314,9 @@ export class TableTheme {
    *
    * @param color 奇数行背景颜色
    */
-  setTableContentOddRowBackgroundColor(color: number): void {
+  setTableContentOddRowBackgroundColor(color: number): TableTheme {
     this.tableContentOddRowBackgroundColor = color
+    return this
   }
 
   /**
@@ -319,8 +324,9 @@ export class TableTheme {
    *
    * @param color 偶数行背景颜色
    */
-  setTableContentEvenRowBackgroundColor(color: number): void {
+  setTableContentEvenRowBackgroundColor(color: number): TableTheme {
     this.tableContentEvenRowBackgroundColor = color
+    return this
   }
 
   /**
@@ -328,8 +334,9 @@ export class TableTheme {
    *
    * @param style 表格边框样式
    */
-  setTableBorderStyle(style: BorderStyle): void {
+  setTableBorderStyle(style: BorderStyle): TableTheme {
     this.tableBorderStyle = style
+    return this
   }
 
   /**
@@ -337,8 +344,9 @@ export class TableTheme {
    *
    * @param width 表格边框宽度
    */
-  setTableBorderWidth(width: number): void {
+  setTableBorderWidth(width: number): TableTheme {
     this.tableBorderWidth = width
+    return this
   }
 
   /**
@@ -346,8 +354,9 @@ export class TableTheme {
    *
    * @param color 表格边框颜色
    */
-  setTableBorderColor(color: number): void {
+  setTableBorderColor(color: number): TableTheme {
     this.tableBorderColor = color
+    return this
   }
 
   /**
@@ -357,7 +366,7 @@ export class TableTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setTableRadius(options: MarkdownRadiusOptions | number): void {
+  setTableRadius(options: MarkdownRadiusOptions | number): TableTheme {
     if (typeof options === "number") {
       this.tableRadiusTopLeft = options
       this.tableRadiusTopRight = options
@@ -377,6 +386,7 @@ export class TableTheme {
         this.tableRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -384,8 +394,9 @@ export class TableTheme {
    *
    * @param state 滚动条状态
    */
-  setTableScrollBarState(state: BarState): void {
+  setTableScrollBarState(state: BarState): TableTheme {
     this.tableScrollBarState = state
+    return this
   }
 
   /**
@@ -393,8 +404,9 @@ export class TableTheme {
    *
    * @param color 滚动条颜色
    */
-  setTableScrollBarColor(color: number): void {
+  setTableScrollBarColor(color: number): TableTheme {
     this.tableScrollBarColor = color
+    return this
   }
 
   /**
@@ -402,8 +414,9 @@ export class TableTheme {
    *
    * @param width 最小宽度
    */
-  setTableMinCellWidth(width: number): void {
+  setTableMinCellWidth(width: number): TableTheme {
     this.tableMinCellWidth = width
+    return this
   }
 
   /**
@@ -411,8 +424,9 @@ export class TableTheme {
    *
    * @param width 最大宽度
    */
-  setTableMaxCellWidth(width: number): void {
+  setTableMaxCellWidth(width: number): TableTheme {
     this.tableMaxCellWidth = width
+    return this
   }
 
   /**
@@ -420,8 +434,9 @@ export class TableTheme {
    *
    * @param isBold 是否加粗
    */
-  setTableFirstColumnIsBold(isBold: boolean): void {
+  setTableFirstColumnIsBold(isBold: boolean): TableTheme {
     this.tableFirstColumnIsBold = isBold
+    return this
   }
 
   /**
@@ -429,8 +444,9 @@ export class TableTheme {
    *
    * @param color 表格标题文本颜色
    */
-  setTableTitleTextFontColor(color: number): void {
+  setTableTitleTextFontColor(color: number): TableTheme {
     this.tableTitleTextFontColor = color
+    return this
   }
 
   /**
@@ -438,8 +454,9 @@ export class TableTheme {
    *
    * @param size 表格标题文本尺寸
    */
-  setTableTitleTextFontSize(size: number): void {
+  setTableTitleTextFontSize(size: number): TableTheme {
     this.tableTitleTextFontSize = size
+    return this
   }
 
   /**
@@ -447,8 +464,9 @@ export class TableTheme {
    *
    * @param style 表格标题文本字体样式
    */
-  setTableTitleTextFontStyle(style: FontStyle): void {
+  setTableTitleTextFontStyle(style: FontStyle): TableTheme {
     this.tableTitleTextFontStyle = style
+    return this
   }
 
   /**
@@ -456,8 +474,9 @@ export class TableTheme {
    *
    * @param weight 表格标题文本字体粗细
    */
-  setTableTitleTextFontWeight(weight: FontWeight): void {
+  setTableTitleTextFontWeight(weight: FontWeight): TableTheme {
     this.tableTitleTextFontWeight = weight
+    return this
   }
 
   /**
@@ -465,8 +484,9 @@ export class TableTheme {
    *
    * @param family 表格标题文本字体
    */
-  setTableTitleTextFontFamily(family: string): void {
+  setTableTitleTextFontFamily(family: string): TableTheme {
     this.tableTitleTextFontFamily = family
+    return this
   }
 
   /**
@@ -474,8 +494,9 @@ export class TableTheme {
    *
    * @param lineHeight 表格标题文本行高
    */
-  setTableTitleTextLineHeight(lineHeight: number): void {
+  setTableTitleTextLineHeight(lineHeight: number): TableTheme {
     this.tableTitleTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -483,8 +504,9 @@ export class TableTheme {
    *
    * @param spacing 表格标题文本字符间距
    */
-  setTableTitleTextLetterSpacing(spacing: number): void {
+  setTableTitleTextLetterSpacing(spacing: number): TableTheme {
     this.tableTitleTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -492,8 +514,9 @@ export class TableTheme {
    *
    * @param color 表格内容文本颜色
    */
-  setTableContentTextFontColor(color: number): void {
+  setTableContentTextFontColor(color: number): TableTheme {
     this.tableContentTextFontColor = color
+    return this
   }
 
   /**
@@ -501,8 +524,9 @@ export class TableTheme {
    *
    * @param size 表格内容文本尺寸
    */
-  setTableContentTextFontSize(size: number): void {
+  setTableContentTextFontSize(size: number): TableTheme {
     this.tableContentTextFontSize = size
+    return this
   }
 
   /**
@@ -510,8 +534,9 @@ export class TableTheme {
    *
    * @param style 表格内容文本字体样式
    */
-  setTableContentTextFontStyle(style: FontStyle): void {
+  setTableContentTextFontStyle(style: FontStyle): TableTheme {
     this.tableContentTextFontStyle = style
+    return this
   }
 
   /**
@@ -519,8 +544,9 @@ export class TableTheme {
    *
    * @param weight 表格内容文本字体粗细
    */
-  setTableContentTextFontWeight(weight: FontWeight): void {
+  setTableContentTextFontWeight(weight: FontWeight): TableTheme {
     this.tableContentTextFontWeight = weight
+    return this
   }
 
   /**
@@ -528,8 +554,9 @@ export class TableTheme {
    *
    * @param family 表格内容文本字体
    */
-  setTableContentTextFontFamily(family: string): void {
+  setTableContentTextFontFamily(family: string): TableTheme {
     this.tableContentTextFontFamily = family
+    return this
   }
 
   /**
@@ -537,8 +564,9 @@ export class TableTheme {
    *
    * @param lineHeight 表格内容文本行高
    */
-  setTableContentTextLineHeight(lineHeight: number): void {
+  setTableContentTextLineHeight(lineHeight: number): TableTheme {
     this.tableContentTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -546,8 +574,9 @@ export class TableTheme {
    *
    * @param spacing 表格内容文本字符间距
    */
-  setTableContentTextLetterSpacing(spacing: number): void {
+  setTableContentTextLetterSpacing(spacing: number): TableTheme {
     this.tableContentTextLetterSpacing = spacing
+    return this
   }
 
   /**

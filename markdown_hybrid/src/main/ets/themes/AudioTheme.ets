@@ -299,8 +299,9 @@ export class AudioTheme {
    *
    * @param color 音频背景颜色
    */
-  setAudioBackgroundColor(color: number): void {
+  setAudioBackgroundColor(color: number): AudioTheme {
     this.audioBackgroundColor = color
+    return this
   }
 
   /**
@@ -310,7 +311,7 @@ export class AudioTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setAudioMargin(options: MarkdownMarginOptions | number): void {
+  setAudioMargin(options: MarkdownMarginOptions | number): AudioTheme {
     if (typeof options === 'number') {
       this.audioMarginTop = options
       this.audioMarginRight = options
@@ -330,6 +331,7 @@ export class AudioTheme {
         this.audioMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -339,7 +341,7 @@ export class AudioTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setAudioPadding(options: MarkdownPaddingOptions | number): void {
+  setAudioPadding(options: MarkdownPaddingOptions | number): AudioTheme {
     if (typeof options === 'number') {
       this.audioPaddingTop = options
       this.audioPaddingRight = options
@@ -359,6 +361,7 @@ export class AudioTheme {
         this.audioPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -366,8 +369,9 @@ export class AudioTheme {
    *
    * @param borderStyle 音频边框样式
    */
-  setAudioBorderStyle(borderStyle: BorderStyle): void {
+  setAudioBorderStyle(borderStyle: BorderStyle): AudioTheme {
     this.audioBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -375,8 +379,9 @@ export class AudioTheme {
    *
    * @param borderWidth 音频边框宽度
    */
-  setAudioBorderWidth(borderWidth: number): void {
+  setAudioBorderWidth(borderWidth: number): AudioTheme {
     this.audioBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -384,8 +389,9 @@ export class AudioTheme {
    *
    * @param borderColor 音频边框颜色
    */
-  setAudioBorderColor(borderColor: number): void {
+  setAudioBorderColor(borderColor: number): AudioTheme {
     this.audioBorderColor = borderColor
+    return this
   }
 
   /**
@@ -395,7 +401,7 @@ export class AudioTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setAudioBorderRadius(options: MarkdownRadiusOptions | number): void {
+  setAudioBorderRadius(options: MarkdownRadiusOptions | number): AudioTheme {
     if (typeof options === 'number') {
       this.audioRadiusTopLeft = options
       this.audioRadiusTopRight = options
@@ -415,6 +421,7 @@ export class AudioTheme {
         this.audioRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -422,8 +429,9 @@ export class AudioTheme {
    *
    * @param radius 音频阴影模糊半径
    */
-  setAudioShadowRadius(radius: number): void {
+  setAudioShadowRadius(radius: number): AudioTheme {
     this.audioShadowRadius = radius
+    return this
   }
 
   /**
@@ -431,8 +439,9 @@ export class AudioTheme {
    *
    * @param offsetX 音频阴影X轴偏移量
    */
-  setAudioShadowOffsetX(offsetX: number): void {
+  setAudioShadowOffsetX(offsetX: number): AudioTheme {
     this.audioShadowOffsetX = offsetX
+    return this
   }
 
   /**
@@ -440,8 +449,9 @@ export class AudioTheme {
    *
    * @param offsetY 音频阴影Y轴偏移量
    */
-  setAudioShadowOffsetY(offsetY: number): void {
+  setAudioShadowOffsetY(offsetY: number): AudioTheme {
     this.audioShadowOffsetY = offsetY
+    return this
   }
 
   /**
@@ -449,8 +459,9 @@ export class AudioTheme {
    *
    * @param icon 音频图标
    */
-  setAudioIcon(icon: Resource): void {
+  setAudioIcon(icon: Resource): AudioTheme {
     this.audioIcon = icon
+    return this
   }
 
   /**
@@ -458,8 +469,9 @@ export class AudioTheme {
    *
    * @param width 音频图标宽度
    */
-  setAudioIconWidth(width: number): void {
+  setAudioIconWidth(width: number): AudioTheme {
     this.audioIconWidth = width
+    return this
   }
 
   /**
@@ -467,8 +479,9 @@ export class AudioTheme {
    *
    * @param height 音频图标高度
    */
-  setAudioIconHeight(height: number): void {
+  setAudioIconHeight(height: number): AudioTheme {
     this.audioIconHeight = height
+    return this
   }
 
   /**
@@ -478,7 +491,7 @@ export class AudioTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setAudioIconRadius(options: MarkdownRadiusOptions | number): void {
+  setAudioIconRadius(options: MarkdownRadiusOptions | number): AudioTheme {
     if (typeof options === 'number') {
       this.audioIconRadiusTopLeft = options
       this.audioIconRadiusTopRight = options
@@ -498,6 +511,7 @@ export class AudioTheme {
         this.audioIconRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -505,8 +519,9 @@ export class AudioTheme {
    *
    * @param fitType 音频图标缩放类型
    */
-  setAudioIconFitType(fitType: ImageFit): void {
+  setAudioIconFitType(fitType: ImageFit): AudioTheme {
     this.audioIconFitType = fitType
+    return this
   }
 
   /**
@@ -514,8 +529,9 @@ export class AudioTheme {
    *
    * @param spacing 音频标题文本和类型文本间距
    */
-  setAudioTitleToTypeSpacing(spacing: number): void {
+  setAudioTitleToTypeSpacing(spacing: number): AudioTheme {
     this.audioTitleToTypeSpacing = spacing
+    return this
   }
 
   /**
@@ -523,8 +539,9 @@ export class AudioTheme {
    *
    * @param color 音频阴影颜色
    */
-  setAudioShadowColor(color: number): void {
+  setAudioShadowColor(color: number): AudioTheme {
     this.audioShadowColor = color
+    return this
   }
 
   /**
@@ -532,8 +549,9 @@ export class AudioTheme {
    *
    * @param width 音频按钮宽度
    */
-  setAudioButtonWidth(width: number): void {
+  setAudioButtonWidth(width: number): AudioTheme {
     this.audioButtonWidth = width
+    return this
   }
 
   /**
@@ -541,8 +559,9 @@ export class AudioTheme {
    *
    * @param height 音频按钮高度
    */
-  setAudioButtonHeight(height: number): void {
+  setAudioButtonHeight(height: number): AudioTheme {
     this.audioButtonHeight = height
+    return this
   }
 
   /**
@@ -550,8 +569,9 @@ export class AudioTheme {
    *
    * @param color 音频按钮背景颜色
    */
-  setAudioButtonBackgroundColor(color: number): void {
+  setAudioButtonBackgroundColor(color: number): AudioTheme {
     this.audioButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -559,8 +579,9 @@ export class AudioTheme {
    *
    * @param borderStyle 音频按钮边框样式
    */
-  setAudioButtonBorderStyle(borderStyle: BorderStyle): void {
+  setAudioButtonBorderStyle(borderStyle: BorderStyle): AudioTheme {
     this.audioButtonBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -568,8 +589,9 @@ export class AudioTheme {
    *
    * @param borderWidth 音频按钮边框宽度
    */
-  setAudioButtonBorderWidth(borderWidth: number): void {
+  setAudioButtonBorderWidth(borderWidth: number): AudioTheme {
     this.audioButtonBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -577,8 +599,9 @@ export class AudioTheme {
    *
    * @param borderColor 音频按钮边框颜色
    */
-  setAudioButtonBorderColor(borderColor: number): void {
+  setAudioButtonBorderColor(borderColor: number): AudioTheme {
     this.audioButtonBorderColor = borderColor
+    return this
   }
 
   /**
@@ -588,7 +611,7 @@ export class AudioTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setAudioButtonRadius(options: MarkdownRadiusOptions | number): void {
+  setAudioButtonRadius(options: MarkdownRadiusOptions | number): AudioTheme {
     if (typeof options === 'number') {
       this.audioButtonRadiusTopLeft = options
       this.audioButtonRadiusTopRight = options
@@ -608,6 +631,7 @@ export class AudioTheme {
         this.audioButtonRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -615,8 +639,9 @@ export class AudioTheme {
    *
    * @param text 音频按钮默认文本内容
    */
-  setAudioButtonText(text: string): void {
+  setAudioButtonText(text: string): AudioTheme {
     this.audioButtonText = text
+    return this
   }
 
   /**
@@ -624,8 +649,9 @@ export class AudioTheme {
    *
    * @param color 音频按钮文本颜色
    */
-  setAudioButtonTextFontColor(color: number): void {
+  setAudioButtonTextFontColor(color: number): AudioTheme {
     this.audioButtonTextFontColor = color
+    return this
   }
 
   /**
@@ -633,8 +659,9 @@ export class AudioTheme {
    *
    * @param size 音频按钮文本尺寸
    */
-  setAudioButtonTextFontSize(size: number): void {
+  setAudioButtonTextFontSize(size: number): AudioTheme {
     this.audioButtonTextFontSize = size
+    return this
   }
 
   /**
@@ -642,8 +669,9 @@ export class AudioTheme {
    *
    * @param style 音频按钮文本字体样式
    */
-  setAudioButtonTextFontStyle(style: FontStyle): void {
+  setAudioButtonTextFontStyle(style: FontStyle): AudioTheme {
     this.audioButtonTextFontStyle = style
+    return this
   }
 
   /**
@@ -651,8 +679,9 @@ export class AudioTheme {
    *
    * @param weight 音频按钮文本字体粗细
    */
-  setAudioButtonTextFontWeight(weight: FontWeight): void {
+  setAudioButtonTextFontWeight(weight: FontWeight): AudioTheme {
     this.audioButtonTextFontWeight = weight
+    return this
   }
 
   /**
@@ -660,8 +689,9 @@ export class AudioTheme {
    *
    * @param family 音频按钮文本字体
    */
-  setAudioButtonTextFontFamily(family: string): void {
+  setAudioButtonTextFontFamily(family: string): AudioTheme {
     this.audioButtonTextFontFamily = family
+    return this
   }
 
   /**
@@ -669,8 +699,9 @@ export class AudioTheme {
    *
    * @param height 音频按钮文本行高
    */
-  setAudioButtonTextLineHeight(height: number): void {
+  setAudioButtonTextLineHeight(height: number): AudioTheme {
     this.audioButtonTextLineHeight = height
+    return this
   }
 
   /**
@@ -678,8 +709,9 @@ export class AudioTheme {
    *
    * @param color 音频标题文本颜色
    */
-  setAudioTitleTextFontColor(color: number): void {
+  setAudioTitleTextFontColor(color: number): AudioTheme {
     this.audioTitleTextFontColor = color
+    return this
   }
 
   /**
@@ -687,8 +719,9 @@ export class AudioTheme {
    *
    * @param size 音频标题文本尺寸
    */
-  setAudioTitleTextFontSize(size: number): void {
+  setAudioTitleTextFontSize(size: number): AudioTheme {
     this.audioTitleTextFontSize = size
+    return this
   }
 
   /**
@@ -696,8 +729,9 @@ export class AudioTheme {
    *
    * @param style 音频标题文本字体样式
    */
-  setAudioTitleTextFontStyle(style: FontStyle): void {
+  setAudioTitleTextFontStyle(style: FontStyle): AudioTheme {
     this.audioTitleTextFontStyle = style
+    return this
   }
 
   /**
@@ -705,8 +739,9 @@ export class AudioTheme {
    *
    * @param weight 音频标题文本字体粗细
    */
-  setAudioTitleTextFontWeight(weight: FontWeight): void {
+  setAudioTitleTextFontWeight(weight: FontWeight): AudioTheme {
     this.audioTitleTextFontWeight = weight
+    return this
   }
 
   /**
@@ -714,8 +749,9 @@ export class AudioTheme {
    *
    * @param family 音频标题文本字体
    */
-  setAudioTitleTextFontFamily(family: string): void {
+  setAudioTitleTextFontFamily(family: string): AudioTheme {
     this.audioTitleTextFontFamily = family
+    return this
   }
 
   /**
@@ -723,8 +759,9 @@ export class AudioTheme {
    *
    * @param height 音频标题文本行高
    */
-  setAudioTitleTextLineHeight(height: number): void {
+  setAudioTitleTextLineHeight(height: number): AudioTheme {
     this.audioTitleTextLineHeight = height
+    return this
   }
 
   /**
@@ -732,8 +769,9 @@ export class AudioTheme {
    *
    * @param color 音频类型文本颜色
    */
-  setAudioTypeTextFontColor(color: number): void {
+  setAudioTypeTextFontColor(color: number): AudioTheme {
     this.audioTypeTextFontColor = color
+    return this
   }
 
   /**
@@ -741,8 +779,9 @@ export class AudioTheme {
    *
    * @param size 音频类型文本尺寸
    */
-  setAudioTypeTextFontSize(size: number): void {
+  setAudioTypeTextFontSize(size: number): AudioTheme {
     this.audioTypeTextFontSize = size
+    return this
   }
 
   /**
@@ -750,8 +789,9 @@ export class AudioTheme {
    *
    * @param style 音频类型文本字体样式
    */
-  setAudioTypeTextFontStyle(style: FontStyle): void {
+  setAudioTypeTextFontStyle(style: FontStyle): AudioTheme {
     this.audioTypeTextFontStyle = style
+    return this
   }
 
   /**
@@ -759,8 +799,9 @@ export class AudioTheme {
    *
    * @param weight 音频类型文本字体粗细
    */
-  setAudioTypeTextFontWeight(weight: FontWeight): void {
+  setAudioTypeTextFontWeight(weight: FontWeight): AudioTheme {
     this.audioTypeTextFontWeight = weight
+    return this
   }
 
   /**
@@ -768,8 +809,9 @@ export class AudioTheme {
    *
    * @param family 音频类型文本字体
    */
-  setAudioTypeTextFontFamily(family: string): void {
+  setAudioTypeTextFontFamily(family: string): AudioTheme {
     this.audioTypeTextFontFamily = family
+    return this
   }
 
   /**
@@ -777,8 +819,9 @@ export class AudioTheme {
    *
    * @param height 音频类型文本行高
    */
-  setAudioTypeTextLineHeight(height: number): void {
+  setAudioTypeTextLineHeight(height: number): AudioTheme {
     this.audioTypeTextLineHeight = height
+    return this
   }
 
   /**

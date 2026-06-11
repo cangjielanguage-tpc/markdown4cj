@@ -34,132 +34,106 @@ export class MarkdownTheme {
    * 是否按照链接文本字体大小显示文本
    */
   private isLinkSize?: boolean = undefined
-
   /**
    * 全局样式
    */
   private markdownThemeGlobal: GlobalTheme = new GlobalTheme()
-
   /**
    * 音频样式
    */
   private markdownThemeAudio: AudioTheme = new AudioTheme()
-
   /**
    * Banner样式
    */
   private markdownThemeBanner: BannerTheme = new BannerTheme()
-
   /**
    * 块引用样式
    */
   private markdownThemeBlockQuote: BlockQuoteTheme = new BlockQuoteTheme()
-
   /**
    * 加粗文本样式
    */
   private markdownThemeBold: BoldTheme = new BoldTheme()
-
   /**
    * 代码块样式
    */
   private markdownThemeCodeBlock: CodeBlockTheme = new CodeBlockTheme()
-
   /**
    * 定义列表样式
    */
   private markdownThemeDefinitionList: DefinitionListTheme = new DefinitionListTheme()
-
   /**
    * 分割线样式
    */
   private markdownThemeDivider: DividerTheme = new DividerTheme()
-
   /**
    * 脚注定义样式
    */
   private markdownThemeFootnoteDef: FootnoteDefTheme = new FootnoteDefTheme()
-
   /**
    * 脚注引用样式
    */
   private markdownThemeFootnoteRef: FootnoteRefTheme = new FootnoteRefTheme()
-
   /**
    * 数学公式样式
    */
   private markdownThemeLatexMath: LatexMathTheme = new LatexMathTheme()
-
   /**
    * 标题样式
    */
   private markdownThemeHeading: HeadingTheme = new HeadingTheme()
-
   /**
    * HTML下划线文本样式
    */
   private markdownThemeHtmlUnderline: HtmlUnderlineTheme = new HtmlUnderlineTheme()
-
   /**
    * 图片样式
    */
   private markdownThemeImage: ImageTheme = new ImageTheme()
-
   /**
    * 内联代码样式
    */
   private markdownThemeInlineCode: InlineCodeTheme = new InlineCodeTheme()
-
   /**
    * 斜体文本样式
    */
   private markdownThemeItalic: ItalicTheme = new ItalicTheme()
-
   /**
    * 链接文本样式
    */
   private markdownThemeLink: LinkTheme = new LinkTheme()
-
   /**
    * 有序列表样式
    */
   private markdownThemeOrderedList: OrderedListTheme = new OrderedListTheme()
-
   /**
    * 段落样式
    */
   private markdownThemeParagraph: ParagraphTheme = new ParagraphTheme()
-
   /**
    * 删除线文本样式
    */
   private markdownThemeStrikethrough: StrikethroughTheme = new StrikethroughTheme()
-
   /**
    * 下标文本样式
    */
   private markdownThemeSub: SubTheme = new SubTheme()
-
   /**
    * 上标文本样式
    */
   private markdownThemeSup: SupTheme = new SupTheme()
-
   /**
    * 表格样式
    */
   private markdownThemeTable: TableTheme = new TableTheme()
-
   /**
    * 无序/任务列表样式
    */
   private markdownThemeBulletList: BulletListTheme = new BulletListTheme()
-
   /**
    * 视频样式
    */
   private markdownThemeVideo: VideoTheme = new VideoTheme()
-
   /**
    * 高亮样式
    */
@@ -172,14 +146,15 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead GlobalTheme#setStageContext
    */
-  setContext(context: Context): void {
+  setContext(context: Context): MarkdownTheme {
     this.markdownThemeGlobal.setStageContext(context)
+    return this
   }
 
   /**
    * 设置浅色主题整体样式
    */
-  setDefaultTheme(): void {
+  setDefaultTheme(): MarkdownTheme {
     // 浅色主题 - 只切换颜色属性
     // 全局主题
     this.markdownThemeGlobal.setBackgroundColor(0x00000000) // markdown全局背景颜色
@@ -261,12 +236,13 @@ export class MarkdownTheme {
     this.markdownThemeStrikethrough.setStrikethroughTextDecorationColor(0xFF191919) // 删除线文本下划线颜色
     // 代码高亮主题
     this.markdownThemeCodeBlock.setCodeBlockIsDark(false)
+    return this
   }
 
   /**
    * 设置深色主题整体样式
    */
-  setDarculaTheme(): void {
+  setDarculaTheme(): MarkdownTheme {
     // 深色主题设计
 
     // 全局主题
@@ -367,6 +343,7 @@ export class MarkdownTheme {
 
     // 代码高亮主题
     this.markdownThemeCodeBlock.setCodeBlockIsDark(true)
+    return this
   }
 
   /**
@@ -374,8 +351,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeGlobal 全局样式
    */
-  setGlobalTheme(markdownThemeGlobal: GlobalTheme): void {
+  setGlobalTheme(markdownThemeGlobal: GlobalTheme): MarkdownTheme {
     this.markdownThemeGlobal = markdownThemeGlobal
+    return this
   }
 
   /**
@@ -383,8 +361,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeAudio 音频样式
    */
-  setAudioTheme(markdownThemeAudio: AudioTheme): void {
+  setAudioTheme(markdownThemeAudio: AudioTheme): MarkdownTheme {
     this.markdownThemeAudio = markdownThemeAudio
+    return this
   }
 
   /**
@@ -392,8 +371,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeBanner Banner样式
    */
-  setBannerTheme(markdownThemeBanner: BannerTheme): void {
+  setBannerTheme(markdownThemeBanner: BannerTheme): MarkdownTheme {
     this.markdownThemeBanner = markdownThemeBanner
+    return this
   }
 
   /**
@@ -401,8 +381,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeBlockQuote 块引用样式
    */
-  setBlockQuoteTheme(markdownThemeBlockQuote: BlockQuoteTheme): void {
+  setBlockQuoteTheme(markdownThemeBlockQuote: BlockQuoteTheme): MarkdownTheme {
     this.markdownThemeBlockQuote = markdownThemeBlockQuote
+    return this
   }
 
   /**
@@ -410,8 +391,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeBold 加粗文本样式
    */
-  setBoldTheme(markdownThemeBold: BoldTheme): void {
+  setBoldTheme(markdownThemeBold: BoldTheme): MarkdownTheme {
     this.markdownThemeBold = markdownThemeBold
+    return this
   }
 
   /**
@@ -419,8 +401,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeCodeBlock 代码块样式
    */
-  setCodeBlockTheme(markdownThemeCodeBlock: CodeBlockTheme): void {
+  setCodeBlockTheme(markdownThemeCodeBlock: CodeBlockTheme): MarkdownTheme {
     this.markdownThemeCodeBlock = markdownThemeCodeBlock
+    return this
   }
 
   /**
@@ -428,8 +411,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeDefinitionList 定义列表样式
    */
-  setDefinitionListTheme(markdownThemeDefinitionList: DefinitionListTheme): void {
+  setDefinitionListTheme(markdownThemeDefinitionList: DefinitionListTheme): MarkdownTheme {
     this.markdownThemeDefinitionList = markdownThemeDefinitionList
+    return this
   }
 
   /**
@@ -437,8 +421,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeDivider 分割线样式
    */
-  setDividerTheme(markdownThemeDivider: DividerTheme): void {
+  setDividerTheme(markdownThemeDivider: DividerTheme): MarkdownTheme {
     this.markdownThemeDivider = markdownThemeDivider
+    return this
   }
 
   /**
@@ -446,8 +431,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeFootnoteDef 脚注定义样式
    */
-  setFootnoteDefTheme(markdownThemeFootnoteDef: FootnoteDefTheme): void {
+  setFootnoteDefTheme(markdownThemeFootnoteDef: FootnoteDefTheme): MarkdownTheme {
     this.markdownThemeFootnoteDef = markdownThemeFootnoteDef
+    return this
   }
 
   /**
@@ -455,8 +441,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeFootnoteRef 脚注引用样式
    */
-  setFootnoteRefTheme(markdownThemeFootnoteRef: FootnoteRefTheme): void {
+  setFootnoteRefTheme(markdownThemeFootnoteRef: FootnoteRefTheme): MarkdownTheme {
     this.markdownThemeFootnoteRef = markdownThemeFootnoteRef
+    return this
   }
 
   /**
@@ -464,8 +451,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeLatexMath 数学公式样式
    */
-  setLatexMathTheme(markdownThemeLatexMath: LatexMathTheme): void {
+  setLatexMathTheme(markdownThemeLatexMath: LatexMathTheme): MarkdownTheme {
     this.markdownThemeLatexMath = markdownThemeLatexMath
+    return this
   }
 
   /**
@@ -473,8 +461,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeHeading 标题样式
    */
-  setHeadingTheme(markdownThemeHeading: HeadingTheme): void {
+  setHeadingTheme(markdownThemeHeading: HeadingTheme): MarkdownTheme {
     this.markdownThemeHeading = markdownThemeHeading
+    return this
   }
 
   /**
@@ -482,8 +471,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeHtmlUnderline HTML下划线文本样式
    */
-  setHtmlUnderlineTheme(markdownThemeHtmlUnderline: HtmlUnderlineTheme): void {
+  setHtmlUnderlineTheme(markdownThemeHtmlUnderline: HtmlUnderlineTheme): MarkdownTheme {
     this.markdownThemeHtmlUnderline = markdownThemeHtmlUnderline
+    return this
   }
 
   /**
@@ -491,8 +481,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeImage 图片样式
    */
-  setImageTheme(markdownThemeImage: ImageTheme): void {
+  setImageTheme(markdownThemeImage: ImageTheme): MarkdownTheme {
     this.markdownThemeImage = markdownThemeImage
+    return this
   }
 
   /**
@@ -500,8 +491,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeInlineCode 内联代码样式
    */
-  setInlineCodeTheme(markdownThemeInlineCode: InlineCodeTheme): void {
+  setInlineCodeTheme(markdownThemeInlineCode: InlineCodeTheme): MarkdownTheme {
     this.markdownThemeInlineCode = markdownThemeInlineCode
+    return this
   }
 
   /**
@@ -509,8 +501,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeItalic 斜体文本样式
    */
-  setItalicTheme(markdownThemeItalic: ItalicTheme): void {
+  setItalicTheme(markdownThemeItalic: ItalicTheme): MarkdownTheme {
     this.markdownThemeItalic = markdownThemeItalic
+    return this
   }
 
   /**
@@ -518,8 +511,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeLink 链接文本样式
    */
-  setLinkTheme(markdownThemeLink: LinkTheme): void {
+  setLinkTheme(markdownThemeLink: LinkTheme): MarkdownTheme {
     this.markdownThemeLink = markdownThemeLink
+    return this
   }
 
   /**
@@ -527,8 +521,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeOrderedList 有序列表样式
    */
-  setOrderedListTheme(markdownThemeOrderedList: OrderedListTheme): void {
+  setOrderedListTheme(markdownThemeOrderedList: OrderedListTheme): MarkdownTheme {
     this.markdownThemeOrderedList = markdownThemeOrderedList
+    return this
   }
 
   /**
@@ -536,8 +531,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeParagraph 段落样式
    */
-  setParagraphTheme(markdownThemeParagraph: ParagraphTheme): void {
+  setParagraphTheme(markdownThemeParagraph: ParagraphTheme): MarkdownTheme {
     this.markdownThemeParagraph = markdownThemeParagraph
+    return this
   }
 
   /**
@@ -545,8 +541,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeStrikethrough 删除线文本样式
    */
-  setStrikethroughTheme(markdownThemeStrikethrough: StrikethroughTheme): void {
+  setStrikethroughTheme(markdownThemeStrikethrough: StrikethroughTheme): MarkdownTheme {
     this.markdownThemeStrikethrough = markdownThemeStrikethrough
+    return this
   }
 
   /**
@@ -554,8 +551,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeSub 下标文本样式
    */
-  setSubTheme(markdownThemeSub: SubTheme): void {
+  setSubTheme(markdownThemeSub: SubTheme): MarkdownTheme {
     this.markdownThemeSub = markdownThemeSub
+    return this
   }
 
   /**
@@ -563,8 +561,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeSup 上标文本样式
    */
-  setSupTheme(markdownThemeSup: SupTheme): void {
+  setSupTheme(markdownThemeSup: SupTheme): MarkdownTheme {
     this.markdownThemeSup = markdownThemeSup
+    return this
   }
 
   /**
@@ -572,8 +571,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeTable 表格样式
    */
-  setTableTheme(markdownThemeTable: TableTheme): void {
+  setTableTheme(markdownThemeTable: TableTheme): MarkdownTheme {
     this.markdownThemeTable = markdownThemeTable
+    return this
   }
 
   /**
@@ -581,8 +581,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeBulletList 无序/任务列表样式
    */
-  setBulletListTheme(markdownThemeBulletList: BulletListTheme): void {
+  setBulletListTheme(markdownThemeBulletList: BulletListTheme): MarkdownTheme {
     this.markdownThemeBulletList = markdownThemeBulletList
+    return this
   }
 
   /**
@@ -590,8 +591,9 @@ export class MarkdownTheme {
    *
    * @param markdownThemeVideo 视频样式
    */
-  setVideoTheme(markdownThemeVideo: VideoTheme): void {
+  setVideoTheme(markdownThemeVideo: VideoTheme): MarkdownTheme {
     this.markdownThemeVideo = markdownThemeVideo
+    return this
   }
 
   /**
@@ -599,8 +601,9 @@ export class MarkdownTheme {
    *
    * @param markdownHighlightTheme 高亮样式
    */
-  setHighlightTheme(markdownHighlightTheme: HighlightTheme): void {
+  setHighlightTheme(markdownHighlightTheme: HighlightTheme): MarkdownTheme {
     this.markdownHighlightTheme = markdownHighlightTheme
+    return this
   }
 
   /**
@@ -610,8 +613,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenIcon
    */
-  setCodeFullScreenIcon(codeFullScreenIcon: Resource): void {
+  setCodeFullScreenIcon(codeFullScreenIcon: Resource): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenIcon(codeFullScreenIcon)
+    return this
   }
 
   /**
@@ -621,8 +625,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockCopyIcon
    */
-  setCodeCopyIcon(codeCopyIcon: Resource): void {
+  setCodeCopyIcon(codeCopyIcon: Resource): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockCopyIcon(codeCopyIcon)
+    return this
   }
 
   /**
@@ -632,8 +637,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioIcon
    */
-  setAudioIcon(audioIcon: Resource): void {
+  setAudioIcon(audioIcon: Resource): MarkdownTheme {
     this.markdownThemeAudio.setAudioIcon(audioIcon)
+    return this
   }
 
   /**
@@ -643,8 +649,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoPlaceholder
    */
-  setVideoImage(videoImage: Resource): void {
+  setVideoImage(videoImage: Resource): MarkdownTheme {
     this.markdownThemeVideo.setVideoPlaceholder(videoImage)
+    return this
   }
 
   /**
@@ -654,8 +661,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoPlayIcon
    */
-  setPlayCircleFillIcon(playCircleFillIcon: Resource): void {
+  setPlayCircleFillIcon(playCircleFillIcon: Resource): MarkdownTheme {
     this.markdownThemeVideo.setVideoPlayIcon(playCircleFillIcon)
+    return this
   }
 
   /**
@@ -665,8 +673,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BannerTheme#setBannerPlaceholder
    */
-  setBannerImage(bannerImage: Resource): void {
+  setBannerImage(bannerImage: Resource): MarkdownTheme {
     this.markdownThemeBanner.setBannerPlaceholder(bannerImage)
+    return this
   }
 
   /**
@@ -676,8 +685,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImagePlaceholder
    */
-  setImageResource(imageResource: Resource): void {
+  setImageResource(imageResource: Resource): MarkdownTheme {
     this.markdownThemeImage.setImagePlaceholder(imageResource)
+    return this
   }
 
   /**
@@ -687,8 +697,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonIcon
    */
-  setVideoReleaseImage(videoReleaseImage: Resource): void {
+  setVideoReleaseImage(videoReleaseImage: Resource): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonIcon(videoReleaseImage)
+    return this
   }
 
   /**
@@ -698,8 +709,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonIcon
    */
-  setVideoDownloadImage(videoDownloadImage: Resource): void {
+  setVideoDownloadImage(videoDownloadImage: Resource): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonIcon(videoDownloadImage)
+    return this
   }
 
   /**
@@ -709,8 +721,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonIcon
    */
-  setImageDownloadImage(imageDownloadImage: Resource): void {
+  setImageDownloadImage(imageDownloadImage: Resource): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonIcon(imageDownloadImage)
+    return this
   }
 
   /**
@@ -720,8 +733,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead GlobalTheme#setIsMarkdownParserSync
    */
-  setIsMarkdownParserSync(isMarkdownParserSync: boolean): void {
+  setIsMarkdownParserSync(isMarkdownParserSync: boolean): MarkdownTheme {
     this.markdownThemeGlobal.setIsMarkdownParserSync(isMarkdownParserSync)
+    return this
   }
 
   /**
@@ -731,8 +745,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead GlobalTheme#setIsOnCopy
    */
-  setIsOnCopy(isOnCopy: boolean): void {
+  setIsOnCopy(isOnCopy: boolean): MarkdownTheme {
     this.markdownThemeGlobal.setIsOnCopy(isOnCopy)
+    return this
   }
 
   /**
@@ -742,8 +757,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead GlobalTheme#setGlobalMargin
    */
-  setBlockFirstTopMargin(blockFirstTopMargin: number): void {
-    this.markdownThemeGlobal.setGlobalMargin({top: blockFirstTopMargin})
+  setBlockFirstTopMargin(blockFirstTopMargin: number): MarkdownTheme {
+    this.markdownThemeGlobal.setGlobalMargin({ top: blockFirstTopMargin })
+    return this
   }
 
   /**
@@ -753,8 +769,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead GlobalTheme#setGlobalMargin
    */
-  setBlockLastBottomMargin(blockLastBottomMargin: number): void {
-    this.markdownThemeGlobal.setGlobalMargin({bottom: blockLastBottomMargin})
+  setBlockLastBottomMargin(blockLastBottomMargin: number): MarkdownTheme {
+    this.markdownThemeGlobal.setGlobalMargin({ bottom: blockLastBottomMargin })
+    return this
   }
 
   /**
@@ -764,8 +781,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead GlobalTheme#setBlockSpacing
    */
-  setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): void {
+  setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): MarkdownTheme {
     this.markdownThemeGlobal.setBlockSpacing(blockTopAndBottomMargins)
+    return this
   }
 
   /**
@@ -775,8 +793,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkIsIcon
    */
-  setIsLinkStyle(isLinkStyle: boolean): void {
+  setIsLinkStyle(isLinkStyle: boolean): MarkdownTheme {
     this.markdownThemeLink.setLinkIsIcon(isLinkStyle)
+    return this
   }
 
   /**
@@ -786,8 +805,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkListIsIcon
    */
-  setIsListLinkStyle(isListLinkStyle: boolean): void {
+  setIsListLinkStyle(isListLinkStyle: boolean): MarkdownTheme {
     this.markdownThemeLink.setLinkListIsIcon(isListLinkStyle)
+    return this
   }
 
   /**
@@ -797,8 +817,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkTextFontColor
    */
-  setLinkColor(linkColor: number): void {
+  setLinkColor(linkColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkTextFontColor(linkColor)
+    return this
   }
 
   /**
@@ -808,7 +829,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkTextFontSize
    */
-  setIsLinkSize(isLinkSize: boolean): void {
+  setIsLinkSize(isLinkSize: boolean): MarkdownTheme {
     if (isLinkSize) {
       if (this.markdownThemeLink.getLinkTextFontSize() == undefined) {
         this.markdownThemeLink.setLinkTextFontSize(14.0)
@@ -816,6 +837,7 @@ export class MarkdownTheme {
     } else {
       this.markdownThemeLink.setLinkTextFontSize(undefined)
     }
+    return this
   }
 
   /**
@@ -825,8 +847,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkTextFontSize
    */
-  setLinkSize(linkSize: number): void {
+  setLinkSize(linkSize: number): MarkdownTheme {
     this.markdownThemeLink.setLinkTextFontSize(linkSize)
+    return this
   }
 
   /**
@@ -836,8 +859,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkTextLineHeight
    */
-  setLinkLineHeight(linkLineHeight: number): void {
+  setLinkLineHeight(linkLineHeight: number): MarkdownTheme {
     this.markdownThemeLink.setLinkTextLineHeight(linkLineHeight)
+    return this
   }
 
   /**
@@ -847,8 +871,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkTextBackgroundColor
    */
-  setLinkBackgroundColor(linkBackgroundColor: number): void {
+  setLinkBackgroundColor(linkBackgroundColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkTextBackgroundColor(linkBackgroundColor)
+    return this
   }
 
   /**
@@ -858,12 +883,13 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkTextDecorationType
    */
-  setIsLinkUnderlined(isLinkUnderlined: boolean): void {
+  setIsLinkUnderlined(isLinkUnderlined: boolean): MarkdownTheme {
     if (isLinkUnderlined) { // 显示下划线
       this.markdownThemeLink.setLinkTextDecorationType(TextDecorationType.Underline)
     } else { // 不显示下划线
       this.markdownThemeLink.setLinkTextDecorationType(TextDecorationType.None)
     }
+    return this
   }
 
   /**
@@ -873,8 +899,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconBackgroundColor
    */
-  setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): void {
+  setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkCircleIconBackgroundColor(linkCircleImageBackgroundColor)
+    return this
   }
 
   /**
@@ -884,8 +911,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconButtonBackgroundColor
    */
-  setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): void {
+  setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkCircleIconButtonBackgroundColor(linkCircleImageButtonBackgroundColor)
+    return this
   }
 
   /**
@@ -895,8 +923,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconTextSize
    */
-  setLinkCircleImageTextSize(linkCircleImageTextSize: number): void {
+  setLinkCircleImageTextSize(linkCircleImageTextSize: number): MarkdownTheme {
     this.markdownThemeLink.setLinkCircleIconTextSize(linkCircleImageTextSize)
+    return this
   }
 
   /**
@@ -906,8 +935,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconTextColor
    */
-  setLinkCircleImageTextColor(linkCircleImageTextColor: number): void {
+  setLinkCircleImageTextColor(linkCircleImageTextColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkCircleIconTextColor(linkCircleImageTextColor)
+    return this
   }
 
   /**
@@ -917,8 +947,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconRadius
    */
-  setLinkCircleImageRadius(linkCircleImageRadius: number): void {
+  setLinkCircleImageRadius(linkCircleImageRadius: number): MarkdownTheme {
     this.markdownThemeLink.setLinkCircleIconRadius(linkCircleImageRadius)
+    return this
   }
 
   /**
@@ -928,8 +959,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconMargin
    */
-  setLinkCircleImageMargin(linkCircleImageMargin: number): void {
+  setLinkCircleImageMargin(linkCircleImageMargin: number): MarkdownTheme {
     this.markdownThemeLink.setLinkCircleIconMargin(linkCircleImageMargin)
+    return this
   }
 
   /**
@@ -939,8 +971,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconBackgroundColor
    */
-  setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): void {
+  setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectIconBackgroundColor(linkRectImageBackgroundColor)
+    return this
   }
 
   /**
@@ -950,8 +983,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconButtonBackgroundColor
    */
-  setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): void {
+  setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectIconButtonBackgroundColor(linkRectImageButtonBackgroundColor)
+    return this
   }
 
   /**
@@ -961,8 +995,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconTextSize
    */
-  setLinkRectImageTextSize(linkRectImageTextSize: number): void {
+  setLinkRectImageTextSize(linkRectImageTextSize: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectIconTextSize(linkRectImageTextSize)
+    return this
   }
 
   /**
@@ -972,8 +1007,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconTextColor
    */
-  setLinkRectImageTextColor(linkRectImageTextColor: number): void {
+  setLinkRectImageTextColor(linkRectImageTextColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectIconTextColor(linkRectImageTextColor)
+    return this
   }
 
   /**
@@ -983,8 +1019,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconHeight
    */
-  setLinkRectImageHeight(linkRectImageHeight: number): void {
+  setLinkRectImageHeight(linkRectImageHeight: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectIconHeight(linkRectImageHeight)
+    return this
   }
 
   /**
@@ -994,8 +1031,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconPadding
    */
-  setLinkRectImagePadding(linkRectImagePadding: number): void {
+  setLinkRectImagePadding(linkRectImagePadding: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectIconPadding(linkRectImagePadding)
+    return this
   }
 
   /**
@@ -1005,8 +1043,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconRadius
    */
-  setLinkRectImageRadius(linkRectImageRadius: number): void {
+  setLinkRectImageRadius(linkRectImageRadius: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectIconRadius(linkRectImageRadius)
+    return this
   }
 
   /**
@@ -1016,8 +1055,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconMargin
    */
-  setLinkRectImageMargin(linkRectImageMargin: number): void {
+  setLinkRectImageMargin(linkRectImageMargin: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectIconMargin(linkRectImageMargin)
+    return this
   }
 
   /**
@@ -1027,8 +1067,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconBackgroundColor
    */
-  setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): void {
+  setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconBackgroundColor(linkRectToolImageBackgroundColor)
+    return this
   }
 
   /**
@@ -1038,8 +1079,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconBackgroundColor
    */
-  setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): void {
+  setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconBackgroundColor(linkRectToolImageButtonBackgroundColor)
+    return this
   }
 
   /**
@@ -1049,8 +1091,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconTextSize
    */
-  setLinkRectToolImageTextSize(linkRectToolImageTextSize: number): void {
+  setLinkRectToolImageTextSize(linkRectToolImageTextSize: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconTextSize(linkRectToolImageTextSize)
+    return this
   }
 
   /**
@@ -1060,8 +1103,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconHeight
    */
-  setLinkRectToolImageHeight(linkRectToolImageHeight: number): void {
+  setLinkRectToolImageHeight(linkRectToolImageHeight: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconHeight(linkRectToolImageHeight)
+    return this
   }
 
   /**
@@ -1071,8 +1115,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconPadding
    */
-  setLinkRectToolImagePadding(linkRectToolImagePadding: number): void {
+  setLinkRectToolImagePadding(linkRectToolImagePadding: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconPadding(linkRectToolImagePadding)
+    return this
   }
 
   /**
@@ -1082,8 +1127,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconBorderWidth
    */
-  setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: number): void {
+  setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconBorderWidth(linkRectToolImageBorderWidth)
+    return this
   }
 
   /**
@@ -1093,8 +1139,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconDividingLineWidth
    */
-  setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: number): void {
+  setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconDividingLineWidth(linkRectToolImageDividingLineWidth)
+    return this
   }
 
   /**
@@ -1104,8 +1151,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconMargin
    */
-  setLinkRectToolImageMargin(linkRectToolImageMargin: number): void {
+  setLinkRectToolImageMargin(linkRectToolImageMargin: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconMargin(linkRectToolImageMargin)
+    return this
   }
 
   /**
@@ -1115,8 +1163,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconLineLeftPadding
    */
-  setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: number): void {
+  setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconLineLeftPadding(linkRectToolImageLineLeftPadding)
+    return this
   }
 
   /**
@@ -1126,8 +1175,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconLineRightPadding
    */
-  setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: number): void {
+  setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: number): MarkdownTheme {
     this.markdownThemeLink.setLinkRectToolIconLineRightPadding(linkRectToolImageLineRightPadding)
+    return this
   }
 
   /**
@@ -1137,8 +1187,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BlockQuoteTheme#setBlockQuoteMargin
    */
-  setBlockQuoteLeftMargin(blockQuoteLeftMargin: number): void {
-    this.markdownThemeBlockQuote.setBlockQuoteMargin({left: blockQuoteLeftMargin})
+  setBlockQuoteLeftMargin(blockQuoteLeftMargin: number): MarkdownTheme {
+    this.markdownThemeBlockQuote.setBlockQuoteMargin({ left: blockQuoteLeftMargin })
+    return this
   }
 
   /**
@@ -1148,8 +1199,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BlockQuoteTheme#setBlockQuoteMargin
    */
-  setBlockQuoteRightMargin(blockQuoteRightMargin: number): void {
-    this.markdownThemeBlockQuote.setBlockQuoteMargin({right: blockQuoteRightMargin})
+  setBlockQuoteRightMargin(blockQuoteRightMargin: number): MarkdownTheme {
+    this.markdownThemeBlockQuote.setBlockQuoteMargin({ right: blockQuoteRightMargin })
+    return this
   }
 
   /**
@@ -1159,8 +1211,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BlockQuoteTheme#setBlockQuoteLeftBorderWidth
    */
-  setBlockQuoteWidth(blockQuoteWidth: number): void {
+  setBlockQuoteWidth(blockQuoteWidth: number): MarkdownTheme {
     this.markdownThemeBlockQuote.setBlockQuoteLeftBorderWidth(blockQuoteWidth)
+    return this
   }
 
   /**
@@ -1170,8 +1223,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BlockQuoteTheme#setBlockQuoteLeftBorderColor
    */
-  setBlockQuoteColor(blockQuoteColor: number): void {
+  setBlockQuoteColor(blockQuoteColor: number): MarkdownTheme {
     this.markdownThemeBlockQuote.setBlockQuoteLeftBorderColor(blockQuoteColor)
+    return this
   }
 
   /**
@@ -1181,8 +1235,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BlockQuoteTheme#setBlockQuoteBackgroundColor
    */
-  setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): void {
+  setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): MarkdownTheme {
     this.markdownThemeBlockQuote.setBlockQuoteBackgroundColor(blockQuoteBackgroundColor)
+    return this
   }
 
   /**
@@ -1192,8 +1247,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BlockQuoteTheme#setBlockQuoteChildSpacing
    */
-  setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: number): void {
+  setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: number): MarkdownTheme {
     this.markdownThemeBlockQuote.setBlockQuoteChildSpacing(blockQuoteTopAndBottomMargins)
+    return this
   }
 
   /**
@@ -1204,9 +1260,10 @@ export class MarkdownTheme {
    * @useinstead OrderedListTheme#setOrderedListChildSpacing
    *             OrderedListTheme#setBulletListChildSpacing
    */
-  setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: number): void {
+  setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: number): MarkdownTheme {
     this.markdownThemeOrderedList.setOrderedListChildSpacing(blockOrderedAndBulletTopAndBottomMargins)
     this.markdownThemeBulletList.setBulletListChildSpacing(blockOrderedAndBulletTopAndBottomMargins)
+    return this
   }
 
   /**
@@ -1217,9 +1274,10 @@ export class MarkdownTheme {
    * @useinstead OrderedListTheme#setOrderedListMargin
    *             OrderedListTheme#setBulletListMargin
    */
-  setBlockLeftMargin(blockLeftMargin: number): void {
-    this.markdownThemeOrderedList.setOrderedListMargin({left: blockLeftMargin})
-    this.markdownThemeBulletList.setBulletListMargin({left: blockLeftMargin})
+  setBlockLeftMargin(blockLeftMargin: number): MarkdownTheme {
+    this.markdownThemeOrderedList.setOrderedListMargin({ left: blockLeftMargin })
+    this.markdownThemeBulletList.setBulletListMargin({ left: blockLeftMargin })
+    return this
   }
 
   /**
@@ -1230,9 +1288,10 @@ export class MarkdownTheme {
    * @useinstead OrderedListTheme#setOrderedListMargin
    *             OrderedListTheme#setBulletListMargin
    */
-  setBlockRightMargin(blockRightMargin: number): void {
-    this.markdownThemeOrderedList.setOrderedListMargin({right: blockRightMargin})
-    this.markdownThemeBulletList.setBulletListMargin({right: blockRightMargin})
+  setBlockRightMargin(blockRightMargin: number): MarkdownTheme {
+    this.markdownThemeOrderedList.setOrderedListMargin({ right: blockRightMargin })
+    this.markdownThemeBulletList.setBulletListMargin({ right: blockRightMargin })
+    return this
   }
 
   /**
@@ -1242,12 +1301,13 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMarkerTextFontWeight
    */
-  setOrderedListItemPrefixBold(orderedListItemPrefixBold: boolean): void {
+  setOrderedListItemPrefixBold(orderedListItemPrefixBold: boolean): MarkdownTheme {
     if (orderedListItemPrefixBold) {
       this.markdownThemeOrderedList.setOrderedListMarkerTextFontWeight(FontWeight.Bold)
     } else {
       this.markdownThemeOrderedList.setOrderedListMarkerTextFontWeight(FontWeight.Normal)
     }
+    return this
   }
 
   /**
@@ -1257,8 +1317,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMarkerTextFontColor
    */
-  setOrderedListItemColor(orderedListItemColor: number): void {
+  setOrderedListItemColor(orderedListItemColor: number): MarkdownTheme {
     this.markdownThemeOrderedList.setOrderedListMarkerTextFontColor(orderedListItemColor)
+    return this
   }
 
   /**
@@ -1268,8 +1329,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMarkerTextFontSize
    */
-  setOrderedListItemSize(orderedListItemSize: number): void {
+  setOrderedListItemSize(orderedListItemSize: number): MarkdownTheme {
     this.markdownThemeOrderedList.setOrderedListMarkerTextFontSize(orderedListItemSize)
+    return this
   }
 
   /**
@@ -1279,8 +1341,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMarkerTextLineHeight
    */
-  setOrderedListItemLineHeight(orderedListItemLineHeight: number): void {
+  setOrderedListItemLineHeight(orderedListItemLineHeight: number): MarkdownTheme {
     this.markdownThemeOrderedList.setOrderedListMarkerTextLineHeight(orderedListItemLineHeight)
+    return this
   }
 
   /**
@@ -1290,8 +1353,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BulletListTheme#setBulletListBulletIsCircle
    */
-  setBulletListItemCircle(bulletListItemCircle: boolean): void {
+  setBulletListItemCircle(bulletListItemCircle: boolean): MarkdownTheme {
     this.markdownThemeBulletList.setBulletListBulletIsCircle(bulletListItemCircle)
+    return this
   }
 
   /**
@@ -1301,8 +1365,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BulletListTheme#setBulletListBulletTextFontColor
    */
-  setBulletListItemColor(bulletListItemColor: number): void {
+  setBulletListItemColor(bulletListItemColor: number): MarkdownTheme {
     this.markdownThemeBulletList.setBulletListBulletTextFontColor(bulletListItemColor)
+    return this
   }
 
   /**
@@ -1312,8 +1377,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BulletListTheme#setBulletListBulletTextFontSize
    */
-  setBulletListItemSize(bulletListItemSize: number): void {
+  setBulletListItemSize(bulletListItemSize: number): MarkdownTheme {
     this.markdownThemeBulletList.setBulletListBulletTextFontSize(bulletListItemSize)
+    return this
   }
 
   /**
@@ -1323,8 +1389,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BulletListTheme#setBulletListBulletTextLineHeight
    */
-  setBulletListItemLineHeight(bulletListItemLineHeight: number): void {
+  setBulletListItemLineHeight(bulletListItemLineHeight: number): MarkdownTheme {
     this.markdownThemeBulletList.setBulletListBulletTextLineHeight(bulletListItemLineHeight)
+    return this
   }
 
   /**
@@ -1335,9 +1402,10 @@ export class MarkdownTheme {
    * @useinstead BulletListTheme#setBulletListCheckboxWidth
    *             BulletListTheme#setBulletListCheckboxHeight
    */
-  setTaskListItemLength(taskListItemLength: number): void {
+  setTaskListItemLength(taskListItemLength: number): MarkdownTheme {
     this.markdownThemeBulletList.setBulletListCheckboxWidth(taskListItemLength)
     this.markdownThemeBulletList.setBulletListCheckboxHeight(taskListItemLength)
+    return this
   }
 
   /**
@@ -1347,8 +1415,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockIsCodeFormat
    */
-  setIsCodeFormat(isCodeFormat: boolean): void {
+  setIsCodeFormat(isCodeFormat: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockIsCodeFormat(isCodeFormat)
+    return this
   }
 
   /**
@@ -1358,8 +1427,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead InlineCodeTheme#setInlineCodeTextFontColor
    */
-  setCodeTextColor(codeTextColor: number): void {
+  setCodeTextColor(codeTextColor: number): MarkdownTheme {
     this.markdownThemeInlineCode.setInlineCodeTextFontColor(codeTextColor)
+    return this
   }
 
   /**
@@ -1369,8 +1439,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead InlineCodeTheme#setInlineCodeTextBackgroundColor
    */
-  setCodeBackgroundColor(codeBackgroundColor: number): void {
+  setCodeBackgroundColor(codeBackgroundColor: number): MarkdownTheme {
     this.markdownThemeInlineCode.setInlineCodeTextBackgroundColor(codeBackgroundColor)
+    return this
   }
 
   /**
@@ -1380,8 +1451,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead InlineCodeTheme#setInlineCodeTextFontSize
    */
-  setCodeTextSize(codeTextSize: number): void {
+  setCodeTextSize(codeTextSize: number): MarkdownTheme {
     this.markdownThemeInlineCode.setInlineCodeTextFontSize(codeTextSize)
+    return this
   }
 
   /**
@@ -1391,8 +1463,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead InlineCodeTheme#setInlineCodeTextFontFamily
    */
-  setCodeTypeface(codeTypeface: string): void {
+  setCodeTypeface(codeTypeface: string): MarkdownTheme {
     this.markdownThemeInlineCode.setInlineCodeTextFontFamily(codeTypeface)
+    return this
   }
 
   /**
@@ -1402,8 +1475,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockParserSync
    */
-  setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void {
+  setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockParserSync(isCodeBlockParserSync)
+    return this
   }
 
   /**
@@ -1413,8 +1487,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTextFontColor
    */
-  setCodeBlockTextColor(codeBlockTextColor: number): void {
+  setCodeBlockTextColor(codeBlockTextColor: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockTextFontColor(codeBlockTextColor)
+    return this
   }
 
   /**
@@ -1424,8 +1499,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTypeTextFontColor
    */
-  setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): void {
+  setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockTypeTextFontColor(codeBlockTypeTextColor)
+    return this
   }
 
   /**
@@ -1435,8 +1511,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTypeText
    */
-  setCodeBlockTypeTextStr(codeBlockTypeTextStr: string): void {
+  setCodeBlockTypeTextStr(codeBlockTypeTextStr: string): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockTypeText(codeBlockTypeTextStr)
+    return this
   }
 
   /**
@@ -1446,8 +1523,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTitleLayoutMarginBottom
    */
-  setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: number): void {
+  setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockTitleLayoutMarginBottom(codeBlockTypeTextPadding)
+    return this
   }
 
   /**
@@ -1458,9 +1536,10 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenTextIsShow
    *             CodeBlockTheme#setCodeBlockCopyTextIsShow
    */
-  setCodeBlockIconTextHide(codeBlockIconTextHide: boolean): void {
+  setCodeBlockIconTextHide(codeBlockIconTextHide: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenTextIsShow(codeBlockIconTextHide)
     this.markdownThemeCodeBlock.setCodeBlockCopyTextIsShow(codeBlockIconTextHide)
+    return this
   }
 
   /**
@@ -1470,8 +1549,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockLineNumberIsShow
    */
-  setCodeBlockLineNumberHide(codeBlockLineNumberHide: boolean): void {
+  setCodeBlockLineNumberHide(codeBlockLineNumberHide: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockLineNumberIsShow(codeBlockLineNumberHide)
+    return this
   }
 
   /**
@@ -1481,8 +1561,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockBackgroundColor
    */
-  setCodeBlockBackgroundColor(codeBlockBackgroundColor: number): void {
+  setCodeBlockBackgroundColor(codeBlockBackgroundColor: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockBackgroundColor(codeBlockBackgroundColor)
+    return this
   }
 
   /**
@@ -1492,8 +1573,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockMargin
    */
-  setCodeMultilineMargin(codeMultilineMargin: number): void {
-    this.markdownThemeCodeBlock.setCodeBlockMargin({left: codeMultilineMargin})
+  setCodeMultilineMargin(codeMultilineMargin: number): MarkdownTheme {
+    this.markdownThemeCodeBlock.setCodeBlockMargin({ left: codeMultilineMargin })
+    return this
   }
 
   /**
@@ -1503,8 +1585,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTextFontFamily
    */
-  setCodeBlockTypeface(codeBlockTypeface: string): void {
+  setCodeBlockTypeface(codeBlockTypeface: string): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockTextFontFamily(codeBlockTypeface)
+    return this
   }
 
   /**
@@ -1514,8 +1597,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTextFontSize
    */
-  setCodeBlockTextSize(codeBlockTextSize: number): void {
+  setCodeBlockTextSize(codeBlockTextSize: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockTextFontSize(codeBlockTextSize)
+    return this
   }
 
   /**
@@ -1525,8 +1609,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTextLineHeight
    */
-  setCodeBlockLineHeight(codeBlockLineHeight: number): void {
+  setCodeBlockLineHeight(codeBlockLineHeight: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockTextLineHeight(codeBlockLineHeight)
+    return this
   }
 
   /**
@@ -1536,8 +1621,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockRadius
    */
-  setCodeBlockRadius(codeBlockRadius: number): void {
+  setCodeBlockRadius(codeBlockRadius: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockRadius(codeBlockRadius)
+    return this
   }
 
   /**
@@ -1547,8 +1633,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenButtonIsShow
    */
-  setIsCodeFullScreen(isCodeFullScreen: boolean): void {
+  setIsCodeFullScreen(isCodeFullScreen: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenButtonIsShow(isCodeFullScreen)
+    return this
   }
 
   /**
@@ -1561,11 +1648,12 @@ export class MarkdownTheme {
    *             CodeBlockTheme#setCodeBlockCopyIconHeight
    *             CodeBlockTheme#setCodeBlockCopyIconWidth
    */
-  setIconWidthAndHeight(iconWidthAndHeight: number): void {
+  setIconWidthAndHeight(iconWidthAndHeight: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenIconHeight(iconWidthAndHeight)
     this.markdownThemeCodeBlock.setCodeBlockFullScreenIconWidth(iconWidthAndHeight)
     this.markdownThemeCodeBlock.setCodeBlockCopyIconHeight(iconWidthAndHeight)
     this.markdownThemeCodeBlock.setCodeBlockCopyIconWidth(iconWidthAndHeight)
+    return this
   }
 
   /**
@@ -1575,8 +1663,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleTextSize
    */
-  setCodeListTitleTextSize(codeListTitleTextSize: number): void {
+  setCodeListTitleTextSize(codeListTitleTextSize: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockListTitleTextSize(codeListTitleTextSize)
+    return this
   }
 
   /**
@@ -1586,8 +1675,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectTextSize
    */
-  setCodeListTitleSelectTextSize(codeListTitleSelectTextSize: number): void {
+  setCodeListTitleSelectTextSize(codeListTitleSelectTextSize: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockListTitleSelectTextSize(codeListTitleSelectTextSize)
+    return this
   }
 
   /**
@@ -1597,8 +1687,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectTextColor
    */
-  setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: number): void {
+  setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockListTitleSelectTextColor(codeListTitleSelectTextColor)
+    return this
   }
 
   /**
@@ -1608,8 +1699,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleUnselectTextColor
    */
-  setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: number): void {
+  setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectTextColor(codeListTitleUnSelectTextColor)
+    return this
   }
 
   /**
@@ -1619,8 +1711,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectBackgroundColor
    */
-  setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): void {
+  setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor)
+    return this
   }
 
   /**
@@ -1630,8 +1723,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleUnselectBackgroundColor
    */
-  setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): void {
+  setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectBackgroundColor(codeListTitleUnSelectBackgroundColor)
+    return this
   }
 
   /**
@@ -1641,8 +1735,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockIsSeparate
    */
-  setIsSeparateCodeBlock(isSeparateCodeBlock: boolean): void {
+  setIsSeparateCodeBlock(isSeparateCodeBlock: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockIsSeparate(isSeparateCodeBlock)
+    return this
   }
 
   /**
@@ -1652,8 +1747,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockSeparateWidth
    */
-  setSeparateCodeBlockWidth(separateCodeBlockWidth: number): void {
+  setSeparateCodeBlockWidth(separateCodeBlockWidth: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockSeparateWidth(separateCodeBlockWidth)
+    return this
   }
 
   /**
@@ -1663,8 +1759,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockSeparateIsBottom
    */
-  setSeparateCodeIsBottom(separateCodeIsBottom: boolean): void {
+  setSeparateCodeIsBottom(separateCodeIsBottom: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockSeparateIsBottom(separateCodeIsBottom)
+    return this
   }
 
   /**
@@ -1674,8 +1771,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setUnderlineHeightForAllHeading
    */
-  setHeadingBreakHeight(headingBreakHeight: number): void {
+  setHeadingBreakHeight(headingBreakHeight: number): MarkdownTheme {
     this.markdownThemeHeading.setUnderlineHeightForAllHeading(headingBreakHeight)
+    return this
   }
 
   /**
@@ -1685,8 +1783,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontFamilyForAllHeading
    */
-  setHeadingTypeface(headingTypeface: string): void {
+  setHeadingTypeface(headingTypeface: string): MarkdownTheme {
     this.markdownThemeHeading.setTextFontFamilyForAllHeading(headingTypeface)
+    return this
   }
 
   /**
@@ -1696,8 +1795,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setMarginForAllHeadingEachLevel
    */
-  setHeadingTopMargins(headingTopMargins: number): void {
-    this.markdownThemeHeading.setMarginForAllHeadingEachLevel({top: headingTopMargins})
+  setHeadingTopMargins(headingTopMargins: number): MarkdownTheme {
+    this.markdownThemeHeading.setMarginForAllHeadingEachLevel({ top: headingTopMargins })
+    return this
   }
 
   /**
@@ -1707,8 +1807,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setMarginForAllHeadingEachLevel
    */
-  setHeadingBottomMargins(headingBottomMargins: number): void {
-    this.markdownThemeHeading.setMarginForAllHeadingEachLevel({bottom: headingBottomMargins})
+  setHeadingBottomMargins(headingBottomMargins: number): MarkdownTheme {
+    this.markdownThemeHeading.setMarginForAllHeadingEachLevel({ bottom: headingBottomMargins })
+    return this
   }
 
   /**
@@ -1719,11 +1820,12 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontSizeForEachHeading
    */
-  setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void {
+  setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): MarkdownTheme {
     if (headingTextSizeMultipliers.length != 6) {
-      return
+      return this
     }
     this.markdownThemeHeading.setTextFontSizeForEachHeading(headingTextSizeMultipliers)
+    return this
   }
 
   /**
@@ -1733,8 +1835,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
-  setHeadingTextSize1(headingTextSize1: number): void {
+  setHeadingTextSize1(headingTextSize1: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(1, headingTextSize1)
+    return this
   }
 
   /**
@@ -1744,8 +1847,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
-  setHeadingTextSize2(headingTextSize2: number): void {
+  setHeadingTextSize2(headingTextSize2: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(2, headingTextSize2)
+    return this
   }
 
   /**
@@ -1755,8 +1859,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
-  setHeadingTextSize3(headingTextSize3: number): void {
+  setHeadingTextSize3(headingTextSize3: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(3, headingTextSize3)
+    return this
   }
 
   /**
@@ -1766,8 +1871,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
-  setHeadingTextSize4(headingTextSize4: number): void {
+  setHeadingTextSize4(headingTextSize4: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(4, headingTextSize4)
+    return this
   }
 
   /**
@@ -1777,8 +1883,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
-  setHeadingTextSize5(headingTextSize5: number): void {
+  setHeadingTextSize5(headingTextSize5: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(5, headingTextSize5)
+    return this
   }
 
   /**
@@ -1788,8 +1895,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
-  setHeadingTextSize6(headingTextSize6: number): void {
+  setHeadingTextSize6(headingTextSize6: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(6, headingTextSize6)
+    return this
   }
 
   /**
@@ -1800,8 +1908,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForAllHeading
    */
-  setHeadingTextColor(headingTextColor: number): void {
+  setHeadingTextColor(headingTextColor: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontColorForAllHeading(headingTextColor)
+    return this
   }
 
   /**
@@ -1812,8 +1921,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setUnderlineColorForAllHeading
    */
-  setHeadingBreakColor(headingBreakColor: number): void {
+  setHeadingBreakColor(headingBreakColor: number): MarkdownTheme {
     this.markdownThemeHeading.setUnderlineColorForAllHeading(headingBreakColor)
+    return this
   }
 
   /**
@@ -1823,8 +1933,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextLetterSpacingForAllHeading
    */
-  setHeadingTextWordSpace(headingTextWordSpace: number): void {
+  setHeadingTextWordSpace(headingTextWordSpace: number): MarkdownTheme {
     this.markdownThemeHeading.setTextLetterSpacingForAllHeading(headingTextWordSpace)
+    return this
   }
 
   /**
@@ -1834,8 +1945,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
-  setHeadingTextLineHeight1(headingTextLineHeight1: number): void {
+  setHeadingTextLineHeight1(headingTextLineHeight1: number): MarkdownTheme {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(1, headingTextLineHeight1)
+    return this
   }
 
   /**
@@ -1845,8 +1957,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
-  setHeadingTextLineHeight2(headingTextLineHeight2: number): void {
+  setHeadingTextLineHeight2(headingTextLineHeight2: number): MarkdownTheme {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(2, headingTextLineHeight2)
+    return this
   }
 
   /**
@@ -1856,8 +1969,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
-  setHeadingTextLineHeight3(headingTextLineHeight3: number): void {
+  setHeadingTextLineHeight3(headingTextLineHeight3: number): MarkdownTheme {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(3, headingTextLineHeight3)
+    return this
   }
 
   /**
@@ -1867,8 +1981,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
-  setHeadingTextLineHeight4(headingTextLineHeight4: number): void {
+  setHeadingTextLineHeight4(headingTextLineHeight4: number): MarkdownTheme {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(4, headingTextLineHeight4)
+    return this
   }
 
   /**
@@ -1878,8 +1993,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
-  setHeadingTextLineHeight5(headingTextLineHeight5: number): void {
+  setHeadingTextLineHeight5(headingTextLineHeight5: number): MarkdownTheme {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(5, headingTextLineHeight5)
+    return this
   }
 
   /**
@@ -1889,8 +2005,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
-  setHeadingTextLineHeight6(headingTextLineHeight6: number): void {
+  setHeadingTextLineHeight6(headingTextLineHeight6: number): MarkdownTheme {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(6, headingTextLineHeight6)
+    return this
   }
 
   /**
@@ -1900,8 +2017,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor1(headingTextColor1: number): void {
+  setHeadingTextColor1(headingTextColor1: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(1, headingTextColor1)
+    return this
   }
 
   /**
@@ -1911,8 +2029,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setUnderlineColorForDesignateHeading
    */
-  setHeadingBreakColor1(headingBreakColor1: number): void {
+  setHeadingBreakColor1(headingBreakColor1: number): MarkdownTheme {
     this.markdownThemeHeading.setUnderlineColorForDesignateHeading(1, headingBreakColor1)
+    return this
   }
 
   /**
@@ -1922,8 +2041,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor2(headingTextColor2: number): void {
+  setHeadingTextColor2(headingTextColor2: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(2, headingTextColor2)
+    return this
   }
 
   /**
@@ -1933,8 +2053,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setUnderlineColorForDesignateHeading
    */
-  setHeadingBreakColor2(headingBreakColor2: number): void {
+  setHeadingBreakColor2(headingBreakColor2: number): MarkdownTheme {
     this.markdownThemeHeading.setUnderlineColorForDesignateHeading(2, headingBreakColor2)
+    return this
   }
 
   /**
@@ -1944,8 +2065,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor3(headingTextColor3: number): void {
+  setHeadingTextColor3(headingTextColor3: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(3, headingTextColor3)
+    return this
   }
 
   /**
@@ -1955,8 +2077,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor4(headingTextColor4: number): void {
+  setHeadingTextColor4(headingTextColor4: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(4, headingTextColor4)
+    return this
   }
 
   /**
@@ -1966,8 +2089,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor5(headingTextColor5: number): void {
+  setHeadingTextColor5(headingTextColor5: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(5, headingTextColor5)
+    return this
   }
 
   /**
@@ -1977,8 +2101,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor6(headingTextColor6: number): void {
+  setHeadingTextColor6(headingTextColor6: number): MarkdownTheme {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(6, headingTextColor6)
+    return this
   }
 
   /**
@@ -1988,8 +2113,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ParagraphTheme#setParagraphMargin
    */
-  setParagraphTopMargins(paragraphTopMargins: number): void {
-    this.markdownThemeParagraph.setParagraphMargin({top: paragraphTopMargins})
+  setParagraphTopMargins(paragraphTopMargins: number): MarkdownTheme {
+    this.markdownThemeParagraph.setParagraphMargin({ top: paragraphTopMargins })
+    return this
   }
 
   /**
@@ -1999,8 +2125,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ParagraphTheme#setParagraphMargin
    */
-  setParagraphBottomMargins(paragraphBottomMargins: number): void {
-    this.markdownThemeParagraph.setParagraphMargin({bottom: paragraphBottomMargins})
+  setParagraphBottomMargins(paragraphBottomMargins: number): MarkdownTheme {
+    this.markdownThemeParagraph.setParagraphMargin({ bottom: paragraphBottomMargins })
+    return this
   }
 
   /**
@@ -2010,8 +2137,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ParagraphTheme#setParagraphTextFontSize
    */
-  setParagraphTextSize(paragraphTextSize: number): void {
+  setParagraphTextSize(paragraphTextSize: number): MarkdownTheme {
     this.markdownThemeParagraph.setParagraphTextFontSize(paragraphTextSize)
+    return this
   }
 
   /**
@@ -2021,8 +2149,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ParagraphTheme#setParagraphTextFontColor
    */
-  setParagraphTextColor(paragraphTextColor: number): void {
+  setParagraphTextColor(paragraphTextColor: number): MarkdownTheme {
     this.markdownThemeParagraph.setParagraphTextFontColor(paragraphTextColor)
+    return this
   }
 
   /**
@@ -2032,8 +2161,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ParagraphTheme#setParagraphTextLetterSpacing
    */
-  setParagraphTextWordSpace(paragraphTextWordSpace: number): void {
+  setParagraphTextWordSpace(paragraphTextWordSpace: number): MarkdownTheme {
     this.markdownThemeParagraph.setParagraphTextLetterSpacing(paragraphTextWordSpace)
+    return this
   }
 
   /**
@@ -2043,8 +2173,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ParagraphTheme#setParagraphTextLineHeight
    */
-  setParagraphTextLineHeight(paragraphTextLineHeight: number): void {
+  setParagraphTextLineHeight(paragraphTextLineHeight: number): MarkdownTheme {
     this.markdownThemeParagraph.setParagraphTextLineHeight(paragraphTextLineHeight)
+    return this
   }
 
   /**
@@ -2054,8 +2185,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ParagraphTheme#setParagraphTextFontFamily
    */
-  setParagraphTypeface(paragraphTypeface: string): void {
+  setParagraphTypeface(paragraphTypeface: string): MarkdownTheme {
     this.markdownThemeParagraph.setParagraphTextFontFamily(paragraphTypeface)
+    return this
   }
 
   /**
@@ -2065,8 +2197,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead DividerTheme#setDividerColor
    */
-  setThematicBreakColor(thematicBreakColor: number): void {
+  setThematicBreakColor(thematicBreakColor: number): MarkdownTheme {
     this.markdownThemeDivider.setDividerColor(thematicBreakColor)
+    return this
   }
 
   /**
@@ -2076,8 +2209,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead DividerTheme#setDividerStrokeWidth
    */
-  setThematicBreakHeight(thematicBreakHeight: number): void {
+  setThematicBreakHeight(thematicBreakHeight: number): MarkdownTheme {
     this.markdownThemeDivider.setDividerStrokeWidth(thematicBreakHeight)
+    return this
   }
 
   /**
@@ -2087,8 +2221,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead DividerTheme#setDividerMargin
    */
-  setThematicBreakTopMargin(thematicBreakTopMargin: number): void {
-    this.markdownThemeDivider.setDividerMargin({top: thematicBreakTopMargin})
+  setThematicBreakTopMargin(thematicBreakTopMargin: number): MarkdownTheme {
+    this.markdownThemeDivider.setDividerMargin({ top: thematicBreakTopMargin })
+    return this
   }
 
   /**
@@ -2098,8 +2233,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead DividerTheme#setDividerMargin
    */
-  setThematicBreakBottomMargin(thematicBreakBottomMargin: number): void {
-    this.markdownThemeDivider.setDividerMargin({bottom: thematicBreakBottomMargin})
+  setThematicBreakBottomMargin(thematicBreakBottomMargin: number): MarkdownTheme {
+    this.markdownThemeDivider.setDividerMargin({ bottom: thematicBreakBottomMargin })
+    return this
   }
 
   /**
@@ -2109,8 +2245,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead GlobalTheme#setIsLineBreak
    */
-  setIsLineBreak(isLineBreak: boolean): void {
+  setIsLineBreak(isLineBreak: boolean): MarkdownTheme {
     this.markdownThemeGlobal.setIsLineBreak(isLineBreak)
+    return this
   }
 
   /**
@@ -2120,8 +2257,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LatexMathTheme#setLatexMathDefaultText
    */
-  setLatexDefaultText(latexDefaultText: boolean): void {
+  setLatexDefaultText(latexDefaultText: boolean): MarkdownTheme {
     this.markdownThemeLatexMath.setLatexMathDefaultText(latexDefaultText)
+    return this
   }
 
   /**
@@ -2131,8 +2269,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LatexMathTheme#setLatexMathDefaultTextFontSize
    */
-  setLatexMathTextSize(latexMathTextSize: number): void {
+  setLatexMathTextSize(latexMathTextSize: number): MarkdownTheme {
     this.markdownThemeLatexMath.setLatexMathDefaultTextFontSize(latexMathTextSize)
+    return this
   }
 
   /**
@@ -2142,8 +2281,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LatexMathTheme#setLatexMathBackgroundColor
    */
-  setLatexMathBackgroundColor(latexMathBackgroundColor: number): void {
+  setLatexMathBackgroundColor(latexMathBackgroundColor: number): MarkdownTheme {
     this.markdownThemeLatexMath.setLatexMathBackgroundColor(latexMathBackgroundColor)
+    return this
   }
 
   /**
@@ -2153,8 +2293,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LatexMathTheme#setLatexMathTextColor
    */
-  setLatexMathTextColor(latexMathTextColor: number): void {
+  setLatexMathTextColor(latexMathTextColor: number): MarkdownTheme {
     this.markdownThemeLatexMath.setLatexMathTextColor(latexMathTextColor)
+    return this
   }
 
   /**
@@ -2164,8 +2305,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LatexMathTheme#setLatexMathColorFormat
    */
-  setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): void {
+  setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): MarkdownTheme {
     this.markdownThemeLatexMath.setLatexMathColorFormat(latexMathColorFormat)
+    return this
   }
 
   /**
@@ -2175,8 +2317,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LatexMathTheme#setLatexMathBlockCenter
    */
-  setLatexMathBlockCenter(latexMathBlockCenter: boolean): void {
+  setLatexMathBlockCenter(latexMathBlockCenter: boolean): MarkdownTheme {
     this.markdownThemeLatexMath.setLatexMathBlockCenter(latexMathBlockCenter)
+    return this
   }
 
   /**
@@ -2186,8 +2329,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LatexMathTheme#setLatexMathResPath
    */
-  setLatexMathResStr(latexMathResStr: string): void {
+  setLatexMathResStr(latexMathResStr: string): MarkdownTheme {
     this.markdownThemeLatexMath.setLatexMathResPath(latexMathResStr)
+    return this
   }
 
   /**
@@ -2197,8 +2341,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioShadowColor
    */
-  setAudioShadowColor(audioShadowColor: number): void {
+  setAudioShadowColor(audioShadowColor: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioShadowColor(audioShadowColor)
+    return this
   }
 
   /**
@@ -2208,8 +2353,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioBorderColor
    */
-  setAudioBorderColor(audioBorderColor: number): void {
+  setAudioBorderColor(audioBorderColor: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioBorderColor(audioBorderColor)
+    return this
   }
 
   /**
@@ -2219,8 +2365,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioBorderWidth
    */
-  setAudioBorderWidth(audioBorderWidth: number): void {
+  setAudioBorderWidth(audioBorderWidth: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioBorderWidth(audioBorderWidth)
+    return this
   }
 
   /**
@@ -2230,8 +2377,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioBorderRadius
    */
-  setAudioBorderRadius(audioBorderRadius: number): void {
+  setAudioBorderRadius(audioBorderRadius: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioBorderRadius(audioBorderRadius)
+    return this
   }
 
   /**
@@ -2241,8 +2389,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioButtonBackgroundColor
    */
-  setAudioButtonBackgroundColor(audioButtonBackgroundColor: number): void {
+  setAudioButtonBackgroundColor(audioButtonBackgroundColor: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioButtonBackgroundColor(audioButtonBackgroundColor)
+    return this
   }
 
   /**
@@ -2252,8 +2401,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioButtonTextFontColor
    */
-  setAudioButtonTextColor(audioButtonTextColor: number): void {
+  setAudioButtonTextColor(audioButtonTextColor: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioButtonTextFontColor(audioButtonTextColor)
+    return this
   }
 
   /**
@@ -2263,8 +2413,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioButtonTextFontSize
    */
-  setAudioButtonTextSize(audioButtonTextSize: number): void {
+  setAudioButtonTextSize(audioButtonTextSize: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioButtonTextFontSize(audioButtonTextSize)
+    return this
   }
 
   /**
@@ -2274,8 +2425,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioButtonText
    */
-  setAudioButtonText(audioButtonText: string): void {
+  setAudioButtonText(audioButtonText: string): MarkdownTheme {
     this.markdownThemeAudio.setAudioButtonText(audioButtonText)
+    return this
   }
 
   /**
@@ -2285,8 +2437,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioButtonRadius
    */
-  setAudioButtonBorderRadius(audioButtonBorderRadius: number): void {
+  setAudioButtonBorderRadius(audioButtonBorderRadius: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioButtonRadius(audioButtonBorderRadius)
+    return this
   }
 
   /**
@@ -2296,8 +2449,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTitleTextFontSize
    */
-  setAudioTitleTextSize(audioTitleTextSize: number): void {
+  setAudioTitleTextSize(audioTitleTextSize: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioTitleTextFontSize(audioTitleTextSize)
+    return this
   }
 
   /**
@@ -2307,8 +2461,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTitleTextFontColor
    */
-  setAudioTitleTextColor(audioTitleTextColor: number): void {
+  setAudioTitleTextColor(audioTitleTextColor: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioTitleTextFontColor(audioTitleTextColor)
+    return this
   }
 
   /**
@@ -2318,8 +2473,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTitleTextLineHeight
    */
-  setAudioTitleTextLineHeight(audioTitleTextLineHeight: number): void {
+  setAudioTitleTextLineHeight(audioTitleTextLineHeight: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioTitleTextLineHeight(audioTitleTextLineHeight)
+    return this
   }
 
   /**
@@ -2329,8 +2485,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTypeTextFontSize
    */
-  setAudioTypeTextSize(audioTypeTextSize: number): void {
+  setAudioTypeTextSize(audioTypeTextSize: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioTypeTextFontSize(audioTypeTextSize)
+    return this
   }
 
   /**
@@ -2340,8 +2497,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTypeTextFontColor
    */
-  setAudioTypeTextColor(audioTypeTextColor: number): void {
+  setAudioTypeTextColor(audioTypeTextColor: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioTypeTextFontColor(audioTypeTextColor)
+    return this
   }
 
   /**
@@ -2351,8 +2509,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTypeTextLineHeight
    */
-  setAudioTypeTextLineHeight(audioTypeTextLineHeight: number): void {
+  setAudioTypeTextLineHeight(audioTypeTextLineHeight: number): MarkdownTheme {
     this.markdownThemeAudio.setAudioTypeTextLineHeight(audioTypeTextLineHeight)
+    return this
   }
 
   /**
@@ -2362,8 +2521,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioMargin
    */
-  setAudioMarginTop(audioMarginTop: number): void {
-    this.markdownThemeAudio.setAudioMargin({top: audioMarginTop})
+  setAudioMarginTop(audioMarginTop: number): MarkdownTheme {
+    this.markdownThemeAudio.setAudioMargin({ top: audioMarginTop })
+    return this
   }
 
   /**
@@ -2373,8 +2533,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioMargin
    */
-  setAudioMarginBottom(audioMarginBottom: number): void {
-    this.markdownThemeAudio.setAudioMargin({bottom: audioMarginBottom})
+  setAudioMarginBottom(audioMarginBottom: number): MarkdownTheme {
+    this.markdownThemeAudio.setAudioMargin({ bottom: audioMarginBottom })
+    return this
   }
 
   /**
@@ -2384,8 +2545,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoBorderRadius
    */
-  setVideoBorderRadius(videoBorderRadius: number): void {
+  setVideoBorderRadius(videoBorderRadius: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoBorderRadius(videoBorderRadius)
+    return this
   }
 
   /**
@@ -2395,8 +2557,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoTimeTextFontColor
    */
-  setVideoTimeTextColor(videoTimeTextColor: number): void {
+  setVideoTimeTextColor(videoTimeTextColor: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoTimeTextFontColor(videoTimeTextColor)
+    return this
   }
 
   /**
@@ -2406,8 +2569,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoTimeTextFontSize
    */
-  setVideoTimeTextSize(videoTimeTextSize: number): void {
+  setVideoTimeTextSize(videoTimeTextSize: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoTimeTextFontSize(videoTimeTextSize)
+    return this
   }
 
   /**
@@ -2417,8 +2581,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoTimeTextMarginRight
    */
-  setVideoTimeTextMarginRight(videoTimeTextMarginRight: number): void {
+  setVideoTimeTextMarginRight(videoTimeTextMarginRight: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoTimeTextMarginRight(videoTimeTextMarginRight)
+    return this
   }
 
   /**
@@ -2428,8 +2593,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoTimeTextMarginBottom
    */
-  setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: number): void {
+  setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoTimeTextMarginBottom(videoTimeTextMarginBottom)
+    return this
   }
 
   /**
@@ -2439,8 +2605,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoMargin
    */
-  setVideoMarginTop(videoMarginTop: number): void {
-    this.markdownThemeVideo.setVideoMargin({top: videoMarginTop})
+  setVideoMarginTop(videoMarginTop: number): MarkdownTheme {
+    this.markdownThemeVideo.setVideoMargin({ top: videoMarginTop })
+    return this
   }
 
   /**
@@ -2450,8 +2617,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoMargin
    */
-  setVideoMarginBottom(videoMarginBottom: number): void {
-    this.markdownThemeVideo.setVideoMargin({bottom: videoMarginBottom})
+  setVideoMarginBottom(videoMarginBottom: number): MarkdownTheme {
+    this.markdownThemeVideo.setVideoMargin({ bottom: videoMarginBottom })
+    return this
   }
 
   /**
@@ -2461,8 +2629,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoBottomLayoutVisible
    */
-  setIsVideoBottomLayout(isVideoBottomLayout: boolean): void {
+  setIsVideoBottomLayout(isVideoBottomLayout: boolean): MarkdownTheme {
     this.markdownThemeVideo.setVideoBottomLayoutVisible(isVideoBottomLayout)
+    return this
   }
 
   /**
@@ -2473,9 +2642,10 @@ export class MarkdownTheme {
    * @useinstead VideoTheme#setVideoReleaseButtonIconWidth
    *             VideoTheme#setVideoReleaseButtonIconHeight
    */
-  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void {
+  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonIconWidth(videoReleaseImageWidthHeight)
     this.markdownThemeVideo.setVideoReleaseButtonIconHeight(videoReleaseImageWidthHeight)
+    return this
   }
 
   /**
@@ -2485,8 +2655,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonWidth
    */
-  setVideoReleaseWidth(videoReleaseWidth: number): void {
+  setVideoReleaseWidth(videoReleaseWidth: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonWidth(videoReleaseWidth)
+    return this
   }
 
   /**
@@ -2496,8 +2667,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonHeight
    */
-  setVideoReleaseHeight(videoReleaseHeight: number): void {
+  setVideoReleaseHeight(videoReleaseHeight: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonHeight(videoReleaseHeight)
+    return this
   }
 
   /**
@@ -2507,8 +2679,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonRadius
    */
-  setVideoReleaseRadius(videoReleaseRadius: number): void {
+  setVideoReleaseRadius(videoReleaseRadius: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonRadius(videoReleaseRadius)
+    return this
   }
 
   /**
@@ -2518,8 +2691,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonText
    */
-  setVideoReleaseText(videoReleaseText: string): void {
+  setVideoReleaseText(videoReleaseText: string): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonText(videoReleaseText)
+    return this
   }
 
   /**
@@ -2529,8 +2703,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonTextFontSize
    */
-  setVideoReleaseTextSize(videoReleaseTextSize: number): void {
+  setVideoReleaseTextSize(videoReleaseTextSize: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonTextFontSize(videoReleaseTextSize)
+    return this
   }
 
   /**
@@ -2540,8 +2715,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonTextFontColor
    */
-  setVideoReleaseTextColor(videoReleaseTextColor: number): void {
+  setVideoReleaseTextColor(videoReleaseTextColor: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonTextFontColor(videoReleaseTextColor)
+    return this
   }
 
   /**
@@ -2551,8 +2727,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonBackgroundColor
    */
-  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void {
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoReleaseButtonBackgroundColor(videoReleaseBackgroundColor)
+    return this
   }
 
   /**
@@ -2563,9 +2740,10 @@ export class MarkdownTheme {
    * @useinstead VideoTheme#setVideoDownloadButtonIconWidth
    *             VideoTheme#setVideoDownloadButtonIconHeight
    */
-  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void {
+  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonIconWidth(videoDownloadImageWidthHeight)
     this.markdownThemeVideo.setVideoDownloadButtonIconHeight(videoDownloadImageWidthHeight)
+    return this
   }
 
   /**
@@ -2575,8 +2753,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonWidth
    */
-  setVideoDownloadWidth(videoDownloadWidth: number): void {
+  setVideoDownloadWidth(videoDownloadWidth: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonWidth(videoDownloadWidth)
+    return this
   }
 
   /**
@@ -2586,8 +2765,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonHeight
    */
-  setVideoDownloadHeight(videoDownloadHeight: number): void {
+  setVideoDownloadHeight(videoDownloadHeight: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonHeight(videoDownloadHeight)
+    return this
   }
 
   /**
@@ -2597,8 +2777,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonRadius
    */
-  setVideoDownloadRadius(videoDownloadRadius: number): void {
+  setVideoDownloadRadius(videoDownloadRadius: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonRadius(videoDownloadRadius)
+    return this
   }
 
   /**
@@ -2608,8 +2789,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonText
    */
-  setVideoDownloadText(videoDownloadText: string): void {
+  setVideoDownloadText(videoDownloadText: string): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonText(videoDownloadText)
+    return this
   }
 
   /**
@@ -2619,8 +2801,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonTextFontSize
    */
-  setVideoDownloadTextSize(videoDownloadTextSize: number): void {
+  setVideoDownloadTextSize(videoDownloadTextSize: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonTextFontSize(videoDownloadTextSize)
+    return this
   }
 
   /**
@@ -2630,8 +2813,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonTextFontColor
    */
-  setVideoDownloadTextColor(videoDownloadTextColor: number): void {
+  setVideoDownloadTextColor(videoDownloadTextColor: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonTextFontColor(videoDownloadTextColor)
+    return this
   }
 
   /**
@@ -2641,8 +2825,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonBackgroundColor
    */
-  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void {
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): MarkdownTheme {
     this.markdownThemeVideo.setVideoDownloadButtonBackgroundColor(videoDownloadBackgroundColor)
+    return this
   }
 
   /**
@@ -2652,8 +2837,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageFitType
    */
-  setImageFitType(imageFitType: ImageFitType): void {
+  setImageFitType(imageFitType: ImageFitType): MarkdownTheme {
     this.markdownThemeImage.setImageFitType(imageFitType)
+    return this
   }
 
   /**
@@ -2663,8 +2849,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageMaximumWidth
    */
-  setImageMaximumWidth(imageMaximumWidth: number): void {
+  setImageMaximumWidth(imageMaximumWidth: number): MarkdownTheme {
     this.markdownThemeImage.setImageMaximumWidth(imageMaximumWidth)
+    return this
   }
 
   /**
@@ -2674,8 +2861,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageFixedRatioWidth
    */
-  setImageFixedRatioWidth(imageFixedRatioWidth: number): void {
+  setImageFixedRatioWidth(imageFixedRatioWidth: number): MarkdownTheme {
     this.markdownThemeImage.setImageFixedRatioWidth(imageFixedRatioWidth)
+    return this
   }
 
   /**
@@ -2685,8 +2873,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageMaxHeight
    */
-  setImageMaxHeight(imageMaxHeight: number): void {
+  setImageMaxHeight(imageMaxHeight: number): MarkdownTheme {
     this.markdownThemeImage.setImageMaxHeight(imageMaxHeight)
+    return this
   }
 
   /**
@@ -2696,8 +2885,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageMaxWidth
    */
-  setImageMaxWidth(imageMaxWidth: number): void {
+  setImageMaxWidth(imageMaxWidth: number): MarkdownTheme {
     this.markdownThemeImage.setImageMaxWidth(imageMaxWidth)
+    return this
   }
 
   /**
@@ -2707,8 +2897,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageBorderRadius
    */
-  setImageBorderRadius(imageBorderRadius: number): void {
+  setImageBorderRadius(imageBorderRadius: number): MarkdownTheme {
     this.markdownThemeImage.setImageBorderRadius(imageBorderRadius)
+    return this
   }
 
   /**
@@ -2718,8 +2909,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageBorderWidth
    */
-  setImageBorderWidth(imageBorderWidth: number): void {
+  setImageBorderWidth(imageBorderWidth: number): MarkdownTheme {
     this.markdownThemeImage.setImageBorderWidth(imageBorderWidth)
+    return this
   }
 
   /**
@@ -2729,8 +2921,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageBorderColor
    */
-  setImageBorderColor(imageBorderColor: number): void {
+  setImageBorderColor(imageBorderColor: number): MarkdownTheme {
     this.markdownThemeImage.setImageBorderColor(imageBorderColor)
+    return this
   }
 
   /**
@@ -2740,8 +2933,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageAutoResize
    */
-  setIsAutoResize(isAutoResize: boolean): void {
+  setIsAutoResize(isAutoResize: boolean): MarkdownTheme {
     this.markdownThemeImage.setImageAutoResize(isAutoResize)
+    return this
   }
 
   /**
@@ -2751,8 +2945,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageMargin
    */
-  setImageMarginTop(imageMarginTop: number): void {
-    this.markdownThemeImage.setImageMargin({top: imageMarginTop})
+  setImageMarginTop(imageMarginTop: number): MarkdownTheme {
+    this.markdownThemeImage.setImageMargin({ top: imageMarginTop })
+    return this
   }
 
   /**
@@ -2762,8 +2957,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageMargin
    */
-  setImageMarginBottom(imageMarginBottom: number): void {
-    this.markdownThemeImage.setImageMargin({bottom: imageMarginBottom})
+  setImageMarginBottom(imageMarginBottom: number): MarkdownTheme {
+    this.markdownThemeImage.setImageMargin({ bottom: imageMarginBottom })
+    return this
   }
 
   /**
@@ -2773,8 +2969,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonVisible
    */
-  setIsImageDownload(isImageDownload: boolean): void {
+  setIsImageDownload(isImageDownload: boolean): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonVisible(isImageDownload)
+    return this
   }
 
   /**
@@ -2784,8 +2981,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setIsImageMixedLayout
    */
-  setIsImageMixedLayout(isImageMixedLayout: boolean): void {
+  setIsImageMixedLayout(isImageMixedLayout: boolean): MarkdownTheme {
     this.markdownThemeImage.setIsImageMixedLayout(isImageMixedLayout)
+    return this
   }
 
   /**
@@ -2796,9 +2994,10 @@ export class MarkdownTheme {
    * @useinstead ImageTheme#setImageDownloadButtonIconWidth
    *             ImageTheme#setImageDownloadButtonIconHeight
    */
-  setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void {
+  setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonIconWidth(imageDownloadImageWidthHeight)
     this.markdownThemeImage.setImageDownloadButtonIconHeight(imageDownloadImageWidthHeight)
+    return this
   }
 
   /**
@@ -2808,8 +3007,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonWidth
    */
-  setImageDownloadWidth(imageDownloadWidth: number): void {
+  setImageDownloadWidth(imageDownloadWidth: number): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonWidth(imageDownloadWidth)
+    return this
   }
 
   /**
@@ -2819,8 +3019,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonHeight
    */
-  setImageDownloadHeight(imageDownloadHeight: number): void {
+  setImageDownloadHeight(imageDownloadHeight: number): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonHeight(imageDownloadHeight)
+    return this
   }
 
   /**
@@ -2830,8 +3031,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonRadius
    */
-  setImageDownloadRadius(imageDownloadRadius: number): void {
+  setImageDownloadRadius(imageDownloadRadius: number): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonRadius(imageDownloadRadius)
+    return this
   }
 
   /**
@@ -2841,8 +3043,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonText
    */
-  setImageDownloadText(imageDownloadText: string): void {
+  setImageDownloadText(imageDownloadText: string): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonText(imageDownloadText)
+    return this
   }
 
   /**
@@ -2852,8 +3055,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonTextFontSize
    */
-  setImageDownloadTextSize(imageDownloadTextSize: number): void {
+  setImageDownloadTextSize(imageDownloadTextSize: number): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonTextFontSize(imageDownloadTextSize)
+    return this
   }
 
   /**
@@ -2863,8 +3067,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonTextFontColor
    */
-  setImageDownloadTextColor(imageDownloadTextColor: number): void {
+  setImageDownloadTextColor(imageDownloadTextColor: number): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonTextFontColor(imageDownloadTextColor)
+    return this
   }
 
   /**
@@ -2874,8 +3079,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonBackgroundColor
    */
-  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void {
+  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): MarkdownTheme {
     this.markdownThemeImage.setImageDownloadButtonBackgroundColor(imageDownloadBackgroundColor)
+    return this
   }
 
   /**
@@ -2885,8 +3091,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableCellPadding
    */
-  setTableCellPadding(tableCellPadding: number): void {
+  setTableCellPadding(tableCellPadding: number): MarkdownTheme {
     this.markdownThemeTable.setTableCellPadding(tableCellPadding)
+    return this
   }
 
   /**
@@ -2896,8 +3103,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableBorderColor
    */
-  setTableBorderColor(tableBorderColor: number): void {
+  setTableBorderColor(tableBorderColor: number): MarkdownTheme {
     this.markdownThemeTable.setTableBorderColor(tableBorderColor)
+    return this
   }
 
   /**
@@ -2907,8 +3115,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableBorderWidth
    */
-  setTableBorderWidth(tableBorderWidth: number): void {
+  setTableBorderWidth(tableBorderWidth: number): MarkdownTheme {
     this.markdownThemeTable.setTableBorderWidth(tableBorderWidth)
+    return this
   }
 
   /**
@@ -2918,8 +3127,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentOddRowBackgroundColor
    */
-  setTableOddRowBackgroundColor(tableOddRowBackgroundColor: number): void {
+  setTableOddRowBackgroundColor(tableOddRowBackgroundColor: number): MarkdownTheme {
     this.markdownThemeTable.setTableContentOddRowBackgroundColor(tableOddRowBackgroundColor)
+    return this
   }
 
   /**
@@ -2929,8 +3139,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentEvenRowBackgroundColor
    */
-  setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): void {
+  setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): MarkdownTheme {
     this.markdownThemeTable.setTableContentEvenRowBackgroundColor(tableEvenRowBackgroundColor)
+    return this
   }
 
   /**
@@ -2940,8 +3151,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableTitleBackgroundColor
    */
-  setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
+  setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): MarkdownTheme {
     this.markdownThemeTable.setTableTitleBackgroundColor(tableHeaderRowBackgroundColor)
+    return this
   }
 
   /**
@@ -2951,8 +3163,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableTitleTextFontColor
    */
-  setTableTitleTextColor(tableTitleTextColor: number): void {
+  setTableTitleTextColor(tableTitleTextColor: number): MarkdownTheme {
     this.markdownThemeTable.setTableTitleTextFontColor(tableTitleTextColor)
+    return this
   }
 
   /**
@@ -2963,9 +3176,10 @@ export class MarkdownTheme {
    * @useinstead TableTheme#setTableContentTextLineHeight
    *             TableTheme#setTableTitleTextLineHeight
    */
-  setTableTextLineHeight(tableTextLineHeight: number): void {
+  setTableTextLineHeight(tableTextLineHeight: number): MarkdownTheme {
     this.markdownThemeTable.setTableContentTextLineHeight(tableTextLineHeight)
     this.markdownThemeTable.setTableTitleTextLineHeight(tableTextLineHeight)
+    return this
   }
 
   /**
@@ -2975,8 +3189,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableTitleTextFontSize
    */
-  setTableTitleTextSize(tableTitleTextSize: number): void {
+  setTableTitleTextSize(tableTitleTextSize: number): MarkdownTheme {
     this.markdownThemeTable.setTableTitleTextFontSize(tableTitleTextSize)
+    return this
   }
 
   /**
@@ -2986,8 +3201,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableTitleTextLineHeight
    */
-  setTableTitleLineHeight(tableTitleLineHeight: number): void {
+  setTableTitleLineHeight(tableTitleLineHeight: number): MarkdownTheme {
     this.markdownThemeTable.setTableTitleTextLineHeight(tableTitleLineHeight)
+    return this
   }
 
   /**
@@ -2997,8 +3213,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentTextFontColor
    */
-  setTableContentTextColor(tableContentTextColor: number): void {
+  setTableContentTextColor(tableContentTextColor: number): MarkdownTheme {
     this.markdownThemeTable.setTableContentTextFontColor(tableContentTextColor)
+    return this
   }
 
   /**
@@ -3008,8 +3225,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentTextFontSize
    */
-  setTableContentTextSize(tableContentTextSize: number): void {
+  setTableContentTextSize(tableContentTextSize: number): MarkdownTheme {
     this.markdownThemeTable.setTableContentTextFontSize(tableContentTextSize)
+    return this
   }
 
   /**
@@ -3019,8 +3237,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentTextLineHeight
    */
-  setTableContentTextLineHeight(tableTextLineHeight: number): void {
+  setTableContentTextLineHeight(tableTextLineHeight: number): MarkdownTheme {
     this.markdownThemeTable.setTableContentTextLineHeight(tableTextLineHeight)
+    return this
   }
 
   /**
@@ -3030,8 +3249,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableRadius
    */
-  setTableRadius(tableRadius: number): void {
+  setTableRadius(tableRadius: number): MarkdownTheme {
     this.markdownThemeTable.setTableRadius(tableRadius)
+    return this
   }
 
   /**
@@ -3041,8 +3261,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableMinCellWidth
    */
-  setTableMinTextWidth(tableMinTextWidth: number): void {
+  setTableMinTextWidth(tableMinTextWidth: number): MarkdownTheme {
     this.markdownThemeTable.setTableMinCellWidth(tableMinTextWidth)
+    return this
   }
 
   /**
@@ -3052,8 +3273,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableMaxCellWidth
    */
-  setTableMaxTextWidth(tableMaxTextWidth: number): void {
+  setTableMaxTextWidth(tableMaxTextWidth: number): MarkdownTheme {
     this.markdownThemeTable.setTableMaxCellWidth(tableMaxTextWidth)
+    return this
   }
 
   /**
@@ -3063,8 +3285,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableFirstColumnIsBold
    */
-  setTableFirstColumnBold(tableFirstColumnBold: boolean): void {
+  setTableFirstColumnBold(tableFirstColumnBold: boolean): MarkdownTheme {
     this.markdownThemeTable.setTableFirstColumnIsBold(tableFirstColumnBold)
+    return this
   }
 
   /**
@@ -3074,12 +3297,13 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableScrollBarState
    */
-  setTableScrollBarShow(tableScrollBarShow: boolean): void {
+  setTableScrollBarShow(tableScrollBarShow: boolean): MarkdownTheme {
     if (tableScrollBarShow) {
       this.markdownThemeTable.setTableScrollBarState(BarState.Auto)
     } else {
       this.markdownThemeTable.setTableScrollBarState(BarState.Off)
     }
+    return this
   }
 
   /**
@@ -3089,8 +3313,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableScrollBarColor
    */
-  setTableScrollBarColor(tableScrollBarColor: number): void {
+  setTableScrollBarColor(tableScrollBarColor: number): MarkdownTheme {
     this.markdownThemeTable.setTableScrollBarColor(tableScrollBarColor)
+    return this
   }
 
   /**
@@ -3100,8 +3325,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockIsDark
    */
-  setIsDark(isDark: boolean): void {
+  setIsDark(isDark: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockIsDark(isDark)
+    return this
   }
 
   /**
@@ -3111,8 +3337,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead StrikethroughTheme#setStrikethroughTextDecorationColor
    */
-  setStrikethroughColor(strikethroughColor: number): void {
+  setStrikethroughColor(strikethroughColor: number): MarkdownTheme {
     this.markdownThemeStrikethrough.setStrikethroughTextDecorationColor(strikethroughColor)
+    return this
   }
 
   /**
@@ -3122,8 +3349,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead StrikethroughTheme#setStrikethroughTextDecorationStyle
    */
-  setStrikethroughStyle(strikethroughStyle: MarkdownTextDecorationStyle): void {
+  setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): MarkdownTheme {
     this.markdownThemeStrikethrough.setStrikethroughTextDecorationStyle(strikethroughStyle)
+    return this
   }
 
   /**
@@ -3133,8 +3361,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead DefinitionListTheme#setDefinitionListTermToDescriptionSpacing
    */
-  setDescListTermAndDefMargins(descListTermAndDefMargins: number): void {
+  setDescListTermAndDefMargins(descListTermAndDefMargins: number): MarkdownTheme {
     this.markdownThemeDefinitionList.setDefinitionListTermToDescriptionSpacing(descListTermAndDefMargins)
+    return this
   }
 
   /**
@@ -3144,8 +3373,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead DefinitionListTheme#setDefinitionListDescriptionIndent
    */
-  setDescListDefIndentation(descListDefIndentation: number): void {
+  setDescListDefIndentation(descListDefIndentation: number): MarkdownTheme {
     this.markdownThemeDefinitionList.setDefinitionListDescriptionIndent(descListDefIndentation)
+    return this
   }
 
   /**
@@ -3155,8 +3385,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead DefinitionListTheme#setDefinitionListDescriptionItemSpacing
    */
-  setDescListDefMargins(descListDefMargins: number): void {
+  setDescListDefMargins(descListDefMargins: number): MarkdownTheme {
     this.markdownThemeDefinitionList.setDefinitionListDescriptionItemSpacing(descListDefMargins)
+    return this
   }
 
   /**
@@ -3166,8 +3397,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead SubTheme#setSubTextFontColor
    */
-  setSubTextColor(subTextColor: number): void {
+  setSubTextColor(subTextColor: number): MarkdownTheme {
     this.markdownThemeSub.setSubTextFontColor(subTextColor)
+    return this
   }
 
   /**
@@ -3177,8 +3409,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead SubTheme#setSubTextFontSize
    */
-  setSubTextSize(subTextSize: number): void {
+  setSubTextSize(subTextSize: number): MarkdownTheme {
     this.markdownThemeSub.setSubTextFontSize(subTextSize)
+    return this
   }
 
   /**
@@ -3188,8 +3421,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead SubTheme#setSubTextBaselineOffset
    */
-  setSubOffsetDist(subOffsetDist: number): void {
+  setSubOffsetDist(subOffsetDist: number): MarkdownTheme {
     this.markdownThemeSub.setSubTextBaselineOffset(subOffsetDist)
+    return this
   }
 
   /**
@@ -3199,8 +3433,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead SupTheme#setSupTextFontColor
    */
-  setSupTextColor(supTextColor: number): void {
+  setSupTextColor(supTextColor: number): MarkdownTheme {
     this.markdownThemeSup.setSupTextFontColor(supTextColor)
+    return this
   }
 
   /**
@@ -3210,8 +3445,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead SupTheme#setSupTextFontSize
    */
-  setSupTextSize(supTextSize: number): void {
+  setSupTextSize(supTextSize: number): MarkdownTheme {
     this.markdownThemeSup.setSupTextFontSize(supTextSize)
+    return this
   }
 
   /**
@@ -3221,8 +3457,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead SupTheme#setSupTextBaselineOffset
    */
-  setSupOffsetDist(supOffsetDist: number): void {
+  setSupOffsetDist(supOffsetDist: number): MarkdownTheme {
     this.markdownThemeSup.setSupTextBaselineOffset(supOffsetDist)
+    return this
   }
 
   /**
@@ -3232,8 +3469,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HtmlUnderlineTheme#setHtmlUnderlineTextDecorationColor
    */
-  setUnderlineColor(underlineColor: number): void {
+  setUnderlineColor(underlineColor: number): MarkdownTheme {
     this.markdownThemeHtmlUnderline.setHtmlUnderlineTextDecorationColor(underlineColor)
+    return this
   }
 
   /**
@@ -3243,8 +3481,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HtmlUnderlineTheme#setHtmlUnderlineTextDecorationStyle
    */
-  setUnderlineStyle(underlineStyle: MarkdownTextDecorationStyle): void {
+  setUnderlineStyle(underlineStyle: TextDecorationStyle): MarkdownTheme {
     this.markdownThemeHtmlUnderline.setHtmlUnderlineTextDecorationStyle(underlineStyle)
+    return this
   }
 
   /**
@@ -3254,8 +3493,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead GlobalTheme#setOpenGestureSwipe
    */
-  setOpenGestureSwipe(openGestureSwipe: boolean): void {
+  setOpenGestureSwipe(openGestureSwipe: boolean): MarkdownTheme {
     this.markdownThemeGlobal.setOpenGestureSwipe(openGestureSwipe)
+    return this
   }
 
   /**
@@ -3265,8 +3505,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockUseTab
    */
-  setUseTab(useTab: boolean): void {
+  setUseTab(useTab: boolean): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockUseTab(useTab)
+    return this
   }
 
   /**
@@ -3276,8 +3517,9 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockIndentWidth
    */
-  setIndentWidth(indentWidth: number): void {
+  setIndentWidth(indentWidth: number): MarkdownTheme {
     this.markdownThemeCodeBlock.setCodeBlockIndentWidth(indentWidth)
+    return this
   }
 
   /**
@@ -3554,32 +3796,6 @@ export enum ImageFitType {
    * 不保持宽高比进行放大缩小，使得图片充满显示边界。
    */
   Fill
-}
-
-/**
- * 文本装饰线样式
- */
-export enum MarkdownTextDecorationStyle {
-  /**
-   * 实线
-   */
-  SOLID = 0,
-  /**
-   * 双横线
-   */
-  DOUBLE = 1,
-  /**
-   * 点线
-   */
-  DOTTED = 2,
-  /**
-   * 虚线
-   */
-  DASHED = 3,
-  /**
-   * 波浪线
-   */
-  WAVY = 4
 }
 
 /**

@@ -69,8 +69,9 @@ export class InlineCodeTheme {
    *
    * @param color 内联代码文本颜色
    */
-  setInlineCodeTextFontColor(color: number): void {
+  setInlineCodeTextFontColor(color: number): InlineCodeTheme {
     this.inlineCodeTextFontColor = color
+    return this
   }
 
   /**
@@ -78,8 +79,9 @@ export class InlineCodeTheme {
    *
    * @param size 内联代码文本尺寸
    */
-  setInlineCodeTextFontSize(size: number): void {
+  setInlineCodeTextFontSize(size: number): InlineCodeTheme {
     this.inlineCodeTextFontSize = size
+    return this
   }
 
   /**
@@ -87,8 +89,9 @@ export class InlineCodeTheme {
    *
    * @param style 内联代码文本字体样式
    */
-  setInlineCodeTextFontStyle(style: FontStyle): void {
+  setInlineCodeTextFontStyle(style: FontStyle): InlineCodeTheme {
     this.inlineCodeTextFontStyle = style
+    return this
   }
 
   /**
@@ -96,8 +99,9 @@ export class InlineCodeTheme {
    *
    * @param weight 内联代码文本字体粗细
    */
-  setInlineCodeTextFontWeight(weight: FontWeight): void {
+  setInlineCodeTextFontWeight(weight: FontWeight): InlineCodeTheme {
     this.inlineCodeTextFontWeight = weight
+    return this
   }
 
   /**
@@ -105,8 +109,9 @@ export class InlineCodeTheme {
    *
    * @param family 内联代码文本字体
    */
-  setInlineCodeTextFontFamily(family: string): void {
+  setInlineCodeTextFontFamily(family: string): InlineCodeTheme {
     this.inlineCodeTextFontFamily = family
+    return this
   }
 
   /**
@@ -114,8 +119,9 @@ export class InlineCodeTheme {
    *
    * @param lineHeight 内联代码文本行高
    */
-  setInlineCodeTextLineHeight(lineHeight: number): void {
+  setInlineCodeTextLineHeight(lineHeight: number): InlineCodeTheme {
     this.inlineCodeTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -123,8 +129,9 @@ export class InlineCodeTheme {
    *
    * @param spacing 内联代码文本字符间距
    */
-  setInlineCodeTextLetterSpacing(spacing: number): void {
+  setInlineCodeTextLetterSpacing(spacing: number): InlineCodeTheme {
     this.inlineCodeTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -132,8 +139,9 @@ export class InlineCodeTheme {
    *
    * @param color 内联代码文本背景颜色
    */
-  setInlineCodeTextBackgroundColor(color: number): void {
+  setInlineCodeTextBackgroundColor(color: number): InlineCodeTheme {
     this.inlineCodeTextBackgroundColor = color
+    return this
   }
 
   /**
@@ -143,7 +151,7 @@ export class InlineCodeTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setInlineCodeTextBackgroundRadius(options: MarkdownRadiusOptions | number): void {
+  setInlineCodeTextBackgroundRadius(options: MarkdownRadiusOptions | number): InlineCodeTheme {
     if (typeof options === "number") {
       this.inlineCodeTextBackgroundRadiusTopLeft = options
       this.inlineCodeTextBackgroundRadiusTopRight = options
@@ -163,6 +171,7 @@ export class InlineCodeTheme {
         this.inlineCodeTextBackgroundRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**

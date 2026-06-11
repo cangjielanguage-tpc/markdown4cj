@@ -42,8 +42,9 @@ export class SupTheme {
    *
    * @param color 上标文本颜色
    */
-  setSupTextFontColor(color: number): void {
+  setSupTextFontColor(color: number): SupTheme {
     this.supTextFontColor = color
+    return this
   }
 
   /**
@@ -51,8 +52,9 @@ export class SupTheme {
    *
    * @param size 上标文本尺寸
    */
-  setSupTextFontSize(size: number): void {
+  setSupTextFontSize(size: number): SupTheme {
     this.supTextFontSize = size
+    return this
   }
 
   /**
@@ -60,8 +62,9 @@ export class SupTheme {
    *
    * @param style 上标文本字体样式
    */
-  setSupTextFontStyle(style: FontStyle): void {
+  setSupTextFontStyle(style: FontStyle): SupTheme {
     this.supTextFontStyle = style
+    return this
   }
 
   /**
@@ -69,8 +72,9 @@ export class SupTheme {
    *
    * @param weight 上标文本字体粗细
    */
-  setSupTextFontWeight(weight: FontWeight): void {
+  setSupTextFontWeight(weight: FontWeight): SupTheme {
     this.supTextFontWeight = weight
+    return this
   }
 
   /**
@@ -78,8 +82,9 @@ export class SupTheme {
    *
    * @param family 上标文本字体
    */
-  setSupTextFontFamily(family: string): void {
+  setSupTextFontFamily(family: string): SupTheme {
     this.supTextFontFamily = family
+    return this
   }
 
   /**
@@ -87,8 +92,9 @@ export class SupTheme {
    *
    * @param spacing 上标文本字符间距
    */
-  setSupTextLetterSpacing(spacing: number): void {
+  setSupTextLetterSpacing(spacing: number): SupTheme {
     this.supTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -96,8 +102,9 @@ export class SupTheme {
    *
    * @param offset 上标文本基线的偏移量
    */
-  setSupTextBaselineOffset(offset: number): void {
+  setSupTextBaselineOffset(offset: number): SupTheme {
     this.supTextBaselineOffset = offset
+    return this
   }
 
   /**

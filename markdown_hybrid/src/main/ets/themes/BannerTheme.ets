@@ -56,7 +56,7 @@ export class BannerTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setBannerMargin(options: MarkdownMarginOptions | number): void {
+  setBannerMargin(options: MarkdownMarginOptions | number): BannerTheme {
     if (typeof options === "number") {
       this.bannerMarginTop = options
       this.bannerMarginRight = options
@@ -76,6 +76,7 @@ export class BannerTheme {
         this.bannerMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -85,7 +86,7 @@ export class BannerTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setBannerPadding(options: MarkdownPaddingOptions | number): void {
+  setBannerPadding(options: MarkdownPaddingOptions | number): BannerTheme {
     if (typeof options === 'number') {
       this.bannerPaddingTop = options
       this.bannerPaddingRight = options
@@ -105,6 +106,7 @@ export class BannerTheme {
         this.bannerPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -112,8 +114,9 @@ export class BannerTheme {
    *
    * @param resource banner占位图
    */
-  setBannerPlaceholder(resource: Resource): void {
+  setBannerPlaceholder(resource: Resource): BannerTheme {
     this.bannerPlaceholder = resource
+    return this
   }
 
   /**
