@@ -237,7 +237,7 @@ struct QuoteDetailsPage {
       theme.setBlockQuoteColor(this.blockQuoteColor) // 块引用左边线条颜色
     }
     if (this.blockQuoteBackGroupColor !== undefined) {
-      theme.setBlockQuoteBackGroupColor(this.blockQuoteBackGroupColor) // 块引用背景颜色
+      theme.setBlockQuoteBackgroundColor(this.blockQuoteBackGroupColor) // 块引用背景颜色
     }
     theme.setBlockQuoteTopAndBottomMargins(this.blockQuoteTopAndBottomMargins) // 块引用子模块上下间距
 

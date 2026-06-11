@@ -7,52 +7,17 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownDescListComponent {
-    /**
-     * markdown配置
-     */
-    var descListMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 定义列表控件自身节点
-     */
-    var descListNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var descListMarkdownConfiguration: MarkdownConfiguration // markdown配置
+    var descListNodeView: NodeView // 定义列表控件自身节点
     @Prop
-    var descListComponentWidth: Float64
-
-    /**
-     * 缓存的控件数据
-     */
-    var descListMarkdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
-     * 自定义行内段落布局
-     */
+    var descListComponentWidth: Float64 // 控件宽度 - 单位vp
+    var descListMarkdownCacheConfiguration: MarkdownCacheConfiguration // 缓存的控件数据
     @BuilderParam
-    var descListCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * TOC列表点击事件
-     */
-    var descListTocListOnClick: (Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var descListImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var descListFootnoteCallback: (String) -> Unit
-
-    /**
-     * 定义列表控件子节点的懒加载数据源
-     */
-    var descListNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var descListCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落布局
+    var descListTocListOnClick: (Int64) -> Unit // TOC列表点击事件
+    var descListImageCallback: (String) -> Unit // 图片点击事件
+    var descListFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var descListNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
         refreshDescListData(descListNodeView) // 初始化刷新数据
@@ -102,6 +67,7 @@ public class MarkdownDescListComponent {
                                 descDefFootnoteCallback: descListFootnoteCallback
                             )
                         }
+                        .margin(top: descDefItemSpacing(idx, descListMarkdownConfiguration.markdownTheme))
                     } else {
                         ListItem() {
                             Text("")
@@ -113,9 +79,21 @@ public class MarkdownDescListComponent {
                 }
             )
         }
+        .backgroundColor(definitionListBackgroundColor(descListMarkdownConfiguration.markdownTheme))
         .listDirection(Axis.Vertical)
         .alignListItem(ListItemAlign.Start)
-        .width(100.percent)
+        .padding(
+            top: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListPaddingTop,
+            right: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListPaddingRight,
+            bottom: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListPaddingBottom,
+            left: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListPaddingLeft
+        )
+        .margin(
+            top: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginTop,
+            right: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginRight,
+            bottom: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginBottom,
+            left: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginLeft
+        )
     }
 
     /**
@@ -129,6 +107,7 @@ public class MarkdownDescListComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = descListNodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            descListNodeViewDataSource.clear()
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {

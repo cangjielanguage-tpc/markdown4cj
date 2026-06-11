@@ -355,9 +355,9 @@ struct VideoDetailsPage {
     theme.setVideoReleaseHeight(this.videoReleaseHeight) // 视频发布按钮高度
     theme.setVideoReleaseRadius(this.videoReleaseRadius) // 视频发布按钮圆角
     theme.setVideoReleaseText(this.videoReleaseText) // 视频发布按钮文本内容
-    theme.setVideoReleaseTexSize(this.videoReleaseTexSize) // 视频发布按钮文本大小
+    theme.setVideoReleaseTextSize(this.videoReleaseTexSize) // 视频发布按钮文本大小
     if (this.videoReleaseTexColor !== undefined) {
-      theme.setVideoReleaseTexColor(this.videoReleaseTexColor) // 视频发布按钮文本颜色
+      theme.setVideoReleaseTextColor(this.videoReleaseTexColor) // 视频发布按钮文本颜色
     }
     if (this.videoReleaseBackgroundColor !== undefined) {
       theme.setVideoReleaseBackgroundColor(this.videoReleaseBackgroundColor) // 视频发布按钮背景颜色
@@ -367,9 +367,9 @@ struct VideoDetailsPage {
     theme.setVideoDownloadHeight(this.videoDownloadHeight) // 视频下载按钮高度
     theme.setVideoDownloadRadius(this.videoDownloadRadius) // 视频下载按钮圆角
     theme.setVideoDownloadText(this.videoDownloadText) // 视频下载按钮文本内容
-    theme.setVideoDownloadTexSize(this.videoDownloadTexSize) // 视频下载按钮文本大小
+    theme.setVideoDownloadTextSize(this.videoDownloadTexSize) // 视频下载按钮文本大小
     if (this.videoDownloadTexColor !== undefined) {
-      theme.setVideoDownloadTexColor(this.videoDownloadTexColor) // 视频下载按钮文本颜色
+      theme.setVideoDownloadTextColor(this.videoDownloadTexColor) // 视频下载按钮文本颜色
     }
     if (this.videoDownloadBackgroundColor !== undefined) {
       theme.setVideoDownloadBackgroundColor(this.videoDownloadBackgroundColor) // 视频下载按钮背景颜色

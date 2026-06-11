@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,34 +7,15 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownBannerComponent {
-    /**
-     * markdown配置
-     */
-    var markdownTheme: MarkdownTheme
-
-    /**
-     * 图片幻灯片image
-     */
-    var nodeView: NodeView
-
-    /**
-     * 图片点击事件
-     */
-    var imageCallback: (String) -> Unit
-
-    /**
-     * 滑动控制器
-     */
-    var controller: SwiperController = SwiperController()
-
-    /**
-     * 数据源
-     */
+    var markdownTheme: MarkdownTheme // markdown配置
+    var nodeView: NodeView // 图片幻灯片image
+    var imageCallback: (String) -> Unit // 图片点击事件
+    var controller: SwiperController = SwiperController() // 滑动控制器
     @State
-    var bannerNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var bannerNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 数据源
 
     protected override func aboutToAppear(): Unit {
-        for (item in nodeView.children){
+        for (item in nodeView.children) {
             bannerNodeViewList.append(item)
         }
     }
@@ -58,6 +36,18 @@ class MarkdownBannerComponent {
         }
         .autoPlay(false)
         .width(100.percent)
+        .padding(
+            top: markdownTheme.bannerTheme.bannerPaddingTop,
+            right: markdownTheme.bannerTheme.bannerPaddingRight,
+            bottom: markdownTheme.bannerTheme.bannerPaddingBottom,
+            left: markdownTheme.bannerTheme.bannerPaddingLeft
+        )
+        .margin(
+            top: markdownTheme.bannerTheme.bannerMarginTop,
+            right: markdownTheme.bannerTheme.bannerMarginRight,
+            bottom: markdownTheme.bannerTheme.bannerMarginBottom,
+            left: markdownTheme.bannerTheme.bannerMarginLeft
+        )
     }
 
     /**
@@ -65,16 +55,16 @@ class MarkdownBannerComponent {
      */
     @Builder
     func imageBannerCommonmarkComponent(item: NodeView) {
-        if (markdownTheme.bannerImage.isSome()) {
+        if (markdownTheme.bannerTheme.bannerPlaceholder.isSome()) {
             Image(item.imageUrl())
-                .alt(markdownTheme.bannerImage())
+                .alt(markdownTheme.bannerTheme.bannerPlaceholder())
                 .objectFit(ImageFit.Contain)
-                .autoResize(markdownTheme.isAutoResize)
+                .autoResize(markdownTheme.imageTheme.imageAutoResize)
                 .onClick {evt => imageOnClick(item.imageUrl(), imageCallback)}
         } else {
             Image(item.imageUrl())
                 .objectFit(ImageFit.Contain)
-                .autoResize(markdownTheme.isAutoResize)
+                .autoResize(markdownTheme.imageTheme.imageAutoResize)
                 .onClick {evt => imageOnClick(item.imageUrl(), imageCallback)}
         }
     }

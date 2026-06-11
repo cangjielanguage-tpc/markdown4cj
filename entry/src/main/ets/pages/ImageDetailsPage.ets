@@ -355,9 +355,9 @@ struct ImageDetailsPage {
     theme.setImageDownloadHeight(this.imageDownloadHeight) // 图片下载按钮高度
     theme.setImageDownloadRadius(this.imageDownloadRadius) // 图片下载按钮圆角
     theme.setImageDownloadText(this.imageDownloadText) // 图片下载按钮文本内容
-    theme.setImageDownloadTexSize(this.imageDownloadTexSize) // 图片下载按钮文本大小
+    theme.setImageDownloadTextSize(this.imageDownloadTexSize) // 图片下载按钮文本大小
     if (this.imageDownloadTexColor !== undefined) {
-      theme.setImageDownloadTexColor(this.imageDownloadTexColor) // 图片下载按钮文本颜色
+      theme.setImageDownloadTextColor(this.imageDownloadTexColor) // 图片下载按钮文本颜色
     }
     if (this.imageDownloadBackgroundColor !== undefined) {
       theme.setImageDownloadBackgroundColor(this.imageDownloadBackgroundColor) // 图片下载按钮背景颜色

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { NodeController, FrameNode } from '@kit.ArkUI'
 import { requireCJLib } from 'libark_interop_loader.so'
 import {
@@ -8,8 +5,62 @@ import {
   CJMarkdownConfig,
   CJMarkdownTheme,
   CJMarkdownPlugin,
-  CJMarkdownScroller
+  CJMarkdownScroller,
+  CJMarkdownAudioTheme,
+  CJMarkdownBannerTheme,
+  CJMarkdownBlockQuoteTheme,
+  CJMarkdownBoldTheme,
+  CJMarkdownBulletListTheme,
+  CJMarkdownCodeBlockTheme,
+  CJMarkdownDefinitionListTheme,
+  CJMarkdownFootnoteDefTheme,
+  CJMarkdownDividerTheme,
+  CJMarkdownFootnoteRefTheme,
+  CJMarkdownGlobalTheme,
+  CJMarkdownHeadingTheme,
+  CJMarkdownHtmlUnderlineTheme,
+  CJMarkdownImageTheme,
+  CJMarkdownInlineCodeTheme,
+  CJMarkdownItalicTheme,
+  CJMarkdownVideoTheme,
+  CJMarkdownTableTheme,
+  CJMarkdownSupTheme,
+  CJMarkdownSubTheme,
+  CJMarkdownStrikethroughTheme,
+  CJMarkdownParagraphTheme,
+  CJMarkdownOrderedListTheme,
+  CJMarkdownLinkTheme,
+  CJNodeViewStringBuilder,
+  CJMarkdownHighlightTheme
 } from 'libark_interop_api_markdown.so'
+import { MarkdownRectResult } from '../configs/MarkdownRectResult'
+import { MarkdownPlugin } from '../configs/MarkdownPlugin'
+import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
+import { AudioTheme } from '../themes/AudioTheme'
+import { BannerTheme } from '../themes/BannerTheme'
+import { BlockQuoteTheme } from '../themes/BlockQuoteTheme'
+import { BoldTheme } from '../themes/BoldTheme'
+import { BulletListTheme } from '../themes/BulletListTheme'
+import { CodeBlockTheme } from '../themes/CodeBlockTheme'
+import { DefinitionListTheme } from '../themes/DefinitionListTheme'
+import { FootnoteDefTheme } from '../themes/FootnoteDefTheme'
+import { DividerTheme } from '../themes/DividerTheme'
+import { FootnoteRefTheme } from '../themes/FootnoteRefTheme'
+import { GlobalTheme } from '../themes/GlobalTheme'
+import { HeadingTheme } from '../themes/HeadingTheme'
+import { HtmlUnderlineTheme } from '../themes/HtmlUnderlineTheme'
+import { ImageTheme } from '../themes/ImageTheme'
+import { InlineCodeTheme } from '../themes/InlineCodeTheme'
+import { ItalicTheme } from '../themes/ItalicTheme'
+import { VideoTheme } from '../themes/VideoTheme'
+import { TableTheme } from '../themes/TableTheme'
+import { SupTheme } from '../themes/SupTheme'
+import { SubTheme } from '../themes/SubTheme'
+import { StrikethroughTheme } from '../themes/StrikethroughTheme'
+import { ParagraphTheme } from '../themes/ParagraphTheme'
+import { OrderedListTheme } from '../themes/OrderedListTheme'
+import { LinkTheme } from '../themes/LinkTheme'
+import { HighlightTheme } from '../themes/HighlightTheme'
 
 export let global_customLib: CustomLib | undefined = undefined
 
@@ -46,6 +97,147 @@ class CJNodeController extends NodeController {
       }
     }
     return this.rootNode
+  }
+}
+
+/**
+ * 全局文本对象
+ */
+export class MarkdownNodeViewString {
+  private cjNodeViewStringBuilder: CJNodeViewStringBuilder | undefined = undefined
+
+  /**
+   * 构造函数
+   */
+  constructor() {
+    if (global_customLib === undefined) {
+      global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+    }
+    this.cjNodeViewStringBuilder = new global_customLib.CJNodeViewStringBuilder()
+  }
+
+  /**
+   * 获取全局文本对象
+   *
+   * @returns 全局文本对象
+   */
+  getCJNodeViewStringBuilder(): CJNodeViewStringBuilder | undefined {
+    return this.cjNodeViewStringBuilder
+  }
+
+  /**
+   * 获取全局文本
+   *
+   * @returns 全局文本
+   */
+  toString(): string {
+    if (this.cjNodeViewStringBuilder !== undefined) {
+      return this.cjNodeViewStringBuilder.toString()
+    } else {
+      return ""
+    }
+  }
+}
+
+/**
+ * Markdown滑动控制器
+ */
+export class MarkdownScroller {
+  private scroller: CJMarkdownScroller | undefined = undefined
+
+  /**
+   * 构造函数
+   */
+  constructor() {
+    if (global_customLib === undefined) {
+      global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+    }
+    this.scroller = new global_customLib.CJMarkdownScroller()
+  }
+
+  /**
+   * 滚动到容器边缘
+   *
+   * @param edge 滚动到容器边缘
+   */
+  scrollEdge(edge: Edge): void {
+    switch (edge) {
+      case Edge.Top:
+        this.scroller?.scrollEdge(1)
+        break
+      case Edge.Bottom:
+        this.scroller?.scrollEdge(2)
+        break
+      default:
+        this.scroller?.scrollEdge(1)
+        break
+    }
+  }
+
+  /**
+   * 滚动指定距离
+   *
+   * @param xOffset x轴偏移量
+   * @param yOffset y轴偏移量
+   */
+  scrollBy(xOffset: number, yOffset: number): void {
+    this.scroller?.scrollBy(xOffset, yOffset)
+  }
+
+  /**
+   * 滑动到指定Index
+   *
+   * @param index 要滑动到的目标元素在当前容器中的索引值
+   */
+  scrollToIndex(index: number): void {
+    this.scroller?.scrollToIndex(index)
+  }
+
+  /**
+   * 判断是否滚动到底部
+   *
+   * @returns 是否滚动到底部
+   */
+  isAtEnd(): boolean {
+    return this.scroller?.isAtEnd() ?? false
+  }
+
+  /**
+   * 获取当前y轴偏移量
+   *
+   * @returns 当前y轴偏移量
+   */
+  currentYOffset(): number {
+    return this.scroller?.currentYOffset() ?? 0
+  }
+
+  /**
+   * 获取子组件的大小及相对容器组件的位置
+   *
+   * @param index 索引值
+   * @returns 子组件的大小和相对于组件的位置
+   */
+  getItemRect(index: number): MarkdownRectResult {
+    if (global_customLib === undefined) {
+      return new MarkdownRectResult(0, 0, 0, 0)
+    }
+    let rect = this.scroller?.getItemRect(index) ?? new global_customLib.CJRectResult(0, 0, 0, 0)
+    return new MarkdownRectResult(rect.getItemRectX(), rect.getItemRectY(), rect.getItemRectWidth(), rect.getItemRectHeight())
+  }
+
+  /**
+   * 获取内部CJMarkdownScroller实例
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getScroller(): CJMarkdownScroller | undefined {
+    if (global_customLib === undefined) {
+      return this.scroller
+    }
+    if (this.scroller === undefined) {
+      this.scroller = new global_customLib.CJMarkdownScroller()
+    }
+    return this.scroller
   }
 }
 
@@ -127,739 +319,54 @@ export struct CJMarkdown {
     }
     let cjMarkdownConfig: CJMarkdownConfig = new global_customLib.CJMarkdownConfig()
     if (this.config !== undefined) {
-      if (this.config.linkCallback !== undefined) {
-        cjMarkdownConfig.setLinkCallback(this.config.linkCallback)
+      if (this.config.getLinkCallback() !== undefined) {
+        cjMarkdownConfig.setLinkCallback(this.config.getLinkCallback())
       }
-      if (this.config.textCopyCallback !== undefined) {
-        cjMarkdownConfig.setTextCopyCallback(this.config.textCopyCallback)
+      if (this.config.getTextCopyCallback() !== undefined) {
+        cjMarkdownConfig.setTextCopyCallback(this.config.getTextCopyCallback())
       }
-      if (this.config.imageCallback !== undefined) {
-        cjMarkdownConfig.setImageCallback(this.config.imageCallback)
+      if (this.config.getImageCallback() !== undefined) {
+        cjMarkdownConfig.setImageCallback(this.config.getImageCallback())
       }
-      if (this.config.imageCallbackCallback !== undefined) {
-        global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
+      if (this.config.getImageReplaceCallback() !== undefined) {
+        global_customLib.registerImgPreprocessCallback(this.config.getImageReplaceCallback())
+      } else {
+        global_customLib.registerImgPreprocessCallback(undefined)
       }
-      if (this.config.imageDownloadCallback !== undefined) {
-        cjMarkdownConfig.setImageDownloadCallback(this.config.imageDownloadCallback)
+      if (this.config.getImageDownloadCallback() !== undefined) {
+        cjMarkdownConfig.setImageDownloadCallback(this.config.getImageDownloadCallback())
       }
-      if (this.config.audioCallback !== undefined) {
-        cjMarkdownConfig.setAudioCallback(this.config.audioCallback)
+      if (this.config.getAudioCallback() !== undefined) {
+        cjMarkdownConfig.setAudioCallback(this.config.getAudioCallback())
       }
-      if (this.config.videoCallback !== undefined) {
-        cjMarkdownConfig.setVideoCallback(this.config.videoCallback)
+      if (this.config.getVideoCallback() !== undefined) {
+        cjMarkdownConfig.setVideoCallback(this.config.getVideoCallback())
       }
-      if (this.config.videoImageCallback !== undefined) {
-        cjMarkdownConfig.setVideoImageCallback(this.config.videoImageCallback)
+      if (this.config.getVideoImageCallback() !== undefined) {
+        cjMarkdownConfig.setVideoImageCallback(this.config.getVideoImageCallback())
       }
-      if (this.config.videoReleaseCallback !== undefined) {
-        cjMarkdownConfig.setVideoReleaseCallback(this.config.videoReleaseCallback)
+      if (this.config.getVideoReleaseCallback() !== undefined) {
+        cjMarkdownConfig.setVideoReleaseCallback(this.config.getVideoReleaseCallback())
       }
-      if (this.config.videoDownloadCallback !== undefined) {
-        cjMarkdownConfig.setVideoDownloadCallback(this.config.videoDownloadCallback)
+      if (this.config.getVideoDownloadCallback() !== undefined) {
+        cjMarkdownConfig.setVideoDownloadCallback(this.config.getVideoDownloadCallback())
       }
-      if (this.config.codeCopyCallback !== undefined) {
-        cjMarkdownConfig.setCodeCopyCallback(this.config.codeCopyCallback)
+      if (this.config.getCodeCopyCallback() !== undefined) {
+        cjMarkdownConfig.setCodeCopyCallback(this.config.getCodeCopyCallback())
       }
-      if (this.config.codeFullScreenCallback !== undefined) {
-        cjMarkdownConfig.setCodeFullScreenCallback(this.config.codeFullScreenCallback)
+      if (this.config.getCodeFullScreenCallback() !== undefined) {
+        cjMarkdownConfig.setCodeFullScreenCallback(this.config.getCodeFullScreenCallback())
       }
-      if (this.config.tocIndexCallback !== undefined) {
-        cjMarkdownConfig.setTocIndexCallback(this.config.tocIndexCallback)
+      if (this.config.getTocIndexCallback() !== undefined) {
+        cjMarkdownConfig.setTocIndexCallback(this.config.getTocIndexCallback())
       }
-      if (this.config.footnoteCallback !== undefined) {
-        cjMarkdownConfig.setFootnoteCallback(this.config.footnoteCallback)
+      if (this.config.getFootnoteCallback() !== undefined) {
+        cjMarkdownConfig.setFootnoteCallback(this.config.getFootnoteCallback())
       }
+      cjMarkdownConfig.setNodeString(this.config.getMarkdownNodeViewString().getCJNodeViewStringBuilder())
       cjMarkdownConfig.setCJMarkdownTheme(this.getTheme())
     }
     return cjMarkdownConfig
-  }
-
-  getTheme(): CJMarkdownTheme | undefined {
-    if (global_customLib === undefined) {
-      return undefined
-    }
-    let cjMarkdownTheme: CJMarkdownTheme = new global_customLib.CJMarkdownTheme()
-    if (this.config !== undefined) {
-      if (this.config.markdownTheme !== undefined) {
-        if (this.config.markdownTheme.context !== undefined) {
-          global_customLib.setGlobalContext(this.config.markdownTheme.context)
-        }
-        global_customLib.getCJResource(
-          this.config.markdownTheme.codeFullScreenIcon,
-          this.config.markdownTheme.codeCopyIcon,
-          this.config.markdownTheme.audioIcon,
-          this.config.markdownTheme.videoImage,
-          this.config.markdownTheme.playCircleFillIcon,
-          this.config.markdownTheme.bannerImage,
-          this.config.markdownTheme.imageResource,
-          this.config.markdownTheme.videoReleaseImage,
-          this.config.markdownTheme.videoDownloadImage,
-          this.config.markdownTheme.imageDownloadImage
-        )
-
-        if (this.config.markdownTheme.isMarkdownParserSync !== undefined) {
-          cjMarkdownTheme.setIsMarkdownParserSync(this.config.markdownTheme.isMarkdownParserSync)
-        }
-        if (this.config.markdownTheme.isOnCopy !== undefined) {
-          cjMarkdownTheme.setIsOnCopy(this.config.markdownTheme.isOnCopy)
-        }
-        if (this.config.markdownTheme.blockFirstTopMargin !== undefined) {
-          cjMarkdownTheme.setBlockFirstTopMargin(this.config.markdownTheme.blockFirstTopMargin)
-        }
-        if (this.config.markdownTheme.blockLastBottomMargin !== undefined) {
-          cjMarkdownTheme.setBlockLastBottomMargin(this.config.markdownTheme.blockLastBottomMargin)
-        }
-        if (this.config.markdownTheme.blockTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockTopAndBottomMargins(this.config.markdownTheme.blockTopAndBottomMargins)
-        }
-        if (this.config.markdownTheme.isLinkStyle !== undefined) {
-          cjMarkdownTheme.setIsLinkStyle(this.config.markdownTheme.isLinkStyle)
-        }
-        if (this.config.markdownTheme.isListLinkStyle !== undefined) {
-          cjMarkdownTheme.setIsListLinkStyle(this.config.markdownTheme.isListLinkStyle)
-        }
-        if (this.config.markdownTheme.linkColor !== undefined) {
-          cjMarkdownTheme.setLinkColor(this.config.markdownTheme.linkColor)
-        }
-        if (this.config.markdownTheme.isLinkSize !== undefined) {
-          cjMarkdownTheme.setIsLinkSize(this.config.markdownTheme.isLinkSize)
-        }
-        if (this.config.markdownTheme.linkSize !== undefined) {
-          cjMarkdownTheme.setLinkSize(this.config.markdownTheme.linkSize)
-        }
-        if (this.config.markdownTheme.linkLineHeight !== undefined) {
-          cjMarkdownTheme.setLinkLineHeight(this.config.markdownTheme.linkLineHeight)
-        }
-        if (this.config.markdownTheme.linkBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkBackGroupColor(this.config.markdownTheme.linkBackGroupColor)
-        }
-        if (this.config.markdownTheme.isLinkUnderlined !== undefined) {
-          cjMarkdownTheme.setIsLinkUnderlined(this.config.markdownTheme.isLinkUnderlined)
-        }
-        if (this.config.markdownTheme.linkCircleImageBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageBackGroupColor(this.config.markdownTheme.linkCircleImageBackGroupColor)
-        }
-        if (this.config.markdownTheme.linkCircleImageButtonBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageButtonBackGroupColor(this.config.markdownTheme.linkCircleImageButtonBackGroupColor)
-        }
-        if (this.config.markdownTheme.linkCircleImageTextSize !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageTextSize(this.config.markdownTheme.linkCircleImageTextSize)
-        }
-        if (this.config.markdownTheme.linkCircleImageTextColor !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageTextColor(this.config.markdownTheme.linkCircleImageTextColor)
-        }
-        if (this.config.markdownTheme.linkCircleImageRadius !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageRadius(this.config.markdownTheme.linkCircleImageRadius)
-        }
-        if (this.config.markdownTheme.linkCircleImageMargin !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageMargin(this.config.markdownTheme.linkCircleImageMargin)
-        }
-        if (this.config.markdownTheme.linkRectImageBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkRectImageBackGroupColor(this.config.markdownTheme.linkRectImageBackGroupColor)
-        }
-        if (this.config.markdownTheme.linkRectImageButtonBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkRectImageButtonBackGroupColor(this.config.markdownTheme.linkRectImageButtonBackGroupColor)
-        }
-        if (this.config.markdownTheme.linkRectImageTextSize !== undefined) {
-          cjMarkdownTheme.setLinkRectImageTextSize(this.config.markdownTheme.linkRectImageTextSize)
-        }
-        if (this.config.markdownTheme.linkRectImageTextColor !== undefined) {
-          cjMarkdownTheme.setLinkRectImageTextColor(this.config.markdownTheme.linkRectImageTextColor)
-        }
-        if (this.config.markdownTheme.linkRectImageHeight !== undefined) {
-          cjMarkdownTheme.setLinkRectImageHeight(this.config.markdownTheme.linkRectImageHeight)
-        }
-        if (this.config.markdownTheme.linkRectImagePadding !== undefined) {
-          cjMarkdownTheme.setLinkRectImagePadding(this.config.markdownTheme.linkRectImagePadding)
-        }
-        if (this.config.markdownTheme.linkRectImageRadius !== undefined) {
-          cjMarkdownTheme.setLinkRectImageRadius(this.config.markdownTheme.linkRectImageRadius)
-        }
-        if (this.config.markdownTheme.linkRectImageMargin !== undefined) {
-          cjMarkdownTheme.setLinkRectImageMargin(this.config.markdownTheme.linkRectImageMargin)
-        }
-        if (this.config.markdownTheme.linkRectToolImageBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageBackGroupColor(this.config.markdownTheme.linkRectToolImageBackGroupColor)
-        }
-        if (this.config.markdownTheme.linkRectToolImageButtonBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageButtonBackGroupColor(this.config.markdownTheme.linkRectToolImageButtonBackGroupColor)
-        }
-        if (this.config.markdownTheme.linkRectToolImageTextSize !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageTextSize(this.config.markdownTheme.linkRectToolImageTextSize)
-        }
-        if (this.config.markdownTheme.linkRectToolImageHeight !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageHeight(this.config.markdownTheme.linkRectToolImageHeight)
-        }
-        if (this.config.markdownTheme.linkRectToolImagePadding !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImagePadding(this.config.markdownTheme.linkRectToolImagePadding)
-        }
-        if (this.config.markdownTheme.linkRectToolImageBorderWidth !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageBorderWidth(this.config.markdownTheme.linkRectToolImageBorderWidth)
-        }
-        if (this.config.markdownTheme.linkRectToolImageDividingLineWidth !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageDividingLineWidth(this.config.markdownTheme.linkRectToolImageDividingLineWidth)
-        }
-        if (this.config.markdownTheme.linkRectToolImageMargin !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageMargin(this.config.markdownTheme.linkRectToolImageMargin)
-        }
-        if (this.config.markdownTheme.linkRectToolImageLineLeftPadding !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageLineLeftPadding(this.config.markdownTheme.linkRectToolImageLineLeftPadding)
-        }
-        if (this.config.markdownTheme.linkRectToolImageLineRightPadding !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageLineRightPadding(this.config.markdownTheme.linkRectToolImageLineRightPadding)
-        }
-        if (this.config.markdownTheme.blockQuoteLeftMargin !== undefined) {
-          cjMarkdownTheme.setBlockQuoteLeftMargin(this.config.markdownTheme.blockQuoteLeftMargin)
-        }
-        if (this.config.markdownTheme.blockQuoteRightMargin !== undefined) {
-          cjMarkdownTheme.setBlockQuoteRightMargin(this.config.markdownTheme.blockQuoteRightMargin)
-        }
-        if (this.config.markdownTheme.blockQuoteWidth !== undefined) {
-          cjMarkdownTheme.setBlockQuoteWidth(this.config.markdownTheme.blockQuoteWidth)
-        }
-        if (this.config.markdownTheme.blockQuoteColor !== undefined) {
-          cjMarkdownTheme.setBlockQuoteColor(this.config.markdownTheme.blockQuoteColor)
-        }
-        if (this.config.markdownTheme.blockQuoteBackGroupColor !== undefined) {
-          cjMarkdownTheme.setBlockQuoteBackGroupColor(this.config.markdownTheme.blockQuoteBackGroupColor)
-        }
-        if (this.config.markdownTheme.blockQuoteTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockQuoteTopAndBottomMargins(this.config.markdownTheme.blockQuoteTopAndBottomMargins)
-        }
-        if (this.config.markdownTheme.blockOrderedAndBulletTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockOrderedAndBulletTopAndBottomMargins(this.config.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
-        }
-        if (this.config.markdownTheme.blockLeftMargin !== undefined) {
-          cjMarkdownTheme.setBlockLeftMargin(this.config.markdownTheme.blockLeftMargin)
-        }
-        if (this.config.markdownTheme.blockRightMargin !== undefined) {
-          cjMarkdownTheme.setBlockRightMargin(this.config.markdownTheme.blockRightMargin)
-        }
-        if (this.config.markdownTheme.orderedListItemPrefixBold !== undefined) {
-          cjMarkdownTheme.setOrderedListItemPrefixBold(this.config.markdownTheme.orderedListItemPrefixBold)
-        }
-        if (this.config.markdownTheme.orderedListItemColor !== undefined) {
-          cjMarkdownTheme.setOrderedListItemColor(this.config.markdownTheme.orderedListItemColor)
-        }
-        if (this.config.markdownTheme.orderedListItemSize !== undefined) {
-          cjMarkdownTheme.setOrderedListItemSize(this.config.markdownTheme.orderedListItemSize)
-        }
-        if (this.config.markdownTheme.orderedListItemLineHeight !== undefined) {
-          cjMarkdownTheme.setOrderedListItemLineHeight(this.config.markdownTheme.orderedListItemLineHeight)
-        }
-        if (this.config.markdownTheme.bulletListItemCircle !== undefined) {
-          cjMarkdownTheme.setBulletListItemCircle(this.config.markdownTheme.bulletListItemCircle)
-        }
-        if (this.config.markdownTheme.bulletListItemColor !== undefined) {
-          cjMarkdownTheme.setBulletListItemColor(this.config.markdownTheme.bulletListItemColor)
-        }
-        if (this.config.markdownTheme.bulletListItemSize !== undefined) {
-          cjMarkdownTheme.setBulletListItemSize(this.config.markdownTheme.bulletListItemSize)
-        }
-        if (this.config.markdownTheme.bulletListItemLineHeight !== undefined) {
-          cjMarkdownTheme.setBulletListItemLineHeight(this.config.markdownTheme.bulletListItemLineHeight)
-        }
-        if (this.config.markdownTheme.taskListItemLength !== undefined) {
-          cjMarkdownTheme.setTaskListItemLength(this.config.markdownTheme.taskListItemLength)
-        }
-        if (this.config.markdownTheme.isCodeFormat !== undefined) {
-          cjMarkdownTheme.setIsCodeFormat(this.config.markdownTheme.isCodeFormat)
-        }
-        if (this.config.markdownTheme.codeTextColor !== undefined) {
-          cjMarkdownTheme.setCodeTextColor(this.config.markdownTheme.codeTextColor)
-        }
-        if (this.config.markdownTheme.codeBackgroundColor !== undefined) {
-          cjMarkdownTheme.setCodeBackgroundColor(this.config.markdownTheme.codeBackgroundColor)
-        }
-        if (this.config.markdownTheme.codeTextSize !== undefined) {
-          cjMarkdownTheme.setCodeTextSize(this.config.markdownTheme.codeTextSize)
-        }
-        if (this.config.markdownTheme.codeTypeface !== undefined) {
-          cjMarkdownTheme.setCodeTypeface(this.config.markdownTheme.codeTypeface)
-        }
-        if (this.config.markdownTheme.isCodeBlockParserSync !== undefined) {
-          cjMarkdownTheme.setIsCodeBlockParserSync(this.config.markdownTheme.isCodeBlockParserSync)
-        }
-        if (this.config.markdownTheme.codeBlockTextColor !== undefined) {
-          cjMarkdownTheme.setCodeBlockTextColor(this.config.markdownTheme.codeBlockTextColor)
-        }
-        if (this.config.markdownTheme.codeBlockTypeTextColor !== undefined) {
-          cjMarkdownTheme.setCodeBlockTypeTextColor(this.config.markdownTheme.codeBlockTypeTextColor)
-        }
-        if (this.config.markdownTheme.codeBlockTypeTextStr !== undefined) {
-          cjMarkdownTheme.setCodeBlockTypeTextStr(this.config.markdownTheme.codeBlockTypeTextStr)
-        }
-        if (this.config.markdownTheme.codeBlockTypeTextPadding !== undefined) {
-          cjMarkdownTheme.setCodeBlockTypeTextPadding(this.config.markdownTheme.codeBlockTypeTextPadding)
-        }
-        if (this.config.markdownTheme.codeBlockIconTextHide !== undefined) {
-          cjMarkdownTheme.setCodeBlockIconTextHide(this.config.markdownTheme.codeBlockIconTextHide)
-        }
-        if (this.config.markdownTheme.codeBlockLineNumberHide !== undefined) {
-          cjMarkdownTheme.setCodeBlockLineNumberHide(this.config.markdownTheme.codeBlockLineNumberHide)
-        }
-        if (this.config.markdownTheme.codeBlockBackgroundColor !== undefined) {
-          cjMarkdownTheme.setCodeBlockBackgroundColor(this.config.markdownTheme.codeBlockBackgroundColor)
-        }
-        if (this.config.markdownTheme.codeMultilineMargin !== undefined) {
-          cjMarkdownTheme.setCodeMultilineMargin(this.config.markdownTheme.codeMultilineMargin)
-        }
-        if (this.config.markdownTheme.codeBlockTypeface !== undefined) {
-          cjMarkdownTheme.setCodeBlockTypeface(this.config.markdownTheme.codeBlockTypeface)
-        }
-        if (this.config.markdownTheme.codeBlockTextSize !== undefined) {
-          cjMarkdownTheme.setCodeBlockTextSize(this.config.markdownTheme.codeBlockTextSize)
-        }
-        if (this.config.markdownTheme.codeBlockLineHeight !== undefined) {
-          cjMarkdownTheme.setCodeBlockLineHeight(this.config.markdownTheme.codeBlockLineHeight)
-        }
-        if (this.config.markdownTheme.codeBlockRadius !== undefined) {
-          cjMarkdownTheme.setCodeBlockRadius(this.config.markdownTheme.codeBlockRadius)
-        }
-        if (this.config.markdownTheme.isCodeFullScreen !== undefined) {
-          cjMarkdownTheme.setIsCodeFullScreen(this.config.markdownTheme.isCodeFullScreen)
-        }
-        if (this.config.markdownTheme.iconWidthAndHeight !== undefined) {
-          cjMarkdownTheme.setIconWidthAndHeight(this.config.markdownTheme.iconWidthAndHeight)
-        }
-        if (this.config.markdownTheme.codeListTitleTextSize !== undefined) {
-          cjMarkdownTheme.setCodeListTitleTextSize(this.config.markdownTheme.codeListTitleTextSize)
-        }
-        if (this.config.markdownTheme.codeListTitleSelectTextSize !== undefined) {
-          cjMarkdownTheme.setCodeListTitleSelectTextSize(this.config.markdownTheme.codeListTitleSelectTextSize)
-        }
-        if (this.config.markdownTheme.codeListTitleSelectTextColor !== undefined) {
-          cjMarkdownTheme.setCodeListTitleSelectTextColor(this.config.markdownTheme.codeListTitleSelectTextColor)
-        }
-        if (this.config.markdownTheme.codeListTitleUnSelectTextColor !== undefined) {
-          cjMarkdownTheme.setCodeListTitleUnSelectTextColor(this.config.markdownTheme.codeListTitleUnSelectTextColor)
-        }
-        if (this.config.markdownTheme.codeListTitleSelectBackGroupColor !== undefined) {
-          cjMarkdownTheme.setCodeListTitleSelectBackGroupColor(this.config.markdownTheme.codeListTitleSelectBackGroupColor)
-        }
-        if (this.config.markdownTheme.codeListTitleUnSelectBackGroupColor !== undefined) {
-          cjMarkdownTheme.setCodeListTitleUnSelectBackGroupColor(this.config.markdownTheme.codeListTitleUnSelectBackGroupColor)
-        }
-        if (this.config.markdownTheme.isSeparateCodeBlock !== undefined) {
-          cjMarkdownTheme.setIsSeparateCodeBlock(this.config.markdownTheme.isSeparateCodeBlock)
-        }
-        if (this.config.markdownTheme.separateCodeBlockWidth !== undefined) {
-          cjMarkdownTheme.setSeparateCodeBlockWidth(this.config.markdownTheme.separateCodeBlockWidth)
-        }
-        if (this.config.markdownTheme.separateCodeIsBottom !== undefined) {
-          cjMarkdownTheme.setSeparateCodeIsBottom(this.config.markdownTheme.separateCodeIsBottom)
-        }
-        if (this.config.markdownTheme.headingBreakHeight !== undefined) {
-          cjMarkdownTheme.setHeadingBreakHeight(this.config.markdownTheme.headingBreakHeight)
-        }
-        if (this.config.markdownTheme.headingTypeface !== undefined) {
-          cjMarkdownTheme.setHeadingTypeface(this.config.markdownTheme.headingTypeface)
-        }
-        if (this.config.markdownTheme.headingTopMargins !== undefined) {
-          cjMarkdownTheme.setHeadingTopMargins(this.config.markdownTheme.headingTopMargins)
-        }
-        if (this.config.markdownTheme.headingBottomMargins !== undefined) {
-          cjMarkdownTheme.setHeadingBottomMargins(this.config.markdownTheme.headingBottomMargins)
-        }
-        if (this.config.markdownTheme.headingTextSize1 !== undefined) {
-          cjMarkdownTheme.setHeadingTextSize1(this.config.markdownTheme.headingTextSize1)
-        }
-        if (this.config.markdownTheme.headingTextSize2 !== undefined) {
-          cjMarkdownTheme.setHeadingTextSize2(this.config.markdownTheme.headingTextSize2)
-        }
-        if (this.config.markdownTheme.headingTextSize3 !== undefined) {
-          cjMarkdownTheme.setHeadingTextSize3(this.config.markdownTheme.headingTextSize3)
-        }
-        if (this.config.markdownTheme.headingTextSize4 !== undefined) {
-          cjMarkdownTheme.setHeadingTextSize4(this.config.markdownTheme.headingTextSize4)
-        }
-        if (this.config.markdownTheme.headingTextSize5 !== undefined) {
-          cjMarkdownTheme.setHeadingTextSize5(this.config.markdownTheme.headingTextSize5)
-        }
-        if (this.config.markdownTheme.headingTextSize6 !== undefined) {
-          cjMarkdownTheme.setHeadingTextSize6(this.config.markdownTheme.headingTextSize6)
-        }
-        if (this.config.markdownTheme.headingTextWordSpace !== undefined) {
-          cjMarkdownTheme.setHeadingTextWordSpace(this.config.markdownTheme.headingTextWordSpace)
-        }
-        if (this.config.markdownTheme.headingTextLineHeight1 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight1(this.config.markdownTheme.headingTextLineHeight1)
-        }
-        if (this.config.markdownTheme.headingTextLineHeight2 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight2(this.config.markdownTheme.headingTextLineHeight2)
-        }
-        if (this.config.markdownTheme.headingTextLineHeight3 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight3(this.config.markdownTheme.headingTextLineHeight3)
-        }
-        if (this.config.markdownTheme.headingTextLineHeight4 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight4(this.config.markdownTheme.headingTextLineHeight4)
-        }
-        if (this.config.markdownTheme.headingTextLineHeight5 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight5(this.config.markdownTheme.headingTextLineHeight5)
-        }
-        if (this.config.markdownTheme.headingTextLineHeight6 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight6(this.config.markdownTheme.headingTextLineHeight6)
-        }
-        if (this.config.markdownTheme.headingTextColor1 !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor1(this.config.markdownTheme.headingTextColor1)
-        }
-        if (this.config.markdownTheme.headingBreakColor1 !== undefined) {
-          cjMarkdownTheme.setHeadingBreakColor1(this.config.markdownTheme.headingBreakColor1)
-        }
-        if (this.config.markdownTheme.headingTextColor2 !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor2(this.config.markdownTheme.headingTextColor2)
-        }
-        if (this.config.markdownTheme.headingBreakColor2 !== undefined) {
-          cjMarkdownTheme.setHeadingBreakColor2(this.config.markdownTheme.headingBreakColor2)
-        }
-        if (this.config.markdownTheme.headingTextColor3 !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor3(this.config.markdownTheme.headingTextColor3)
-        }
-        if (this.config.markdownTheme.headingTextColor4 !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor4(this.config.markdownTheme.headingTextColor4)
-        }
-        if (this.config.markdownTheme.headingTextColor5 !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor5(this.config.markdownTheme.headingTextColor5)
-        }
-        if (this.config.markdownTheme.headingTextColor6 !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor6(this.config.markdownTheme.headingTextColor6)
-        }
-        if (this.config.markdownTheme.paragraphTopMargins !== undefined) {
-          cjMarkdownTheme.setParagraphTopMargins(this.config.markdownTheme.paragraphTopMargins)
-        }
-        if (this.config.markdownTheme.paragraphBottomMargins !== undefined) {
-          cjMarkdownTheme.setParagraphBottomMargins(this.config.markdownTheme.paragraphBottomMargins)
-        }
-        if (this.config.markdownTheme.paragraphTextSize !== undefined) {
-          cjMarkdownTheme.setParagraphTextSize(this.config.markdownTheme.paragraphTextSize)
-        }
-        if (this.config.markdownTheme.paragraphTextColor !== undefined) {
-          cjMarkdownTheme.setParagraphTextColor(this.config.markdownTheme.paragraphTextColor)
-        }
-        if (this.config.markdownTheme.paragraphTextWordSpace !== undefined) {
-          cjMarkdownTheme.setParagraphTextWordSpace(this.config.markdownTheme.paragraphTextWordSpace)
-        }
-        if (this.config.markdownTheme.paragraphTextLineHeight !== undefined) {
-          cjMarkdownTheme.setParagraphTextLineHeight(this.config.markdownTheme.paragraphTextLineHeight)
-        }
-        if (this.config.markdownTheme.paragraphTypeface !== undefined) {
-          cjMarkdownTheme.setParagraphTypeface(this.config.markdownTheme.paragraphTypeface)
-        }
-        if (this.config.markdownTheme.thematicBreakColor !== undefined) {
-          cjMarkdownTheme.setThematicBreakColor(this.config.markdownTheme.thematicBreakColor)
-        }
-        if (this.config.markdownTheme.thematicBreakHeight !== undefined) {
-          cjMarkdownTheme.setThematicBreakHeight(this.config.markdownTheme.thematicBreakHeight)
-        }
-        if (this.config.markdownTheme.thematicBreakTopMargin !== undefined) {
-          cjMarkdownTheme.setThematicBreakTopMargin(this.config.markdownTheme.thematicBreakTopMargin)
-        }
-        if (this.config.markdownTheme.thematicBreakBottomMargin !== undefined) {
-          cjMarkdownTheme.setThematicBreakBottomMargin(this.config.markdownTheme.thematicBreakBottomMargin)
-        }
-        if (this.config.markdownTheme.isLineBreak !== undefined) {
-          cjMarkdownTheme.setIsLineBreak(this.config.markdownTheme.isLineBreak)
-        }
-        if (this.config.markdownTheme.audioShadowColor !== undefined) {
-          cjMarkdownTheme.setAudioShadowColor(this.config.markdownTheme.audioShadowColor)
-        }
-        if (this.config.markdownTheme.audioBorderColor !== undefined) {
-          cjMarkdownTheme.setAudioBorderColor(this.config.markdownTheme.audioBorderColor)
-        }
-        if (this.config.markdownTheme.audioBorderWidth !== undefined) {
-          cjMarkdownTheme.setAudioBorderWidth(this.config.markdownTheme.audioBorderWidth)
-        }
-        if (this.config.markdownTheme.audioBorderRadius !== undefined) {
-          cjMarkdownTheme.setAudioBorderRadius(this.config.markdownTheme.audioBorderRadius)
-        }
-        if (this.config.markdownTheme.audioButtonBackgroundColor !== undefined) {
-          cjMarkdownTheme.setAudioButtonBackgroundColor(this.config.markdownTheme.audioButtonBackgroundColor)
-        }
-        if (this.config.markdownTheme.audioButtonTextColor !== undefined) {
-          cjMarkdownTheme.setAudioButtonTextColor(this.config.markdownTheme.audioButtonTextColor)
-        }
-        if (this.config.markdownTheme.audioButtonTextSize !== undefined) {
-          cjMarkdownTheme.setAudioButtonTextSize(this.config.markdownTheme.audioButtonTextSize)
-        }
-        if (this.config.markdownTheme.audioButtonText !== undefined) {
-          cjMarkdownTheme.setAudioButtonText(this.config.markdownTheme.audioButtonText)
-        }
-        if (this.config.markdownTheme.audioButtonBorderRadius !== undefined) {
-          cjMarkdownTheme.setAudioButtonBorderRadius(this.config.markdownTheme.audioButtonBorderRadius)
-        }
-        if (this.config.markdownTheme.audioTitleTextSize !== undefined) {
-          cjMarkdownTheme.setAudioTitleTextSize(this.config.markdownTheme.audioTitleTextSize)
-        }
-        if (this.config.markdownTheme.audioTitleTextColor !== undefined) {
-          cjMarkdownTheme.setAudioTitleTextColor(this.config.markdownTheme.audioTitleTextColor)
-        }
-        if (this.config.markdownTheme.blockTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockTopAndBottomMargins(this.config.markdownTheme.blockTopAndBottomMargins)
-        }
-        if (this.config.markdownTheme.blockTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockTopAndBottomMargins(this.config.markdownTheme.blockTopAndBottomMargins)
-        }
-        if (this.config.markdownTheme.audioTitleTextLineHeight !== undefined) {
-          cjMarkdownTheme.setAudioTitleTextLineHeight(this.config.markdownTheme.audioTitleTextLineHeight)
-        }
-        if (this.config.markdownTheme.audioTypeTextSize !== undefined) {
-          cjMarkdownTheme.setAudioTypeTextSize(this.config.markdownTheme.audioTypeTextSize)
-        }
-        if (this.config.markdownTheme.audioTypeTextColor !== undefined) {
-          cjMarkdownTheme.setAudioTypeTextColor(this.config.markdownTheme.audioTypeTextColor)
-        }
-        if (this.config.markdownTheme.audioTypeTextLineHeight !== undefined) {
-          cjMarkdownTheme.setAudioTypeTextLineHeight(this.config.markdownTheme.audioTypeTextLineHeight)
-        }
-        if (this.config.markdownTheme.audioMarginTop !== undefined) {
-          cjMarkdownTheme.setAudioMarginTop(this.config.markdownTheme.audioMarginTop)
-        }
-        if (this.config.markdownTheme.audioMarginBottom !== undefined) {
-          cjMarkdownTheme.setAudioMarginBottom(this.config.markdownTheme.audioMarginBottom)
-        }
-        if (this.config.markdownTheme.videoBorderRadius !== undefined) {
-          cjMarkdownTheme.setVideoBorderRadius(this.config.markdownTheme.videoBorderRadius)
-        }
-        if (this.config.markdownTheme.videoTimeTextColor !== undefined) {
-          cjMarkdownTheme.setVideoTimeTextColor(this.config.markdownTheme.videoTimeTextColor)
-        }
-        if (this.config.markdownTheme.videoTimeTextSize !== undefined) {
-          cjMarkdownTheme.setVideoTimeTextSize(this.config.markdownTheme.videoTimeTextSize)
-        }
-        if (this.config.markdownTheme.videoTimeTextMarginRight !== undefined) {
-          cjMarkdownTheme.setVideoTimeTextMarginRight(this.config.markdownTheme.videoTimeTextMarginRight)
-        }
-        if (this.config.markdownTheme.videoTimeTextMarginBottom !== undefined) {
-          cjMarkdownTheme.setVideoTimeTextMarginBottom(this.config.markdownTheme.videoTimeTextMarginBottom)
-        }
-        if (this.config.markdownTheme.videoMarginTop !== undefined) {
-          cjMarkdownTheme.setVideoMarginTop(this.config.markdownTheme.videoMarginTop)
-        }
-        if (this.config.markdownTheme.videoMarginBottom !== undefined) {
-          cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
-        }
-        if (this.config.markdownTheme.isVideoBottomLayout !== undefined) {
-          cjMarkdownTheme.setIsVideoBottomLayout(this.config.markdownTheme.isVideoBottomLayout)
-        }
-        if (this.config.markdownTheme.videoReleaseImageWidthHeight !== undefined) {
-          cjMarkdownTheme.setVideoReleaseImageWidthHeight(this.config.markdownTheme.videoReleaseImageWidthHeight)
-        }
-        if (this.config.markdownTheme.videoReleaseWidth !== undefined) {
-          cjMarkdownTheme.setVideoReleaseWidth(this.config.markdownTheme.videoReleaseWidth)
-        }
-        if (this.config.markdownTheme.videoReleaseHeight !== undefined) {
-          cjMarkdownTheme.setVideoReleaseHeight(this.config.markdownTheme.videoReleaseHeight)
-        }
-        if (this.config.markdownTheme.videoReleaseRadius !== undefined) {
-          cjMarkdownTheme.setVideoReleaseRadius(this.config.markdownTheme.videoReleaseRadius)
-        }
-        if (this.config.markdownTheme.videoReleaseText !== undefined) {
-          cjMarkdownTheme.setVideoReleaseText(this.config.markdownTheme.videoReleaseText)
-        }
-        if (this.config.markdownTheme.videoReleaseTexSize !== undefined) {
-          cjMarkdownTheme.setVideoReleaseTexSize(this.config.markdownTheme.videoReleaseTexSize)
-        }
-        if (this.config.markdownTheme.videoReleaseTexColor !== undefined) {
-          cjMarkdownTheme.setVideoReleaseTexColor(this.config.markdownTheme.videoReleaseTexColor)
-        }
-        if (this.config.markdownTheme.videoReleaseBackgroundColor !== undefined) {
-          cjMarkdownTheme.setVideoReleaseBackgroundColor(this.config.markdownTheme.videoReleaseBackgroundColor)
-        }
-        if (this.config.markdownTheme.videoDownloadImageWidthHeight !== undefined) {
-          cjMarkdownTheme.setVideoDownloadImageWidthHeight(this.config.markdownTheme.videoDownloadImageWidthHeight)
-        }
-        if (this.config.markdownTheme.videoDownloadWidth !== undefined) {
-          cjMarkdownTheme.setVideoDownloadWidth(this.config.markdownTheme.videoDownloadWidth)
-        }
-        if (this.config.markdownTheme.videoDownloadHeight !== undefined) {
-          cjMarkdownTheme.setVideoDownloadHeight(this.config.markdownTheme.videoDownloadHeight)
-        }
-        if (this.config.markdownTheme.videoDownloadRadius !== undefined) {
-          cjMarkdownTheme.setVideoDownloadRadius(this.config.markdownTheme.videoDownloadRadius)
-        }
-        if (this.config.markdownTheme.videoDownloadText !== undefined) {
-          cjMarkdownTheme.setVideoDownloadText(this.config.markdownTheme.videoDownloadText)
-        }
-        if (this.config.markdownTheme.videoDownloadTexSize !== undefined) {
-          cjMarkdownTheme.setVideoDownloadTexSize(this.config.markdownTheme.videoDownloadTexSize)
-        }
-        if (this.config.markdownTheme.videoDownloadTexColor !== undefined) {
-          cjMarkdownTheme.setVideoDownloadTexColor(this.config.markdownTheme.videoDownloadTexColor)
-        }
-        if (this.config.markdownTheme.videoDownloadBackgroundColor !== undefined) {
-          cjMarkdownTheme.setVideoDownloadBackgroundColor(this.config.markdownTheme.videoDownloadBackgroundColor)
-        }
-        if (this.config.markdownTheme.imageFitType !== undefined) {
-          cjMarkdownTheme.setImageFitType(this.config.markdownTheme.imageFitType)
-        }
-        if (this.config.markdownTheme.imageMaximumWidth !== undefined) {
-          cjMarkdownTheme.setImageMaximumWidth(this.config.markdownTheme.imageMaximumWidth)
-        }
-        if (this.config.markdownTheme.imageFixedRatioWidth !== undefined) {
-          cjMarkdownTheme.setImageFixedRatioWidth(this.config.markdownTheme.imageFixedRatioWidth)
-        }
-        if (this.config.markdownTheme.imageMaxHeight !== undefined) {
-          cjMarkdownTheme.setImageMaxHeight(this.config.markdownTheme.imageMaxHeight)
-        }
-        if (this.config.markdownTheme.imageMaxWidth !== undefined) {
-          cjMarkdownTheme.setImageMaxWidth(this.config.markdownTheme.imageMaxWidth)
-        }
-        if (this.config.markdownTheme.imageBorderRadius !== undefined) {
-          cjMarkdownTheme.setImageBorderRadius(this.config.markdownTheme.imageBorderRadius)
-        }
-        if (this.config.markdownTheme.imageBorderWidth !== undefined) {
-          cjMarkdownTheme.setImageBorderWidth(this.config.markdownTheme.imageBorderWidth)
-        }
-        if (this.config.markdownTheme.imageBorderColor !== undefined) {
-          cjMarkdownTheme.setImageBorderColor(this.config.markdownTheme.imageBorderColor)
-        }
-        if (this.config.markdownTheme.isAutoResize !== undefined) {
-          cjMarkdownTheme.setIsAutoResize(this.config.markdownTheme.isAutoResize)
-        }
-        if (this.config.markdownTheme.imageMarginTop !== undefined) {
-          cjMarkdownTheme.setImageMarginTop(this.config.markdownTheme.imageMarginTop)
-        }
-        if (this.config.markdownTheme.imageMarginBottom !== undefined) {
-          cjMarkdownTheme.setImageMarginBottom(this.config.markdownTheme.imageMarginBottom)
-        }
-        if (this.config.markdownTheme.isImageDownload !== undefined) {
-          cjMarkdownTheme.setIsImageDownload(this.config.markdownTheme.isImageDownload)
-        }
-        if (this.config.markdownTheme.isImageMixedLayout !== undefined) {
-          cjMarkdownTheme.setIsImageMixedLayout(this.config.markdownTheme.isImageMixedLayout)
-        }
-        if (this.config.markdownTheme.imageDownloadImageWidthHeight !== undefined) {
-          cjMarkdownTheme.setImageDownloadImageWidthHeight(this.config.markdownTheme.imageDownloadImageWidthHeight)
-        }
-        if (this.config.markdownTheme.imageDownloadWidth !== undefined) {
-          cjMarkdownTheme.setImageDownloadWidth(this.config.markdownTheme.imageDownloadWidth)
-        }
-        if (this.config.markdownTheme.imageDownloadHeight !== undefined) {
-          cjMarkdownTheme.setImageDownloadHeight(this.config.markdownTheme.imageDownloadHeight)
-        }
-        if (this.config.markdownTheme.imageDownloadRadius !== undefined) {
-          cjMarkdownTheme.setImageDownloadRadius(this.config.markdownTheme.imageDownloadRadius)
-        }
-        if (this.config.markdownTheme.imageDownloadText !== undefined) {
-          cjMarkdownTheme.setImageDownloadText(this.config.markdownTheme.imageDownloadText)
-        }
-        if (this.config.markdownTheme.imageDownloadTexSize !== undefined) {
-          cjMarkdownTheme.setImageDownloadTexSize(this.config.markdownTheme.imageDownloadTexSize)
-        }
-        if (this.config.markdownTheme.imageDownloadTexColor !== undefined) {
-          cjMarkdownTheme.setImageDownloadTexColor(this.config.markdownTheme.imageDownloadTexColor)
-        }
-        if (this.config.markdownTheme.imageDownloadBackgroundColor !== undefined) {
-          cjMarkdownTheme.setImageDownloadBackgroundColor(this.config.markdownTheme.imageDownloadBackgroundColor)
-        }
-        if (this.config.markdownTheme.tableCellPadding !== undefined) {
-          cjMarkdownTheme.setTableCellPadding(this.config.markdownTheme.tableCellPadding)
-        }
-        if (this.config.markdownTheme.tableBorderColor !== undefined) {
-          cjMarkdownTheme.setTableBorderColor(this.config.markdownTheme.tableBorderColor)
-        }
-        if (this.config.markdownTheme.tableBorderWidth !== undefined) {
-          cjMarkdownTheme.setTableBorderWidth(this.config.markdownTheme.tableBorderWidth)
-        }
-        if (this.config.markdownTheme.tableOddRowBackgroundColor !== undefined) {
-          cjMarkdownTheme.setTableOddRowBackgroundColor(this.config.markdownTheme.tableOddRowBackgroundColor)
-        }
-        if (this.config.markdownTheme.tableEvenRowBackgroundColor !== undefined) {
-          cjMarkdownTheme.setTableEvenRowBackgroundColor(this.config.markdownTheme.tableEvenRowBackgroundColor)
-        }
-        if (this.config.markdownTheme.tableHeaderRowBackgroundColor !== undefined) {
-          cjMarkdownTheme.setTableHeaderRowBackgroundColor(this.config.markdownTheme.tableHeaderRowBackgroundColor)
-        }
-        if (this.config.markdownTheme.tableTitleTextColor !== undefined) {
-          cjMarkdownTheme.setTableTitleTextColor(this.config.markdownTheme.tableTitleTextColor)
-        }
-        if (this.config.markdownTheme.tableTitleTextSize !== undefined) {
-          cjMarkdownTheme.setTableTitleTextSize(this.config.markdownTheme.tableTitleTextSize)
-        }
-        if (this.config.markdownTheme.tableTitleLineHeight !== undefined) {
-          cjMarkdownTheme.setTableTitleLineHeight(this.config.markdownTheme.tableTitleLineHeight)
-        }
-        if (this.config.markdownTheme.tableContentTextColor !== undefined) {
-          cjMarkdownTheme.setTableContentTextColor(this.config.markdownTheme.tableContentTextColor)
-        }
-        if (this.config.markdownTheme.tableContentTextSize !== undefined) {
-          cjMarkdownTheme.setTableContentTextSize(this.config.markdownTheme.tableContentTextSize)
-        }
-        if (this.config.markdownTheme.tableTextLineHeight !== undefined) {
-          cjMarkdownTheme.setTableTextLineHeight(this.config.markdownTheme.tableTextLineHeight)
-        }
-        if (this.config.markdownTheme.tableRadius !== undefined) {
-          cjMarkdownTheme.setTableRadius(this.config.markdownTheme.tableRadius)
-        }
-        if (this.config.markdownTheme.tableMinTextWidth !== undefined) {
-          cjMarkdownTheme.setTableMinTextWidth(this.config.markdownTheme.tableMinTextWidth)
-        }
-        if (this.config.markdownTheme.tableMaxTextWidth !== undefined) {
-          cjMarkdownTheme.setTableMaxTextWidth(this.config.markdownTheme.tableMaxTextWidth)
-        }
-        if (this.config.markdownTheme.tableFirstColumnBold !== undefined) {
-          cjMarkdownTheme.setTableFirstColumnBold(this.config.markdownTheme.tableFirstColumnBold)
-        }
-        if (this.config.markdownTheme.tableScrollBarShow !== undefined) {
-          cjMarkdownTheme.setTableScrollBarShow(this.config.markdownTheme.tableScrollBarShow)
-        }
-        if (this.config.markdownTheme.tableScrollBarColor !== undefined) {
-          cjMarkdownTheme.setTableScrollBarColor(this.config.markdownTheme.tableScrollBarColor)
-        }
-        if (this.config.markdownTheme.isDark !== undefined) {
-          cjMarkdownTheme.setIsDark(this.config.markdownTheme.isDark)
-        }
-        if (this.config.markdownTheme.strikethroughColor !== undefined) {
-          cjMarkdownTheme.setStrikethroughColor(this.config.markdownTheme.strikethroughColor)
-        }
-        if (this.config.markdownTheme.strikethroughStyle !== undefined) {
-          cjMarkdownTheme.setStrikethroughStyle(this.config.markdownTheme.strikethroughStyle)
-        }
-        if (this.config.markdownTheme.descListTermAndDefMargins !== undefined) {
-          cjMarkdownTheme.setDescListTermAndDefMargins(this.config.markdownTheme.descListTermAndDefMargins)
-        }
-        if (this.config.markdownTheme.descListDefIndentation !== undefined) {
-          cjMarkdownTheme.setDescListDefIndentation(this.config.markdownTheme.descListDefIndentation)
-        }
-        if (this.config.markdownTheme.descListDefMargins !== undefined) {
-          cjMarkdownTheme.setDescListDefMargins(this.config.markdownTheme.descListDefMargins)
-        }
-        if (this.config.markdownTheme.subTextColor !== undefined) {
-          cjMarkdownTheme.setSubTextColor(this.config.markdownTheme.subTextColor)
-        }
-        if (this.config.markdownTheme.subTextSize !== undefined) {
-          cjMarkdownTheme.setSubTextSize(this.config.markdownTheme.subTextSize)
-        }
-        if (this.config.markdownTheme.subOffsetDist !== undefined) {
-          cjMarkdownTheme.setSubOffsetDist(this.config.markdownTheme.subOffsetDist)
-        }
-        if (this.config.markdownTheme.supTextColor !== undefined) {
-          cjMarkdownTheme.setSupTextColor(this.config.markdownTheme.supTextColor)
-        }
-        if (this.config.markdownTheme.supTextSize !== undefined) {
-          cjMarkdownTheme.setSupTextSize(this.config.markdownTheme.supTextSize)
-        }
-        if (this.config.markdownTheme.supOffsetDist !== undefined) {
-          cjMarkdownTheme.setSupOffsetDist(this.config.markdownTheme.supOffsetDist)
-        }
-        if (this.config.markdownTheme.underlineColor !== undefined) {
-          cjMarkdownTheme.setUnderlineColor(this.config.markdownTheme.underlineColor)
-        }
-        if (this.config.markdownTheme.underlineStyle !== undefined) {
-          cjMarkdownTheme.setUnderlineStyle(this.config.markdownTheme.underlineStyle)
-        }
-        if (this.config.markdownTheme.openGestureSwipe !== undefined) {
-          cjMarkdownTheme.setOpenGestureSwipe(this.config.markdownTheme.openGestureSwipe)
-        }
-        if (this.config.markdownTheme.useTab !== undefined) {
-          cjMarkdownTheme.setUseTab(this.config.markdownTheme.useTab)
-        }
-        if (this.config.markdownTheme.indentWidth !== undefined) {
-          cjMarkdownTheme.setIndentWidth(this.config.markdownTheme.indentWidth)
-        }
-      }
-    }
-    return cjMarkdownTheme
   }
 
   getPlugin(): CJMarkdownPlugin | undefined {
@@ -868,3665 +375,1917 @@ export struct CJMarkdown {
     }
     let cjMarkdownPlugin: CJMarkdownPlugin = new global_customLib.CJMarkdownPlugin()
     if (this.plugin !== undefined) {
-      cjMarkdownPlugin.setIsBlockAudioPlugin(this.plugin.isBlockAudioPlugin)
-      cjMarkdownPlugin.setIsBlockVideoPlugin(this.plugin.isBlockVideoPlugin)
-      cjMarkdownPlugin.setIsCodeListPlugin(this.plugin.isCodeListPlugin)
-      cjMarkdownPlugin.setIsFootnotePlugin(this.plugin.isFootnotePlugin)
-      cjMarkdownPlugin.setIsHtmlPlugin(this.plugin.isHtmlPlugin)
-      cjMarkdownPlugin.setIsTablePlugin(this.plugin.isTablePlugin)
-      cjMarkdownPlugin.setIsTocPlugin(this.plugin.isTocPlugin)
-      cjMarkdownPlugin.setIsTaskListPlugin(this.plugin.isTaskListPlugin)
-      cjMarkdownPlugin.setIsStrikethroughPlugin(this.plugin.isStrikethroughPlugin)
-      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin, this.plugin.regs)
-      cjMarkdownPlugin.setIsLinkViewPlugin(this.plugin.isLinkViewPlugin)
-      cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.isImageStylePlugin)
-      cjMarkdownPlugin.setIsImageSlidePlugin(this.plugin.isImageSlidePlugin)
-      cjMarkdownPlugin.setIsImageTextMixPlugin(this.plugin.isImageTextMixPlugin)
-      cjMarkdownPlugin.setIsImageCollectPlugin(this.plugin.isImageCollectPlugin)
-      cjMarkdownPlugin.setIsDescListPlugin(this.plugin.isDescListPlugin)
-      cjMarkdownPlugin.setIsHeadIDPlugin(this.plugin.isHeadIDPlugin)
-      cjMarkdownPlugin.setIsSubPlugin(this.plugin.isSubPlugin)
-      cjMarkdownPlugin.setIsSupPlugin(this.plugin.isSupPlugin)
-      cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.isEmojiPlugin, this.plugin.isEmojiLight)
+      cjMarkdownPlugin.setIsBlockAudioPlugin(this.plugin.getIsBlockAudioPlugin())
+      cjMarkdownPlugin.setIsBlockVideoPlugin(this.plugin.getIsBlockVideoPlugin())
+      cjMarkdownPlugin.setIsCodeListPlugin(this.plugin.getIsCodeListPlugin())
+      cjMarkdownPlugin.setIsFootnotePlugin(this.plugin.getIsFootnotePlugin())
+      cjMarkdownPlugin.setIsHtmlPlugin(this.plugin.getIsHtmlPlugin())
+      cjMarkdownPlugin.setIsTablePlugin(this.plugin.getIsTablePlugin())
+      cjMarkdownPlugin.setIsTocPlugin(this.plugin.getIsTocPlugin())
+      cjMarkdownPlugin.setIsTaskListPlugin(this.plugin.getIsTaskListPlugin())
+      cjMarkdownPlugin.setIsStrikethroughPlugin(this.plugin.getIsStrikethroughPlugin())
+      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.getIsLinkifyPlugin(), this.plugin.getRegs())
+      cjMarkdownPlugin.setIsLinkViewPlugin(this.plugin.getIsLinkViewPlugin())
+      cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.getIsImageStylePlugin())
+      cjMarkdownPlugin.setIsImageSlidePlugin(this.plugin.getIsImageSlidePlugin())
+      cjMarkdownPlugin.setIsImageTextMixPlugin(this.plugin.getIsImageTextMixPlugin())
+      cjMarkdownPlugin.setIsImageCollectPlugin(this.plugin.getIsImageCollectPlugin())
+      cjMarkdownPlugin.setIsDescListPlugin(this.plugin.getIsDescListPlugin())
+      cjMarkdownPlugin.setIsHeadIDPlugin(this.plugin.getIsHeadIDPlugin())
+      cjMarkdownPlugin.setIsSubPlugin(this.plugin.getIsSubPlugin())
+      cjMarkdownPlugin.setIsSupPlugin(this.plugin.getIsSupPlugin())
+      cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.getIsEmojiPlugin(), this.plugin.getIsEmojiLight())
+      cjMarkdownPlugin.setIsHighlightPlugin(this.plugin.getIsHighlightPlugin())
+      cjMarkdownPlugin.setIsWhitelistPlugin(this.plugin.getIsWhitelistPlugin(), this.plugin.getMode(), this.plugin.getWhitelist())
     }
     return cjMarkdownPlugin
   }
-}
 
-/**
- * markdown配置
- */
-export class MarkdownConfiguration {
-  /**
-   * 链接的点击事件
-   */
-  linkCallback?: (funcArg0: string) => void = undefined
-  /**
-   * 文本复制的点击事件
-   */
-  textCopyCallback?: (funcArg0: string) => void = undefined
-  /**
-   * 图片的点击事件
-   */
-  imageCallback?: (funcArg0: string, funcArg1: Array<string>) => void = undefined
-  /**
-   * 图片替换事件
-   */
-  imageCallbackCallback?: (funcArg0: string) => Promise<ArrayBuffer | undefined> = undefined
-  /**
-   * 图片下载的点击事件
-   */
-  imageDownloadCallback?: (funcArg0: string) => void = undefined
-  /**
-   * 音频的点击事件
-   */
-  audioCallback?: (funcArg0: string) => void = undefined
-  /**
-   * 视频的点击事件
-   */
-  videoCallback?: (funcArg0: string, funcArg1: Array<string>) => void = undefined
-  /**
-   * 视频的图片替换回调
-   */
-  videoImageCallback?: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
-  /**
-   * 视频发布的点击事件
-   */
-  videoReleaseCallback?: (funcArg0: string) => void = undefined
-  /**
-   * 视频下载的点击事件
-   */
-  videoDownloadCallback?: (funcArg0: string) => void = undefined
-  /**
-   * 代码复制按钮的点击事件
-   */
-  codeCopyCallback?: (funcArg0: string) => void = undefined
-  /**
-   * 代码全屏按钮的点击事件
-   */
-  codeFullScreenCallback?: (funcArg0: string, funcArg1: string | undefined) => void = undefined
-  /**
-   * TOC跳转指定位置
-   */
-  tocIndexCallback?: (funcArg0: number | undefined) => void = undefined
-  /**
-   * 脚注跳转指定位置
-   */
-  footnoteCallback?: (funcArg0: number | undefined) => void = undefined
-  /**
-   * markdown默认样式
-   */
-  markdownTheme?: MarkdownTheme = undefined
-
-  /**
-   * 设置链接点击回调
-   *
-   * @param cb 链接点击回调(funcArg0：链接url)
-   */
-  setLinkCallback(cb: (funcArg0: string) => void): void {
-    this.linkCallback = cb
-  }
-
-  /**
-   * 设置文本复制的点击事件
-   *
-   * @param cb 文本复制的点击事件(funcArg0：复制的文本)
-   */
-  setTextCopyCallback(cb: (funcArg0: string) => void): void {
-    this.textCopyCallback = cb
-  }
-
-  /**
-   * 设置图片点击回调
-   *
-   * @param cb 图片点击回调。 (funcArg0：图片url,funcArg1:所有图片和视频连接集合 --- 需要加载图片视频列表url集合列表解析插件)
-   */
-  setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void {
-    this.imageCallback = cb
-  }
-
-  /**
-   * 设置图片替换事件
-   *
-   * @param cb 图片替换事件。 (funcArg0：图片url 返回值是替换的图片数据)
-   */
-  setImageCallbackCallback(cb: (funcArg0: string) => Promise<ArrayBuffer | undefined>): void {
-    this.imageCallbackCallback = cb
-  }
-
-  /**
-   * 设置图片下载的点击事件
-   *
-   * @param cb 图片下载的点击事件。 (funcArg0：图片url)
-   */
-  setImageDownloadCallback(cb: (funcArg0: string) => void): void {
-    this.imageDownloadCallback = cb
-  }
-
-  /**
-   * 设置音频点击回调
-   *
-   * @param cb 音频点击回调(funcArg0：音频url) --- 需要加载音频解析插件
-   */
-  setAudioCallback(cb: (funcArg0: string) => void): void {
-    this.audioCallback = cb
-  }
-
-  /**
-   * 设置视频点击回调
-   *
-   * @param cb 视频点击回调。 (funcArg0：视频url,funcArg1:所有图片和视频连接集合 --- 需要加载图片视频列表url集合列表解析插件) --- 需要加载视频解析插件
-   */
-  setVideoCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void {
-    this.videoCallback = cb
-  }
-
-  /**
-   * 设置视频占位图和宽高比和视频时长的回调
-   *
-   * @param cb 视频视频占位图和宽高比和视频时长回调。 (funcArg0：视频url,funcArg1:视频占位图和宽高比和视频时长回调 (funcArgfuncArg0:视频首帧图,funcArgfuncArg1:图片宽高比,funcArgfuncArg2,视频时长)) --- 需要加载视频解析插件
-   */
-  setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void {
-    this.videoImageCallback = cb
-  }
-
-  /**
-   * 设置视频发布的点击事件
-   *
-   * @param cb 视频发布的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
-   */
-  setVideoReleaseCallback(cb: (funcArg0: string) => void): void {
-    this.videoReleaseCallback = cb
-  }
-
-  /**
-   * 设置视频下载的点击事件
-   *
-   * @param cb 视频下载的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
-   */
-  setVideoDownloadCallback(cb: (funcArg0: string) => void): void {
-    this.videoDownloadCallback = cb
-  }
-
-  /**
-   * 设置代码复制点击回调
-   *
-   * @param cb 代码复制点击回调(funcArg0：代码内容)
-   */
-  setCodeCopyCallback(cb: (funcArg0: string) => void): void {
-    this.codeCopyCallback = cb
-  }
-
-  /**
-   * 设置代码全屏点击回调
-   *
-   * @param cb 代码全屏点击回调(funcArg0：代码内容, funcArg1:代码类型)
-   */
-  setCodeFullScreenCallback(cb: (funcArg0: string, funcArg1: string | undefined) => void): void {
-    this.codeFullScreenCallback = cb
-  }
-
-  /**
-   * 设置TOC点击回调
-   *
-   * @param cb TOC点击回调(funcArg0：偏移量) --- 需要加载TOC解析插件
-   */
-  setTocIndexCallback(cb: (funcArg0: number | undefined) => void): void {
-    this.tocIndexCallback = cb
-  }
-
-  /**
-   * 设置脚注点击回调
-   *
-   * @param cb 脚注点击回调(funcArg0：偏移量) --- 需要加载脚注解析插件
-   */
-  setFootnoteCallback(cb: (funcArg0: number | undefined) => void): void {
-    this.footnoteCallback = cb
-  }
-
-  /**
-   * 设置markdown样式
-   *
-   * @param markdownTheme markdown样式
-   */
-  setMarkdownTheme(markdownTheme: MarkdownTheme): void {
-    this.markdownTheme = markdownTheme
-  }
-}
-
-/**
- * Markdown用户可设置的样式
- */
-export class MarkdownTheme {
-  /**
-   * 上下文
-   */
-  context?: Context = undefined
-  /**
-   * 代码块全屏图片icon
-   */
-  codeFullScreenIcon?: Resource = undefined
-  /**
-   * 代码块复制图片icon
-   */
-  codeCopyIcon?: Resource = undefined
-  /**
-   * 音频图片icon
-   */
-  audioIcon?: Resource = undefined
-  /**
-   * 视频默认占位图
-   */
-  videoImage?: Resource = undefined
-  /**
-   * 视频播放按钮icon
-   */
-  playCircleFillIcon?: Resource = undefined
-  /**
-   * banner默认占位图
-   */
-  bannerImage?: Resource = undefined
-  /**
-   * 图片默认占位图
-   */
-  imageResource?: Resource = undefined
-  /**
-   * 视频发布默认图标
-   */
-  videoReleaseImage?: Resource = undefined
-  /**
-   * 视频下载默认图标
-   */
-  videoDownloadImage?: Resource = undefined
-  /**
-   * 图片下载默认图标
-   */
-  imageDownloadImage?: Resource = undefined
-  /**
-   * markdown是否同步解析
-   */
-  isMarkdownParserSync?: boolean = undefined
-  /**
-   * 是否打开长按复制粘贴
-   */
-  isOnCopy?: boolean = undefined
-  /**
-   * markdown第一个模块上边距
-   */
-  blockFirstTopMargin?: number = undefined
-  /**
-   * markdown最后一个模块下边距
-   */
-  blockLastBottomMargin?: number = undefined
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMargins?: number = undefined
-  /**
-   * 链接是否是图片显示
-   */
-  isLinkStyle?: boolean = undefined
-  /**
-   * 列表中的单行链接是否是图片显示
-   */
-  isListLinkStyle?: boolean = undefined
-  /**
-   * 文本格式链接文本颜色
-   */
-  linkColor?: number = undefined
-  /**
-   * 文本格式链接文字大小
-   */
-  isLinkSize?: boolean = undefined
-  /**
-   * 文本格式链接文字大小
-   */
-  linkSize?: number = undefined
-  /**
-   * 文本格式链接文字行高
-   */
-  linkLineHeight?: number = undefined
-  /**
-   * 文本格式链接背景颜色
-   */
-  linkBackGroupColor?: number = undefined
-  /**
-   * 文本格式是否显示链接下划线
-   */
-  isLinkUnderlined?: boolean = undefined
-  /**
-   * 圆形图片格式链接主题背景颜色
-   */
-  linkCircleImageBackGroupColor?: number = undefined
-  /**
-   * 圆形图片格式链接控件背景颜色
-   */
-  linkCircleImageButtonBackGroupColor?: number = undefined
-  /**
-   * 圆形图片格式链接文字大小
-   */
-  linkCircleImageTextSize?: number = undefined
-  /**
-   * 圆形图片格式链接文字颜色
-   */
-  linkCircleImageTextColor?: number = undefined
-  /**
-   * 圆形图片格式链接半径
-   */
-  linkCircleImageRadius?: number = undefined
-  /**
-   * 圆形图片格式链接左右外边距
-   */
-  linkCircleImageMargin?: number = undefined
-  /**
-   * 圆角矩形图片格式链接主题背景颜色
-   */
-  linkRectImageBackGroupColor?: number = undefined
-  /**
-   * 圆角矩形图片格式链接控件背景颜色
-   */
-  linkRectImageButtonBackGroupColor?: number = undefined
-  /**
-   * 圆角矩形图片格式链接文字大小
-   */
-  linkRectImageTextSize?: number = undefined
-  /**
-   * 圆角矩形图片格式链接文字颜色
-   */
-  linkRectImageTextColor?: number = undefined
-  /**
-   * 圆角矩形图片格式链接控件高度
-   */
-  linkRectImageHeight?: number = undefined
-  /**
-   * 圆角矩形图片格式链接左右内边距
-   */
-  linkRectImagePadding?: number = undefined
-  /**
-   * 圆角矩形图片格式链接圆角半径
-   */
-  linkRectImageRadius?: number = undefined
-  /**
-   * 圆角矩形图片格式链接左右外边距
-   */
-  linkRectImageMargin?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接主题背景颜色
-   */
-  linkRectToolImageBackGroupColor?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接控件背景颜色
-   */
-  linkRectToolImageButtonBackGroupColor?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接文字大小
-   */
-  linkRectToolImageTextSize?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接控件高度
-   */
-  linkRectToolImageHeight?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接左右内边距
-   */
-  linkRectToolImagePadding?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接边框宽度
-   */
-  linkRectToolImageBorderWidth?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接分割线宽度
-   */
-  linkRectToolImageDividingLineWidth?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接左右外边距
-   */
-  linkRectToolImageMargin?: number = undefined
-  /**
-   * 空心圆角矩形图片格式分割线和文本左边距
-   */
-  linkRectToolImageLineLeftPadding?: number = undefined
-  /**
-   * 空心圆角矩形图片格式分割线和文本右边距
-   */
-  linkRectToolImageLineRightPadding?: number = undefined
-  /**
-   * 块引用左边距
-   */
-  blockQuoteLeftMargin?: number = undefined
-  /**
-   * 块引用右边距
-   */
-  blockQuoteRightMargin?: number = undefined
-  /**
-   * 块引用左边线条宽度
-   */
-  blockQuoteWidth?: number = undefined
-  /**
-   * 块引用左边线条颜色
-   */
-  blockQuoteColor?: number = undefined
-  /**
-   * 块引用背景颜色
-   */
-  blockQuoteBackGroupColor?: number = undefined
-  /**
-   * 块引用子模块上下间距
-   */
-  blockQuoteTopAndBottomMargins?: number = undefined
-  /**
-   * 有序列表、无序列表、任务列表子模块上下间距
-   */
-  blockOrderedAndBulletTopAndBottomMargins?: number = undefined
-  /**
-   * 有序列表、无序列表、任务列表左边距
-   */
-  blockLeftMargin?: number = undefined
-  /**
-   * 有序列表、无序列表、任务列表右边距
-   */
-  blockRightMargin?: number = undefined
-  /**
-   * 有序列表前缀文本是否加粗
-   */
-  orderedListItemPrefixBold?: boolean = undefined
-  /**
-   * 有序列表前缀文本颜色
-   */
-  orderedListItemColor?: number = undefined
-  /**
-   * 有序列表前缀文本大小
-   */
-  orderedListItemSize?: number = undefined
-  /**
-   * 有序列表前缀文本行高
-   */
-  orderedListItemLineHeight?: number = undefined
-  /**
-   * 无序列表前缀是否全部是实心圆型
-   */
-  bulletListItemCircle?: boolean = undefined
-  /**
-   * 无序列表前缀文本颜色
-   */
-  bulletListItemColor?: number = undefined
-  /**
-   * 无序列表前缀文本大小
-   */
-  bulletListItemSize?: number = undefined
-  /**
-   * 无序列表前缀文本行高
-   */
-  bulletListItemLineHeight?: number = undefined
-  /**
-   * 任务列表选择框宽高
-   */
-  taskListItemLength?: number = undefined
-  /**
-   * 设置是否格式化代码块内容
-   */
-  isCodeFormat?: boolean = undefined
-  /**
-   * 内联代码文本颜色
-   */
-  codeTextColor?: number = undefined
-  /**
-   * 内联代码背景颜色
-   */
-  codeBackgroundColor?: number = undefined
-  /**
-   * 内联代码文本大小
-   */
-  codeTextSize?: number = undefined
-  /**
-   * 内联代码文本字体
-   */
-  codeTypeface?: string = undefined
-  /**
-   * 围栏代码块代码高亮是否同步解析
-   */
-  isCodeBlockParserSync?: boolean = undefined
-  /**
-   * 代码块代码文本颜色
-   */
-  codeBlockTextColor?: number = undefined
-  /**
-   * 代码块代码类型文本颜色
-   */
-  codeBlockTypeTextColor?: number = undefined
-  /**
-   * 代码块代码类型文本
-   */
-  codeBlockTypeTextStr?: string = undefined
-  /**
-   * 代码类型和代码块距离
-   */
-  codeBlockTypeTextPadding?: number = undefined
-  /**
-   * 代码块复制、全屏图片文字是否显示
-   */
-  codeBlockIconTextHide?: boolean = undefined
-  /**
-   * 代码块代码行号是否显示
-   */
-  codeBlockLineNumberHide?: boolean = undefined
-  /**
-   * 代码块背景颜色
-   */
-  codeBlockBackgroundColor?: number = undefined
-  /**
-   * 代码块左边距
-   */
-  codeMultilineMargin?: number = undefined
-  /**
-   * 代码块字体
-   */
-  codeBlockTypeface?: string = undefined
-  /**
-   * 代码块代码文本大小
-   */
-  codeBlockTextSize?: number = undefined
-  /**
-   * 代码块代码文本行高
-   */
-  codeBlockLineHeight?: number = undefined
-  /**
-   * 代码块控件圆角大小
-   */
-  codeBlockRadius?: number = undefined
-  /**
-   * 代码块代码全屏按钮是否显示
-   */
-  isCodeFullScreen?: boolean = undefined
-  /**
-   * 代码块代码全屏、代码复制按钮宽高
-   */
-  iconWidthAndHeight?: number = undefined
-  /**
-   * 组合代码未选中标题字体大小
-   */
-  codeListTitleTextSize?: number = undefined
-  /**
-   * 组合代码选中标题字体大小
-   */
-  codeListTitleSelectTextSize?: number = undefined
-  /**
-   * 组合代码选中标题文本颜色
-   */
-  codeListTitleSelectTextColor?: number = undefined
-  /**
-   * 组合代码未选中标题文本颜色
-   */
-  codeListTitleUnSelectTextColor?: number = undefined
-  /**
-   * 组合代码选中标题背景颜色
-   */
-  codeListTitleSelectBackGroupColor?: number = undefined
-  /**
-   * 组合代码未选中标题背景颜色
-   */
-  codeListTitleUnSelectBackGroupColor?: number = undefined
-  /**
-   * 是否单独代码块显示
-   */
-  isSeparateCodeBlock?: boolean = undefined
-  /**
-   * 单独代码块行号宽度
-   */
-  separateCodeBlockWidth?: number = undefined
-  /**
-   * 单独代码块是否居底显示
-   */
-  separateCodeIsBottom?: boolean = undefined
-  /**
-   * H1、H2标题下分割线高度
-   */
-  headingBreakHeight?: number = undefined
-  /**
-   * 标题文本字体
-   */
-  headingTypeface?: string = undefined
-  /**
-   * 标题模块上间距
-   */
-  headingTopMargins?: number = undefined
-  /**
-   * 标题模块下间距
-   */
-  headingBottomMargins?: number = undefined
-  /**
-   * 一级标题文本大小
-   */
-  headingTextSize1?: number = undefined
-  /**
-   * 二级标题文本大小
-   */
-  headingTextSize2?: number = undefined
-  /**
-   * 三级标题文本大小
-   */
-  headingTextSize3?: number = undefined
-  /**
-   * 四级标题文本大小
-   */
-  headingTextSize4?: number = undefined
-  /**
-   * 五级标题文本大小
-   */
-  headingTextSize5?: number = undefined
-  /**
-   * 六级标题文本大小
-   */
-  headingTextSize6?: number = undefined
-  /**
-   * 标题文本字间距
-   */
-  headingTextWordSpace?: number = undefined
-  /**
-   * 一级标题文本行高
-   */
-  headingTextLineHeight1?: number = undefined
-  /**
-   * 二级标题文本行高
-   */
-  headingTextLineHeight2?: number = undefined
-  /**
-   * 三级标题文本行高
-   */
-  headingTextLineHeight3?: number = undefined
-  /**
-   * 四级标题文本行高
-   */
-  headingTextLineHeight4?: number = undefined
-  /**
-   * 五级标题文本行高
-   */
-  headingTextLineHeight5?: number = undefined
-  /**
-   * 六级标题文本行高
-   */
-  headingTextLineHeight6?: number = undefined
-  /**
-   * 一级标题文本颜色
-   */
-  headingTextColor1?: number = undefined
-  /**
-   * H1标题下分割线颜色
-   */
-  headingBreakColor1?: number = undefined
-  /**
-   * 二级标题文本颜色
-   */
-  headingTextColor2?: number = undefined
-  /**
-   * H2标题下分割线颜色
-   */
-  headingBreakColor2?: number = undefined
-  /**
-   * 三级标题文本颜色
-   */
-  headingTextColor3?: number = undefined
-  /**
-   * 四级标题文本颜色
-   */
-  headingTextColor4?: number = undefined
-  /**
-   * 五级标题文本颜色
-   */
-  headingTextColor5?: number = undefined
-  /**
-   * 六级标题文本颜色
-   */
-  headingTextColor6?: number = undefined
-  /**
-   * 段落模块上间距
-   */
-  paragraphTopMargins?: number = undefined
-  /**
-   * 段落模块下间距
-   */
-  paragraphBottomMargins?: number = undefined
-  /**
-   * 段落文本大小
-   */
-  paragraphTextSize?: number = undefined
-  /**
-   * 段落文本颜色
-   */
-  paragraphTextColor?: number = undefined
-  /**
-   * 段落文本字间距
-   */
-  paragraphTextWordSpace?: number = undefined
-  /**
-   * 段落文本行高
-   */
-  paragraphTextLineHeight?: number = undefined
-  /**
-   * 段落文本字体
-   */
-  paragraphTypeface?: string = undefined
-  /**
-   * 分割线颜色
-   */
-  thematicBreakColor?: number = undefined
-  /**
-   * 分割线高度
-   */
-  thematicBreakHeight?: number = undefined
-  /**
-   * 分割线上部外边距
-   */
-  thematicBreakTopMargin?: number = undefined
-  /**
-   * 分割线下部外边距
-   */
-  thematicBreakBottomMargin?: number = undefined
-  /**
-   * 软换行是否换行
-   */
-  isLineBreak?: boolean = undefined
-  /**
-   * 音频阴影颜色值
-   */
-  audioShadowColor?: number = undefined
-  /**
-   * 音频边框颜色
-   */
-  audioBorderColor?: number = undefined
-  /**
-   * 音频边框粗细
-   */
-  audioBorderWidth?: number = undefined
-  /**
-   * 音频边框圆角
-   */
-  audioBorderRadius?: number = undefined
-  /**
-   * 音频按钮背景颜色
-   */
-  audioButtonBackgroundColor?: number = undefined
-  /**
-   * 音频按钮文字颜色
-   */
-  audioButtonTextColor?: number = undefined
-  /**
-   * 音频按钮文字大小
-   */
-  audioButtonTextSize?: number = undefined
-  /**
-   * 音频按钮文字内容
-   */
-  audioButtonText?: string = undefined
-  /**
-   * 音频按钮圆角
-   */
-  audioButtonBorderRadius?: number = undefined
-  /**
-   * 音频标题文字大小
-   */
-  audioTitleTextSize?: number = undefined
-  /**
-   * 音频标题文字颜色
-   */
-  audioTitleTextColor?: number = undefined
-  /**
-   * 音频标题文字行高
-   */
-  audioTitleTextLineHeight?: number = undefined
-  /**
-   * 音频类型文字大小
-   */
-  audioTypeTextSize?: number = undefined
-  /**
-   * 音频类型文字颜色
-   */
-  audioTypeTextColor?: number = undefined
-  /**
-   * 音频类型文字行高
-   */
-  audioTypeTextLineHeight?: number = undefined
-  /**
-   * 音频上边距
-   */
-  audioMarginTop?: number = undefined
-  /**
-   * 音频下边距
-   */
-  audioMarginBottom?: number = undefined
-  /**
-   * 视频圆角
-   */
-  videoBorderRadius?: number = undefined
-  /**
-   * 视频时间文本颜色
-   */
-  videoTimeTextColor?: number = undefined
-  /**
-   * 视频时间文本大小
-   */
-  videoTimeTextSize?: number = undefined
-  /**
-   * 视频时间文本居右边距
-   */
-  videoTimeTextMarginRight?: number = undefined
-  /**
-   * 视频时间文本居底边距
-   */
-  videoTimeTextMarginBottom?: number = undefined
-  /**
-   * 视频上边距
-   */
-  videoMarginTop?: number = undefined
-  /**
-   * 视频下边距
-   */
-  videoMarginBottom?: number = undefined
-  /**
-   * 视频发布/下载按钮布局是否显示
-   */
-  isVideoBottomLayout?: boolean = undefined
-  /**
-   * 视频发布按钮图片宽度和高度
-   */
-  videoReleaseImageWidthHeight?: number = undefined
-  /**
-   * 视频发布按钮宽度
-   */
-  videoReleaseWidth?: number = undefined
-  /**
-   * 视频发布按钮高度
-   */
-  videoReleaseHeight?: number = undefined
-  /**
-   * 视频发布按钮圆角
-   */
-  videoReleaseRadius?: number = undefined
-  /**
-   * 视频发布按钮文本内容
-   */
-  videoReleaseText?: string = undefined
-  /**
-   * 视频发布按钮文本大小
-   */
-  videoReleaseTexSize?: number = undefined
-  /**
-   * 视频发布按钮文本颜色
-   */
-  videoReleaseTexColor?: number = undefined
-  /**
-   * 视频发布按钮背景颜色
-   */
-  videoReleaseBackgroundColor?: number = undefined
-  /**
-   * 视频下载按钮图片宽度和高度
-   */
-  videoDownloadImageWidthHeight?: number = undefined
-  /**
-   * 视频下载按钮宽度
-   */
-  videoDownloadWidth?: number = undefined
-  /**
-   * 视频下载按钮高度
-   */
-  videoDownloadHeight?: number = undefined
-  /**
-   * 视频下载按钮圆角
-   */
-  videoDownloadRadius?: number = undefined
-  /**
-   * 视频下载按钮文本内容
-   */
-  videoDownloadText?: string = undefined
-  /**
-   * 视频下载按钮文本大小
-   */
-  videoDownloadTexSize?: number = undefined
-  /**
-   * 视频下载按钮文本颜色
-   */
-  videoDownloadTexColor?: number = undefined
-  /**
-   * 视频下载按钮背景颜色
-   */
-  videoDownloadBackgroundColor?: number = undefined
-  /**
-   * 图片缩放类型
-   */
-  imageFitType?: ImageFitType = undefined
-  /**
-   * 图片最大宽度百分比
-   */
-  imageMaximumWidth?: number = undefined
-  /**
-   * 图片固定宽度百分比
-   */
-  imageFixedRatioWidth?: number = undefined
-  /**
-   * 图片最大高度
-   */
-  imageMaxHeight?: number = undefined
-  /**
-   * 图片最大宽度
-   */
-  imageMaxWidth?: number = undefined
-  /**
-   * 图片圆角大小
-   */
-  imageBorderRadius?: number = undefined
-  /**
-   * 图片圆角大小
-   */
-  imageBorderWidth?: number = undefined
-  /**
-   * 图片圆角大小
-   */
-  imageBorderColor?: number = undefined
-  /**
-   * 网络图片是否压缩
-   */
-  isAutoResize?: boolean = undefined
-  /**
-   * 图片上边距
-   */
-  imageMarginTop?: number = undefined
-  /**
-   * 图片下边距
-   */
-  imageMarginBottom?: number = undefined
-  /**
-   * 图片是否有下载按钮
-   */
-  isImageDownload?: boolean = undefined
-  /**
-   * 是否图文混排
-   */
-  isImageMixedLayout?: boolean = undefined
-  /**
-   * 图片下载按钮图片宽度和高度
-   */
-  imageDownloadImageWidthHeight?: number = undefined
-  /**
-   * 图片下载按钮宽度
-   */
-  imageDownloadWidth?: number = undefined
-  /**
-   * 图片下载按钮高度
-   */
-  imageDownloadHeight?: number = undefined
-  /**
-   * 图片下载按钮圆角
-   */
-  imageDownloadRadius?: number = undefined
-  /**
-   * 图片下载按钮文本内容
-   */
-  imageDownloadText?: string = undefined
-  /**
-   * 图片下载按钮文本大小
-   */
-  imageDownloadTexSize?: number = undefined
-  /**
-   * 图片下载按钮文本颜色
-   */
-  imageDownloadTexColor?: number = undefined
-  /**
-   * 图片下载按钮背景颜色
-   */
-  imageDownloadBackgroundColor?: number = undefined
-  /**
-   * 表格内容内边距
-   */
-  tableCellPadding?: number = undefined
-  /**
-   * 表格边框颜色
-   */
-  tableBorderColor?: number = undefined
-  /**
-   * 表格边框宽度
-   */
-  tableBorderWidth?: number = undefined
-  /**
-   * 表格奇数行背景色
-   */
-  tableOddRowBackgroundColor?: number = undefined
-  /**
-   * 表格偶数行背景色
-   */
-  tableEvenRowBackgroundColor?: number = undefined
-  /**
-   * 表格标题背景色
-   */
-  tableHeaderRowBackgroundColor?: number = undefined
-  /**
-   * 表格标题文本颜色
-   */
-  tableTitleTextColor?: number = undefined
-  /**
-   * 表格标题文本大小
-   */
-  tableTitleTextSize?: number = undefined
-  /**
-   * 表格标题文本行高
-   */
-  tableTitleLineHeight?: number = undefined
-  /**
-   * 表格内容文本颜色
-   */
-  tableContentTextColor?: number = undefined
-  /**
-   * 表格内容文本大小
-   */
-  tableContentTextSize?: number = undefined
-  /**
-   * 表格文本行高
-   */
-  tableTextLineHeight?: number = undefined
-  /**
-   * 表格圆角
-   */
-  tableRadius?: number = undefined
-  /**
-   * 表格最小宽度
-   */
-  tableMinTextWidth?: number = undefined
-  /**
-   * 表格最大宽度
-   */
-  tableMaxTextWidth?: number = undefined
-  /**
-   * 表格第一列是否加粗
-   */
-  tableFirstColumnBold?: boolean = undefined
-  /**
-   * 表格是否显示滚动条
-   */
-  tableScrollBarShow?: boolean = undefined
-  /**
-   * 表格滚动条颜色
-   */
-  tableScrollBarColor?: number = undefined
-  /**
-   * 代码深浅色模式
-   */
-  isDark?: boolean = undefined
-  /**
-   * 删除线颜色
-   */
-  strikethroughColor?: number = undefined
-  /**
-   * 删除线样式
-   */
-  strikethroughStyle?: TextDecorationStyle = undefined
-  /**
-   * 定义列表定义行缩进
-   */
-  descListTermAndDefMargins?: number = undefined
-  /**
-   * 定义列表定义行缩进
-   */
-  descListDefIndentation?: number = undefined
-  /**
-   * 定义列表定义行间距
-   */
-  descListDefMargins?: number = undefined
-  /**
-   * 下标字体颜色
-   */
-  subTextColor?: number = undefined
-  /**
-   * 下标字体大小
-   */
-  subTextSize?: number = undefined
-  /**
-   * 下标偏移距离
-   */
-  subOffsetDist?: number = undefined
-  /**
-   * 上标字体颜色
-   */
-  supTextColor?: number = undefined
-  /**
-   * 上标字体大小
-   */
-  supTextSize?: number = undefined
-  /**
-   * 上标偏移距离
-   */
-  supOffsetDist?: number = undefined
-  /**
-   * 下划线颜色
-   */
-  underlineColor?: number = undefined
-  /**
-   * 下划线样式
-   */
-  underlineStyle?: TextDecorationStyle = undefined
-  /**
-   * markdown是否支持滚动手势
-   */
-  openGestureSwipe?: boolean = undefined
-  /**
-   * codeformat是否用制表符
-   */
-  useTab?: boolean = undefined
-  /**
-   * codeformat空格缩进数量，默认4空格
-   */
-  indentWidth?: number = undefined
-
-  /**
-   * 设置上下文
-   *
-   * @param context 上下文
-   */
-  setContext(context: Context): void {
-    this.context = context
-  }
-
-  /**
-   * 设置代码块全屏图片icon
-   *
-   * @param codeFullScreenIcon 代码块全屏图片icon
-   */
-  setCodeFullScreenIcon(codeFullScreenIcon: Resource): void {
-    this.codeFullScreenIcon = codeFullScreenIcon
-  }
-
-  /**
-   * 设置代码块复制图片icon
-   *
-   * @param codeCopyIcon 代码块复制图片icon
-   */
-  setCodeCopyIcon(codeCopyIcon: Resource): void {
-    this.codeCopyIcon = codeCopyIcon
-  }
-
-  /**
-   * 设置音频图片icon
-   *
-   * @param audioIcon 音频图片icon
-   */
-  setAudioIcon(audioIcon: Resource): void {
-    this.audioIcon = audioIcon
-  }
-
-  /**
-   * 设置视频默认占位图
-   *
-   * @param videoImage 视频默认占位图
-   */
-  setVideoImage(videoImage: Resource): void {
-    this.videoImage = videoImage
-  }
-
-  /**
-   * 设置视频播放按钮icon
-   *
-   * @param playCircleFillIcon 视频播放按钮icon
-   */
-  setPlayCircleFillIcon(playCircleFillIcon: Resource): void {
-    this.playCircleFillIcon = playCircleFillIcon
-  }
-
-  /**
-   * 设置banner占位图
-   *
-   * @param bannerImage banner占位图
-   */
-  setBannerImage(bannerImage: Resource): void {
-    this.bannerImage = bannerImage
-  }
-
-  /**
-   * 设置图片占位图
-   *
-   * @param imageResource 图片占位图
-   */
-  setImageResource(imageResource: Resource): void {
-    this.imageResource = imageResource
-  }
-
-  /**
-   * 设置视频发布默认图标
-   *
-   * @param videoReleaseImage 视频发布默认图标
-   */
-  setVideoReleaseImage(videoReleaseImage: Resource): void {
-    this.videoReleaseImage = videoReleaseImage
-  }
-
-  /**
-   * 设置视频下载默认图标
-   *
-   * @param videoDownloadImage 视频下载默认图标
-   */
-  setVideoDownloadImage(videoDownloadImage: Resource): void {
-    this.videoDownloadImage = videoDownloadImage
-  }
-
-  /**
-   * 设置图片下载默认图标
-   *
-   * @param imageDownloadImage 图片下载默认图标
-   */
-  setImageDownloadImage(imageDownloadImage: Resource): void {
-    this.imageDownloadImage = imageDownloadImage
-  }
-
-  /**
-   * 设置markdown是否同步解析
-   *
-   * @param isMarkdownParserSync markdown是否同步解析 - 默认false
-   */
-  setIsMarkdownParserSync(isMarkdownParserSync: boolean): void {
-    this.isMarkdownParserSync = isMarkdownParserSync
-  }
-
-  /**
-   * 设置是否打开长按复制粘贴
-   *
-   * @param isOnCopy 是否打开长按复制粘贴 - 默认true
-   */
-  setIsOnCopy(isOnCopy: boolean): void {
-    this.isOnCopy = isOnCopy
-  }
-
-  /**
-   * 设置markdown第一个模块上边距
-   *
-   * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
-   */
-  setBlockFirstTopMargin(blockFirstTopMargin: number): void {
-    this.blockFirstTopMargin = blockFirstTopMargin
-  }
-
-  /**
-   * 设置markdown最后一个模块下边距
-   *
-   * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
-   */
-  setBlockLastBottomMargin(blockLastBottomMargin: number): void {
-    this.blockLastBottomMargin = blockLastBottomMargin
-  }
-
-  /**
-   * 设置模块间上下间距
-   *
-   * @param blockTopAndBottomMargins 模块间上下间距 - 默认8.0vp
-   */
-  setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): void {
-    this.blockTopAndBottomMargins = blockTopAndBottomMargins
-  }
-
-  /**
-   * 设置链接是否是图片显示
-   *
-   * @param isLinkStyle 链接是否是图片显示 - true：图片显示；false：文本显示。默认false
-   */
-  setIsLinkStyle(isLinkStyle: boolean): void {
-    this.isLinkStyle = isLinkStyle
-  }
-
-  /**
-   * 设置列表中的单行链接是否是图片显示
-   *
-   * @param isListLinkStyle 列表中的单行链接是否是图片显示 - true：图片显示；false：文本显示。默认false
-   */
-  setIsListLinkStyle(isListLinkStyle: boolean): void {
-    this.isListLinkStyle = isListLinkStyle
-  }
-
-  /**
-   * 设置文本格式链接文本颜色
-   *
-   * @param linkColor 文本格式链接文本颜色 - 默认0XFF0000FF
-   */
-  setLinkColor(linkColor: number): void {
-    this.linkColor = linkColor
-  }
-
-  /**
-   * 设置是否按照链接文本字体大小显示文本
-   *
-   * @param isLinkSize 是否按照链接文本字体大小显示文本 - true：显示链接字体文本大小；false：跟随标题段落大小显示。默认true
-   */
-  setIsLinkSize(isLinkSize: boolean): void {
-    this.isLinkSize = isLinkSize
-  }
-
-  /**
-   * 设置文本格式链接文字大小
-   *
-   * @param linkSize 文本格式链接文字大小 - 默认14.0fp
-   */
-  setLinkSize(linkSize: number): void {
-    this.linkSize = linkSize
-  }
-
-  /**
-   * 设置文本格式链接文字行高
-   *
-   * @param linkLineHeight 文本格式链接文字行高
-   */
-  setLinkLineHeight(linkLineHeight: number): void {
-    this.linkLineHeight = linkLineHeight
-  }
-
-  /**
-   * 设置文本格式链接背景颜色
-   *
-   * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
-   */
-  setLinkBackGroupColor(linkBackGroupColor: number): void {
-    this.linkBackGroupColor = linkBackGroupColor
-  }
-
-  /**
-   * 设置文本格式是否显示链接下划线
-   *
-   * @param isLinkUnderlined 文本格式是否显示链接下划线 - true：显示下划线；false：不显示下划线。默认true
-   */
-  setIsLinkUnderlined(isLinkUnderlined: boolean): void {
-    this.isLinkUnderlined = isLinkUnderlined
-  }
-
-  /**
-   * 设置圆形图片格式链接主题背景颜色
-   *
-   * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-   */
-  setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void {
-    this.linkCircleImageBackGroupColor = linkCircleImageBackGroupColor
-  }
-
-  /**
-   * 设置圆形图片格式链接控件背景颜色
-   *
-   * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0XFF000000
-   */
-  setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void {
-    this.linkCircleImageButtonBackGroupColor = linkCircleImageButtonBackGroupColor
-  }
-
-  /**
-   * 设置圆形图片格式链接文字大小
-   *
-   * @param linkCircleImageTextSize 圆形图片格式链接文字大小 - 默认14.0fp
-   */
-  setLinkCircleImageTextSize(linkCircleImageTextSize: number): void {
-    this.linkCircleImageTextSize = linkCircleImageTextSize
-  }
-
-  /**
-   * 设置圆形图片格式链接文字颜色
-   *
-   * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认0XFFFFFFFF
-   */
-  setLinkCircleImageTextColor(linkCircleImageTextColor: number): void {
-    this.linkCircleImageTextColor = linkCircleImageTextColor
-  }
-
-  /**
-   * 设置圆形图片格式链接半径
-   *
-   * @param linkCircleImageRadius 圆形图片格式链接半径 - 默认20.0vp
-   */
-  setLinkCircleImageRadius(linkCircleImageRadius: number): void {
-    this.linkCircleImageRadius = linkCircleImageRadius
-  }
-
-  /**
-   * 设置圆形图片格式链接左右外边距
-   *
-   * @param linkCircleImageMargin 圆形图片格式链接左右外边距 - 默认6.0vp
-   */
-  setLinkCircleImageMargin(linkCircleImageMargin: number): void {
-    this.linkCircleImageMargin = linkCircleImageMargin
-  }
-
-  /**
-   * 设置圆角矩形图片格式链接主题背景颜色
-   *
-   * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-   */
-  setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: number): void {
-    this.linkRectImageBackGroupColor = linkRectImageBackGroupColor
-  }
-
-  /**
-   * 设置圆角矩形图片格式链接控件背景颜色
-   *
-   * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0XFF000000
-   */
-  setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: number): void {
-    this.linkRectImageButtonBackGroupColor = linkRectImageButtonBackGroupColor
-  }
-
-  /**
-   * 圆角矩形图片格式链接文字大小
-   *
-   * @param linkRectImageTextSize 圆角矩形图片格式链接文字大小 - 默认14.0fp
-   */
-  setLinkRectImageTextSize(linkRectImageTextSize: number): void {
-    this.linkRectImageTextSize = linkRectImageTextSize
-  }
-
-  /**
-   * 设置圆角矩形图片格式链接文字颜色
-   *
-   * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认0XFFFFFFFF
-   */
-  setLinkRectImageTextColor(linkRectImageTextColor: number): void {
-    this.linkRectImageTextColor = linkRectImageTextColor
-  }
-
-  /**
-   * 圆角矩形图片格式链接控件高度
-   *
-   * @param linkRectImageHeight 圆角矩形图片格式链接控件高度 - 默认20.0vp
-   */
-  setLinkRectImageHeight(linkRectImageHeight: number): void {
-    this.linkRectImageHeight = linkRectImageHeight
-  }
-
-  /**
-   * 圆角矩形图片格式链接左右内边距
-   *
-   * @param linkRectImagePadding 圆角矩形图片格式链接左右内边距 - 默认6.0vp
-   */
-  setLinkRectImagePadding(linkRectImagePadding: number): void {
-    this.linkRectImagePadding = linkRectImagePadding
-  }
-
-  /**
-   * 圆角矩形图片格式链接圆角半径
-   *
-   * @param linkRectImageRadius 圆角矩形图片格式链接圆角半径 - 默认6.0vp
-   */
-  setLinkRectImageRadius(linkRectImageRadius: number): void {
-    this.linkRectImageRadius = linkRectImageRadius
-  }
-
-  /**
-   * 圆角矩形图片格式链接左右外边距
-   *
-   * @param linkRectImageMargin 圆角矩形图片格式链接左右外边距 - 默认6.0vp
-   */
-  setLinkRectImageMargin(linkRectImageMargin: number): void {
-    this.linkRectImageMargin = linkRectImageMargin
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接主题背景颜色
-   *
-   * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-   */
-  setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void {
-    this.linkRectToolImageBackGroupColor = linkRectToolImageBackGroupColor
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接控件背景颜色
-   *
-   * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认OXFFFFFFFF
-   */
-  setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void {
-    this.linkRectToolImageButtonBackGroupColor = linkRectToolImageButtonBackGroupColor
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接文字大小
-   *
-   * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
-   */
-  setLinkRectToolImageTextSize(linkRectToolImageTextSize: number): void {
-    this.linkRectToolImageTextSize = linkRectToolImageTextSize
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接控件高度
-   *
-   * @param linkRectToolImageHeight 空心圆角矩形图片格式链接控件高度 - 默认21.0vp
-   */
-  setLinkRectToolImageHeight(linkRectToolImageHeight: number): void {
-    this.linkRectToolImageHeight = linkRectToolImageHeight
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接左右内边距
-   *
-   * @param linkRectToolImagePadding 空心圆角矩形图片格式链接左右内边距 - 默认6.0vp
-   */
-  setLinkRectToolImagePadding(linkRectToolImagePadding: number): void {
-    this.linkRectToolImagePadding = linkRectToolImagePadding
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接边框宽度
-   *
-   * @param linkRectToolImageBorderWidth 空心圆角矩形图片格式链接边框宽度 - 默认1.0vp
-   */
-  setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: number): void {
-    this.linkRectToolImageBorderWidth = linkRectToolImageBorderWidth
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接分割线宽度
-   *
-   * @param linkRectToolImageDividingLineWidth 空心圆角矩形图片格式链接分割线宽度 - 默认1.0vp
-   */
-  setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: number): void {
-    this.linkRectToolImageDividingLineWidth = linkRectToolImageDividingLineWidth
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接左右外边距
-   *
-   * @param linkRectToolImageMargin 空心圆角矩形图片格式链接左右外边距 - 默认6.0vp
-   */
-  setLinkRectToolImageMargin(linkRectToolImageMargin: number): void {
-    this.linkRectToolImageMargin = linkRectToolImageMargin
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式分割线和文本左边距
-   *
-   * @param linkRectToolImageLineLeftPadding 空心圆角矩形图片格式分割线和文本左边距 - 默认3.0vp
-   */
-  setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: number): void {
-    this.linkRectToolImageLineLeftPadding = linkRectToolImageLineLeftPadding
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式分割线和文本右边距
-   *
-   * @param linkRectToolImageLineRightPadding 空心圆角矩形图片格式分割线和文本右边距 - 默认3.0vp
-   */
-  setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: number): void {
-    this.linkRectToolImageLineRightPadding = linkRectToolImageLineRightPadding
-  }
-
-  /**
-   * 设置块引用左边距
-   *
-   * @param blockQuoteLeftMargin 块引用左边距 - 默认8.0vp
-   */
-  setBlockQuoteLeftMargin(blockQuoteLeftMargin: number): void {
-    this.blockQuoteLeftMargin = blockQuoteLeftMargin
-  }
-
-  /**
-   * 设置块引用右边距
-   *
-   * @param blockQuoteRightMargin 块引用右边距 - 默认8.0vp
-   */
-  setBlockQuoteRightMargin(blockQuoteRightMargin: number): void {
-    this.blockQuoteRightMargin = blockQuoteRightMargin
-  }
-
-  /**
-   * 设置块引用左边线条宽度
-   *
-   * @param blockQuoteWidth 块引用左边线条宽度 - 默认1.0vp
-   */
-  setBlockQuoteWidth(blockQuoteWidth: number): void {
-    this.blockQuoteWidth = blockQuoteWidth
-  }
-
-  /**
-   * 设置块引用左边线条颜色
-   *
-   * @param blockQuoteColor 块引用左边线条颜色 - 默认0XFF191919
-   */
-  setBlockQuoteColor(blockQuoteColor: number): void {
-    this.blockQuoteColor = blockQuoteColor
-  }
-
-  /**
-   * 设置块引用背景颜色
-   *
-   * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFEAEAEA
-   */
-  setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void {
-    this.blockQuoteBackGroupColor = blockQuoteBackGroupColor
-  }
-
-  /**
-   * 设置块引用子模块上下间距
-   *
-   * @param blockQuoteTopAndBottomMargins 块引用子模块上下间距 - 默认0.0vp
-   */
-  setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: number): void {
-    this.blockQuoteTopAndBottomMargins = blockQuoteTopAndBottomMargins
-  }
-
-  /**
-   * 设置有序列表、无序列表、任务列表子模块上下间距
-   *
-   * @param blockOrderedAndBulletTopAndBottomMargins 有序列表、无序列表、任务列表子模块上下间距 - 默认0.0vp
-   */
-  setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: number): void {
-    this.blockOrderedAndBulletTopAndBottomMargins = blockOrderedAndBulletTopAndBottomMargins
-  }
-
-  /**
-   * 设置有序列表、无序列表、任务列表左边距
-   *
-   * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
-   */
-  setBlockLeftMargin(blockLeftMargin: number): void {
-    this.blockLeftMargin = blockLeftMargin
-  }
-
-  /**
-   * 设置有序列表、无序列表、任务列表右边距
-   *
-   * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
-   */
-  setBlockRightMargin(blockRightMargin: number): void {
-    this.blockRightMargin = blockRightMargin
-  }
-
-  /**
-   * 设置有序列表前缀文本是否加粗
-   *
-   * @param orderedListItemPrefixBold 有序列表前缀文本是否加粗 - true：加粗；false：不加粗。默认false
-   */
-  setOrderedListItemPrefixBold(orderedListItemPrefixBold: boolean): void {
-    this.orderedListItemPrefixBold = orderedListItemPrefixBold
-  }
-
-  /**
-   * 设置有序列表前缀文本颜色
-   *
-   * @param orderedListItemColor 有序列表前缀文本颜色 - 默认OXFF191919
-   */
-  setOrderedListItemColor(orderedListItemColor: number): void {
-    this.orderedListItemColor = orderedListItemColor
-  }
-
-  /**
-   * 设置有序列表前缀文本大小
-   *
-   * @param orderedListItemSize 有序列表前缀文本大小 - 默认14.0fp
-   */
-  setOrderedListItemSize(orderedListItemSize: number): void {
-    this.orderedListItemSize = orderedListItemSize
-  }
-
-  /**
-   * 设置有序列表前缀文本行高
-   *
-   * @param orderedListItemLineHeight 有序列表前缀文本行高 - 默认22.0vp
-   */
-  setOrderedListItemLineHeight(orderedListItemLineHeight: number): void {
-    this.orderedListItemLineHeight = orderedListItemLineHeight
-  }
-
-  /**
-   * 设置无序列表前缀是否全部是实心圆型
-   *
-   * @param orderedListItemLineHeight 无序列表前缀是否全部是实心圆型 - 默认false
-   */
-  setBulletListItemCircle(bulletListItemCircle: boolean): void {
-    this.bulletListItemCircle = bulletListItemCircle
-  }
-
-  /**
-   * 设置无序列表前缀文本颜色
-   *
-   * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
-   */
-  setBulletListItemColor(bulletListItemColor: number): void {
-    this.bulletListItemColor = bulletListItemColor
-  }
-
-  /**
-   * 设置无序列表前缀文本大小
-   *
-   * @param bulletListItemSize 无序列表前缀文本大小 - 默认4.0fp
-   */
-  setBulletListItemSize(bulletListItemSize: number): void {
-    this.bulletListItemSize = bulletListItemSize
-  }
-
-  /**
-   * 设置无序列表前缀文本行高
-   *
-   * @param bulletListItemLineHeight 无序列表前缀文本行高 - 默认18.0vp
-   */
-  setBulletListItemLineHeight(bulletListItemLineHeight: number): void {
-    this.bulletListItemLineHeight = bulletListItemLineHeight
-  }
-
-  /**
-   * 设置任务列表选择框宽高
-   *
-   * @param taskListItemLength 任务列表选择框宽高 - 默认15.0vp
-   */
-  setTaskListItemLength(taskListItemLength: number): void {
-    this.taskListItemLength = taskListItemLength
-  }
-
-  /**
-   * 设置是否格式化代码块内容
-   *
-   * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
-   */
-  setIsCodeFormat(isCodeFormat: boolean): void {
-    this.isCodeFormat = isCodeFormat
-  }
-
-  /**
-   * 设置内联代码文本颜色
-   *
-   * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
-   */
-  setCodeTextColor(codeTextColor: number): void {
-    this.codeTextColor = codeTextColor
-  }
-
-  /**
-   * 设置内联代码背景颜色
-   *
-   * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
-   */
-  setCodeBackgroundColor(codeBackgroundColor: number): void {
-    this.codeBackgroundColor = codeBackgroundColor
-  }
-
-  /**
-   * 设置内联代码文本大小
-   *
-   * @param codeTextSize 内联代码文本大小 - 默认13.0fp
-   */
-  setCodeTextSize(codeTextSize: number): void {
-    this.codeTextSize = codeTextSize
-  }
-
-  /**
-   * 设置内联代码文本字体
-   *
-   * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
-   */
-  setCodeTypeface(codeTypeface: string): void {
-    this.codeTypeface = codeTypeface
-  }
-
-  /**
-   * 设置围栏代码块代码高亮是否同步解析
-   *
-   * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
-   */
-  setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void {
-    this.isCodeBlockParserSync = isCodeBlockParserSync
-  }
-
-  /**
-   * 设置代码块代码文本颜色
-   *
-   * @param codeBlockTextColor 代码块代码文本颜色 - 默认None
-   */
-  setCodeBlockTextColor(codeBlockTextColor: number): void {
-    this.codeBlockTextColor = codeBlockTextColor
-  }
-
-  /**
-   * 设置代码块代码类型文本颜色
-   *
-   * @param codeBlockTypeTextColor 代码块代码类型文本颜色 - 默认None
-   */
-  setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): void {
-    this.codeBlockTypeTextColor = codeBlockTypeTextColor
-  }
-
-  /**
-   * 设置代码块代码类型文本
-   *
-   * @param codeBlockTypeTextStr 代码块代码类型文本 - 默认""
-   */
-  setCodeBlockTypeTextStr(codeBlockTypeTextStr: string): void {
-    this.codeBlockTypeTextStr = codeBlockTypeTextStr
-  }
-
-  /**
-   * 设置代码类型和代码块距离
-   *
-   * @param codeBlockTypeTextPadding 代码类型和代码块距离 - 默认0.0
-   */
-  setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: number): void {
-    this.codeBlockTypeTextPadding = codeBlockTypeTextPadding
-  }
-
-  /**
-   * 设置代码块复制、全屏图片文字是否显示
-   *
-   * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
-   */
-  setCodeBlockIconTextHide(codeBlockIconTextHide: boolean): void {
-    this.codeBlockIconTextHide = codeBlockIconTextHide
-  }
-
-  /**
-   * 设置代码块代码行号是否显示
-   *
-   * @param codeBlockLineNumberHide 代码块代码行号是否显示 - true：显示；false：不显示。默认true
-   */
-  setCodeBlockLineNumberHide(codeBlockLineNumberHide: boolean): void {
-    this.codeBlockLineNumberHide = codeBlockLineNumberHide
-  }
-
-  /**
-   * 设置代码块背景颜色
-   *
-   * @param codeBlockBackgroundColor 代码块背景颜色 - 默认None
-   */
-  setCodeBlockBackgroundColor(codeBlockBackgroundColor: number): void {
-    this.codeBlockBackgroundColor = codeBlockBackgroundColor
-  }
-
-  /**
-   * 设置代码块左边距
-   *
-   * @param codeMultilineMargin 代码块左边距 - 默认8.0vp
-   */
-  setCodeMultilineMargin(codeMultilineMargin: number): void {
-    this.codeMultilineMargin = codeMultilineMargin
-  }
-
-  /**
-   * 设置代码块字体
-   *
-   * @param codeBlockTypeface 代码块字体 - 默认"HarmonyOS Sans"
-   */
-  setCodeBlockTypeface(codeBlockTypeface: string): void {
-    this.codeBlockTypeface = codeBlockTypeface
-  }
-
-  /**
-   * 设置代码块代码文本大小
-   *
-   * @param codeBlockTextSize 代码块代码文本大小 -  默认13.0fp
-   */
-  setCodeBlockTextSize(codeBlockTextSize: number): void {
-    this.codeBlockTextSize = codeBlockTextSize
-  }
-
-  /**
-   * 设置代码块代码文本行高
-   *
-   * @param codeBlockLineHeight 代码块代码文本行高 - 默认22.0vp
-   */
-  setCodeBlockLineHeight(codeBlockLineHeight: number): void {
-    this.codeBlockLineHeight = codeBlockLineHeight
-  }
-
-  /**
-   * 设置代码块控件圆角大小
-   *
-   * @param codeBlockRadius 代码块控件圆角大小 - 默认8.0vp
-   */
-  setCodeBlockRadius(codeBlockRadius: number): void {
-    this.codeBlockRadius = codeBlockRadius
-  }
-
-  /**
-   * 设置代码块代码全屏按钮是否显示
-   *
-   * @param isCodeFullScreen 代码块代码全屏按钮是否显示 - true：显示；false：不显示。默认true
-   */
-  setIsCodeFullScreen(isCodeFullScreen: boolean): void {
-    this.isCodeFullScreen = isCodeFullScreen
-  }
-
-  /**
-   * 设置代码块代码全屏、代码复制按钮宽高
-   *
-   * @param iconWidthAndHeight 代码块代码全屏、代码复制按钮宽高 - 默认24.0vp
-   */
-  setIconWidthAndHeight(iconWidthAndHeight: number): void {
-    this.iconWidthAndHeight = iconWidthAndHeight
-  }
-
-  /**
-   * 设置组合代码未选中标题字体大小
-   *
-   * @param codeListTitleTextSize 组合代码未选中标题字体大小 - 默认13.0fp
-   */
-  setCodeListTitleTextSize(codeListTitleTextSize: number): void {
-    this.codeListTitleTextSize = codeListTitleTextSize
-  }
-
-  /**
-   * 设置组合代码选中标题字体大小
-   *
-   * @param codeListTitleSelectTextSize 组合代码选中标题字体大小 - 默认13.0fp
-   */
-  setCodeListTitleSelectTextSize(codeListTitleSelectTextSize: number): void {
-    this.codeListTitleSelectTextSize = codeListTitleSelectTextSize
-  }
-
-  /**
-   * 设置组合代码选中标题文本颜色
-   *
-   * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认Color.RED
-   */
-  setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: number): void {
-    this.codeListTitleSelectTextColor = codeListTitleSelectTextColor
-  }
-
-  /**
-   * 设置组合代码未选中标题文本颜色
-   *
-   * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
-   */
-  setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: number): void {
-    this.codeListTitleUnSelectTextColor = codeListTitleUnSelectTextColor
-  }
-
-  /**
-   * 设置组合代码选中标题背景颜色
-   *
-   * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
-   */
-  setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: number): void {
-    this.codeListTitleSelectBackGroupColor = codeListTitleSelectBackGroupColor
-  }
-
-  /**
-   * 设置组合代码未选中标题背景颜色
-   *
-   * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
-   */
-  setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: number): void {
-    this.codeListTitleUnSelectBackGroupColor = codeListTitleUnSelectBackGroupColor
-  }
-
-  /**
-   * 设置是否单独代码块显示
-   *
-   * @param isSeparateCodeBlock 是否单独代码块显示 - true：显示；false：不显示。默认false
-   */
-  setIsSeparateCodeBlock(isSeparateCodeBlock: boolean): void {
-    this.isSeparateCodeBlock = isSeparateCodeBlock
-  }
-
-  /**
-   * 设置单独代码块行号宽度
-   *
-   * @param separateCodeBlockWidth 单独代码块行号宽度 - 默认50.0vp
-   */
-  setSeparateCodeBlockWidth(separateCodeBlockWidth: number): void {
-    this.separateCodeBlockWidth = separateCodeBlockWidth
-  }
-
-  /**
-   * 设置单独代码块是否居底显示
-   *
-   * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
-   */
-  setSeparateCodeIsBottom(separateCodeIsBottom: boolean): void {
-    this.separateCodeIsBottom = separateCodeIsBottom
-  }
-
-  /**
-   * 设置H1、H2标题下分割线高度
-   *
-   * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
-   */
-  setHeadingBreakHeight(headingBreakHeight: number): void {
-    this.headingBreakHeight = headingBreakHeight
-  }
-
-  /**
-   * 设置标题文本字体
-   *
-   * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
-   */
-  setHeadingTypeface(headingTypeface: string): void {
-    this.headingTypeface = headingTypeface
-  }
-
-  /**
-   * 设置标题模块上间距
-   *
-   * @param headingTopMargins 标题模块上间距 - 默认8.0
-   */
-  setHeadingTopMargins(headingTopMargins: number): void {
-    this.headingTopMargins = headingTopMargins
-  }
-
-  /**
-   * 设置标题模块下间距
-   *
-   * @param headingBottomMargins 标题模块下间距 - 默认8.0
-   */
-  setHeadingBottomMargins(headingBottomMargins: number): void {
-    this.headingBottomMargins = headingBottomMargins
-  }
-
-  /**
-   * 设置一级标题文本大小
-   *
-   * @param headingTextSize1 一级标题文本大小 - 默认20.0
-   */
-  setHeadingTextSize1(headingTextSize1: number): void {
-    this.headingTextSize1 = headingTextSize1
-  }
-
-  /**
-   * 设置二级标题文本大小
-   *
-   * @param headingTextSize2 二级标题文本大小 - 默认17.0
-   */
-  setHeadingTextSize2(headingTextSize2: number): void {
-    this.headingTextSize2 = headingTextSize2
-  }
-
-  /**
-   * 设置三级标题文本大小
-   *
-   * @param headingTextSize3 三级标题文本大小 - 默认16.0
-   */
-  setHeadingTextSize3(headingTextSize3: number): void {
-    this.headingTextSize3 = headingTextSize3
-  }
-
-  /**
-   * 设置四级标题文本大小
-   *
-   * @param headingTextSize4 四级标题文本大小 - 默认15.0
-   */
-  setHeadingTextSize4(headingTextSize4: number): void {
-    this.headingTextSize4 = headingTextSize4
-  }
-
-  /**
-   * 设置五级标题文本大小
-   *
-   * @param headingTextSize5 五级标题文本大小 - 默认15.0
-   */
-  setHeadingTextSize5(headingTextSize5: number): void {
-    this.headingTextSize5 = headingTextSize5
-  }
-
-  /**
-   * 设置六级标题文本大小
-   *
-   * @param headingTextSize6 六级标题文本大小 - 默认13.0
-   */
-  setHeadingTextSize6(headingTextSize6: number): void {
-    this.headingTextSize6 = headingTextSize6
-  }
-
-  /**
-   * 设置标题文本字间距
-   *
-   * @param headingTextWordSpace 标题文本字间距 - 默认0.0vp
-   */
-  setHeadingTextWordSpace(headingTextWordSpace: number): void {
-    this.headingTextWordSpace = headingTextWordSpace
-  }
-
-  /**
-   * 设置一级标题文本行高
-   *
-   * @param headingTextLineHeight1 一级标题文本行高 - 默认22.0vp
-   */
-  setHeadingTextLineHeight1(headingTextLineHeight1: number): void {
-    this.headingTextLineHeight1 = headingTextLineHeight1
-  }
-
-  /**
-   * 设置二级标题文本行高
-   *
-   * @param headingTextLineHeight2 二级标题文本行高 - 默认22.0vp
-   */
-  setHeadingTextLineHeight2(headingTextLineHeight2: number): void {
-    this.headingTextLineHeight2 = headingTextLineHeight2
-  }
-
-  /**
-   * 设置三级标题文本行高
-   *
-   * @param headingTextLineHeight3 三级标题文本行高 - 默认22.0vp
-   */
-  setHeadingTextLineHeight3(headingTextLineHeight3: number): void {
-    this.headingTextLineHeight3 = headingTextLineHeight3
-  }
-
-  /**
-   * 设置四级标题文本行高
-   *
-   * @param headingTextLineHeight4 四级标题文本行高 - 默认22.0vp
-   */
-  setHeadingTextLineHeight4(headingTextLineHeight4: number): void {
-    this.headingTextLineHeight4 = headingTextLineHeight4
-  }
-
-  /**
-   * 设置五级标题文本行高
-   *
-   * @param headingTextLineHeight5 五级标题文本行高 - 默认22.0vp
-   */
-  setHeadingTextLineHeight5(headingTextLineHeight5: number): void {
-    this.headingTextLineHeight5 = headingTextLineHeight5
-  }
-
-  /**
-   * 设置六级标题文本行高
-   *
-   * @param headingTextLineHeight6 六级标题文本行高 - 默认22.0vp
-   */
-  setHeadingTextLineHeight6(headingTextLineHeight6: number): void {
-    this.headingTextLineHeight6 = headingTextLineHeight6
-  }
-
-  /**
-   * 设置一级标题文本颜色
-   *
-   * @param headingTextColor1 标题文本颜色
-   */
-  setHeadingTextColor1(headingTextColor1: number): void {
-    this.headingTextColor1 = headingTextColor1
-  }
-
-  /**
-   * 设置H1标题下分割线颜色
-   *
-   * @param headingBreakColor1 H1标题下分割线颜色 - 默认0XFF191919
-   */
-  setHeadingBreakColor1(headingBreakColor1: number): void {
-    this.headingBreakColor1 = headingBreakColor1
-  }
-
-  /**
-   * 设置二级标题文本颜色
-   *
-   * @param headingTextColor2 标题文本颜色
-   */
-  setHeadingTextColor2(headingTextColor2: number): void {
-    this.headingTextColor2 = headingTextColor2
-  }
-
-  /**
-   * 设置H2标题下分割线颜色
-   *
-   * @param headingBreakColor2 H2标题下分割线颜色 - 默认0XFF191919
-   */
-  setHeadingBreakColor2(headingBreakColor2: number): void {
-    this.headingBreakColor2 = headingBreakColor2
-  }
-
-  /**
-   * 设置三级标题文本颜色
-   *
-   * @param headingTextColor3 标题文本颜色
-   */
-  setHeadingTextColor3(headingTextColor3: number): void {
-    this.headingTextColor3 = headingTextColor3
-  }
-
-  /**
-   * 设置四级标题文本颜色
-   *
-   * @param headingTextColor4 标题文本颜色
-   */
-  setHeadingTextColor4(headingTextColor4: number): void {
-    this.headingTextColor4 = headingTextColor4
-  }
-
-  /**
-   * 设置五级标题文本颜色
-   *
-   * @param headingTextColor5 标题文本颜色
-   */
-  setHeadingTextColor5(headingTextColor5: number): void {
-    this.headingTextColor5 = headingTextColor5
-  }
-
-  /**
-   * 设置六级标题文本颜色
-   *
-   * @param headingTextColor6 标题文本颜色
-   */
-  setHeadingTextColor6(headingTextColor6: number): void {
-    this.headingTextColor6 = headingTextColor6
-  }
-
-  /**
-   * 设置段落模块上间距
-   *
-   * @param paragraphTopMargins 段落模块上间距 - 默认8.0vp
-   */
-  setParagraphTopMargins(paragraphTopMargins: number): void {
-    this.paragraphTopMargins = paragraphTopMargins
-  }
-
-  /**
-   * 设置段落模块下间距
-   *
-   * @param paragraphBottomMargins 段落模块下间距 - 默认8.0vp
-   */
-  setParagraphBottomMargins(paragraphBottomMargins: number): void {
-    this.paragraphBottomMargins = paragraphBottomMargins
-  }
-
-  /**
-   * 设置段落文本大小
-   *
-   * @param paragraphTextSize 段落文本大小 - 默认14.0fp
-   */
-  setParagraphTextSize(paragraphTextSize: number): void {
-    this.paragraphTextSize = paragraphTextSize
-  }
-
-  /**
-   * 设置段落文本颜色
-   *
-   * @param paragraphTextColor 段落文本颜色 - 默认0XFF191919
-   */
-  setParagraphTextColor(paragraphTextColor: number): void {
-    this.paragraphTextColor = paragraphTextColor
-  }
-
-  /**
-   * 设置段落文本字间距
-   *
-   * @param paragraphTextWordSpace 段落文本字间距 - 默认0.0vp
-   */
-  setParagraphTextWordSpace(paragraphTextWordSpace: number): void {
-    this.paragraphTextWordSpace = paragraphTextWordSpace
-  }
-
-  /**
-   * 设置段落文本行高
-   *
-   * @param paragraphTextLineHeight 段落文本行高 - 默认22.0vp
-   */
-  setParagraphTextLineHeight(paragraphTextLineHeight: number): void {
-    this.paragraphTextLineHeight = paragraphTextLineHeight
-  }
-
-  /**
-   * 设置段落文本字体
-   *
-   * @param paragraphTypeface 段落文本字体 - 默认"HarmonyOS Sans"
-   */
-  setParagraphTypeface(paragraphTypeface: string): void {
-    this.paragraphTypeface = paragraphTypeface
-  }
-
-  /**
-   * 设置分割线颜色
-   *
-   * @param thematicBreakColor 分割线颜色 - 默认0XFF191919
-   */
-  setThematicBreakColor(thematicBreakColor: number): void {
-    this.thematicBreakColor = thematicBreakColor
-  }
-
-  /**
-   * 设置分割线高度
-   *
-   * @param thematicBreakHeight 分割线高度 - 默认0.5vp
-   */
-  setThematicBreakHeight(thematicBreakHeight: number): void {
-    this.thematicBreakHeight = thematicBreakHeight
-  }
-
-  /**
-   * 设置分割线上部外边距
-   *
-   * @param thematicBreakTopMargin 分割线上部外边距 - 默认0.0vp
-   */
-  setThematicBreakTopMargin(thematicBreakTopMargin: number): void {
-    this.thematicBreakTopMargin = thematicBreakTopMargin
-  }
-
-  /**
-   * 设置分割线下部外边距
-   *
-   * @param thematicBreakBottomMargin 分割线下部外边距 - 默认0.0vp
-   */
-  setThematicBreakBottomMargin(thematicBreakBottomMargin: number): void {
-    this.thematicBreakBottomMargin = thematicBreakBottomMargin
-  }
-
-  /**
-   * 设置软换行是否换行
-   *
-   * @param isLineBreak 软换行是否换行 - true：换行；false：不换行。默认false
-   */
-  setIsLineBreak(isLineBreak: boolean): void {
-    this.isLineBreak = isLineBreak
-  }
-
-  /**
-   * 设置音频阴影颜色值
-   *
-   * @param audioShadowColor 音频阴影颜色值 - 默认0x1A000000
-   */
-  setAudioShadowColor(audioShadowColor: number): void {
-    this.audioShadowColor = audioShadowColor
-  }
-
-  /**
-   * 设置音频边框颜色
-   *
-   * @param audioBorderColor 音频边框颜色 - 默认0x33000000
-   */
-  setAudioBorderColor(audioBorderColor: number): void {
-    this.audioBorderColor = audioBorderColor
-  }
-
-  /**
-   * 设置音频边框粗细
-   *
-   * @param audioBorderWidth 音频边框粗细 - 默认0.5vp
-   */
-  setAudioBorderWidth(audioBorderWidth: number): void {
-    this.audioBorderWidth = audioBorderWidth
-  }
-
-  /**
-   * 设置音频边框圆角
-   *
-   * @param audioBorderRadius 音频边框圆角 - 默认12.0vp
-   */
-  setAudioBorderRadius(audioBorderRadius: number): void {
-    this.audioBorderRadius = audioBorderRadius
-  }
-
-  /**
-   * 设置音频按钮背景颜色
-   *
-   * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认Color.BLACK
-   */
-  setAudioButtonBackgroundColor(audioButtonBackgroundColor: number): void {
-    this.audioButtonBackgroundColor = audioButtonBackgroundColor
-  }
-
-  /**
-   * 设置音频按钮文字颜色
-   *
-   * @param audioButtonTextColor 音频按钮文字颜色 - 默认Color.WHITE
-   */
-  setAudioButtonTextColor(audioButtonTextColor: number): void {
-    this.audioButtonTextColor = audioButtonTextColor
-  }
-
-  /**
-   * 设置音频按钮文字大小
-   *
-   * @param audioButtonTextSize 音频按钮文字大小 - 默认14.0fp
-   */
-  setAudioButtonTextSize(audioButtonTextSize: number): void {
-    this.audioButtonTextSize = audioButtonTextSize
-  }
-
-  /**
-   * 设置音频按钮文字内容
-   *
-   * @param audioButtonText 音频按钮文字内容 - 默认"立即播放"
-   */
-  setAudioButtonText(audioButtonText: string): void {
-    this.audioButtonText = audioButtonText
-  }
-
-  /**
-   * 设置音频按钮圆角
-   *
-   * @param audioButtonBorderRadius 音频按钮圆角 - 默认16.0vp
-   */
-  setAudioButtonBorderRadius(audioButtonBorderRadius: number): void {
-    this.audioButtonBorderRadius = audioButtonBorderRadius
-  }
-
-  /**
-   * 设置音频标题文字大小
-   *
-   * @param audioTitleTextSize 音频标题文字大小 - 默认15.0fp
-   */
-  setAudioTitleTextSize(audioTitleTextSize: number): void {
-    this.audioTitleTextSize = audioTitleTextSize
-  }
-
-  /**
-   * 设置音频标题文字颜色
-   *
-   * @param audioTitleTextColor音频标题文字颜色 - 默认Color.BLACK
-   */
-  setAudioTitleTextColor(audioTitleTextColor: number): void {
-    this.audioTitleTextColor = audioTitleTextColor
-  }
-
-  /**
-   * 设置音频标题文字行高
-   *
-   * @param audioTitleTextLineHeight 音频标题文字行高 - 默认20.0vp
-   */
-  setAudioTitleTextLineHeight(audioTitleTextLineHeight: number): void {
-    this.audioTitleTextLineHeight = audioTitleTextLineHeight
-  }
-
-  /**
-   * 设置音频类型文字大小
-   *
-   * @param audioTypeTextSize 音频类型文字大小 - 默认11.0fp
-   */
-  setAudioTypeTextSize(audioTypeTextSize: number): void {
-    this.audioTypeTextSize = audioTypeTextSize
-  }
-
-  /**
-   * 设置音频类型文字颜色
-   *
-   * @param audioTypeTextColor 音频类型文字颜色 - 默认0X80000000
-   */
-  setAudioTypeTextColor(audioTypeTextColor: number): void {
-    this.audioTypeTextColor = audioTypeTextColor
-  }
-
-  /**
-   * 设置音频类型文字行高
-   *
-   * @param audioTypeTextLineHeight 音频类型文字行高 - 默认15.0vp
-   */
-  setAudioTypeTextLineHeight(audioTypeTextLineHeight: number): void {
-    this.audioTypeTextLineHeight = audioTypeTextLineHeight
-  }
-
-  /**
-   * 设置音频上边距
-   *
-   * @param audioMarginTop 音频上边距 - 默认10.0vp
-   */
-  setAudioMarginTop(audioMarginTop: number): void {
-    this.audioMarginTop = audioMarginTop
-  }
-
-  /**
-   * 设置音频下边距
-   *
-   * @param audioMarginBottom 音频下边距 - 默认10.0vp
-   */
-  setAudioMarginBottom(audioMarginBottom: number): void {
-    this.audioMarginBottom = audioMarginBottom
-  }
-
-  /**
-   * 设置视频圆角
-   *
-   * @param videoBorderRadius 视频圆角 - 默认10.0vp
-   */
-  setVideoBorderRadius(videoBorderRadius: number): void {
-    this.videoBorderRadius = videoBorderRadius
-  }
-
-  /**
-   * 设置视频时间文本颜色
-   *
-   * @param videoTimeTextColor 视频时间文本颜色 - 默认Color.WHITE
-   */
-  setVideoTimeTextColor(videoTimeTextColor: number): void {
-    this.videoTimeTextColor = videoTimeTextColor
-  }
-
-  /**
-   * 设置视频时间文本大小
-   *
-   * @param videoTimeTextSize 视频时间文本大小 - 默认14.0fp
-   */
-  setVideoTimeTextSize(videoTimeTextSize: number): void {
-    this.videoTimeTextSize = videoTimeTextSize
-  }
-
-  /**
-   * 设置视频时间文本居右边距
-   *
-   * @param videoTimeTextMarginRight 视频时间文本居右边距 - 默认10.0vp
-   */
-  setVideoTimeTextMarginRight(videoTimeTextMarginRight: number): void {
-    this.videoTimeTextMarginRight = videoTimeTextMarginRight
-  }
-
-  /**
-   * 设置视频时间文本居底边距
-   *
-   * @param videoTimeTextMarginBottom 视频时间文本居底边距 - 默认10.0vp
-   */
-  setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: number): void {
-    this.videoTimeTextMarginBottom = videoTimeTextMarginBottom
-  }
-
-  /**
-   * 设置视频上边距
-   *
-   * @param videoMarginTop 视频上边距 - 默认10.0vp
-   */
-  setVideoMarginTop(videoMarginTop: number): void {
-    this.videoMarginTop = videoMarginTop
-  }
-
-  /**
-   * 设置视频下边距
-   *
-   * @param videoMarginBottom 视频下边距 - 默认10.0vp
-   */
-  setVideoMarginBottom(videoMarginBottom: number): void {
-    this.videoMarginBottom = videoMarginBottom
-  }
-
-  /**
-   * 设置视频发布/下载按钮布局是否显示
-   *
-   * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
-   */
-  setIsVideoBottomLayout(isVideoBottomLayout: boolean): void {
-    this.isVideoBottomLayout = isVideoBottomLayout
-  }
-
-  /**
-   * 设置视频发布按钮图片宽度和高度
-   *
-   * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
-   */
-  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void {
-    this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
-  }
-
-  /**
-   * 设置视频发布按钮宽度
-   *
-   * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
-   */
-  setVideoReleaseWidth(videoReleaseWidth: number): void {
-    this.videoReleaseWidth = videoReleaseWidth
-  }
-
-  /**
-   * 设置视频发布按钮高度
-   *
-   * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
-   */
-  setVideoReleaseHeight(videoReleaseHeight: number): void {
-    this.videoReleaseHeight = videoReleaseHeight
-  }
-
-  /**
-   * 设置视频发布按钮圆角
-   *
-   * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
-   */
-  setVideoReleaseRadius(videoReleaseRadius: number): void {
-    this.videoReleaseRadius = videoReleaseRadius
-  }
-
-  /**
-   * 设置视频发布按钮文本内容
-   *
-   * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
-   */
-  setVideoReleaseText(videoReleaseText: string): void {
-    this.videoReleaseText = videoReleaseText
-  }
-
-  /**
-   * 设置视频发布按钮文本大小
-   *
-   * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
-   */
-  setVideoReleaseTexSize(videoReleaseTexSize: number): void {
-    this.videoReleaseTexSize = videoReleaseTexSize
-  }
-
-  /**
-   * 设置视频发布按钮文本颜色
-   *
-   * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
-   */
-  setVideoReleaseTexColor(videoReleaseTexColor: number): void {
-    this.videoReleaseTexColor = videoReleaseTexColor
-  }
-
-  /**
-   * 设置视频发布按钮背景颜色
-   *
-   * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
-   */
-  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void {
-    this.videoReleaseBackgroundColor = videoReleaseBackgroundColor
-  }
-
-  /**
-   * 设置视频下载按钮图片宽度和高度
-   *
-   * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
-   */
-  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void {
-    this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
-  }
-
-  /**
-   * 设置视频下载按钮宽度
-   *
-   * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
-   */
-  setVideoDownloadWidth(videoDownloadWidth: number): void {
-    this.videoDownloadWidth = videoDownloadWidth
-  }
-
-  /**
-   * 设置视频下载按钮高度
-   *
-   * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
-   */
-  setVideoDownloadHeight(videoDownloadHeight: number): void {
-    this.videoDownloadHeight = videoDownloadHeight
-  }
-
-  /**
-   * 设置视频下载按钮圆角
-   *
-   * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
-   */
-  setVideoDownloadRadius(videoDownloadRadius: number): void {
-    this.videoDownloadRadius = videoDownloadRadius
-  }
-
-  /**
-   * 设置视频下载按钮文本内容
-   *
-   * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
-   */
-  setVideoDownloadText(videoDownloadText: string): void {
-    this.videoDownloadText = videoDownloadText
-  }
-
-  /**
-   * 设置视频下载按钮文本大小
-   *
-   * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
-   */
-  setVideoDownloadTexSize(videoDownloadTexSize: number): void {
-    this.videoDownloadTexSize = videoDownloadTexSize
-  }
-
-  /**
-   * 设置视频下载按钮文本颜色
-   *
-   * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
-   */
-  setVideoDownloadTexColor(videoDownloadTexColor: number): void {
-    this.videoDownloadTexColor = videoDownloadTexColor
-  }
-
-  /**
-   * 设置视频下载按钮背景颜色
-   *
-   * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
-   */
-  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void {
-    this.videoDownloadBackgroundColor = videoDownloadBackgroundColor
-  }
-
-  /**
-   * 设置图片缩放类型
-   *
-   * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
-   */
-  setImageFitType(imageFitType: ImageFitType): void {
-    this.imageFitType = imageFitType
-  }
-
-  /**
-   * 设置图片基于自身宽度缩放百分比
-   *
-   * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
-   */
-  setImageMaximumWidth(imageMaximumWidth: number): void {
-    this.imageMaximumWidth = imageMaximumWidth
-  }
-
-  /**
-   * 设置图片基于父布局宽度缩放百分比
-   *
-   * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比 - 默认None
-   */
-  setImageFixedRatioWidth(imageFixedRatioWidth: number): void {
-    this.imageFixedRatioWidth = imageFixedRatioWidth
-  }
-
-  /**
-   * 设置图片最大高度
-   *
-   * @param imageMaxHeight 图片最大高度 - 默认None
-   */
-  setImageMaxHeight(imageMaxHeight: number): void {
-    this.imageMaxHeight = imageMaxHeight
-  }
-
-  /**
-   * 设置图片最大宽度
-   *
-   * @param imageMaxWidth 图片最大宽度 - 默认None
-   */
-  setImageMaxWidth(imageMaxWidth: number): void {
-    this.imageMaxWidth = imageMaxWidth
-  }
-
-  /**
-   * 设置图片圆角大小
-   *
-   * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
-   */
-  setImageBorderRadius(imageBorderRadius: number): void {
-    this.imageBorderRadius = imageBorderRadius
-  }
-
-  /**
-   * 设置图片边框宽度
-   *
-   * @param imageBorderWidth 图片边框宽度 - 默认0.0vp
-   */
-  setImageBorderWidth(imageBorderWidth: number): void {
-    this.imageBorderWidth = imageBorderWidth
-  }
-
-  /**
-   * 设置图片边框颜色
-   *
-   * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
-   */
-  setImageBorderColor(imageBorderColor: number): void {
-    this.imageBorderColor = imageBorderColor
-  }
-
-  /**
-   * 设置网络图片是否压缩
-   *
-   * @param isAutoResize 网络图片是否压缩 - true：压缩；false：不压缩。默认true
-   */
-  setIsAutoResize(isAutoResize: boolean): void {
-    this.isAutoResize = isAutoResize
-  }
-
-  /**
-   * 设置图片上边距
-   *
-   * @param imageMarginTop 图片上边距 - 默认10.0vp
-   */
-  setImageMarginTop(imageMarginTop: number): void {
-    this.imageMarginTop = imageMarginTop
-  }
-
-  /**
-   * 设置图片下边距
-   *
-   * @param imageMarginBottom 图片下边距 - 默认10.0vp
-   */
-  setImageMarginBottom(imageMarginBottom: number): void {
-    this.imageMarginBottom = imageMarginBottom
-  }
-
-  /**
-   * 设置图片是否有下载按钮
-   *
-   * @param isImageDownload 图片是否有下载按钮 - 默认false
-   */
-  setIsImageDownload(isImageDownload: boolean): void {
-    this.isImageDownload = isImageDownload
-  }
-
-  /**
-   * 设置是否图文混排
-   *
-   * @param isImageMixedLayout 是否图文混排 - 默认true
-   */
-  setIsImageMixedLayout(isImageMixedLayout: boolean): void {
-    this.isImageMixedLayout = isImageMixedLayout
-  }
-
-  /**
-   * 设置图片下载按钮图片宽度和高度
-   *
-   * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
-   */
-  setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void {
-    this.imageDownloadImageWidthHeight = imageDownloadImageWidthHeight
-  }
-
-  /**
-   * 设置图片下载按钮宽度
-   *
-   * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
-   */
-  setImageDownloadWidth(imageDownloadWidth: number): void {
-    this.imageDownloadWidth = imageDownloadWidth
-  }
-
-  /**
-   * 设置图片下载按钮高度
-   *
-   * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
-   */
-  setImageDownloadHeight(imageDownloadHeight: number): void {
-    this.imageDownloadHeight = imageDownloadHeight
-  }
-
-  /**
-   * 设置图片下载按钮圆角
-   *
-   * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
-   */
-  setImageDownloadRadius(imageDownloadRadius: number): void {
-    this.imageDownloadRadius = imageDownloadRadius
-  }
-
-  /**
-   * 设置图片下载按钮文本内容
-   *
-   * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
-   */
-  setImageDownloadText(imageDownloadText: string): void {
-    this.imageDownloadText = imageDownloadText
-  }
-
-  /**
-   * 设置图片下载按钮文本大小
-   *
-   * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
-   */
-  setImageDownloadTexSize(imageDownloadTexSize: number): void {
-    this.imageDownloadTexSize = imageDownloadTexSize
-  }
-
-  /**
-   * 设置图片下载按钮文本颜色
-   *
-   * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
-   */
-  setImageDownloadTexColor(imageDownloadTexColor: number): void {
-    this.imageDownloadTexColor = imageDownloadTexColor
-  }
-
-  /**
-   * 设置图片下载按钮背景颜色
-   *
-   * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
-   */
-  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void {
-    this.imageDownloadBackgroundColor = imageDownloadBackgroundColor
-  }
-
-  /**
-   * 设置表格内容内边距
-   *
-   * @param tableCellPadding 表格内容内边距 - 默认4.0vp
-   */
-  setTableCellPadding(tableCellPadding: number): void {
-    this.tableCellPadding = tableCellPadding
-  }
-
-  /**
-   * 设置表格边框颜色
-   *
-   * @param tableBorderColor 表格边框颜色 - 默认0XFF000000
-   */
-  setTableBorderColor(tableBorderColor: number): void {
-    this.tableBorderColor = tableBorderColor
-  }
-
-  /**
-   * 设置表格边框宽度
-   *
-   * @param tableBorderWidth 表格边框宽度 - 默认1.0vp
-   */
-  setTableBorderWidth(tableBorderWidth: number): void {
-    this.tableBorderWidth = tableBorderWidth
-  }
-
-  /**
-   * 设置表格奇数行背景色
-   *
-   * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0XFFFFFFFF
-   */
-  setTableOddRowBackgroundColor(tableOddRowBackgroundColor: number): void {
-    this.tableOddRowBackgroundColor = tableOddRowBackgroundColor
-  }
-
-  /**
-   * 设置表格偶数行背景色
-   *
-   * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0XFFE0E0E0
-   */
-  setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): void {
-    this.tableEvenRowBackgroundColor = tableEvenRowBackgroundColor
-  }
-
-  /**
-   * 设置表格标题背景色
-   *
-   * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
-   */
-  setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
-    this.tableHeaderRowBackgroundColor = tableHeaderRowBackgroundColor
-  }
-
-  /**
-   * 设置表格标题文本颜色
-   *
-   * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
-   */
-  setTableTitleTextColor(tableTitleTextColor: number): void {
-    this.tableTitleTextColor = tableTitleTextColor
-  }
-
-  /**
-   * 设置表格标题文本大小
-   *
-   * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
-   */
-  setTableTitleTextSize(tableTitleTextSize: number): void {
-    this.tableTitleTextSize = tableTitleTextSize
-  }
-
-  /**
-   * 设置表格标题文本行高
-   *
-   * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
-   */
-  setTableTitleLineHeight(tableTitleLineHeight: number): void {
-    this.tableTitleLineHeight = tableTitleLineHeight
-  }
-
-  /**
-   * 设置表格内容文本颜色
-   *
-   * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
-   */
-  setTableContentTextColor(tableContentTextColor: number): void {
-    this.tableContentTextColor = tableContentTextColor
-  }
-
-  /**
-   * 设置表格内容文本大小
-   *
-   * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
-   */
-  setTableContentTextSize(tableContentTextSize: number): void {
-    this.tableContentTextSize = tableContentTextSize
-  }
-
-  /**
-   * 设置表格内容文本行高
-   *
-   * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
-   */
-  setTableTextLineHeight(tableTextLineHeight: number): void {
-    this.tableTextLineHeight = tableTextLineHeight
-  }
-
-  /**
-   * 设置表格圆角
-   *
-   * @param tableRadius 表格圆角 - 默认5.0vp
-   */
-  setTableRadius(tableRadius: number): void {
-    this.tableRadius = tableRadius
-  }
-
-  /**
-   * 设置表格最小宽度
-   *
-   * @param tableMinTextWidth 表格最小宽度 - 默认50.0vp
-   */
-  setTableMinTextWidth(tableMinTextWidth: number): void {
-    this.tableMinTextWidth = tableMinTextWidth
-  }
-
-  /**
-   * 设置表格最大宽度
-   *
-   * @param tableMaxTextWidth 表格最大宽度- 默认300.0vp
-   */
-  setTableMaxTextWidth(tableMaxTextWidth: number): void {
-    this.tableMaxTextWidth = tableMaxTextWidth
-  }
-
-  /**
-   * 设置表格第一列是否加粗
-   *
-   * @param tableFirstColumnBold 表格第一列是否加粗 - true：加粗；false：不加粗。默认false
-   */
-  setTableFirstColumnBold(tableFirstColumnBold: boolean): void {
-    this.tableFirstColumnBold = tableFirstColumnBold
-  }
-
-  /**
-   * 设置表格是否显示滚动条
-   *
-   * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
-   */
-  setTableScrollBarShow(tableScrollBarShow: boolean): void {
-    this.tableScrollBarShow = tableScrollBarShow
-  }
-
-  /**
-   * 设置表格滚动条颜色
-   *
-   * @param tableScrollBarColor 表格滚动条颜色
-   */
-  setTableScrollBarColor(tableScrollBarColor: number): void {
-    this.tableScrollBarColor = tableScrollBarColor
-  }
-
-  /**
-   * 设置代码块深浅色
-   *
-   * @param isDark 是否是深色 - true：深色；false：浅色。默认false
-   */
-  setIsDark(isDark: boolean): void {
-    this.isDark = isDark
-  }
-
-  /**
-   * 设置删除线颜色
-   *
-   * @param strikethroughColor 删除线颜色 - 默认0XFF191919
-   */
-  setStrikethroughColor(strikethroughColor: number): void {
-    this.strikethroughColor = strikethroughColor
-  }
-
-  /**
-   * 设置删除线样式
-   *
-   * @param strikethroughStyle 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
-   */
-  setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): void {
-    this.strikethroughStyle = strikethroughStyle
-  }
-
-  /**
-   * 设置定义列表术语和定义行之间间距
-   *
-   * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
-   */
-  setDescListTermAndDefMargins(descListTermAndDefMargins: number): void {
-    this.descListTermAndDefMargins = descListTermAndDefMargins
-  }
-
-  /**
-   * 设置定义列表定义行缩进
-   *
-   * @param descListDefIndentation 定义列表定义行缩进 默认8.0
-   */
-  setDescListDefIndentation(descListDefIndentation: number): void {
-    this.descListDefIndentation = descListDefIndentation
-  }
-
-  /**
-   * 设置定义列表定义行间距
-   *
-   * @param descListDefMargins 定义列表定义行间距 默认8.0
-   */
-  setDescListDefMargins(descListDefMargins: number): void {
-    this.descListDefMargins = descListDefMargins
-  }
-
-  /**
-   * 设置下标字体颜色
-   *
-   * @param subTextColor 下标字体颜色 默认0XFF191919
-   */
-  setSubTextColor(subTextColor: number): void {
-    this.subTextColor = subTextColor
-  }
-
-  /**
-   * 设置下标字体大小
-   *
-   * @param subTextSize 下标字体大小 默认8.0
-   */
-  setSubTextSize(subTextSize: number): void {
-    this.subTextSize = subTextSize
-  }
-
-  /**
-   * 设置下标偏移距离
-   *
-   * @param subOffsetDist 下标偏移距离 默认0.0
-   */
-  setSubOffsetDist(subOffsetDist: number): void {
-    this.subOffsetDist = subOffsetDist
-  }
-
-  /**
-   * 设置上标字体颜色
-   *
-   * @param supTextColor 上标字体颜色 默认0XFF191919
-   */
-  setSupTextColor(supTextColor: number): void {
-    this.supTextColor = supTextColor
-  }
-
-  /**
-   * 设置上标字体大小
-   *
-   * @param supTextSize 上标字体大小 默认8.0
-   */
-  setSupTextSize(supTextSize: number): void {
-    this.supTextSize = supTextSize
-  }
-
-  /**
-   * 设置上标偏移距离
-   *
-   * @param supOffsetDist 上标偏移距离 默认6.0
-   */
-  setSupOffsetDist(supOffsetDist: number): void {
-    this.supOffsetDist = supOffsetDist
-  }
-
-  /**
-   * 设置下划线颜色
-   *
-   * @param underlineColor 下划线颜色 默认0XFF191919
-   */
-  setUnderlineColor(underlineColor: number): void {
-    this.underlineColor = underlineColor
-  }
-
-  /**
-   * 设置下划线样式
-   *
-   * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
-   */
-  setUnderlineStyle(underlineStyle: TextDecorationStyle): void {
-    this.underlineStyle = underlineStyle
-  }
-
-  /**
-   * 设置markdown是否支持滚动手势
-   *
-   * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
-   */
-  setOpenGestureSwipe(openGestureSwipe: boolean): void {
-    this.openGestureSwipe = openGestureSwipe
-  }
-
-  /**
-   * 设置codeformat是否用制表符
-   *
-   * @param useTab true-使用，false-不使用，默认false
-   */
-  setUseTab(useTab: boolean): void {
-    this.useTab = useTab
-  }
-
-  /**
-   * 设置codeformat空格缩进数量
-   *
-   * @param indentWidth 空格缩进数量，默认4空格
-   */
-  setIndentWidth(indentWidth: number): void {
-    this.indentWidth = indentWidth
-  }
-}
-
-/**
- * 图片缩放类型的枚举
- */
-export enum ImageFitType {
-  /**
-   * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
-   */
-  Contain,
-  /**
-   * 保持宽高比进行缩小或者放大，使得图片恰好完全显示在显示边界内。
-   */
-  Cover,
-  /**
-   * 不保持宽高比进行放大缩小，使得图片充满显示边界。
-   */
-  Fill
-}
-
-/**
- * Markdown插件配置
- */
-export class MarkdownPlugin {
-  /**
-   * 是否加载音频解析插件
-   */
-  isBlockAudioPlugin: boolean = false
-  /**
-   * 是否加载视频解析插件
-   */
-  isBlockVideoPlugin: boolean = false
-  /**
-   * 是否加载代码列表解析插件
-   */
-  isCodeListPlugin: boolean = false
-  /**
-   * 是否加载脚注解析插件
-   */
-  isFootnotePlugin: boolean = false
-  /**
-   * 是否加载html解析插件
-   */
-  isHtmlPlugin: boolean = false
-  /**
-   * 是否加载表格解析插件
-   */
-  isTablePlugin: boolean = false
-  /**
-   * 是否加载toc解析插件
-   */
-  isTocPlugin: boolean = false
-  /**
-   * 是否加载任务列表解析插件
-   */
-  isTaskListPlugin: boolean = false
-  /**
-   * 是否加载删除线解析插件
-   */
-  isStrikethroughPlugin: boolean = false
-  /**
-   * 是否加载链接自动解析插件
-   */
-  isLinkifyPlugin: boolean = false
-  /**
-   * 正则列表
-   */
-  regs: Array<string> = []
-  /**
-   * 是否加载链接单独解析插件
-   */
-  isLinkViewPlugin: boolean = false
-  /**
-   * 是否加载图片自定义样式解析插件
-   */
-  isImageStylePlugin: boolean = false
-  /**
-   * 是否加载图片banner解析插件
-   */
-  isImageSlidePlugin: boolean = false
-  /**
-   * 是否加载图片单独提取到block解析插件
-   */
-  isImageTextMixPlugin: boolean = false
-  /**
-   * 是否加载图片视频列表url集合列表解析插件
-   */
-  isImageCollectPlugin: boolean = false
-  /**
-   * 是否加载定义列表解析插件
-   */
-  isDescListPlugin: boolean = false
-  /**
-   * 是否加载标题ID解析插件
-   */
-  isHeadIDPlugin: boolean = false
-  /**
-   * 是否加载下标解析插件
-   */
-  isSubPlugin: boolean = false
-  /**
-   * 是否加载上标解析插件
-   */
-  isSupPlugin: boolean = false
-  /**
-   * 是否加载emoji解析插件
-   */
-  isEmojiPlugin: boolean = false
-  /**
-   * emoji解析插件是否精简加载
-   */
-  isEmojiLight: boolean = false
-
-  /**
-   * 设置音频插件
-   *
-   * @param isBlockAudioPlugin 是否设置音频插件 - true：设置音频插件；false：不设置音频插件。默认false
-   */
-  setIsBlockAudioPlugin(isBlockAudioPlugin: boolean): void {
-    this.isBlockAudioPlugin = isBlockAudioPlugin
-  }
-
-  /**
-   * 设置视频插件
-   *
-   * @param isBlockVideoPlugin 是否设置视频插件 - true：设置视频插件；false：不设置视频插件。默认false
-   */
-  setIsBlockVideoPlugin(isBlockVideoPlugin: boolean): void {
-    this.isBlockVideoPlugin = isBlockVideoPlugin
-  }
-
-  /**
-   * 设置组合代码快列表插件
-   *
-   * @param isCodeListPlugin 是否设置组合代码快列表插件 - true：设置组合代码快列表插件；false：不设置组合代码快列表插件。默认false
-   */
-  setIsCodeListPlugin(isCodeListPlugin: boolean): void {
-    this.isCodeListPlugin = isCodeListPlugin
-  }
-
-  /**
-   * 设置脚注插件
-   *
-   * @param isFootnotePlugin 是否设置脚注插件 - true：设置脚注插件；false：不设置脚注插件。默认false
-   */
-  setIsFootnotePlugin(isFootnotePlugin: boolean): void {
-    this.isFootnotePlugin = isFootnotePlugin
-  }
-
-  /**
-   * 设置HTML插件
-   *
-   * @param isHtmlPlugin 是否设置HTML插件 - true：设置HTML插件；false：不设置HTML插件。默认false
-   */
-  setIsHtmlPlugin(isHtmlPlugin: boolean): void {
-    this.isHtmlPlugin = isHtmlPlugin
-  }
-
-  /**
-   * 设置表格插件
-   *
-   * @param isTablePlugin 是否设置表格插件 - true：设置表格插件；false：不设置表格插件。默认false
-   */
-  setIsTablePlugin(isTablePlugin: boolean): void {
-    this.isTablePlugin = isTablePlugin
-  }
-
-  /**
-   * 设置TOC插件
-   *
-   * @param isTocPlugin 是否设置TOC插件 - true：设置TOC插件；false：不设置TOC插件。默认false
-   */
-  setIsTocPlugin(isTocPlugin: boolean): void {
-    this.isTocPlugin = isTocPlugin
-  }
-
-  /**
-   * 设置任务列表插件
-   *
-   * @param isTaskListPlugin 是否设置任务列表插件 - true：设置任务列表插件；false：不设置任务列表插件。默认false
-   */
-  setIsTaskListPlugin(isTaskListPlugin: boolean): void {
-    this.isTaskListPlugin = isTaskListPlugin
-  }
-
-  /**
-   * 设置删除线插件
-   *
-   * @param isStrikethroughPlugin 是否设置删除线插件 - true：设置删除线插件；false：不设置删除线插件。默认false
-   */
-  setIsStrikethroughPlugin(isStrikethroughPlugin: boolean): void {
-    this.isStrikethroughPlugin = isStrikethroughPlugin
-  }
-
-  /**
-   * 设置链接自动加载插件
-   *
-   * @param isLinkifyPlugin 是否设置链接自动加载插件 - true：设置链接自动加载插件；false：不设置链接自动加载插件。默认false
-   * @param regs 正则列表
-   */
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void {
-    this.isLinkifyPlugin = isLinkifyPlugin
-    this.regs = regs
-  }
-
-  /**
-   * 设置链接块状化插件
-   *
-   * @param isLinkViewPlugin 是否设置链接块状化插件 - true：设置链接块状化插件；false：不设置链接块状化插件。默认false
-   */
-  setIsLinkViewPlugin(isLinkViewPlugin: boolean): void {
-    this.isLinkViewPlugin = isLinkViewPlugin
-  }
-
-  /**
-   * 设置图片样式插件
-   *
-   * @param isImageStylePlugin 是否设置图片样式插件 - true：设置图片样式插件；false：不设置图片样式插件。默认false
-   */
-  setIsImageStylePlugin(isImageStylePlugin: boolean): void {
-    this.isImageStylePlugin = isImageStylePlugin
-  }
-
-  /**
-   * 设置图片幻灯片（Banner）插件
-   *
-   * @param isImageSlidePlugin 是否设置图片幻灯片（Banner）插件 - true：设置图片幻灯片（Banner）插件；false：不设置图片幻灯片（Banner）插件。默认false
-   */
-  setIsImageSlidePlugin(isImageSlidePlugin: boolean): void {
-    this.isImageSlidePlugin = isImageSlidePlugin
-  }
-
-  /**
-   * 设置图片不混排插件
-   *
-   * @param isImageTextMixPlugin 是否图片不混排插件 - true：图片混排；false：图片不混排。默认true
-   */
-  setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): void {
-    this.isImageTextMixPlugin = isImageTextMixPlugin
-  }
-
-  /**
-   * 设置图片视频url集合列表插件
-   *
-   * @param isImageCollectPlugin 是否设置图片视频url集合列表插件 - true：设置图片视频url集合列表插件；false：不设置图片视频url集合列表插件。默认false
-   */
-  setIsImageCollectPlugin(isImageCollectPlugin: boolean): void {
-    this.isImageCollectPlugin = isImageCollectPlugin
-  }
-
-  /**
-   * 设置是否加载定义列表解析插件
-   *
-   * @param isDescListPlugin 是否加载定义列表解析插件 - true：设置加载定义列表解析插件；false：不设置加载定义列表解析插件。默认false
-   */
-  setIsDescListPlugin(isDescListPlugin: boolean): void {
-    this.isDescListPlugin = isDescListPlugin
-  }
-
-  /**
-   * 设置是否加载标题ID解析插件
-   *
-   * @param isHeadIDPlugin 是否加载标题ID解析插件 - true：设置加载标题ID解析插件；false：不设置加载标题ID解析插件。默认false
-   */
-  setIsHeadIDPlugin(isHeadIDPlugin: boolean): void {
-    this.isHeadIDPlugin = isHeadIDPlugin
-  }
-
-  /**
-   * 设置是否加载下标解析插件
-   *
-   * @param isSubPlugin 是否加载下标解析插件 - true：设置加载下标解析插件；false：不设置加载下标解析插件。默认false
-   */
-  setIsSubPlugin(isSubPlugin: boolean): void {
-    this.isSubPlugin = isSubPlugin
-  }
-
-  /**
-   * 设置是否加载上标解析插件
-   *
-   * @param isSupPlugin 是否加载上标解析插件 - true：设置加载上标解析插件；false：不设置加载上标解析插件。默认false
-   */
-  setIsSupPlugin(isSupPlugin: boolean): void {
-    this.isSupPlugin = isSupPlugin
-  }
-
-  /**
-   * 设置是否加载emoji解析插件
-   *
-   * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件件；false：不设置加载Emoji解析插件。默认false
-   * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
-   */
-  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
-    this.isEmojiPlugin = isEmojiPlugin
-    this.isEmojiLight = isEmojiLight
-  }
-}
-
-/**
- * Markdown滑动控制器
- */
-export class MarkdownScroller {
-  private scroller: CJMarkdownScroller | undefined = undefined
-
-  /**
-   * 构造函数
-   */
-  constructor() {
+  getTheme(): CJMarkdownTheme | undefined {
     if (global_customLib === undefined) {
-      global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+      return undefined
     }
-    this.scroller = new global_customLib.CJMarkdownScroller()
+    let cjMarkdownTheme: CJMarkdownTheme = new global_customLib.CJMarkdownTheme()
+    if (this.config !== undefined) {
+      let markdownTheme = this.config.getMarkdownTheme()
+      if (markdownTheme !== undefined) {
+        if (markdownTheme.getGlobalTheme().getStageContext() !== undefined) {
+          global_customLib.setGlobalContext(markdownTheme.getGlobalTheme().getStageContext())
+        } else {
+          global_customLib.setGlobalContext(undefined)
+        }
+        global_customLib.getCJResource(
+          markdownTheme.getCodeBlockTheme().getCodeBlockFullScreenIcon(),
+          markdownTheme.getCodeBlockTheme().getCodeBlockCopyIcon(),
+          markdownTheme.getAudioTheme().getAudioIcon(),
+          markdownTheme.getVideoTheme().getVideoPlaceholder(),
+          markdownTheme.getVideoTheme().getVideoPlayIcon(),
+          markdownTheme.getBannerTheme().getBannerPlaceholder(),
+          markdownTheme.getImageTheme().getImagePlaceholder(),
+          markdownTheme.getVideoTheme().getVideoReleaseButtonIcon(),
+          markdownTheme.getVideoTheme().getVideoDownloadButtonIcon(),
+          markdownTheme.getImageTheme().getImageDownloadButtonIcon()
+        )
+        cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(markdownTheme.getGlobalTheme()))
+        cjMarkdownTheme.setCJMarkdownAudioTheme(this.getAudioTheme(markdownTheme.getAudioTheme()))
+        cjMarkdownTheme.setCJMarkdownBannerTheme(this.getBannerTheme(markdownTheme.getBannerTheme()))
+        cjMarkdownTheme.setCJMarkdownBlockQuoteTheme(this.getBlockQuoteTheme(markdownTheme.getBlockQuoteTheme()))
+        cjMarkdownTheme.setCJMarkdownBoldTheme(this.getBoldTheme(markdownTheme.getBoldTheme()))
+        cjMarkdownTheme.setCJMarkdownBulletListTheme(this.getBulletListTheme(markdownTheme.getBulletListTheme()))
+        cjMarkdownTheme.setCJMarkdownCodeBlockTheme(this.getCodeBlockTheme(markdownTheme.getCodeBlockTheme()))
+        cjMarkdownTheme.setCJMarkdownDefinitionListTheme(this.getDefinitionListTheme(markdownTheme.getDefinitionListTheme()))
+        cjMarkdownTheme.setCJMarkdownDividerTheme(this.getDividerTheme(markdownTheme.getDividerTheme()))
+        cjMarkdownTheme.setCJMarkdownFootnoteDefTheme(this.getFootnoteDefTheme(markdownTheme.getFootnoteDefTheme()))
+        cjMarkdownTheme.setCJMarkdownFootnoteRefTheme(this.getFootnoteRefTheme(markdownTheme.getFootnoteRefTheme()))
+        cjMarkdownTheme.setCJMarkdownHeadingTheme(this.getHeadingTheme(markdownTheme.getHeadingTheme()))
+        cjMarkdownTheme.setCJMarkdownHtmlUnderlineTheme(this.getHtmlUnderlineTheme(markdownTheme.getHtmlUnderlineTheme()))
+        cjMarkdownTheme.setCJMarkdownImageTheme(this.getImageTheme(markdownTheme.getImageTheme()))
+        cjMarkdownTheme.setCJMarkdownInlineCodeTheme(this.getInlineCodeTheme(markdownTheme.getInlineCodeTheme()))
+        cjMarkdownTheme.setCJMarkdownItalicTheme(this.getItalicTheme(markdownTheme.getItalicTheme()))
+        cjMarkdownTheme.setCJMarkdownLinkTheme(this.getLinkTheme(markdownTheme.getLinkTheme()))
+        cjMarkdownTheme.setCJMarkdownOrderedListTheme(this.getOrderedListTheme(markdownTheme.getOrderedListTheme()))
+        cjMarkdownTheme.setCJMarkdownParagraphTheme(this.getParagraphTheme(markdownTheme.getParagraphTheme()))
+        cjMarkdownTheme.setCJMarkdownStrikethroughTheme(this.getStrikethroughTheme(markdownTheme.getStrikethroughTheme()))
+        cjMarkdownTheme.setCJMarkdownSubTheme(this.getSubTheme(markdownTheme.getSubTheme()))
+        cjMarkdownTheme.setCJMarkdownSupTheme(this.getSupTheme(markdownTheme.getSupTheme()))
+        cjMarkdownTheme.setCJMarkdownTableTheme(this.getTableTheme(markdownTheme.getTableTheme()))
+        cjMarkdownTheme.setCJMarkdownVideoTheme(this.getVideoTheme(markdownTheme.getVideoTheme()))
+        cjMarkdownTheme.setCJMarkdownHighlightTheme(this.getHighlightTheme(markdownTheme.getHighlightTheme()))
+      }
+    }
+    return cjMarkdownTheme
   }
 
-  /**
-   * 滚动到容器边缘
-   *
-   * @param edge 滚动到容器边缘
-   */
-  scrollEdge(edge: Edge): void {
-    switch (edge) {
-      case Edge.Top:
-        this.scroller?.scrollEdge(1)
-        break
-      case Edge.Bottom:
-        this.scroller?.scrollEdge(2)
-        break
+  getAudioTheme(theme: AudioTheme): CJMarkdownAudioTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownAudioTheme()
+    if (theme.getAudioBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setAudioBackgroundColor(theme.getAudioBackgroundColor())
+    }
+    let audioMarginTop: number = theme.getAudioMarginTop() ?? 0
+    let audioMarginRight: number = theme.getAudioMarginRight() ?? 0
+    let audioMarginBottom: number = theme.getAudioMarginBottom() ?? 0
+    let audioMarginLeft: number = theme.getAudioMarginLeft() ?? 0
+    cjMarkdownTheme.setAudioMargin(audioMarginTop, audioMarginRight, audioMarginBottom, audioMarginLeft)
+
+    let audioPaddingTop: number = theme.getAudioPaddingTop() ?? 12
+    let audioPaddingRight: number = theme.getAudioPaddingRight() ?? 16
+    let audioPaddingBottom: number = theme.getAudioPaddingBottom() ?? 12
+    let audioPaddingLeft: number = theme.getAudioPaddingLeft() ?? 12
+    cjMarkdownTheme.setAudioPadding(audioPaddingTop, audioPaddingRight, audioPaddingBottom, audioPaddingLeft)
+
+    if (theme.getAudioBorderStyle() !== undefined) {
+      cjMarkdownTheme.setAudioBorderStyle(theme.getAudioBorderStyle())
+    }
+    if (theme.getAudioBorderWidth() !== undefined) {
+      cjMarkdownTheme.setAudioBorderWidth(theme.getAudioBorderWidth())
+    }
+    if (theme.getAudioBorderColor() !== undefined) {
+      cjMarkdownTheme.setAudioBorderColor(theme.getAudioBorderColor())
+    }
+    let audioRadiusTopLeft: number = theme.getAudioRadiusTopLeft() ?? 12
+    let audioRadiusTopRight: number = theme.getAudioRadiusTopRight() ?? 12
+    let audioRadiusBottomLeft: number = theme.getAudioRadiusBottomLeft() ?? 12
+    let audioRadiusBottomRight: number = theme.getAudioRadiusBottomRight() ?? 12
+    cjMarkdownTheme.setAudioBorderRadius(audioRadiusTopLeft, audioRadiusTopRight, audioRadiusBottomLeft, audioRadiusBottomRight)
+
+    if (theme.getAudioShadowRadius() !== undefined) {
+      cjMarkdownTheme.setAudioShadowRadius(theme.getAudioShadowRadius())
+    }
+    if (theme.getAudioShadowColor() !== undefined) {
+      cjMarkdownTheme.setAudioShadowColor(theme.getAudioShadowColor())
+    }
+    if (theme.getAudioShadowOffsetX() !== undefined) {
+      cjMarkdownTheme.setAudioShadowOffsetX(theme.getAudioShadowOffsetX())
+    }
+    if (theme.getAudioShadowOffsetY() !== undefined) {
+      cjMarkdownTheme.setAudioShadowOffsetY(theme.getAudioShadowOffsetY())
+    }
+    if (theme.getAudioButtonWidth() !== undefined) {
+      cjMarkdownTheme.setAudioButtonWidth(theme.getAudioButtonWidth())
+    }
+    if (theme.getAudioButtonHeight() !== undefined) {
+      cjMarkdownTheme.setAudioButtonHeight(theme.getAudioButtonHeight())
+    }
+    if (theme.getAudioButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setAudioButtonBackgroundColor(theme.getAudioButtonBackgroundColor())
+    }
+    if (theme.getAudioButtonBorderStyle() !== undefined) {
+      cjMarkdownTheme.setAudioButtonBorderStyle(theme.getAudioButtonBorderStyle())
+    }
+    if (theme.getAudioButtonBorderWidth() !== undefined) {
+      cjMarkdownTheme.setAudioButtonBorderWidth(theme.getAudioButtonBorderWidth())
+    }
+    if (theme.getAudioButtonBorderColor() !== undefined) {
+      cjMarkdownTheme.setAudioButtonBorderColor(theme.getAudioButtonBorderColor())
+    }
+    let audioButtonRadiusTopLeft: number = theme.getAudioButtonRadiusTopLeft() ?? 16
+    let audioButtonRadiusTopRight: number = theme.getAudioButtonRadiusTopRight() ?? 16
+    let audioButtonRadiusBottomLeft: number = theme.getAudioButtonRadiusBottomLeft() ?? 16
+    let audioButtonRadiusBottomRight: number = theme.getAudioButtonRadiusBottomRight() ?? 16
+    cjMarkdownTheme.setAudioButtonRadius(audioButtonRadiusTopLeft, audioButtonRadiusTopRight, audioButtonRadiusBottomLeft, audioButtonRadiusBottomRight)
+
+    if (theme.getAudioButtonText() !== undefined) {
+      cjMarkdownTheme.setAudioButtonText(theme.getAudioButtonText())
+    }
+    if (theme.getAudioButtonTextFontColor() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontColor(theme.getAudioButtonTextFontColor())
+    }
+    if (theme.getAudioButtonTextFontSize() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontSize(theme.getAudioButtonTextFontSize())
+    }
+    if (theme.getAudioButtonTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontStyle(theme.getAudioButtonTextFontStyle())
+    }
+    if (theme.getAudioButtonTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontWeight(this.convertFontWeight(theme.getAudioButtonTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getAudioButtonTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontFamily(theme.getAudioButtonTextFontFamily())
+    }
+    if (theme.getAudioButtonTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextLineHeight(theme.getAudioButtonTextLineHeight())
+    }
+    if (theme.getAudioIconWidth() !== undefined) {
+      cjMarkdownTheme.setAudioIconWidth(theme.getAudioIconWidth())
+    }
+    if (theme.getAudioIconHeight() !== undefined) {
+      cjMarkdownTheme.setAudioIconHeight(theme.getAudioIconHeight())
+    }
+    let audioIconRadiusTopLeft: number = theme.getAudioIconRadiusTopLeft() ?? 8
+    let audioIconRadiusTopRight: number = theme.getAudioIconRadiusTopRight() ?? 8
+    let audioIconRadiusBottomLeft: number = theme.getAudioIconRadiusBottomLeft() ?? 8
+    let audioIconRadiusBottomRight: number = theme.getAudioIconRadiusBottomRight() ?? 8
+    cjMarkdownTheme.setAudioIconRadius(audioIconRadiusTopLeft, audioIconRadiusTopRight, audioIconRadiusBottomLeft, audioIconRadiusBottomRight
+    )
+    if (theme.getAudioIconFitType() !== undefined) {
+      cjMarkdownTheme.setAudioIconFitType(theme.getAudioIconFitType())
+    }
+    if (theme.getAudioTitleTextFontColor() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontColor(theme.getAudioTitleTextFontColor())
+    }
+    if (theme.getAudioTitleTextFontSize() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontSize(theme.getAudioTitleTextFontSize())
+    }
+    if (theme.getAudioTitleTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontStyle(theme.getAudioTitleTextFontStyle())
+    }
+    if (theme.getAudioTitleTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontWeight(this.convertFontWeight(theme.getAudioTitleTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getAudioTitleTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontFamily(theme.getAudioTitleTextFontFamily())
+    }
+    if (theme.getAudioTitleTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextLineHeight(theme.getAudioTitleTextLineHeight())
+    }
+    if (theme.getAudioTypeTextFontColor() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontColor(theme.getAudioTypeTextFontColor())
+    }
+    if (theme.getAudioTypeTextFontSize() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontSize(theme.getAudioTypeTextFontSize())
+    }
+    if (theme.getAudioTypeTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontStyle(theme.getAudioTypeTextFontStyle())
+    }
+    if (theme.getAudioTypeTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontWeight(this.convertFontWeight(theme.getAudioTypeTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getAudioTypeTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontFamily(theme.getAudioTypeTextFontFamily())
+    }
+    if (theme.getAudioTypeTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextLineHeight(theme.getAudioTypeTextLineHeight())
+    }
+    if (theme.getAudioTitleToTypeSpacing() !== undefined) {
+      cjMarkdownTheme.setAudioTitleToTypeSpacing(theme.getAudioTitleToTypeSpacing())
+    }
+    return cjMarkdownTheme
+  }
+
+  getBannerTheme(theme: BannerTheme): CJMarkdownBannerTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownBannerTheme()
+    let bannerMarginTop: number = theme.getBannerMarginTop() ?? 0
+    let bannerMarginRight: number = theme.getBannerMarginRight() ?? 0
+    let bannerMarginBottom: number = theme.getBannerMarginBottom() ?? 0
+    let bannerMarginLeft: number = theme.getBannerMarginLeft() ?? 0
+    cjMarkdownTheme.setBannerMargin(bannerMarginTop, bannerMarginRight, bannerMarginBottom, bannerMarginLeft)
+
+    let bannerPaddingTop: number = theme.getBannerPaddingTop() ?? 0
+    let bannerPaddingRight: number = theme.getBannerPaddingRight() ?? 0
+    let bannerPaddingBottom: number = theme.getBannerPaddingBottom() ?? 0
+    let bannerPaddingLeft: number = theme.getBannerPaddingLeft() ?? 0
+    cjMarkdownTheme.setBannerPadding(bannerPaddingTop, bannerPaddingRight, bannerPaddingBottom, bannerPaddingLeft)
+    return cjMarkdownTheme
+  }
+
+  getBlockQuoteTheme(theme: BlockQuoteTheme): CJMarkdownBlockQuoteTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownBlockQuoteTheme()
+    if (theme.getBlockQuoteBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteBackgroundColor(theme.getBlockQuoteBackgroundColor())
+    }
+    let blockQuoteMarginTop: number = theme.getBlockQuoteMarginTop() ?? 0
+    let blockQuoteMarginRight: number = theme.getBlockQuoteMarginRight() ?? 0
+    let blockQuoteMarginBottom: number = theme.getBlockQuoteMarginBottom() ?? 0
+    let blockQuoteMarginLeft: number = theme.getBlockQuoteMarginLeft() ?? 8
+    cjMarkdownTheme.setBlockQuoteMargin(blockQuoteMarginTop, blockQuoteMarginRight, blockQuoteMarginBottom, blockQuoteMarginLeft)
+
+    let blockQuotePaddingTop: number = theme.getBlockQuotePaddingTop() ?? 0
+    let blockQuotePaddingRight: number = theme.getBlockQuotePaddingRight() ?? 0
+    let blockQuotePaddingBottom: number = theme.getBlockQuotePaddingBottom() ?? 0
+    let blockQuotePaddingLeft: number = theme.getBlockQuotePaddingLeft() ?? 0
+    cjMarkdownTheme.setBlockQuotePadding(blockQuotePaddingTop, blockQuotePaddingRight, blockQuotePaddingBottom, blockQuotePaddingLeft)
+
+    let blockQuoteRadiusTopLeft: number = theme.getBlockQuoteRadiusTopLeft() ?? 0
+    let blockQuoteRadiusTopRight: number = theme.getBlockQuoteRadiusTopRight() ?? 0
+    let blockQuoteRadiusBottomLeft: number = theme.getBlockQuoteRadiusBottomLeft() ?? 0
+    let blockQuoteRadiusBottomRight: number = theme.getBlockQuoteRadiusBottomRight() ?? 0
+    cjMarkdownTheme.setBlockQuoteRadius(blockQuoteRadiusTopLeft, blockQuoteRadiusTopRight, blockQuoteRadiusBottomLeft, blockQuoteRadiusBottomRight)
+    if (theme.getBlockQuoteLeftBorderWidth() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteLeftBorderWidth(theme.getBlockQuoteLeftBorderWidth())
+    }
+    if (theme.getBlockQuoteLeftBorderColor() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteLeftBorderColor(theme.getBlockQuoteLeftBorderColor())
+    }
+    if (theme.getBlockQuoteChildSpacing() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteChildSpacing(theme.getBlockQuoteChildSpacing())
+    }
+    return cjMarkdownTheme
+  }
+
+  getBoldTheme(theme: BoldTheme): CJMarkdownBoldTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownBoldTheme()
+    if (theme.getBoldTextFontColor() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontColor(theme.getBoldTextFontColor())
+    }
+    if (theme.getBoldTextFontSize() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontSize(theme.getBoldTextFontSize())
+    }
+    if (theme.getBoldTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontStyle(theme.getBoldTextFontStyle())
+    }
+    if (theme.getBoldTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontWeight(this.convertFontWeight(theme.getBoldTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getBoldTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontFamily(theme.getBoldTextFontFamily())
+    }
+    if (theme.getBoldTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setBoldTextLineHeight(theme.getBoldTextLineHeight())
+    }
+    if (theme.getBoldTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setBoldTextLetterSpacing(theme.getBoldTextLetterSpacing())
+    }
+    return cjMarkdownTheme
+  }
+
+  getBulletListTheme(theme: BulletListTheme): CJMarkdownBulletListTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownBulletListTheme()
+    if (theme.getBulletListBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBulletListBackgroundColor(theme.getBulletListBackgroundColor())
+    }
+    let bulletListMarginTop: number = theme.getBulletListMarginTop() ?? 0
+    let bulletListMarginRight: number = theme.getBulletListMarginRight() ?? 0
+    let bulletListMarginBottom: number = theme.getBulletListMarginBottom() ?? 0
+    let bulletListMarginLeft: number = theme.getBulletListMarginLeft() ?? 8
+    cjMarkdownTheme.setBulletListMargin(bulletListMarginTop, bulletListMarginRight, bulletListMarginBottom, bulletListMarginLeft)
+
+    let bulletListPaddingTop: number = theme.getBulletListPaddingTop() ?? 0
+    let bulletListPaddingRight: number = theme.getBulletListPaddingRight() ?? 0
+    let bulletListPaddingBottom: number = theme.getBulletListPaddingBottom() ?? 0
+    let bulletListPaddingLeft: number = theme.getBulletListPaddingLeft() ?? 0
+    cjMarkdownTheme.setBulletListPadding(bulletListPaddingTop, bulletListPaddingRight, bulletListPaddingBottom, bulletListPaddingLeft)
+    if (theme.getBulletListChildSpacing() !== undefined) {
+      cjMarkdownTheme.setBulletListChildSpacing(theme.getBulletListChildSpacing())
+    }
+    if (theme.getBulletListChildChildSpacing() !== undefined) {
+      cjMarkdownTheme.setBulletListChildChildSpacing(theme.getBulletListChildChildSpacing())
+    }
+    if (theme.getBulletListBulletSpacing() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletSpacing(theme.getBulletListBulletSpacing())
+    }
+    if (theme.getBulletListBulletIsCircle() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletIsCircle(theme.getBulletListBulletIsCircle())
+    }
+    if (theme.getBulletListBulletTextFontColor() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontColor(theme.getBulletListBulletTextFontColor())
+    }
+    if (theme.getBulletListBulletTextFontSize() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontSize(theme.getBulletListBulletTextFontSize())
+    }
+    if (theme.getBulletListBulletTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontStyle(theme.getBulletListBulletTextFontStyle())
+    }
+    if (theme.getBulletListBulletTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontWeight(this.convertFontWeight(theme.getBulletListBulletTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getBulletListBulletTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontFamily(theme.getBulletListBulletTextFontFamily())
+    }
+    if (theme.getBulletListBulletTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextLineHeight(theme.getBulletListBulletTextLineHeight())
+    }
+    if (theme.getBulletListCheckboxSpacing() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxSpacing(theme.getBulletListCheckboxSpacing())
+    }
+    if (theme.getBulletListCheckboxWidth() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxWidth(theme.getBulletListCheckboxWidth())
+    }
+    if (theme.getBulletListCheckboxHeight() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxHeight(theme.getBulletListCheckboxHeight())
+    }
+    if (theme.getBulletListCheckboxSelectedColor() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxSelectedColor(theme.getBulletListCheckboxSelectedColor())
+    }
+    if (theme.getBulletListCheckboxShape() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxShape(theme.getBulletListCheckboxShape())
+    }
+    return cjMarkdownTheme
+  }
+
+  getCodeBlockTheme(theme: CodeBlockTheme): CJMarkdownCodeBlockTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownCodeBlockTheme()
+    if (theme.getCodeBlockIsDark() !== undefined) {
+      cjMarkdownTheme.setCodeBlockIsDark(theme.getCodeBlockIsDark())
+    }
+    if (theme.getCodeBlockIsCodeFormat() !== undefined) {
+      cjMarkdownTheme.setCodeBlockIsCodeFormat(theme.getCodeBlockIsCodeFormat())
+    }
+    if (theme.getCodeBlockUseTab() !== undefined) {
+      cjMarkdownTheme.setCodeBlockUseTab(theme.getCodeBlockUseTab())
+    }
+    if (theme.getCodeBlockIndentWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockIndentWidth(theme.getCodeBlockIndentWidth())
+    }
+    if (theme.getCodeBlockParserSync() !== undefined) {
+      cjMarkdownTheme.setCodeBlockParserSync(theme.getCodeBlockParserSync())
+    }
+    if (theme.getCodeBlockBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockBackgroundColor(theme.getCodeBlockBackgroundColor())
+    }
+    let codeBlockMarginTop: number = theme.getCodeBlockMarginTop() ?? 8
+    let codeBlockMarginRight: number = theme.getCodeBlockMarginRight() ?? 0
+    let codeBlockMarginBottom: number = theme.getCodeBlockMarginBottom() ?? 8
+    let codeBlockMarginLeft: number = theme.getCodeBlockMarginLeft() ?? 0
+    cjMarkdownTheme.setCodeBlockMargin(codeBlockMarginTop, codeBlockMarginRight, codeBlockMarginBottom, codeBlockMarginLeft)
+
+    let codeBlockPaddingTop: number = theme.getCodeBlockPaddingTop() ?? 0
+    let codeBlockPaddingRight: number = theme.getCodeBlockPaddingRight() ?? 8
+    let codeBlockPaddingBottom: number = theme.getCodeBlockPaddingBottom() ?? 8
+    let codeBlockPaddingLeft: number = theme.getCodeBlockPaddingLeft() ?? 0
+    cjMarkdownTheme.setCodeBlockPadding(codeBlockPaddingTop, codeBlockPaddingRight, codeBlockPaddingBottom, codeBlockPaddingLeft)
+    if (theme.getCodeBlockBorderStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockBorderStyle(theme.getCodeBlockBorderStyle())
+    }
+    if (theme.getCodeBlockBorderWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockBorderWidth(theme.getCodeBlockBorderWidth())
+    }
+    if (theme.getCodeBlockBorderColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockBorderColor(theme.getCodeBlockBorderColor())
+    }
+    let codeBlockRadiusTopLeft: number = theme.getCodeBlockRadiusTopLeft() ?? 8
+    let codeBlockRadiusTopRight: number = theme.getCodeBlockRadiusTopRight() ?? 8
+    let codeBlockRadiusBottomLeft: number = theme.getCodeBlockRadiusBottomLeft() ?? 8
+    let codeBlockRadiusBottomRight: number = theme.getCodeBlockRadiusBottomRight() ?? 8
+    cjMarkdownTheme.setCodeBlockRadius(codeBlockRadiusTopLeft, codeBlockRadiusTopRight, codeBlockRadiusBottomLeft, codeBlockRadiusBottomRight)
+    if (theme.getCodeBlockTitleLayoutMarginBottom() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTitleLayoutMarginBottom(theme.getCodeBlockTitleLayoutMarginBottom())
+    }
+    if (theme.getCodeBlockTypeTextMarginLeft() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextMarginLeft(theme.getCodeBlockTypeTextMarginLeft())
+    }
+    if (theme.getCodeBlockTypeText() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeText(theme.getCodeBlockTypeText())
+    }
+    if (theme.getCodeBlockTypeTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontColor(theme.getCodeBlockTypeTextFontColor())
+    }
+    if (theme.getCodeBlockTypeTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontSize(theme.getCodeBlockTypeTextFontSize())
+    }
+    if (theme.getCodeBlockTypeTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontStyle(theme.getCodeBlockTypeTextFontStyle())
+    }
+    if (theme.getCodeBlockTypeTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontWeight(this.convertFontWeight(theme.getCodeBlockTypeTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getCodeBlockTypeTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontFamily(theme.getCodeBlockTypeTextFontFamily())
+    }
+    if (theme.getCodeBlockTypeTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextLineHeight(theme.getCodeBlockTypeTextLineHeight())
+    }
+    if (theme.getCodeBlockCopyFullScreenSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyFullScreenSpacing(theme.getCodeBlockCopyFullScreenSpacing())
+    }
+    if (theme.getCodeBlockCopyButtonIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyButtonIsShow(theme.getCodeBlockCopyButtonIsShow())
+    }
+    if (theme.getCodeBlockCopyTextIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextIsShow(theme.getCodeBlockCopyTextIsShow())
+    }
+    if (theme.getCodeBlockCopyIconWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyIconWidth(theme.getCodeBlockCopyIconWidth())
+    }
+    if (theme.getCodeBlockCopyIconHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyIconHeight(theme.getCodeBlockCopyIconHeight())
+    }
+    if (theme.getCodeBlockCopyIconTextSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyIconTextSpacing(theme.getCodeBlockCopyIconTextSpacing())
+    }
+    if (theme.getCodeBlockCopyText() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyText(theme.getCodeBlockCopyText())
+    }
+    if (theme.getCodeBlockCopyTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontColor(theme.getCodeBlockCopyTextFontColor())
+    }
+    if (theme.getCodeBlockCopyTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontSize(theme.getCodeBlockCopyTextFontSize())
+    }
+    if (theme.getCodeBlockCopyTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontStyle(theme.getCodeBlockCopyTextFontStyle())
+    }
+    if (theme.getCodeBlockCopyTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontWeight(this.convertFontWeight(theme.getCodeBlockCopyTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getCodeBlockCopyTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontFamily(theme.getCodeBlockCopyTextFontFamily())
+    }
+    if (theme.getCodeBlockCopyTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextLineHeight(theme.getCodeBlockCopyTextLineHeight())
+    }
+    if (theme.getCodeBlockFullScreenButtonIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenButtonIsShow(theme.getCodeBlockFullScreenButtonIsShow())
+    }
+    if (theme.getCodeBlockFullScreenTextIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextIsShow(theme.getCodeBlockFullScreenTextIsShow())
+    }
+    if (theme.getCodeBlockFullScreenIconWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenIconWidth(theme.getCodeBlockFullScreenIconWidth())
+    }
+    if (theme.getCodeBlockFullScreenIconHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenIconHeight(theme.getCodeBlockFullScreenIconHeight())
+    }
+    if (theme.getCodeBlockFullScreenIconTextSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenIconTextSpacing(theme.getCodeBlockFullScreenIconTextSpacing())
+    }
+    if (theme.getCodeBlockFullScreenText() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenText(theme.getCodeBlockFullScreenText())
+    }
+    if (theme.getCodeBlockFullScreenTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontColor(theme.getCodeBlockFullScreenTextFontColor())
+    }
+    if (theme.getCodeBlockFullScreenTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontSize(theme.getCodeBlockFullScreenTextFontSize())
+    }
+    if (theme.getCodeBlockFullScreenTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontStyle(theme.getCodeBlockFullScreenTextFontStyle())
+    }
+    if (theme.getCodeBlockFullScreenTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontWeight(this.convertFontWeight(theme.getCodeBlockFullScreenTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getCodeBlockFullScreenTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontFamily(theme.getCodeBlockFullScreenTextFontFamily())
+    }
+    if (theme.getCodeBlockFullScreenTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextLineHeight(theme.getCodeBlockFullScreenTextLineHeight())
+    }
+    if (theme.getCodeBlockLineNumberIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberIsShow(theme.getCodeBlockLineNumberIsShow())
+    }
+    if (theme.getCodeBlockLineNumberTextPaddingLeft() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextPaddingLeft(theme.getCodeBlockLineNumberTextPaddingLeft())
+    }
+    if (theme.getCodeBlockLineNumberTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontColor(theme.getCodeBlockLineNumberTextFontColor())
+    }
+    if (theme.getCodeBlockLineNumberTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontSize(theme.getCodeBlockLineNumberTextFontSize())
+    }
+    if (theme.getCodeBlockLineNumberTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontStyle(theme.getCodeBlockLineNumberTextFontStyle())
+    }
+    if (theme.getCodeBlockLineNumberTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontWeight(this.convertFontWeight(theme.getCodeBlockLineNumberTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getCodeBlockLineNumberTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontFamily(theme.getCodeBlockLineNumberTextFontFamily())
+    }
+    if (theme.getCodeBlockLineNumberTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextLineHeight(theme.getCodeBlockLineNumberTextLineHeight())
+    }
+    if (theme.getCodeBlockDividerColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockDividerColor(theme.getCodeBlockDividerColor())
+    }
+    if (theme.getCodeBlockDividerStrokeWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockDividerStrokeWidth(theme.getCodeBlockDividerStrokeWidth())
+    }
+    if (theme.getCodeBlockLineNumberDividerSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberDividerSpacing(theme.getCodeBlockLineNumberDividerSpacing())
+    }
+    if (theme.getCodeBlockTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontColor(theme.getCodeBlockTextFontColor())
+    }
+    if (theme.getCodeBlockTextMarginRight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextMarginRight(theme.getCodeBlockTextMarginRight())
+    }
+    if (theme.getCodeBlockTextMarginLeft() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextMarginLeft(theme.getCodeBlockTextMarginLeft())
+    }
+    if (theme.getCodeBlockTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontSize(theme.getCodeBlockTextFontSize())
+    }
+    if (theme.getCodeBlockTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontStyle(theme.getCodeBlockTextFontStyle())
+    }
+    if (theme.getCodeBlockTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontWeight(this.convertFontWeight(theme.getCodeBlockTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getCodeBlockTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontFamily(theme.getCodeBlockTextFontFamily())
+    }
+    if (theme.getCodeBlockTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextLineHeight(theme.getCodeBlockTextLineHeight())
+    }
+    if (theme.getCodeBlockTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextLetterSpacing(theme.getCodeBlockTextLetterSpacing())
+    }
+    if (theme.getCodeBlockListTitleTextSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleTextSize(theme.getCodeBlockListTitleTextSize())
+    }
+    if (theme.getCodeBlockListTitleSelectTextSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleSelectTextSize(theme.getCodeBlockListTitleSelectTextSize())
+    }
+    if (theme.getCodeBlockListTitleSelectTextColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleSelectTextColor(theme.getCodeBlockListTitleSelectTextColor())
+    }
+    if (theme.getCodeBlockListTitleUnselectTextColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleUnselectTextColor(theme.getCodeBlockListTitleUnselectTextColor())
+    }
+    if (theme.getCodeBlockListTitleSelectBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleSelectBackgroundColor(theme.getCodeBlockListTitleSelectBackgroundColor())
+    }
+    if (theme.getCodeBlockListTitleUnselectBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleUnselectBackgroundColor(theme.getCodeBlockListTitleUnselectBackgroundColor())
+    }
+    if (theme.getCodeBlockIsSeparate() !== undefined) {
+      cjMarkdownTheme.setCodeBlockIsSeparate(theme.getCodeBlockIsSeparate())
+    }
+    if (theme.getCodeBlockSeparateWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockSeparateWidth(theme.getCodeBlockSeparateWidth())
+    }
+    if (theme.getCodeBlockSeparateIsBottom() !== undefined) {
+      cjMarkdownTheme.setCodeBlockSeparateIsBottom(theme.getCodeBlockSeparateIsBottom())
+    }
+    return cjMarkdownTheme
+  }
+
+  getDefinitionListTheme(theme: DefinitionListTheme): CJMarkdownDefinitionListTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownDefinitionListTheme()
+    if (theme.getDefinitionListBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setDefinitionListBackgroundColor(theme.getDefinitionListBackgroundColor())
+    }
+    let definitionListMarginTop: number = theme.getDefinitionListMarginTop() ?? 0
+    let definitionListMarginRight: number = theme.getDefinitionListMarginRight() ?? 0
+    let definitionListMarginBottom: number = theme.getDefinitionListMarginBottom() ?? 0
+    let definitionListMarginLeft: number = theme.getDefinitionListMarginLeft() ?? 0
+    cjMarkdownTheme.setDefinitionListMargin(definitionListMarginTop, definitionListMarginRight, definitionListMarginBottom, definitionListMarginLeft)
+
+    let definitionListPaddingTop: number = theme.getDefinitionListPaddingTop() ?? 0
+    let definitionListPaddingRight: number = theme.getDefinitionListPaddingRight() ?? 0
+    let definitionListPaddingBottom: number = theme.getDefinitionListPaddingBottom() ?? 0
+    let definitionListPaddingLeft: number = theme.getDefinitionListPaddingLeft() ?? 0
+    cjMarkdownTheme.setDefinitionListPadding(definitionListPaddingTop, definitionListPaddingRight, definitionListPaddingBottom, definitionListPaddingLeft)
+    if (theme.getDefinitionListTermToDescriptionSpacing() !== undefined) {
+      cjMarkdownTheme.setDefinitionListTermToDescriptionSpacing(theme.getDefinitionListTermToDescriptionSpacing())
+    }
+    if (theme.getDefinitionListTermTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setDefinitionListTermTextFontWeight(this.convertFontWeight(theme.getDefinitionListTermTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getDefinitionListTermTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setDefinitionListTermTextFontStyle(theme.getDefinitionListTermTextFontStyle())
+    }
+    if (theme.getDefinitionListDescriptionItemSpacing() !== undefined) {
+      cjMarkdownTheme.setDefinitionListDescriptionItemSpacing(theme.getDefinitionListDescriptionItemSpacing())
+    }
+    if (theme.getDefinitionListDescriptionIndent() !== undefined) {
+      cjMarkdownTheme.setDefinitionListDescriptionIndent(theme.getDefinitionListDescriptionIndent())
+    }
+    return cjMarkdownTheme
+  }
+
+  getDividerTheme(theme: DividerTheme): CJMarkdownDividerTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownDividerTheme()
+    let dividerMarginTop: number = theme.getDividerMarginTop() ?? 0
+    let dividerMarginRight: number = theme.getDividerMarginRight() ?? 0
+    let dividerMarginBottom: number = theme.getDividerMarginBottom() ?? 0
+    let dividerMarginLeft: number = theme.getDividerMarginLeft() ?? 0
+    cjMarkdownTheme.setDividerMargin(dividerMarginTop, dividerMarginRight, dividerMarginBottom, dividerMarginLeft)
+
+    let dividerPaddingTop: number = theme.getDividerPaddingTop() ?? 0
+    let dividerPaddingRight: number = theme.getDividerPaddingRight() ?? 0
+    let dividerPaddingBottom: number = theme.getDividerPaddingBottom() ?? 0
+    let dividerPaddingLeft: number = theme.getDividerPaddingLeft() ?? 0
+    cjMarkdownTheme.setDividerPadding(dividerPaddingTop, dividerPaddingRight, dividerPaddingBottom, dividerPaddingLeft)
+    if (theme.getDividerColor() !== undefined) {
+      cjMarkdownTheme.setDividerColor(theme.getDividerColor())
+    }
+    if (theme.getDividerStrokeWidth() !== undefined) {
+      cjMarkdownTheme.setDividerStrokeWidth(theme.getDividerStrokeWidth())
+    }
+    if (theme.getDividerStyle() !== undefined) {
+      cjMarkdownTheme.setDividerStyle(theme.getDividerStyle())
+    }
+    return cjMarkdownTheme
+  }
+
+  getFootnoteDefTheme(theme: FootnoteDefTheme): CJMarkdownFootnoteDefTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownFootnoteDefTheme()
+    if (theme.getFootnoteDefBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setFootnoteDefBackgroundColor(theme.getFootnoteDefBackgroundColor())
+    }
+    let footnoteDefMarginTop: number = theme.getFootnoteDefMarginTop() ?? 0
+    let footnoteDefMarginRight: number = theme.getFootnoteDefMarginRight() ?? 0
+    let footnoteDefMarginBottom: number = theme.getFootnoteDefMarginBottom() ?? 0
+    let footnoteDefMarginLeft: number = theme.getFootnoteDefMarginLeft() ?? 0
+    cjMarkdownTheme.setFootnoteDefMargin(footnoteDefMarginTop, footnoteDefMarginRight, footnoteDefMarginBottom, footnoteDefMarginLeft)
+
+    let footnoteDefPaddingTop: number = theme.getFootnoteDefPaddingTop() ?? 0
+    let footnoteDefPaddingRight: number = theme.getFootnoteDefPaddingRight() ?? 0
+    let footnoteDefPaddingBottom: number = theme.getFootnoteDefPaddingBottom() ?? 0
+    let footnoteDefPaddingLeft: number = theme.getFootnoteDefPaddingLeft() ?? 0
+    cjMarkdownTheme.setFootnoteDefPadding(footnoteDefPaddingTop, footnoteDefPaddingRight, footnoteDefPaddingBottom, footnoteDefPaddingLeft)
+    return cjMarkdownTheme
+  }
+
+  getFootnoteRefTheme(theme: FootnoteRefTheme): CJMarkdownFootnoteRefTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownFootnoteRefTheme()
+    if (theme.getFootnoteRefTextFontColor() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontColor(theme.getFootnoteRefTextFontColor())
+    }
+    if (theme.getFootnoteRefTextFontSize() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontSize(theme.getFootnoteRefTextFontSize())
+    }
+    if (theme.getFootnoteRefTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontStyle(theme.getFootnoteRefTextFontStyle())
+    }
+    if (theme.getFootnoteRefTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontWeight(this.convertFontWeight(theme.getFootnoteRefTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getFootnoteRefTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontFamily(theme.getFootnoteRefTextFontFamily())
+    }
+    if (theme.getFootnoteRefTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextLineHeight(theme.getFootnoteRefTextLineHeight())
+    }
+    if (theme.getFootnoteRefTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextLetterSpacing(theme.getFootnoteRefTextLetterSpacing())
+    }
+    if (theme.getFootnoteRefTextDecorationType() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextDecorationType(theme.getFootnoteRefTextDecorationType())
+    }
+    if (theme.getFootnoteRefTextDecorationColor() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextDecorationColor(theme.getFootnoteRefTextDecorationColor())
+    }
+    if (theme.getFootnoteRefTextDecorationStyle() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextDecorationStyle(theme.getFootnoteRefTextDecorationStyle())
+    }
+    if (theme.getFootnoteRefTextBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextBackgroundColor(theme.getFootnoteRefTextBackgroundColor())
+    }
+    let footnoteRefTextBackgroundRadiusTopLeft: number = theme.getFootnoteRefTextBackgroundRadiusTopLeft() ?? 0
+    let footnoteRefTextBackgroundRadiusTopRight: number = theme.getFootnoteRefTextBackgroundRadiusTopRight() ?? 0
+    let footnoteRefTextBackgroundRadiusBottomLeft: number = theme.getFootnoteRefTextBackgroundRadiusBottomLeft() ?? 0
+    let footnoteRefTextBackgroundRadiusBottomRight: number = theme.getFootnoteRefTextBackgroundRadiusBottomRight() ?? 0
+    cjMarkdownTheme.setFootnoteRefTextBackgroundRadius(
+      footnoteRefTextBackgroundRadiusTopLeft,
+      footnoteRefTextBackgroundRadiusTopRight,
+      footnoteRefTextBackgroundRadiusBottomLeft,
+      footnoteRefTextBackgroundRadiusBottomRight
+    )
+    return cjMarkdownTheme
+  }
+
+  getGlobalTheme(theme: GlobalTheme): CJMarkdownGlobalTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownGlobalTheme()
+    if (theme.getIsMarkdownParserSync() !== undefined) {
+      cjMarkdownTheme.setIsMarkdownParserSync(theme.getIsMarkdownParserSync())
+    }
+    if (theme.getIsOnCopy() !== undefined) {
+      cjMarkdownTheme.setIsOnCopy(theme.getIsOnCopy())
+    }
+    if (theme.getBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColor(theme.getBackgroundColor())
+    }
+    let blockMarginTop: number = theme.getBlockMarginTop() ?? 0
+    let blockMarginRight: number = theme.getBlockMarginRight() ?? 0
+    let blockMarginBottom: number = theme.getBlockMarginBottom() ?? 0
+    let blockMarginLeft: number = theme.getBlockMarginLeft() ?? 0
+    cjMarkdownTheme.setGlobalMargin(blockMarginTop, blockMarginRight, blockMarginBottom, blockMarginLeft)
+    if (theme.getMarkdownBlockSpacing() !== undefined) {
+      cjMarkdownTheme.setBlockSpacing(theme.getMarkdownBlockSpacing())
+    }
+    if (theme.getIsLineBreak() !== undefined) {
+      cjMarkdownTheme.setIsLineBreak(theme.getIsLineBreak())
+    }
+    if (theme.getOpenGestureSwipe() !== undefined) {
+      cjMarkdownTheme.setOpenGestureSwipe(theme.getOpenGestureSwipe())
+    }
+    return cjMarkdownTheme
+  }
+
+  getHeadingTheme(theme: HeadingTheme): CJMarkdownHeadingTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownHeadingTheme()
+    // H1
+    if (theme.getHeading1BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(1, theme.getHeading1BackgroundColor())
+    }
+    let heading1MarginTop: number = theme.getHeading1MarginTop() ?? 0
+    let heading1MarginRight: number = theme.getHeading1MarginRight() ?? 0
+    let heading1MarginBottom: number = theme.getHeading1MarginBottom() ?? 0
+    let heading1MarginLeft: number = theme.getHeading1MarginLeft() ?? 0
+    cjMarkdownTheme.setMarginForDesignateHeading(1, heading1MarginTop, heading1MarginRight, heading1MarginBottom, heading1MarginLeft)
+
+    let heading1PaddingTop: number = theme.getHeading1PaddingTop() ?? 0
+    let heading1PaddingRight: number = theme.getHeading1PaddingRight() ?? 0
+    let heading1PaddingBottom: number = theme.getHeading1PaddingBottom() ?? 0
+    let heading1PaddingLeft: number = theme.getHeading1PaddingLeft() ?? 0
+    cjMarkdownTheme.setPaddingForDesignateHeading(1, heading1PaddingTop, heading1PaddingRight, heading1PaddingBottom, heading1PaddingLeft)
+    if (theme.getHeading1TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(1, theme.getHeading1TextFontColor())
+    }
+    if (theme.getHeading1TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(1, theme.getHeading1TextFontSize())
+    }
+    if (theme.getHeading1TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(1, theme.getHeading1TextFontStyle())
+    }
+    if (theme.getHeading1TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(1, this.convertFontWeight(theme.getHeading1TextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHeading1TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(1, theme.getHeading1TextFontFamily())
+    }
+    if (theme.getHeading1TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(1, theme.getHeading1TextLineHeight())
+    }
+    if (theme.getHeading1TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(1, theme.getHeading1TextLetterSpacing())
+    }
+    if (theme.getHeading1UnderlineHeight() !== undefined) {
+      cjMarkdownTheme.setUnderlineHeightForDesignateHeading(1, theme.getHeading1UnderlineHeight())
+    }
+    if (theme.getHeading1UnderlineColor() !== undefined) {
+      cjMarkdownTheme.setUnderlineColorForDesignateHeading(1, theme.getHeading1UnderlineColor())
+    }
+    if (theme.getHeading1UnderlineSpacing() !== undefined) {
+      cjMarkdownTheme.setUnderlineSpacingForDesignateHeading(1, theme.getHeading1UnderlineSpacing())
+    }
+    // H2
+    if (theme.getHeading2BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(2, theme.getHeading2BackgroundColor())
+    }
+    let heading2MarginTop: number = theme.getHeading2MarginTop() ?? 0
+    let heading2MarginRight: number = theme.getHeading2MarginRight() ?? 0
+    let heading2MarginBottom: number = theme.getHeading2MarginBottom() ?? 0
+    let heading2MarginLeft: number = theme.getHeading2MarginLeft() ?? 0
+    cjMarkdownTheme.setMarginForDesignateHeading(2, heading2MarginTop, heading2MarginRight, heading2MarginBottom, heading2MarginLeft)
+
+    let heading2PaddingTop: number = theme.getHeading2PaddingTop() ?? 0
+    let heading2PaddingRight: number = theme.getHeading2PaddingRight() ?? 0
+    let heading2PaddingBottom: number = theme.getHeading2PaddingBottom() ?? 0
+    let heading2PaddingLeft: number = theme.getHeading2PaddingLeft() ?? 0
+    cjMarkdownTheme.setPaddingForDesignateHeading(2, heading2PaddingTop, heading2PaddingRight, heading2PaddingBottom, heading2PaddingLeft)
+    if (theme.getHeading2TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(2, theme.getHeading2TextFontColor())
+    }
+    if (theme.getHeading2TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(2, theme.getHeading2TextFontSize())
+    }
+    if (theme.getHeading2TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(2, theme.getHeading2TextFontStyle())
+    }
+    if (theme.getHeading2TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(2, this.convertFontWeight(theme.getHeading2TextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHeading2TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(2, theme.getHeading2TextFontFamily())
+    }
+    if (theme.getHeading2TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(2, theme.getHeading2TextLineHeight())
+    }
+    if (theme.getHeading2TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(2, theme.getHeading2TextLetterSpacing())
+    }
+    if (theme.getHeading2UnderlineHeight() !== undefined) {
+      cjMarkdownTheme.setUnderlineHeightForDesignateHeading(2, theme.getHeading2UnderlineHeight())
+    }
+    if (theme.getHeading2UnderlineColor() !== undefined) {
+      cjMarkdownTheme.setUnderlineColorForDesignateHeading(2, theme.getHeading2UnderlineColor())
+    }
+    if (theme.getHeading2UnderlineSpacing() !== undefined) {
+      cjMarkdownTheme.setUnderlineSpacingForDesignateHeading(2, theme.getHeading2UnderlineSpacing())
+    }
+    // H3
+    if (theme.getHeading3BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(3, theme.getHeading3BackgroundColor())
+    }
+    let heading3MarginTop: number = theme.getHeading3MarginTop() ?? 0
+    let heading3MarginRight: number = theme.getHeading3MarginRight() ?? 0
+    let heading3MarginBottom: number = theme.getHeading3MarginBottom() ?? 0
+    let heading3MarginLeft: number = theme.getHeading3MarginLeft() ?? 0
+    cjMarkdownTheme.setMarginForDesignateHeading(3, heading3MarginTop, heading3MarginRight, heading3MarginBottom, heading3MarginLeft)
+
+    let heading3PaddingTop: number = theme.getHeading3PaddingTop() ?? 0
+    let heading3PaddingRight: number = theme.getHeading3PaddingRight() ?? 0
+    let heading3PaddingBottom: number = theme.getHeading3PaddingBottom() ?? 0
+    let heading3PaddingLeft: number = theme.getHeading3PaddingLeft() ?? 0
+    cjMarkdownTheme.setPaddingForDesignateHeading(3, heading3PaddingTop, heading3PaddingRight, heading3PaddingBottom, heading3PaddingLeft)
+    if (theme.getHeading3TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(3, theme.getHeading3TextFontColor())
+    }
+    if (theme.getHeading3TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(3, theme.getHeading3TextFontSize())
+    }
+    if (theme.getHeading3TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(3, theme.getHeading3TextFontStyle())
+    }
+    if (theme.getHeading3TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(3, this.convertFontWeight(theme.getHeading3TextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHeading3TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(3, theme.getHeading3TextFontFamily())
+    }
+    if (theme.getHeading3TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(3, theme.getHeading3TextLineHeight())
+    }
+    if (theme.getHeading3TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(3, theme.getHeading3TextLetterSpacing())
+    }
+    // H4
+    if (theme.getHeading4BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(4, theme.getHeading4BackgroundColor())
+    }
+    let heading4MarginTop: number = theme.getHeading4MarginTop() ?? 0
+    let heading4MarginRight: number = theme.getHeading4MarginRight() ?? 0
+    let heading4MarginBottom: number = theme.getHeading4MarginBottom() ?? 0
+    let heading4MarginLeft: number = theme.getHeading4MarginLeft() ?? 0
+    cjMarkdownTheme.setMarginForDesignateHeading(4, heading4MarginTop, heading4MarginRight, heading4MarginBottom, heading4MarginLeft)
+
+    let heading4PaddingTop: number = theme.getHeading4PaddingTop() ?? 0
+    let heading4PaddingRight: number = theme.getHeading4PaddingRight() ?? 0
+    let heading4PaddingBottom: number = theme.getHeading4PaddingBottom() ?? 0
+    let heading4PaddingLeft: number = theme.getHeading4PaddingLeft() ?? 0
+    cjMarkdownTheme.setPaddingForDesignateHeading(4, heading4PaddingTop, heading4PaddingRight, heading4PaddingBottom, heading4PaddingLeft)
+    if (theme.getHeading4TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(4, theme.getHeading4TextFontColor())
+    }
+    if (theme.getHeading4TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(4, theme.getHeading4TextFontSize())
+    }
+    if (theme.getHeading4TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(4, theme.getHeading4TextFontStyle())
+    }
+    if (theme.getHeading4TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(4, this.convertFontWeight(theme.getHeading4TextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHeading4TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(4, theme.getHeading4TextFontFamily())
+    }
+    if (theme.getHeading4TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(4, theme.getHeading4TextLineHeight())
+    }
+    if (theme.getHeading4TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(4, theme.getHeading4TextLetterSpacing())
+    }
+    // H5
+    if (theme.getHeading5BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(5, theme.getHeading5BackgroundColor())
+    }
+    let heading5MarginTop: number = theme.getHeading5MarginTop() ?? 0
+    let heading5MarginRight: number = theme.getHeading5MarginRight() ?? 0
+    let heading5MarginBottom: number = theme.getHeading5MarginBottom() ?? 0
+    let heading5MarginLeft: number = theme.getHeading5MarginLeft() ?? 0
+    cjMarkdownTheme.setMarginForDesignateHeading(5, heading5MarginTop, heading5MarginRight, heading5MarginBottom, heading5MarginLeft)
+
+    let heading5PaddingTop: number = theme.getHeading5PaddingTop() ?? 0
+    let heading5PaddingRight: number = theme.getHeading5PaddingRight() ?? 0
+    let heading5PaddingBottom: number = theme.getHeading5PaddingBottom() ?? 0
+    let heading5PaddingLeft: number = theme.getHeading5PaddingLeft() ?? 0
+    cjMarkdownTheme.setPaddingForDesignateHeading(5, heading5PaddingTop, heading5PaddingRight, heading5PaddingBottom, heading5PaddingLeft)
+    if (theme.getHeading5TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(5, theme.getHeading5TextFontColor())
+    }
+    if (theme.getHeading5TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(5, theme.getHeading5TextFontSize())
+    }
+    if (theme.getHeading5TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(5, theme.getHeading5TextFontStyle())
+    }
+    if (theme.getHeading5TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(5, this.convertFontWeight(theme.getHeading5TextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHeading5TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(5, theme.getHeading5TextFontFamily())
+    }
+    if (theme.getHeading5TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(5, theme.getHeading5TextLineHeight())
+    }
+    if (theme.getHeading5TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(5, theme.getHeading5TextLetterSpacing())
+    }
+    // H6
+    if (theme.getHeading6BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(6, theme.getHeading6BackgroundColor())
+    }
+    let heading6MarginTop: number = theme.getHeading6MarginTop() ?? 0
+    let heading6MarginRight: number = theme.getHeading6MarginRight() ?? 0
+    let heading6MarginBottom: number = theme.getHeading6MarginBottom() ?? 0
+    let heading6MarginLeft: number = theme.getHeading6MarginLeft() ?? 0
+    cjMarkdownTheme.setMarginForDesignateHeading(6, heading6MarginTop, heading6MarginRight, heading6MarginBottom, heading6MarginLeft)
+
+    let heading6PaddingTop: number = theme.getHeading6PaddingTop() ?? 0
+    let heading6PaddingRight: number = theme.getHeading6PaddingRight() ?? 0
+    let heading6PaddingBottom: number = theme.getHeading6PaddingBottom() ?? 0
+    let heading6PaddingLeft: number = theme.getHeading6PaddingLeft() ?? 0
+    cjMarkdownTheme.setPaddingForDesignateHeading(6, heading6PaddingTop, heading6PaddingRight, heading6PaddingBottom, heading6PaddingLeft)
+    if (theme.getHeading6TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(6, theme.getHeading6TextFontColor())
+    }
+    if (theme.getHeading6TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(6, theme.getHeading6TextFontSize())
+    }
+    if (theme.getHeading6TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(6, theme.getHeading6TextFontStyle())
+    }
+    if (theme.getHeading6TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(6, this.convertFontWeight(theme.getHeading6TextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHeading6TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(6, theme.getHeading6TextFontFamily())
+    }
+    if (theme.getHeading6TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(6, theme.getHeading6TextLineHeight())
+    }
+    if (theme.getHeading6TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(6, theme.getHeading6TextLetterSpacing())
+    }
+    return cjMarkdownTheme
+  }
+
+  getHtmlUnderlineTheme(theme: HtmlUnderlineTheme): CJMarkdownHtmlUnderlineTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownHtmlUnderlineTheme()
+    if (theme.getHtmlUnderlineTextFontColor() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontColor(theme.getHtmlUnderlineTextFontColor())
+    }
+    if (theme.getHtmlUnderlineTextFontSize() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontSize(theme.getHtmlUnderlineTextFontSize())
+    }
+    if (theme.getHtmlUnderlineTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontStyle(theme.getHtmlUnderlineTextFontStyle())
+    }
+    if (theme.getHtmlUnderlineTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontWeight(this.convertFontWeight(theme.getHtmlUnderlineTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHtmlUnderlineTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontFamily(theme.getHtmlUnderlineTextFontFamily())
+    }
+    if (theme.getHtmlUnderlineTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextLineHeight(theme.getHtmlUnderlineTextLineHeight())
+    }
+    if (theme.getHtmlUnderlineTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextLetterSpacing(theme.getHtmlUnderlineTextLetterSpacing())
+    }
+    if (theme.getHtmlUnderlineTextDecorationColor() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextDecorationColor(theme.getHtmlUnderlineTextDecorationColor())
+    }
+    if (theme.getHtmlUnderlineTextDecorationStyle() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextDecorationStyle(theme.getHtmlUnderlineTextDecorationStyle())
+    }
+    return cjMarkdownTheme
+  }
+
+  getImageTheme(theme: ImageTheme): CJMarkdownImageTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownImageTheme()
+    let imageMarginTop: number = theme.getImageMarginTop() ?? 0
+    let imageMarginRight: number = theme.getImageMarginRight() ?? 0
+    let imageMarginBottom: number = theme.getImageMarginBottom() ?? 0
+    let imageMarginLeft: number = theme.getImageMarginLeft() ?? 0
+    cjMarkdownTheme.setImageMargin(imageMarginTop, imageMarginRight, imageMarginBottom, imageMarginLeft)
+
+    let imageRadiusTopLeft: number = theme.getImageRadiusTopLeft() ?? 0
+    let imageRadiusTopRight: number = theme.getImageRadiusTopRight() ?? 0
+    let imageRadiusBottomLeft: number = theme.getImageRadiusBottomLeft() ?? 0
+    let imageRadiusBottomRight: number = theme.getImageRadiusBottomRight() ?? 0
+    cjMarkdownTheme.setImageBorderRadius(imageRadiusTopLeft, imageRadiusTopRight, imageRadiusBottomLeft, imageRadiusBottomRight)
+    if (theme.getImageBorderStyle() !== undefined) {
+      cjMarkdownTheme.setImageBorderStyle(theme.getImageBorderStyle())
+    }
+    if (theme.getImageBorderWidth() !== undefined) {
+      cjMarkdownTheme.setImageBorderWidth(theme.getImageBorderWidth())
+    }
+    if (theme.getImageBorderColor() !== undefined) {
+      cjMarkdownTheme.setImageBorderColor(theme.getImageBorderColor())
+    }
+    if (theme.getImageAutoResize() !== undefined) {
+      cjMarkdownTheme.setImageAutoResize(theme.getImageAutoResize())
+    }
+    if (theme.getIsImageMixedLayout() !== undefined) {
+      cjMarkdownTheme.setIsImageMixedLayout(theme.getIsImageMixedLayout())
+    }
+    if (theme.getImageMaximumWidth() !== undefined) {
+      cjMarkdownTheme.setImageMaximumWidth(theme.getImageMaximumWidth())
+    }
+    if (theme.getImageFixedRatioWidth() !== undefined) {
+      cjMarkdownTheme.setImageFixedRatioWidth(theme.getImageFixedRatioWidth())
+    }
+    if (theme.getImageMaxHeight() !== undefined) {
+      cjMarkdownTheme.setImageMaxHeight(theme.getImageMaxHeight())
+    }
+    if (theme.getImageHeight() !== undefined) {
+      cjMarkdownTheme.setImageHeight(theme.getImageHeight())
+    }
+    if (theme.getImageMaxWidth() !== undefined) {
+      cjMarkdownTheme.setImageMaxWidth(theme.getImageMaxWidth())
+    }
+    if (theme.getImageWidth() !== undefined) {
+      cjMarkdownTheme.setImageWidth(theme.getImageWidth())
+    }
+    if (theme.getImageFitType() !== undefined) {
+      cjMarkdownTheme.setImageFitType(theme.getImageFitType())
+    }
+    if (theme.getImageBottomLayoutMarginTop() !== undefined) {
+      cjMarkdownTheme.setImageBottomLayoutMarginTop(theme.getImageBottomLayoutMarginTop())
+    }
+    if (theme.getImageDownloadButtonVisible() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonVisible(theme.getImageDownloadButtonVisible())
+    }
+    if (theme.getImageDownloadButtonWidth() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonWidth(theme.getImageDownloadButtonWidth())
+    }
+    if (theme.getImageDownloadButtonHeight() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonHeight(theme.getImageDownloadButtonHeight())
+    }
+    let imageDownloadButtonRadiusTopLeft: number = theme.getImageDownloadButtonRadiusTopLeft() ?? 22
+    let imageDownloadButtonRadiusTopRight: number = theme.getImageDownloadButtonRadiusTopRight() ?? 22
+    let imageDownloadButtonRadiusBottomLeft: number = theme.getImageDownloadButtonRadiusBottomLeft() ?? 22
+    let imageDownloadButtonRadiusBottomRight: number = theme.getImageDownloadButtonRadiusBottomRight() ?? 22
+    cjMarkdownTheme.setImageDownloadButtonRadius(
+      imageDownloadButtonRadiusTopLeft,
+      imageDownloadButtonRadiusTopRight,
+      imageDownloadButtonRadiusBottomLeft,
+      imageDownloadButtonRadiusBottomRight
+    )
+    if (theme.getImageDownloadButtonIconWidth() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonIconWidth(theme.getImageDownloadButtonIconWidth())
+    }
+    if (theme.getImageDownloadButtonIconHeight() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonIconHeight(theme.getImageDownloadButtonIconHeight())
+    }
+    if (theme.getImageDownloadButtonIconTextGap() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonIconTextGap(theme.getImageDownloadButtonIconTextGap())
+    }
+    if (theme.getImageDownloadButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonBackgroundColor(theme.getImageDownloadButtonBackgroundColor())
+    }
+    if (theme.getImageDownloadButtonText() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonText(theme.getImageDownloadButtonText())
+    }
+    if (theme.getImageDownloadButtonTextFontColor() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontColor(theme.getImageDownloadButtonTextFontColor())
+    }
+    if (theme.getImageDownloadButtonTextFontSize() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontSize(theme.getImageDownloadButtonTextFontSize())
+    }
+    if (theme.getImageDownloadButtonTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontStyle(theme.getImageDownloadButtonTextFontStyle())
+    }
+    if (theme.getImageDownloadButtonTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontWeight(this.convertFontWeight(theme.getImageDownloadButtonTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getImageDownloadButtonTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontFamily(theme.getImageDownloadButtonTextFontFamily())
+    }
+    if (theme.getImageDownloadButtonTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextLineHeight(theme.getImageDownloadButtonTextLineHeight())
+    }
+    return cjMarkdownTheme
+  }
+
+  getInlineCodeTheme(theme: InlineCodeTheme): CJMarkdownInlineCodeTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownInlineCodeTheme()
+    if (theme.getInlineCodeTextFontColor() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontColor(theme.getInlineCodeTextFontColor())
+    }
+    if (theme.getInlineCodeTextFontSize() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontSize(theme.getInlineCodeTextFontSize())
+    }
+    if (theme.getInlineCodeTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontStyle(theme.getInlineCodeTextFontStyle())
+    }
+    if (theme.getInlineCodeTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontWeight(this.convertFontWeight(theme.getInlineCodeTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getInlineCodeTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontFamily(theme.getInlineCodeTextFontFamily())
+    }
+    if (theme.getInlineCodeTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextLineHeight(theme.getInlineCodeTextLineHeight())
+    }
+    if (theme.getInlineCodeTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextLetterSpacing(theme.getInlineCodeTextLetterSpacing())
+    }
+    if (theme.getInlineCodeTextBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextBackgroundColor(theme.getInlineCodeTextBackgroundColor())
+    }
+    let inlineCodeTextBackgroundRadiusTopLeft: number = theme.getInlineCodeTextBackgroundRadiusTopLeft() ?? 0
+    let inlineCodeTextBackgroundRadiusTopRight: number = theme.getInlineCodeTextBackgroundRadiusTopRight() ?? 0
+    let inlineCodeTextBackgroundRadiusBottomLeft: number = theme.getInlineCodeTextBackgroundRadiusBottomLeft() ?? 0
+    let inlineCodeTextBackgroundRadiusBottomRight: number = theme.getInlineCodeTextBackgroundRadiusBottomRight() ?? 0
+    cjMarkdownTheme.setInlineCodeTextBackgroundRadius(
+      inlineCodeTextBackgroundRadiusTopLeft,
+      inlineCodeTextBackgroundRadiusTopRight,
+      inlineCodeTextBackgroundRadiusBottomLeft,
+      inlineCodeTextBackgroundRadiusBottomRight
+    )
+    return cjMarkdownTheme
+  }
+
+  getItalicTheme(theme: ItalicTheme): CJMarkdownItalicTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownItalicTheme()
+    if (theme.getItalicTextFontColor() !== undefined) {
+      cjMarkdownTheme.setItalicTextFontColor(theme.getItalicTextFontColor())
+    }
+    if (theme.getItalicTextFontSize() !== undefined) {
+      cjMarkdownTheme.setItalicTextFontSize(theme.getItalicTextFontSize())
+    }
+    if (theme.getItalicTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setItalicTextFontWeight(this.convertFontWeight(theme.getItalicTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getItalicTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setItalicTextFontFamily(theme.getItalicTextFontFamily())
+    }
+    if (theme.getItalicTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setItalicTextLineHeight(theme.getItalicTextLineHeight())
+    }
+    if (theme.getItalicTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setItalicTextLetterSpacing(theme.getItalicTextLetterSpacing())
+    }
+    return cjMarkdownTheme
+  }
+
+  getLinkTheme(theme: LinkTheme): CJMarkdownLinkTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownLinkTheme()
+    if (theme.getLinkIsIcon() !== undefined) {
+      cjMarkdownTheme.setLinkIsIcon(theme.getLinkIsIcon())
+    }
+    if (theme.getLinkListIsIcon() !== undefined) {
+      cjMarkdownTheme.setLinkListIsIcon(theme.getLinkListIsIcon())
+    }
+    if (theme.getLinkTextFontColor() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontColor(theme.getLinkTextFontColor())
+    }
+    if (theme.getLinkTextFontSize() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontSize(theme.getLinkTextFontSize())
+    }
+    if (theme.getLinkTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontStyle(theme.getLinkTextFontStyle())
+    }
+    if (theme.getLinkTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontWeight(this.convertFontWeight(theme.getLinkTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getLinkTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontFamily(theme.getLinkTextFontFamily())
+    }
+    if (theme.getLinkTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setLinkTextLineHeight(theme.getLinkTextLineHeight())
+    }
+    if (theme.getLinkTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setLinkTextLetterSpacing(theme.getLinkTextLetterSpacing())
+    }
+    if (theme.getLinkTextDecorationType() !== undefined) {
+      cjMarkdownTheme.setLinkTextDecorationType(theme.getLinkTextDecorationType())
+    }
+    if (theme.getLinkTextDecorationColor() !== undefined) {
+      cjMarkdownTheme.setLinkTextDecorationColor(theme.getLinkTextDecorationColor())
+    }
+    if (theme.getLinkTextDecorationStyle() !== undefined) {
+      cjMarkdownTheme.setLinkTextDecorationStyle(theme.getLinkTextDecorationStyle())
+    }
+    if (theme.getLinkTextBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkTextBackgroundColor(theme.getLinkTextBackgroundColor())
+    }
+    let linkTextBackgroundRadiusTopLeft: number = theme.getLinkTextBackgroundRadiusTopLeft() ?? 0
+    let linkTextBackgroundRadiusTopRight: number = theme.getLinkTextBackgroundRadiusTopRight() ?? 0
+    let linkTextBackgroundRadiusBottomLeft: number = theme.getLinkTextBackgroundRadiusBottomLeft() ?? 0
+    let linkTextBackgroundRadiusBottomRight: number = theme.getLinkTextBackgroundRadiusBottomRight() ?? 0
+    cjMarkdownTheme.setLinkTextBackgroundRadius(
+      linkTextBackgroundRadiusTopLeft,
+      linkTextBackgroundRadiusTopRight,
+      linkTextBackgroundRadiusBottomLeft,
+      linkTextBackgroundRadiusBottomRight
+    )
+    if (theme.getLinkCircleIconBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconBackgroundColor(theme.getLinkCircleIconBackgroundColor())
+    }
+    if (theme.getLinkCircleIconButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconButtonBackgroundColor(theme.getLinkCircleIconButtonBackgroundColor())
+    }
+    if (theme.getLinkCircleIconTextSize() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconTextSize(theme.getLinkCircleIconTextSize())
+    }
+    if (theme.getLinkCircleIconTextColor() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconTextColor(theme.getLinkCircleIconTextColor())
+    }
+    if (theme.getLinkCircleIconRadius() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconRadius(theme.getLinkCircleIconRadius())
+    }
+    if (theme.getLinkCircleIconMargin() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconMargin(theme.getLinkCircleIconMargin())
+    }
+    if (theme.getLinkRectIconBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconBackgroundColor(theme.getLinkRectIconBackgroundColor())
+    }
+    if (theme.getLinkRectIconButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconButtonBackgroundColor(theme.getLinkRectIconButtonBackgroundColor())
+    }
+    if (theme.getLinkRectIconTextSize() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconTextSize(theme.getLinkRectIconTextSize())
+    }
+    if (theme.getLinkRectIconTextColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconTextColor(theme.getLinkRectIconTextColor())
+    }
+    if (theme.getLinkRectIconHeight() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconHeight(theme.getLinkRectIconHeight())
+    }
+    if (theme.getLinkRectIconPadding() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconPadding(theme.getLinkRectIconPadding())
+    }
+    if (theme.getLinkRectIconRadius() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconRadius(theme.getLinkRectIconRadius())
+    }
+    if (theme.getLinkRectIconMargin() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconMargin(theme.getLinkRectIconMargin())
+    }
+    if (theme.getLinkRectToolIconBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconBackgroundColor(theme.getLinkRectToolIconBackgroundColor())
+    }
+    if (theme.getLinkRectToolIconButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconButtonBackgroundColor(theme.getLinkRectToolIconButtonBackgroundColor())
+    }
+    if (theme.getLinkRectToolIconTextSize() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconTextSize(theme.getLinkRectToolIconTextSize())
+    }
+    if (theme.getLinkRectToolIconHeight() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconHeight(theme.getLinkRectToolIconHeight())
+    }
+    if (theme.getLinkRectToolIconPadding() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconPadding(theme.getLinkRectToolIconPadding())
+    }
+    if (theme.getLinkRectToolIconBorderWidth() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconBorderWidth(theme.getLinkRectToolIconBorderWidth())
+    }
+    if (theme.getLinkRectToolIconDividingLineWidth() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconDividingLineWidth(theme.getLinkRectToolIconDividingLineWidth())
+    }
+    if (theme.getLinkRectToolIconMargin() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconMargin(theme.getLinkRectToolIconMargin())
+    }
+    if (theme.getLinkRectToolIconLineLeftPadding() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconLineLeftPadding(theme.getLinkRectToolIconLineLeftPadding())
+    }
+    if (theme.getLinkRectToolIconLineRightPadding() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconLineRightPadding(theme.getLinkRectToolIconLineRightPadding())
+    }
+    return cjMarkdownTheme
+  }
+
+  getOrderedListTheme(theme: OrderedListTheme): CJMarkdownOrderedListTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownOrderedListTheme()
+    if (theme.getOrderedListBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setOrderedListBackgroundColor(theme.getOrderedListBackgroundColor())
+    }
+    let orderedListMarginTop: number = theme.getOrderedListMarginTop() ?? 0
+    let orderedListMarginRight: number = theme.getOrderedListMarginRight() ?? 0
+    let orderedListMarginBottom: number = theme.getOrderedListMarginBottom() ?? 0
+    let orderedListMarginLeft: number = theme.getOrderedListMarginLeft() ?? 8
+    cjMarkdownTheme.setOrderedListMargin(
+      orderedListMarginTop,
+      orderedListMarginRight,
+      orderedListMarginBottom,
+      orderedListMarginLeft
+    )
+    let orderedListPaddingTop: number = theme.getOrderedListPaddingTop() ?? 0
+    let orderedListPaddingRight: number = theme.getOrderedListPaddingRight() ?? 0
+    let orderedListPaddingBottom: number = theme.getOrderedListPaddingBottom() ?? 0
+    let orderedListPaddingLeft: number = theme.getOrderedListPaddingLeft() ?? 0
+    cjMarkdownTheme.setOrderedListPadding(
+      orderedListPaddingTop,
+      orderedListPaddingRight,
+      orderedListPaddingBottom,
+      orderedListPaddingLeft
+    )
+    if (theme.getOrderedListChildSpacing() !== undefined) {
+      cjMarkdownTheme.setOrderedListChildSpacing(theme.getOrderedListChildSpacing())
+    }
+    if (theme.getOrderedListChildChildSpacing() !== undefined) {
+      cjMarkdownTheme.setOrderedListChildChildSpacing(theme.getOrderedListChildChildSpacing())
+    }
+    if (theme.getOrderedListMarkerSpacing() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerSpacing(theme.getOrderedListMarkerSpacing())
+    }
+    if (theme.getOrderedListMarkerTextFontColor() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontColor(theme.getOrderedListMarkerTextFontColor())
+    }
+    if (theme.getOrderedListMarkerTextFontSize() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontSize(theme.getOrderedListMarkerTextFontSize())
+    }
+    if (theme.getOrderedListMarkerTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontStyle(theme.getOrderedListMarkerTextFontStyle())
+    }
+    if (theme.getOrderedListMarkerTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontWeight(this.convertFontWeight(theme.getOrderedListMarkerTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getOrderedListMarkerTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontFamily(theme.getOrderedListMarkerTextFontFamily())
+    }
+    if (theme.getOrderedListMarkerTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextLineHeight(theme.getOrderedListMarkerTextLineHeight())
+    }
+    return cjMarkdownTheme
+  }
+
+  getParagraphTheme(theme: ParagraphTheme): CJMarkdownParagraphTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownParagraphTheme()
+    if (theme.getParagraphBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setParagraphBackgroundColor(theme.getParagraphBackgroundColor())
+    }
+    let paragraphMarginTop: number = theme.getParagraphMarginTop() ?? 0
+    let paragraphMarginRight: number = theme.getParagraphMarginRight() ?? 0
+    let paragraphMarginBottom: number = theme.getParagraphMarginBottom() ?? 0
+    let paragraphMarginLeft: number = theme.getParagraphMarginLeft() ?? 0
+    cjMarkdownTheme.setParagraphMargin(paragraphMarginTop, paragraphMarginRight, paragraphMarginBottom, paragraphMarginLeft)
+
+    let paragraphPaddingTop: number = theme.getParagraphPaddingTop() ?? 0
+    let paragraphPaddingRight: number = theme.getParagraphPaddingRight() ?? 0
+    let paragraphPaddingBottom: number = theme.getParagraphPaddingBottom() ?? 0
+    let paragraphPaddingLeft: number = theme.getParagraphPaddingLeft() ?? 0
+    cjMarkdownTheme.setParagraphPadding(paragraphPaddingTop, paragraphPaddingRight, paragraphPaddingBottom, paragraphPaddingLeft)
+    if (theme.getParagraphTextFontColor() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontColor(theme.getParagraphTextFontColor())
+    }
+    if (theme.getParagraphTextFontSize() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontSize(theme.getParagraphTextFontSize())
+    }
+    if (theme.getParagraphTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontStyle(theme.getParagraphTextFontStyle())
+    }
+    if (theme.getParagraphTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontWeight(this.convertFontWeight(theme.getParagraphTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getParagraphTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontFamily(theme.getParagraphTextFontFamily())
+    }
+    if (theme.getParagraphTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setParagraphTextLineHeight(theme.getParagraphTextLineHeight())
+    }
+    if (theme.getParagraphTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setParagraphTextLetterSpacing(theme.getParagraphTextLetterSpacing())
+    }
+    return cjMarkdownTheme
+  }
+
+  getStrikethroughTheme(theme: StrikethroughTheme): CJMarkdownStrikethroughTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownStrikethroughTheme()
+    if (theme.getStrikethroughTextFontColor() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontColor(theme.getStrikethroughTextFontColor())
+    }
+    if (theme.getStrikethroughTextFontSize() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontSize(theme.getStrikethroughTextFontSize())
+    }
+    if (theme.getStrikethroughTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontStyle(theme.getStrikethroughTextFontStyle())
+    }
+    if (theme.getStrikethroughTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontWeight(this.convertFontWeight(theme.getStrikethroughTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getStrikethroughTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontFamily(theme.getStrikethroughTextFontFamily())
+    }
+    if (theme.getStrikethroughTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextLineHeight(theme.getStrikethroughTextLineHeight())
+    }
+    if (theme.getStrikethroughTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextLetterSpacing(theme.getStrikethroughTextLetterSpacing())
+    }
+    if (theme.getStrikethroughTextDecorationColor() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextDecorationColor(theme.getStrikethroughTextDecorationColor())
+    }
+    if (theme.getStrikethroughTextDecorationStyle() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextDecorationStyle(theme.getStrikethroughTextDecorationStyle())
+    }
+    return cjMarkdownTheme
+  }
+
+  getSubTheme(theme: SubTheme): CJMarkdownSubTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownSubTheme()
+    if (theme.getSubTextFontColor() !== undefined) {
+      cjMarkdownTheme.setSubTextFontColor(theme.getSubTextFontColor())
+    }
+    if (theme.getSubTextFontSize() !== undefined) {
+      cjMarkdownTheme.setSubTextFontSize(theme.getSubTextFontSize())
+    }
+    if (theme.getSubTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setSubTextFontStyle(theme.getSubTextFontStyle())
+    }
+    if (theme.getSubTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setSubTextFontWeight(this.convertFontWeight(theme.getSubTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getSubTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setSubTextFontFamily(theme.getSubTextFontFamily())
+    }
+    if (theme.getSubTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setSubTextLetterSpacing(theme.getSubTextLetterSpacing())
+    }
+    if (theme.getSubTextBaselineOffset() !== undefined) {
+      cjMarkdownTheme.setSubTextBaselineOffset(theme.getSubTextBaselineOffset())
+    }
+    return cjMarkdownTheme
+  }
+
+  getSupTheme(theme: SupTheme): CJMarkdownSupTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownSupTheme()
+    if (theme.getSupTextFontColor() !== undefined) {
+      cjMarkdownTheme.setSupTextFontColor(theme.getSupTextFontColor())
+    }
+    if (theme.getSupTextFontSize() !== undefined) {
+      cjMarkdownTheme.setSupTextFontSize(theme.getSupTextFontSize())
+    }
+    if (theme.getSupTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setSupTextFontStyle(theme.getSupTextFontStyle())
+    }
+    if (theme.getSupTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setSupTextFontWeight(this.convertFontWeight(theme.getSupTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getSupTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setSupTextFontFamily(theme.getSupTextFontFamily())
+    }
+    if (theme.getSupTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setSupTextLetterSpacing(theme.getSupTextLetterSpacing())
+    }
+    if (theme.getSupTextBaselineOffset() !== undefined) {
+      cjMarkdownTheme.setSupTextBaselineOffset(theme.getSupTextBaselineOffset())
+    }
+    return cjMarkdownTheme
+  }
+
+  getTableTheme(theme: TableTheme): CJMarkdownTableTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownTableTheme()
+    if (theme.getTableTitleBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setTableTitleBackgroundColor(theme.getTableTitleBackgroundColor())
+    }
+    if (theme.getTableContentOddRowBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setTableContentOddRowBackgroundColor(theme.getTableContentOddRowBackgroundColor())
+    }
+    if (theme.getTableContentEvenRowBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setTableContentEvenRowBackgroundColor(theme.getTableContentEvenRowBackgroundColor())
+    }
+    let tableMarginTop: number = theme.getTableMarginTop() ?? 0
+    let tableMarginRight: number = theme.getTableMarginRight() ?? 0
+    let tableMarginBottom: number = theme.getTableMarginBottom() ?? 0
+    let tableMarginLeft: number = theme.getTableMarginLeft() ?? 0
+    cjMarkdownTheme.setTableMargin(tableMarginTop, tableMarginRight, tableMarginBottom, tableMarginLeft)
+
+    let tablePaddingTop: number = theme.getTablePaddingTop() ?? 0
+    let tablePaddingRight: number = theme.getTablePaddingRight() ?? 0
+    let tablePaddingBottom: number = theme.getTablePaddingBottom() ?? 0
+    let tablePaddingLeft: number = theme.getTablePaddingLeft() ?? 0
+    cjMarkdownTheme.setTablePadding(tablePaddingTop, tablePaddingRight, tablePaddingBottom, tablePaddingLeft)
+
+    let tableCellPaddingTop: number = theme.getTableCellPaddingTop() ?? 4
+    let tableCellPaddingRight: number = theme.getTableCellPaddingRight() ?? 4
+    let tableCellPaddingBottom: number = theme.getTableCellPaddingBottom() ?? 4
+    let tableCellPaddingLeft: number = theme.getTableCellPaddingLeft() ?? 4
+    cjMarkdownTheme.setTableCellPadding(tableCellPaddingTop, tableCellPaddingRight, tableCellPaddingBottom, tableCellPaddingLeft)
+    if (theme.getTableBorderStyle() !== undefined) {
+      cjMarkdownTheme.setTableBorderStyle(theme.getTableBorderStyle())
+    }
+    if (theme.getTableBorderWidth() !== undefined) {
+      cjMarkdownTheme.setTableBorderWidth(theme.getTableBorderWidth())
+    }
+    if (theme.getTableBorderColor() !== undefined) {
+      cjMarkdownTheme.setTableBorderColor(theme.getTableBorderColor())
+    }
+    let tableRadiusTopLeft: number = theme.getTableRadiusTopLeft() ?? 5
+    let tableRadiusTopRight: number = theme.getTableRadiusTopRight() ?? 5
+    let tableRadiusBottomLeft: number = theme.getTableRadiusBottomLeft() ?? 5
+    let tableRadiusBottomRight: number = theme.getTableRadiusBottomRight() ?? 5
+    cjMarkdownTheme.setTableRadius(tableRadiusTopLeft, tableRadiusTopRight, tableRadiusBottomLeft, tableRadiusBottomRight)
+    if (theme.getTableScrollBarState() !== undefined) {
+      cjMarkdownTheme.setTableScrollBarState(theme.getTableScrollBarState())
+    }
+    if (theme.getTableScrollBarColor() !== undefined) {
+      cjMarkdownTheme.setTableScrollBarColor(theme.getTableScrollBarColor())
+    }
+    if (theme.getTableMinCellWidth() !== undefined) {
+      cjMarkdownTheme.setTableMinCellWidth(theme.getTableMinCellWidth())
+    }
+    if (theme.getTableMaxCellWidth() !== undefined) {
+      cjMarkdownTheme.setTableMaxCellWidth(theme.getTableMaxCellWidth())
+    }
+    if (theme.getTableFirstColumnIsBold() !== undefined) {
+      cjMarkdownTheme.setTableFirstColumnIsBold(theme.getTableFirstColumnIsBold())
+    }
+    if (theme.getTableTitleTextFontColor() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontColor(theme.getTableTitleTextFontColor())
+    }
+    if (theme.getTableTitleTextFontSize() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontSize(theme.getTableTitleTextFontSize())
+    }
+    if (theme.getTableTitleTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontStyle(theme.getTableTitleTextFontStyle())
+    }
+    if (theme.getTableTitleTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontWeight(this.convertFontWeight(theme.getTableTitleTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getTableTitleTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontFamily(theme.getTableTitleTextFontFamily())
+    }
+    if (theme.getTableTitleTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextLineHeight(theme.getTableTitleTextLineHeight())
+    }
+    if (theme.getTableTitleTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextLetterSpacing(theme.getTableTitleTextLetterSpacing())
+    }
+    if (theme.getTableContentTextFontColor() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontColor(theme.getTableContentTextFontColor())
+    }
+    if (theme.getTableContentTextFontSize() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontSize(theme.getTableContentTextFontSize())
+    }
+    if (theme.getTableContentTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontStyle(theme.getTableContentTextFontStyle())
+    }
+    if (theme.getTableContentTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontWeight(this.convertFontWeight(theme.getTableContentTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getTableContentTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontFamily(theme.getTableContentTextFontFamily())
+    }
+    if (theme.getTableContentTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTableContentTextLineHeight(theme.getTableContentTextLineHeight())
+    }
+    if (theme.getTableContentTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTableContentTextLetterSpacing(theme.getTableContentTextLetterSpacing())
+    }
+    return cjMarkdownTheme
+  }
+
+  getVideoTheme(theme: VideoTheme): CJMarkdownVideoTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownVideoTheme()
+    if (theme.getVideoBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setVideoBackgroundColor(theme.getVideoBackgroundColor())
+    }
+    let videoMarginTop: number = theme.getVideoMarginTop() ?? 0
+    let videoMarginRight: number = theme.getVideoMarginRight() ?? 0
+    let videoMarginBottom: number = theme.getVideoMarginBottom() ?? 0
+    let videoMarginLeft: number = theme.getVideoMarginLeft() ?? 0
+    cjMarkdownTheme.setVideoMargin(videoMarginTop, videoMarginRight, videoMarginBottom, videoMarginLeft)
+
+    let videoPaddingTop: number = theme.getVideoPaddingTop() ?? 0
+    let videoPaddingRight: number = theme.getVideoPaddingRight() ?? 0
+    let videoPaddingBottom: number = theme.getVideoPaddingBottom() ?? 0
+    let videoPaddingLeft: number = theme.getVideoPaddingLeft() ?? 0
+    cjMarkdownTheme.setVideoPadding(videoPaddingTop, videoPaddingRight, videoPaddingBottom, videoPaddingLeft)
+
+    let videoRadiusTopLeft: number = theme.getVideoRadiusTopLeft() ?? 10
+    let videoRadiusTopRight: number = theme.getVideoRadiusTopRight() ?? 10
+    let videoRadiusBottomLeft: number = theme.getVideoRadiusBottomLeft() ?? 10
+    let videoRadiusBottomRight: number = theme.getVideoRadiusBottomRight() ?? 10
+    cjMarkdownTheme.setVideoBorderRadius(videoRadiusTopLeft, videoRadiusTopRight, videoRadiusBottomLeft, videoRadiusBottomRight)
+    if (theme.getVideoImageFitType() !== undefined) {
+      cjMarkdownTheme.setVideoImageFitType(theme.getVideoImageFitType())
+    }
+    if (theme.getVideoBorderStyle() !== undefined) {
+      cjMarkdownTheme.setVideoBorderStyle(theme.getVideoBorderStyle())
+    }
+    if (theme.getVideoBorderWidth() !== undefined) {
+      cjMarkdownTheme.setVideoBorderWidth(theme.getVideoBorderWidth())
+    }
+    if (theme.getVideoBorderColor() !== undefined) {
+      cjMarkdownTheme.setVideoBorderColor(theme.getVideoBorderColor())
+    }
+    if (theme.getVideoTimeTextFontColor() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontColor(theme.getVideoTimeTextFontColor())
+    }
+    if (theme.getVideoTimeTextFontSize() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontSize(theme.getVideoTimeTextFontSize())
+    }
+    if (theme.getVideoTimeTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontStyle(theme.getVideoTimeTextFontStyle())
+    }
+    if (theme.getVideoTimeTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontWeight(this.convertFontWeight(theme.getVideoTimeTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getVideoTimeTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontFamily(theme.getVideoTimeTextFontFamily())
+    }
+    if (theme.getVideoTimeTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextLineHeight(theme.getVideoTimeTextLineHeight())
+    }
+    if (theme.getVideoTimeTextMarginRight() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextMarginRight(theme.getVideoTimeTextMarginRight())
+    }
+    if (theme.getVideoTimeTextMarginBottom() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextMarginBottom(theme.getVideoTimeTextMarginBottom())
+    }
+    if (theme.getVideoBottomLayoutVisible() !== undefined) {
+      cjMarkdownTheme.setVideoBottomLayoutVisible(theme.getVideoBottomLayoutVisible())
+    }
+    if (theme.getVideoBottomLayoutMarginTop() !== undefined) {
+      cjMarkdownTheme.setVideoBottomLayoutMarginTop(theme.getVideoBottomLayoutMarginTop())
+    }
+    if (theme.getVideoPlayIconWidth() !== undefined) {
+      cjMarkdownTheme.setVideoPlayIconWidth(theme.getVideoPlayIconWidth())
+    }
+    if (theme.getVideoPlayIconHeight() !== undefined) {
+      cjMarkdownTheme.setVideoPlayIconHeight(theme.getVideoPlayIconHeight())
+    }
+    if (theme.getVideoPlayIconFitType() !== undefined) {
+      cjMarkdownTheme.setVideoPlayIconFitType(theme.getVideoPlayIconFitType())
+    }
+    if (theme.getVideoReleaseButtonVisible() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonVisible(theme.getVideoReleaseButtonVisible())
+    }
+    if (theme.getVideoReleaseButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonBackgroundColor(theme.getVideoReleaseButtonBackgroundColor())
+    }
+    if (theme.getVideoReleaseButtonWidth() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonWidth(theme.getVideoReleaseButtonWidth())
+    }
+    if (theme.getVideoReleaseButtonHeight() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonHeight(theme.getVideoReleaseButtonHeight())
+    }
+    let videoReleaseButtonRadiusTopLeft: number = theme.getVideoReleaseButtonRadiusTopLeft() ?? 22
+    let videoReleaseButtonRadiusTopRight: number = theme.getVideoReleaseButtonRadiusTopRight() ?? 22
+    let videoReleaseButtonRadiusBottomLeft: number = theme.getVideoReleaseButtonRadiusBottomLeft() ?? 22
+    let videoReleaseButtonRadiusBottomRight: number = theme.getVideoReleaseButtonRadiusBottomRight() ?? 22
+    cjMarkdownTheme.setVideoReleaseButtonRadius(
+      videoReleaseButtonRadiusTopLeft,
+      videoReleaseButtonRadiusTopRight,
+      videoReleaseButtonRadiusBottomLeft,
+      videoReleaseButtonRadiusBottomRight
+    )
+    if (theme.getVideoReleaseButtonIconWidth() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonIconWidth(theme.getVideoReleaseButtonIconWidth())
+    }
+    if (theme.getVideoReleaseButtonIconHeight() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonIconHeight(theme.getVideoReleaseButtonIconHeight())
+    }
+    if (theme.getVideoReleaseButtonIconTextGap() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonIconTextGap(theme.getVideoReleaseButtonIconTextGap())
+    }
+    if (theme.getVideoReleaseButtonText() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonText(theme.getVideoReleaseButtonText())
+    }
+    if (theme.getVideoReleaseButtonTextFontColor() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontColor(theme.getVideoReleaseButtonTextFontColor())
+    }
+    if (theme.getVideoReleaseButtonTextFontSize() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontSize(theme.getVideoReleaseButtonTextFontSize())
+    }
+    if (theme.getVideoReleaseButtonTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontStyle(theme.getVideoReleaseButtonTextFontStyle())
+    }
+    if (theme.getVideoReleaseButtonTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontWeight(this.convertFontWeight(theme.getVideoReleaseButtonTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getVideoReleaseButtonTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontFamily(theme.getVideoReleaseButtonTextFontFamily())
+    }
+    if (theme.getVideoReleaseButtonTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextLineHeight(theme.getVideoReleaseButtonTextLineHeight())
+    }
+    if (theme.getVideoDownloadButtonVisible() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonVisible(theme.getVideoDownloadButtonVisible())
+    }
+    if (theme.getVideoDownloadButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonBackgroundColor(theme.getVideoDownloadButtonBackgroundColor())
+    }
+    if (theme.getVideoDownloadButtonWidth() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonWidth(theme.getVideoDownloadButtonWidth())
+    }
+    if (theme.getVideoDownloadButtonHeight() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonHeight(theme.getVideoDownloadButtonHeight())
+    }
+    let videoDownloadButtonRadiusTopLeft: number = theme.getVideoDownloadButtonRadiusTopLeft() ?? 22
+    let videoDownloadButtonRadiusTopRight: number = theme.getVideoDownloadButtonRadiusTopRight() ?? 22
+    let videoDownloadButtonRadiusBottomLeft: number = theme.getVideoDownloadButtonRadiusBottomLeft() ?? 22
+    let videoDownloadButtonRadiusBottomRight: number = theme.getVideoDownloadButtonRadiusBottomRight() ?? 22
+    cjMarkdownTheme.setVideoDownloadButtonRadius(
+      videoDownloadButtonRadiusTopLeft,
+      videoDownloadButtonRadiusTopRight,
+      videoDownloadButtonRadiusBottomLeft,
+      videoDownloadButtonRadiusBottomRight
+    )
+    if (theme.getVideoDownloadButtonIconWidth() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonIconWidth(theme.getVideoDownloadButtonIconWidth())
+    }
+    if (theme.getVideoDownloadButtonIconHeight() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonIconHeight(theme.getVideoDownloadButtonIconHeight())
+    }
+    if (theme.getVideoDownloadButtonIconTextGap() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonIconTextGap(theme.getVideoDownloadButtonIconTextGap())
+    }
+    if (theme.getVideoDownloadButtonText() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonText(theme.getVideoDownloadButtonText())
+    }
+    if (theme.getVideoDownloadButtonTextFontColor() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontColor(theme.getVideoDownloadButtonTextFontColor())
+    }
+    if (theme.getVideoDownloadButtonTextFontSize() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontSize(theme.getVideoDownloadButtonTextFontSize())
+    }
+    if (theme.getVideoDownloadButtonTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontStyle(theme.getVideoDownloadButtonTextFontStyle())
+    }
+    if (theme.getVideoDownloadButtonTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontWeight(this.convertFontWeight(theme.getVideoDownloadButtonTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getVideoDownloadButtonTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontFamily(theme.getVideoDownloadButtonTextFontFamily())
+    }
+    if (theme.getVideoDownloadButtonTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextLineHeight(theme.getVideoDownloadButtonTextLineHeight())
+    }
+    return cjMarkdownTheme
+  }
+
+  getHighlightTheme(theme: HighlightTheme): CJMarkdownHighlightTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownHighlightTheme()
+    if (theme.getHighlightTextFontColor() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontColor(theme.getHighlightTextFontColor())
+    }
+    if (theme.getHighlightTextFontSize() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontSize(theme.getHighlightTextFontSize())
+    }
+    if (theme.getHighlightTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontStyle(theme.getHighlightTextFontStyle())
+    }
+    if (theme.getHighlightTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontWeight(this.convertFontWeight(theme.getHighlightTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHighlightTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontFamily(theme.getHighlightTextFontFamily())
+    }
+    if (theme.getHighlightTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setHighlightTextLineHeight(theme.getHighlightTextLineHeight())
+    }
+    if (theme.getHighlightTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setHighlightTextLetterSpacing(theme.getHighlightTextLetterSpacing())
+    }
+    if (theme.getHighlightTextBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setHighlightTextBackgroundColor(theme.getHighlightTextBackgroundColor())
+    }
+    let highlightTextBackgroundRadiusTopLeft: number = theme.getHighlightTextBackgroundRadiusTopLeft() ?? 0
+    let highlightTextBackgroundRadiusTopRight: number = theme.getHighlightTextBackgroundRadiusTopRight() ?? 0
+    let highlightTextBackgroundRadiusBottomLeft: number = theme.getHighlightTextBackgroundRadiusBottomLeft() ?? 0
+    let highlightTextBackgroundRadiusBottomRight: number = theme.getHighlightTextBackgroundRadiusBottomRight() ?? 0
+    cjMarkdownTheme.setHighlightTextBackgroundRadius(highlightTextBackgroundRadiusTopLeft, highlightTextBackgroundRadiusTopRight, highlightTextBackgroundRadiusBottomLeft, highlightTextBackgroundRadiusBottomRight)
+
+    return cjMarkdownTheme
+  }
+
+  convertFontWeight(weight: FontWeight): number {
+    switch (weight) {
+      case FontWeight.Lighter:
+        return 0
+      case FontWeight.Normal:
+        return 1
+      case FontWeight.Regular:
+        return 2
+      case FontWeight.Medium:
+        return 3
+      case FontWeight.Bold:
+        return 4
+      case FontWeight.Bolder:
+        return 5
       default:
-        this.scroller?.scrollEdge(1)
-        break
+        return 1
     }
-  }
-
-  /**
-   * 滚动指定距离
-   *
-   * @param xOffset x轴偏移量
-   * @param yOffset y轴偏移量
-   */
-  scrollBy(xOffset: number, yOffset: number): void {
-    this.scroller?.scrollBy(xOffset, yOffset)
-  }
-
-  /**
-   * 滑动到指定Index
-   *
-   * @param index 要滑动到的目标元素在当前容器中的索引值
-   */
-  scrollToIndex(index: number): void {
-    this.scroller?.scrollToIndex(index)
-  }
-
-  /**
-   * 判断是否滚动到底部
-   *
-   * @returns 是否滚动到底部
-   */
-  isAtEnd(): boolean {
-    return this.scroller?.isAtEnd() || false
-  }
-
-  /**
-   * 获取当前y轴偏移量
-   *
-   * @returns 当前y轴偏移量
-   */
-  currentYOffset(): number {
-    return this.scroller?.currentYOffset() || 0
-  }
-
-  /**
-   * 获取子组件的大小及相对容器组件的位置
-   *
-   * @param index 索引值
-   * @returns 子组件的大小和相对于组件的位置
-   */
-  getItemRect(index: number): MarkdownRectResult {
-    if (global_customLib === undefined) {
-      return new MarkdownRectResult(0, 0, 0, 0)
-    }
-    let rect = this.scroller?.getItemRect(index) || new global_customLib.CJRectResult(0, 0, 0, 0)
-    return new MarkdownRectResult(rect.getItemRectX(), rect.getItemRectY(), rect.getItemRectWidth(), rect.getItemRectHeight())
-  }
-
-  /**
-   * 获取内部CJMarkdownScroller实例
-   *
-   * @returns CJMarkdownScroller实例
-   */
-  getScroller(): CJMarkdownScroller | undefined {
-    if (global_customLib === undefined) {
-      return this.scroller
-    }
-    if (this.scroller === undefined) {
-      this.scroller = new global_customLib.CJMarkdownScroller()
-    }
-    return this.scroller
-  }
-}
-
-/**
- * 子组件的大小和相对于组件的位置
- */
-export class MarkdownRectResult {
-  private x: number = 0
-  private y: number = 0
-  private width: number = 0
-  private height: number = 0
-
-  /**
-   * 构造函数
-   */
-  constructor(x: number, y: number, width: number, height: number) {
-    this.x = x
-    this.y = y
-    this.width = width
-    this.height = height
-  }
-
-  /**
-   * 获取子组件相对坐标x
-   *
-   * @returns 子组件x轴位置
-   */
-  getItemRectX(): number {
-    return this.x
-  }
-
-  /**
-   * 获取子组件相对坐标y
-   *
-   * @returns 子组件y轴位置
-   */
-  getItemRectY(): number {
-    return this.y
-  }
-
-  /**
-   * 获取子组件宽度
-   *
-   * @returns 子组件宽度
-   */
-  getItemRectWidth(): number {
-    return this.width
-  }
-
-  /**
-   * 获取子组件高度
-   *
-   * @returns 子组件高度
-   */
-  getItemRectHeight(): number {
-    return this.height
   }
 }

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,127 +7,67 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownSpanImageRawFileComponent {
-    /**
-     * markdown配置
-     */
-    var rawFileMarkdownTheme: MarkdownTheme
-
-    /**
-     * 图片链接
-     */
-    var rawFileDestination: String
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var rawFileMarkdownTheme: MarkdownTheme // markdown配置
+    var rawFileDestination: String // 图片链接
     @Prop
-    var rawFileComponentWidth: Float64
-
-    /**
-     * 图片点击事件
-     */
-    var rawFileImageCallback: (String) -> Unit
-
-    /**
-     * 链接点击事件
-     */
-    var rawFileLinkCallback: ?(String) -> Unit
-
-    /**
-     * 是否是链接
-     */
-    var rawFileLink: Bool
-
-    /**
-     * 链接URL
-     */
-    var rawFileLinkUrl: Option<String>
-
-    /**
-     * 图片宽度
-     */
-    var rawFileImageWidth: Option<Length>
-
-    /**
-     * 图片高度
-     */
-    var rawFileImageHeight: Option<Length>
-
-    /**
-     * 图片圆角
-     */
-    var rawFileImageRadius: Option<Length>
-
-    /**
-     * 图片对齐方式
-     */
-    var rawFileImageAlign: Option<HorizontalAlign>
-
-    /**
-     * 图片加载
-     */
+    var rawFileComponentWidth: Float64 // 控件宽度 - 单位vp
+    var rawFileImageCallback: (String) -> Unit // 图片点击事件
+    var rawFileLinkCallback: ?(String) -> Unit // 链接点击事件
+    var rawFileLink: Bool // 是否是链接
+    var rawFileLinkUrl: Option<String> // 链接URL
+    var rawFileImageWidth: Option<Length> // 图片宽度
+    var rawFileImageHeight: Option<Length> // 图片高度
+    var rawFileImageRadius: Option<Length> // 图片圆角
+    var rawFileImageAlign: Option<HorizontalAlign> // 图片对齐方式
     @State
-    var rawFileImageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
-
-    /**
-     * 图片数据
-     */
+    var rawFileImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
     @State
-    var rawFileImagePixelMap: Option<PixelMap> = Option<PixelMap>.None
-
-    /**
-     * 图片高度 - 单位px
-     */
+    var rawFileImagePixelMap: Option<PixelMap> = Option<PixelMap>.None // 图片数据
     @State
-    var rawFileHeight: Float64 = 0.0
-
-    /**
-     * 图片宽度 - 单位px
-     */
+    var rawFileHeight: Float64 = 0.0 // 图片最终高度 - 单位px
     @State
-    var rawFileWidth: Float64 = 0.0
-
-    /**
-     * 图片圆角 - 单位vp
-     */
+    var rawFileWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
     @State
-    var rawFileRadius: Float64 = 0.0
-
-    /**
-     * 占位图片高度 - 单位px
-     */
+    var rawFileRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State
-    var rawFilePlaceholderHeight: Float64 = 0.0
-
-    /**
-     * 占位图片宽度 - 单位px
-     */
+    var rawFileRadiusTopRight: Float64 = 0.0 // 图片右上圆角 - 单位vp
     @State
-    var rawFilePlaceholderWidth: Float64 = 0.0
-
-    /**
-     * 图片最大宽度 - 单位px
-     */
+    var rawFileRadiusBottomLeft: Float64 = 0.0 // 图片左下圆角 - 单位vp
     @State
-    var rawFileComponentImageWidth: Float64 = 0.0
-
-    /**
-     * 解析子线程
-     */
-    var rawFileFut: ?Future<Unit> = Option<Future<Unit>>.None
+    var rawFileRadiusBottomRight: Float64 = 0.0 // 图片右下圆角 - 单位vp
+    @State
+    var rawFileThemeHeight: Option<Float64> = Option<Float64>.None // 图片设置高度 - 单位px
+    @State
+    var rawFileThemeWidth: Option<Float64> = Option<Float64>.None // 图片设置宽度 - 单位px
+    @State
+    var rawFilePlaceholderHeight: Float64 = 0.0 // 占位图片高度 - 单位px
+    @State
+    var rawFilePlaceholderWidth: Float64 = 0.0 // 占位图片宽度 - 单位px
+    @State
+    var rawFileComponentImageWidth: Float64 = 0.0 // 图片最大宽度 - 单位px
+    var rawFileFut: ?Future<Unit> = Option<Future<Unit>>.None // 解析子线程
 
     protected override func aboutToAppear(): Unit {
-        rawFileComponentImageWidth = vp2px(rawFileComponentWidth.vp)().value
-        rawFileRadius = imageSpanBorderRadius(rawFileImageRadius, rawFileMarkdownTheme.imageBorderRadius)
-        rawFilePlaceholderWidth = if (rawFileMarkdownTheme.imageFixedRatioWidth.isSome()) {
-            rawFileComponentImageWidth * rawFileMarkdownTheme.imageFixedRatioWidth()
+        rawFileComponentImageWidth = vp2px(rawFileComponentWidth.vp)().value // 图片最大宽度单位转换
+        // 图片圆角
+        let radius = imageSpanBorderRadius(rawFileImageRadius, rawFileMarkdownTheme.imageTheme.imageRadiusTopLeft, rawFileMarkdownTheme.imageTheme.imageRadiusTopRight, rawFileMarkdownTheme.imageTheme.imageRadiusBottomLeft, rawFileMarkdownTheme.imageTheme.imageRadiusBottomRight)
+        rawFileRadiusTopLeft =  radius[0] // 图片左上圆角
+        rawFileRadiusTopRight =  radius[1] // 图片右上圆角
+        rawFileRadiusBottomLeft =  radius[2] // 图片左下圆角
+        rawFileRadiusBottomRight =  radius[3] // 图片右下圆角
+        rawFileThemeWidth = widthHeightLength2FloatPx(rawFileImageWidth, rawFileMarkdownTheme.imageTheme.imageWidth, rawFileComponentImageWidth) // 图片设置宽度
+        rawFileThemeHeight = widthHeightLength2FloatPx(rawFileImageHeight, rawFileMarkdownTheme.imageTheme.imageHeight, rawFileComponentImageWidth) // 图片设置高度
+        // 图片占位图宽度
+        rawFilePlaceholderWidth = if (rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth.isSome()) {
+            rawFileComponentImageWidth * rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth()
         } else {
-            rawFileComponentImageWidth * rawFileMarkdownTheme.imageMaximumWidth
+            rawFileComponentImageWidth * rawFileMarkdownTheme.imageTheme.imageMaximumWidth
         }
-        rawFilePlaceholderHeight = if (rawFileMarkdownTheme.imageFixedRatioWidth.isSome()) {
-            rawFileComponentImageWidth * 9.0 / 16.0 * rawFileMarkdownTheme.imageFixedRatioWidth()
+        // 图片占位图高度
+        rawFilePlaceholderHeight = if (rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth.isSome()) {
+            rawFileComponentImageWidth * 9.0 / 16.0 * rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth()
         } else {
-            rawFileComponentImageWidth * 9.0 / 16.0 * rawFileMarkdownTheme.imageMaximumWidth
+            rawFileComponentImageWidth * 9.0 / 16.0 * rawFileMarkdownTheme.imageTheme.imageMaximumWidth
         }
         imageRawFilePixelMap()
     }
@@ -147,30 +84,37 @@ public class MarkdownSpanImageRawFileComponent {
             if (rawFileImageType == 1) {
                 // 加载图片
                 ImageSpan(rawFileImagePixelMap())
-                    .margin(top: rawFileMarkdownTheme.imageMarginTop, bottom: rawFileMarkdownTheme.imageMarginBottom)
-                    .interopBorderRadius(rawFileRadius)
-                    .borderWidth(rawFileMarkdownTheme.imageBorderWidth)
-                    .borderColor(rawFileMarkdownTheme.imageBorderColor)
+                    .margin(top: rawFileMarkdownTheme.imageTheme.imageMarginTop, right: rawFileMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileMarkdownTheme.imageTheme.imageMarginLeft)
+                    .interopBorderRadius(rawFileRadiusTopLeft, rawFileRadiusTopRight, rawFileRadiusBottomLeft, rawFileRadiusBottomRight)
+                    .borderWidth(rawFileMarkdownTheme.imageTheme.imageBorderWidth)
+                    .borderColor(rawFileMarkdownTheme.imageTheme.imageBorderColor)
+                    .borderStyle(rawFileMarkdownTheme.imageTheme.imageBorderStyle)
                     .width(rawFileWidth.px)
                     .height(rawFileHeight.px)
-                    .objectFit(rawFileMarkdownTheme.imageFitType)
+                    .objectFit(rawFileMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     .constraintSize(maxWidth: 100.percent)
                     .onClick {
                         evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
                     }
             }
-            if (rawFileMarkdownTheme.imageResource.isSome() && rawFileImageType != 1) {
+            if (rawFileMarkdownTheme.imageTheme.imagePlaceholder.isSome() && rawFileImageType != 1) {
                 // 图片占位图
                 imageSpanPlaceholderComponent(
-                    rawFileMarkdownTheme.imageResource(),
-                    rawFileMarkdownTheme.imageMarginTop,
-                    rawFileMarkdownTheme.imageMarginBottom,
+                    rawFileMarkdownTheme.imageTheme.imagePlaceholder(),
+                    rawFileMarkdownTheme.imageTheme.imageMarginTop,
+                    rawFileMarkdownTheme.imageTheme.imageMarginRight,
+                    rawFileMarkdownTheme.imageTheme.imageMarginBottom,
+                    rawFileMarkdownTheme.imageTheme.imageMarginLeft,
                     rawFilePlaceholderWidth,
                     rawFilePlaceholderHeight,
-                    rawFileRadius,
-                    rawFileMarkdownTheme.imageBorderWidth,
-                    rawFileMarkdownTheme.imageBorderColor
+                    rawFileRadiusTopLeft,
+                    rawFileRadiusTopRight,
+                    rawFileRadiusBottomLeft,
+                    rawFileRadiusBottomRight,
+                    rawFileMarkdownTheme.imageTheme.imageBorderWidth,
+                    rawFileMarkdownTheme.imageTheme.imageBorderColor,
+                    rawFileMarkdownTheme.imageTheme.imageBorderStyle
                 )
             }
         }
@@ -188,12 +132,12 @@ public class MarkdownSpanImageRawFileComponent {
                         rawFileComponentImageWidth,
                         imageResWidth(),
                         imageResHeight(),
-                        rawFileImageWidth,
-                        rawFileImageHeight,
-                        rawFileMarkdownTheme.imageMaxWidth,
-                        rawFileMarkdownTheme.imageMaxHeight,
-                        rawFileMarkdownTheme.imageFixedRatioWidth,
-                        rawFileMarkdownTheme.imageMaximumWidth
+                        rawFileThemeWidth,
+                        rawFileThemeHeight,
+                        rawFileMarkdownTheme.imageTheme.imageMaxWidth,
+                        rawFileMarkdownTheme.imageTheme.imageMaxHeight,
+                        rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                        rawFileMarkdownTheme.imageTheme.imageMaximumWidth
                     )
                     rawFileWidth = res[0]
                     rawFileHeight = res[1]
@@ -203,10 +147,10 @@ public class MarkdownSpanImageRawFileComponent {
                 }
             }
         }
-        rawFileFut = rawfileToPixelmap1(
+        rawFileFut = MarkdownParseImageUtil.rawfileToPixelmap(
             rawFileDestination,
-            rawFileMarkdownTheme.uiAbilityContext,
-            rawFileMarkdownTheme.stageContext,
+            rawFileMarkdownTheme.globalTheme.uiAbilityContext,
+            rawFileMarkdownTheme.globalTheme.stageContext,
             callback
         )
     }

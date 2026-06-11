@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2026. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,59 +7,20 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownVideoComponent {
-    /**
-     * markdown样式
-     */
-    var markdownTheme: MarkdownTheme
-
-    /**
-     * NodeView
-     */
-    var nodeView: NodeView
-
-    /**
-     * 视频点击事件
-     */
-    var videoCallback: (String) -> Unit
-
-    /**
-     * 视频的图片替换回调
-     */
-    var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit
-
-    /**
-     * 视频发布的点击事件
-     */
-    var videoReleaseCallback: ?(String) -> Unit
-
-    /**
-     * 视频下载的点击事件
-     */
-    var videoDownloadCallback: ?(String) -> Unit
-
-    /**
-     * 视频链接
-     */
+    var markdownTheme: MarkdownTheme // markdown样式
+    var nodeView: NodeView // NodeView
+    var videoCallback: (String) -> Unit // 视频点击事件
+    var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit // 视频的图片替换回调
+    var videoReleaseCallback: ?(String) -> Unit // 视频发布的点击事件
+    var videoDownloadCallback: ?(String) -> Unit // 视频下载的点击事件
     @State
-    var imageVideoUrl: String = ""
-
-    /**
-     * 回调得到的图片
-     */
+    var imageVideoUrl: String = "" // 视频链接
     @State
-    var imageUrl: String = ""
-
-    /**
-     * 图片宽高比
-     */
+    var imageUrl: String = "" // 回调得到的图片
     @State
-    var aspectRatio: Float64 = 16.0 / 9.0
-
-    /**
-     * 视频时长
-     */
+    var aspectRatio: Float64 = 16.0 / 9.0 // 图片宽高比
     @State
-    var time: String = ""
+    var time: String = "" // 视频时长
 
     protected override func aboutToAppear(): Unit {
         imageVideoUrl = nodeView.imageUrl()
@@ -79,25 +37,43 @@ public class MarkdownVideoComponent {
     }
 
     func build() {
-        Column() {
-            Stack(Alignment.BottomEnd) {
-                Stack(Alignment.Center) {
-                    imgVideoComponent()
+        Row() {
+            Column() {
+                Stack(Alignment.BottomEnd) {
+                    Stack(Alignment.Center) {
+                        imgVideoComponent()
+                    }
+                    Text(time)
+                        .fontFamily(markdownTheme.videoTheme.videoTimeTextFontFamily)
+                        .fontSize(markdownTheme.videoTheme.videoTimeTextFontSize)
+                        .fontWeight(markdownTheme.videoTheme.videoTimeTextFontWeight)
+                        .fontStyle(markdownTheme.videoTheme.videoTimeTextFontStyle)
+                        .fontColor(markdownTheme.videoTheme.videoTimeTextFontColor)
+                        .lineHeight(markdownTheme.videoTheme.videoTimeTextLineHeight)
+                        .margin(right: markdownTheme.videoTheme.videoTimeTextMarginRight, bottom: markdownTheme.videoTheme.videoTimeTextMarginBottom)
                 }
-                .width(100.percent)
-                Text(time)
-                    .fontColor(markdownTheme.videoTimeTextColor)
-                    .fontSize(markdownTheme.videoTimeTextSize)
-                    .margin(right: markdownTheme.videoTimeTextMarginRight, bottom: markdownTheme.videoTimeTextMarginBottom)
+                .onClick {
+                    evt => videoCallback(imageVideoUrl)
+                }
+                if (markdownTheme.videoTheme.videoBottomLayoutVisible) {
+                    imgVideoButtonComponent()
+                }
             }
-            .width(100.percent)
-            .onClick {
-                evt => videoCallback(imageVideoUrl)
-            }
-            if (markdownTheme.isVideoBottomLayout) {
-                imgVideoButtonComponent()
-            }
+            .layoutWeight(1)
         }
+        .backgroundColor(markdownTheme.videoTheme.videoBackgroundColor)
+        .padding(
+            top: markdownTheme.videoTheme.videoPaddingTop,
+            right: markdownTheme.videoTheme.videoPaddingRight,
+            bottom: markdownTheme.videoTheme.videoPaddingBottom,
+            left: markdownTheme.videoTheme.videoPaddingLeft
+        )
+        .margin(
+            top: markdownTheme.videoTheme.videoMarginTop,
+            right: markdownTheme.videoTheme.videoMarginRight,
+            bottom: markdownTheme.videoTheme.videoMarginBottom,
+            left: markdownTheme.videoTheme.videoMarginLeft
+        )
     }
 
     /**
@@ -106,26 +82,32 @@ public class MarkdownVideoComponent {
     @Builder
     func imgVideoComponent() {
         if (imageUrl == "") {
-            if (markdownTheme.videoImage.isSome()) {
-                Image(markdownTheme.videoImage())
+            if (markdownTheme.videoTheme.videoPlaceholder.isSome()) {
+                Image(markdownTheme.videoTheme.videoPlaceholder())
                     .width(100.percent)
                     .aspectRatio(aspectRatio)
-                    .objectFit(ImageFit.Cover)
-                    .borderRadius(markdownTheme.videoBorderRadius)
+                    .objectFit(markdownTheme.videoTheme.videoImageFitType)
+                    .borderRadius(topLeft: markdownTheme.videoTheme.videoRadiusTopLeft, topRight: markdownTheme.videoTheme.videoRadiusTopRight, bottomLeft: markdownTheme.videoTheme.videoRadiusBottomLeft, bottomRight: markdownTheme.videoTheme.videoRadiusBottomRight)
+                    .borderWidth(markdownTheme.videoTheme.videoBorderWidth)
+                    .borderColor(markdownTheme.videoTheme.videoBorderColor)
+                    .borderStyle(markdownTheme.videoTheme.videoBorderStyle)
             }
         } else {
             Image(imageUrl)
                 .width(100.percent)
                 .aspectRatio(aspectRatio)
-                .objectFit(ImageFit.Cover)
-                .borderRadius(markdownTheme.videoBorderRadius)
+                .objectFit(markdownTheme.videoTheme.videoImageFitType)
+                .borderRadius(topLeft: markdownTheme.videoTheme.videoRadiusTopLeft, topRight: markdownTheme.videoTheme.videoRadiusTopRight, bottomLeft: markdownTheme.videoTheme.videoRadiusBottomLeft, bottomRight: markdownTheme.videoTheme.videoRadiusBottomRight)
+                .borderWidth(markdownTheme.videoTheme.videoBorderWidth)
+                .borderColor(markdownTheme.videoTheme.videoBorderColor)
+                .borderStyle(markdownTheme.videoTheme.videoBorderStyle)
         }
 
-        if (markdownTheme.playCircleFillIcon.isSome()) {
-            Image(markdownTheme.playCircleFillIcon())
-                .width(60)
-                .height(60)
-                .objectFit(ImageFit.Contain)
+        if (markdownTheme.videoTheme.videoPlayIcon.isSome()) {
+            Image(markdownTheme.videoTheme.videoPlayIcon())
+                .width(markdownTheme.videoTheme.videoPlayIconWidth)
+                .height(markdownTheme.videoTheme.videoPlayIconHeight)
+                .objectFit(markdownTheme.videoTheme.videoPlayIconFitType)
         }
     }
 
@@ -135,53 +117,66 @@ public class MarkdownVideoComponent {
     @Builder
     func imgVideoButtonComponent() {
         Row(8) {
-            Row(6) {
-                if (markdownTheme.videoReleaseImage.isSome()) {
-                    Image(markdownTheme.videoReleaseImage())
-                        .width(markdownTheme.videoReleaseImageWidthHeight)
-                        .height(markdownTheme.videoReleaseImageWidthHeight)
-                        .fillColor(markdownTheme.videoReleaseTexColor)
+            if (markdownTheme.videoTheme.videoReleaseButtonVisible) {
+                Row(markdownTheme.videoTheme.videoReleaseButtonIconTextGap) {
+                    if (markdownTheme.videoTheme.videoReleaseButtonIcon.isSome()) {
+                        Image(markdownTheme.videoTheme.videoReleaseButtonIcon())
+                            .width(markdownTheme.videoTheme.videoReleaseButtonIconWidth)
+                            .height(markdownTheme.videoTheme.videoReleaseButtonIconHeight)
+                            .fillColor(markdownTheme.videoTheme.videoReleaseButtonTextFontColor)
+                    }
+                    Text(markdownTheme.videoTheme.videoReleaseButtonText)
+                        .fontFamily(markdownTheme.videoTheme.videoReleaseButtonTextFontFamily)
+                        .fontSize(markdownTheme.videoTheme.videoReleaseButtonTextFontSize)
+                        .fontWeight(markdownTheme.videoTheme.videoReleaseButtonTextFontWeight)
+                        .fontStyle(markdownTheme.videoTheme.videoReleaseButtonTextFontStyle)
+                        .fontColor(markdownTheme.videoTheme.videoReleaseButtonTextFontColor)
+                        .lineHeight(markdownTheme.videoTheme.videoReleaseButtonTextLineHeight)
                 }
-                Text(markdownTheme.videoReleaseText)
-                    .fontSize(markdownTheme.videoReleaseTexSize)
-                    .fontWeight(FontWeight.Medium)
-                    .fontColor(markdownTheme.videoReleaseTexColor)
-            }
-            .justifyContent(FlexAlign.Center)
-            .alignItems(VerticalAlign.Center)
-            .width(markdownTheme.videoReleaseWidth)
-            .height(markdownTheme.videoReleaseHeight)
-            .borderRadius(markdownTheme.videoReleaseRadius)
-            .backgroundColor(markdownTheme.videoReleaseBackgroundColor)
-            .onClick {
-                evt => if (videoReleaseCallback.isSome()) {
-                    videoReleaseCallback()(imageVideoUrl)
+                .width(markdownTheme.videoTheme.videoReleaseButtonWidth)
+                .height(markdownTheme.videoTheme.videoReleaseButtonHeight)
+                .borderRadius(topLeft: markdownTheme.videoTheme.videoReleaseButtonRadiusTopLeft, topRight: markdownTheme.videoTheme.videoReleaseButtonRadiusTopRight, bottomLeft: markdownTheme.videoTheme.videoReleaseButtonRadiusBottomLeft, bottomRight: markdownTheme.videoTheme.videoReleaseButtonRadiusBottomRight)
+                .backgroundColor(markdownTheme.videoTheme.videoReleaseButtonBackgroundColor)
+                .justifyContent(FlexAlign.Center)
+                .alignItems(VerticalAlign.Center)
+                .onClick {
+                    evt => if (videoReleaseCallback.isSome()) {
+                        videoReleaseCallback()(imageVideoUrl)
+                    }
                 }
             }
-            Row(6) {
-                if (markdownTheme.videoDownloadImage.isSome()) {
-                    Image(markdownTheme.videoDownloadImage())
-                        .width(markdownTheme.videoDownloadImageWidthHeight)
-                        .height(markdownTheme.videoDownloadImageWidthHeight)
-                        .fillColor(markdownTheme.videoDownloadTexColor)
+            if (markdownTheme.videoTheme.videoDownloadButtonVisible) {
+                Row(markdownTheme.videoTheme.videoDownloadButtonIconTextGap) {
+                    if (markdownTheme.videoTheme.videoDownloadButtonIcon.isSome()) {
+                        Image(markdownTheme.videoTheme.videoDownloadButtonIcon())
+                            .width(markdownTheme.videoTheme.videoDownloadButtonIconWidth)
+                            .height(markdownTheme.videoTheme.videoDownloadButtonIconHeight)
+                            .fillColor(markdownTheme.videoTheme.videoDownloadButtonTextFontColor)
+                    }
+                    Text(markdownTheme.videoTheme.videoDownloadButtonText)
+                        .fontFamily(markdownTheme.videoTheme.videoDownloadButtonTextFontFamily)
+                        .fontSize(markdownTheme.videoTheme.videoDownloadButtonTextFontSize)
+                        .fontWeight(markdownTheme.videoTheme.videoDownloadButtonTextFontWeight)
+                        .fontStyle(markdownTheme.videoTheme.videoDownloadButtonTextFontStyle)
+                        .fontColor(markdownTheme.videoTheme.videoDownloadButtonTextFontColor)
+                        .lineHeight(markdownTheme.videoTheme.videoDownloadButtonTextLineHeight)
                 }
-                Text(markdownTheme.videoDownloadText)
-                    .fontSize(markdownTheme.videoDownloadTexSize)
-                    .fontWeight(FontWeight.Medium)
-                    .fontColor(markdownTheme.videoDownloadTexColor)
-            }
-            .justifyContent(FlexAlign.Center)
-            .alignItems(VerticalAlign.Center)
-            .width(markdownTheme.videoDownloadWidth)
-            .height(markdownTheme.videoDownloadHeight)
-            .borderRadius(markdownTheme.videoDownloadRadius)
-            .backgroundColor(markdownTheme.videoDownloadBackgroundColor)
-            .onClick {
-                evt => if (videoDownloadCallback.isSome()) {
-                    videoDownloadCallback()(imageVideoUrl)
+                .width(markdownTheme.videoTheme.videoDownloadButtonWidth)
+                .height(markdownTheme.videoTheme.videoDownloadButtonHeight)
+                .borderRadius(topLeft: markdownTheme.videoTheme.videoDownloadButtonRadiusTopLeft, topRight: markdownTheme.videoTheme.videoDownloadButtonRadiusTopRight, bottomLeft: markdownTheme.videoTheme.videoDownloadButtonRadiusBottomLeft, bottomRight: markdownTheme.videoTheme.videoDownloadButtonRadiusBottomRight)
+                .backgroundColor(markdownTheme.videoTheme.videoDownloadButtonBackgroundColor)
+                .justifyContent(FlexAlign.Center)
+                .alignItems(VerticalAlign.Center)
+                .onClick {
+                    evt => if (videoDownloadCallback.isSome()) {
+                        videoDownloadCallback()(imageVideoUrl)
+                    }
                 }
             }
         }
-        .margin(top: 14)
+        .width(100.percent)
+        .justifyContent(FlexAlign.Center)
+        .alignItems(VerticalAlign.Center)
+        .margin(top: markdownTheme.videoTheme.videoBottomLayoutMarginTop)
     }
 }

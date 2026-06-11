@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,41 +7,33 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownImageDownloadComponent {
-    /**
-     * markdown配置
-     */
-    var markdownTheme: MarkdownTheme
-
-    /**
-     * 图片链接
-     */
-    var destination: String
-
-    /**
-     * 图片下载的点击事件
-     */
-    var imageDownloadCallback: ?(String) -> Unit
+    var markdownTheme: MarkdownTheme // markdown配置
+    var destination: String // 图片链接
+    var imageDownloadCallback: ?(String) -> Unit // 图片下载的点击事件
 
     func build() {
-         Row(7) {
-            if (markdownTheme.imageDownloadImage.isSome()) {
-                Image(markdownTheme.imageDownloadImage())
-                    .width(markdownTheme.imageDownloadImageWidthHeight)
-                    .height(markdownTheme.imageDownloadImageWidthHeight)
-                    .fillColor(markdownTheme.imageDownloadTexColor)
+         Row(markdownTheme.imageTheme.imageDownloadButtonIconTextGap) {
+            if (markdownTheme.imageTheme.imageDownloadButtonIcon.isSome()) {
+                Image(markdownTheme.imageTheme.imageDownloadButtonIcon())
+                    .width(markdownTheme.imageTheme.imageDownloadButtonIconWidth)
+                    .height(markdownTheme.imageTheme.imageDownloadButtonIconHeight)
+                    .fillColor(markdownTheme.imageTheme.imageDownloadButtonTextFontColor)
             }
-            Text(markdownTheme.imageDownloadText)
-                .fontSize(markdownTheme.imageDownloadTexSize)
-                .fontWeight(FontWeight.Medium)
-                .fontColor(markdownTheme.imageDownloadTexColor)
+            Text(markdownTheme.imageTheme.imageDownloadButtonText)
+                .fontFamily(markdownTheme.imageTheme.imageDownloadButtonTextFontFamily)
+                .fontSize(markdownTheme.imageTheme.imageDownloadButtonTextFontSize)
+                .fontWeight(markdownTheme.imageTheme.imageDownloadButtonTextFontWeight)
+                .fontStyle(markdownTheme.imageTheme.imageDownloadButtonTextFontStyle)
+                .fontColor(markdownTheme.imageTheme.imageDownloadButtonTextFontColor)
+                .lineHeight(markdownTheme.imageTheme.imageDownloadButtonTextLineHeight)
         }
         .justifyContent(FlexAlign.Center)
         .alignItems(VerticalAlign.Center)
-        .width(markdownTheme.imageDownloadWidth)
-        .height(markdownTheme.imageDownloadHeight)
-        .borderRadius(markdownTheme.imageDownloadRadius)
-        .backgroundColor(markdownTheme.imageDownloadBackgroundColor)
-        .margin(top: 14)
+        .width(markdownTheme.imageTheme.imageDownloadButtonWidth)
+        .height(markdownTheme.imageTheme.imageDownloadButtonHeight)
+        .borderRadius(topLeft: markdownTheme.imageTheme.imageDownloadButtonRadiusTopLeft, topRight: markdownTheme.imageTheme.imageDownloadButtonRadiusTopRight, bottomLeft: markdownTheme.imageTheme.imageDownloadButtonRadiusBottomLeft, bottomRight: markdownTheme.imageTheme.imageDownloadButtonRadiusBottomRight)
+        .backgroundColor(markdownTheme.imageTheme.imageDownloadButtonBackgroundColor)
+        .margin(top: markdownTheme.imageTheme.imageBottomLayoutMarginTop)
         .onClick {evt =>
             if (imageDownloadCallback.isSome()) {
                 imageDownloadCallback()(destination)

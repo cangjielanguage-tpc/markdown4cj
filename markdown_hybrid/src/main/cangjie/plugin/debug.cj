@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved.
- */
 package markdown.plugin
 
 /* public class Debuger {
@@ -29,10 +26,10 @@ public func printTag(tag: HtmlTag): Unit {
     println(appender)
 }
 
-public func printTag(tag: HtmlTag, dep: Int, appender: StringBuilder): Unit {
-    appender.append("${" " * dep}${tag} ${tag.isClosed()}\n")
+public func printTag(tag: HtmlTag, depth: Int, appender: StringBuilder): Unit {
+    appender.append("${" " * depth}${tag} ${tag.isClosed()}\n")
     for (child in tag.getChildren()) {
-        printTag(child, dep + 1, appender)
+        printTag(child, depth + 1, appender)
     }
 }
 
@@ -48,13 +45,13 @@ public func printNode(node: ?Node): Unit {
     }
 }
 
-public func printNode(node: ?Node, dep: Int, builder: StringBuilder): Unit {
+public func printNode(node: ?Node, depth: Int, builder: StringBuilder): Unit {
     if (let Some(v) <- node) {
         let str = v.toString().replace("\n", "\\n")
-        builder.append("${" " * dep}${str}\n")
+        builder.append("${" " * depth}${str}\n")
         let child = v.getFirstChild()
-        printNode(child, dep + 4, builder)
+        printNode(child, depth + 4, builder)
         let next = v.getNext()
-        printNode(next, dep, builder)
+        printNode(next, depth, builder)
     }
 }

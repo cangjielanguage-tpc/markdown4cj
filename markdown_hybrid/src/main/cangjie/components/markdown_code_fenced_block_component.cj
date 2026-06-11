@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,71 +7,28 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownCodeFencedBlockComponent {
-    /**
-     * markdown配置
-     */
-    var markdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 代码内容
-     */
+    var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
-    var codeText: String = ""
-
-    /**
-     * 代码类型
-     */
+    var codeText: String = "" // 代码内容
     @State
-    var info: String = ""
-
-    /**
-     * hash
-     */
+    var info: String = "" // 代码类型
     @State
-    var nodeHash: Int64 = 0
-
-    /**
-     *
-     */
+    var nodeHash: Int64 = 0 // hash
     @State
     var isCodeNone: Bool = false
-
-    /**
-     * 高亮代码列表
-     */
     @State
-    var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>()
-
-    /**
-     * 缓存的围栏代码块控件列表
-     */
-    var fencedCodeComponents: HashMap<Int64, MarkdownCodeFencedBlockComponent>
-
-    /**
-     * 代码行数显示数据列表
-     */
+    var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>() // 高亮代码列表
+    var fencedCodeComponents: HashMap<Int64, MarkdownCodeFencedBlockComponent> // 缓存的围栏代码块控件列表
     @State
-    var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
-
-    /**
-     * 代码高亮
-     */
-    var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None
-
-    /**
-     * 子线程
-     */
-    var future: ?Future<Unit> = Option<Future<Unit>>.None
-
-    /**
-     * codeformat配置
-     */
+    var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
+    var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
+    var future: ?Future<Unit> = Option<Future<Unit>>.None // 子线程
     @State
-    var formatConfig: FormatConfig = FormatConfig()
+    var formatConfig: FormatConfig = FormatConfig() // codeformat配置
 
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
-        formatConfig = FormatConfig(useTab: markdownConfiguration.markdownTheme.useTab, indentWidth: markdownConfiguration.markdownTheme.indentWidth)
+        formatConfig = FormatConfig(useTab: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockUseTab, indentWidth: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIndentWidth)
         refreshData(codeText, info, nodeHash) // 初始化刷新数据
         fencedCodeComponents.add(nodeHash, this) // 缓存当前控件
     }
@@ -101,9 +55,12 @@ class MarkdownCodeFencedBlockComponent {
                         lineArray,
                         itemGeneratorFunc: {
                             item: Int64, idx: Int64 => Text((idx + 1).toString())
-                                .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
+                                .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
+                                .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
+                                .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
+                                .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
+                                .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
+                                .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
                                 .maxLines(1)
                                 .textOverflow(TextOverflow.Ellipsis)
                         },
@@ -112,13 +69,12 @@ class MarkdownCodeFencedBlockComponent {
                         }
                     )
                 }
-                .margin(bottom: 10)
-                .padding(left: 8, right: 8)
-                .alignItems(HorizontalAlign.End)
-                .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.thematicBreakHeight.vp))
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberIsShow))
+                .padding(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberDividerSpacing, left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberTextPaddingLeft)
+                .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockDividerStrokeWidth.vp))
+                .borderColor(codeDividerColor(markdownConfiguration.markdownTheme))
                 .borderStyle(BorderStyle.Solid)
-                .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockLineNumberHide))
+                .alignItems(HorizontalAlign.End)
                 Scroll() {
                     Column() {
                         Text() {
@@ -126,31 +82,46 @@ class MarkdownCodeFencedBlockComponent {
                                 arrayList,
                                 itemGeneratorFunc: {
                                     item: PrismNodesParseResUI, idx: Int64 => Span(item.getText())
-                                        .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                        .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                                        .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme))
+                                        .letterSpacing(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
                                 },
                                 keyGeneratorFunc: {
                                     item: PrismNodesParseResUI, idx: Int64 => return "${idx}-${item.getText()}"
                                 }
                             )
                         }
-                        .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                        .fontFamily(markdownConfiguration.markdownTheme.codeBlockTypeface)
+                        .fontFamily(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
+                        .fontSize(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontSize)
+                        .fontWeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
+                        .fontStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+                        .lineHeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
                         .textAlign(TextAlign.Start)
-                        .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineRightMargin)
-                        .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
                     }
                 }
                 .scrollable(ScrollDirection.Horizontal)
                 .scrollBar(BarState.Off)
-                .layoutWeight(1)
                 .align(Alignment.Start)
-                .padding(bottom: 10)
+                .layoutWeight(1)
+                .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginLeft, right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginRight)
             }
         }
-        .width(100.percent)
-        .borderRadius(markdownConfiguration.markdownTheme.codeBlockRadius)
+        .borderRadius(topLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopLeft, topRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopRight, bottomLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomLeft, bottomRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomRight)
+        .borderColor(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderColor)
+        .borderWidth(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderWidth)
+        .borderStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderStyle)
         .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+        .padding(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingLeft
+        )
+        .margin(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
+        )
     }
 
     /**
@@ -163,56 +134,67 @@ class MarkdownCodeFencedBlockComponent {
                 codeBlockTextComponent(if (info != "") {
                     info
                 } else {
-                    markdownConfiguration.markdownTheme.codeBlockTypeTextStr
+                    markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeText
                 }, markdownConfiguration)
                 Row() {
-                    if (markdownConfiguration.markdownTheme.codeCopyIcon.isSome()) {
+                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow) {
                         Row() {
-                            Image(markdownConfiguration.markdownTheme.codeCopyIcon())
-                                .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                .objectFit(ImageFit.Contain)
+                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
+                                Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())
+                                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconWidth)
+                                    .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconHeight)
+                                    .objectFit(ImageFit.Contain)
+                            }
 
-                            Row()
-                                .width(5)
+                            Blank()
+                                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconTextSpacing)
 
-                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
-                                Text("复制代码")
-                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow) {
+                                Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyText)
+                                    .fontFamily(codeCopyTextFontFamily(markdownConfiguration.markdownTheme))
+                                    .fontSize(codeCopyTextFontSize(markdownConfiguration.markdownTheme))
+                                    .fontWeight(codeCopyTextFontWeight(markdownConfiguration.markdownTheme))
+                                    .fontStyle(codeCopyTextFontStyle(markdownConfiguration.markdownTheme))
+                                    .fontColor(codeCopyTextFontColor(markdownConfiguration.markdownTheme))
+                                    .lineHeight(codeCopyTextLineHeight(markdownConfiguration.markdownTheme))
                                     .align(Alignment.End)
                                     .maxLines(1)
                                     .textOverflow(TextOverflow.Ellipsis)
-                                    .margin(right: 4)
                             }
                         }
                         .justifyContent(FlexAlign.End)
                         .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
                     }
 
-                    if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
+                    Blank()
+                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
+
+                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
                         Row() {
-                            Image(markdownConfiguration.markdownTheme.codeFullScreenIcon())
-                                .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                .margin(left: 4)
-                                .objectFit(ImageFit.Contain)
+                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome()) {
+                                Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
+                                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
+                                    .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
+                                    .objectFit(ImageFit.Contain)
+                            }
 
-                            Row()
-                                .width(5)
+                            Blank()
+                                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
 
-                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
-                                Text("全屏代码")
-                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow) {
+                                Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenText)
+                                    .fontFamily(codeFullScreenTextFontFamily(markdownConfiguration.markdownTheme))
+                                    .fontSize(codeFullScreenTextFontSize(markdownConfiguration.markdownTheme))
+                                    .fontWeight(codeFullScreenTextFontWeight(markdownConfiguration.markdownTheme))
+                                    .fontStyle(codeFullScreenTextFontStyle(markdownConfiguration.markdownTheme))
+                                    .fontColor(codeFullScreenTextFontColor(markdownConfiguration.markdownTheme))
+                                    .lineHeight(codeFullScreenTextLineHeight(markdownConfiguration.markdownTheme))
                                     .align(Alignment.End)
                                     .maxLines(1)
                                     .textOverflow(TextOverflow.Ellipsis)
-                                    .margin(right: 4)
                             }
                         }
                         .justifyContent(FlexAlign.End)
-                        .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                         .onClick {
                             evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
                         }
@@ -222,7 +204,7 @@ class MarkdownCodeFencedBlockComponent {
                 .justifyContent(FlexAlign.End)
             }
         }
-        .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTypeTextPadding)
+        .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTitleLayoutMarginBottom)
         .alignItems(VerticalAlign.Center)
     }
 
@@ -234,7 +216,7 @@ class MarkdownCodeFencedBlockComponent {
         this.isCodeNone = this.codeText.trimAscii().size > 0
         this.info = info
         this.nodeHash = nodeHash
-        if (markdownConfiguration.markdownTheme.isCodeBlockParserSync) {
+        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockParserSync) {
             stringCodeToResListSync(this.codeText)
         } else {
             stringCodeToResList(this.codeText)
@@ -245,7 +227,7 @@ class MarkdownCodeFencedBlockComponent {
      * 代码数据高亮解析
      */
     func stringCodeToResListSync(code: String) {
-        let codeTextStr = if (markdownConfiguration.markdownTheme.isCodeFormat) {
+        let codeTextStr = if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsCodeFormat) {
             codeFormat(info, code, formatConfig)
         } else {
             code
@@ -327,8 +309,7 @@ class MarkdownCodeFencedBlockComponent {
                 }
             }
         }
-
-        future = stringToResList(str, info, callback)
+        future = MarkdownParseCodeUtil.stringToResList(str, info, markdownConfiguration, formatConfig, psh, callback)
     }
 
     /**
@@ -349,41 +330,5 @@ class MarkdownCodeFencedBlockComponent {
                 lineArray.remove(i)
             }
         }
-    }
-
-    /**
-     * 通过异步的方式将代码转换成带有颜色的列表 - 围栏代码、缩进代码
-     *
-     * @param code 传入代码内容
-     * @param info 传入代码类型
-     * @param callback PrismNodesParseRes列表回调接口
-     */
-    func stringToResList(code: String, info: ?String, callback: (ArrayList<PrismNodesParseResUI>, Int64) -> Unit): Future<Unit> {
-        let fut: Future<Unit> = spawn {
-            let codeTextStr = if (markdownConfiguration.markdownTheme.isCodeFormat) {
-                codeFormat(info, code, formatConfig)
-            } else {
-                code
-            }
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-
-            let arr = codeTextStr.split("\n") // 代码块数据分割
-            let lines = arr.size
-            var prismNodesParseResUIList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
-            try {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
-                prismNodesParseResUIList = psh().highlight(info, codeTextStr)
-                callback(prismNodesParseResUIList, lines)
-            } catch (e: Exception) {
-                let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeTextStr, alias: Option<String>.None, color: Option<Color>.None)
-                prismNodesParseResUIList.add(prismNodesParseResUI)
-                callback(prismNodesParseResUIList, lines)
-            }
-        }
-        return fut
     }
 }

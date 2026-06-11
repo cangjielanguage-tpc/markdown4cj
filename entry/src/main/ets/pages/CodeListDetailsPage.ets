@@ -227,10 +227,10 @@ struct CodeListDetailsPage {
       theme.setCodeListTitleUnSelectTextColor(this.codeListTitleUnSelectTextColor)
     }
     if (this.codeListTitleSelectBackGroupColor !== undefined) {
-      theme.setCodeListTitleSelectBackGroupColor(this.codeListTitleSelectBackGroupColor)
+      theme.setCodeListTitleSelectBackgroundColor(this.codeListTitleSelectBackGroupColor)
     }
     if (this.codeListTitleUnSelectBackGroupColor !== undefined) {
-      theme.setCodeListTitleUnSelectBackGroupColor(this.codeListTitleUnSelectBackGroupColor)
+      theme.setCodeListTitleUnSelectBackgroundColor(this.codeListTitleUnSelectBackGroupColor)
     }
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))

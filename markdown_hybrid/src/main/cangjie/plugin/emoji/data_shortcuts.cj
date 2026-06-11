@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.plugin.emoji
 
 // Emoticons -> Emoji mapping.
@@ -17,7 +14,7 @@ package markdown.plugin.emoji
 
 /* eslint-disable key-spacing */
 
-public let EMOJI_DATA_SHORTCUTS:HashMap<String,Array<String>> = HashMap(
+public let EMOJI_DATA_SHORTCUTS: HashMap<String,Array<String>> = HashMap(
   ("angry",            ['>:(', '>:-(']),
   ("blush",            [':")', ':-")']),
   ("broken_heart",     ['</3', '<\\3']),

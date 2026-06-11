@@ -378,14 +378,14 @@ struct LinkDetailsPage {
     theme.setIsLinkSize(this.isLinkSize) // 是否按照链接文本字体大小显示文本
     theme.setLinkSize(this.linkSize) // 文本格式链接文字大小
     if (this.linkBackGroupColor !== undefined) {
-      theme.setLinkBackGroupColor(this.linkBackGroupColor) // 文本格式链接背景颜色
+      theme.setLinkBackgroundColor(this.linkBackGroupColor) // 文本格式链接背景颜色
     }
     theme.setIsLinkUnderlined(this.isLinkUnderlined) // 文本格式是否显示链接下划线
     if (this.linkCircleImageBackGroupColor !== undefined) {
-      theme.setLinkCircleImageBackGroupColor(this.linkCircleImageBackGroupColor) // 圆形图片格式链接主题背景颜色
+      theme.setLinkCircleImageBackgroundColor(this.linkCircleImageBackGroupColor) // 圆形图片格式链接主题背景颜色
     }
     if (this.linkCircleImageButtonBackGroupColor !== undefined) {
-      theme.setLinkCircleImageButtonBackGroupColor(this.linkCircleImageButtonBackGroupColor) // 圆形图片格式链接控件背景颜色
+      theme.setLinkCircleImageButtonBackgroundColor(this.linkCircleImageButtonBackGroupColor) // 圆形图片格式链接控件背景颜色
     }
     theme.setLinkCircleImageTextSize(this.linkCircleImageTextSize) // 圆形图片格式链接文字大小
     if (this.linkCircleImageTextColor !== undefined) {
@@ -394,10 +394,10 @@ struct LinkDetailsPage {
     theme.setLinkCircleImageRadius(this.linkCircleImageRadius) // 圆形图片格式链接半径
     theme.setLinkCircleImageMargin(this.linkCircleImageMargin) // 圆形图片格式链接左右外边距
     if (this.linkRectImageBackGroupColor !== undefined) {
-      theme.setLinkRectImageBackGroupColor(this.linkRectImageBackGroupColor) // 圆角矩形图片格式链接主题背景颜色
+      theme.setLinkRectImageBackgroundColor(this.linkRectImageBackGroupColor) // 圆角矩形图片格式链接主题背景颜色
     }
     if (this.linkRectImageButtonBackGroupColor !== undefined) {
-      theme.setLinkRectImageButtonBackGroupColor(this.linkRectImageButtonBackGroupColor) // 圆角矩形图片格式链接控件背景颜色
+      theme.setLinkRectImageButtonBackgroundColor(this.linkRectImageButtonBackGroupColor) // 圆角矩形图片格式链接控件背景颜色
     }
     theme.setLinkRectImageTextSize(this.linkRectImageTextSize) // 圆角矩形图片格式链接文字大小
     if (this.linkRectImageTextColor !== undefined) {
@@ -408,10 +408,10 @@ struct LinkDetailsPage {
     theme.setLinkRectImageRadius(this.linkRectImageRadius) // 圆角矩形图片格式链接圆角半径
     theme.setLinkRectImageMargin(this.linkRectImageMargin) // 圆角矩形图片格式链接左右外边距
     if (this.linkRectToolImageBackGroupColor !== undefined) {
-      theme.setLinkRectToolImageBackGroupColor(this.linkRectToolImageBackGroupColor) // 空心圆角矩形图片格式链接主题背景颜色
+      theme.setLinkRectToolImageBackgroundColor(this.linkRectToolImageBackGroupColor) // 空心圆角矩形图片格式链接主题背景颜色
     }
     if (this.linkRectToolImageButtonBackGroupColor !== undefined) {
-      theme.setLinkRectToolImageButtonBackGroupColor(this.linkRectToolImageButtonBackGroupColor) // 空心圆角矩形图片格式链接控件背景颜色
+      theme.setLinkRectToolImageButtonBackgroundColor(this.linkRectToolImageButtonBackGroupColor) // 空心圆角矩形图片格式链接控件背景颜色
     }
     theme.setLinkRectToolImageTextSize(this.linkRectToolImageTextSize) // 空心圆角矩形图片格式链接文字大小
     theme.setLinkRectToolImageHeight(this.linkRectToolImageHeight) // 空心圆角矩形图片格式链接控件高度
