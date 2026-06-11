@@ -7,105 +7,34 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownQuoteComponent {
-    /**
-     * markdown配置
-     */
-    var quoteMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 列表节点
-     */
-    var quoteNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var quoteMarkdownConfiguration: MarkdownConfiguration // markdown配置
+    var quoteNodeView: NodeView // 列表节点
     @Prop
-    var quoteComponentWidth: Float64
-
-    /**
-     * 表格控件宽度 - 单位vp
-     */
+    var quoteComponentWidth: Float64 // 控件宽度 - 单位vp
     @Prop
-    var quoteTableBlockComponentWidth: Float64
-
-    /**
-     * 缓存的数据
-     */
-    var quoteMarkdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
-     * 自定义广告块结构布局
-     */
+    var quoteTableBlockComponentWidth: Float64 // 表格控件宽度 - 单位vp
+    var quoteMarkdownCacheConfiguration: MarkdownCacheConfiguration // 缓存的数据
     @BuilderParam
-    var quoteAdBuilder: (NodeView) -> Unit = ADBuilder
-
-    /**
-     * 自定义视频块结构布局
-     */
+    var quoteAdBuilder: (NodeView) -> Unit = ADBuilder // 自定义广告块结构布局
     @BuilderParam
-    var quoteVideoBuilder: (NodeView, MarkdownTheme, (String) -> Unit, (String, (String, Float64, Int64) -> Unit) -> Unit, ?(String) -> Unit, ?(String) -> Unit) -> Unit
-
-    /**
-     * 自定义音频块结构布局
-     */
+    var quoteVideoBuilder: (NodeView, MarkdownTheme, (String) -> Unit, (String, (String, Float64, Int64) -> Unit) -> Unit, ?(String) -> Unit, ?(String) -> Unit) -> Unit // 自定义视频块结构布局
     @BuilderParam
-    var quoteAudioBuilder: (NodeView, MarkdownTheme, ?(String) -> Unit) -> Unit
-
-    /**
-     * 自定义块结构布局
-     */
+    var quoteAudioBuilder: (NodeView, MarkdownTheme, ?(String) -> Unit) -> Unit // 自定义音频块结构布局
     @BuilderParam
-    var quoteCustomBlockBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内标题布局
-     */
+    var quoteCustomBlockBuilder: (NodeView, Int64) -> Unit // 自定义块结构布局
     @BuilderParam
-    var quoteCustomHeadingLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内段落布局
-     */
+    var quoteCustomHeadingLineBuilder: (NodeView, Int64) -> Unit // 自定义行内标题布局
     @BuilderParam
-    var quoteCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内表格布局
-     */
+    var quoteCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落布局
     @BuilderParam
-    var quoteCustomTableLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var quoteFootnoteCallback: (String) -> Unit
-
-    /**
-     * TOC列表点击事件回调
-     */
-    var quoteTocListOnClick: (Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var quoteImageCallback: (String) -> Unit
-
-    /**
-     * 视频点击事件
-     */
-    var quoteVideoCallback: (String) -> Unit
-
-    /**
-     * 列表深度
-     */
-    var quoteDepth: Int64
-
-    /**
-     * 懒加载数据源
-     */
+    var quoteCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格布局
+    var quoteFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var quoteTocListOnClick: (Int64) -> Unit // TOC列表点击事件回调
+    var quoteImageCallback: (String) -> Unit // 图片点击事件
+    var quoteVideoCallback: (String) -> Unit // 视频点击事件
+    var quoteDepth: Int64 // 列表深度
     @State
-    var quoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var quoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
         refreshQuoteData(quoteNodeView) // 初始化刷新数据
@@ -125,7 +54,7 @@ public class MarkdownQuoteComponent {
     }
 
     func build() {
-        List() {
+        List(space: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteChildSpacing) {
             LazyForEach(
                 quoteNodeViewDataSource,
                 itemGeneratorFunc: {
@@ -306,21 +235,35 @@ public class MarkdownQuoteComponent {
                         }
                     }
                     .layoutWeight(1)
-                    .padding(left: quoteMarkdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                    .margin(right: quoteMarkdownConfiguration.markdownTheme.blockQuoteRightMargin, top: quoteMarkdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins, bottom: quoteMarkdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins)
                 },
                 keyGeneratorFunc: {
                     quoteNodeView: NodeView, idx: Int64 => return "${idx}-${quoteNodeView.nodeHash}-${quoteNodeView.contentHash}"
                 }
             )
         }
-        .backgroundColor(quoteMarkdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-        .width(100.percent)
         .listDirection(Axis.Vertical)
         .alignListItem(ListItemAlign.Start)
-        .borderColor(quoteMarkdownConfiguration.markdownTheme.blockQuoteColor)
-        .borderWidth(EdgeWidths(left: quoteMarkdownConfiguration.markdownTheme.blockQuoteWidth.vp))
-        .margin(left: quoteMarkdownConfiguration.markdownTheme.blockQuoteLeftMargin)
+        .backgroundColor(quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor)
+        .borderRadius(
+            topLeft: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusTopLeft,
+            topRight: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusTopRight,
+            bottomLeft: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusBottomLeft,
+            bottomRight: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusBottomRight
+        )
+        .borderWidth(EdgeWidths(left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteLeftBorderWidth.vp))
+        .borderColor(quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteLeftBorderColor)
+        .padding(
+            top: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingTop,
+            right: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingRight,
+            bottom: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingBottom,
+            left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingLeft
+        )
+        .margin(
+            top: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginTop,
+            right: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginRight,
+            bottom: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginBottom,
+            left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginLeft
+        )
     }
 
     /**
@@ -332,6 +275,7 @@ public class MarkdownQuoteComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = quoteNodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            quoteNodeViewDataSource.clear()
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {

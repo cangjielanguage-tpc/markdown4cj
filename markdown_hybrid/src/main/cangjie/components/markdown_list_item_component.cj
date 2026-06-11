@@ -7,104 +7,33 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownListItemComponent {
-    /**
-     * markdown配置
-     */
-    var listItemMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 列表节点
-     */
-    var listItemNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var listItemMarkdownConfiguration: MarkdownConfiguration // markdown配置
+    var listItemNodeView: NodeView // 列表节点
     @Prop
-    var listItemComponentWidth: Float64
-
-    /**
-     * 表格控件宽度 - 单位vp
-     */
+    var listItemComponentWidth: Float64 // 控件宽度 - 单位vp
     @Prop
-    var listItemTableBlockComponentWidth: Float64
-
-    /**
-     * 缓存的数据
-     */
-    var listItemMarkdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
-     * 广告布局
-     */
+    var listItemTableBlockComponentWidth: Float64 // 表格控件宽度 - 单位vp
+    var listItemMarkdownCacheConfiguration: MarkdownCacheConfiguration // 缓存的数据
     @BuilderParam
-    var listItemAdBuilder: (NodeView) -> Unit
-
-    /**
-     * 视频布局
-     */
+    var listItemAdBuilder: (NodeView) -> Unit // 广告布局
     @BuilderParam
-    var listItemVideoBuilder: (NodeView, MarkdownTheme, (String) -> Unit, (String, (String, Float64, Int64) -> Unit) -> Unit, ?(String) -> Unit, ?(String) -> Unit) -> Unit
-
-    /**
-     * 音频布局
-     */
+    var listItemVideoBuilder: (NodeView, MarkdownTheme, (String) -> Unit, (String, (String, Float64, Int64) -> Unit) -> Unit, ?(String) -> Unit, ?(String) -> Unit) -> Unit // 视频布局
     @BuilderParam
-    var listItemAudioBuilder: (NodeView, MarkdownTheme, ?(String) -> Unit) -> Unit
-
-    /**
-     * 自定义块结构布局
-     */
+    var listItemAudioBuilder: (NodeView, MarkdownTheme, ?(String) -> Unit) -> Unit // 音频布局
     @BuilderParam
-    var listItemCustomBlockBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内标题布局
-     */
+    var listItemCustomBlockBuilder: (NodeView, Int64) -> Unit // 自定义块结构布局
     @BuilderParam
-    var listItemCustomHeadingLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内段落布局
-     */
+    var listItemCustomHeadingLineBuilder: (NodeView, Int64) -> Unit // 自定义行内标题布局
     @BuilderParam
-    var listItemCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内表格布局
-     */
+    var listItemCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落布局
     @BuilderParam
-    var listItemCustomTableLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var listItemFootnoteCallback: (String) -> Unit
-
-    /**
-     * TOC列表点击事件回调
-     */
-    var listItemTocListOnClick: (Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var listItemImageCallback: (String) -> Unit
-
-    /**
-     * 视频点击事件
-     */
-    var listItemVideoCallback: (String) -> Unit
-
-    /**
-     * 列表深度
-     */
-    var listItemDepth: Int64
-
-    /**
-     * 懒加载数据源
-     */
-    var listItemNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var listItemCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格布局
+    var listItemFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var listItemTocListOnClick: (Int64) -> Unit // TOC列表点击事件回调
+    var listItemImageCallback: (String) -> Unit // 图片点击事件
+    var listItemVideoCallback: (String) -> Unit // 视频点击事件
+    var listItemDepth: Int64 // 列表深度
+    var listItemNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
         refreshListItemData(listItemNodeView) // 初始化刷新数据
@@ -124,7 +53,7 @@ class MarkdownListItemComponent {
     }
 
     func build() {
-        List() {
+        List(space: listChildChildSpacing(listItemMarkdownConfiguration.markdownTheme, listItemNodeView)) {
             LazyForEach(
                 listItemNodeViewDataSource,
                 itemGeneratorFunc: {
@@ -304,7 +233,6 @@ class MarkdownListItemComponent {
                             )
                         }
                     }
-                    .margin(top: listItemMarkdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins, bottom: listItemMarkdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
                 },
                 keyGeneratorFunc: {
                     listItemNodeView: NodeView, idx: Int64 => return "${idx}-${listItemNodeView.nodeHash}-${listItemNodeView.contentHash}"
@@ -325,6 +253,7 @@ class MarkdownListItemComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = listItemNodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            listItemNodeViewDataSource.clear()
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {

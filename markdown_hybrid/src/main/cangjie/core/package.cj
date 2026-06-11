@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
 package markdown.core
 
 internal import commonmark4cj.commonmark.*
@@ -12,31 +9,16 @@ internal import std.collection.collectArrayList
 internal import std.collection.forEach
 internal import std.time.DateTime
 
-/**
- * 扩展Option，getOrThrow()方法直接用()
- */
-extend<T> Option<T> {
-    operator func ()(): T {
-        this.getOrThrow()
-    }
+public interface OptionExt<T> {
+    operator func ()(): T
 }
 
 /**
- * 扩展Option，实现Option类型直接使用==和!=
+ * 扩展Option，getOrThrow()方法直接用()
  */
-extend<T> Option<T> where T <: Equatable<T> {
-    operator func !=(other: T): Bool {
-        match (this) {
-            case Some(v) => v != other
-            case _ => true
-        }
-    }
-
-    operator func ==(other: T): Bool {
-        match (this) {
-            case Some(v) => v == other
-            case _ => false
-        }
+extend<T> Option<T> <: OptionExt<T> {
+    public operator func ()(): T {
+        this.getOrThrow()
     }
 }
 

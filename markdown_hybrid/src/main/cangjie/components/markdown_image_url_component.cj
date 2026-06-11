@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,129 +7,70 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownImageUrlComponent {
-    /**
-     * markdown配置
-     */
-    var urlMarkdownTheme: MarkdownTheme
-
-    /**
-     * 图片链接
-     */
-    var urlDestination: String
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var urlMarkdownTheme: MarkdownTheme // markdown配置
+    var urlDestination: String // 图片链接
     @Prop
-    var urlComponentWidth: Float64
-
-    /**
-     * 图片下载的点击事件
-     */
-    var urlImageDownloadCallback: ?(String) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var urlImageCallback: (String) -> Unit
-
-    /**
-     * 链接点击事件
-     */
-    var urlLinkCallback: ?(String) -> Unit
-
-    /**
-     * 是否是链接
-     */
-    var urlLink: Bool
-
-    /**
-     * 链接URL
-     */
-    var urlLinkUrl: Option<String>
-
-    /**
-     * 图片宽度
-     */
-    var urlImageWidth: Option<Length>
-
-    /**
-     * 图片高度
-     */
-    var urlImageHeight: Option<Length>
-
-    /**
-     * 图片圆角
-     */
-    var urlImageRadius: Option<Length>
-
-    /**
-     * 图片对齐方式
-     */
-    var urlImageAlign: Option<HorizontalAlign>
-
-    /**
-     * 图片加载
-     */
+    var urlComponentWidth: Float64 // 控件宽度 - 单位vp
+    var urlImageDownloadCallback: ?(String) -> Unit // 图片下载的点击事件
+    var urlImageCallback: (String) -> Unit // 图片点击事件
+    var urlLinkCallback: ?(String) -> Unit // 链接点击事件
+    var urlLink: Bool // 是否是链接
+    var urlLinkUrl: Option<String> // 链接URL
+    var urlImageWidth: Option<Length> // 图片宽度
+    var urlImageHeight: Option<Length> // 图片高度
+    var urlImageRadius: Option<Length> // 图片圆角
+    var urlImageAlign: Option<HorizontalAlign> // 图片对齐方式
     @State
-    var urlImageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
-
-    /**
-     * 图片高度 - 单位px
-     */
+    var urlImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
     @State
-    var urlHeight: Float64 = 0.0
-
-    /**
-     * 图片宽度 - 单位px
-     */
+    var urlHeight: Float64 = 0.0 // 图片最终高度 - 单位px
     @State
-    var urlWidth: Float64 = 0.0
-
-    /**
-     * 图片圆角 - 单位vp
-     */
+    var urlWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
     @State
-    var urlRadius: Float64 = 0.0
-
-    /**
-     * 占位图片高度 - 单位px
-     */
+    var urlRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State
-    var urlPlaceholderHeight: Float64 = 0.0
-
-    /**
-     * 占位图片宽度 - 单位px
-     */
+    var urlRadiusTopRight: Float64 = 0.0 // 图片右上圆角 - 单位vp
     @State
-    var urlPlaceholderWidth: Float64 = 0.0
-
-    /**
-     * 图片最大宽度 - 单位px
-     */
+    var urlRadiusBottomLeft: Float64 = 0.0 // 图片左下圆角 - 单位vp
     @State
-    var urlComponentImageWidth: Float64 = 0.0
-
-    /**
-     * 图片对齐
-     */
+    var urlRadiusBottomRight: Float64 = 0.0 // 图片右下圆角 - 单位vp
     @State
-    var urlHorizontalAlign: HorizontalAlign = HorizontalAlign.Start
+    var urlThemeHeight: Option<Float64> = Option<Float64>.None // 图片设置高度 - 单位px
+    @State
+    var urlThemeWidth: Option<Float64> = Option<Float64>.None // 图片设置宽度 - 单位px
+    @State
+    var urlPlaceholderHeight: Float64 = 0.0 // 占位图片高度 - 单位px
+    @State
+    var urlPlaceholderWidth: Float64 = 0.0 // 占位图片宽度 - 单位px
+    @State
+    var urlComponentImageWidth: Float64 = 0.0 // 图片最大宽度 - 单位px
+    @State
+    var urlHorizontalAlign: HorizontalAlign = HorizontalAlign.Start // 图片对齐
 
     protected override func aboutToAppear(): Unit {
-        urlComponentImageWidth = vp2px(urlComponentWidth.vp)().value
-        urlRadius = imageSpanBorderRadius(urlImageRadius, urlMarkdownTheme.imageBorderRadius)
-        urlPlaceholderWidth = if (urlMarkdownTheme.imageFixedRatioWidth.isSome()) {
-            urlComponentImageWidth * urlMarkdownTheme.imageFixedRatioWidth()
+        urlComponentImageWidth = vp2px(urlComponentWidth.vp)().value // 图片最大宽度单位转换
+        // 图片圆角
+        let radius = imageSpanBorderRadius(urlImageRadius, urlMarkdownTheme.imageTheme.imageRadiusTopLeft, urlMarkdownTheme.imageTheme.imageRadiusTopRight, urlMarkdownTheme.imageTheme.imageRadiusBottomLeft, urlMarkdownTheme.imageTheme.imageRadiusBottomRight)
+        urlRadiusTopLeft =  radius[0] // 图片左上圆角
+        urlRadiusTopRight =  radius[1] // 图片右上圆角
+        urlRadiusBottomLeft =  radius[2] // 图片左下圆角
+        urlRadiusBottomRight =  radius[3] // 图片右下圆角
+        urlThemeWidth = widthHeightLength2FloatPx(urlImageWidth, urlMarkdownTheme.imageTheme.imageWidth, urlComponentImageWidth) // 图片设置宽度
+        urlThemeHeight = widthHeightLength2FloatPx(urlImageHeight, urlMarkdownTheme.imageTheme.imageHeight, urlComponentImageWidth) // 图片设置高度
+        // 图片占位图宽度
+        urlPlaceholderWidth = if (urlMarkdownTheme.imageTheme.imageFixedRatioWidth.isSome()) {
+            urlComponentImageWidth * urlMarkdownTheme.imageTheme.imageFixedRatioWidth()
         } else {
-            urlComponentImageWidth * urlMarkdownTheme.imageMaximumWidth
+            urlComponentImageWidth * urlMarkdownTheme.imageTheme.imageMaximumWidth
         }
-        urlPlaceholderHeight = if (urlMarkdownTheme.imageFixedRatioWidth.isSome()) {
-            urlComponentImageWidth * 9.0 / 16.0 * urlMarkdownTheme.imageFixedRatioWidth()
+        // 图片占位图高度
+        urlPlaceholderHeight = if (urlMarkdownTheme.imageTheme.imageFixedRatioWidth.isSome()) {
+            urlComponentImageWidth * 9.0 / 16.0 * urlMarkdownTheme.imageTheme.imageFixedRatioWidth()
         } else {
-            urlComponentImageWidth * 9.0 / 16.0 * urlMarkdownTheme.imageMaximumWidth
+            urlComponentImageWidth * 9.0 / 16.0 * urlMarkdownTheme.imageTheme.imageMaximumWidth
         }
-        urlHorizontalAlign = if(urlImageAlign.isSome()){
+        // 图片对齐
+        urlHorizontalAlign = if (urlImageAlign.isSome()) {
             urlImageAlign()
         } else {
             HorizontalAlign.Start
@@ -140,17 +78,18 @@ public class MarkdownImageUrlComponent {
     }
 
     func build() {
-        Column(){
-            Column(){
+        Column() {
+            Column() {
                 if (urlImageType != 2) {
                     // 加载图片
                     Image(urlDestination)
-                        .borderRadius(urlRadius)
-                        .borderWidth(urlMarkdownTheme.imageBorderWidth)
-                        .borderColor(urlMarkdownTheme.imageBorderColor)
+                        .borderRadius(topLeft: urlRadiusTopLeft, topRight: urlRadiusTopRight, bottomLeft: urlRadiusBottomRight, bottomRight: urlRadiusBottomLeft)
+                        .borderWidth(urlMarkdownTheme.imageTheme.imageBorderWidth)
+                        .borderColor(urlMarkdownTheme.imageTheme.imageBorderColor)
+                        .borderStyle(urlMarkdownTheme.imageTheme.imageBorderStyle)
                         .width(urlWidth.px)
                         .height(urlHeight.px)
-                        .objectFit(urlMarkdownTheme.imageFitType)
+                        .objectFit(urlMarkdownTheme.imageTheme.imageFitType)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
                             evt => imageSpanOnClick(urlLink, urlImageCallback, urlLinkCallback, urlLinkUrl, urlDestination)
@@ -161,12 +100,12 @@ public class MarkdownImageUrlComponent {
                                     urlComponentImageWidth,
                                     imageLoadResult.width,
                                     imageLoadResult.height,
-                                    urlImageWidth,
-                                    urlImageHeight,
-                                    urlMarkdownTheme.imageMaxWidth,
-                                    urlMarkdownTheme.imageMaxHeight,
-                                    urlMarkdownTheme.imageFixedRatioWidth,
-                                    urlMarkdownTheme.imageMaximumWidth
+                                    urlThemeWidth,
+                                    urlThemeHeight,
+                                    urlMarkdownTheme.imageTheme.imageMaxWidth,
+                                    urlMarkdownTheme.imageTheme.imageMaxHeight,
+                                    urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                                    urlMarkdownTheme.imageTheme.imageMaximumWidth
                                 )
                                 urlWidth = res[0]
                                 urlHeight = res[1]
@@ -176,20 +115,24 @@ public class MarkdownImageUrlComponent {
                             imageError => urlImageType = 2
                         }
                 }
-                if (urlMarkdownTheme.imageResource.isSome() && urlImageType != 1) {
+                if (urlMarkdownTheme.imageTheme.imagePlaceholder.isSome() && urlImageType != 1) {
                     // 图片占位图
                     imagePlaceholderComponent(
-                        urlMarkdownTheme.imageResource(),
+                        urlMarkdownTheme.imageTheme.imagePlaceholder(),
                         urlPlaceholderWidth,
                         urlPlaceholderHeight,
-                        urlRadius,
-                        urlMarkdownTheme.imageBorderWidth,
-                        urlMarkdownTheme.imageBorderColor
+                        urlRadiusTopLeft,
+                        urlRadiusTopRight,
+                        urlRadiusBottomLeft,
+                        urlRadiusBottomRight,
+                        urlMarkdownTheme.imageTheme.imageBorderWidth,
+                        urlMarkdownTheme.imageTheme.imageBorderColor,
+                        urlMarkdownTheme.imageTheme.imageBorderStyle
                     )
                 }
             }
             .alignItems(urlHorizontalAlign)
-            if(urlMarkdownTheme.isImageDownload){
+            if (urlMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: urlMarkdownTheme,
                     destination: urlDestination,
@@ -197,6 +140,6 @@ public class MarkdownImageUrlComponent {
                 )
             }
         }
-        .margin(top: urlMarkdownTheme.imageMarginTop, bottom: urlMarkdownTheme.imageMarginBottom)
+        .margin(top: urlMarkdownTheme.imageTheme.imageMarginTop, right: urlMarkdownTheme.imageTheme.imageMarginRight, bottom: urlMarkdownTheme.imageTheme.imageMarginBottom, left: urlMarkdownTheme.imageTheme.imageMarginLeft)
     }
 }

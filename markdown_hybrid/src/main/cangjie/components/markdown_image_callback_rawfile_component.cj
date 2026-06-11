@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,174 +7,83 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownImageCallbackRawFileComponent {
-    /**
-     * markdown配置
-     */
-    var rawFileCallbackMarkdownTheme: MarkdownTheme
-
-    /**
-     * 图片链接
-     */
-    var rawFileCallbackDestination: String
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var rawFileCallbackMarkdownTheme: MarkdownTheme // markdown配置
+    var rawFileCallbackDestination: String // 图片链接
     @Prop
-    var rawFileCallbackComponentWidth: Float64
-
-    /**
-     * 图片替换事件
-     */
-    var rawFileCallbackImageCallbackCallback: (String) -> ?Array<UInt8>
-
-    /**
-     * 图片下载的点击事件
-     */
-    var rawFileCallbackImageDownloadCallback: ?(String) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var rawFileCallbackImageCallback: (String) -> Unit
-
-    /**
-     * 链接点击事件
-     */
-    var rawFileCallbackLinkCallback: ?(String) -> Unit
-
-    /**
-     * 是否是链接
-     */
-    var rawFileCallbackLink: Bool
-
-    /**
-     * 链接URL
-     */
-    var rawFileCallbackLinkUrl: Option<String>
-
-    /**
-     * 图片宽度
-     */
-    var rawFileCallbackImageWidth: Option<Length>
-
-    /**
-     * 图片高度
-     */
-    var rawFileCallbackImageHeight: Option<Length>
-
-    /**
-     * 图片圆角
-     */
-    var rawFileCallbackImageRadius: Option<Length>
-
-    /**
-     * 图片对齐方式
-     */
-    var rawFileCallbackImageAlign: Option<HorizontalAlign>
-
-    /**
-     * 图片加载
-     */
+    var rawFileCallbackComponentWidth: Float64 // 控件宽度 - 单位vp
+    var rawFileCallbackImageReplaceCallback: (String) -> ?Array<UInt8> // 图片替换事件
+    var rawFileCallbackImageDownloadCallback: ?(String) -> Unit // 图片下载的点击事件
+    var rawFileCallbackImageCallback: (String) -> Unit // 图片点击事件
+    var rawFileCallbackLinkCallback: ?(String) -> Unit // 链接点击事件
+    var rawFileCallbackLink: Bool // 是否是链接
+    var rawFileCallbackLinkUrl: Option<String> // 链接URL
+    var rawFileCallbackImageWidth: Option<Length> // 图片宽度
+    var rawFileCallbackImageHeight: Option<Length> // 图片高度
+    var rawFileCallbackImageRadius: Option<Length> // 图片圆角
+    var rawFileCallbackImageAlign: Option<HorizontalAlign> // 图片对齐方式
     @State
-    var rawFileCallbackImageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
-
-    /**
-     * 图片数据
-     */
+    var rawFileCallbackImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
     @State
-    var rawFileCallbackImagePixelMap: Option<PixelMap> = Option<PixelMap>.None
-
-    /**
-     * 图片高度 - 单位px
-     */
+    var rawFileCallbackImagePixelMap: Option<PixelMap> = Option<PixelMap>.None // 图片数据
     @State
-    var rawFileCallbackHeight: Float64 = 0.0
-
-    /**
-     * 图片宽度 - 单位px
-     */
+    var rawFileCallbackHeight: Float64 = 0.0 // 图片最终高度 - 单位px
     @State
-    var rawFileCallbackWidth: Float64 = 0.0
-
-    /**
-     * 图片圆角 - 单位vp
-     */
+    var rawFileCallbackWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
     @State
-    var rawFileCallbackRadius: Float64 = 0.0
-
-    /**
-     * 占位图片高度 - 单位px
-     */
+    var rawFileCallbackRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State
-    var rawFileCallbackPlaceholderHeight: Float64 = 0.0
-
-    /**
-     * 占位图片宽度 - 单位px
-     */
+    var rawFileCallbackRadiusTopRight: Float64 = 0.0 // 图片右上圆角 - 单位vp
     @State
-    var rawFileCallbackPlaceholderWidth: Float64 = 0.0
-
-    /**
-     * 替换之后的图片宽度 - 单位px
-     */
+    var rawFileCallbackRadiusBottomLeft: Float64 = 0.0 // 图片左下圆角 - 单位vp
     @State
-    var rawFileCallbackReplaceWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     * 替换之后的图片高度 - 单位px
-     */
+    var rawFileCallbackRadiusBottomRight: Float64 = 0.0 // 图片右下圆角 - 单位vp
     @State
-    var rawFileCallbackReplaceHeight: ?Float64 = Option<Float64>.None
-
-    /**
-     * 替换之后的图片数据
-     */
+    var rawFileCallbackThemeHeight: Option<Float64> = Option<Float64>.None // 图片设置高度 - 单位px
     @State
-    var rawFileCallbackReplaceImagePixelMap: Option<PixelMap> = Option<PixelMap>.None
-
-    /**
-     * 解析加载
-     */
+    var rawFileCallbackThemeWidth: Option<Float64> = Option<Float64>.None // 图片设置宽度 - 单位px
     @State
-    var rawFileCallbackReplaceImageType: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
-
-    /**
-     * 替换子线程
-     */
-    var rawFileCallbackReplaceFut: ?Future<Unit> = Option<Future<Unit>>.None
-
-    /**
-     * 图片最大宽度 - 单位px
-     */
+    var rawFileCallbackPlaceholderHeight: Float64 = 0.0 // 占位图片高度 - 单位px
     @State
-    var rawFileCallbackComponentImageWidth: Float64 = 0.0
-
-    /**
-     * 解析子线程
-     */
-    var rawFileCallbackFut: ?Future<Unit> = Option<Future<Unit>>.None
-
-    /**
-     * 图片对齐
-     */
+    var rawFileCallbackPlaceholderWidth: Float64 = 0.0 // 占位图片宽度 - 单位px
     @State
-    var urlHorizontalAlign: HorizontalAlign = HorizontalAlign.Start
+    var rawFileCallbackReplaceWidth: ?Float64 = Option<Float64>.None // 替换之后的图片宽度 - 单位px
+    @State
+    var rawFileCallbackReplaceHeight: ?Float64 = Option<Float64>.None // 替换之后的图片高度 - 单位px
+    @State
+    var rawFileCallbackReplaceImagePixelMap: Option<PixelMap> = Option<PixelMap>.None // 替换之后的图片数据
+    @State
+    var rawFileCallbackReplaceImageType: Int64 = 0 // 解析加载 0：开始解析。1：解析成功完成。2：解析失败
+    var rawFileCallbackReplaceFut: ?Future<Unit> = Option<Future<Unit>>.None // 替换子线程
+    @State
+    var rawFileCallbackComponentImageWidth: Float64 = 0.0 // 图片最大宽度 - 单位px
+    var rawFileCallbackFut: ?Future<Unit> = Option<Future<Unit>>.None // 解析子线程
+    @State
+    var rawFileCallbackHorizontalAlign: HorizontalAlign = HorizontalAlign.Start // 图片对齐
 
     protected override func aboutToAppear(): Unit {
-        rawFileCallbackComponentImageWidth = vp2px(rawFileCallbackComponentWidth.vp)().value
-        rawFileCallbackRadius = imageSpanBorderRadius(rawFileCallbackImageRadius, rawFileCallbackMarkdownTheme.imageBorderRadius)
-        rawFileCallbackPlaceholderWidth = if (rawFileCallbackMarkdownTheme.imageFixedRatioWidth.isSome()) {
-            rawFileCallbackComponentImageWidth * rawFileCallbackMarkdownTheme.imageFixedRatioWidth()
+        rawFileCallbackComponentImageWidth = vp2px(rawFileCallbackComponentWidth.vp)().value // 图片最大宽度单位转换
+         // 图片圆角
+        let radius = imageSpanBorderRadius(rawFileCallbackImageRadius, rawFileCallbackMarkdownTheme.imageTheme.imageRadiusTopLeft, rawFileCallbackMarkdownTheme.imageTheme.imageRadiusTopRight, rawFileCallbackMarkdownTheme.imageTheme.imageRadiusBottomLeft, rawFileCallbackMarkdownTheme.imageTheme.imageRadiusBottomRight)
+        rawFileCallbackRadiusTopLeft =  radius[0] // 图片左上圆角
+        rawFileCallbackRadiusTopRight =  radius[1] // 图片右上圆角
+        rawFileCallbackRadiusBottomLeft =  radius[2] // 图片左下圆角
+        rawFileCallbackRadiusBottomRight =  radius[3] // 图片右下圆角
+        rawFileCallbackThemeWidth = widthHeightLength2FloatPx(rawFileCallbackImageWidth, rawFileCallbackMarkdownTheme.imageTheme.imageWidth, rawFileCallbackComponentImageWidth) // 图片设置宽度
+        rawFileCallbackThemeHeight = widthHeightLength2FloatPx(rawFileCallbackImageHeight, rawFileCallbackMarkdownTheme.imageTheme.imageHeight, rawFileCallbackComponentImageWidth) // 图片设置高度
+        // 图片占位图宽度
+        rawFileCallbackPlaceholderWidth = if (rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth.isSome()) {
+            rawFileCallbackComponentImageWidth * rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth()
         } else {
-            rawFileCallbackComponentImageWidth * rawFileCallbackMarkdownTheme.imageMaximumWidth
+            rawFileCallbackComponentImageWidth * rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
         }
-        rawFileCallbackPlaceholderHeight = if (rawFileCallbackMarkdownTheme.imageFixedRatioWidth.isSome()) {
-            rawFileCallbackComponentImageWidth * 9.0 / 16.0 * rawFileCallbackMarkdownTheme.imageFixedRatioWidth()
+        // 图片占位图高度
+        rawFileCallbackPlaceholderHeight = if (rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth.isSome()) {
+            rawFileCallbackComponentImageWidth * 9.0 / 16.0 * rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth()
         } else {
-            rawFileCallbackComponentImageWidth * 9.0 / 16.0 * rawFileCallbackMarkdownTheme.imageMaximumWidth
+            rawFileCallbackComponentImageWidth * 9.0 / 16.0 * rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
         }
-        urlHorizontalAlign = if (rawFileCallbackImageAlign.isSome()) {
+        // 图片对齐
+        rawFileCallbackHorizontalAlign = if (rawFileCallbackImageAlign.isSome()) {
             rawFileCallbackImageAlign()
         } else {
             HorizontalAlign.Start
@@ -197,51 +103,57 @@ public class MarkdownImageCallbackRawFileComponent {
     }
 
     func build() {
-        Column(){
-             Column(){
+        Column() {
+             Column() {
                 if (rawFileCallbackReplaceImageType == 1) {
                     // 替换之后的图片
                     Image(rawFileCallbackReplaceImagePixelMap())
-                        .borderRadius(rawFileCallbackRadius)
-                        .borderWidth(rawFileCallbackMarkdownTheme.imageBorderWidth)
-                        .borderColor(rawFileCallbackMarkdownTheme.imageBorderColor)
-                        .width(rawFileCallbackReplaceWidth())
-                        .height(rawFileCallbackReplaceHeight())
-                        .objectFit(rawFileCallbackMarkdownTheme.imageFitType)
+                        .borderRadius(topLeft: rawFileCallbackRadiusTopLeft, topRight: rawFileCallbackRadiusTopRight, bottomLeft: rawFileCallbackRadiusBottomRight, bottomRight: rawFileCallbackRadiusBottomLeft)
+                        .borderWidth(rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth)
+                        .borderColor(rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor)
+                        .borderStyle(rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle)
+                        .width(rawFileCallbackReplaceWidth().px)
+                        .height(rawFileCallbackReplaceHeight().px)
+                        .objectFit(rawFileCallbackMarkdownTheme.imageTheme.imageFitType)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
                             evt => imageSpanOnClick(rawFileCallbackLink, rawFileCallbackImageCallback, rawFileCallbackLinkCallback, rawFileCallbackLinkUrl, rawFileCallbackDestination)
                         }
-                }else{
+                } else {
                     if (rawFileCallbackImageType == 1) {
                         // 加载图片
                         Image(rawFileCallbackImagePixelMap())
-                            .borderRadius(rawFileCallbackRadius)
-                            .borderWidth(rawFileCallbackMarkdownTheme.imageBorderWidth)
-                            .borderColor(rawFileCallbackMarkdownTheme.imageBorderColor)
+                            .borderRadius(topLeft: rawFileCallbackRadiusTopLeft, topRight: rawFileCallbackRadiusTopRight, bottomLeft: rawFileCallbackRadiusBottomRight, bottomRight: rawFileCallbackRadiusBottomLeft)
+                            .borderWidth(rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth)
+                            .borderColor(rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor)
+                            .borderStyle(rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle)
                             .width(rawFileCallbackWidth.px)
                             .height(rawFileCallbackHeight.px)
-                            .objectFit(rawFileCallbackMarkdownTheme.imageFitType)
+                            .objectFit(rawFileCallbackMarkdownTheme.imageTheme.imageFitType)
                             .constraintSize(maxWidth: 100.percent)
                             .onClick {
                                 evt => imageSpanOnClick(rawFileCallbackLink, rawFileCallbackImageCallback, rawFileCallbackLinkCallback, rawFileCallbackLinkUrl, rawFileCallbackDestination)
                             }
                     }
-                    if (rawFileCallbackMarkdownTheme.imageResource.isSome() && rawFileCallbackImageType != 1) {
+                    if (rawFileCallbackMarkdownTheme.imageTheme.imagePlaceholder.isSome() && rawFileCallbackImageType != 1) {
                         // 图片占位图
                         imagePlaceholderComponent(
-                            rawFileCallbackMarkdownTheme.imageResource(),
+                            rawFileCallbackMarkdownTheme.imageTheme.imagePlaceholder(),
                             rawFileCallbackPlaceholderWidth,
                             rawFileCallbackPlaceholderHeight,
-                            rawFileCallbackRadius,
-                            rawFileCallbackMarkdownTheme.imageBorderWidth,
-                            rawFileCallbackMarkdownTheme.imageBorderColor
+                            rawFileCallbackRadiusTopLeft,
+                            rawFileCallbackRadiusTopRight,
+                            rawFileCallbackRadiusBottomLeft,
+                            rawFileCallbackRadiusBottomRight,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle
                         )
                     }
                 }
             }
-            .alignItems(urlHorizontalAlign)
-            if(rawFileCallbackMarkdownTheme.isImageDownload){
+            .alignItems(rawFileCallbackHorizontalAlign)
+            if (rawFileCallbackMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: rawFileCallbackMarkdownTheme,
                     destination: rawFileCallbackDestination,
@@ -249,7 +161,7 @@ public class MarkdownImageCallbackRawFileComponent {
                 )
             }
         }
-        .margin(top: rawFileCallbackMarkdownTheme.imageMarginTop, bottom: rawFileCallbackMarkdownTheme.imageMarginBottom)
+        .margin(top: rawFileCallbackMarkdownTheme.imageTheme.imageMarginTop, right: rawFileCallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileCallbackMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileCallbackMarkdownTheme.imageTheme.imageMarginLeft)
     }
 
     func imageCallbackPixelmap() {
@@ -261,12 +173,12 @@ public class MarkdownImageCallbackRawFileComponent {
                         rawFileCallbackComponentImageWidth,
                         imageResWidth(),
                         imageResHeight(),
-                        rawFileCallbackImageWidth,
-                        rawFileCallbackImageHeight,
-                        rawFileCallbackMarkdownTheme.imageMaxWidth,
-                        rawFileCallbackMarkdownTheme.imageMaxHeight,
-                        rawFileCallbackMarkdownTheme.imageFixedRatioWidth,
-                        rawFileCallbackMarkdownTheme.imageMaximumWidth
+                        rawFileCallbackThemeWidth,
+                        rawFileCallbackThemeHeight,
+                        rawFileCallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                        rawFileCallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                        rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                        rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
                     )
                     rawFileCallbackReplaceWidth = res[0]
                     rawFileCallbackReplaceHeight = res[1]
@@ -276,9 +188,9 @@ public class MarkdownImageCallbackRawFileComponent {
                 }
             }
         }
-        rawFileCallbackReplaceFut = callbackToPixelmap(
+        rawFileCallbackReplaceFut = MarkdownParseImageUtil.callbackToPixelmap(
             rawFileCallbackDestination,
-            rawFileCallbackImageCallbackCallback,
+            rawFileCallbackImageReplaceCallback,
             callback
         )
     }
@@ -295,12 +207,12 @@ public class MarkdownImageCallbackRawFileComponent {
                         rawFileCallbackComponentImageWidth,
                         imageResWidth(),
                         imageResHeight(),
-                        rawFileCallbackImageWidth,
-                        rawFileCallbackImageHeight,
-                        rawFileCallbackMarkdownTheme.imageMaxWidth,
-                        rawFileCallbackMarkdownTheme.imageMaxHeight,
-                        rawFileCallbackMarkdownTheme.imageFixedRatioWidth,
-                        rawFileCallbackMarkdownTheme.imageMaximumWidth
+                        rawFileCallbackThemeWidth,
+                        rawFileCallbackThemeHeight,
+                        rawFileCallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                        rawFileCallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                        rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                        rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
                     )
                     rawFileCallbackWidth = res[0]
                     rawFileCallbackHeight = res[1]
@@ -310,10 +222,10 @@ public class MarkdownImageCallbackRawFileComponent {
                 }
             }
         }
-        rawFileCallbackFut = rawfileToPixelmap1(
+        rawFileCallbackFut = MarkdownParseImageUtil.rawfileToPixelmap(
             rawFileCallbackDestination,
-            rawFileCallbackMarkdownTheme.uiAbilityContext,
-            rawFileCallbackMarkdownTheme.stageContext,
+            rawFileCallbackMarkdownTheme.globalTheme.uiAbilityContext,
+            rawFileCallbackMarkdownTheme.globalTheme.stageContext,
             callback
         )
     }

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved.
- */
 package markdown.plugin
 
 public abstract class TagHandler {

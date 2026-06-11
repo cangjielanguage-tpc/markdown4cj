@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown
 
 import ohos.ark_interop_macro.*
@@ -71,6 +68,8 @@ public class CJMarkdownConfig {
      * 脚注跳转指定位置
      */
     var footnoteCallback: ?(Option<Int64>) -> Unit = None
+
+    var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
 
     /**
      * markdown默认样式
@@ -185,7 +184,7 @@ public class CJMarkdownConfig {
     /**
      * 设置TOC跳转指定位置
      *
-     * @param cb TOC跳转指定位置接口 (位置距离)
+     * @param cb TOC跳转指定位置接口 (第几条数据)
      */
     public func setTocIndexCallback(cb: (Option<Int64>) -> Unit): Unit {
         this.tocIndexCallback = cb
@@ -194,10 +193,21 @@ public class CJMarkdownConfig {
     /**
      * 设置脚注跳转指定位置
      *
-     * @param cb 脚注跳转指定位置接口 (位置距离)
+     * @param cb 脚注跳转指定位置接口 (第几条数据)
      */
     public func setFootnoteCallback(cb: (Option<Int64>) -> Unit): Unit {
         this.footnoteCallback = cb
+    }
+
+    /**
+     * 设置获取markdown全文的回调
+     *
+     * @param nodeString 用于接收markdown全文的对象
+     */
+    public func setNodeString(nodeString: CJNodeViewStringBuilder): Unit {
+        this.nodeString = {
+            builder => nodeString.nodeViewStringBuilder = builder
+        }
     }
 
     /**

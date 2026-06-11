@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown
 
 var arkImgPreprocessFunc: ?(String) -> ?Array<Byte> = None
@@ -11,39 +8,49 @@ class cbRet {
 }
 
 public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallInfo): JSValue {
+    if (callInfo[0].typeof() == JSType.UNDEFINED) {
+        arkImgPreprocessFunc = None
+        return context.undefined().toJSValue()
+    }
     let arktsCB = callInfo[0].asFunction(context)
-    arkImgPreprocessFunc = {
-        url =>
-            let ret: cbRet = cbRet()
-            ret.sem.acquire()
-            ctx.getOrThrow().postJSTask {
-                    let _url = url.toJSValue(context)
-                    let _ret = arktsCB.call([_url]).asPromise()
-                    let onFulfilled = context.function {
-                        context, callInfo =>
-                            let bufferVale = Option<Array<Byte>>.fromJSValue(context, callInfo[0])
-                            if (bufferVale.isSome()) {
-                                ret.value = bufferVale.getOrThrow()
-                            }
-                            ret.sem.release()
-                            context.undefined().toJSValue()
+    if (let Some(c) <- ctx) {
+        arkImgPreprocessFunc = {
+            url =>
+                let ret: cbRet = cbRet()
+                ret.sem.acquire()
+                c.postJSTask {
+                    newScope(context) {
+                        let _url = url.toJSValue(context)
+                        let _ret = arktsCB.call([_url]).asPromise()
+                        let onFulfilled = context.function {
+                            context, callInfo =>
+                                let bufferValue = Option<Array<Byte>>.fromJSValue(context, callInfo[0])
+                                if (let Some(v) <- bufferValue) {
+                                    ret.value = v
+                                }
+                                ret.sem.release()
+                                context.undefined().toJSValue()
+                        }
+                        _ret.then(onFulfilled)
                     }
-                    _ret.then(onFulfilled)
                 }
-            ret.sem.acquire()
-            let retValue = ret.value
-            ret.sem.release()
-            retValue
+                ret.sem.acquire()
+                let retValue = ret.value
+                ret.sem.release()
+                retValue
+        }
+    } else {
+        arkImgPreprocessFunc = None
     }
     context.undefined().toJSValue()
 }
 
 /**
- * 设置markdown属性互操作函数
+ * 获取加载仓颉页面互操作函数
  *
  * @param runtime JSContext
  * @param callInfo 接口数据
- * @return JSValue 返回值
+ * @return JSValue 返回更新函数
  */
 public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let mdStr: String = callInfo[0].asString().toString()
@@ -65,16 +72,16 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
             plugin = v.cast<CJMarkdownPlugin>()
         }
     }
-    var listscroller: ?CJMarkdownScroller = None
+    var listScroller: ?CJMarkdownScroller = None
     if (callInfo[5].typeof() != JSType.UNDEFINED) {
         let scrollerObj: JSObject = callInfo[5].asObject()
         let scrollerExt: Option<JSExternal> = scrollerObj.getAttachInfo()
         if (let Some(v) <- scrollerExt) {
-            listscroller = v.cast<CJMarkdownScroller>()
+            listScroller = v.cast<CJMarkdownScroller>()
         }
     }
-    let elmetId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
-    ViewStackProcessor.StartGetAccessRecordingFor(elmetId)
+    let elementId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
+    ViewStackProcessor.StartGetAccessRecordingFor(elementId)
     let comp = CJMarkdownComponent(
         Option<CustomView>.None,
         mdStr: ObservedProperty<String>("", mdStr),
@@ -82,7 +89,7 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
         incrementalAnalysis: ObservedProperty<Bool>("", incrementalAnalysis),
         cfg: ObservedProperty<Option<CJMarkdownConfig>>("", cfg),
         plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin),
-        listscroller: ObservedProperty<Option<CJMarkdownScroller>>("", listscroller)
+        listScroller: ObservedProperty<Option<CJMarkdownScroller>>("", listScroller)
     )
     CustomView.create(comp)
     ViewStackProcessor.StopGetAccessRecording()
@@ -175,16 +182,147 @@ func arktsRes2CJResource(ctx: JSContext, value: JSValue): AppResource {
 }
 
 /**
- * 互操作透明色颜色处理
+ * 互操作透明颜色处理
  *
  * @param value 颜色值
  * @return Color Color对象
  *
  */
-func transColorForTrasparent(value: UInt32): Color {
+func transColorForTransparent(value: UInt32): Color {
     if (value >> 24 == 0) {
         Color.TRANSPARENT
     } else {
         Color(value)
+    }
+}
+
+/**
+ * 将Int64转换为FontStyle
+ *
+ * @param style 字体样式代码
+ * @return FontStyle枚举值
+ */
+func convertFontStyle(style: Int64): FontStyle {
+    match (style) {
+        case 0 => FontStyle.Normal
+        case 1 => FontStyle.Italic
+        case _ => FontStyle.Normal
+    }
+}
+
+/**
+ * 将Int64转换为FontWeight
+ *
+ * @param weight 字体粗细代码
+ * @return FontWeight枚举值
+ */
+func convertFontWeight(weight: Int64): FontWeight {
+    match (weight) {
+        case 0 => FontWeight.Lighter
+        case 1 => FontWeight.Normal
+        case 2 => FontWeight.Regular
+        case 3 => FontWeight.Medium
+        case 4 => FontWeight.Bold
+        case 5 => FontWeight.Bolder
+        case 100 => FontWeight.W100
+        case 200 => FontWeight.W200
+        case 300 => FontWeight.W300
+        case 400 => FontWeight.W400
+        case 500 => FontWeight.W500
+        case 600 => FontWeight.W600
+        case 700 => FontWeight.W700
+        case 800 => FontWeight.W800
+        case 900 => FontWeight.W900
+        case _ => FontWeight.Normal
+    }
+}
+
+/**
+ * 将Int64转换为BorderStyle
+ *
+ * @param style 字体样式代码
+ * @return BorderStyle枚举值
+ */
+func convertBorderStyle(style: Int64): BorderStyle {
+    match (style) {
+        case 0 => BorderStyle.Solid
+        case 1 => BorderStyle.Dashed
+        case 2 => BorderStyle.Dotted
+        case _ => BorderStyle.Solid
+    }
+}
+
+/**
+ * 将Int64转换为LineCapStyle
+ *
+ * @param style 分割线端点样式
+ * @return LineCapStyle枚举值
+ */
+func convertLineCapStyle(style: Int64): LineCapStyle {
+    match (style) {
+        case 0 => LineCapStyle.Butt
+        case 1 => LineCapStyle.Round
+        case 2 => LineCapStyle.Square
+        case _ => LineCapStyle.Butt
+    }
+}
+
+/**
+ * 将Int64转换为TextDecorationType
+ *
+ * @param decorationType 文本装饰线类型
+ * @return TextDecorationType枚举值
+ */
+func convertTextDecorationType(decorationType: Int64): TextDecorationType {
+    match (decorationType) {
+        case 0 => TextDecorationType.None // 无装饰线
+        case 1 => TextDecorationType.Underline // 上划线
+        case 2 => TextDecorationType.Overline // 下划线
+        case 3 => TextDecorationType.LineThrough // 中划线
+        case _ => TextDecorationType.None // 默认无装饰线
+    }
+}
+
+/**
+ * 将Int64转换为CheckBoxShape
+ *
+ * @param style 多选框形状
+ * @return CheckBoxShape枚举值
+ */
+func convertCheckBoxShape(style: Int64): CheckBoxShape {
+    match (style) {
+        case 0 => CheckBoxShape.CIRCLE
+        case 1 => CheckBoxShape.ROUNDED_SQUARE
+        case _ => CheckBoxShape.ROUNDED_SQUARE
+    }
+}
+
+/**
+ * 将Int64转换为BarState
+ *
+ * @param style 滚动条状态
+ * @return BarState枚举值
+ */
+func convertBarState(style: Int64): BarState {
+    match (style) {
+        case 0 => BarState.Off
+        case 1 => BarState.Auto
+        case 2 => BarState.On
+        case _ => BarState.Off
+    }
+}
+
+/**
+ * 将Int64转换为ImageFit
+ *
+ * @param imageFitType 图片缩放类型
+ * @return ImageFit枚举值
+ */
+func convertImageFitType(imageFitType: Int64): ImageFit {
+    match (imageFitType) {
+        case 0 => ImageFit.Contain
+        case 1 => ImageFit.Cover
+        case 2 => ImageFit.Fill
+        case _ => ImageFit.Contain
     }
 }
