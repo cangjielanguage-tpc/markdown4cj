@@ -344,10 +344,6 @@ struct ListDetailsPage {
     hilog.error(1, "1", `---code:${code},type:${type}`)
   }
 
-  latexCallBack(data: ArrayBuffer, heightNumber: number, widthNumber: number): void {
-    hilog.error(1, "1", `---data.size:${data.byteLength},heightNumber:${heightNumber},widthNumber:${widthNumber}`)
-  }
-
   tocIndexCallback(y: number | undefined): void {
     hilog.error(1, "1", `---y:${y}`)
   }

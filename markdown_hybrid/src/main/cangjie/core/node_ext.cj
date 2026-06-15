@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
 package markdown.core
 
 import std.collection.at
@@ -228,12 +225,13 @@ extend Node <: NodeExt {
 
     prop props: HashMap<String, Any> {
         get() {
-            this.custom as HashMap<String, Any> ?? {
-                =>
-                    let m = HashMap<String, Any>(2)
-                    this.custom = m
-                    m
-            }()
+            if (let v: HashMap<String, Any> <- this.custom) {
+                return v
+            } else {
+                let m = HashMap<String, Any>(2)
+                this.custom = m
+                return m
+            }
         }
     }
 

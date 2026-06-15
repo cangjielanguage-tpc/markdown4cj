@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown
 
 import ohos.ark_interop_macro.*
@@ -98,7 +95,7 @@ public class CJMarkdownPlugin {
     var isHeadIDPlugin: Bool = false
 
     /**
-     * 是否加载上标解析插件
+     * 是否加载下标解析插件
      */
     var isSubPlugin: Bool = false
 
@@ -116,6 +113,21 @@ public class CJMarkdownPlugin {
      * emoji解析插件是否精简加载
      */
     var isEmojiLight: Bool = true
+
+    /**
+     * 是否加载高亮解析插件
+     */
+    var isHighlightPlugin: Bool = false
+
+    /**
+     * 是否加载白名单宽松分隔符插件
+     */
+    var isWhitelistPlugin: Bool = false
+
+    /**
+     * 分隔符过滤模式
+     */
+    var mode: DelimiterFilterMode = DelimiterFilterMode.Selective([])
 
     public init() {}
 
@@ -301,5 +313,26 @@ public class CJMarkdownPlugin {
     public func setIsEmojiPlugin(isEmojiPlugin: Bool, isEmojiLight: Bool): Unit {
         this.isEmojiPlugin = isEmojiPlugin
         this.isEmojiLight = isEmojiLight
+    }
+
+    /**
+     * 设置是否加载高亮解析插件
+     *
+     * @param isHighlightPlugin
+     */
+    public func setIsHighlightPlugin(isHighlightPlugin: Bool): Unit {
+        this.isHighlightPlugin = isHighlightPlugin
+    }
+
+    /**
+     * 设置是否加载白名单宽松分隔符插件
+     *
+     * @param IsWhitelistPlugin
+     * @param mode
+     * @param whitelist
+     */
+    public func setIsWhitelistPlugin(isWhitelistPlugin: Bool, mode: Int64, whitelist: JSArrayEx<String>): Unit {
+        this.isWhitelistPlugin = isWhitelistPlugin
+        this.mode = DelimiterFilterMode.fromInt64(mode, whitelist.toArray())
     }
 }

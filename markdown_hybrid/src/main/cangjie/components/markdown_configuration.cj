@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -9,94 +6,31 @@ import ohos.state_macro_manage.*
  * markdown配置
  */
 public class MarkdownConfiguration {
-    /**
-     * markdown默认样式
-     */
-    protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
-
-    /**
-     * 文本复制的点击事件
-     */
-    protected var textCopyCallback: ?(String) -> Unit = None
-
-    /**
-     * 链接的点击事件
-     */
-    protected var linkCallback: ?(String) -> Unit = None
-
-    /**
-     * 图片的点击事件
-     */
-    protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
-
-    /**
-     * 图片替换事件
-     */
-    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
-
-    /**
-     * 图片下载的点击事件
-     */
-    protected var imageDownloadCallback: ?(String) -> Unit = None
-
-    /**
-     * 音频的点击事件
-     */
-    protected var audioCallback: ?(String) -> Unit = None
-
-    /**
-     * 视频的点击事件
-     */
-    protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None
-
-    /**
-     * 视频的图片替换回调
-     */
+    protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build() // markdown默认样式
+    protected var textCopyCallback: ?(String) -> Unit = None // 文本复制的点击事件
+    protected var linkCallback: ?(String) -> Unit = None // 链接的点击事件
+    protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None // 图片的点击事件
+    protected var imageReplaceCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
+    protected var imageDownloadCallback: ?(String) -> Unit = None // 图片下载的点击事件
+    protected var audioCallback: ?(String) -> Unit = None // 音频的点击事件
+    protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None // 视频的点击事件
     protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
         url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
-    }
-
-    /**
-     * 视频发布的点击事件
-     */
-    protected var videoReleaseCallback: ?(String) -> Unit = None
-
-    /**
-     * 视频下载的点击事件
-     */
-    protected var videoDownloadCallback: ?(String) -> Unit = None
-
-    /**
-     * 代码复制按钮的点击事件
-     */
-    protected var codeCopyCallback: ?(String) -> Unit = None
-
-    /**
-     * 代码全屏按钮的点击事件
-     */
-    protected var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
-
-    /**
-     * TOC跳转指定位置
-     */
-    protected var tocIndexCallback: ?(?Int64) -> Unit = None
-
-    /**
-     * 脚注跳转指定位置
-     */
-    protected var footnoteCallback: ?(?Int64) -> Unit = None
-
-    /**
-     * 全部文本
-     */
-    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None
+    } // 视频的图片替换回调
+    protected var videoReleaseCallback: ?(String) -> Unit = None // 视频发布的点击事件
+    protected var videoDownloadCallback: ?(String) -> Unit = None // 视频下载的点击事件
+    protected var codeCopyCallback: ?(String) -> Unit = None // 代码复制按钮的点击事件
+    protected var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None // 代码全屏按钮的点击事件
+    protected var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
+    protected var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
+    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
 
     protected init(builder: MarkdownConfigurationBuilder) {
         this.markdownTheme = builder.markdownTheme
         this.textCopyCallback = builder.textCopyCallback
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
-        this.imageCallbackCallback = builder.imageCallbackCallback
+        this.imageReplaceCallback = builder.imageReplaceCallback
         this.imageDownloadCallback = builder.imageDownloadCallback
         this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
@@ -143,87 +77,24 @@ public class MarkdownConfiguration {
  * MarkdownConfiguration Builder
  */
 public class MarkdownConfigurationBuilder {
-    /**
-     * markdown默认样式
-     */
-    var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
-
-    /**
-     * 文本复制的点击事件
-     */
-    var textCopyCallback: ?(String) -> Unit = None
-
-    /**
-     * 链接的点击事件
-     */
-    var linkCallback: ?(String) -> Unit = None
-
-    /**
-     * 图片的点击事件
-     */
-    var imageCallback: ?(String, ArrayList<String>) -> Unit = None
-
-    /**
-     * 图片替换事件
-     */
-    var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
-
-    /**
-     * 图片下载的点击事件
-     */
-    var imageDownloadCallback: ?(String) -> Unit = None
-
-    /**
-     * 音频的点击事件
-     */
-    var audioCallback: ?(String) -> Unit = None
-
-    /**
-     * 视频的点击事件
-     */
-    var videoCallback: ?(String, ArrayList<String>) -> Unit = None
-
-    /**
-     * 视频的图片替换回调
-     */
+    var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build() // markdown默认样式
+    var textCopyCallback: ?(String) -> Unit = None // 文本复制的点击事件
+    var linkCallback: ?(String) -> Unit = None // 链接的点击事件
+    var imageCallback: ?(String, ArrayList<String>) -> Unit = None // 图片的点击事件
+    var imageReplaceCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
+    var imageDownloadCallback: ?(String) -> Unit = None // 图片下载的点击事件
+    var audioCallback: ?(String) -> Unit = None // 音频的点击事件
+    var videoCallback: ?(String, ArrayList<String>) -> Unit = None // 视频的点击事件
     var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
         url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
-    }
-
-    /**
-     * 视频发布的点击事件
-     */
-    var videoReleaseCallback: ?(String) -> Unit = None
-
-    /**
-     * 视频下载的点击事件
-     */
-    var videoDownloadCallback: ?(String) -> Unit = None
-
-    /**
-     * 代码复制按钮的点击事件
-     */
-    var codeCopyCallback: ?(String) -> Unit = None
-
-    /**
-     * 代码全屏按钮的点击事件
-     */
-    var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
-
-    /**
-     * TOC跳转指定位置
-     */
-    var tocIndexCallback: ?(?Int64) -> Unit = None
-
-    /**
-     * 脚注跳转指定位置
-     */
-    var footnoteCallback: ?(?Int64) -> Unit = None
-
-    /**
-     * 全部文本
-     */
-    var nodeString: ?(NodeViewStringBuilder) -> Unit = None
+    } // 视频的图片替换回调
+    var videoReleaseCallback: ?(String) -> Unit = None // 视频发布的点击事件
+    var videoDownloadCallback: ?(String) -> Unit = None // 视频下载的点击事件
+    var codeCopyCallback: ?(String) -> Unit = None // 代码复制按钮的点击事件
+    var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None // 代码全屏按钮的点击事件
+    var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
+    var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
+    var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
 
     init() {
     }
@@ -233,7 +104,7 @@ public class MarkdownConfigurationBuilder {
         this.textCopyCallback = configuration.textCopyCallback
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
-        this.imageCallbackCallback = configuration.imageCallbackCallback
+        this.imageReplaceCallback = configuration.imageReplaceCallback
         this.imageDownloadCallback = configuration.imageDownloadCallback
         this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
@@ -297,8 +168,20 @@ public class MarkdownConfigurationBuilder {
      * @param imageCallbackCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
+    @Deprecated["用MarkdownConfigurationBuilder.setImageReplaceCallback方法代替", since: "1.4.0"]
     public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder {
-        this.imageCallbackCallback = imageCallbackCallback
+        setImageReplaceCallback(imageCallbackCallback)
+        return this
+    }
+
+    /**
+     * 设置图片替换事件
+     *
+     * @param imageReplaceCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setImageReplaceCallback(imageReplaceCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder {
+        this.imageReplaceCallback = imageReplaceCallback
         return this
     }
 
@@ -327,7 +210,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置视频的点击事件
      *
-     * @param videoCallback 视频点击回调接口 (String:视频ID，图片和视频链接列表)
+     * @param videoCallback 视频点击回调接口 (String:视频URL，图片和视频链接列表)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setVideoCallback(videoCallback: (String, ArrayList<String>) -> Unit): MarkdownConfigurationBuilder {
@@ -371,7 +254,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置代码复制按钮的点击事件
      *
-     * @param codeCopyCallback 代码复制点击回调接口 (String:代码内容型)
+     * @param codeCopyCallback 代码复制点击回调接口 (String:代码内容)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setCodeCopyCallback(codeCopyCallback: (String) -> Unit): MarkdownConfigurationBuilder {
@@ -393,7 +276,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置TOC跳转指定位置
      *
-     * @param tocIndexCallback TOC跳转指定位置接口 (?Float64:位置距离)
+     * @param tocIndexCallback TOC跳转指定位置接口 (?Int64:第几条数据)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setTocIndexCallback(tocIndexCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
@@ -404,7 +287,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置脚注跳转指定位置
      *
-     * @param footnoteCallback 脚注跳转指定位置接口 (?Float64:位置距离)
+     * @param footnoteCallback 脚注跳转指定位置接口 (?Int64:第几条数据)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setFootnoteCallback(footnoteCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {

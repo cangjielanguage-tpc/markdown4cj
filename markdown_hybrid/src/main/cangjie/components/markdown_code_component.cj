@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,71 +7,24 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownCodeComponent {
-    /**
-     * markdown配置
-     */
-    var markdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 代码内容
-     */
+    var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
-    var codeText: String = ""
-
-    /**
-     * 代码类型
-     */
+    var codeText: String = "" // 代码内容
     @State
-    var info: Option<String> = Option<String>.None
-
-    /**
-     * hash
-     */
+    var info: Option<String> = Option<String>.None // 代码类型
     @State
-    var nodeHash: Int64 = 0
-
-    /**
-     * 缓存的单独代码块控件
-     */
-    var codeComponents: HashMap<Int64, MarkdownCodeComponent>
-
-    /**
-     * 缓存的单独代码块文本列表控件
-     */
-    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
-
-    /**
-     * 代码列表
-     */
+    var nodeHash: Int64 = 0 // hash
+    var codeComponents: HashMap<Int64, MarkdownCodeComponent> // 缓存的单独代码块控件
+    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent> // 缓存的单独代码块文本列表控件
     @State
-    var lineStrArray: StringDataSource = StringDataSource(ArrayList<String>())
-
-    /**
-     * 代码列表
-     */
+    var lineStrArray: StringDataSource = StringDataSource(ArrayList<String>()) // 代码列表
     @State
-    var lineInt64Array: StringDataSource = StringDataSource(ArrayList<String>())
-
-    /**
-     * list控制器
-     */
-    let scroller1: Scroller = Scroller()
-
-    /**
-     * list控制器
-     */
-    let scroller2: Scroller = Scroller()
-
-    /**
-     * 是否在布局末尾
-     */
+    var lineInt64Array: StringDataSource = StringDataSource(ArrayList<String>()) // 代码列表
+    let scroller1: Scroller = Scroller() // list控制器
+    let scroller2: Scroller = Scroller() // list控制器
     @State
-    var reachBottom: Bool = true
-
-    /**
-     * 手指是否触摸
-     */
-    var chatTouch: Bool = false
+    var reachBottom: Bool = true // 是否在布局末尾
+    var chatTouch: Bool = false // 手指是否触摸
 
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info, nodeHash) // 初始化刷新数据
@@ -103,12 +53,15 @@ class MarkdownCodeComponent {
                         itemGeneratorFunc: {
                             item: String, idx: Int64 => ListItem() {
                                 Text((idx + 1).toString())
-                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                    .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
-                                    .textAlign(TextAlign.End)
+                                    .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
+                                    .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
+                                    .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
+                                    .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
+                                    .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
+                                    .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
                                     .maxLines(1)
                                     .textOverflow(TextOverflow.Ellipsis)
+                                    .textAlign(TextAlign.End)
                             }
                         },
                         keyGeneratorFunc: {
@@ -116,12 +69,12 @@ class MarkdownCodeComponent {
                         }
                     )
                 }
+                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockSeparateWidth)
+                .padding(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberDividerSpacing, left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberTextPaddingLeft)
+                .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockDividerStrokeWidth.vp))
+                .borderColor(codeDividerColor(markdownConfiguration.markdownTheme))
                 .height(100.percent)
-                .padding(left: 8, right: 8)
-                .width(markdownConfiguration.markdownTheme.separateCodeBlockWidth)
-                .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.thematicBreakHeight.vp))
                 .borderStyle(BorderStyle.Solid)
-                .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
                 .scrollBar(BarState.Off)
                 .alignListItem(ListItemAlign.End)
                 .enabled(false)
@@ -163,7 +116,7 @@ class MarkdownCodeComponent {
                         }
                         .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
                     }
-                    .height(100.percent)
+                    .layoutWeight(1)
                 }
                 .scrollable(ScrollDirection.Horizontal)
                 .scrollBar(BarState.Off)
@@ -171,26 +124,24 @@ class MarkdownCodeComponent {
                 .width(100.percent)
                 .height(100.percent)
                 .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
+                .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginLeft, right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginRight)
             }
+            .layoutWeight(1)
             .width(100.percent)
-            .height(100.percent)
         }
         .width(100.percent)
         .height(100.percent)
-        .padding(bottom: bottomSize())
-        .borderRadius(markdownConfiguration.markdownTheme.codeBlockRadius)
+        .borderRadius(topLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopLeft, topRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopRight, bottomLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomLeft, bottomRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomRight)
+        .borderColor(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderColor)
+        .borderWidth(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderWidth)
+        .borderStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderStyle)
         .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-    }
-
-    /**
-     * 底部高度
-     */
-    func bottomSize(): Float64 {
-        if (markdownConfiguration.markdownTheme.codeCopyIcon.isSome() || markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
-            return 50.0
-        } else {
-            return 20.0
-        }
+        .padding(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingLeft
+        )
     }
 
     /**
@@ -204,12 +155,15 @@ class MarkdownCodeComponent {
                 if (let Some(i) <- info) {
                     Row() {
                         Text(i)
-                            .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                            .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                            .margin(left: 8)
-                            .maxLines(1)
-                            .textOverflow(TextOverflow.Ellipsis)
-                            .visibility(isVisibility(!markdownConfiguration.markdownTheme.isSeparateCodeBlock))
+                        .fontFamily(codeTypeTextFontFamily(markdownConfiguration.markdownTheme))
+                        .fontSize(codeTypeTextFontSize(markdownConfiguration.markdownTheme))
+                        .fontWeight(codeTypeTextFontWeight(markdownConfiguration.markdownTheme))
+                        .fontStyle(codeTypeTextFontStyle(markdownConfiguration.markdownTheme))
+                        .fontColor(codeTypeTextFontColor(markdownConfiguration.markdownTheme))
+                        .lineHeight(codeTypeTextLineHeight(markdownConfiguration.markdownTheme))
+                        .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeTextMarginLeft)
+                        .textOverflow(TextOverflow.Ellipsis)
+                        .maxLines(1)
                     }
                     .width(30.percent)
                     .justifyContent(FlexAlign.Start)
@@ -219,53 +173,65 @@ class MarkdownCodeComponent {
                         .justifyContent(FlexAlign.Start)
                 }
                 Row() {
-                    if (markdownConfiguration.markdownTheme.codeCopyIcon.isSome()) {
+                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow) {
                         Row() {
-                            Image(markdownConfiguration.markdownTheme.codeCopyIcon())
-                                .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                .objectFit(ImageFit.Contain)
+                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
+                                Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())
+                                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconWidth)
+                                    .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconHeight)
+                                    .objectFit(ImageFit.Contain)
+                            }
 
-                            Row()
-                                .width(5)
+                            Blank()
+                                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconTextSpacing)
 
-                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
-                                Text("复制代码")
-                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow) {
+                                Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyText)
+                                    .fontFamily(codeCopyTextFontFamily(markdownConfiguration.markdownTheme))
+                                    .fontSize(codeCopyTextFontSize(markdownConfiguration.markdownTheme))
+                                    .fontWeight(codeCopyTextFontWeight(markdownConfiguration.markdownTheme))
+                                    .fontStyle(codeCopyTextFontStyle(markdownConfiguration.markdownTheme))
+                                    .fontColor(codeCopyTextFontColor(markdownConfiguration.markdownTheme))
+                                    .lineHeight(codeCopyTextLineHeight(markdownConfiguration.markdownTheme))
                                     .align(Alignment.End)
                                     .maxLines(1)
                                     .textOverflow(TextOverflow.Ellipsis)
-                                    .margin(right: 4)
                             }
                         }
                         .justifyContent(FlexAlign.End)
                         .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
                     }
 
-                    if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
+                    Blank()
+                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
+
+                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
                         Row() {
-                            Image(markdownConfiguration.markdownTheme.codeFullScreenIcon())
-                                .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                .margin(left: 4)
-                                .objectFit(ImageFit.Contain)
+                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome()) {
+                                Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
+                                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
+                                    .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
+                                    .margin(left: 4)
+                                    .objectFit(ImageFit.Contain)
+                            }
 
-                            Row()
-                                .width(5)
+                            Blank()
+                                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
 
-                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
-                                Text("全屏代码")
-                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow) {
+                                Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenText)
+                                    .fontFamily(codeFullScreenTextFontFamily(markdownConfiguration.markdownTheme))
+                                    .fontSize(codeFullScreenTextFontSize(markdownConfiguration.markdownTheme))
+                                    .fontWeight(codeFullScreenTextFontWeight(markdownConfiguration.markdownTheme))
+                                    .fontStyle(codeFullScreenTextFontStyle(markdownConfiguration.markdownTheme))
+                                    .fontColor(codeFullScreenTextFontColor(markdownConfiguration.markdownTheme))
+                                    .lineHeight(codeFullScreenTextLineHeight(markdownConfiguration.markdownTheme))
                                     .align(Alignment.End)
                                     .maxLines(1)
                                     .textOverflow(TextOverflow.Ellipsis)
-                                    .margin(right: 4)
                             }
                         }
                         .justifyContent(FlexAlign.End)
-                        .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                         .onClick {
                             evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
                         }
@@ -275,7 +241,7 @@ class MarkdownCodeComponent {
                 .justifyContent(FlexAlign.End)
             }
         }
-        .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTypeTextPadding)
+        .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTitleLayoutMarginBottom)
         .alignItems(VerticalAlign.Center)
     }
 
@@ -326,13 +292,14 @@ class MarkdownCodeComponent {
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            lineStrArray.clear()
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..dataSourceSize) {
-                if(lineStrArray.getData(i) != arr[i]){
+                if (lineStrArray.getData(i) != arr[i]) {
                     // 最后一条数据通过页面缓存刷新
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
@@ -351,7 +318,7 @@ class MarkdownCodeComponent {
             // 新数据等于页面数据
             let indexItem: Int64 = dataSourceSize
             for (i in 0..indexItem) {
-                if(lineStrArray.getData(i) != arr[i]){
+                if (lineStrArray.getData(i) != arr[i]) {
                     // 最后一条数据通过页面缓存刷新
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
@@ -365,7 +332,7 @@ class MarkdownCodeComponent {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..refreshNodeViewSize) {
-                if(lineStrArray.getData(i) != arr[i]){
+                if (lineStrArray.getData(i) != arr[i]) {
                     // 最后一条数据通过页面缓存刷新
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
@@ -382,7 +349,7 @@ class MarkdownCodeComponent {
             }
         }
         // 列表是否置底
-        if (markdownConfiguration.markdownTheme.separateCodeIsBottom) {
+        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockSeparateIsBottom) {
             scrollChatIfAtBottom()
         }
     }
