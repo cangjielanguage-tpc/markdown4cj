@@ -304,7 +304,7 @@ struct ThematicPage {
           })
           BaseTabComponent({
             titleStr: "分割线端点样式 - ",
-            typeEnum: TypeEnum.IS_STRING,
+            typeEnum: TypeEnum.IS_LINE_CAP_STYLE,
             allListData: this.dividerStyleList,
             allData: this.dividerStyle
           })

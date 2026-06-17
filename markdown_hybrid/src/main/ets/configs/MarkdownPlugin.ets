@@ -120,8 +120,9 @@ export class MarkdownPlugin {
    *
    * @param isBlockAudioPlugin 是否设置音频插件 - true：设置音频插件；false：不设置音频插件。默认false
    */
-  setIsBlockAudioPlugin(isBlockAudioPlugin: boolean): void {
+  setIsBlockAudioPlugin(isBlockAudioPlugin: boolean): MarkdownPlugin {
     this.isBlockAudioPlugin = isBlockAudioPlugin
+    return this
   }
 
   /**
@@ -129,8 +130,9 @@ export class MarkdownPlugin {
    *
    * @param isBlockVideoPlugin 是否设置视频插件 - true：设置视频插件；false：不设置视频插件。默认false
    */
-  setIsBlockVideoPlugin(isBlockVideoPlugin: boolean): void {
+  setIsBlockVideoPlugin(isBlockVideoPlugin: boolean): MarkdownPlugin {
     this.isBlockVideoPlugin = isBlockVideoPlugin
+    return this
   }
 
   /**
@@ -138,8 +140,9 @@ export class MarkdownPlugin {
    *
    * @param isCodeListPlugin 是否设置组合代码块列表插件 - true：设置组合代码块列表插件；false：不设置组合代码块列表插件。默认false
    */
-  setIsCodeListPlugin(isCodeListPlugin: boolean): void {
+  setIsCodeListPlugin(isCodeListPlugin: boolean): MarkdownPlugin {
     this.isCodeListPlugin = isCodeListPlugin
+    return this
   }
 
   /**
@@ -147,8 +150,9 @@ export class MarkdownPlugin {
    *
    * @param isFootnotePlugin 是否设置脚注插件 - true：设置脚注插件；false：不设置脚注插件。默认false
    */
-  setIsFootnotePlugin(isFootnotePlugin: boolean): void {
+  setIsFootnotePlugin(isFootnotePlugin: boolean): MarkdownPlugin {
     this.isFootnotePlugin = isFootnotePlugin
+    return this
   }
 
   /**
@@ -156,8 +160,9 @@ export class MarkdownPlugin {
    *
    * @param isHtmlPlugin 是否设置HTML插件 - true：设置HTML插件；false：不设置HTML插件。默认false
    */
-  setIsHtmlPlugin(isHtmlPlugin: boolean): void {
+  setIsHtmlPlugin(isHtmlPlugin: boolean): MarkdownPlugin {
     this.isHtmlPlugin = isHtmlPlugin
+    return this
   }
 
   /**
@@ -165,8 +170,9 @@ export class MarkdownPlugin {
    *
    * @param isTablePlugin 是否设置表格插件 - true：设置表格插件；false：不设置表格插件。默认false
    */
-  setIsTablePlugin(isTablePlugin: boolean): void {
+  setIsTablePlugin(isTablePlugin: boolean): MarkdownPlugin {
     this.isTablePlugin = isTablePlugin
+    return this
   }
 
   /**
@@ -174,8 +180,9 @@ export class MarkdownPlugin {
    *
    * @param isTocPlugin 是否设置TOC插件 - true：设置TOC插件；false：不设置TOC插件。默认false
    */
-  setIsTocPlugin(isTocPlugin: boolean): void {
+  setIsTocPlugin(isTocPlugin: boolean): MarkdownPlugin {
     this.isTocPlugin = isTocPlugin
+    return this
   }
 
   /**
@@ -183,8 +190,9 @@ export class MarkdownPlugin {
    *
    * @param isTaskListPlugin 是否设置任务列表插件 - true：设置任务列表插件；false：不设置任务列表插件。默认false
    */
-  setIsTaskListPlugin(isTaskListPlugin: boolean): void {
+  setIsTaskListPlugin(isTaskListPlugin: boolean): MarkdownPlugin {
     this.isTaskListPlugin = isTaskListPlugin
+    return this
   }
 
   /**
@@ -192,8 +200,9 @@ export class MarkdownPlugin {
    *
    * @param isStrikethroughPlugin 是否设置删除线插件 - true：设置删除线插件；false：不设置删除线插件。默认false
    */
-  setIsStrikethroughPlugin(isStrikethroughPlugin: boolean): void {
+  setIsStrikethroughPlugin(isStrikethroughPlugin: boolean): MarkdownPlugin {
     this.isStrikethroughPlugin = isStrikethroughPlugin
+    return this
   }
 
   /**
@@ -202,12 +211,13 @@ export class MarkdownPlugin {
    * @param isLinkifyPlugin 是否设置链接自动加载插件 - true：设置链接自动加载插件；false：不设置链接自动加载插件。默认false
    * @param regs 正则列表
    */
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs?: Array<string>): void {
+  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs?: Array<string>): MarkdownPlugin {
     this.isLinkifyPlugin = isLinkifyPlugin
     // 判断是否传入了 regs 参数
     if (regs !== undefined) {
       this.regs = regs
     }
+    return this
   }
 
   /**
@@ -215,8 +225,9 @@ export class MarkdownPlugin {
    *
    * @param isLinkViewPlugin 是否设置链接块状化插件 - true：设置链接块状化插件；false：不设置链接块状化插件。默认false
    */
-  setIsLinkViewPlugin(isLinkViewPlugin: boolean): void {
+  setIsLinkViewPlugin(isLinkViewPlugin: boolean): MarkdownPlugin {
     this.isLinkViewPlugin = isLinkViewPlugin
+    return this
   }
 
   /**
@@ -224,8 +235,9 @@ export class MarkdownPlugin {
    *
    * @param isLatexMathPlugin 是否设置数学公式插件 - true：设置数学公式插件；false：不设置数学公式插件。默认false
    */
-  setIsLatexMathPlugin(isLatexMathPlugin: boolean): void {
+  setIsLatexMathPlugin(isLatexMathPlugin: boolean): MarkdownPlugin {
     this.isLatexMathPlugin = isLatexMathPlugin
+    return this
   }
 
   /**
@@ -233,8 +245,9 @@ export class MarkdownPlugin {
    *
    * @param isImageStylePlugin 是否设置图片样式插件 - true：设置图片样式插件；false：不设置图片样式插件。默认false
    */
-  setIsImageStylePlugin(isImageStylePlugin: boolean): void {
+  setIsImageStylePlugin(isImageStylePlugin: boolean): MarkdownPlugin {
     this.isImageStylePlugin = isImageStylePlugin
+    return this
   }
 
   /**
@@ -242,8 +255,9 @@ export class MarkdownPlugin {
    *
    * @param isImageSlidePlugin 是否设置图片幻灯片（Banner）插件 - true：设置图片幻灯片（Banner）插件；false：不设置图片幻灯片（Banner）插件。默认false
    */
-  setIsImageSlidePlugin(isImageSlidePlugin: boolean): void {
+  setIsImageSlidePlugin(isImageSlidePlugin: boolean): MarkdownPlugin {
     this.isImageSlidePlugin = isImageSlidePlugin
+    return this
   }
 
   /**
@@ -251,8 +265,9 @@ export class MarkdownPlugin {
    *
    * @param isImageTextMixPlugin 是否图片不混排插件 - true：图片不混排；false：图片混排。默认false
    */
-  setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): void {
+  setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): MarkdownPlugin {
     this.isImageTextMixPlugin = isImageTextMixPlugin
+    return this
   }
 
   /**
@@ -260,8 +275,9 @@ export class MarkdownPlugin {
    *
    * @param isImageCollectPlugin 是否设置图片视频url集合列表插件 - true：设置图片视频url集合列表插件；false：不设置图片视频url集合列表插件。默认false
    */
-  setIsImageCollectPlugin(isImageCollectPlugin: boolean): void {
+  setIsImageCollectPlugin(isImageCollectPlugin: boolean): MarkdownPlugin {
     this.isImageCollectPlugin = isImageCollectPlugin
+    return this
   }
 
   /**
@@ -269,8 +285,9 @@ export class MarkdownPlugin {
    *
    * @param isDescListPlugin 是否加载定义列表解析插件 - true：启用定义列表解析插件；false：禁用定义列表解析插件。默认false
    */
-  setIsDescListPlugin(isDescListPlugin: boolean): void {
+  setIsDescListPlugin(isDescListPlugin: boolean): MarkdownPlugin {
     this.isDescListPlugin = isDescListPlugin
+    return this
   }
 
   /**
@@ -278,8 +295,9 @@ export class MarkdownPlugin {
    *
    * @param isHeadIDPlugin 是否加载标题ID解析插件 - true：设置加载标题ID解析插件；false：不设置加载标题ID解析插件。默认false
    */
-  setIsHeadIDPlugin(isHeadIDPlugin: boolean): void {
+  setIsHeadIDPlugin(isHeadIDPlugin: boolean): MarkdownPlugin {
     this.isHeadIDPlugin = isHeadIDPlugin
+    return this
   }
 
   /**
@@ -287,8 +305,9 @@ export class MarkdownPlugin {
    *
    * @param isSubPlugin 是否加载下标解析插件 - true：设置加载下标解析插件；false：不设置加载下标解析插件。默认false
    */
-  setIsSubPlugin(isSubPlugin: boolean): void {
+  setIsSubPlugin(isSubPlugin: boolean): MarkdownPlugin {
     this.isSubPlugin = isSubPlugin
+    return this
   }
 
   /**
@@ -296,8 +315,9 @@ export class MarkdownPlugin {
    *
    * @param isSupPlugin 是否加载上标解析插件 - true：设置加载上标解析插件；false：不设置加载上标解析插件。默认false
    */
-  setIsSupPlugin(isSupPlugin: boolean): void {
+  setIsSupPlugin(isSupPlugin: boolean): MarkdownPlugin {
     this.isSupPlugin = isSupPlugin
+    return this
   }
 
   /**
@@ -306,9 +326,10 @@ export class MarkdownPlugin {
    * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件；false：不设置加载Emoji解析插件。默认false
    * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
-  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
+  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): MarkdownPlugin {
     this.isEmojiPlugin = isEmojiPlugin
     this.isEmojiLight = isEmojiLight
+    return this
   }
 
   /**
@@ -316,8 +337,9 @@ export class MarkdownPlugin {
    *
    * @param isHighlightPlugin 是否加载高亮解析插件 - true：设置加载高亮解析插件；false：不设置加载高亮解析插件。默认false
    */
-  setIsHighlightPlugin(isHighlightPlugin: boolean): void {
+  setIsHighlightPlugin(isHighlightPlugin: boolean): MarkdownPlugin {
     this.isHighlightPlugin = isHighlightPlugin
+    return this
   }
 
   /**
@@ -325,10 +347,10 @@ export class MarkdownPlugin {
    *
    * @param mode 加载模式。 - undefined：不加载插件。DelimiterFilterMode：(0:宽松模式，1：严格模式)。Array<string>：白名单模式
    */
-  setIsWhitelistPlugin(mode: undefined | DelimiterFilterMode | Array<string>): void {
-    if (mode ===  undefined) {
+  setIsWhitelistPlugin(mode: undefined | DelimiterFilterMode | Array<string>): MarkdownPlugin {
+    if (mode === undefined) {
       this.isWhitelistPlugin = false
-      return
+      return this
     }
     this.isWhitelistPlugin = true
     if (Array.isArray(mode)) {
@@ -337,6 +359,7 @@ export class MarkdownPlugin {
     } else {
       this.mode = mode
     }
+    return this
   }
 
   /**

@@ -359,8 +359,9 @@ export class VideoTheme {
    *
    * @param color 视频背景颜色
    */
-  setVideoBackgroundColor(color: number): void {
+  setVideoBackgroundColor(color: number): VideoTheme {
     this.videoBackgroundColor = color
+    return this
   }
 
   /**
@@ -370,7 +371,7 @@ export class VideoTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setVideoMargin(options: MarkdownMarginOptions | number): void {
+  setVideoMargin(options: MarkdownMarginOptions | number): VideoTheme {
     if (typeof options === 'number') {
       this.videoMarginTop = options
       this.videoMarginRight = options
@@ -390,6 +391,7 @@ export class VideoTheme {
         this.videoMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -399,7 +401,7 @@ export class VideoTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setVideoPadding(options: MarkdownPaddingOptions | number): void {
+  setVideoPadding(options: MarkdownPaddingOptions | number): VideoTheme {
     if (typeof options === 'number') {
       this.videoPaddingTop = options
       this.videoPaddingRight = options
@@ -419,6 +421,7 @@ export class VideoTheme {
         this.videoPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -428,7 +431,7 @@ export class VideoTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setVideoBorderRadius(options: MarkdownRadiusOptions | number): void {
+  setVideoBorderRadius(options: MarkdownRadiusOptions | number): VideoTheme {
     if (typeof options === 'number') {
       this.videoRadiusTopLeft = options
       this.videoRadiusTopRight = options
@@ -448,6 +451,7 @@ export class VideoTheme {
         this.videoRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -455,8 +459,9 @@ export class VideoTheme {
    *
    * @param borderStyle 视频边框样式
    */
-  setVideoBorderStyle(borderStyle: BorderStyle): void {
+  setVideoBorderStyle(borderStyle: BorderStyle): VideoTheme {
     this.videoBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -464,8 +469,9 @@ export class VideoTheme {
    *
    * @param borderWidth 视频边框宽度
    */
-  setVideoBorderWidth(borderWidth: number): void {
+  setVideoBorderWidth(borderWidth: number): VideoTheme {
     this.videoBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -473,8 +479,9 @@ export class VideoTheme {
    *
    * @param borderColor 视频边框颜色
    */
-  setVideoBorderColor(borderColor: number): void {
+  setVideoBorderColor(borderColor: number): VideoTheme {
     this.videoBorderColor = borderColor
+    return this
   }
 
   /**
@@ -482,8 +489,9 @@ export class VideoTheme {
    *
    * @param resource 视频占位图
    */
-  setVideoPlaceholder(resource: Resource): void {
+  setVideoPlaceholder(resource: Resource): VideoTheme {
     this.videoPlaceholder = resource
+    return this
   }
 
   /**
@@ -491,8 +499,9 @@ export class VideoTheme {
    *
    * @param fitType 视频图片缩放类型
    */
-  setVideoImageFitType(fitType: ImageFit): void {
+  setVideoImageFitType(fitType: ImageFit): VideoTheme {
     this.videoImageFitType = fitType
+    return this
   }
 
   /**
@@ -500,8 +509,9 @@ export class VideoTheme {
    *
    * @param icon 播放按钮默认图片
    */
-  setVideoPlayIcon(icon: Resource): void {
+  setVideoPlayIcon(icon: Resource): VideoTheme {
     this.videoPlayIcon = icon
+    return this
   }
 
   /**
@@ -509,8 +519,9 @@ export class VideoTheme {
    *
    * @param width 播放按钮图标宽度
    */
-  setVideoPlayIconWidth(width: number): void {
+  setVideoPlayIconWidth(width: number): VideoTheme {
     this.videoPlayIconWidth = width
+    return this
   }
 
   /**
@@ -518,8 +529,9 @@ export class VideoTheme {
    *
    * @param height 播放按钮图标高度
    */
-  setVideoPlayIconHeight(height: number): void {
+  setVideoPlayIconHeight(height: number): VideoTheme {
     this.videoPlayIconHeight = height
+    return this
   }
 
   /**
@@ -527,8 +539,9 @@ export class VideoTheme {
    *
    * @param fitType 播放按钮图标缩放类型
    */
-  setVideoPlayIconFitType(fitType: ImageFit): void {
+  setVideoPlayIconFitType(fitType: ImageFit): VideoTheme {
     this.videoPlayIconFitType = fitType
+    return this
   }
 
   /**
@@ -536,8 +549,9 @@ export class VideoTheme {
    *
    * @param color 视频时间文本颜色
    */
-  setVideoTimeTextFontColor(color: number): void {
+  setVideoTimeTextFontColor(color: number): VideoTheme {
     this.videoTimeTextFontColor = color
+    return this
   }
 
   /**
@@ -545,8 +559,9 @@ export class VideoTheme {
    *
    * @param size 视频时间文本尺寸
    */
-  setVideoTimeTextFontSize(size: number): void {
+  setVideoTimeTextFontSize(size: number): VideoTheme {
     this.videoTimeTextFontSize = size
+    return this
   }
 
   /**
@@ -554,8 +569,9 @@ export class VideoTheme {
    *
    * @param style 视频时间文本字体样式
    */
-  setVideoTimeTextFontStyle(style: FontStyle): void {
+  setVideoTimeTextFontStyle(style: FontStyle): VideoTheme {
     this.videoTimeTextFontStyle = style
+    return this
   }
 
   /**
@@ -563,8 +579,9 @@ export class VideoTheme {
    *
    * @param weight 视频时间文本字体粗细
    */
-  setVideoTimeTextFontWeight(weight: FontWeight): void {
+  setVideoTimeTextFontWeight(weight: FontWeight): VideoTheme {
     this.videoTimeTextFontWeight = weight
+    return this
   }
 
   /**
@@ -572,8 +589,9 @@ export class VideoTheme {
    *
    * @param family 视频时间文本字体
    */
-  setVideoTimeTextFontFamily(family: string): void {
+  setVideoTimeTextFontFamily(family: string): VideoTheme {
     this.videoTimeTextFontFamily = family
+    return this
   }
 
   /**
@@ -581,8 +599,9 @@ export class VideoTheme {
    *
    * @param lineHeight 视频时间文本行高
    */
-  setVideoTimeTextLineHeight(lineHeight: number): void {
+  setVideoTimeTextLineHeight(lineHeight: number): VideoTheme {
     this.videoTimeTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -590,8 +609,9 @@ export class VideoTheme {
    *
    * @param margin 视频时间文本居右边距
    */
-  setVideoTimeTextMarginRight(margin: number): void {
+  setVideoTimeTextMarginRight(margin: number): VideoTheme {
     this.videoTimeTextMarginRight = margin
+    return this
   }
 
   /**
@@ -599,8 +619,9 @@ export class VideoTheme {
    *
    * @param margin 视频时间文本居底边距
    */
-  setVideoTimeTextMarginBottom(margin: number): void {
+  setVideoTimeTextMarginBottom(margin: number): VideoTheme {
     this.videoTimeTextMarginBottom = margin
+    return this
   }
 
   /**
@@ -608,8 +629,9 @@ export class VideoTheme {
    *
    * @param visible 底部布局是否显示
    */
-  setVideoBottomLayoutVisible(visible: boolean): void {
+  setVideoBottomLayoutVisible(visible: boolean): VideoTheme {
     this.videoBottomLayoutVisible = visible
+    return this
   }
 
   /**
@@ -617,8 +639,9 @@ export class VideoTheme {
    *
    * @param marginTop 底部布局距离视频上边距
    */
-  setVideoBottomLayoutMarginTop(marginTop: number): void {
+  setVideoBottomLayoutMarginTop(marginTop: number): VideoTheme {
     this.videoBottomLayoutMarginTop = marginTop
+    return this
   }
 
   /**
@@ -626,8 +649,9 @@ export class VideoTheme {
    *
    * @param visible 视频发布按钮是否显示
    */
-  setVideoReleaseButtonVisible(visible: boolean): void {
+  setVideoReleaseButtonVisible(visible: boolean): VideoTheme {
     this.videoReleaseButtonVisible = visible
+    return this
   }
 
   /**
@@ -635,8 +659,9 @@ export class VideoTheme {
    *
    * @param color 视频发布按钮背景颜色
    */
-  setVideoReleaseButtonBackgroundColor(color: number): void {
+  setVideoReleaseButtonBackgroundColor(color: number): VideoTheme {
     this.videoReleaseButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -644,8 +669,9 @@ export class VideoTheme {
    *
    * @param width 视频发布按钮宽度
    */
-  setVideoReleaseButtonWidth(width: number): void {
+  setVideoReleaseButtonWidth(width: number): VideoTheme {
     this.videoReleaseButtonWidth = width
+    return this
   }
 
   /**
@@ -653,8 +679,9 @@ export class VideoTheme {
    *
    * @param height 视频发布按钮高度
    */
-  setVideoReleaseButtonHeight(height: number): void {
+  setVideoReleaseButtonHeight(height: number): VideoTheme {
     this.videoReleaseButtonHeight = height
+    return this
   }
 
   /**
@@ -664,7 +691,7 @@ export class VideoTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setVideoReleaseButtonRadius(options: MarkdownRadiusOptions | number): void {
+  setVideoReleaseButtonRadius(options: MarkdownRadiusOptions | number): VideoTheme {
     if (typeof options === 'number') {
       this.videoReleaseButtonRadiusTopLeft = options
       this.videoReleaseButtonRadiusTopRight = options
@@ -684,6 +711,7 @@ export class VideoTheme {
         this.videoReleaseButtonRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -691,8 +719,9 @@ export class VideoTheme {
    *
    * @param gap 视频发布按钮图标和文本间距
    */
-  setVideoReleaseButtonIconTextGap(gap: number): void {
+  setVideoReleaseButtonIconTextGap(gap: number): VideoTheme {
     this.videoReleaseButtonIconTextGap = gap
+    return this
   }
 
   /**
@@ -700,8 +729,9 @@ export class VideoTheme {
    *
    * @param icon 视频发布按钮图标
    */
-  setVideoReleaseButtonIcon(icon: Resource): void {
+  setVideoReleaseButtonIcon(icon: Resource): VideoTheme {
     this.videoReleaseButtonIcon = icon
+    return this
   }
 
   /**
@@ -709,8 +739,9 @@ export class VideoTheme {
    *
    * @param width 视频发布按钮图标宽度
    */
-  setVideoReleaseButtonIconWidth(width: number): void {
+  setVideoReleaseButtonIconWidth(width: number): VideoTheme {
     this.videoReleaseButtonIconWidth = width
+    return this
   }
 
   /**
@@ -718,8 +749,9 @@ export class VideoTheme {
    *
    * @param height 视频发布按钮图标高度
    */
-  setVideoReleaseButtonIconHeight(height: number): void {
+  setVideoReleaseButtonIconHeight(height: number): VideoTheme {
     this.videoReleaseButtonIconHeight = height
+    return this
   }
 
   /**
@@ -727,8 +759,9 @@ export class VideoTheme {
    *
    * @param text 视频发布按钮默认文本内容
    */
-  setVideoReleaseButtonText(text: string): void {
+  setVideoReleaseButtonText(text: string): VideoTheme {
     this.videoReleaseButtonText = text
+    return this
   }
 
   /**
@@ -736,8 +769,9 @@ export class VideoTheme {
    *
    * @param color 视频发布按钮文本颜色
    */
-  setVideoReleaseButtonTextFontColor(color: number): void {
+  setVideoReleaseButtonTextFontColor(color: number): VideoTheme {
     this.videoReleaseButtonTextFontColor = color
+    return this
   }
 
   /**
@@ -745,8 +779,9 @@ export class VideoTheme {
    *
    * @param size 视频发布按钮文本尺寸
    */
-  setVideoReleaseButtonTextFontSize(size: number): void {
+  setVideoReleaseButtonTextFontSize(size: number): VideoTheme {
     this.videoReleaseButtonTextFontSize = size
+    return this
   }
 
   /**
@@ -754,8 +789,9 @@ export class VideoTheme {
    *
    * @param style 视频发布按钮文本字体样式
    */
-  setVideoReleaseButtonTextFontStyle(style: FontStyle): void {
+  setVideoReleaseButtonTextFontStyle(style: FontStyle): VideoTheme {
     this.videoReleaseButtonTextFontStyle = style
+    return this
   }
 
   /**
@@ -763,8 +799,9 @@ export class VideoTheme {
    *
    * @param weight 视频发布按钮文本字体粗细
    */
-  setVideoReleaseButtonTextFontWeight(weight: FontWeight): void {
+  setVideoReleaseButtonTextFontWeight(weight: FontWeight): VideoTheme {
     this.videoReleaseButtonTextFontWeight = weight
+    return this
   }
 
   /**
@@ -772,8 +809,9 @@ export class VideoTheme {
    *
    * @param family 视频发布按钮文本字体
    */
-  setVideoReleaseButtonTextFontFamily(family: string): void {
+  setVideoReleaseButtonTextFontFamily(family: string): VideoTheme {
     this.videoReleaseButtonTextFontFamily = family
+    return this
   }
 
   /**
@@ -781,8 +819,9 @@ export class VideoTheme {
    *
    * @param lineHeight 视频发布按钮文本行高
    */
-  setVideoReleaseButtonTextLineHeight(lineHeight: number): void {
+  setVideoReleaseButtonTextLineHeight(lineHeight: number): VideoTheme {
     this.videoReleaseButtonTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -790,8 +829,9 @@ export class VideoTheme {
    *
    * @param visible 视频下载按钮是否显示
    */
-  setVideoDownloadButtonVisible(visible: boolean): void {
+  setVideoDownloadButtonVisible(visible: boolean): VideoTheme {
     this.videoDownloadButtonVisible = visible
+    return this
   }
 
   /**
@@ -799,8 +839,9 @@ export class VideoTheme {
    *
    * @param color 视频下载按钮背景颜色
    */
-  setVideoDownloadButtonBackgroundColor(color: number): void {
+  setVideoDownloadButtonBackgroundColor(color: number): VideoTheme {
     this.videoDownloadButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -808,8 +849,9 @@ export class VideoTheme {
    *
    * @param width 视频下载按钮宽度
    */
-  setVideoDownloadButtonWidth(width: number): void {
+  setVideoDownloadButtonWidth(width: number): VideoTheme {
     this.videoDownloadButtonWidth = width
+    return this
   }
 
   /**
@@ -817,8 +859,9 @@ export class VideoTheme {
    *
    * @param height 视频下载按钮高度
    */
-  setVideoDownloadButtonHeight(height: number): void {
+  setVideoDownloadButtonHeight(height: number): VideoTheme {
     this.videoDownloadButtonHeight = height
+    return this
   }
 
   /**
@@ -828,7 +871,7 @@ export class VideoTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setVideoDownloadButtonRadius(options: MarkdownRadiusOptions | number): void {
+  setVideoDownloadButtonRadius(options: MarkdownRadiusOptions | number): VideoTheme {
     if (typeof options === 'number') {
       this.videoDownloadButtonRadiusTopLeft = options
       this.videoDownloadButtonRadiusTopRight = options
@@ -848,6 +891,7 @@ export class VideoTheme {
         this.videoDownloadButtonRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -855,8 +899,9 @@ export class VideoTheme {
    *
    * @param gap 视频下载按钮图标和文本间距
    */
-  setVideoDownloadButtonIconTextGap(gap: number): void {
+  setVideoDownloadButtonIconTextGap(gap: number): VideoTheme {
     this.videoDownloadButtonIconTextGap = gap
+    return this
   }
 
   /**
@@ -864,8 +909,9 @@ export class VideoTheme {
    *
    * @param icon 视频下载按钮图标
    */
-  setVideoDownloadButtonIcon(icon: Resource): void {
+  setVideoDownloadButtonIcon(icon: Resource): VideoTheme {
     this.videoDownloadButtonIcon = icon
+    return this
   }
 
   /**
@@ -873,8 +919,9 @@ export class VideoTheme {
    *
    * @param width 视频下载按钮图标宽度
    */
-  setVideoDownloadButtonIconWidth(width: number): void {
+  setVideoDownloadButtonIconWidth(width: number): VideoTheme {
     this.videoDownloadButtonIconWidth = width
+    return this
   }
 
   /**
@@ -882,8 +929,9 @@ export class VideoTheme {
    *
    * @param height 视频下载按钮图标高度
    */
-  setVideoDownloadButtonIconHeight(height: number): void {
+  setVideoDownloadButtonIconHeight(height: number): VideoTheme {
     this.videoDownloadButtonIconHeight = height
+    return this
   }
 
   /**
@@ -891,8 +939,9 @@ export class VideoTheme {
    *
    * @param text 视频下载按钮默认文本内容
    */
-  setVideoDownloadButtonText(text: string): void {
+  setVideoDownloadButtonText(text: string): VideoTheme {
     this.videoDownloadButtonText = text
+    return this
   }
 
   /**
@@ -900,8 +949,9 @@ export class VideoTheme {
    *
    * @param color 视频下载按钮文本颜色
    */
-  setVideoDownloadButtonTextFontColor(color: number): void {
+  setVideoDownloadButtonTextFontColor(color: number): VideoTheme {
     this.videoDownloadButtonTextFontColor = color
+    return this
   }
 
   /**
@@ -909,8 +959,9 @@ export class VideoTheme {
    *
    * @param size 视频下载按钮文本尺寸
    */
-  setVideoDownloadButtonTextFontSize(size: number): void {
+  setVideoDownloadButtonTextFontSize(size: number): VideoTheme {
     this.videoDownloadButtonTextFontSize = size
+    return this
   }
 
   /**
@@ -918,8 +969,9 @@ export class VideoTheme {
    *
    * @param style 视频下载按钮文本字体样式
    */
-  setVideoDownloadButtonTextFontStyle(style: FontStyle): void {
+  setVideoDownloadButtonTextFontStyle(style: FontStyle): VideoTheme {
     this.videoDownloadButtonTextFontStyle = style
+    return this
   }
 
   /**
@@ -927,8 +979,9 @@ export class VideoTheme {
    *
    * @param weight 视频下载按钮文本字体粗细
    */
-  setVideoDownloadButtonTextFontWeight(weight: FontWeight): void {
+  setVideoDownloadButtonTextFontWeight(weight: FontWeight): VideoTheme {
     this.videoDownloadButtonTextFontWeight = weight
+    return this
   }
 
   /**
@@ -936,8 +989,9 @@ export class VideoTheme {
    *
    * @param family 视频下载按钮文本字体
    */
-  setVideoDownloadButtonTextFontFamily(family: string): void {
+  setVideoDownloadButtonTextFontFamily(family: string): VideoTheme {
     this.videoDownloadButtonTextFontFamily = family
+    return this
   }
 
   /**
@@ -945,8 +999,9 @@ export class VideoTheme {
    *
    * @param lineHeight 视频下载按钮文本行高
    */
-  setVideoDownloadButtonTextLineHeight(lineHeight: number): void {
+  setVideoDownloadButtonTextLineHeight(lineHeight: number): VideoTheme {
     this.videoDownloadButtonTextLineHeight = lineHeight
+    return this
   }
 
   /**

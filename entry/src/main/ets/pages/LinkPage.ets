@@ -22,7 +22,6 @@ import {
   widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { LinkData } from '../model/LinkData'
-import { MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component

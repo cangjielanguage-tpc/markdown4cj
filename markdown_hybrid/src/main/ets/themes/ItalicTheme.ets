@@ -37,8 +37,9 @@ export class ItalicTheme {
    *
    * @param color 斜体文本颜色
    */
-  setItalicTextFontColor(color: number): void {
+  setItalicTextFontColor(color: number): ItalicTheme {
     this.italicTextFontColor = color
+    return this
   }
 
   /**
@@ -46,8 +47,9 @@ export class ItalicTheme {
    *
    * @param size 斜体文本尺寸
    */
-  setItalicTextFontSize(size: number): void {
+  setItalicTextFontSize(size: number): ItalicTheme {
     this.italicTextFontSize = size
+    return this
   }
 
   /**
@@ -55,8 +57,9 @@ export class ItalicTheme {
    *
    * @param weight 斜体文本字体粗细
    */
-  setItalicTextFontWeight(weight: FontWeight): void {
+  setItalicTextFontWeight(weight: FontWeight): ItalicTheme {
     this.italicTextFontWeight = weight
+    return this
   }
 
   /**
@@ -64,8 +67,9 @@ export class ItalicTheme {
    *
    * @param family 斜体文本字体
    */
-  setItalicTextFontFamily(family: string): void {
+  setItalicTextFontFamily(family: string): ItalicTheme {
     this.italicTextFontFamily = family
+    return this
   }
 
   /**
@@ -73,8 +77,9 @@ export class ItalicTheme {
    *
    * @param lineHeight 斜体文本行高
    */
-  setItalicTextLineHeight(lineHeight: number): void {
+  setItalicTextLineHeight(lineHeight: number): ItalicTheme {
     this.italicTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -82,8 +87,9 @@ export class ItalicTheme {
    *
    * @param spacing 斜体文本字符间距
    */
-  setItalicTextLetterSpacing(spacing: number): void {
+  setItalicTextLetterSpacing(spacing: number): ItalicTheme {
     this.italicTextLetterSpacing = spacing
+    return this
   }
 
   /**

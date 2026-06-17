@@ -1,4 +1,4 @@
-import { ImageFitType, MarkdownTextDecorationStyle } from "@cangjie-tpc/markdown_hybrid"
+import { ImageFitType } from "@cangjie-tpc/markdown_hybrid"
 
 /**
  * 通用颜色列表
@@ -113,11 +113,6 @@ export const widthOrHeightListGeneralData: Array<number> = [0, 5, 10, 20, 50, 80
  * 通用文本装饰线类型列表
  */
 export const textDecorationTypeListGeneralData: Array<TextDecorationType> = [TextDecorationType.None, TextDecorationType.Underline, TextDecorationType.Overline, TextDecorationType.LineThrough]
-
-/**
- * 通用文本装饰线样式列表
- */
-export const markdownTextDecorationStyleListGeneralData: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.WAVY]
 
 /**
  * 通用文本装饰线样式列表

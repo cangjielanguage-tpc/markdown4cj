@@ -54,8 +54,9 @@ export class FootnoteDefTheme {
    *
    * @param color 脚注定义背景颜色
    */
-  setFootnoteDefBackgroundColor(color: number): void {
+  setFootnoteDefBackgroundColor(color: number): FootnoteDefTheme {
     this.footnoteDefBackgroundColor = color
+    return this
   }
 
   /**
@@ -65,7 +66,7 @@ export class FootnoteDefTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setFootnoteDefMargin(options: MarkdownMarginOptions | number): void {
+  setFootnoteDefMargin(options: MarkdownMarginOptions | number): FootnoteDefTheme {
     if (typeof options === "number") {
       this.footnoteDefMarginTop = options
       this.footnoteDefMarginRight = options
@@ -85,6 +86,7 @@ export class FootnoteDefTheme {
         this.footnoteDefMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -94,7 +96,7 @@ export class FootnoteDefTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setFootnoteDefPadding(options: MarkdownPaddingOptions | number): void {
+  setFootnoteDefPadding(options: MarkdownPaddingOptions | number): FootnoteDefTheme {
     if (typeof options === "number") {
       this.footnoteDefPaddingTop = options
       this.footnoteDefPaddingRight = options
@@ -114,6 +116,7 @@ export class FootnoteDefTheme {
         this.footnoteDefPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**

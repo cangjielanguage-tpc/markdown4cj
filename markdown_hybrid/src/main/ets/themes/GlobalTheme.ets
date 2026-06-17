@@ -64,8 +64,9 @@ export class GlobalTheme {
    *
    * @param context 上下文
    */
-  setStageContext(context: Context): void {
+  setStageContext(context: Context): GlobalTheme {
     this.stageContext = context
+    return this
   }
 
   /**
@@ -73,8 +74,9 @@ export class GlobalTheme {
    *
    * @param isSync 是否同步解析
    */
-  setIsMarkdownParserSync(isSync: boolean): void {
+  setIsMarkdownParserSync(isSync: boolean): GlobalTheme {
     this.isMarkdownParserSync = isSync
+    return this
   }
 
   /**
@@ -82,8 +84,9 @@ export class GlobalTheme {
    *
    * @param onCopy 是否打开
    */
-  setIsOnCopy(onCopy: boolean): void {
+  setIsOnCopy(onCopy: boolean): GlobalTheme {
     this.isOnCopy = onCopy
+    return this
   }
 
   /**
@@ -93,7 +96,7 @@ export class GlobalTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setGlobalMargin(options: MarkdownMarginOptions | number): void {
+  setGlobalMargin(options: MarkdownMarginOptions | number): GlobalTheme {
     if (typeof options === "number") {
       this.blockMarginTop = options
       this.blockMarginRight = options
@@ -113,6 +116,7 @@ export class GlobalTheme {
         this.blockMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -120,8 +124,9 @@ export class GlobalTheme {
    *
    * @param spacing 模块间上下间距
    */
-  setBlockSpacing(spacing: number): void {
+  setBlockSpacing(spacing: number): GlobalTheme {
     this.markdownBlockSpacing = spacing
+    return this
   }
 
   /**
@@ -129,8 +134,9 @@ export class GlobalTheme {
    *
    * @param isLineBreak 是否换行
    */
-  setIsLineBreak(isLineBreak: boolean): void {
+  setIsLineBreak(isLineBreak: boolean): GlobalTheme {
     this.isLineBreak = isLineBreak
+    return this
   }
 
   /**
@@ -138,8 +144,9 @@ export class GlobalTheme {
    *
    * @param openGestureSwipe 是否允许滑动
    */
-  setOpenGestureSwipe(openGestureSwipe: boolean): void {
+  setOpenGestureSwipe(openGestureSwipe: boolean): GlobalTheme {
     this.openGestureSwipe = openGestureSwipe
+    return this
   }
 
   /**
@@ -147,8 +154,9 @@ export class GlobalTheme {
    *
    * @param color 背景颜色
    */
-  setBackgroundColor(color: number): void {
+  setBackgroundColor(color: number): GlobalTheme {
     this.backgroundColor = color
+    return this
   }
 
   /**

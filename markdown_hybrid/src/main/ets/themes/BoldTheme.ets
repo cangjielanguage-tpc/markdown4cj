@@ -42,8 +42,9 @@ export class BoldTheme {
    *
    * @param color 加粗文本颜色
    */
-  setBoldTextFontColor(color: number): void {
+  setBoldTextFontColor(color: number): BoldTheme {
     this.boldTextFontColor = color
+    return this
   }
 
   /**
@@ -51,8 +52,9 @@ export class BoldTheme {
    *
    * @param size 加粗文本尺寸
    */
-  setBoldTextFontSize(size: number): void {
+  setBoldTextFontSize(size: number): BoldTheme {
     this.boldTextFontSize = size
+    return this
   }
 
   /**
@@ -60,8 +62,9 @@ export class BoldTheme {
    *
    * @param style 加粗文本字体样式
    */
-  setBoldTextFontStyle(style: FontStyle): void {
+  setBoldTextFontStyle(style: FontStyle): BoldTheme {
     this.boldTextFontStyle = style
+    return this
   }
 
   /**
@@ -69,8 +72,9 @@ export class BoldTheme {
    *
    * @param weight 加粗文本字体粗细
    */
-  setBoldTextFontWeight(weight: FontWeight): void {
+  setBoldTextFontWeight(weight: FontWeight): BoldTheme {
     this.boldTextFontWeight = weight
+    return this
   }
 
   /**
@@ -78,8 +82,9 @@ export class BoldTheme {
    *
    * @param family 加粗文本字体
    */
-  setBoldTextFontFamily(family: string): void {
+  setBoldTextFontFamily(family: string): BoldTheme {
     this.boldTextFontFamily = family
+    return this
   }
 
   /**
@@ -87,8 +92,9 @@ export class BoldTheme {
    *
    * @param lineHeight 加粗文本行高
    */
-  setBoldTextLineHeight(lineHeight: number): void {
+  setBoldTextLineHeight(lineHeight: number): BoldTheme {
     this.boldTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -96,8 +102,9 @@ export class BoldTheme {
    *
    * @param spacing 加粗文本字符间距
    */
-  setBoldTextLetterSpacing(spacing: number): void {
+  setBoldTextLetterSpacing(spacing: number): BoldTheme {
     this.boldTextLetterSpacing = spacing
+    return this
   }
 
   /**

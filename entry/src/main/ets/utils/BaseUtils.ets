@@ -84,7 +84,7 @@ export function numberToColorString(color: number | undefined): string {
     case 0xFF333333:
       return "深灰"
     case 0xFF808080:
-      return "中灰"
+      return "灰"
     case 0xFFCCCCCC:
       return "浅灰"
     case 0xFF4CAF50:
@@ -287,6 +287,22 @@ export function barStateToString(state: BarState): string {
       return "Auto"
     default:
       return "Off"
+  }
+}
+
+/**
+ * 分割线端点样式转文本
+ */
+export function lineCapStyleToString(state: LineCapStyle): string {
+  switch (state) {
+    case LineCapStyle.Butt:
+      return "平行线"
+    case LineCapStyle.Round:
+      return "半圆"
+    case LineCapStyle.Square:
+      return "延伸半圆"
+    default:
+      return "平行线"
   }
 }
 

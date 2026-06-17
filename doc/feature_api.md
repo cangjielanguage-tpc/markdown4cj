@@ -2430,7 +2430,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead StrikethroughTheme#setStrikethroughTextDecorationStyle
    */
-  setStrikethroughStyle(strikethroughStyle: MarkdownTextDecorationStyle): void
+  setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): void
 
   /**
    * 设置定义列表术语和定义行之间间距
@@ -2529,7 +2529,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HtmlUnderlineTheme#setHtmlUnderlineTextDecorationStyle
    */
-  setUnderlineStyle(underlineStyle: MarkdownTextDecorationStyle): void
+  setUnderlineStyle(underlineStyle: TextDecorationStyle): void
 
   /**
    * 设置markdown是否支持滚动手势
@@ -2585,20 +2585,6 @@ export enum ImageFitType {
     Cover,
     // 不保持宽高比进行放大缩小，使得图片充满显示边界。
     Fill
-}
-```
-
-### enum MarkdownTextDecorationStyle
-```ets
-/**
- * 文本装饰线样式
- */
-export enum MarkdownTextDecorationStyle {
-    SOLID = 0, // 实线
-    DOUBLE = 1, // 双横线
-    DOTTED = 2, // 点线
-    DASHED = 3, // 虚线
-    WAVY = 4 // 波浪线
 }
 ```
 
@@ -2821,7 +2807,7 @@ export class StrikethroughTheme {
    *
    * @param style 删除线文本装饰线样式
    */
-  setStrikethroughTextDecorationStyle(style: MarkdownTextDecorationStyle): void
+  setStrikethroughTextDecorationStyle(style: TextDecorationStyle): void
 }
 ```
 
@@ -2985,7 +2971,7 @@ export class HtmlUnderlineTheme {
    *
    * @param style HTML下划线文本装饰线样式
    */
-  setHtmlUnderlineTextDecorationStyle(style: MarkdownTextDecorationStyle): void
+  setHtmlUnderlineTextDecorationStyle(style: TextDecorationStyle): void
 }
 ```
 
@@ -3788,7 +3774,7 @@ export class FootnoteRefTheme {
    *
    * @param style 脚注引用文本装饰线样式
    */
-  setFootnoteRefTextDecorationStyle(style: MarkdownTextDecorationStyle): void
+  setFootnoteRefTextDecorationStyle(style: TextDecorationStyle): void
 
   /**
    * 设置脚注引用文本背景颜色

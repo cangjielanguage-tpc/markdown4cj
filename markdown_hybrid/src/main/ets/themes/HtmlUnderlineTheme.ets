@@ -1,5 +1,3 @@
-import { MarkdownTextDecorationStyle } from "./MarkdownTheme"
-
 /**
  * Markdown用户可设置的样式-HTML下划线文本样式
  */
@@ -47,15 +45,16 @@ export class HtmlUnderlineTheme {
   /**
    * HTML下划线文本装饰线样式
    */
-  private htmlUnderlineTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
+  private htmlUnderlineTextDecorationStyle?: TextDecorationStyle = undefined
 
   /**
    * 设置HTML下划线文本颜色
    *
    * @param color HTML下划线文本颜色
    */
-  setHtmlUnderlineTextFontColor(color: number): void {
+  setHtmlUnderlineTextFontColor(color: number): HtmlUnderlineTheme {
     this.htmlUnderlineTextFontColor = color
+    return this
   }
 
   /**
@@ -63,8 +62,9 @@ export class HtmlUnderlineTheme {
    *
    * @param size HTML下划线文本尺寸
    */
-  setHtmlUnderlineTextFontSize(size: number): void {
+  setHtmlUnderlineTextFontSize(size: number): HtmlUnderlineTheme {
     this.htmlUnderlineTextFontSize = size
+    return this
   }
 
   /**
@@ -72,8 +72,9 @@ export class HtmlUnderlineTheme {
    *
    * @param style HTML下划线文本字体样式
    */
-  setHtmlUnderlineTextFontStyle(style: FontStyle): void {
+  setHtmlUnderlineTextFontStyle(style: FontStyle): HtmlUnderlineTheme {
     this.htmlUnderlineTextFontStyle = style
+    return this
   }
 
   /**
@@ -81,8 +82,9 @@ export class HtmlUnderlineTheme {
    *
    * @param weight HTML下划线文本字体粗细
    */
-  setHtmlUnderlineTextFontWeight(weight: FontWeight): void {
+  setHtmlUnderlineTextFontWeight(weight: FontWeight): HtmlUnderlineTheme {
     this.htmlUnderlineTextFontWeight = weight
+    return this
   }
 
   /**
@@ -90,8 +92,9 @@ export class HtmlUnderlineTheme {
    *
    * @param family HTML下划线文本字体
    */
-  setHtmlUnderlineTextFontFamily(family: string): void {
+  setHtmlUnderlineTextFontFamily(family: string): HtmlUnderlineTheme {
     this.htmlUnderlineTextFontFamily = family
+    return this
   }
 
   /**
@@ -99,8 +102,9 @@ export class HtmlUnderlineTheme {
    *
    * @param lineHeight HTML下划线文本行高
    */
-  setHtmlUnderlineTextLineHeight(lineHeight: number): void {
+  setHtmlUnderlineTextLineHeight(lineHeight: number): HtmlUnderlineTheme {
     this.htmlUnderlineTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -108,8 +112,9 @@ export class HtmlUnderlineTheme {
    *
    * @param spacing HTML下划线文本字符间距
    */
-  setHtmlUnderlineTextLetterSpacing(spacing: number): void {
+  setHtmlUnderlineTextLetterSpacing(spacing: number): HtmlUnderlineTheme {
     this.htmlUnderlineTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -117,8 +122,9 @@ export class HtmlUnderlineTheme {
    *
    * @param color HTML下划线文本装饰线颜色
    */
-  setHtmlUnderlineTextDecorationColor(color: number): void {
+  setHtmlUnderlineTextDecorationColor(color: number): HtmlUnderlineTheme {
     this.htmlUnderlineTextDecorationColor = color
+    return this
   }
 
   /**
@@ -126,8 +132,9 @@ export class HtmlUnderlineTheme {
    *
    * @param style HTML下划线文本装饰线样式
    */
-  setHtmlUnderlineTextDecorationStyle(style: MarkdownTextDecorationStyle): void {
+  setHtmlUnderlineTextDecorationStyle(style: TextDecorationStyle): HtmlUnderlineTheme {
     this.htmlUnderlineTextDecorationStyle = style
+    return this
   }
 
   /**
@@ -207,7 +214,7 @@ export class HtmlUnderlineTheme {
    *
    * @returns htmlUnderlineTextDecorationStyle
    */
-  getHtmlUnderlineTextDecorationStyle(): MarkdownTextDecorationStyle | undefined {
+  getHtmlUnderlineTextDecorationStyle(): TextDecorationStyle | undefined {
     return this.htmlUnderlineTextDecorationStyle
   }
 }

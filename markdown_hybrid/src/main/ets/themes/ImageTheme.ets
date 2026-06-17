@@ -216,7 +216,7 @@ export class ImageTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setImageMargin(options: MarkdownMarginOptions | number): void {
+  setImageMargin(options: MarkdownMarginOptions | number): ImageTheme {
     if (typeof options === "number") {
       this.imageMarginTop = options
       this.imageMarginRight = options
@@ -236,6 +236,7 @@ export class ImageTheme {
         this.imageMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -245,7 +246,7 @@ export class ImageTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setImageBorderRadius(options: MarkdownRadiusOptions | number): void {
+  setImageBorderRadius(options: MarkdownRadiusOptions | number): ImageTheme {
     if (typeof options === "number") {
       this.imageRadiusTopLeft = options
       this.imageRadiusTopRight = options
@@ -265,6 +266,7 @@ export class ImageTheme {
         this.imageRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -272,8 +274,9 @@ export class ImageTheme {
    *
    * @param borderStyle 图片边框样式
    */
-  setImageBorderStyle(borderStyle: BorderStyle): void {
+  setImageBorderStyle(borderStyle: BorderStyle): ImageTheme {
     this.imageBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -281,8 +284,9 @@ export class ImageTheme {
    *
    * @param borderWidth 图片边框宽度
    */
-  setImageBorderWidth(borderWidth: number): void {
+  setImageBorderWidth(borderWidth: number): ImageTheme {
     this.imageBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -290,8 +294,9 @@ export class ImageTheme {
    *
    * @param borderColor 图片边框颜色
    */
-  setImageBorderColor(borderColor: number): void {
+  setImageBorderColor(borderColor: number): ImageTheme {
     this.imageBorderColor = borderColor
+    return this
   }
 
   /**
@@ -299,8 +304,9 @@ export class ImageTheme {
    *
    * @param placeholder 图片默认占位图
    */
-  setImagePlaceholder(placeholder: Resource): void {
+  setImagePlaceholder(placeholder: Resource): ImageTheme {
     this.imagePlaceholder = placeholder
+    return this
   }
 
   /**
@@ -308,8 +314,9 @@ export class ImageTheme {
    *
    * @param imageAutoResize 网络图片是否压缩
    */
-  setImageAutoResize(imageAutoResize: boolean): void {
+  setImageAutoResize(imageAutoResize: boolean): ImageTheme {
     this.imageAutoResize = imageAutoResize
+    return this
   }
 
   /**
@@ -317,8 +324,9 @@ export class ImageTheme {
    *
    * @param mixedLayout 是否图文混排
    */
-  setIsImageMixedLayout(mixedLayout: boolean): void {
+  setIsImageMixedLayout(mixedLayout: boolean): ImageTheme {
     this.isImageMixedLayout = mixedLayout
+    return this
   }
 
   /**
@@ -326,8 +334,9 @@ export class ImageTheme {
    *
    * @param maximumWidth 图片基于自身宽度缩放百分比
    */
-  setImageMaximumWidth(maximumWidth: number): void {
+  setImageMaximumWidth(maximumWidth: number): ImageTheme {
     this.imageMaximumWidth = maximumWidth
+    return this
   }
 
   /**
@@ -335,8 +344,9 @@ export class ImageTheme {
    *
    * @param fixedRatioWidth 图片基于父布局宽度缩放百分比
    */
-  setImageFixedRatioWidth(fixedRatioWidth: number): void {
+  setImageFixedRatioWidth(fixedRatioWidth: number): ImageTheme {
     this.imageFixedRatioWidth = fixedRatioWidth
+    return this
   }
 
   /**
@@ -344,8 +354,9 @@ export class ImageTheme {
    *
    * @param maxHeight 图片最大高度
    */
-  setImageMaxHeight(maxHeight: number): void {
+  setImageMaxHeight(maxHeight: number): ImageTheme {
     this.imageMaxHeight = maxHeight
+    return this
   }
 
   /**
@@ -353,8 +364,9 @@ export class ImageTheme {
    *
    * @param height 图片高度
    */
-  setImageHeight(height: number): void {
+  setImageHeight(height: number): ImageTheme {
     this.imageHeight = height
+    return this
   }
 
   /**
@@ -362,8 +374,9 @@ export class ImageTheme {
    *
    * @param maxWidth 图片最大宽度
    */
-  setImageMaxWidth(maxWidth: number): void {
+  setImageMaxWidth(maxWidth: number): ImageTheme {
     this.imageMaxWidth = maxWidth
+    return this
   }
 
   /**
@@ -371,8 +384,9 @@ export class ImageTheme {
    *
    * @param width 图片宽度
    */
-  setImageWidth(width: number): void {
+  setImageWidth(width: number): ImageTheme {
     this.imageWidth = width
+    return this
   }
 
   /**
@@ -380,8 +394,9 @@ export class ImageTheme {
    *
    * @param fitType 图片缩放类型
    */
-  setImageFitType(fitType: ImageFitType): void {
+  setImageFitType(fitType: ImageFitType): ImageTheme {
     this.imageFitType = fitType
+    return this
   }
 
   /**
@@ -389,8 +404,9 @@ export class ImageTheme {
    *
    * @param marginTop 底部布局距离图片上边距
    */
-  setImageBottomLayoutMarginTop(marginTop: number): void {
+  setImageBottomLayoutMarginTop(marginTop: number): ImageTheme {
     this.imageBottomLayoutMarginTop = marginTop
+    return this
   }
 
   /**
@@ -398,8 +414,9 @@ export class ImageTheme {
    *
    * @param visible 图片下载按钮是否显示
    */
-  setImageDownloadButtonVisible(visible: boolean): void {
+  setImageDownloadButtonVisible(visible: boolean): ImageTheme {
     this.imageDownloadButtonVisible = visible
+    return this
   }
 
   /**
@@ -407,8 +424,9 @@ export class ImageTheme {
    *
    * @param width 图片下载按钮宽度
    */
-  setImageDownloadButtonWidth(width: number): void {
+  setImageDownloadButtonWidth(width: number): ImageTheme {
     this.imageDownloadButtonWidth = width
+    return this
   }
 
   /**
@@ -416,8 +434,9 @@ export class ImageTheme {
    *
    * @param height 图片下载按钮高度
    */
-  setImageDownloadButtonHeight(height: number): void {
+  setImageDownloadButtonHeight(height: number): ImageTheme {
     this.imageDownloadButtonHeight = height
+    return this
   }
 
   /**
@@ -427,7 +446,7 @@ export class ImageTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setImageDownloadButtonRadius(options: MarkdownRadiusOptions | number): void {
+  setImageDownloadButtonRadius(options: MarkdownRadiusOptions | number): ImageTheme {
     if (typeof options === 'number') {
       this.imageDownloadButtonRadiusTopLeft = options
       this.imageDownloadButtonRadiusTopRight = options
@@ -447,6 +466,7 @@ export class ImageTheme {
         this.imageDownloadButtonRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -454,8 +474,9 @@ export class ImageTheme {
    *
    * @param icon 图片下载按钮图标
    */
-  setImageDownloadButtonIcon(icon: Resource): void {
+  setImageDownloadButtonIcon(icon: Resource): ImageTheme {
     this.imageDownloadButtonIcon = icon
+    return this
   }
 
   /**
@@ -463,8 +484,9 @@ export class ImageTheme {
    *
    * @param width 图片下载按钮图标宽度
    */
-  setImageDownloadButtonIconWidth(width: number): void {
+  setImageDownloadButtonIconWidth(width: number): ImageTheme {
     this.imageDownloadButtonIconWidth = width
+    return this
   }
 
   /**
@@ -472,8 +494,9 @@ export class ImageTheme {
    *
    * @param height 图片下载按钮图标高度
    */
-  setImageDownloadButtonIconHeight(height: number): void {
+  setImageDownloadButtonIconHeight(height: number): ImageTheme {
     this.imageDownloadButtonIconHeight = height
+    return this
   }
 
   /**
@@ -481,8 +504,9 @@ export class ImageTheme {
    *
    * @param gap 图片下载按钮图标和文本间距
    */
-  setImageDownloadButtonIconTextGap(gap: number): void {
+  setImageDownloadButtonIconTextGap(gap: number): ImageTheme {
     this.imageDownloadButtonIconTextGap = gap
+    return this
   }
 
   /**
@@ -490,8 +514,9 @@ export class ImageTheme {
    *
    * @param color 图片下载按钮背景颜色
    */
-  setImageDownloadButtonBackgroundColor(color: number): void {
+  setImageDownloadButtonBackgroundColor(color: number): ImageTheme {
     this.imageDownloadButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -499,8 +524,9 @@ export class ImageTheme {
    *
    * @param text 图片下载按钮默认文本内容
    */
-  setImageDownloadButtonText(text: string): void {
+  setImageDownloadButtonText(text: string): ImageTheme {
     this.imageDownloadButtonText = text
+    return this
   }
 
   /**
@@ -508,8 +534,9 @@ export class ImageTheme {
    *
    * @param color 图片下载按钮文本颜色
    */
-  setImageDownloadButtonTextFontColor(color: number): void {
+  setImageDownloadButtonTextFontColor(color: number): ImageTheme {
     this.imageDownloadButtonTextFontColor = color
+    return this
   }
 
   /**
@@ -517,8 +544,9 @@ export class ImageTheme {
    *
    * @param size 图片下载按钮文本尺寸
    */
-  setImageDownloadButtonTextFontSize(size: number): void {
+  setImageDownloadButtonTextFontSize(size: number): ImageTheme {
     this.imageDownloadButtonTextFontSize = size
+    return this
   }
 
   /**
@@ -526,8 +554,9 @@ export class ImageTheme {
    *
    * @param style 图片下载按钮文本字体样式
    */
-  setImageDownloadButtonTextFontStyle(style: FontStyle): void {
+  setImageDownloadButtonTextFontStyle(style: FontStyle): ImageTheme {
     this.imageDownloadButtonTextFontStyle = style
+    return this
   }
 
   /**
@@ -535,8 +564,9 @@ export class ImageTheme {
    *
    * @param weight 图片下载按钮文本字体粗细
    */
-  setImageDownloadButtonTextFontWeight(weight: FontWeight): void {
+  setImageDownloadButtonTextFontWeight(weight: FontWeight): ImageTheme {
     this.imageDownloadButtonTextFontWeight = weight
+    return this
   }
 
   /**
@@ -544,8 +574,9 @@ export class ImageTheme {
    *
    * @param family 图片下载按钮文本字体
    */
-  setImageDownloadButtonTextFontFamily(family: string): void {
+  setImageDownloadButtonTextFontFamily(family: string): ImageTheme {
     this.imageDownloadButtonTextFontFamily = family
+    return this
   }
 
   /**
@@ -553,8 +584,9 @@ export class ImageTheme {
    *
    * @param lineHeight 图片下载按钮文本行高
    */
-  setImageDownloadButtonTextLineHeight(lineHeight: number): void {
+  setImageDownloadButtonTextLineHeight(lineHeight: number): ImageTheme {
     this.imageDownloadButtonTextLineHeight = lineHeight
+    return this
   }
 
   /**

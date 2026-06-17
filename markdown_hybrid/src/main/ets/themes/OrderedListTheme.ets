@@ -99,8 +99,9 @@ export class OrderedListTheme {
    *
    * @param color 有序列表背景颜色
    */
-  setOrderedListBackgroundColor(color: number): void {
+  setOrderedListBackgroundColor(color: number): OrderedListTheme {
     this.orderedListBackgroundColor = color
+    return this
   }
 
   /**
@@ -110,7 +111,7 @@ export class OrderedListTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setOrderedListMargin(options: MarkdownMarginOptions | number): void {
+  setOrderedListMargin(options: MarkdownMarginOptions | number): OrderedListTheme {
     if (typeof options === "number") {
       this.orderedListMarginTop = options
       this.orderedListMarginRight = options
@@ -130,6 +131,7 @@ export class OrderedListTheme {
         this.orderedListMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -139,7 +141,7 @@ export class OrderedListTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setOrderedListPadding(options: MarkdownPaddingOptions | number): void {
+  setOrderedListPadding(options: MarkdownPaddingOptions | number): OrderedListTheme {
     if (typeof options === "number") {
       this.orderedListPaddingTop = options
       this.orderedListPaddingRight = options
@@ -159,6 +161,7 @@ export class OrderedListTheme {
         this.orderedListPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -166,8 +169,9 @@ export class OrderedListTheme {
    *
    * @param spacing 上下间距
    */
-  setOrderedListChildSpacing(spacing: number): void {
+  setOrderedListChildSpacing(spacing: number): OrderedListTheme {
     this.orderedListChildSpacing = spacing
+    return this
   }
 
   /**
@@ -175,8 +179,9 @@ export class OrderedListTheme {
    *
    * @param spacing 上下间距
    */
-  setOrderedListChildChildSpacing(spacing: number): void {
+  setOrderedListChildChildSpacing(spacing: number): OrderedListTheme {
     this.orderedListChildChildSpacing = spacing
+    return this
   }
 
   /**
@@ -184,8 +189,9 @@ export class OrderedListTheme {
    *
    * @param spacing 间距
    */
-  setOrderedListMarkerSpacing(spacing: number): void {
+  setOrderedListMarkerSpacing(spacing: number): OrderedListTheme {
     this.orderedListMarkerSpacing = spacing
+    return this
   }
 
   /**
@@ -193,8 +199,9 @@ export class OrderedListTheme {
    *
    * @param color 列表编号文本颜色
    */
-  setOrderedListMarkerTextFontColor(color: number): void {
+  setOrderedListMarkerTextFontColor(color: number): OrderedListTheme {
     this.orderedListMarkerTextFontColor = color
+    return this
   }
 
   /**
@@ -202,8 +209,9 @@ export class OrderedListTheme {
    *
    * @param size 列表编号文本尺寸
    */
-  setOrderedListMarkerTextFontSize(size: number): void {
+  setOrderedListMarkerTextFontSize(size: number): OrderedListTheme {
     this.orderedListMarkerTextFontSize = size
+    return this
   }
 
   /**
@@ -211,8 +219,9 @@ export class OrderedListTheme {
    *
    * @param style 列表编号文本字体样式
    */
-  setOrderedListMarkerTextFontStyle(style: FontStyle): void {
+  setOrderedListMarkerTextFontStyle(style: FontStyle): OrderedListTheme {
     this.orderedListMarkerTextFontStyle = style
+    return this
   }
 
   /**
@@ -220,8 +229,9 @@ export class OrderedListTheme {
    *
    * @param weight 列表编号文本字体粗细
    */
-  setOrderedListMarkerTextFontWeight(weight: FontWeight): void {
+  setOrderedListMarkerTextFontWeight(weight: FontWeight): OrderedListTheme {
     this.orderedListMarkerTextFontWeight = weight
+    return this
   }
 
   /**
@@ -229,8 +239,9 @@ export class OrderedListTheme {
    *
    * @param family 列表编号文本字体
    */
-  setOrderedListMarkerTextFontFamily(family: string): void {
+  setOrderedListMarkerTextFontFamily(family: string): OrderedListTheme {
     this.orderedListMarkerTextFontFamily = family
+    return this
   }
 
   /**
@@ -238,8 +249,9 @@ export class OrderedListTheme {
    *
    * @param lineHeight 列表编号文本行高
    */
-  setOrderedListMarkerTextLineHeight(lineHeight: number): void {
+  setOrderedListMarkerTextLineHeight(lineHeight: number): OrderedListTheme {
     this.orderedListMarkerTextLineHeight = lineHeight
+    return this
   }
 
   /**

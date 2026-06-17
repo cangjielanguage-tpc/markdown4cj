@@ -214,8 +214,9 @@ export class LinkTheme {
    *
    * @param isIcon 链接是否是图片显示
    */
-  setLinkIsIcon(isIcon: boolean): void {
+  setLinkIsIcon(isIcon: boolean): LinkTheme {
     this.linkIsIcon = isIcon
+    return this
   }
 
   /**
@@ -223,8 +224,9 @@ export class LinkTheme {
    *
    * @param isIcon 列表中的单行链接是否是图片显示
    */
-  setLinkListIsIcon(isIcon: boolean): void {
+  setLinkListIsIcon(isIcon: boolean): LinkTheme {
     this.linkListIsIcon = isIcon
+    return this
   }
 
   /**
@@ -232,8 +234,9 @@ export class LinkTheme {
    *
    * @param color 链接文本颜色
    */
-  setLinkTextFontColor(color: number): void {
+  setLinkTextFontColor(color: number): LinkTheme {
     this.linkTextFontColor = color
+    return this
   }
 
   /**
@@ -241,8 +244,9 @@ export class LinkTheme {
    *
    * @param size 链接文本尺寸
    */
-  setLinkTextFontSize(size: number | undefined): void {
+  setLinkTextFontSize(size: number | undefined): LinkTheme {
     this.linkTextFontSize = size
+    return this
   }
 
   /**
@@ -250,8 +254,9 @@ export class LinkTheme {
    *
    * @param style 链接文本字体样式
    */
-  setLinkTextFontStyle(style: FontStyle): void {
+  setLinkTextFontStyle(style: FontStyle): LinkTheme {
     this.linkTextFontStyle = style
+    return this
   }
 
   /**
@@ -259,8 +264,9 @@ export class LinkTheme {
    *
    * @param weight 链接文本字体粗细
    */
-  setLinkTextFontWeight(weight: FontWeight): void {
+  setLinkTextFontWeight(weight: FontWeight): LinkTheme {
     this.linkTextFontWeight = weight
+    return this
   }
 
   /**
@@ -268,8 +274,9 @@ export class LinkTheme {
    *
    * @param family 链接文本字体
    */
-  setLinkTextFontFamily(family: string): void {
+  setLinkTextFontFamily(family: string): LinkTheme {
     this.linkTextFontFamily = family
+    return this
   }
 
   /**
@@ -277,8 +284,9 @@ export class LinkTheme {
    *
    * @param lineHeight 链接文本行高
    */
-  setLinkTextLineHeight(lineHeight: number): void {
+  setLinkTextLineHeight(lineHeight: number): LinkTheme {
     this.linkTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -286,8 +294,9 @@ export class LinkTheme {
    *
    * @param spacing 链接文本字符间距
    */
-  setLinkTextLetterSpacing(spacing: number): void {
+  setLinkTextLetterSpacing(spacing: number): LinkTheme {
     this.linkTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -295,8 +304,9 @@ export class LinkTheme {
    *
    * @param decorationType 链接文本装饰线类型
    */
-  setLinkTextDecorationType(decorationType: TextDecorationType): void {
+  setLinkTextDecorationType(decorationType: TextDecorationType): LinkTheme {
     this.linkTextDecorationType = decorationType
+    return this
   }
 
   /**
@@ -304,8 +314,9 @@ export class LinkTheme {
    *
    * @param color 链接文本装饰线颜色
    */
-  setLinkTextDecorationColor(color: number): void {
+  setLinkTextDecorationColor(color: number): LinkTheme {
     this.linkTextDecorationColor = color
+    return this
   }
 
   /**
@@ -313,8 +324,9 @@ export class LinkTheme {
    *
    * @param style 链接文本装饰线样式
    */
-  setLinkTextDecorationStyle(style: TextDecorationStyle): void {
+  setLinkTextDecorationStyle(style: TextDecorationStyle): LinkTheme {
     this.linkTextDecorationStyle = style
+    return this
   }
 
   /**
@@ -322,8 +334,9 @@ export class LinkTheme {
    *
    * @param color 链接文本背景颜色
    */
-  setLinkTextBackgroundColor(color: number): void {
+  setLinkTextBackgroundColor(color: number): LinkTheme {
     this.linkTextBackgroundColor = color
+    return this
   }
 
   /**
@@ -333,7 +346,7 @@ export class LinkTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setLinkTextBackgroundRadius(options: MarkdownRadiusOptions | number): void {
+  setLinkTextBackgroundRadius(options: MarkdownRadiusOptions | number): LinkTheme {
     if (typeof options === 'number') {
       this.linkTextBackgroundRadiusTopLeft = options
       this.linkTextBackgroundRadiusTopRight = options
@@ -353,6 +366,7 @@ export class LinkTheme {
         this.linkTextBackgroundRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -360,8 +374,9 @@ export class LinkTheme {
    *
    * @param color 圆形图片格式链接主题背景颜色
    */
-  setLinkCircleIconBackgroundColor(color: number): void {
+  setLinkCircleIconBackgroundColor(color: number): LinkTheme {
     this.linkCircleIconBackgroundColor = color
+    return this
   }
 
   /**
@@ -369,8 +384,9 @@ export class LinkTheme {
    *
    * @param color 圆形图片格式链接控件背景颜色
    */
-  setLinkCircleIconButtonBackgroundColor(color: number): void {
+  setLinkCircleIconButtonBackgroundColor(color: number): LinkTheme {
     this.linkCircleIconButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -378,8 +394,9 @@ export class LinkTheme {
    *
    * @param size 圆形图片格式链接文字大小
    */
-  setLinkCircleIconTextSize(size: number): void {
+  setLinkCircleIconTextSize(size: number): LinkTheme {
     this.linkCircleIconTextSize = size
+    return this
   }
 
   /**
@@ -387,8 +404,9 @@ export class LinkTheme {
    *
    * @param color 圆形图片格式链接文字颜色
    */
-  setLinkCircleIconTextColor(color: number): void {
+  setLinkCircleIconTextColor(color: number): LinkTheme {
     this.linkCircleIconTextColor = color
+    return this
   }
 
   /**
@@ -396,8 +414,9 @@ export class LinkTheme {
    *
    * @param radius 圆形图片格式链接半径
    */
-  setLinkCircleIconRadius(radius: number): void {
+  setLinkCircleIconRadius(radius: number): LinkTheme {
     this.linkCircleIconRadius = radius
+    return this
   }
 
   /**
@@ -405,8 +424,9 @@ export class LinkTheme {
    *
    * @param margin 圆形图片格式链接左右外边距
    */
-  setLinkCircleIconMargin(margin: number): void {
+  setLinkCircleIconMargin(margin: number): LinkTheme {
     this.linkCircleIconMargin = margin
+    return this
   }
 
   /**
@@ -414,8 +434,9 @@ export class LinkTheme {
    *
    * @param color 圆角矩形图片格式链接主题背景颜色
    */
-  setLinkRectIconBackgroundColor(color: number): void {
+  setLinkRectIconBackgroundColor(color: number): LinkTheme {
     this.linkRectIconBackgroundColor = color
+    return this
   }
 
   /**
@@ -423,8 +444,9 @@ export class LinkTheme {
    *
    * @param color 圆角矩形图片格式链接控件背景颜色
    */
-  setLinkRectIconButtonBackgroundColor(color: number): void {
+  setLinkRectIconButtonBackgroundColor(color: number): LinkTheme {
     this.linkRectIconButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -432,8 +454,9 @@ export class LinkTheme {
    *
    * @param size 圆角矩形图片格式链接文字大小
    */
-  setLinkRectIconTextSize(size: number): void {
+  setLinkRectIconTextSize(size: number): LinkTheme {
     this.linkRectIconTextSize = size
+    return this
   }
 
   /**
@@ -441,8 +464,9 @@ export class LinkTheme {
    *
    * @param color 圆角矩形图片格式链接文字颜色
    */
-  setLinkRectIconTextColor(color: number): void {
+  setLinkRectIconTextColor(color: number): LinkTheme {
     this.linkRectIconTextColor = color
+    return this
   }
 
   /**
@@ -450,8 +474,9 @@ export class LinkTheme {
    *
    * @param height 圆角矩形图片格式链接控件高度
    */
-  setLinkRectIconHeight(height: number): void {
+  setLinkRectIconHeight(height: number): LinkTheme {
     this.linkRectIconHeight = height
+    return this
   }
 
   /**
@@ -459,8 +484,9 @@ export class LinkTheme {
    *
    * @param padding 圆角矩形图片格式链接左右内边距
    */
-  setLinkRectIconPadding(padding: number): void {
+  setLinkRectIconPadding(padding: number): LinkTheme {
     this.linkRectIconPadding = padding
+    return this
   }
 
   /**
@@ -468,8 +494,9 @@ export class LinkTheme {
    *
    * @param radius 圆角矩形图片格式链接圆角半径
    */
-  setLinkRectIconRadius(radius: number): void {
+  setLinkRectIconRadius(radius: number): LinkTheme {
     this.linkRectIconRadius = radius
+    return this
   }
 
   /**
@@ -477,8 +504,9 @@ export class LinkTheme {
    *
    * @param margin 圆角矩形图片格式链接左右外边距
    */
-  setLinkRectIconMargin(margin: number): void {
+  setLinkRectIconMargin(margin: number): LinkTheme {
     this.linkRectIconMargin = margin
+    return this
   }
 
   /**
@@ -486,8 +514,9 @@ export class LinkTheme {
    *
    * @param color 空心圆角矩形图片格式链接主题背景颜色
    */
-  setLinkRectToolIconBackgroundColor(color: number): void {
+  setLinkRectToolIconBackgroundColor(color: number): LinkTheme {
     this.linkRectToolIconBackgroundColor = color
+    return this
   }
 
   /**
@@ -495,8 +524,9 @@ export class LinkTheme {
    *
    * @param color 空心圆角矩形图片格式链接控件背景颜色
    */
-  setLinkRectToolIconButtonBackgroundColor(color: number): void {
+  setLinkRectToolIconButtonBackgroundColor(color: number): LinkTheme {
     this.linkRectToolIconButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -504,8 +534,9 @@ export class LinkTheme {
    *
    * @param size 空心圆角矩形图片格式链接文字大小
    */
-  setLinkRectToolIconTextSize(size: number): void {
+  setLinkRectToolIconTextSize(size: number): LinkTheme {
     this.linkRectToolIconTextSize = size
+    return this
   }
 
   /**
@@ -513,8 +544,9 @@ export class LinkTheme {
    *
    * @param height 空心圆角矩形图片格式链接控件高度
    */
-  setLinkRectToolIconHeight(height: number): void {
+  setLinkRectToolIconHeight(height: number): LinkTheme {
     this.linkRectToolIconHeight = height
+    return this
   }
 
   /**
@@ -522,8 +554,9 @@ export class LinkTheme {
    *
    * @param padding 空心圆角矩形图片格式链接左右内边距
    */
-  setLinkRectToolIconPadding(padding: number): void {
+  setLinkRectToolIconPadding(padding: number): LinkTheme {
     this.linkRectToolIconPadding = padding
+    return this
   }
 
   /**
@@ -531,8 +564,9 @@ export class LinkTheme {
    *
    * @param width 空心圆角矩形图片格式链接边框宽度
    */
-  setLinkRectToolIconBorderWidth(width: number): void {
+  setLinkRectToolIconBorderWidth(width: number): LinkTheme {
     this.linkRectToolIconBorderWidth = width
+    return this
   }
 
   /**
@@ -540,8 +574,9 @@ export class LinkTheme {
    *
    * @param width 空心圆角矩形图片格式链接分割线宽度
    */
-  setLinkRectToolIconDividingLineWidth(width: number): void {
+  setLinkRectToolIconDividingLineWidth(width: number): LinkTheme {
     this.linkRectToolIconDividingLineWidth = width
+    return this
   }
 
   /**
@@ -549,8 +584,9 @@ export class LinkTheme {
    *
    * @param margin 空心圆角矩形图片格式链接左右外边距
    */
-  setLinkRectToolIconMargin(margin: number): void {
+  setLinkRectToolIconMargin(margin: number): LinkTheme {
     this.linkRectToolIconMargin = margin
+    return this
   }
 
   /**
@@ -558,8 +594,9 @@ export class LinkTheme {
    *
    * @param padding 空心圆角矩形图片格式分割线和文本左边距
    */
-  setLinkRectToolIconLineLeftPadding(padding: number): void {
+  setLinkRectToolIconLineLeftPadding(padding: number): LinkTheme {
     this.linkRectToolIconLineLeftPadding = padding
+    return this
   }
 
   /**
@@ -567,8 +604,9 @@ export class LinkTheme {
    *
    * @param padding 空心圆角矩形图片格式分割线和文本右边距
    */
-  setLinkRectToolIconLineRightPadding(padding: number): void {
+  setLinkRectToolIconLineRightPadding(padding: number): LinkTheme {
     this.linkRectToolIconLineRightPadding = padding
+    return this
   }
 
   /**

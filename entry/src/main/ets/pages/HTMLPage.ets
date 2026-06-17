@@ -9,7 +9,6 @@ import {
   fontStyleListGeneraData,
   fontWeightListGeneraData,
   marginListGeneralData,
-  markdownTextDecorationStyleListGeneralData,
   textDecorationStyleListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
@@ -19,8 +18,6 @@ import {
   timeListGeneralData
 } from '../model/GeneralData'
 import { HTMLData } from '../model/HTMLData'
-import { styleToString } from '../utils/BaseUtils'
-import { MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -129,9 +126,9 @@ struct HTMLPage {
   @State // HTML下划线文本装饰线颜色
   htmlUnderlineTextDecorationColor: number | undefined = undefined
   // HTML下划线文本装饰线样式列表
-  htmlUnderlineTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = markdownTextDecorationStyleListGeneralData
+  htmlUnderlineTextDecorationStyleList: Array<TextDecorationStyle> = textDecorationStyleListGeneralData
   @State // HTML下划线文本装饰线样式
-  htmlUnderlineTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  htmlUnderlineTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   @State htmlData: HTMLData = new HTMLData() // 配置数据内容
 
   aboutToAppear(): void {

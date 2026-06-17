@@ -439,8 +439,9 @@ export class CodeBlockTheme {
    *
    * @param isDark 是否是深色 - true：深色；false：浅色。默认false
    */
-  setCodeBlockIsDark(isDark: boolean): void {
+  setCodeBlockIsDark(isDark: boolean): CodeBlockTheme {
     this.codeBlockIsDark = isDark
+    return this
   }
 
   /**
@@ -448,8 +449,9 @@ export class CodeBlockTheme {
    *
    * @param isCodeFormat 是否格式化围栏代码块内容
    */
-  setCodeBlockIsCodeFormat(isCodeFormat: boolean): void {
+  setCodeBlockIsCodeFormat(isCodeFormat: boolean): CodeBlockTheme {
     this.codeBlockIsCodeFormat = isCodeFormat
+    return this
   }
 
   /**
@@ -457,8 +459,9 @@ export class CodeBlockTheme {
    *
    * @param useTab 是否用制表符
    */
-  setCodeBlockUseTab(useTab: boolean): void {
+  setCodeBlockUseTab(useTab: boolean): CodeBlockTheme {
     this.codeBlockUseTab = useTab
+    return this
   }
 
   /**
@@ -466,8 +469,9 @@ export class CodeBlockTheme {
    *
    * @param indentWidth 空格缩进数量
    */
-  setCodeBlockIndentWidth(indentWidth: number): void {
+  setCodeBlockIndentWidth(indentWidth: number): CodeBlockTheme {
     this.codeBlockIndentWidth = indentWidth
+    return this
   }
 
   /**
@@ -475,8 +479,9 @@ export class CodeBlockTheme {
    *
    * @param parserSync 是否同步解析
    */
-  setCodeBlockParserSync(parserSync: boolean): void {
+  setCodeBlockParserSync(parserSync: boolean): CodeBlockTheme {
     this.codeBlockParserSync = parserSync
+    return this
   }
 
   /**
@@ -484,8 +489,9 @@ export class CodeBlockTheme {
    *
    * @param color 代码块背景颜色
    */
-  setCodeBlockBackgroundColor(color: number): void {
+  setCodeBlockBackgroundColor(color: number): CodeBlockTheme {
     this.codeBlockBackgroundColor = color
+    return this
   }
 
   /**
@@ -495,7 +501,7 @@ export class CodeBlockTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setCodeBlockMargin(options: MarkdownMarginOptions | number): void {
+  setCodeBlockMargin(options: MarkdownMarginOptions | number): CodeBlockTheme {
     if (typeof options === 'number') {
       this.codeBlockMarginTop = options
       this.codeBlockMarginRight = options
@@ -515,6 +521,7 @@ export class CodeBlockTheme {
         this.codeBlockMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -524,7 +531,7 @@ export class CodeBlockTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setCodeBlockPadding(options: MarkdownPaddingOptions | number): void {
+  setCodeBlockPadding(options: MarkdownPaddingOptions | number): CodeBlockTheme {
     if (typeof options === 'number') {
       this.codeBlockPaddingTop = options
       this.codeBlockPaddingRight = options
@@ -544,6 +551,7 @@ export class CodeBlockTheme {
         this.codeBlockPaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -551,8 +559,9 @@ export class CodeBlockTheme {
    *
    * @param borderStyle 代码块边框样式
    */
-  setCodeBlockBorderStyle(borderStyle: BorderStyle): void {
+  setCodeBlockBorderStyle(borderStyle: BorderStyle): CodeBlockTheme {
     this.codeBlockBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -560,8 +569,9 @@ export class CodeBlockTheme {
    *
    * @param borderWidth 代码块边框宽度
    */
-  setCodeBlockBorderWidth(borderWidth: number): void {
+  setCodeBlockBorderWidth(borderWidth: number): CodeBlockTheme {
     this.codeBlockBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -569,8 +579,9 @@ export class CodeBlockTheme {
    *
    * @param borderColor 代码块边框颜色
    */
-  setCodeBlockBorderColor(borderColor: number): void {
+  setCodeBlockBorderColor(borderColor: number): CodeBlockTheme {
     this.codeBlockBorderColor = borderColor
+    return this
   }
 
   /**
@@ -580,7 +591,7 @@ export class CodeBlockTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setCodeBlockRadius(options: MarkdownRadiusOptions | number): void {
+  setCodeBlockRadius(options: MarkdownRadiusOptions | number): CodeBlockTheme {
     if (typeof options === 'number') {
       this.codeBlockRadiusTopLeft = options
       this.codeBlockRadiusTopRight = options
@@ -600,6 +611,7 @@ export class CodeBlockTheme {
         this.codeBlockRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -607,8 +619,9 @@ export class CodeBlockTheme {
    *
    * @param marginBottom 代码块类型和代码块内容间距
    */
-  setCodeBlockTitleLayoutMarginBottom(marginBottom: number): void {
+  setCodeBlockTitleLayoutMarginBottom(marginBottom: number): CodeBlockTheme {
     this.codeBlockTitleLayoutMarginBottom = marginBottom
+    return this
   }
 
   /**
@@ -616,8 +629,9 @@ export class CodeBlockTheme {
    *
    * @param marginLeft 代码块类型左边距
    */
-  setCodeBlockTypeTextMarginLeft(marginLeft: number): void {
+  setCodeBlockTypeTextMarginLeft(marginLeft: number): CodeBlockTheme {
     this.codeBlockTypeTextMarginLeft = marginLeft
+    return this
   }
 
   /**
@@ -625,8 +639,9 @@ export class CodeBlockTheme {
    *
    * @param text 默认显示文本
    */
-  setCodeBlockTypeText(text: string): void {
+  setCodeBlockTypeText(text: string): CodeBlockTheme {
     this.codeBlockTypeText = text
+    return this
   }
 
   /**
@@ -634,8 +649,9 @@ export class CodeBlockTheme {
    *
    * @param color 代码块类型文本颜色
    */
-  setCodeBlockTypeTextFontColor(color: number): void {
+  setCodeBlockTypeTextFontColor(color: number): CodeBlockTheme {
     this.codeBlockTypeTextFontColor = color
+    return this
   }
 
   /**
@@ -643,8 +659,9 @@ export class CodeBlockTheme {
    *
    * @param size 代码块类型文本尺寸
    */
-  setCodeBlockTypeTextFontSize(size: number): void {
+  setCodeBlockTypeTextFontSize(size: number): CodeBlockTheme {
     this.codeBlockTypeTextFontSize = size
+    return this
   }
 
   /**
@@ -652,8 +669,9 @@ export class CodeBlockTheme {
    *
    * @param style 代码块类型文本字体样式
    */
-  setCodeBlockTypeTextFontStyle(style: FontStyle): void {
+  setCodeBlockTypeTextFontStyle(style: FontStyle): CodeBlockTheme {
     this.codeBlockTypeTextFontStyle = style
+    return this
   }
 
   /**
@@ -661,8 +679,9 @@ export class CodeBlockTheme {
    *
    * @param weight 代码块类型文本字体粗细
    */
-  setCodeBlockTypeTextFontWeight(weight: FontWeight): void {
+  setCodeBlockTypeTextFontWeight(weight: FontWeight): CodeBlockTheme {
     this.codeBlockTypeTextFontWeight = weight
+    return this
   }
 
   /**
@@ -670,8 +689,9 @@ export class CodeBlockTheme {
    *
    * @param family 代码块类型文本字体
    */
-  setCodeBlockTypeTextFontFamily(family: string): void {
+  setCodeBlockTypeTextFontFamily(family: string): CodeBlockTheme {
     this.codeBlockTypeTextFontFamily = family
+    return this
   }
 
   /**
@@ -679,8 +699,9 @@ export class CodeBlockTheme {
    *
    * @param height 代码块类型文本行高
    */
-  setCodeBlockTypeTextLineHeight(height: number): void {
+  setCodeBlockTypeTextLineHeight(height: number): CodeBlockTheme {
     this.codeBlockTypeTextLineHeight = height
+    return this
   }
 
   /**
@@ -688,8 +709,9 @@ export class CodeBlockTheme {
    *
    * @param spacing 代码块代码复制和代码全屏间距
    */
-  setCodeBlockCopyFullScreenSpacing(spacing: number): void {
+  setCodeBlockCopyFullScreenSpacing(spacing: number): CodeBlockTheme {
     this.codeBlockCopyFullScreenSpacing = spacing
+    return this
   }
 
   /**
@@ -697,8 +719,9 @@ export class CodeBlockTheme {
    *
    * @param isShow 是否显示
    */
-  setCodeBlockCopyButtonIsShow(isShow: boolean): void {
+  setCodeBlockCopyButtonIsShow(isShow: boolean): CodeBlockTheme {
     this.codeBlockCopyButtonIsShow = isShow
+    return this
   }
 
   /**
@@ -706,8 +729,9 @@ export class CodeBlockTheme {
    *
    * @param isShow 是否显示
    */
-  setCodeBlockCopyTextIsShow(isShow: boolean): void {
+  setCodeBlockCopyTextIsShow(isShow: boolean): CodeBlockTheme {
     this.codeBlockCopyTextIsShow = isShow
+    return this
   }
 
   /**
@@ -715,8 +739,9 @@ export class CodeBlockTheme {
    *
    * @param icon 默认图标
    */
-  setCodeBlockCopyIcon(icon: Resource): void {
+  setCodeBlockCopyIcon(icon: Resource): CodeBlockTheme {
     this.codeBlockCopyIcon = icon
+    return this
   }
 
   /**
@@ -724,8 +749,9 @@ export class CodeBlockTheme {
    *
    * @param width 图标宽度
    */
-  setCodeBlockCopyIconWidth(width: number): void {
+  setCodeBlockCopyIconWidth(width: number): CodeBlockTheme {
     this.codeBlockCopyIconWidth = width
+    return this
   }
 
   /**
@@ -733,8 +759,9 @@ export class CodeBlockTheme {
    *
    * @param height 图标高度
    */
-  setCodeBlockCopyIconHeight(height: number): void {
+  setCodeBlockCopyIconHeight(height: number): CodeBlockTheme {
     this.codeBlockCopyIconHeight = height
+    return this
   }
 
   /**
@@ -742,8 +769,9 @@ export class CodeBlockTheme {
    *
    * @param spacing 代码块代码复制图标和文本间距
    */
-  setCodeBlockCopyIconTextSpacing(spacing: number): void {
+  setCodeBlockCopyIconTextSpacing(spacing: number): CodeBlockTheme {
     this.codeBlockCopyIconTextSpacing = spacing
+    return this
   }
 
   /**
@@ -751,8 +779,9 @@ export class CodeBlockTheme {
    *
    * @param text 默认文本内容
    */
-  setCodeBlockCopyText(text: string): void {
+  setCodeBlockCopyText(text: string): CodeBlockTheme {
     this.codeBlockCopyText = text
+    return this
   }
 
   /**
@@ -760,8 +789,9 @@ export class CodeBlockTheme {
    *
    * @param color 代码块代码复制文本颜色
    */
-  setCodeBlockCopyTextFontColor(color: number): void {
+  setCodeBlockCopyTextFontColor(color: number): CodeBlockTheme {
     this.codeBlockCopyTextFontColor = color
+    return this
   }
 
   /**
@@ -769,8 +799,9 @@ export class CodeBlockTheme {
    *
    * @param size 代码块代码复制文本尺寸
    */
-  setCodeBlockCopyTextFontSize(size: number): void {
+  setCodeBlockCopyTextFontSize(size: number): CodeBlockTheme {
     this.codeBlockCopyTextFontSize = size
+    return this
   }
 
   /**
@@ -778,8 +809,9 @@ export class CodeBlockTheme {
    *
    * @param style 代码块代码复制文本字体样式
    */
-  setCodeBlockCopyTextFontStyle(style: FontStyle): void {
+  setCodeBlockCopyTextFontStyle(style: FontStyle): CodeBlockTheme {
     this.codeBlockCopyTextFontStyle = style
+    return this
   }
 
   /**
@@ -787,8 +819,9 @@ export class CodeBlockTheme {
    *
    * @param weight 代码块代码复制文本字体粗细
    */
-  setCodeBlockCopyTextFontWeight(weight: FontWeight): void {
+  setCodeBlockCopyTextFontWeight(weight: FontWeight): CodeBlockTheme {
     this.codeBlockCopyTextFontWeight = weight
+    return this
   }
 
   /**
@@ -796,8 +829,9 @@ export class CodeBlockTheme {
    *
    * @param family 代码块代码复制文本字体
    */
-  setCodeBlockCopyTextFontFamily(family: string): void {
+  setCodeBlockCopyTextFontFamily(family: string): CodeBlockTheme {
     this.codeBlockCopyTextFontFamily = family
+    return this
   }
 
   /**
@@ -805,8 +839,9 @@ export class CodeBlockTheme {
    *
    * @param height 代码块代码复制文本行高
    */
-  setCodeBlockCopyTextLineHeight(height: number): void {
+  setCodeBlockCopyTextLineHeight(height: number): CodeBlockTheme {
     this.codeBlockCopyTextLineHeight = height
+    return this
   }
 
   /**
@@ -814,8 +849,9 @@ export class CodeBlockTheme {
    *
    * @param isShow 是否显示
    */
-  setCodeBlockFullScreenButtonIsShow(isShow: boolean): void {
+  setCodeBlockFullScreenButtonIsShow(isShow: boolean): CodeBlockTheme {
     this.codeBlockFullScreenButtonIsShow = isShow
+    return this
   }
 
   /**
@@ -823,8 +859,9 @@ export class CodeBlockTheme {
    *
    * @param isShow 是否显示
    */
-  setCodeBlockFullScreenTextIsShow(isShow: boolean): void {
+  setCodeBlockFullScreenTextIsShow(isShow: boolean): CodeBlockTheme {
     this.codeBlockFullScreenTextIsShow = isShow
+    return this
   }
 
   /**
@@ -832,8 +869,9 @@ export class CodeBlockTheme {
    *
    * @param icon 默认图标
    */
-  setCodeBlockFullScreenIcon(icon: Resource): void {
+  setCodeBlockFullScreenIcon(icon: Resource): CodeBlockTheme {
     this.codeBlockFullScreenIcon = icon
+    return this
   }
 
   /**
@@ -841,8 +879,9 @@ export class CodeBlockTheme {
    *
    * @param width 图标宽度
    */
-  setCodeBlockFullScreenIconWidth(width: number): void {
+  setCodeBlockFullScreenIconWidth(width: number): CodeBlockTheme {
     this.codeBlockFullScreenIconWidth = width
+    return this
   }
 
   /**
@@ -850,8 +889,9 @@ export class CodeBlockTheme {
    *
    * @param height 图标高度
    */
-  setCodeBlockFullScreenIconHeight(height: number): void {
+  setCodeBlockFullScreenIconHeight(height: number): CodeBlockTheme {
     this.codeBlockFullScreenIconHeight = height
+    return this
   }
 
   /**
@@ -859,8 +899,9 @@ export class CodeBlockTheme {
    *
    * @param spacing 代码块代码全屏图标和文本间距
    */
-  setCodeBlockFullScreenIconTextSpacing(spacing: number): void {
+  setCodeBlockFullScreenIconTextSpacing(spacing: number): CodeBlockTheme {
     this.codeBlockFullScreenIconTextSpacing = spacing
+    return this
   }
 
   /**
@@ -868,8 +909,9 @@ export class CodeBlockTheme {
    *
    * @param text 默认文本内容
    */
-  setCodeBlockFullScreenText(text: string): void {
+  setCodeBlockFullScreenText(text: string): CodeBlockTheme {
     this.codeBlockFullScreenText = text
+    return this
   }
 
   /**
@@ -877,8 +919,9 @@ export class CodeBlockTheme {
    *
    * @param color 代码块代码全屏文本颜色
    */
-  setCodeBlockFullScreenTextFontColor(color: number): void {
+  setCodeBlockFullScreenTextFontColor(color: number): CodeBlockTheme {
     this.codeBlockFullScreenTextFontColor = color
+    return this
   }
 
   /**
@@ -886,8 +929,9 @@ export class CodeBlockTheme {
    *
    * @param size 代码块代码全屏文本尺寸
    */
-  setCodeBlockFullScreenTextFontSize(size: number): void {
+  setCodeBlockFullScreenTextFontSize(size: number): CodeBlockTheme {
     this.codeBlockFullScreenTextFontSize = size
+    return this
   }
 
   /**
@@ -895,8 +939,9 @@ export class CodeBlockTheme {
    *
    * @param style 代码块代码全屏文本字体样式
    */
-  setCodeBlockFullScreenTextFontStyle(style: FontStyle): void {
+  setCodeBlockFullScreenTextFontStyle(style: FontStyle): CodeBlockTheme {
     this.codeBlockFullScreenTextFontStyle = style
+    return this
   }
 
   /**
@@ -904,8 +949,9 @@ export class CodeBlockTheme {
    *
    * @param weight 代码块代码全屏文本字体粗细
    */
-  setCodeBlockFullScreenTextFontWeight(weight: FontWeight): void {
+  setCodeBlockFullScreenTextFontWeight(weight: FontWeight): CodeBlockTheme {
     this.codeBlockFullScreenTextFontWeight = weight
+    return this
   }
 
   /**
@@ -913,8 +959,9 @@ export class CodeBlockTheme {
    *
    * @param family 代码块代码全屏文本字体
    */
-  setCodeBlockFullScreenTextFontFamily(family: string): void {
+  setCodeBlockFullScreenTextFontFamily(family: string): CodeBlockTheme {
     this.codeBlockFullScreenTextFontFamily = family
+    return this
   }
 
   /**
@@ -922,8 +969,9 @@ export class CodeBlockTheme {
    *
    * @param height 代码块代码全屏文本行高
    */
-  setCodeBlockFullScreenTextLineHeight(height: number): void {
+  setCodeBlockFullScreenTextLineHeight(height: number): CodeBlockTheme {
     this.codeBlockFullScreenTextLineHeight = height
+    return this
   }
 
   /**
@@ -931,8 +979,9 @@ export class CodeBlockTheme {
    *
    * @param isShow 是否显示
    */
-  setCodeBlockLineNumberIsShow(isShow: boolean): void {
+  setCodeBlockLineNumberIsShow(isShow: boolean): CodeBlockTheme {
     this.codeBlockLineNumberIsShow = isShow
+    return this
   }
 
   /**
@@ -940,8 +989,9 @@ export class CodeBlockTheme {
    *
    * @param left 代码块代码行号左内边距
    */
-  setCodeBlockLineNumberTextPaddingLeft(left: number): void {
+  setCodeBlockLineNumberTextPaddingLeft(left: number): CodeBlockTheme {
     this.codeBlockLineNumberTextPaddingLeft = left
+    return this
   }
 
   /**
@@ -949,8 +999,9 @@ export class CodeBlockTheme {
    *
    * @param color 代码块代码行号文本颜色
    */
-  setCodeBlockLineNumberTextFontColor(color: number): void {
+  setCodeBlockLineNumberTextFontColor(color: number): CodeBlockTheme {
     this.codeBlockLineNumberTextFontColor = color
+    return this
   }
 
   /**
@@ -958,8 +1009,9 @@ export class CodeBlockTheme {
    *
    * @param size 代码块代码行号文本尺寸
    */
-  setCodeBlockLineNumberTextFontSize(size: number): void {
+  setCodeBlockLineNumberTextFontSize(size: number): CodeBlockTheme {
     this.codeBlockLineNumberTextFontSize = size
+    return this
   }
 
   /**
@@ -967,8 +1019,9 @@ export class CodeBlockTheme {
    *
    * @param style 代码块代码行号文本字体样式
    */
-  setCodeBlockLineNumberTextFontStyle(style: FontStyle): void {
+  setCodeBlockLineNumberTextFontStyle(style: FontStyle): CodeBlockTheme {
     this.codeBlockLineNumberTextFontStyle = style
+    return this
   }
 
   /**
@@ -976,8 +1029,9 @@ export class CodeBlockTheme {
    *
    * @param weight 代码块代码行号文本字体粗细
    */
-  setCodeBlockLineNumberTextFontWeight(weight: FontWeight): void {
+  setCodeBlockLineNumberTextFontWeight(weight: FontWeight): CodeBlockTheme {
     this.codeBlockLineNumberTextFontWeight = weight
+    return this
   }
 
   /**
@@ -985,8 +1039,9 @@ export class CodeBlockTheme {
    *
    * @param family 代码块代码行号文本字体
    */
-  setCodeBlockLineNumberTextFontFamily(family: string): void {
+  setCodeBlockLineNumberTextFontFamily(family: string): CodeBlockTheme {
     this.codeBlockLineNumberTextFontFamily = family
+    return this
   }
 
   /**
@@ -994,8 +1049,9 @@ export class CodeBlockTheme {
    *
    * @param height 代码块代码行号文本行高
    */
-  setCodeBlockLineNumberTextLineHeight(height: number): void {
+  setCodeBlockLineNumberTextLineHeight(height: number): CodeBlockTheme {
     this.codeBlockLineNumberTextLineHeight = height
+    return this
   }
 
   /**
@@ -1003,8 +1059,9 @@ export class CodeBlockTheme {
    *
    * @param color 分割线颜色
    */
-  setCodeBlockDividerColor(color: number): void {
+  setCodeBlockDividerColor(color: number): CodeBlockTheme {
     this.codeBlockDividerColor = color
+    return this
   }
 
   /**
@@ -1012,8 +1069,9 @@ export class CodeBlockTheme {
    *
    * @param strokeWidth 分割线宽度
    */
-  setCodeBlockDividerStrokeWidth(strokeWidth: number): void {
+  setCodeBlockDividerStrokeWidth(strokeWidth: number): CodeBlockTheme {
     this.codeBlockDividerStrokeWidth = strokeWidth
+    return this
   }
 
   /**
@@ -1021,8 +1079,9 @@ export class CodeBlockTheme {
    *
    * @param spacing 代码块代码行号和分割线间距
    */
-  setCodeBlockLineNumberDividerSpacing(spacing: number): void {
+  setCodeBlockLineNumberDividerSpacing(spacing: number): CodeBlockTheme {
     this.codeBlockLineNumberDividerSpacing = spacing
+    return this
   }
 
   /**
@@ -1030,8 +1089,9 @@ export class CodeBlockTheme {
    *
    * @param color 代码块文本颜色
    */
-  setCodeBlockTextFontColor(color: number): void {
+  setCodeBlockTextFontColor(color: number): CodeBlockTheme {
     this.codeBlockTextFontColor = color
+    return this
   }
 
   /**
@@ -1039,8 +1099,9 @@ export class CodeBlockTheme {
    *
    * @param marginRight 代码块代码文本右外边距
    */
-  setCodeBlockTextMarginRight(marginRight: number): void {
+  setCodeBlockTextMarginRight(marginRight: number): CodeBlockTheme {
     this.codeBlockTextMarginRight = marginRight
+    return this
   }
 
   /**
@@ -1048,8 +1109,9 @@ export class CodeBlockTheme {
    *
    * @param marginLeft 代码块代码文本左外边距
    */
-  setCodeBlockTextMarginLeft(marginLeft: number): void {
+  setCodeBlockTextMarginLeft(marginLeft: number): CodeBlockTheme {
     this.codeBlockTextMarginLeft = marginLeft
+    return this
   }
 
   /**
@@ -1057,8 +1119,9 @@ export class CodeBlockTheme {
    *
    * @param size 代码块文本尺寸
    */
-  setCodeBlockTextFontSize(size: number): void {
+  setCodeBlockTextFontSize(size: number): CodeBlockTheme {
     this.codeBlockTextFontSize = size
+    return this
   }
 
   /**
@@ -1066,8 +1129,9 @@ export class CodeBlockTheme {
    *
    * @param style 代码块文本字体样式
    */
-  setCodeBlockTextFontStyle(style: FontStyle): void {
+  setCodeBlockTextFontStyle(style: FontStyle): CodeBlockTheme {
     this.codeBlockTextFontStyle = style
+    return this
   }
 
   /**
@@ -1075,8 +1139,9 @@ export class CodeBlockTheme {
    *
    * @param weight 代码块文本字体粗细
    */
-  setCodeBlockTextFontWeight(weight: FontWeight): void {
+  setCodeBlockTextFontWeight(weight: FontWeight): CodeBlockTheme {
     this.codeBlockTextFontWeight = weight
+    return this
   }
 
   /**
@@ -1084,8 +1149,9 @@ export class CodeBlockTheme {
    *
    * @param family 代码块文本字体
    */
-  setCodeBlockTextFontFamily(family: string): void {
+  setCodeBlockTextFontFamily(family: string): CodeBlockTheme {
     this.codeBlockTextFontFamily = family
+    return this
   }
 
   /**
@@ -1093,8 +1159,9 @@ export class CodeBlockTheme {
    *
    * @param height 代码块文本行高
    */
-  setCodeBlockTextLineHeight(height: number): void {
+  setCodeBlockTextLineHeight(height: number): CodeBlockTheme {
     this.codeBlockTextLineHeight = height
+    return this
   }
 
   /**
@@ -1102,8 +1169,9 @@ export class CodeBlockTheme {
    *
    * @param spacing 代码块文本字符间距
    */
-  setCodeBlockTextLetterSpacing(spacing: number): void {
+  setCodeBlockTextLetterSpacing(spacing: number): CodeBlockTheme {
     this.codeBlockTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -1111,8 +1179,9 @@ export class CodeBlockTheme {
    *
    * @param size 字体大小
    */
-  setCodeBlockListTitleTextSize(size: number): void {
+  setCodeBlockListTitleTextSize(size: number): CodeBlockTheme {
     this.codeBlockListTitleTextSize = size
+    return this
   }
 
   /**
@@ -1120,8 +1189,9 @@ export class CodeBlockTheme {
    *
    * @param size 字体大小
    */
-  setCodeBlockListTitleSelectTextSize(size: number): void {
+  setCodeBlockListTitleSelectTextSize(size: number): CodeBlockTheme {
     this.codeBlockListTitleSelectTextSize = size
+    return this
   }
 
   /**
@@ -1129,8 +1199,9 @@ export class CodeBlockTheme {
    *
    * @param color 文本颜色
    */
-  setCodeBlockListTitleSelectTextColor(color: number): void {
+  setCodeBlockListTitleSelectTextColor(color: number): CodeBlockTheme {
     this.codeBlockListTitleSelectTextColor = color
+    return this
   }
 
   /**
@@ -1138,8 +1209,9 @@ export class CodeBlockTheme {
    *
    * @param color 文本颜色
    */
-  setCodeBlockListTitleUnselectTextColor(color: number): void {
+  setCodeBlockListTitleUnselectTextColor(color: number): CodeBlockTheme {
     this.codeBlockListTitleUnselectTextColor = color
+    return this
   }
 
   /**
@@ -1147,8 +1219,9 @@ export class CodeBlockTheme {
    *
    * @param color 背景颜色
    */
-  setCodeBlockListTitleSelectBackgroundColor(color: number): void {
+  setCodeBlockListTitleSelectBackgroundColor(color: number): CodeBlockTheme {
     this.codeBlockListTitleSelectBackgroundColor = color
+    return this
   }
 
   /**
@@ -1156,8 +1229,9 @@ export class CodeBlockTheme {
    *
    * @param color 背景颜色
    */
-  setCodeBlockListTitleUnselectBackgroundColor(color: number): void {
+  setCodeBlockListTitleUnselectBackgroundColor(color: number): CodeBlockTheme {
     this.codeBlockListTitleUnselectBackgroundColor = color
+    return this
   }
 
   /**
@@ -1165,8 +1239,9 @@ export class CodeBlockTheme {
    *
    * @param isSeparate 是否单独显示
    */
-  setCodeBlockIsSeparate(isSeparate: boolean): void {
+  setCodeBlockIsSeparate(isSeparate: boolean): CodeBlockTheme {
     this.codeBlockIsSeparate = isSeparate
+    return this
   }
 
   /**
@@ -1174,8 +1249,9 @@ export class CodeBlockTheme {
    *
    * @param width 行号宽度
    */
-  setCodeBlockSeparateWidth(width: number): void {
+  setCodeBlockSeparateWidth(width: number): CodeBlockTheme {
     this.codeBlockSeparateWidth = width
+    return this
   }
 
   /**
@@ -1183,8 +1259,9 @@ export class CodeBlockTheme {
    *
    * @param isBottom 是否居底
    */
-  setCodeBlockSeparateIsBottom(isBottom: boolean): void {
+  setCodeBlockSeparateIsBottom(isBottom: boolean): CodeBlockTheme {
     this.codeBlockSeparateIsBottom = isBottom
+    return this
   }
 
   /**

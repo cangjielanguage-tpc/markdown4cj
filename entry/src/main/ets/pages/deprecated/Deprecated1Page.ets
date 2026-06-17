@@ -11,7 +11,6 @@ import {
   timeListGeneralData
 } from '../../model/GeneralData'
 import { DeprecatedData } from '../../model/DeprecatedData'
-import { MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 // 链接配置
 @Entry
@@ -83,8 +82,8 @@ struct Deprecated1Page {
   underlineColorList: Array<number | undefined> = colorListGeneralData
   @State underlineColor: number = 0xFF191919 // 下划线颜色
   // 下划线样式列表
-  underlineStyleList: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.WAVY]
-  @State underlineStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID // 下划线样式
+  underlineStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DASHED, TextDecorationStyle.DOTTED, TextDecorationStyle.WAVY]
+  @State underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID // 下划线样式
 
   // ---------------- 链接配置
   // 链接是否是图片显示列表

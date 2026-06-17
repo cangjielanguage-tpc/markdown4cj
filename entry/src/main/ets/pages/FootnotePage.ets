@@ -10,7 +10,6 @@ import {
   fontStyleListGeneraData,
   fontWeightListGeneraData,
   marginListGeneralData,
-  markdownTextDecorationStyleListGeneralData,
   radiusListGeneraData,
   textDecorationStyleListGeneralData,
   textDecorationTypeListGeneralData,
@@ -22,7 +21,6 @@ import {
   timeListGeneralData
 } from '../model/GeneralData'
 import { FootnoteData } from '../model/FootnoteData'
-import { MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -172,9 +170,9 @@ struct FootnotePage {
   @State // 脚注引用文本装饰线颜色
   footnoteRefTextDecorationColor: number | undefined = undefined
   // 脚注引用文本装饰线样式列表
-  footnoteRefTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = markdownTextDecorationStyleListGeneralData
+  footnoteRefTextDecorationStyleList: Array<TextDecorationStyle> = textDecorationStyleListGeneralData
   @State // 脚注引用文本装饰线样式
-  footnoteRefTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  footnoteRefTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   // 脚注引用文本背景颜色列表
   footnoteRefTextBackgroundColorList: Array<number | undefined> = colorListGeneralData
   @State // 脚注引用文本背景颜色
@@ -401,7 +399,7 @@ struct FootnotePage {
           })
           BaseTabComponent({
             titleStr: "脚注引用文本装饰线类型 - ",
-            typeEnum: TypeEnum.IS_STRING,
+            typeEnum: TypeEnum.IS_DECORATION_TYPE,
             allListData: this.footnoteRefTextDecorationTypeList,
             allData: this.footnoteRefTextDecorationType
           })
@@ -413,7 +411,7 @@ struct FootnotePage {
           })
           BaseTabComponent({
             titleStr: "脚注引用文本装饰线样式 - ",
-            typeEnum: TypeEnum.IS_STRING,
+            typeEnum: TypeEnum.IS_DECORATION_STYLE,
             allListData: this.footnoteRefTextDecorationStyleList,
             allData: this.footnoteRefTextDecorationStyle
           })

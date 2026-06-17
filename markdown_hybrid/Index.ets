@@ -4,7 +4,6 @@ export { MarkdownConfiguration } from './src/main/ets/configs/MarkdownConfigurat
 export { MarkdownTheme,
   LatexMathColorFormat,
   ImageFitType,
-  MarkdownTextDecorationStyle,
   MarkdownMarginOptions,
   MarkdownMarginArrayOptions,
   MarkdownPaddingOptions,

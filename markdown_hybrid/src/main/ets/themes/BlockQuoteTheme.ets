@@ -89,8 +89,9 @@ export class BlockQuoteTheme {
    *
    * @param color 块引用背景颜色
    */
-  setBlockQuoteBackgroundColor(color: number): void {
+  setBlockQuoteBackgroundColor(color: number): BlockQuoteTheme {
     this.blockQuoteBackgroundColor = color
+    return this
   }
 
   /**
@@ -100,7 +101,7 @@ export class BlockQuoteTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setBlockQuoteMargin(options: MarkdownMarginOptions | number): void {
+  setBlockQuoteMargin(options: MarkdownMarginOptions | number): BlockQuoteTheme {
     if (typeof options === 'number') {
       this.blockQuoteMarginTop = options
       this.blockQuoteMarginRight = options
@@ -120,6 +121,7 @@ export class BlockQuoteTheme {
         this.blockQuoteMarginLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -129,7 +131,7 @@ export class BlockQuoteTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setBlockQuotePadding(options: MarkdownPaddingOptions | number): void {
+  setBlockQuotePadding(options: MarkdownPaddingOptions | number): BlockQuoteTheme {
     if (typeof options === 'number') {
       this.blockQuotePaddingTop = options
       this.blockQuotePaddingRight = options
@@ -149,6 +151,7 @@ export class BlockQuoteTheme {
         this.blockQuotePaddingLeft = options.left
       }
     }
+    return this
   }
 
   /**
@@ -158,7 +161,7 @@ export class BlockQuoteTheme {
    *                  入参 number 类型时四个设为相同值
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setBlockQuoteRadius(options: MarkdownRadiusOptions | number): void {
+  setBlockQuoteRadius(options: MarkdownRadiusOptions | number): BlockQuoteTheme {
     if (typeof options === 'number') {
       this.blockQuoteRadiusTopLeft = options
       this.blockQuoteRadiusTopRight = options
@@ -178,6 +181,7 @@ export class BlockQuoteTheme {
         this.blockQuoteRadiusBottomRight = options.bottomRight
       }
     }
+    return this
   }
 
   /**
@@ -185,8 +189,9 @@ export class BlockQuoteTheme {
    *
    * @param width 块引用左侧边框宽度
    */
-  setBlockQuoteLeftBorderWidth(width: number): void {
+  setBlockQuoteLeftBorderWidth(width: number): BlockQuoteTheme {
     this.blockQuoteLeftBorderWidth = width
+    return this
   }
 
   /**
@@ -194,8 +199,9 @@ export class BlockQuoteTheme {
    *
    * @param color 块引用左侧边框颜色
    */
-  setBlockQuoteLeftBorderColor(color: number): void {
+  setBlockQuoteLeftBorderColor(color: number): BlockQuoteTheme {
     this.blockQuoteLeftBorderColor = color
+    return this
   }
 
   /**
@@ -203,8 +209,9 @@ export class BlockQuoteTheme {
    *
    * @param spacing 块引用子模块上下间距
    */
-  setBlockQuoteChildSpacing(spacing: number): void {
+  setBlockQuoteChildSpacing(spacing: number): BlockQuoteTheme {
     this.blockQuoteChildSpacing = spacing
+    return this
   }
 
   /**

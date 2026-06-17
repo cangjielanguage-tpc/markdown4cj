@@ -83,8 +83,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 链接点击回调(url：链接url)
    */
-  setLinkCallback(cb: (url: string) => void): void {
+  setLinkCallback(cb: (url: string) => void): MarkdownConfiguration {
     this.linkCallback = cb
+    return this
   }
 
   /**
@@ -92,8 +93,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 文本复制的点击事件(text：复制的文本)
    */
-  setTextCopyCallback(cb: (text: string) => void): void {
+  setTextCopyCallback(cb: (text: string) => void): MarkdownConfiguration {
     this.textCopyCallback = cb
+    return this
   }
 
   /**
@@ -101,8 +103,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 图片点击回调。 (url：图片url,urlList：所有图片和视频链接集合 --- 需要加载图片视频列表url集合列表解析插件)
    */
-  setImageCallback(cb: (url: string, urlList: Array<string>) => void): void {
+  setImageCallback(cb: (url: string, urlList: Array<string>) => void): MarkdownConfiguration {
     this.imageCallback = cb
+    return this
   }
 
   /**
@@ -112,8 +115,9 @@ export class MarkdownConfiguration {
    * @deprecated since 1.4.0
    * @useinstead MarkdownConfiguration#setImageReplaceCallback
    */
-  setImageCallbackCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): void {
+  setImageCallbackCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): MarkdownConfiguration {
     this.setImageReplaceCallback(cb)
+    return this
   }
 
   /**
@@ -121,8 +125,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 图片替换事件。 (url：图片url 返回值是替换的图片数据)
    */
-  setImageReplaceCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): void {
+  setImageReplaceCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): MarkdownConfiguration {
     this.imageReplaceCallback = cb
+    return this
   }
 
   /**
@@ -130,8 +135,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 图片下载的点击事件。 (url：图片url)
    */
-  setImageDownloadCallback(cb: (url: string) => void): void {
+  setImageDownloadCallback(cb: (url: string) => void): MarkdownConfiguration {
     this.imageDownloadCallback = cb
+    return this
   }
 
   /**
@@ -139,8 +145,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 音频点击回调(url：音频url) --- 需要加载音频解析插件
    */
-  setAudioCallback(cb: (url: string) => void): void {
+  setAudioCallback(cb: (url: string) => void): MarkdownConfiguration {
     this.audioCallback = cb
+    return this
   }
 
   /**
@@ -148,8 +155,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 视频点击回调。 (url：视频url,urlList：所有图片和视频链接集合 --- 需要加载图片视频列表url集合列表解析插件) --- 需要加载视频解析插件
    */
-  setVideoCallback(cb: (url: string, urlList: Array<string>) => void): void {
+  setVideoCallback(cb: (url: string, urlList: Array<string>) => void): MarkdownConfiguration {
     this.videoCallback = cb
+    return this
   }
 
   /**
@@ -157,8 +165,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 视频占位图和宽高比和视频时长回调。 (url：视频url,coverCallback：视频占位图和宽高比和视频时长回调 (coverUrl：视频首帧图,aspectRatio：图片宽高比,duration：视频时长)) --- 需要加载视频解析插件
    */
-  setVideoImageCallback(cb: (url: string, coverCallback: (coverUrl: string, aspectRatio: number, duration: number) => void) => void): void {
+  setVideoImageCallback(cb: (url: string, coverCallback: (coverUrl: string, aspectRatio: number, duration: number) => void) => void): MarkdownConfiguration {
     this.videoImageCallback = cb
+    return this
   }
 
   /**
@@ -166,8 +175,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 视频发布的点击事件(url：视频url) --- 需要加载视频解析插件
    */
-  setVideoReleaseCallback(cb: (url: string) => void): void {
+  setVideoReleaseCallback(cb: (url: string) => void): MarkdownConfiguration {
     this.videoReleaseCallback = cb
+    return this
   }
 
   /**
@@ -175,8 +185,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 视频下载的点击事件(url：视频url) --- 需要加载视频解析插件
    */
-  setVideoDownloadCallback(cb: (url: string) => void): void {
+  setVideoDownloadCallback(cb: (url: string) => void): MarkdownConfiguration {
     this.videoDownloadCallback = cb
+    return this
   }
 
   /**
@@ -184,8 +195,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 代码复制点击回调(code：代码内容)
    */
-  setCodeCopyCallback(cb: (code: string) => void): void {
+  setCodeCopyCallback(cb: (code: string) => void): MarkdownConfiguration {
     this.codeCopyCallback = cb
+    return this
   }
 
   /**
@@ -193,8 +205,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 代码全屏点击回调(code：代码内容, language：代码类型)
    */
-  setCodeFullScreenCallback(cb: (code: string, language: string | undefined) => void): void {
+  setCodeFullScreenCallback(cb: (code: string, language: string | undefined) => void): MarkdownConfiguration {
     this.codeFullScreenCallback = cb
+    return this
   }
 
   /**
@@ -202,8 +215,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 数学公式点击回调(imageData：数学公式图片数组数据, height：图片高度, width：图片宽度) --- 需要加载数学公式解析插件
    */
-  setLatexImageCallback(cb: (imageData: ArrayBuffer, height: number, width: number) => void): void {
+  setLatexImageCallback(cb: (imageData: ArrayBuffer, height: number, width: number) => void): MarkdownConfiguration {
     this.latexImageCallback = cb
+    return this
   }
 
   /**
@@ -211,8 +225,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 数学公式公式预处理回调(formula：数学公式文本内容,return：处理过后的数学公式文本) --- 需要加载数学公式解析插件
    */
-  setLatexStrCallback(cb: (formula: string) => string): void {
+  setLatexStrCallback(cb: (formula: string) => string): MarkdownConfiguration {
     this.latexStrCallback = cb
+    return this
   }
 
   /**
@@ -220,8 +235,9 @@ export class MarkdownConfiguration {
    *
    * @param cb TOC点击回调(index：第几条数据) --- 需要加载TOC解析插件
    */
-  setTocIndexCallback(cb: (index: number | undefined) => void): void {
+  setTocIndexCallback(cb: (index: number | undefined) => void): MarkdownConfiguration {
     this.tocIndexCallback = cb
+    return this
   }
 
   /**
@@ -229,8 +245,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 脚注点击回调(index：第几条数据) --- 需要加载脚注解析插件
    */
-  setFootnoteCallback(cb: (index: number | undefined) => void): void {
+  setFootnoteCallback(cb: (index: number | undefined) => void): MarkdownConfiguration {
     this.footnoteCallback = cb
+    return this
   }
 
   /**
@@ -238,8 +255,9 @@ export class MarkdownConfiguration {
    *
    * @param nodeString 全局文本对象
    */
-  setNodeString(nodeString: MarkdownNodeViewString): void {
+  setNodeString(nodeString: MarkdownNodeViewString): MarkdownConfiguration {
     this.markdownNodeViewString = nodeString
+    return this
   }
 
   /**
@@ -247,8 +265,9 @@ export class MarkdownConfiguration {
    *
    * @param markdownTheme markdown样式
    */
-  setMarkdownTheme(markdownTheme: MarkdownTheme): void {
+  setMarkdownTheme(markdownTheme: MarkdownTheme): MarkdownConfiguration {
     this.markdownTheme = markdownTheme
+    return this
   }
 
   /**
