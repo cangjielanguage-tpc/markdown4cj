@@ -95,7 +95,6 @@ struct CodeBlockPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
-
   // ---------------- 专有
   // 是否格式化围栏代码块内容列表
   codeBlockIsCodeFormatList: Array<boolean> = booleanListGeneralData
@@ -405,44 +404,17 @@ struct CodeBlockPage {
   codeBlockTextLetterSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块文本字符间距
   codeBlockTextLetterSpacing: number = 0
-  // 组合代码块未选中标题字体大小列表
-  codeBlockListTitleTextSizeList: Array<number> = textSizeListGeneralData
-  @State // 组合代码块未选中标题字体大小
-  codeBlockListTitleTextSize: number = 13
-  // 组合代码块选中标题字体大小列表
-  codeBlockListTitleSelectTextSizeList: Array<number> = textSizeListGeneralData
-  @State // 组合代码块选中标题字体大小
-  codeBlockListTitleSelectTextSize: number = 13
-  // 组合代码块选中标题文本颜色列表
-  codeBlockListTitleSelectTextColorList: Array<number | undefined> = colorListGeneralData
-  @State // 组合代码块选中标题文本颜色
-  codeBlockListTitleSelectTextColor: number | undefined = undefined
-  // 组合代码块未选中标题文本颜色列表
-  codeBlockListTitleUnselectTextColorList: Array<number | undefined> = colorListGeneralData
-  @State // 组合代码块未选中标题文本颜色
-  codeBlockListTitleUnselectTextColor: number | undefined = undefined
-  // 组合代码块选中标题背景颜色列表
-  codeBlockListTitleSelectBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State // 组合代码块选中标题背景颜色
-  codeBlockListTitleSelectBackgroundColor: number | undefined = undefined
-  // 组合代码块未选中标题背景颜色列表
-  codeBlockListTitleUnselectBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State // 组合代码块未选中标题背景颜色
-  codeBlockListTitleUnselectBackgroundColor: number | undefined = undefined
-  // 是否单独代码块显示列表
-  codeBlockIsSeparateList: Array<boolean> = booleanListGeneralData
-  @State // 是否单独代码块显示
-  codeBlockIsSeparate: boolean = false
-  // 单独代码块行号宽度列表
-  codeBlockSeparateWidthList: Array<number> = widthOrHeightListGeneralData
-  @State // 单独代码块行号宽度
-  codeBlockSeparateWidth: number = 50
-  // 单独代码块是否居底显示列表
-  codeBlockSeparateIsBottomList: Array<boolean> = booleanListGeneralData
-  @State // 单独代码块是否居底显示
-  codeBlockSeparateIsBottom: boolean = false
+
   @State // 配置数据内容
   codeBlockData: CodeBlockData = new CodeBlockData()
+  heightMD: number = 30 * 2 // 乘以行数
+  @State isExpanded1: boolean = false // 控制展开/折叠状态 - 通用样式配置
+  @State isExpanded2: boolean = false // 控制展开/折叠状态 - 边距和边框
+  @State isExpanded3: boolean = false // 控制展开/折叠状态 - 类型文本
+  @State isExpanded4: boolean = false // 控制展开/折叠状态 - 复制相关
+  @State isExpanded5: boolean = false // 控制展开/折叠状态 - 全屏相关
+  @State isExpanded6: boolean = false // 控制展开/折叠状态 - 代码块行号
+  @State isExpanded7: boolean = false // 控制展开/折叠状态 - 代码块文本
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -456,738 +428,897 @@ struct CodeBlockPage {
         true,
         this.safeTop
       )
+
+      // md文档展示部分
+      Column() {
+        GridRow({
+          columns: 4,
+          gutter: { x: 5, y: 5 },
+          breakpoints: {
+            value: ['400vp', '600vp', '800vp'],
+            reference: BreakpointsReference.ComponentSize
+          },
+          direction: GridRowDirection.Row
+        }) {
+          ForEach(this.folderList, (item: string, index: number) => {
+            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor(0xFFFFFFFF)
+                .backgroundColor(0xFF2196F3)
+                .height(25).width('100%')
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                  this.codeBlockData._isFull = this.isFull
+                  this.codeBlockData._incrementalAnalysis = this.incrementalAnalysis
+                  this.codeBlockData._time = this.time
+                  this.codeBlockData._textNumber = this.textNumber
+                  this.codeBlockData._isMarkdownParserSync = this.isMarkdownParserSync
+                  this.codeBlockData._isOnCopy = this.isOnCopy
+                  this.codeBlockData._blockMarginTop = this.blockMarginTop
+                  this.codeBlockData._blockMarginRight = this.blockMarginRight
+                  this.codeBlockData._blockMarginBottom = this.blockMarginBottom
+                  this.codeBlockData._blockMarginLeft = this.blockMarginLeft
+                  this.codeBlockData._markdownBlockSpacing = this.markdownBlockSpacing
+                  this.codeBlockData._isLineBreak = this.isLineBreak
+                  this.codeBlockData._backgroundColor = this.globalBackgroundColor
+                  this.codeBlockData._openGestureSwipe = this.openGestureSwipe
+                  this.codeBlockData._openGestureSwipeTest = this.openGestureSwipeTest
+                  this.codeBlockData._pagePath = `${this.rawFilePath}/${item}`
+
+                  // ---------- 专有
+                  this.codeBlockData.codeBlockIsDark = this.codeBlockIsDark
+                  this.codeBlockData.codeBlockIsCodeFormat = this.codeBlockIsCodeFormat
+                  this.codeBlockData.codeBlockUseTab = this.codeBlockUseTab
+                  this.codeBlockData.codeBlockIndentWidth = this.codeBlockIndentWidth
+                  this.codeBlockData.codeBlockParserSync = this.codeBlockParserSync
+                  this.codeBlockData.codeBlockBackgroundColor = this.codeBlockBackgroundColor
+                  this.codeBlockData.codeBlockMarginTop = this.codeBlockMarginTop
+                  this.codeBlockData.codeBlockMarginRight = this.codeBlockMarginRight
+                  this.codeBlockData.codeBlockMarginBottom = this.codeBlockMarginBottom
+                  this.codeBlockData.codeBlockMarginLeft = this.codeBlockMarginLeft
+                  this.codeBlockData.codeBlockPaddingTop = this.codeBlockPaddingTop
+                  this.codeBlockData.codeBlockPaddingRight = this.codeBlockPaddingRight
+                  this.codeBlockData.codeBlockPaddingBottom = this.codeBlockPaddingBottom
+                  this.codeBlockData.codeBlockPaddingLeft = this.codeBlockPaddingLeft
+                  this.codeBlockData.codeBlockBorderStyle = this.codeBlockBorderStyle
+                  this.codeBlockData.codeBlockBorderWidth = this.codeBlockBorderWidth
+                  this.codeBlockData.codeBlockBorderColor = this.codeBlockBorderColor
+                  this.codeBlockData.codeBlockRadiusTopLeft = this.codeBlockRadiusTopLeft
+                  this.codeBlockData.codeBlockRadiusTopRight = this.codeBlockRadiusTopRight
+                  this.codeBlockData.codeBlockRadiusBottomLeft = this.codeBlockRadiusBottomLeft
+                  this.codeBlockData.codeBlockRadiusBottomRight = this.codeBlockRadiusBottomRight
+                  this.codeBlockData.codeBlockTitleLayoutMarginBottom = this.codeBlockTitleLayoutMarginBottom
+                  this.codeBlockData.codeBlockTypeTextMarginLeft = this.codeBlockTypeTextMarginLeft
+                  this.codeBlockData.codeBlockTypeText = this.codeBlockTypeText
+                  this.codeBlockData.codeBlockTypeTextFontColor = this.codeBlockTypeTextFontColor
+                  this.codeBlockData.codeBlockTypeTextFontSize = this.codeBlockTypeTextFontSize
+                  this.codeBlockData.codeBlockTypeTextFontStyle = this.codeBlockTypeTextFontStyle
+                  this.codeBlockData.codeBlockTypeTextFontWeight = this.codeBlockTypeTextFontWeight
+                  this.codeBlockData.codeBlockTypeTextFontFamily = this.codeBlockTypeTextFontFamily
+                  this.codeBlockData.codeBlockTypeTextLineHeight = this.codeBlockTypeTextLineHeight
+                  this.codeBlockData.codeBlockCopyFullScreenSpacing = this.codeBlockCopyFullScreenSpacing
+                  this.codeBlockData.codeBlockCopyButtonIsShow = this.codeBlockCopyButtonIsShow
+                  this.codeBlockData.codeBlockCopyTextIsShow = this.codeBlockCopyTextIsShow
+                  this.codeBlockData.codeBlockCopyIcon = this.codeBlockCopyIcon
+                  this.codeBlockData.codeBlockCopyIconWidth = this.codeBlockCopyIconWidth
+                  this.codeBlockData.codeBlockCopyIconHeight = this.codeBlockCopyIconHeight
+                  this.codeBlockData.codeBlockCopyIconTextSpacing = this.codeBlockCopyIconTextSpacing
+                  this.codeBlockData.codeBlockCopyText = this.codeBlockCopyText
+                  this.codeBlockData.codeBlockCopyTextFontColor = this.codeBlockCopyTextFontColor
+                  this.codeBlockData.codeBlockCopyTextFontSize = this.codeBlockCopyTextFontSize
+                  this.codeBlockData.codeBlockCopyTextFontStyle = this.codeBlockCopyTextFontStyle
+                  this.codeBlockData.codeBlockCopyTextFontWeight = this.codeBlockCopyTextFontWeight
+                  this.codeBlockData.codeBlockCopyTextFontFamily = this.codeBlockCopyTextFontFamily
+                  this.codeBlockData.codeBlockCopyTextLineHeight = this.codeBlockCopyTextLineHeight
+                  this.codeBlockData.codeBlockFullScreenButtonIsShow = this.codeBlockFullScreenButtonIsShow
+                  this.codeBlockData.codeBlockFullScreenTextIsShow = this.codeBlockFullScreenTextIsShow
+                  this.codeBlockData.codeBlockFullScreenIcon = this.codeBlockFullScreenIcon
+                  this.codeBlockData.codeBlockFullScreenIconWidth = this.codeBlockFullScreenIconWidth
+                  this.codeBlockData.codeBlockFullScreenIconHeight = this.codeBlockFullScreenIconHeight
+                  this.codeBlockData.codeBlockFullScreenIconTextSpacing = this.codeBlockFullScreenIconTextSpacing
+                  this.codeBlockData.codeBlockFullScreenText = this.codeBlockFullScreenText
+                  this.codeBlockData.codeBlockFullScreenTextFontColor = this.codeBlockFullScreenTextFontColor
+                  this.codeBlockData.codeBlockFullScreenTextFontSize = this.codeBlockFullScreenTextFontSize
+                  this.codeBlockData.codeBlockFullScreenTextFontStyle = this.codeBlockFullScreenTextFontStyle
+                  this.codeBlockData.codeBlockFullScreenTextFontWeight = this.codeBlockFullScreenTextFontWeight
+                  this.codeBlockData.codeBlockFullScreenTextFontFamily = this.codeBlockFullScreenTextFontFamily
+                  this.codeBlockData.codeBlockFullScreenTextLineHeight = this.codeBlockFullScreenTextLineHeight
+                  this.codeBlockData.codeBlockLineNumberIsShow = this.codeBlockLineNumberIsShow
+                  this.codeBlockData.codeBlockLineNumberTextPaddingLeft = this.codeBlockLineNumberTextPaddingLeft
+                  this.codeBlockData.codeBlockLineNumberTextFontColor = this.codeBlockLineNumberTextFontColor
+                  this.codeBlockData.codeBlockLineNumberTextFontSize = this.codeBlockLineNumberTextFontSize
+                  this.codeBlockData.codeBlockLineNumberTextFontStyle = this.codeBlockLineNumberTextFontStyle
+                  this.codeBlockData.codeBlockLineNumberTextFontWeight = this.codeBlockLineNumberTextFontWeight
+                  this.codeBlockData.codeBlockLineNumberTextFontFamily = this.codeBlockLineNumberTextFontFamily
+                  this.codeBlockData.codeBlockLineNumberTextLineHeight = this.codeBlockLineNumberTextLineHeight
+                  this.codeBlockData.codeBlockDividerColor = this.codeBlockDividerColor
+                  this.codeBlockData.codeBlockDividerStrokeWidth = this.codeBlockDividerStrokeWidth
+                  this.codeBlockData.codeBlockLineNumberDividerSpacing = this.codeBlockLineNumberDividerSpacing
+                  this.codeBlockData.codeBlockTextFontColor = this.codeBlockTextFontColor
+                  this.codeBlockData.codeBlockTextMarginRight = this.codeBlockTextMarginRight
+                  this.codeBlockData.codeBlockTextMarginLeft = this.codeBlockTextMarginLeft
+                  this.codeBlockData.codeBlockTextFontSize = this.codeBlockTextFontSize
+                  this.codeBlockData.codeBlockTextFontStyle = this.codeBlockTextFontStyle
+                  this.codeBlockData.codeBlockTextFontWeight = this.codeBlockTextFontWeight
+                  this.codeBlockData.codeBlockTextFontFamily = this.codeBlockTextFontFamily
+                  this.codeBlockData.codeBlockTextLineHeight = this.codeBlockTextLineHeight
+                  this.codeBlockData.codeBlockTextLetterSpacing = this.codeBlockTextLetterSpacing
+                  // ---------- 跳转到详情
+                  router.pushUrl({ url: "pages/CodeBlockDetailsPage", params: this.codeBlockData })
+                })
+            }
+          })
+        }.width('100%').height('100%')
+      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+
       Scroll() {
         Column() {
-          // ------------ 通用
-          BaseTabComponent({
-            titleStr: "是否全量加载Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isFullList,
-            allData: this.isFull
-          })
-          BaseTabComponent({
-            titleStr: "是否增量解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.incrementalAnalysisList,
-            allData: this.incrementalAnalysis
-          })
-          BaseTabComponent({
-            titleStr: "增量加载每次间隔时间 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.timeList,
-            allData: this.time
-          })
-          BaseTabComponent({
-            titleStr: "增量每次增量文本数量 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.textNumberList,
-            allData: this.textNumber
-          })
-          BaseTabComponent({
-            titleStr: "是否同步解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isMarkdownParserSyncList,
-            allData: this.isMarkdownParserSync
-          })
-          BaseTabComponent({
-            titleStr: "是否打开长按复制粘贴效果 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isOnCopyList,
-            allData: this.isOnCopy
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局上外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginTopList,
-            allData: this.blockMarginTop
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局右外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginRightList,
-            allData: this.blockMarginRight
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局下外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginBottomList,
-            allData: this.blockMarginBottom
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局左外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginLeftList,
-            allData: this.blockMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "模块间上下间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.markdownBlockSpacingList,
-            allData: this.markdownBlockSpacing
-          })
-          BaseTabComponent({
-            titleStr: "是否开启响应滑动测试 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeTestList,
-            allData: this.openGestureSwipeTest
-          })
-          BaseTabComponent({
-            titleStr: "是否允许markdown控件自身响应滑动 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeList,
-            allData: this.openGestureSwipe
-          })
-
-          // ---------------- 专有
-          BaseTabComponent({
-            titleStr: "代码深浅色模式 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockIsDarkList,
-            allData: this.codeBlockIsDark
-          })
-          BaseTabComponent({
-            titleStr: "是否格式化围栏代码块内容 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockIsCodeFormatList,
-            allData: this.codeBlockIsCodeFormat
-          })
-          BaseTabComponent({
-            titleStr: "codeformat是否用制表符 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockUseTabList,
-            allData: this.codeBlockUseTab
-          })
-          BaseTabComponent({
-            titleStr: "codeformat空格缩进数量 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockIndentWidthList,
-            allData: this.codeBlockIndentWidth
-          })
-          BaseTabComponent({
-            titleStr: "围栏代码块代码高亮是否同步解析 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockParserSyncList,
-            allData: this.codeBlockParserSync
-          })
-          BaseTabComponent({
-            titleStr: "代码块背景颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockBackgroundColorList,
-            allData: this.codeBlockBackgroundColor
-          })
-          BaseTabComponent({
-            titleStr: "代码块上外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockMarginTopList,
-            allData: this.codeBlockMarginTop
-          })
-          BaseTabComponent({
-            titleStr: "代码块右外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockMarginRightList,
-            allData: this.codeBlockMarginRight
-          })
-          BaseTabComponent({
-            titleStr: "代码块下外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockMarginBottomList,
-            allData: this.codeBlockMarginBottom
-          })
-          BaseTabComponent({
-            titleStr: "代码块左外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockMarginLeftList,
-            allData: this.codeBlockMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "代码块上内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockPaddingTopList,
-            allData: this.codeBlockPaddingTop
-          })
-          BaseTabComponent({
-            titleStr: "代码块右内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockPaddingRightList,
-            allData: this.codeBlockPaddingRight
-          })
-          BaseTabComponent({
-            titleStr: "代码块下内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockPaddingBottomList,
-            allData: this.codeBlockPaddingBottom
-          })
-          BaseTabComponent({
-            titleStr: "代码块左内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockPaddingLeftList,
-            allData: this.codeBlockPaddingLeft
-          })
-          BaseTabComponent({
-            titleStr: "代码块边框样式 - ",
-            typeEnum: TypeEnum.IS_BORDER_STYLE,
-            allListData: this.codeBlockBorderStyleList,
-            allData: this.codeBlockBorderStyle
-          })
-          BaseTabComponent({
-            titleStr: "代码块边框宽度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockBorderWidthList,
-            allData: this.codeBlockBorderWidth
-          })
-          BaseTabComponent({
-            titleStr: "代码块边框颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockBorderColorList,
-            allData: this.codeBlockBorderColor
-          })
-          BaseTabComponent({
-            titleStr: "代码块边框左上圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockRadiusTopLeftList,
-            allData: this.codeBlockRadiusTopLeft
-          })
-          BaseTabComponent({
-            titleStr: "代码块边框右上圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockRadiusTopRightList,
-            allData: this.codeBlockRadiusTopRight
-          })
-          BaseTabComponent({
-            titleStr: "代码块边框左下圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockRadiusBottomLeftList,
-            allData: this.codeBlockRadiusBottomLeft
-          })
-          BaseTabComponent({
-            titleStr: "代码块边框右下圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockRadiusBottomRightList,
-            allData: this.codeBlockRadiusBottomRight
-          })
-          BaseTabComponent({
-            titleStr: "代码块类型和代码块内容间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTitleLayoutMarginBottomList,
-            allData: this.codeBlockTitleLayoutMarginBottom
-          })
-          BaseTabComponent({
-            titleStr: "代码块类型左边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTypeTextMarginLeftList,
-            allData: this.codeBlockTypeTextMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "代码块没有代码类型时默认显示文本 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.codeBlockTypeTextList,
-            allData: this.codeBlockTypeText
-          })
-          BaseTabComponent({
-            titleStr: "代码块类型文本颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockTypeTextFontColorList,
-            allData: this.codeBlockTypeTextFontColor
-          })
-          BaseTabComponent({
-            titleStr: "代码块类型文本尺寸 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTypeTextFontSizeList,
-            allData: this.codeBlockTypeTextFontSize
-          })
-          BaseTabComponent({
-            titleStr: "代码块类型文本字体样式 - ",
-            typeEnum: TypeEnum.IS_FONT_STYLE,
-            allListData: this.codeBlockTypeTextFontStyleList,
-            allData: this.codeBlockTypeTextFontStyle
-          })
-          BaseTabComponent({
-            titleStr: "代码块类型文本字体粗细 - ",
-            typeEnum: TypeEnum.IS_FONT_WEIGHT,
-            allListData: this.codeBlockTypeTextFontWeightList,
-            allData: this.codeBlockTypeTextFontWeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块类型文本字体 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.codeBlockTypeTextFontFamilyList,
-            allData: this.codeBlockTypeTextFontFamily
-          })
-          BaseTabComponent({
-            titleStr: "代码块类型文本行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTypeTextLineHeightList,
-            allData: this.codeBlockTypeTextLineHeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制和代码全屏间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockCopyFullScreenSpacingList,
-            allData: this.codeBlockCopyFullScreenSpacing
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制按钮是否显示 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockCopyButtonIsShowList,
-            allData: this.codeBlockCopyButtonIsShow
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制文本是否显示 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockCopyTextIsShowList,
-            allData: this.codeBlockCopyTextIsShow
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制按钮默认图标 - ",
-            typeEnum: TypeEnum.IS_RESOURCE,
-            allListData: this.codeBlockCopyIconList,
-            allData: this.codeBlockCopyIcon
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制图标宽度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockCopyIconWidthList,
-            allData: this.codeBlockCopyIconWidth
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制图标高度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockCopyIconHeightList,
-            allData: this.codeBlockCopyIconHeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制图标和文本间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockCopyIconTextSpacingList,
-            allData: this.codeBlockCopyIconTextSpacing
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制默认文本内容 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.codeBlockCopyTextList,
-            allData: this.codeBlockCopyText
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制文本颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockCopyTextFontColorList,
-            allData: this.codeBlockCopyTextFontColor
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制文本尺寸 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockCopyTextFontSizeList,
-            allData: this.codeBlockCopyTextFontSize
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制文本字体样式 - ",
-            typeEnum: TypeEnum.IS_FONT_STYLE,
-            allListData: this.codeBlockCopyTextFontStyleList,
-            allData: this.codeBlockCopyTextFontStyle
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制文本字体粗细 - ",
-            typeEnum: TypeEnum.IS_FONT_WEIGHT,
-            allListData: this.codeBlockCopyTextFontWeightList,
-            allData: this.codeBlockCopyTextFontWeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制文本字体 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.codeBlockCopyTextFontFamilyList,
-            allData: this.codeBlockCopyTextFontFamily
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码复制文本行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockCopyTextLineHeightList,
-            allData: this.codeBlockCopyTextLineHeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏按钮是否显示 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockFullScreenButtonIsShowList,
-            allData: this.codeBlockFullScreenButtonIsShow
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏文本是否显示 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockFullScreenTextIsShowList,
-            allData: this.codeBlockFullScreenTextIsShow
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏按钮默认图标 - ",
-            typeEnum: TypeEnum.IS_RESOURCE,
-            allListData: this.codeBlockFullScreenIconList,
-            allData: this.codeBlockFullScreenIcon
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏图标宽度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockFullScreenIconWidthList,
-            allData: this.codeBlockFullScreenIconWidth
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏图标高度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockFullScreenIconHeightList,
-            allData: this.codeBlockFullScreenIconHeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏图标和文本间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockFullScreenIconTextSpacingList,
-            allData: this.codeBlockFullScreenIconTextSpacing
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏默认文本内容 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.codeBlockFullScreenTextList,
-            allData: this.codeBlockFullScreenText
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏文本颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockFullScreenTextFontColorList,
-            allData: this.codeBlockFullScreenTextFontColor
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏文本尺寸 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockFullScreenTextFontSizeList,
-            allData: this.codeBlockFullScreenTextFontSize
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏文本字体样式 - ",
-            typeEnum: TypeEnum.IS_FONT_STYLE,
-            allListData: this.codeBlockFullScreenTextFontStyleList,
-            allData: this.codeBlockFullScreenTextFontStyle
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏文本字体粗细 - ",
-            typeEnum: TypeEnum.IS_FONT_WEIGHT,
-            allListData: this.codeBlockFullScreenTextFontWeightList,
-            allData: this.codeBlockFullScreenTextFontWeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏文本字体 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.codeBlockFullScreenTextFontFamilyList,
-            allData: this.codeBlockFullScreenTextFontFamily
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码全屏文本行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockFullScreenTextLineHeightList,
-            allData: this.codeBlockFullScreenTextLineHeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号是否显示 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockLineNumberIsShowList,
-            allData: this.codeBlockLineNumberIsShow
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号左内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockLineNumberTextPaddingLeftList,
-            allData: this.codeBlockLineNumberTextPaddingLeft
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号文本颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockLineNumberTextFontColorList,
-            allData: this.codeBlockLineNumberTextFontColor
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号文本尺寸 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockLineNumberTextFontSizeList,
-            allData: this.codeBlockLineNumberTextFontSize
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号文本字体样式 - ",
-            typeEnum: TypeEnum.IS_FONT_STYLE,
-            allListData: this.codeBlockLineNumberTextFontStyleList,
-            allData: this.codeBlockLineNumberTextFontStyle
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号文本字体粗细 - ",
-            typeEnum: TypeEnum.IS_FONT_WEIGHT,
-            allListData: this.codeBlockLineNumberTextFontWeightList,
-            allData: this.codeBlockLineNumberTextFontWeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号文本字体 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.codeBlockLineNumberTextFontFamilyList,
-            allData: this.codeBlockLineNumberTextFontFamily
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号文本行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockLineNumberTextLineHeightList,
-            allData: this.codeBlockLineNumberTextLineHeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号和代码块中间分割线颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockDividerColorList,
-            allData: this.codeBlockDividerColor
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号和代码块中间分割线宽度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockDividerStrokeWidthList,
-            allData: this.codeBlockDividerStrokeWidth
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码行号和分割线间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockLineNumberDividerSpacingList,
-            allData: this.codeBlockLineNumberDividerSpacing
-          })
-          BaseTabComponent({
-            titleStr: "代码块文本颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockTextFontColorList,
-            allData: this.codeBlockTextFontColor
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码文本右外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTextMarginRightList,
-            allData: this.codeBlockTextMarginRight
-          })
-          BaseTabComponent({
-            titleStr: "代码块代码文本左外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTextMarginLeftList,
-            allData: this.codeBlockTextMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "代码块文本尺寸 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTextFontSizeList,
-            allData: this.codeBlockTextFontSize
-          })
-          BaseTabComponent({
-            titleStr: "代码块文本字体样式 - ",
-            typeEnum: TypeEnum.IS_FONT_STYLE,
-            allListData: this.codeBlockTextFontStyleList,
-            allData: this.codeBlockTextFontStyle
-          })
-          BaseTabComponent({
-            titleStr: "代码块文本字体粗细 - ",
-            typeEnum: TypeEnum.IS_FONT_WEIGHT,
-            allListData: this.codeBlockTextFontWeightList,
-            allData: this.codeBlockTextFontWeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块文本字体 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.codeBlockTextFontFamilyList,
-            allData: this.codeBlockTextFontFamily
-          })
-          BaseTabComponent({
-            titleStr: "代码块文本行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTextLineHeightList,
-            allData: this.codeBlockTextLineHeight
-          })
-          BaseTabComponent({
-            titleStr: "代码块文本字符间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockTextLetterSpacingList,
-            allData: this.codeBlockTextLetterSpacing
-          })
-          BaseTabComponent({
-            titleStr: "组合代码块未选中标题字体大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockListTitleTextSizeList,
-            allData: this.codeBlockListTitleTextSize
-          })
-          BaseTabComponent({
-            titleStr: "组合代码块选中标题字体大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockListTitleSelectTextSizeList,
-            allData: this.codeBlockListTitleSelectTextSize
-          })
-          BaseTabComponent({
-            titleStr: "组合代码块选中标题文本颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockListTitleSelectTextColorList,
-            allData: this.codeBlockListTitleSelectTextColor
-          })
-          BaseTabComponent({
-            titleStr: "组合代码块未选中标题文本颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockListTitleUnselectTextColorList,
-            allData: this.codeBlockListTitleUnselectTextColor
-          })
-          BaseTabComponent({
-            titleStr: "组合代码块选中标题背景颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockListTitleSelectBackgroundColorList,
-            allData: this.codeBlockListTitleSelectBackgroundColor
-          })
-          BaseTabComponent({
-            titleStr: "组合代码块未选中标题背景颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.codeBlockListTitleUnselectBackgroundColorList,
-            allData: this.codeBlockListTitleUnselectBackgroundColor
-          })
-          BaseTabComponent({
-            titleStr: "是否单独代码块显示 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockIsSeparateList,
-            allData: this.codeBlockIsSeparate
-          })
-          BaseTabComponent({
-            titleStr: "单独代码块行号宽度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockSeparateWidthList,
-            allData: this.codeBlockSeparateWidth
-          })
-          BaseTabComponent({
-            titleStr: "单独代码块是否居底显示 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.codeBlockSeparateIsBottomList,
-            allData: this.codeBlockSeparateIsBottom
-          })
-
-          // 列表显示
-          List() {
-            ForEach(this.folderList, (item: string, index: number) => {
-              ListItem() {
-                Button(`${index + 1}、${item}`)
-                  .height(40)
-                  .width('80%')
-                  .type(ButtonType.Capsule)
-                  .fontColor(0xFFFFFFFF)
-                  .backgroundColor(0xFF317AFF)
-                  .margin({ top: 5, bottom: 5 })
-                  .align(Alignment.Center)
-                  .fontSize(16)
-                  .onClick(() => {
-                    // ---------- 通用
-                    this.codeBlockData.isFull = this.isFull
-                    this.codeBlockData.incrementalAnalysis = this.incrementalAnalysis
-                    this.codeBlockData.time = this.time
-                    this.codeBlockData.textNumber = this.textNumber
-                    this.codeBlockData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.codeBlockData.isOnCopy = this.isOnCopy
-                    this.codeBlockData.blockMarginTop = this.blockMarginTop
-                    this.codeBlockData.blockMarginRight = this.blockMarginRight
-                    this.codeBlockData.blockMarginBottom = this.blockMarginBottom
-                    this.codeBlockData.blockMarginLeft = this.blockMarginLeft
-                    this.codeBlockData.markdownBlockSpacing = this.markdownBlockSpacing
-                    this.codeBlockData.isLineBreak = this.isLineBreak
-                    this.codeBlockData.backgroundColor = this.globalBackgroundColor
-                    this.codeBlockData.openGestureSwipe = this.openGestureSwipe
-                    this.codeBlockData.openGestureSwipeTest = this.openGestureSwipeTest
-                    this.codeBlockData.pagePath = `${this.rawFilePath}/${item}`
-                    // ---------- 专有
-                    this.codeBlockData.codeBlockIsDark = this.codeBlockIsDark
-                    this.codeBlockData.codeBlockIsCodeFormat = this.codeBlockIsCodeFormat
-                    this.codeBlockData.codeBlockUseTab = this.codeBlockUseTab
-                    this.codeBlockData.codeBlockIndentWidth = this.codeBlockIndentWidth
-                    this.codeBlockData.codeBlockParserSync = this.codeBlockParserSync
-                    this.codeBlockData.codeBlockBackgroundColor = this.codeBlockBackgroundColor
-                    this.codeBlockData.codeBlockMarginTop = this.codeBlockMarginTop
-                    this.codeBlockData.codeBlockMarginRight = this.codeBlockMarginRight
-                    this.codeBlockData.codeBlockMarginBottom = this.codeBlockMarginBottom
-                    this.codeBlockData.codeBlockMarginLeft = this.codeBlockMarginLeft
-                    this.codeBlockData.codeBlockPaddingTop = this.codeBlockPaddingTop
-                    this.codeBlockData.codeBlockPaddingRight = this.codeBlockPaddingRight
-                    this.codeBlockData.codeBlockPaddingBottom = this.codeBlockPaddingBottom
-                    this.codeBlockData.codeBlockPaddingLeft = this.codeBlockPaddingLeft
-                    this.codeBlockData.codeBlockBorderStyle = this.codeBlockBorderStyle
-                    this.codeBlockData.codeBlockBorderWidth = this.codeBlockBorderWidth
-                    this.codeBlockData.codeBlockBorderColor = this.codeBlockBorderColor
-                    this.codeBlockData.codeBlockRadiusTopLeft = this.codeBlockRadiusTopLeft
-                    this.codeBlockData.codeBlockRadiusTopRight = this.codeBlockRadiusTopRight
-                    this.codeBlockData.codeBlockRadiusBottomLeft = this.codeBlockRadiusBottomLeft
-                    this.codeBlockData.codeBlockRadiusBottomRight = this.codeBlockRadiusBottomRight
-                    this.codeBlockData.codeBlockTitleLayoutMarginBottom = this.codeBlockTitleLayoutMarginBottom
-                    this.codeBlockData.codeBlockTypeTextMarginLeft = this.codeBlockTypeTextMarginLeft
-                    this.codeBlockData.codeBlockTypeText = this.codeBlockTypeText
-                    this.codeBlockData.codeBlockTypeTextFontColor = this.codeBlockTypeTextFontColor
-                    this.codeBlockData.codeBlockTypeTextFontSize = this.codeBlockTypeTextFontSize
-                    this.codeBlockData.codeBlockTypeTextFontStyle = this.codeBlockTypeTextFontStyle
-                    this.codeBlockData.codeBlockTypeTextFontWeight = this.codeBlockTypeTextFontWeight
-                    this.codeBlockData.codeBlockTypeTextFontFamily = this.codeBlockTypeTextFontFamily
-                    this.codeBlockData.codeBlockTypeTextLineHeight = this.codeBlockTypeTextLineHeight
-                    this.codeBlockData.codeBlockCopyFullScreenSpacing = this.codeBlockCopyFullScreenSpacing
-                    this.codeBlockData.codeBlockCopyButtonIsShow = this.codeBlockCopyButtonIsShow
-                    this.codeBlockData.codeBlockCopyTextIsShow = this.codeBlockCopyTextIsShow
-                    this.codeBlockData.codeBlockCopyIcon = this.codeBlockCopyIcon
-                    this.codeBlockData.codeBlockCopyIconWidth = this.codeBlockCopyIconWidth
-                    this.codeBlockData.codeBlockCopyIconHeight = this.codeBlockCopyIconHeight
-                    this.codeBlockData.codeBlockCopyIconTextSpacing = this.codeBlockCopyIconTextSpacing
-                    this.codeBlockData.codeBlockCopyText = this.codeBlockCopyText
-                    this.codeBlockData.codeBlockCopyTextFontColor = this.codeBlockCopyTextFontColor
-                    this.codeBlockData.codeBlockCopyTextFontSize = this.codeBlockCopyTextFontSize
-                    this.codeBlockData.codeBlockCopyTextFontStyle = this.codeBlockCopyTextFontStyle
-                    this.codeBlockData.codeBlockCopyTextFontWeight = this.codeBlockCopyTextFontWeight
-                    this.codeBlockData.codeBlockCopyTextFontFamily = this.codeBlockCopyTextFontFamily
-                    this.codeBlockData.codeBlockCopyTextLineHeight = this.codeBlockCopyTextLineHeight
-                    this.codeBlockData.codeBlockFullScreenButtonIsShow = this.codeBlockFullScreenButtonIsShow
-                    this.codeBlockData.codeBlockFullScreenTextIsShow = this.codeBlockFullScreenTextIsShow
-                    this.codeBlockData.codeBlockFullScreenIcon = this.codeBlockFullScreenIcon
-                    this.codeBlockData.codeBlockFullScreenIconWidth = this.codeBlockFullScreenIconWidth
-                    this.codeBlockData.codeBlockFullScreenIconHeight = this.codeBlockFullScreenIconHeight
-                    this.codeBlockData.codeBlockFullScreenIconTextSpacing = this.codeBlockFullScreenIconTextSpacing
-                    this.codeBlockData.codeBlockFullScreenText = this.codeBlockFullScreenText
-                    this.codeBlockData.codeBlockFullScreenTextFontColor = this.codeBlockFullScreenTextFontColor
-                    this.codeBlockData.codeBlockFullScreenTextFontSize = this.codeBlockFullScreenTextFontSize
-                    this.codeBlockData.codeBlockFullScreenTextFontStyle = this.codeBlockFullScreenTextFontStyle
-                    this.codeBlockData.codeBlockFullScreenTextFontWeight = this.codeBlockFullScreenTextFontWeight
-                    this.codeBlockData.codeBlockFullScreenTextFontFamily = this.codeBlockFullScreenTextFontFamily
-                    this.codeBlockData.codeBlockFullScreenTextLineHeight = this.codeBlockFullScreenTextLineHeight
-                    this.codeBlockData.codeBlockLineNumberIsShow = this.codeBlockLineNumberIsShow
-                    this.codeBlockData.codeBlockLineNumberTextPaddingLeft = this.codeBlockLineNumberTextPaddingLeft
-                    this.codeBlockData.codeBlockLineNumberTextFontColor = this.codeBlockLineNumberTextFontColor
-                    this.codeBlockData.codeBlockLineNumberTextFontSize = this.codeBlockLineNumberTextFontSize
-                    this.codeBlockData.codeBlockLineNumberTextFontStyle = this.codeBlockLineNumberTextFontStyle
-                    this.codeBlockData.codeBlockLineNumberTextFontWeight = this.codeBlockLineNumberTextFontWeight
-                    this.codeBlockData.codeBlockLineNumberTextFontFamily = this.codeBlockLineNumberTextFontFamily
-                    this.codeBlockData.codeBlockLineNumberTextLineHeight = this.codeBlockLineNumberTextLineHeight
-                    this.codeBlockData.codeBlockDividerColor = this.codeBlockDividerColor
-                    this.codeBlockData.codeBlockDividerStrokeWidth = this.codeBlockDividerStrokeWidth
-                    this.codeBlockData.codeBlockLineNumberDividerSpacing = this.codeBlockLineNumberDividerSpacing
-                    this.codeBlockData.codeBlockTextFontColor = this.codeBlockTextFontColor
-                    this.codeBlockData.codeBlockTextMarginRight = this.codeBlockTextMarginRight
-                    this.codeBlockData.codeBlockTextMarginLeft = this.codeBlockTextMarginLeft
-                    this.codeBlockData.codeBlockTextFontSize = this.codeBlockTextFontSize
-                    this.codeBlockData.codeBlockTextFontStyle = this.codeBlockTextFontStyle
-                    this.codeBlockData.codeBlockTextFontWeight = this.codeBlockTextFontWeight
-                    this.codeBlockData.codeBlockTextFontFamily = this.codeBlockTextFontFamily
-                    this.codeBlockData.codeBlockTextLineHeight = this.codeBlockTextLineHeight
-                    this.codeBlockData.codeBlockTextLetterSpacing = this.codeBlockTextLetterSpacing
-                    this.codeBlockData.codeBlockListTitleTextSize = this.codeBlockListTitleTextSize
-                    this.codeBlockData.codeBlockListTitleSelectTextSize = this.codeBlockListTitleSelectTextSize
-                    this.codeBlockData.codeBlockListTitleSelectTextColor = this.codeBlockListTitleSelectTextColor
-                    this.codeBlockData.codeBlockListTitleUnselectTextColor = this.codeBlockListTitleUnselectTextColor
-                    this.codeBlockData.codeBlockListTitleSelectBackgroundColor = this.codeBlockListTitleSelectBackgroundColor
-                    this.codeBlockData.codeBlockListTitleUnselectBackgroundColor = this.codeBlockListTitleUnselectBackgroundColor
-                    this.codeBlockData.codeBlockIsSeparate = this.codeBlockIsSeparate
-                    this.codeBlockData.codeBlockSeparateWidth = this.codeBlockSeparateWidth
-                    this.codeBlockData.codeBlockSeparateIsBottom = this.codeBlockSeparateIsBottom
-                    // ---------- 跳转到详情
-                    router.pushUrl({ url: "pages/CodeBlockDetailsPage", params: this.codeBlockData })
-                  })
-              }
+          // 通用样式配置
+          Column() {
+            Row() {
+              Text("通用样式配置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded1 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded1 = !this.isExpanded1
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded1 = !this.isExpanded1
             })
+
+            if (this.isExpanded1) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否全量加载Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isFullList,
+                  allData: this.isFull
+                })
+                BaseTabComponent({
+                  titleStr: "是否增量解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.incrementalAnalysisList,
+                  allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "增量加载每次间隔时间 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.timeList,
+                  allData: this.time
+                })
+                BaseTabComponent({
+                  titleStr: "增量每次增量文本数量 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.textNumberList,
+                  allData: this.textNumber
+                })
+                BaseTabComponent({
+                  titleStr: "是否同步解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isMarkdownParserSyncList,
+                  allData: this.isMarkdownParserSync
+                })
+                BaseTabComponent({
+                  titleStr: "是否打开长按复制粘贴效果 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isOnCopyList,
+                  allData: this.isOnCopy
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局上外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginTopList,
+                  allData: this.blockMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginRightList,
+                  allData: this.blockMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginBottomList,
+                  allData: this.blockMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginLeftList,
+                  allData: this.blockMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "模块间上下间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.markdownBlockSpacingList,
+                  allData: this.markdownBlockSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "是否开启响应滑动测试 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeTestList,
+                  allData: this.openGestureSwipeTest
+                })
+                BaseTabComponent({
+                  titleStr: "是否允许markdown控件自身响应滑动 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeList,
+                  allData: this.openGestureSwipe
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
           }
-          .alignListItem(ListItemAlign.Center)
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 边距和边框
+          Column() {
+            Row() {
+              Text("代码块边距和边框")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded2 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded2 = !this.isExpanded2
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded2 = !this.isExpanded2
+            })
+
+            if (this.isExpanded2) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "代码块背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.codeBlockBackgroundColorList,
+                  allData: this.codeBlockBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "代码块上外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockMarginTopList,
+                  allData: this.codeBlockMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "代码块右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockMarginRightList,
+                  allData: this.codeBlockMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockMarginBottomList,
+                  allData: this.codeBlockMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "代码块左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockMarginLeftList,
+                  allData: this.codeBlockMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "代码块上内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockPaddingTopList,
+                  allData: this.codeBlockPaddingTop
+                })
+                BaseTabComponent({
+                  titleStr: "代码块右内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockPaddingRightList,
+                  allData: this.codeBlockPaddingRight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块下内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockPaddingBottomList,
+                  allData: this.codeBlockPaddingBottom
+                })
+                BaseTabComponent({
+                  titleStr: "代码块左内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockPaddingLeftList,
+                  allData: this.codeBlockPaddingLeft
+                })
+                BaseTabComponent({
+                  titleStr: "代码块边框样式 - ",
+                  typeEnum: TypeEnum.IS_BORDER_STYLE,
+                  allListData: this.codeBlockBorderStyleList,
+                  allData: this.codeBlockBorderStyle
+                })
+                BaseTabComponent({
+                  titleStr: "代码块边框宽度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockBorderWidthList,
+                  allData: this.codeBlockBorderWidth
+                })
+                BaseTabComponent({
+                  titleStr: "代码块边框颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.codeBlockBorderColorList,
+                  allData: this.codeBlockBorderColor
+                })
+                BaseTabComponent({
+                  titleStr: "代码块边框左上圆角 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockRadiusTopLeftList,
+                  allData: this.codeBlockRadiusTopLeft
+                })
+                BaseTabComponent({
+                  titleStr: "代码块边框右上圆角 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockRadiusTopRightList,
+                  allData: this.codeBlockRadiusTopRight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块边框左下圆角 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockRadiusBottomLeftList,
+                  allData: this.codeBlockRadiusBottomLeft
+                })
+                BaseTabComponent({
+                  titleStr: "代码块边框右下圆角 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockRadiusBottomRightList,
+                  allData: this.codeBlockRadiusBottomRight
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 类型文本
+          Column() {
+            Row() {
+              Text("代码块类型文本")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded3 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded3 = !this.isExpanded3
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded3 = !this.isExpanded3
+            })
+
+            if (this.isExpanded3) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "代码块类型和代码块内容间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTitleLayoutMarginBottomList,
+                  allData: this.codeBlockTitleLayoutMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "代码块类型左边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTypeTextMarginLeftList,
+                  allData: this.codeBlockTypeTextMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "代码块没有代码类型时默认显示文本 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.codeBlockTypeTextList,
+                  allData: this.codeBlockTypeText
+                })
+                BaseTabComponent({
+                  titleStr: "代码块类型文本颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.codeBlockTypeTextFontColorList,
+                  allData: this.codeBlockTypeTextFontColor
+                })
+                BaseTabComponent({
+                  titleStr: "代码块类型文本尺寸 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTypeTextFontSizeList,
+                  allData: this.codeBlockTypeTextFontSize
+                })
+                BaseTabComponent({
+                  titleStr: "代码块类型文本字体样式 - ",
+                  typeEnum: TypeEnum.IS_FONT_STYLE,
+                  allListData: this.codeBlockTypeTextFontStyleList,
+                  allData: this.codeBlockTypeTextFontStyle
+                })
+                BaseTabComponent({
+                  titleStr: "代码块类型文本字体粗细 - ",
+                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
+                  allListData: this.codeBlockTypeTextFontWeightList,
+                  allData: this.codeBlockTypeTextFontWeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块类型文本字体 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.codeBlockTypeTextFontFamilyList,
+                  allData: this.codeBlockTypeTextFontFamily
+                })
+                BaseTabComponent({
+                  titleStr: "代码块类型文本行高 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTypeTextLineHeightList,
+                  allData: this.codeBlockTypeTextLineHeight
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 复制相关
+          Column() {
+            Row() {
+              Text("代码块复制相关")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded4 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded4 = !this.isExpanded4
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded4 = !this.isExpanded4
+            })
+
+            if (this.isExpanded4) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "代码块代码复制按钮是否显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockCopyButtonIsShowList,
+                  allData: this.codeBlockCopyButtonIsShow
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制文本是否显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockCopyTextIsShowList,
+                  allData: this.codeBlockCopyTextIsShow
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制按钮默认图标 - ",
+                  typeEnum: TypeEnum.IS_RESOURCE,
+                  allListData: this.codeBlockCopyIconList,
+                  allData: this.codeBlockCopyIcon
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制图标宽度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockCopyIconWidthList,
+                  allData: this.codeBlockCopyIconWidth
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制图标高度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockCopyIconHeightList,
+                  allData: this.codeBlockCopyIconHeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制图标和文本间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockCopyIconTextSpacingList,
+                  allData: this.codeBlockCopyIconTextSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制默认文本内容 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.codeBlockCopyTextList,
+                  allData: this.codeBlockCopyText
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制文本颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.codeBlockCopyTextFontColorList,
+                  allData: this.codeBlockCopyTextFontColor
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制文本尺寸 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockCopyTextFontSizeList,
+                  allData: this.codeBlockCopyTextFontSize
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制文本字体样式 - ",
+                  typeEnum: TypeEnum.IS_FONT_STYLE,
+                  allListData: this.codeBlockCopyTextFontStyleList,
+                  allData: this.codeBlockCopyTextFontStyle
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制文本字体粗细 - ",
+                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
+                  allListData: this.codeBlockCopyTextFontWeightList,
+                  allData: this.codeBlockCopyTextFontWeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制文本字体 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.codeBlockCopyTextFontFamilyList,
+                  allData: this.codeBlockCopyTextFontFamily
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码复制文本行高 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockCopyTextLineHeightList,
+                  allData: this.codeBlockCopyTextLineHeight
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 全屏相关
+          Column() {
+            Row() {
+              Text("代码块全屏相关")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded5 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded5 = !this.isExpanded5
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded5 = !this.isExpanded5
+            })
+
+            if (this.isExpanded5) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏按钮是否显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockFullScreenButtonIsShowList,
+                  allData: this.codeBlockFullScreenButtonIsShow
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏文本是否显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockFullScreenTextIsShowList,
+                  allData: this.codeBlockFullScreenTextIsShow
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏按钮默认图标 - ",
+                  typeEnum: TypeEnum.IS_RESOURCE,
+                  allListData: this.codeBlockFullScreenIconList,
+                  allData: this.codeBlockFullScreenIcon
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏图标宽度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockFullScreenIconWidthList,
+                  allData: this.codeBlockFullScreenIconWidth
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏图标高度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockFullScreenIconHeightList,
+                  allData: this.codeBlockFullScreenIconHeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏图标和文本间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockFullScreenIconTextSpacingList,
+                  allData: this.codeBlockFullScreenIconTextSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏默认文本内容 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.codeBlockFullScreenTextList,
+                  allData: this.codeBlockFullScreenText
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏文本颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.codeBlockFullScreenTextFontColorList,
+                  allData: this.codeBlockFullScreenTextFontColor
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏文本尺寸 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockFullScreenTextFontSizeList,
+                  allData: this.codeBlockFullScreenTextFontSize
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏文本字体样式 - ",
+                  typeEnum: TypeEnum.IS_FONT_STYLE,
+                  allListData: this.codeBlockFullScreenTextFontStyleList,
+                  allData: this.codeBlockFullScreenTextFontStyle
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏文本字体粗细 - ",
+                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
+                  allListData: this.codeBlockFullScreenTextFontWeightList,
+                  allData: this.codeBlockFullScreenTextFontWeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏文本字体 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.codeBlockFullScreenTextFontFamilyList,
+                  allData: this.codeBlockFullScreenTextFontFamily
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码全屏文本行高 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockFullScreenTextLineHeightList,
+                  allData: this.codeBlockFullScreenTextLineHeight
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 代码块行号
+          Column() {
+            Row() {
+              Text("代码块行号")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded6 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded6 = !this.isExpanded6
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded6 = !this.isExpanded6
+            })
+
+            if (this.isExpanded6) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "代码块代码行号是否显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockLineNumberIsShowList,
+                  allData: this.codeBlockLineNumberIsShow
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号左内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockLineNumberTextPaddingLeftList,
+                  allData: this.codeBlockLineNumberTextPaddingLeft
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号文本颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.codeBlockLineNumberTextFontColorList,
+                  allData: this.codeBlockLineNumberTextFontColor
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号文本尺寸 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockLineNumberTextFontSizeList,
+                  allData: this.codeBlockLineNumberTextFontSize
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号文本字体样式 - ",
+                  typeEnum: TypeEnum.IS_FONT_STYLE,
+                  allListData: this.codeBlockLineNumberTextFontStyleList,
+                  allData: this.codeBlockLineNumberTextFontStyle
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号文本字体粗细 - ",
+                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
+                  allListData: this.codeBlockLineNumberTextFontWeightList,
+                  allData: this.codeBlockLineNumberTextFontWeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号文本字体 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.codeBlockLineNumberTextFontFamilyList,
+                  allData: this.codeBlockLineNumberTextFontFamily
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号文本行高 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockLineNumberTextLineHeightList,
+                  allData: this.codeBlockLineNumberTextLineHeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号和代码块中间分割线颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.codeBlockDividerColorList,
+                  allData: this.codeBlockDividerColor
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号和代码块中间分割线宽度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockDividerStrokeWidthList,
+                  allData: this.codeBlockDividerStrokeWidth
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码行号和分割线间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockLineNumberDividerSpacingList,
+                  allData: this.codeBlockLineNumberDividerSpacing
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 代码块文本
+          Column() {
+            Row() {
+              Text("代码块文本")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded7 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded7 = !this.isExpanded7
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded7 = !this.isExpanded7
+            })
+
+            if (this.isExpanded7) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "代码块文本颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.codeBlockTextFontColorList,
+                  allData: this.codeBlockTextFontColor
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码文本右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTextMarginRightList,
+                  allData: this.codeBlockTextMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块代码文本左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTextMarginLeftList,
+                  allData: this.codeBlockTextMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "代码块文本尺寸 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTextFontSizeList,
+                  allData: this.codeBlockTextFontSize
+                })
+                BaseTabComponent({
+                  titleStr: "代码块文本字体样式 - ",
+                  typeEnum: TypeEnum.IS_FONT_STYLE,
+                  allListData: this.codeBlockTextFontStyleList,
+                  allData: this.codeBlockTextFontStyle
+                })
+                BaseTabComponent({
+                  titleStr: "代码块文本字体粗细 - ",
+                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
+                  allListData: this.codeBlockTextFontWeightList,
+                  allData: this.codeBlockTextFontWeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块文本字体 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.codeBlockTextFontFamilyList,
+                  allData: this.codeBlockTextFontFamily
+                })
+                BaseTabComponent({
+                  titleStr: "代码块文本行高 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTextLineHeightList,
+                  allData: this.codeBlockTextLineHeight
+                })
+                BaseTabComponent({
+                  titleStr: "代码块文本字符间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockTextLetterSpacingList,
+                  allData: this.codeBlockTextLetterSpacing
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
         }
-        .padding({ bottom: 100 })
+        .padding({ top: 10, bottom: 100 })
       }
+
     }
     .backgroundColor(0xFFEAEAEA)
-    .height("100%")
+    .height("90%")
   }
 }
-
-

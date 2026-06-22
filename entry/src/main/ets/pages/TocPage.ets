@@ -63,8 +63,10 @@ struct TocPage {
   // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
-
   @State tocData: TocData = new TocData() // 配置数据内容
+  heightMD: number = 30 * 1 // 乘以行数
+  @State isExpanded1: boolean = false // 控制展开/折叠状态
+  @State isExpanded2: boolean = false // 控制展开/折叠状态
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -78,137 +80,179 @@ struct TocPage {
         true,
         this.safeTop
       )
+
+      // md文档展示部分
+      Column() {
+        GridRow({
+          columns: 3,
+          gutter: { x: 5, y: 5 },
+          breakpoints: {
+            value: ['400vp', '600vp', '800vp'],
+            reference: BreakpointsReference.ComponentSize
+          },
+          direction: GridRowDirection.Row
+        }) {
+          ForEach(this.folderList, (item: string, index: number) => {
+            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor(0xFFFFFFFF)
+                .backgroundColor(0xFF2196F3)
+                .height(25).width('100%')
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                  this.tocData._isFull = this.isFull
+                  this.tocData._incrementalAnalysis = this.incrementalAnalysis
+                  this.tocData._time = this.time
+                  this.tocData._textNumber = this.textNumber
+                  this.tocData._isMarkdownParserSync = this.isMarkdownParserSync
+                  this.tocData._isOnCopy = this.isOnCopy
+                  this.tocData._blockMarginTop = this.blockMarginTop
+                  this.tocData._blockMarginRight = this.blockMarginRight
+                  this.tocData._blockMarginBottom = this.blockMarginBottom
+                  this.tocData._blockMarginLeft = this.blockMarginLeft
+                  this.tocData._markdownBlockSpacing = this.markdownBlockSpacing
+                  this.tocData._isLineBreak = this.isLineBreak
+                  this.tocData._openGestureSwipe = this.openGestureSwipe
+                  this.tocData._openGestureSwipeTest = this.openGestureSwipeTest
+                  this.tocData._pagePath = `${this.rawFilePath}/${item}`
+                  // ---------- 跳转到详情
+                  router.pushUrl({ url: "pages/TocDetailsPage", params: this.tocData })
+                })
+            }
+          })
+        }.width('100%').height('100%')
+      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+
       Scroll() {
         Column() {
-          // ------------ 通用配置
-          BaseTabComponent({
-            titleStr: "是否全量加载Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isFullList,
-            allData: this.isFull
-          })
-          BaseTabComponent({
-            titleStr: "是否增量解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.incrementalAnalysisList,
-            allData: this.incrementalAnalysis
-          })
-          BaseTabComponent({
-            titleStr: "增量加载每次间隔时间 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.timeList,
-            allData: this.time
-          })
-          BaseTabComponent({
-            titleStr: "增量每次增量文本数量 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.textNumberList,
-            allData: this.textNumber
-          })
-          BaseTabComponent({
-            titleStr: "是否同步解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isMarkdownParserSyncList,
-            allData: this.isMarkdownParserSync
-          })
-          BaseTabComponent({
-            titleStr: "是否打开长按复制粘贴效果 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isOnCopyList,
-            allData: this.isOnCopy
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局上外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginTopList,
-            allData: this.blockMarginTop
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局右外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginRightList,
-            allData: this.blockMarginRight
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局下外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginBottomList,
-            allData: this.blockMarginBottom
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局左外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginLeftList,
-            allData: this.blockMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "模块间上下间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.markdownBlockSpacingList,
-            allData: this.markdownBlockSpacing
-          })
-          BaseTabComponent({
-            titleStr: "软换行是否换行 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isLineBreakList,
-            allData: this.isLineBreak
-          })
-          BaseTabComponent({
-            titleStr: "是否开启响应滑动测试 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeTestList,
-            allData: this.openGestureSwipeTest
-          })
-          BaseTabComponent({
-            titleStr: "是否允许markdown控件自身响应滑动 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeList,
-            allData: this.openGestureSwipe
-          })
-
-          List() {
-            ForEach(this.folderList, (item: string, index: number) => {
-              ListItem() {
-                Button(`${index + 1}、${item}`)
-                  .height(40)
-                  .width('80%')
-                  .type(ButtonType.Capsule)
-                  .fontColor(0xFFFFFFFF)
-                  .backgroundColor(0xFF317AFF)
-                  .margin({ top: 5, bottom: 5 })
-                  .align(Alignment.Center)
-                  .fontSize(16)
-                  .onClick(() => {
-                    // ---------- 通用配置
-                    this.tocData.isFull = this.isFull
-                    this.tocData.incrementalAnalysis = this.incrementalAnalysis
-                    this.tocData.time = this.time
-                    this.tocData.textNumber = this.textNumber
-                    this.tocData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.tocData.isOnCopy = this.isOnCopy
-                    this.tocData.blockMarginTop = this.blockMarginTop
-                    this.tocData.blockMarginRight = this.blockMarginRight
-                    this.tocData.blockMarginBottom = this.blockMarginBottom
-                    this.tocData.blockMarginLeft = this.blockMarginLeft
-                    this.tocData.markdownBlockSpacing = this.markdownBlockSpacing
-                    this.tocData.isLineBreak = this.isLineBreak
-                    this.tocData.openGestureSwipe = this.openGestureSwipe
-                    this.tocData.openGestureSwipeTest = this.openGestureSwipeTest
-                    this.tocData.pagePath = `${this.rawFilePath}/${item}`
-
-                    // ---------- 跳转到详情
-                    router.pushUrl({ url: "pages/TocDetailsPage", params: this.tocData })
-                  })
-              }
+          Column() {
+            Row() {
+              Text("通用样式配置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded1 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded1 = !this.isExpanded1
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded1 = !this.isExpanded1
             })
+
+            if (this.isExpanded1) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否全量加载Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isFullList,
+                  allData: this.isFull
+                })
+                BaseTabComponent({
+                  titleStr: "是否增量解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.incrementalAnalysisList,
+                  allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "增量加载每次间隔时间 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.timeList,
+                  allData: this.time
+                })
+                BaseTabComponent({
+                  titleStr: "增量每次增量文本数量 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.textNumberList,
+                  allData: this.textNumber
+                })
+                BaseTabComponent({
+                  titleStr: "是否同步解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isMarkdownParserSyncList,
+                  allData: this.isMarkdownParserSync
+                })
+                BaseTabComponent({
+                  titleStr: "是否打开长按复制粘贴效果 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isOnCopyList,
+                  allData: this.isOnCopy
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局上外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginTopList,
+                  allData: this.blockMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginRightList,
+                  allData: this.blockMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginBottomList,
+                  allData: this.blockMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginLeftList,
+                  allData: this.blockMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "模块间上下间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.markdownBlockSpacingList,
+                  allData: this.markdownBlockSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "软换行是否换行 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isLineBreakList,
+                  allData: this.isLineBreak
+                })
+                BaseTabComponent({
+                  titleStr: "是否开启响应滑动测试 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeTestList,
+                  allData: this.openGestureSwipeTest
+                })
+                BaseTabComponent({
+                  titleStr: "是否允许markdown控件自身响应滑动 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeList,
+                  allData: this.openGestureSwipe
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
           }
-          // 设置ListItem在List交叉轴方向的布局方式
-          .alignListItem(ListItemAlign.Center)
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
         }
-        .padding({ bottom: 100 })
+        .padding({ top: 10, bottom: 100 })
       }
     }
     .backgroundColor($r('app.color.page_background'))
-    .height("100%")
+    .height("90%")
   }
 }

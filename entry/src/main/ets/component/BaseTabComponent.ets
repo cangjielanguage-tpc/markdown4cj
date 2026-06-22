@@ -1,8 +1,7 @@
 import { ImageFitType } from "@cangjie-tpc/markdown_hybrid"
 import { TypeEnum } from "../model/TypeEnum"
 import { borderStyleToString, barStateToString, colorSwitch, colorSwitch1, decorationTypeToString, enumToString, fontStyleToString, fontWeightToString, imageFitToString, numberToColorString, styleToString,
-  resToString,
-  lineCapStyleToString} from "../utils/BaseUtils"
+  resToString, lineCapStyleToString } from "../utils/BaseUtils"
 
 /**
  * 自定义选项卡
@@ -11,10 +10,10 @@ import { borderStyleToString, barStateToString, colorSwitch, colorSwitch1, decor
 export struct BaseTabComponent {
   titleStr: string = ""
   typeEnum: TypeEnum = TypeEnum.IS_STRING
-  allListData: Array<string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit | ImageFitType | BarState | LineCapStyle| undefined> =
-    Array<string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit | ImageFitType | BarState | LineCapStyle| undefined>()
+  allListData: Array<string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit | ImageFitType | BarState | LineCapStyle | undefined> =
+    Array<string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit | ImageFitType | BarState | LineCapStyle | undefined>()
   @Link
-  allData: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit | ImageFitType | BarState | LineCapStyle| undefined
+  allData: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit | ImageFitType | BarState | LineCapStyle | undefined
 
   build() {
     Column() {
@@ -551,6 +550,7 @@ export struct BaseTabComponent {
           })
         }
       }
+      .backgroundColor($r('app.color.start_window_background'))
     }
   }
 }

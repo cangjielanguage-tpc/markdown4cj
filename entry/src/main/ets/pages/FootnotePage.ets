@@ -1,4 +1,3 @@
-
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
@@ -95,7 +94,6 @@ struct FootnotePage {
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
   @State footnoteData: FootnoteData = new FootnoteData() // 配置数据内容
-
   // ---------------- 专有
   // 脚注定义背景颜色列表
   footnoteDefBackgroundColorList: Array<number | undefined> = colorListGeneralData
@@ -193,6 +191,10 @@ struct FootnotePage {
   footnoteRefTextBackgroundRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State // 脚注引用文本背景右下圆角
   footnoteRefTextBackgroundRadiusBottomRight: number = 0
+  heightMD: number = 30 * 2 // 乘以行数
+  @State isExpanded1: boolean = false // 控制展开/折叠状态 - 通用样式配置
+  @State isExpanded2: boolean = false // 控制展开/折叠状态 - 脚注定义
+  @State isExpanded3: boolean = false // 控制展开/折叠状态 - 脚注引用
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -206,314 +208,429 @@ struct FootnotePage {
         true,
         this.safeTop
       )
+
+      // md文档展示部分
+      Column() {
+        GridRow({
+          columns: 5,
+          gutter: { x: 5, y: 5 },
+          breakpoints: {
+            value: ['400vp', '600vp', '800vp'],
+            reference: BreakpointsReference.ComponentSize
+          },
+          direction: GridRowDirection.Row
+        }) {
+          ForEach(this.folderList, (item: string, index: number) => {
+            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor(0xFFFFFFFF)
+                .backgroundColor(0xFF2196F3)
+                .height(25).width('100%')
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                  this.footnoteData._isFull = this.isFull
+                  this.footnoteData._incrementalAnalysis = this.incrementalAnalysis
+                  this.footnoteData._time = this.time
+                  this.footnoteData._textNumber = this.textNumber
+                  this.footnoteData._isMarkdownParserSync = this.isMarkdownParserSync
+                  this.footnoteData._isOnCopy = this.isOnCopy
+                  this.footnoteData._blockMarginTop = this.blockMarginTop
+                  this.footnoteData._blockMarginRight = this.blockMarginRight
+                  this.footnoteData._blockMarginBottom = this.blockMarginBottom
+                  this.footnoteData._blockMarginLeft = this.blockMarginLeft
+                  this.footnoteData._markdownBlockSpacing = this.markdownBlockSpacing
+                  this.footnoteData._isLineBreak = this.isLineBreak
+                  this.footnoteData._backgroundColor = this.globalBackgroundColor
+                  this.footnoteData._openGestureSwipe = this.openGestureSwipe
+                  this.footnoteData._openGestureSwipeTest = this.openGestureSwipeTest
+                  this.footnoteData._pagePath = `${this.rawFilePath}/${item}`
+
+                  // ---------- 专有
+                  this.footnoteData.footnoteDefBackgroundColor = this.footnoteDefBackgroundColor
+                  this.footnoteData.footnoteDefMarginTop = this.footnoteDefMarginTop
+                  this.footnoteData.footnoteDefMarginRight = this.footnoteDefMarginRight
+                  this.footnoteData.footnoteDefMarginBottom = this.footnoteDefMarginBottom
+                  this.footnoteData.footnoteDefMarginLeft = this.footnoteDefMarginLeft
+                  this.footnoteData.footnoteDefPaddingTop = this.footnoteDefPaddingTop
+                  this.footnoteData.footnoteDefPaddingRight = this.footnoteDefPaddingRight
+                  this.footnoteData.footnoteDefPaddingBottom = this.footnoteDefPaddingBottom
+                  this.footnoteData.footnoteDefPaddingLeft = this.footnoteDefPaddingLeft
+                  this.footnoteData.footnoteRefTextFontColor = this.footnoteRefTextFontColor
+                  this.footnoteData.footnoteRefTextFontSize = this.footnoteRefTextFontSize
+                  this.footnoteData.footnoteRefTextFontStyle = this.footnoteRefTextFontStyle
+                  this.footnoteData.footnoteRefTextFontWeight = this.footnoteRefTextFontWeight
+                  this.footnoteData.footnoteRefTextFontFamily = this.footnoteRefTextFontFamily
+                  this.footnoteData.footnoteRefTextLineHeight = this.footnoteRefTextLineHeight
+                  this.footnoteData.footnoteRefTextLetterSpacing = this.footnoteRefTextLetterSpacing
+                  this.footnoteData.footnoteRefTextDecorationType = this.footnoteRefTextDecorationType
+                  this.footnoteData.footnoteRefTextDecorationColor = this.footnoteRefTextDecorationColor
+                  this.footnoteData.footnoteRefTextDecorationStyle = this.footnoteRefTextDecorationStyle
+                  this.footnoteData.footnoteRefTextBackgroundColor = this.footnoteRefTextBackgroundColor
+                  this.footnoteData.footnoteRefTextBackgroundRadiusTopLeft = this.footnoteRefTextBackgroundRadiusTopLeft
+                  this.footnoteData.footnoteRefTextBackgroundRadiusTopRight = this.footnoteRefTextBackgroundRadiusTopRight
+                  this.footnoteData.footnoteRefTextBackgroundRadiusBottomLeft = this.footnoteRefTextBackgroundRadiusBottomLeft
+                  this.footnoteData.footnoteRefTextBackgroundRadiusBottomRight = this.footnoteRefTextBackgroundRadiusBottomRight
+                  // ---------- 跳转到详情
+                  router.pushUrl({ url: "pages/FootnoteDetailsPage", params: this.footnoteData })
+                })
+            }
+          })
+        }.width('100%').height('100%')
+      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+
       Scroll() {
         Column() {
-          // ------------ 通用
-          BaseTabComponent({
-            titleStr: "是否全量加载Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isFullList,
-            allData: this.isFull
-          })
-          BaseTabComponent({
-            titleStr: "是否增量解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.incrementalAnalysisList,
-            allData: this.incrementalAnalysis
-          })
-          BaseTabComponent({
-            titleStr: "增量加载每次间隔时间 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.timeList,
-            allData: this.time
-          })
-          BaseTabComponent({
-            titleStr: "增量每次增量文本数量 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.textNumberList,
-            allData: this.textNumber
-          })
-          BaseTabComponent({
-            titleStr: "是否同步解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isMarkdownParserSyncList,
-            allData: this.isMarkdownParserSync
-          })
-          BaseTabComponent({
-            titleStr: "是否打开长按复制粘贴效果 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isOnCopyList,
-            allData: this.isOnCopy
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局上外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginTopList,
-            allData: this.blockMarginTop
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局右外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginRightList,
-            allData: this.blockMarginRight
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局下外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginBottomList,
-            allData: this.blockMarginBottom
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局左外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginLeftList,
-            allData: this.blockMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "模块间上下间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.markdownBlockSpacingList,
-            allData: this.markdownBlockSpacing
-          })
-          BaseTabComponent({
-            titleStr: "软换行是否换行 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isLineBreakList,
-            allData: this.isLineBreak
-          })
-          BaseTabComponent({
-            titleStr: "背景颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.globalBackgroundColorList,
-            allData: this.globalBackgroundColor
-          })
-          BaseTabComponent({
-            titleStr: "是否开启响应滑动测试 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeTestList,
-            allData: this.openGestureSwipeTest
-          })
-          BaseTabComponent({
-            titleStr: "是否允许markdown控件自身响应滑动 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeList,
-            allData: this.openGestureSwipe
-          })
-
-          // ---------------- 专有
-          BaseTabComponent({
-            titleStr: "脚注定义背景颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.footnoteDefBackgroundColorList,
-            allData: this.footnoteDefBackgroundColor
-          })
-          BaseTabComponent({
-            titleStr: "脚注定义上外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteDefMarginTopList,
-            allData: this.footnoteDefMarginTop
-          })
-          BaseTabComponent({
-            titleStr: "脚注定义右外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteDefMarginRightList,
-            allData: this.footnoteDefMarginRight
-          })
-          BaseTabComponent({
-            titleStr: "脚注定义下外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteDefMarginBottomList,
-            allData: this.footnoteDefMarginBottom
-          })
-          BaseTabComponent({
-            titleStr: "脚注定义左外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteDefMarginLeftList,
-            allData: this.footnoteDefMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "脚注定义上内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteDefPaddingTopList,
-            allData: this.footnoteDefPaddingTop
-          })
-          BaseTabComponent({
-            titleStr: "脚注定义右内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteDefPaddingRightList,
-            allData: this.footnoteDefPaddingRight
-          })
-          BaseTabComponent({
-            titleStr: "脚注定义下内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteDefPaddingBottomList,
-            allData: this.footnoteDefPaddingBottom
-          })
-          BaseTabComponent({
-            titleStr: "脚注定义左内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteDefPaddingLeftList,
-            allData: this.footnoteDefPaddingLeft
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.footnoteRefTextFontColorList,
-            allData: this.footnoteRefTextFontColor
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本尺寸 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteRefTextFontSizeList,
-            allData: this.footnoteRefTextFontSize
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本字体样式 - ",
-            typeEnum: TypeEnum.IS_FONT_STYLE,
-            allListData: this.footnoteRefTextFontStyleList,
-            allData: this.footnoteRefTextFontStyle
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本字体粗细 - ",
-            typeEnum: TypeEnum.IS_FONT_WEIGHT,
-            allListData: this.footnoteRefTextFontWeightList,
-            allData: this.footnoteRefTextFontWeight
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本字体 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.footnoteRefTextFontFamilyList,
-            allData: this.footnoteRefTextFontFamily
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteRefTextLineHeightList,
-            allData: this.footnoteRefTextLineHeight
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本字符间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteRefTextLetterSpacingList,
-            allData: this.footnoteRefTextLetterSpacing
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本装饰线类型 - ",
-            typeEnum: TypeEnum.IS_DECORATION_TYPE,
-            allListData: this.footnoteRefTextDecorationTypeList,
-            allData: this.footnoteRefTextDecorationType
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本装饰线颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.footnoteRefTextDecorationColorList,
-            allData: this.footnoteRefTextDecorationColor
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本装饰线样式 - ",
-            typeEnum: TypeEnum.IS_DECORATION_STYLE,
-            allListData: this.footnoteRefTextDecorationStyleList,
-            allData: this.footnoteRefTextDecorationStyle
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本背景颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.footnoteRefTextBackgroundColorList,
-            allData: this.footnoteRefTextBackgroundColor
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本背景左上圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteRefTextBackgroundRadiusTopLeftList,
-            allData: this.footnoteRefTextBackgroundRadiusTopLeft
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本背景右上圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteRefTextBackgroundRadiusTopRightList,
-            allData: this.footnoteRefTextBackgroundRadiusTopRight
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本背景左下圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteRefTextBackgroundRadiusBottomLeftList,
-            allData: this.footnoteRefTextBackgroundRadiusBottomLeft
-          })
-          BaseTabComponent({
-            titleStr: "脚注引用文本背景右下圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.footnoteRefTextBackgroundRadiusBottomRightList,
-            allData: this.footnoteRefTextBackgroundRadiusBottomRight
-          })
-
-          // 列表显示
-          List() {
-            ForEach(this.folderList, (item: string, index: number) => {
-              ListItem() {
-                Button(`${index + 1}、${item}`)
-                  .height(40)
-                  .width('80%')
-                  .type(ButtonType.Capsule)
-                  .fontColor(0xFFFFFFFF)
-                  .backgroundColor(0xFF317AFF)
-                  .margin({ top: 5, bottom: 5 })
-                  .align(Alignment.Center)
-                  .fontSize(16)
-                  .onClick(() => {
-                    // ---------- 通用
-                    this.footnoteData.isFull = this.isFull
-                    this.footnoteData.incrementalAnalysis = this.incrementalAnalysis
-                    this.footnoteData.time = this.time
-                    this.footnoteData.textNumber = this.textNumber
-                    this.footnoteData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.footnoteData.isOnCopy = this.isOnCopy
-                    this.footnoteData.blockMarginTop = this.blockMarginTop
-                    this.footnoteData.blockMarginRight = this.blockMarginRight
-                    this.footnoteData.blockMarginBottom = this.blockMarginBottom
-                    this.footnoteData.blockMarginLeft = this.blockMarginLeft
-                    this.footnoteData.markdownBlockSpacing = this.markdownBlockSpacing
-                    this.footnoteData.isLineBreak = this.isLineBreak
-                    this.footnoteData.backgroundColor = this.globalBackgroundColor
-                    this.footnoteData.openGestureSwipe = this.openGestureSwipe
-                    this.footnoteData.openGestureSwipeTest = this.openGestureSwipeTest
-                    this.footnoteData.pagePath = `${this.rawFilePath}/${item}`
-                    // ---------- 专有
-                    this.footnoteData.footnoteDefBackgroundColor = this.footnoteDefBackgroundColor
-                    this.footnoteData.footnoteDefMarginTop = this.footnoteDefMarginTop
-                    this.footnoteData.footnoteDefMarginRight = this.footnoteDefMarginRight
-                    this.footnoteData.footnoteDefMarginBottom = this.footnoteDefMarginBottom
-                    this.footnoteData.footnoteDefMarginLeft = this.footnoteDefMarginLeft
-                    this.footnoteData.footnoteDefPaddingTop = this.footnoteDefPaddingTop
-                    this.footnoteData.footnoteDefPaddingRight = this.footnoteDefPaddingRight
-                    this.footnoteData.footnoteDefPaddingBottom = this.footnoteDefPaddingBottom
-                    this.footnoteData.footnoteDefPaddingLeft = this.footnoteDefPaddingLeft
-                    this.footnoteData.footnoteRefTextFontColor = this.footnoteRefTextFontColor
-                    this.footnoteData.footnoteRefTextFontSize = this.footnoteRefTextFontSize
-                    this.footnoteData.footnoteRefTextFontStyle = this.footnoteRefTextFontStyle
-                    this.footnoteData.footnoteRefTextFontWeight = this.footnoteRefTextFontWeight
-                    this.footnoteData.footnoteRefTextFontFamily = this.footnoteRefTextFontFamily
-                    this.footnoteData.footnoteRefTextLineHeight = this.footnoteRefTextLineHeight
-                    this.footnoteData.footnoteRefTextLetterSpacing = this.footnoteRefTextLetterSpacing
-                    this.footnoteData.footnoteRefTextDecorationType = this.footnoteRefTextDecorationType
-                    this.footnoteData.footnoteRefTextDecorationColor = this.footnoteRefTextDecorationColor
-                    this.footnoteData.footnoteRefTextDecorationStyle = this.footnoteRefTextDecorationStyle
-                    this.footnoteData.footnoteRefTextBackgroundColor = this.footnoteRefTextBackgroundColor
-                    this.footnoteData.footnoteRefTextBackgroundRadiusTopLeft = this.footnoteRefTextBackgroundRadiusTopLeft
-                    this.footnoteData.footnoteRefTextBackgroundRadiusTopRight = this.footnoteRefTextBackgroundRadiusTopRight
-                    this.footnoteData.footnoteRefTextBackgroundRadiusBottomLeft = this.footnoteRefTextBackgroundRadiusBottomLeft
-                    this.footnoteData.footnoteRefTextBackgroundRadiusBottomRight = this.footnoteRefTextBackgroundRadiusBottomRight
-                    // ---------- 跳转到详情
-                    router.pushUrl({ url: "pages/FootnoteDetailsPage", params: this.footnoteData })
-                  })
-              }
+          // 通用样式配置
+          Column() {
+            Row() {
+              Text("通用样式配置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded1 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded1 = !this.isExpanded1
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded1 = !this.isExpanded1
             })
+
+            if (this.isExpanded1) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否全量加载Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isFullList,
+                  allData: this.isFull
+                })
+                BaseTabComponent({
+                  titleStr: "是否增量解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.incrementalAnalysisList,
+                  allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "增量加载每次间隔时间 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.timeList,
+                  allData: this.time
+                })
+                BaseTabComponent({
+                  titleStr: "增量每次增量文本数量 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.textNumberList,
+                  allData: this.textNumber
+                })
+                BaseTabComponent({
+                  titleStr: "是否同步解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isMarkdownParserSyncList,
+                  allData: this.isMarkdownParserSync
+                })
+                BaseTabComponent({
+                  titleStr: "是否打开长按复制粘贴效果 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isOnCopyList,
+                  allData: this.isOnCopy
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局上外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginTopList,
+                  allData: this.blockMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginRightList,
+                  allData: this.blockMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginBottomList,
+                  allData: this.blockMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginLeftList,
+                  allData: this.blockMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "模块间上下间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.markdownBlockSpacingList,
+                  allData: this.markdownBlockSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "软换行是否换行 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isLineBreakList,
+                  allData: this.isLineBreak
+                })
+                BaseTabComponent({
+                  titleStr: "背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.globalBackgroundColorList,
+                  allData: this.globalBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "是否开启响应滑动测试 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeTestList,
+                  allData: this.openGestureSwipeTest
+                })
+                BaseTabComponent({
+                  titleStr: "是否允许markdown控件自身响应滑动 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeList,
+                  allData: this.openGestureSwipe
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
           }
-          .alignListItem(ListItemAlign.Center)
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 脚注定义
+          Column() {
+            Row() {
+              Text("脚注定义")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded2 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded2 = !this.isExpanded2
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded2 = !this.isExpanded2
+            })
+
+            if (this.isExpanded2) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "脚注定义背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.footnoteDefBackgroundColorList,
+                  allData: this.footnoteDefBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "脚注定义上外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteDefMarginTopList,
+                  allData: this.footnoteDefMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "脚注定义右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteDefMarginRightList,
+                  allData: this.footnoteDefMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "脚注定义下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteDefMarginBottomList,
+                  allData: this.footnoteDefMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "脚注定义左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteDefMarginLeftList,
+                  allData: this.footnoteDefMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "脚注定义上内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteDefPaddingTopList,
+                  allData: this.footnoteDefPaddingTop
+                })
+                BaseTabComponent({
+                  titleStr: "脚注定义右内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteDefPaddingRightList,
+                  allData: this.footnoteDefPaddingRight
+                })
+                BaseTabComponent({
+                  titleStr: "脚注定义下内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteDefPaddingBottomList,
+                  allData: this.footnoteDefPaddingBottom
+                })
+                BaseTabComponent({
+                  titleStr: "脚注定义左内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteDefPaddingLeftList,
+                  allData: this.footnoteDefPaddingLeft
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 脚注引用
+          Column() {
+            Row() {
+              Text("脚注引用")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded3 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded3 = !this.isExpanded3
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded3 = !this.isExpanded3
+            })
+
+            if (this.isExpanded3) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "脚注引用文本颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.footnoteRefTextFontColorList,
+                  allData: this.footnoteRefTextFontColor
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本尺寸 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteRefTextFontSizeList,
+                  allData: this.footnoteRefTextFontSize
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本字体样式 - ",
+                  typeEnum: TypeEnum.IS_FONT_STYLE,
+                  allListData: this.footnoteRefTextFontStyleList,
+                  allData: this.footnoteRefTextFontStyle
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本字体粗细 - ",
+                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
+                  allListData: this.footnoteRefTextFontWeightList,
+                  allData: this.footnoteRefTextFontWeight
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本字体 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.footnoteRefTextFontFamilyList,
+                  allData: this.footnoteRefTextFontFamily
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本行高 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteRefTextLineHeightList,
+                  allData: this.footnoteRefTextLineHeight
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本字符间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteRefTextLetterSpacingList,
+                  allData: this.footnoteRefTextLetterSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本装饰线类型 - ",
+                  typeEnum: TypeEnum.IS_DECORATION_TYPE,
+                  allListData: this.footnoteRefTextDecorationTypeList,
+                  allData: this.footnoteRefTextDecorationType
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本装饰线颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.footnoteRefTextDecorationColorList,
+                  allData: this.footnoteRefTextDecorationColor
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本装饰线样式 - ",
+                  typeEnum: TypeEnum.IS_DECORATION_STYLE,
+                  allListData: this.footnoteRefTextDecorationStyleList,
+                  allData: this.footnoteRefTextDecorationStyle
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.footnoteRefTextBackgroundColorList,
+                  allData: this.footnoteRefTextBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本背景左上圆角 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteRefTextBackgroundRadiusTopLeftList,
+                  allData: this.footnoteRefTextBackgroundRadiusTopLeft
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本背景右上圆角 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteRefTextBackgroundRadiusTopRightList,
+                  allData: this.footnoteRefTextBackgroundRadiusTopRight
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本背景左下圆角 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteRefTextBackgroundRadiusBottomLeftList,
+                  allData: this.footnoteRefTextBackgroundRadiusBottomLeft
+                })
+                BaseTabComponent({
+                  titleStr: "脚注引用文本背景右下圆角 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.footnoteRefTextBackgroundRadiusBottomRightList,
+                  allData: this.footnoteRefTextBackgroundRadiusBottomRight
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
         }
-        .padding({ bottom: 100 })
+        .padding({ top: 10, bottom: 100 })
       }
     }
     .backgroundColor(0xFFEAEAEA)
-    .height("100%")
+    .height("90%")
   }
 }
