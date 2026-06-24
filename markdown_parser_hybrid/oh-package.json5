@@ -1,0 +1,21 @@
+{
+  "name": "@cangjie-tpc/markdown_parser_hybrid",
+  "version": "1.0.0",
+  "description": "markdown parser hybrid.",
+  "main": "Index.ets",
+  "author": "cangjie-tpc",
+  "license": "Apache-2.0",
+  "repository": "https://gitcode.com/Cangjie-TPC/markdown4cj.git",
+  "homepage": "https://gitcode.com/Cangjie-TPC/markdown4cj",
+  "keywords": [
+    "markdown",
+    "commonmark",
+    "cangjie",
+    "仓颉",
+    "OpenHarmony",
+    "HarmonyOS"
+  ],
+  "dependencies": {
+    "libmarkdown_parser_hybrid.so": "file:src/main/cangjie/types/libmarkdown_parser_hybrid"
+  }
+}

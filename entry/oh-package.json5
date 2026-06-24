@@ -1,0 +1,13 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@cangjie-tpc/markdown_parser_hybrid": "file:../markdown_parser_hybrid"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}
