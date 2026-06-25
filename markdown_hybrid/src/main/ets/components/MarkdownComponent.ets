@@ -7,6 +7,9 @@ import { nodeToNodeView } from "../utils/MarkdownParserUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
 import { image } from "@kit.ImageKit"
+import { MarkdownAudio } from "./MarkdownAudio"
+import { MarkdownVideo } from "./MarkdownVideo"
+import { MarkdownBanner } from "./MarkdownBanner"
 
 @Component
 export struct CJMarkdown {
@@ -18,6 +21,7 @@ export struct CJMarkdown {
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
   private parseVersion: number = 0 // 解析版本号，每次解析递增
   private appliedVersion: number = 0 // 已应用的版本号，用于渐进式更新（避免丢弃所有中间结果）
+  imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -80,9 +84,39 @@ export struct CJMarkdown {
                 componentWidth: this.componentWidth
               })
             } else if (item.nodeType == "ThematicBreak") {
+              // 分割线
               MarkdownThematicBreak({
                 dividerTheme: this.config.markdownTheme.dividerTheme
               })
+            } else if (item.nodeType == "SlideBlock") {
+              // 图片幻灯片
+              MarkdownBanner({
+                node: item,
+                bannerTheme: this.config.markdownTheme.bannerTheme,
+                imageTheme: this.config.markdownTheme.imageTheme,
+                imageCallback: this.imageCallback
+              })
+            } else if (item.nodeType == "BlockVideo") {
+              // 视频
+              MarkdownVideo({
+                node: item,
+                videoTheme: this.config.markdownTheme.videoTheme,
+                videoCallback: this.videoCallback,
+                videoImageCallback: this.config.videoImageCallback,
+                videoReleaseCallback: this.config.videoReleaseCallback,
+                videoDownloadCallback: this.config.videoDownloadCallback
+              })
+            } else if (item.nodeType == "BlockAudio") {
+              // 音频
+              MarkdownAudio({
+                node: item,
+                audioTheme: this.config.markdownTheme.audioTheme,
+                audioCallback: this.config.audioCallback
+              })
+            } else if (item.nodeType == "BlockAD") {
+              // 广告
+            } else {
+              // 其他
             }
           }
         },
@@ -196,7 +230,7 @@ export struct CJMarkdown {
    * 异步处理图片占位图（可等待）
    */
   async loadPlaceholderImage(): Promise<void> {
-    if(this.config.markdownTheme.imageTheme.imagePlaceholder !== undefined){
+    if (this.config.markdownTheme.imageTheme.imagePlaceholder !== undefined) {
       const hostContext = this.getUIContext().getHostContext()
       if (hostContext !== undefined) {
         const resourceMgr = hostContext.resourceManager
@@ -205,5 +239,19 @@ export struct CJMarkdown {
         this.placeholderPixelMap = await imageSource.createPixelMap()
       }
     }
+  }
+
+  /**
+   * 图片点击回调
+   */
+  imageCallback(url: string): void {
+    this.config.imageCallback?.(url, this.imageAndVideoList)
+  }
+
+  /**
+   * 视频点击回调
+   */
+  videoCallback(url: string): void {
+    this.config.videoCallback?.(url, this.imageAndVideoList)
   }
 }
