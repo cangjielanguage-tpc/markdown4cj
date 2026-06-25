@@ -4,7 +4,7 @@
 import { Message, MessageContent, Who } from '../model/Message'
 import { GeneralDataSource } from '../utils/ForLazyRender'
 import { LLM } from '../utils/LLM'
-import { MarkdownScroller } from '@cangjie-tpc/markdown_hybrid'
+// import { MarkdownScroller } from '@cangjie-tpc/markdown_hybrid'
 import { inputMethod } from '@kit.IMEKit'
 import { titleComponent } from '../component/BaseComponent'
 import {
@@ -51,10 +51,10 @@ struct AIChatDetailsPage {
    * 消息对象列表
    */
   private messages = new GeneralDataSource<Message>()
-  /**
-   * 滑动控制器列表
-   */
-  private markdownScrollerArray: MarkdownScroller[] = []
+  // /**
+  //  * 滑动控制器列表
+  //  */
+  // private markdownScrollerArray: MarkdownScroller[] = []
   /**
    * LLM
    */
@@ -109,7 +109,7 @@ struct AIChatDetailsPage {
           ListItem() {
             AIChatBlock({
               message: value,
-              scroller: this.markdownScrollerArray[index],
+              // scroller: this.markdownScrollerArray[index],
               incrementalAnalysis: this.incrementalAnalysis
             })
           }
@@ -152,7 +152,7 @@ struct AIChatDetailsPage {
                 return
               }
               this.messages.append(new Message(new MessageContent(this.input), Who.Me, this.now()))
-              this.markdownScrollerArray.push(new MarkdownScroller())
+              // this.markdownScrollerArray.push(new MarkdownScroller())
               this.doChat(this.input)
               this.input = ''
             })
@@ -201,9 +201,9 @@ struct AIChatDetailsPage {
    */
   private async doChat(text: string) {
     this.messages.append(new Message(new MessageContent('思考中...'), Who.You, this.now()))
-    let element = new MarkdownScroller()
-    element.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(element)
+    // let element = new MarkdownScroller()
+    // element.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(element)
     this.llm.chat(text, (slice: string) => {
       const talking = this.messages.get(-1)
       if (talking.content.content == '思考中...') {

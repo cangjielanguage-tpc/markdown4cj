@@ -124,21 +124,21 @@ struct ABCustomDetailsPage {
           if (this.isABLoadCustom) {
             CJMarkdown({
               content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
               config: this.setMarkdownConfig(),
-              plugin: this.setPlugin(),
-              useCangjieComponent: !this.isABLoad,
-              customContains: this.showTextBuilder.bind(this)
+              // plugin: this.setPlugin(),
+              // useCangjieComponent: !this.isABLoad,
+              // customContains: this.showTextBuilder.bind(this)
             })
           } else {
             CJMarkdown({
               content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
               config: this.setMarkdownConfig(),
-              plugin: this.setPlugin(),
-              useCangjieComponent: !this.isABLoad
+              // plugin: this.setPlugin(),
+              // useCangjieComponent: !this.isABLoad
             })
           }
         }

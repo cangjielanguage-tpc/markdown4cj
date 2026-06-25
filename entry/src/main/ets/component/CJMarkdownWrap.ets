@@ -6,7 +6,7 @@ import {
   MarkdownConfiguration,
   MarkdownPlugin,
   MarkdownTheme,
-  MarkdownScroller
+  // MarkdownScroller
 } from '@cangjie-tpc/markdown_hybrid'
 import hilog from '@ohos.hilog'
 import { promptAction } from '@kit.ArkUI'
@@ -23,19 +23,19 @@ export struct CJMarkdownWrap {
    */
   @State
   incrementalAnalysis: boolean = false
-  /**
-   * Markdown的控制器
-   */
-  @State
-  scroller?: MarkdownScroller = undefined
+  // /**
+  //  * Markdown的控制器
+  //  */
+  // @State
+  // scroller?: MarkdownScroller = undefined
 
   build() {
     CJMarkdown({
       content: this.input,
       config: this.setConfiguration(),
-      plugin: this.setPlugin(),
-      listScroller: this.setScroller(),
-      incrementalAnalysis: this.incrementalAnalysis
+      // plugin: this.setPlugin(),
+      // listScroller: this.setScroller(),
+      // incrementalAnalysis: this.incrementalAnalysis
     })
   }
 
@@ -85,16 +85,16 @@ export struct CJMarkdownWrap {
     plugin.setIsEmojiPlugin(true, false) // emoji解析插件
     return plugin
   }
-
-  /**
-   * MarkdownScroller
-   */
-  setScroller(): MarkdownScroller {
-    if (this.scroller === undefined) {
-      this.scroller = new MarkdownScroller()
-    }
-    return this.scroller
-  }
+  //
+  // /**
+  //  * MarkdownScroller
+  //  */
+  // setScroller(): MarkdownScroller {
+  //   if (this.scroller === undefined) {
+  //     this.scroller = new MarkdownScroller()
+  //   }
+  //   return this.scroller
+  // }
 
   /**
    * 链接点击事件

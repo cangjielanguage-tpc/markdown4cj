@@ -3,7 +3,7 @@
  */
 import { getIcon, Message } from "../model/Message"
 import { CJMarkdownWrap } from "./CJMarkdownWrap"
-import { MarkdownScroller } from '@cangjie-tpc/markdown_hybrid'
+// import { MarkdownScroller } from '@cangjie-tpc/markdown_hybrid'
 
 const SIZE: number = 36
 const MARGIN: number = SIZE * 2 + 25
@@ -20,10 +20,10 @@ export struct AIChatBlock {
    */
   @State
   incrementalAnalysis: boolean = false
-  /**
-   * Markdown的控制器
-   */
-  scroller?: MarkdownScroller = undefined
+  // /**
+  //  * Markdown的控制器
+  //  */
+  // scroller?: MarkdownScroller = undefined
 
   build() {
     if (this.message.who === 'Me') {
@@ -87,7 +87,7 @@ export struct AIChatBlock {
       } else {
         CJMarkdownWrap({
           input: this.message.content.content,
-          scroller: this.scroller,
+          // scroller: this.scroller,
           incrementalAnalysis: this.incrementalAnalysis
         })
       }

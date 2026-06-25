@@ -1,74 +1,27 @@
-import { MarkdownNodeViewString } from "../pages/CJMarkDown"
-import { MarkdownTheme } from "../themes/MarkdownTheme"
+import { MarkdownTheme } from "../theme/MarkdownTheme"
+import { MarkdownNodeViewString } from "./MarkdownNodeViewString"
 
 /**
  * markdown配置
  */
+@Observed
 export class MarkdownConfiguration {
-  /**
-   * 链接的点击事件
-   */
-  private linkCallback?: (url: string) => void = undefined
-  /**
-   * 文本复制的点击事件
-   */
-  private textCopyCallback?: (text: string) => void = undefined
-  /**
-   * 图片的点击事件
-   */
-  private imageCallback?: (url: string, urlList: Array<string>) => void = undefined
-  /**
-   * 图片替换事件
-   */
-  private imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> = undefined
-  /**
-   * 图片下载的点击事件
-   */
-  private imageDownloadCallback?: (url: string) => void = undefined
-  /**
-   * 音频的点击事件
-   */
-  private audioCallback?: (url: string) => void = undefined
-  /**
-   * 视频的点击事件
-   */
-  private videoCallback?: (url: string, urlList: Array<string>) => void = undefined
-  /**
-   * 视频的图片替换回调
-   */
-  private videoImageCallback?: (url: string, coverCallback: (coverUrl: string, aspectRatio: number, duration: number) => void) => void = undefined
-  /**
-   * 视频发布的点击事件
-   */
-  private videoReleaseCallback?: (url: string) => void = undefined
-  /**
-   * 视频下载的点击事件
-   */
-  private videoDownloadCallback?: (url: string) => void = undefined
-  /**
-   * 代码复制按钮的点击事件
-   */
-  private codeCopyCallback?: (code: string) => void = undefined
-  /**
-   * 代码全屏按钮的点击事件
-   */
-  private codeFullScreenCallback?: (code: string, language: string | undefined) => void = undefined
-  /**
-   * TOC跳转指定位置
-   */
-  private tocIndexCallback?: (index: number | undefined) => void = undefined
-  /**
-   * 脚注跳转指定位置
-   */
-  private footnoteCallback?: (index: number | undefined) => void = undefined
-  /**
-   * 获取全局文本
-   */
-  private markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString()
-  /**
-   * markdown默认样式
-   */
-  private markdownTheme?: MarkdownTheme = undefined
+  linkCallback?: (url: string) => void = undefined // 链接的点击事件
+  textCopyCallback?: (text: string) => void = undefined // 文本复制的点击事件
+  imageCallback?: (url: string, urlList: Array<string>) => void = undefined // 图片的点击事件
+  imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> = undefined // 图片替换事件
+  imageDownloadCallback?: (url: string) => void = undefined // 图片下载的点击事件
+  audioCallback?: (url: string) => void = undefined // 音频的点击事件
+  videoCallback?: (url: string, urlList: Array<string>) => void = undefined // 视频的点击事件
+  videoImageCallback?: (url: string, coverCallback: (coverUrl: string, aspectRatio: number, duration: number) => void) => void = undefined // 视频的图片替换回调
+  videoReleaseCallback?: (url: string) => void = undefined // 视频发布的点击事件
+  videoDownloadCallback?: (url: string) => void = undefined // 视频下载的点击事件
+  codeCopyCallback?: (code: string) => void = undefined // 代码复制按钮的点击事件
+  codeFullScreenCallback?: (code: string, language: string | undefined) => void = undefined // 代码全屏按钮的点击事件
+  tocIndexCallback?: (index: number | undefined) => void = undefined // TOC跳转指定位置
+  footnoteCallback?: (index: number | undefined) => void = undefined // 脚注跳转指定位置
+  markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
+  markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown默认样式
 
   /**
    * 设置链接点击回调
@@ -240,149 +193,5 @@ export class MarkdownConfiguration {
   setMarkdownTheme(markdownTheme: MarkdownTheme): MarkdownConfiguration {
     this.markdownTheme = markdownTheme
     return this
-  }
-
-  /**
-   * 获取链接的点击事件
-   *
-   * @returns 链接的点击事件回调函数
-   */
-  getLinkCallback(): ((url: string) => void) | undefined {
-    return this.linkCallback
-  }
-
-  /**
-   * 获取文本复制的点击事件
-   *
-   * @returns 文本复制的点击事件回调函数
-   */
-  getTextCopyCallback(): ((text: string) => void) | undefined {
-    return this.textCopyCallback
-  }
-
-  /**
-   * 获取图片的点击事件
-   *
-   * @returns 图片的点击事件回调函数
-   */
-  getImageCallback(): ((url: string, urlList: Array<string>) => void) | undefined {
-    return this.imageCallback
-  }
-
-  /**
-   * 获取图片替换事件
-   *
-   * @returns 图片替换事件回调函数
-   */
-  getImageReplaceCallback(): ((url: string) => Promise<ArrayBuffer | undefined>) | undefined {
-    return this.imageReplaceCallback
-  }
-
-  /**
-   * 获取图片下载的点击事件
-   *
-   * @returns 图片下载的点击事件回调函数
-   */
-  getImageDownloadCallback(): ((url: string) => void) | undefined {
-    return this.imageDownloadCallback
-  }
-
-  /**
-   * 获取音频的点击事件
-   *
-   * @returns 音频的点击事件回调函数
-   */
-  getAudioCallback(): ((url: string) => void) | undefined {
-    return this.audioCallback
-  }
-
-  /**
-   * 获取视频的点击事件
-   *
-   * @returns 视频的点击事件回调函数
-   */
-  getVideoCallback(): ((url: string, urlList: Array<string>) => void) | undefined {
-    return this.videoCallback
-  }
-
-  /**
-   * 获取视频的图片替换回调
-   *
-   * @returns 视频的图片替换回调函数
-   */
-  getVideoImageCallback(): ((url: string, coverCallback: (coverUrl: string, aspectRatio: number, duration: number) => void) => void) | undefined {
-    return this.videoImageCallback
-  }
-
-  /**
-   * 获取视频发布的点击事件
-   *
-   * @returns 视频发布的点击事件回调函数
-   */
-  getVideoReleaseCallback(): ((url: string) => void) | undefined {
-    return this.videoReleaseCallback
-  }
-
-  /**
-   * 获取视频下载的点击事件
-   *
-   * @returns 视频下载的点击事件回调函数
-   */
-  getVideoDownloadCallback(): ((url: string) => void) | undefined {
-    return this.videoDownloadCallback
-  }
-
-  /**
-   * 获取代码复制按钮的点击事件
-   *
-   * @returns 代码复制按钮的点击事件回调函数
-   */
-  getCodeCopyCallback(): ((code: string) => void) | undefined {
-    return this.codeCopyCallback
-  }
-
-  /**
-   * 获取代码全屏按钮的点击事件
-   *
-   * @returns 代码全屏按钮的点击事件回调函数
-   */
-  getCodeFullScreenCallback(): ((code: string, language: string | undefined) => void) | undefined {
-    return this.codeFullScreenCallback
-  }
-
-  /**
-   * 获取TOC跳转指定位置回调
-   *
-   * @returns TOC跳转指定位置回调函数
-   */
-  getTocIndexCallback(): ((index: number | undefined) => void) | undefined {
-    return this.tocIndexCallback
-  }
-
-  /**
-   * 获取脚注跳转指定位置回调
-   *
-   * @returns 脚注跳转指定位置回调函数
-   */
-  getFootnoteCallback(): ((index: number | undefined) => void) | undefined {
-    return this.footnoteCallback
-  }
-
-  /**
-   * 获取全局文本对象
-   *
-   * @returns 全局文本对象
-   */
-  getMarkdownNodeViewString(): MarkdownNodeViewString {
-    return this.markdownNodeViewString
-  }
-
-  /**
-   * 获取markdown默认样式
-   *
-   * @returns markdown默认样式对象
-   */
-  getMarkdownTheme(): MarkdownTheme | undefined {
-    return this.markdownTheme
   }
 }

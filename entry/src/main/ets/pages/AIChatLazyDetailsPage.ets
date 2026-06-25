@@ -5,7 +5,7 @@ import { Message, MessageContent, Who } from '../model/Message'
 import { GeneralDataSource } from '../utils/ForLazyRender'
 import { LLM } from '../utils/LLM'
 import { AIChatLazyBlock } from '../component/AIChatLazyBlock'
-import { MarkdownScroller } from '@cangjie-tpc/markdown_hybrid'
+// import { MarkdownScroller } from '@cangjie-tpc/markdown_hybrid'
 import { inputMethod } from '@kit.IMEKit'
 import { titleComponent } from '../component/BaseComponent'
 import {
@@ -51,10 +51,10 @@ struct AIChaLazytDetailsPage {
    * 消息对象列表
    */
   private messages = new GeneralDataSource<Message>()
-  /**
-   * 滑动控制器列表
-   */
-  private markdownScrollerArray: MarkdownScroller[] = []
+  // /**
+  //  * 滑动控制器列表
+  //  */
+  // private markdownScrollerArray: MarkdownScroller[] = []
   /**
    * LLM
    */
@@ -98,85 +98,85 @@ struct AIChaLazytDetailsPage {
   aboutToAppear(): void {
     // 数据添加
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_1), Who.Me, this.now()))
-    let markdownScroller1 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller1)
+    // let markdownScroller1 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller1)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_2), Who.You, this.now()))
-    let markdownScroller2 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller2)
+    // let markdownScroller2 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller2)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_3), Who.Me, this.now()))
-    let markdownScroller3 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller3)
+    // let markdownScroller3 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller3)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_4), Who.You, this.now()))
-    let markdownScroller4 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller4)
+    // let markdownScroller4 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller4)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_5), Who.Me, this.now()))
-    let markdownScroller5 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller5)
+    // let markdownScroller5 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller5)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_6), Who.You, this.now()))
-    let markdownScroller6 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller6)
+    // let markdownScroller6 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller6)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_7), Who.Me, this.now()))
-    let markdownScroller7 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller7)
+    // let markdownScroller7 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller7)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_8), Who.You, this.now()))
-    let markdownScroller8 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller8)
+    // let markdownScroller8 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller8)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_9), Who.Me, this.now()))
-    let markdownScroller9 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller9)
+    // let markdownScroller9 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller9)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_10), Who.You, this.now()))
-    let markdownScroller10 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller10)
+    // let markdownScroller10 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller10)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_11), Who.Me, this.now()))
-    let markdownScroller11 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller11)
+    // let markdownScroller11 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller11)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_12), Who.You, this.now()))
-    let markdownScroller12 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller12)
+    // let markdownScroller12 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller12)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_13), Who.Me, this.now()))
-    let markdownScroller13 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller13)
+    // let markdownScroller13 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller13)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_14), Who.You, this.now()))
-    let markdownScroller14 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller14)
+    // let markdownScroller14 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller14)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_15), Who.Me, this.now()))
-    let markdownScroller15 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller15)
+    // let markdownScroller15 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller15)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_16), Who.You, this.now()))
-    let markdownScroller16 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller16)
+    // let markdownScroller16 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller16)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_17), Who.Me, this.now()))
-    let markdownScroller17 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller17)
+    // let markdownScroller17 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller17)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_18), Who.You, this.now()))
-    let markdownScroller18 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller18)
+    // let markdownScroller18 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller18)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_19), Who.Me, this.now()))
-    let markdownScroller19 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller19)
+    // let markdownScroller19 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller19)
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_20), Who.You, this.now()))
-    let markdownScroller20 = new MarkdownScroller()
-    markdownScroller1.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(markdownScroller20)
+    // let markdownScroller20 = new MarkdownScroller()
+    // markdownScroller1.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(markdownScroller20)
   }
 
   build() {
@@ -195,7 +195,7 @@ struct AIChaLazytDetailsPage {
           ListItem() {
             AIChatLazyBlock({
               message: value,
-              scroller: this.markdownScrollerArray[index],
+              // scroller: this.markdownScrollerArray[index],
               incrementalAnalysis: this.incrementalAnalysis
             })
           }
@@ -218,22 +218,22 @@ struct AIChaLazytDetailsPage {
       .onScrollIndex(index => {
         this.currentIndex = index
         // 循环markdown滑动控制器
-        for (let i = 0; i < this.markdownScrollerArray.length; i++) {
-          const element = this.markdownScrollerArray[i]
-          if (i < index) {
-            // 在当前数据上面的布局全部置底
-            element.scrollEdge(Edge.Bottom)
-          } else if (i == index) {
-            // 当前数据第一次进来置底，之后自己滑动不做处理
-            if (this.inFirst) {
-              element.scrollEdge(Edge.Bottom)
-              this.inFirst = false
-            }
-          } else if (i > index){
-            // 在当前数据下面的布局全部置顶
-            element.scrollEdge(Edge.Top)
-          }
-        }
+        // for (let i = 0; i < this.markdownScrollerArray.length; i++) {
+        //   const element = this.markdownScrollerArray[i]
+        //   if (i < index) {
+        //     // 在当前数据上面的布局全部置底
+        //     element.scrollEdge(Edge.Bottom)
+        //   } else if (i == index) {
+        //     // 当前数据第一次进来置底，之后自己滑动不做处理
+        //     if (this.inFirst) {
+        //       element.scrollEdge(Edge.Bottom)
+        //       this.inFirst = false
+        //     }
+        //   } else if (i > index){
+        //     // 在当前数据下面的布局全部置顶
+        //     element.scrollEdge(Edge.Top)
+        //   }
+        // }
       })
       .onScrollFrameBegin((offset, state) => {
         this.checkScroll(offset)
@@ -241,23 +241,24 @@ struct AIChaLazytDetailsPage {
           // 其他卡片
           return { offsetRemain: offset }
         }
-        const childOffset = this.markdownScrollerArray[this.currentIndex]?.currentYOffset() || 0
+        // const childOffset = this.markdownScrollerArray[this.currentIndex]?.currentYOffset() || 0
+        const childOffset = 0
         if (offset >= 0) {
           // 上滑
           // 优先分发事件给子组件，当子组件无法下滑时，再分发给父组件
-          if (!this.markdownScrollerArray[this.currentIndex]?.isAtEnd()) {
-            // 分发事件给子组件
-            this.markdownScrollerArray[this.currentIndex]?.scrollBy(0, offset)
-            // 自身不响应事件
-            return { offsetRemain: 0 }
-          }
+          // if (!this.markdownScrollerArray[this.currentIndex]?.isAtEnd()) {
+          //   // 分发事件给子组件
+          //   this.markdownScrollerArray[this.currentIndex]?.scrollBy(0, offset)
+          //   // 自身不响应事件
+          //   return { offsetRemain: 0 }
+          // }
 
           // 父组件滑动，直到下一个子组件归位
           const rect = this.scroller.getItemRect(this.currentIndex)
           const rectBottom = rect.y + rect.height
           if (rectBottom < offset) {
-            this.currentIndex = Math.min(this.currentIndex + 1, this.markdownScrollerArray.length - 1)
-            this.markdownScrollerArray[this.currentIndex]?.scrollBy(0, offset - rectBottom)
+            // this.currentIndex = Math.min(this.currentIndex + 1, this.markdownScrollerArray.length - 1)
+            // this.markdownScrollerArray[this.currentIndex]?.scrollBy(0, offset - rectBottom)
           }
           return { offsetRemain: Math.min(rectBottom, offset) }
         } else {
@@ -266,18 +267,18 @@ struct AIChaLazytDetailsPage {
           const rect = this.scroller.getItemRect(this.currentIndex)
           const rectBottom = rect.y + rect.height
           if (rectBottom < this.listHeight) {
-            if (offset < rectBottom - this.listHeight) {
-              this.markdownScrollerArray[this.currentIndex]?.scrollBy(0, offset - rectBottom + this.listHeight)
-            }
+            // if (offset < rectBottom - this.listHeight) {
+            //   this.markdownScrollerArray[this.currentIndex]?.scrollBy(0, offset - rectBottom + this.listHeight)
+            // }
             return { offsetRemain: Math.max(offset, rectBottom - this.listHeight, -this.listHeight) }
           }
 
           if (childOffset > 0) {
             // 当当前子组件底部对齐时触发
             // 分发事件给子组件
-            this.markdownScrollerArray[this.currentIndex]?.scrollBy(0, offset)
-            // 自身不响应事件
-            return { offsetRemain: 0 }
+            // this.markdownScrollerArray[this.currentIndex]?.scrollBy(0, offset)
+            // // 自身不响应事件
+            // return { offsetRemain: 0 }
           }
 
           // 父组件滑动，直到下一个子组件归位
@@ -319,7 +320,7 @@ struct AIChaLazytDetailsPage {
                 return
               }
               this.messages.append(new Message(new MessageContent(this.input), Who.Me, this.now()))
-              this.markdownScrollerArray.push(new MarkdownScroller())
+              // this.markdownScrollerArray.push(new MarkdownScroller())
               this.doChat(this.input)
               this.input = ''
             })
@@ -361,7 +362,7 @@ struct AIChaLazytDetailsPage {
    */
   scroll2Bottom() {
     this.scroller.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray[this.markdownScrollerArray.length -1].scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray[this.markdownScrollerArray.length -1].scrollEdge(Edge.Bottom)
   }
 
   /**
@@ -408,9 +409,9 @@ struct AIChaLazytDetailsPage {
    */
   private async doChat(text: string) {
     this.messages.append(new Message(new MessageContent('思考中...'), Who.You, this.now()))
-    let element = new MarkdownScroller()
-    element.scrollEdge(Edge.Bottom)
-    this.markdownScrollerArray.push(element)
+    // let element = new MarkdownScroller()
+    // element.scrollEdge(Edge.Bottom)
+    // this.markdownScrollerArray.push(element)
     this.llm.chat(text, (slice: string) => {
       const talking = this.messages.get(-1)
       if (talking.content.content == '思考中...') {

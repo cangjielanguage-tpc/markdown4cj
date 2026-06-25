@@ -1,0 +1,871 @@
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants";
+
+/**
+ * 标题样式配置
+ */
+@Observed
+export class HeadingTheme implements MarkdownBaseTheme {
+  heading1BackgroundColor: ResourceColor | undefined = undefined // H1级标题背景颜色
+  heading1MarginTop: Length = 0.0 // H1级标题上外边距
+  heading1MarginRight: Length = 0.0 // H1级标题右外边距
+  heading1MarginBottom: Length = 0.0 // H1级标题下外边距
+  heading1MarginLeft: Length = 0.0 // H1级标题左外边距
+  heading1PaddingTop: Length = 0.0 // H1级标题上内边距
+  heading1PaddingRight: Length = 0.0 // H1级标题右内边距
+  heading1PaddingBottom: Length = 0.0 // H1级标题下内边距
+  heading1PaddingLeft: Length = 0.0 // H1级标题左内边距
+  heading1TextFontColor: ResourceColor = COLOR_FF191919 // H1级标题字体颜色
+  heading1TextFontSize: number | string | Resource = 20.0 // H1级标题字体大小
+  heading1TextFontStyle: FontStyle = FontStyle.Normal // H1级标题字体样式
+  heading1TextFontWeight: number | FontWeight = FontWeight.Bold // H1级标题字体粗细
+  heading1TextFontFamily: string | Resource = 'HarmonyOS Sans' // H1级标题字体族
+  heading1TextLineHeight: number | string | Resource = 22.0 // H1级标题行高
+  heading1TextLetterSpacing: number = 0.0 // H1级标题字母间距
+  heading1UnderlineHeight: number = 0.5 // H1级标题下划线高度
+  heading1UnderlineColor: ResourceColor = COLOR_FF191919 // H1级标题下划线颜色
+  heading1UnderlineSpacing: number = 0.0 // H1级标题下划线间距
+  heading2BackgroundColor: ResourceColor | undefined = undefined // H2级标题背景颜色
+  heading2MarginTop: Length = 0.0 // H2级标题上外边距
+  heading2MarginRight: Length = 0.0 // H2级标题右外边距
+  heading2MarginBottom: Length = 0.0 // H2级标题下外边距
+  heading2MarginLeft: Length = 0.0 // H2级标题左外边距
+  heading2PaddingTop: Length = 0.0 // H2级标题上内边距
+  heading2PaddingRight: Length = 0.0 // H2级标题右内边距
+  heading2PaddingBottom: Length = 0.0 // H2级标题下内边距
+  heading2PaddingLeft: Length = 0.0 // H2级标题左内边距
+  heading2TextFontColor: ResourceColor = COLOR_FF191919 // H2级标题字体颜色
+  heading2TextFontSize: number | string | Resource = 17.0 // H2级标题字体大小
+  heading2TextFontStyle: FontStyle = FontStyle.Normal // H2级标题字体样式
+  heading2TextFontWeight: number | FontWeight = FontWeight.Bold // H2级标题字体粗细
+  heading2TextFontFamily: string | Resource = 'HarmonyOS Sans' // H2级标题字体族
+  heading2TextLineHeight: number | string | Resource = 22.0 // H2级标题行高
+  heading2TextLetterSpacing: number = 0.0 // H2级标题字母间距
+  heading2UnderlineHeight: number = 0.5 // H2级标题下划线高度
+  heading2UnderlineColor: ResourceColor = COLOR_FF191919 // H2级标题下划线颜色
+  heading2UnderlineSpacing: number = 0.0 // H2级标题下划线间距
+  heading3BackgroundColor: ResourceColor | undefined = undefined // H3级标题背景颜色
+  heading3MarginTop: Length = 0.0 // H3级标题上外边距
+  heading3MarginRight: Length = 0.0 // H3级标题右外边距
+  heading3MarginBottom: Length = 0.0 // H3级标题下外边距
+  heading3MarginLeft: Length = 0.0 // H3级标题左外边距
+  heading3PaddingTop: Length = 0.0 // H3级标题上内边距
+  heading3PaddingRight: Length = 0.0 // H3级标题右内边距
+  heading3PaddingBottom: Length = 0.0 // H3级标题下内边距
+  heading3PaddingLeft: Length = 0.0 // H3级标题左内边距
+  heading3TextFontColor: ResourceColor = COLOR_FF191919 // H3级标题字体颜色
+  heading3TextFontSize: number | string | Resource = 16.0 // H3级标题字体大小
+  heading3TextFontStyle: FontStyle = FontStyle.Normal // H3级标题字体样式
+  heading3TextFontWeight: number | FontWeight = FontWeight.Bold // H3级标题字体粗细
+  heading3TextFontFamily: string | Resource = 'HarmonyOS Sans' // H3级标题字体族
+  heading3TextLineHeight: number | string | Resource = 22.0 // H3级标题行高
+  heading3TextLetterSpacing: number = 0.0 // H3级标题字母间距
+  heading4BackgroundColor: ResourceColor | undefined = undefined // H4级标题背景颜色
+  heading4MarginTop: Length = 0.0 // H4级标题上外边距
+  heading4MarginRight: Length = 0.0 // H4级标题右外边距
+  heading4MarginBottom: Length = 0.0 // H4级标题下外边距
+  heading4MarginLeft: Length = 0.0 // H4级标题左外边距
+  heading4PaddingTop: Length = 0.0 // H4级标题上内边距
+  heading4PaddingRight: Length = 0.0 // H4级标题右内边距
+  heading4PaddingBottom: Length = 0.0 // H4级标题下内边距
+  heading4PaddingLeft: Length = 0.0 // H4级标题左内边距
+  heading4TextFontColor: ResourceColor = COLOR_FF191919 // H4级标题字体颜色
+  heading4TextFontSize: number | string | Resource = 15.0 // H4级标题字体大小
+  heading4TextFontStyle: FontStyle = FontStyle.Normal // H4级标题字体样式
+  heading4TextFontWeight: number | FontWeight = FontWeight.Bold // H4级标题字体粗细
+  heading4TextFontFamily: string | Resource = 'HarmonyOS Sans' // H4级标题字体族
+  heading4TextLineHeight: number | string | Resource = 22.0 // H4级标题行高
+  heading4TextLetterSpacing: number = 0.0 // H4级标题字母间距
+  heading5BackgroundColor: ResourceColor | undefined = undefined // H5级标题背景颜色
+  heading5MarginTop: Length = 0.0 // H5级标题上外边距
+  heading5MarginRight: Length = 0.0 // H5级标题右外边距
+  heading5MarginBottom: Length = 0.0 // H5级标题下外边距
+  heading5MarginLeft: Length = 0.0 // H5级标题左外边距
+  heading5PaddingTop: Length = 0.0 // H5级标题上内边距
+  heading5PaddingRight: Length = 0.0 // H5级标题右内边距
+  heading5PaddingBottom: Length = 0.0 // H5级标题下内边距
+  heading5PaddingLeft: Length = 0.0 // H5级标题左内边距
+  heading5TextFontColor: ResourceColor = COLOR_FF191919 // H5级标题字体颜色
+  heading5TextFontSize: number | string | Resource = 15.0 // H5级标题字体大小
+  heading5TextFontStyle: FontStyle = FontStyle.Normal // H5级标题字体样式
+  heading5TextFontWeight: number | FontWeight = FontWeight.Bold // H5级标题字体粗细
+  heading5TextFontFamily: string | Resource = 'HarmonyOS Sans' // H5级标题字体族
+  heading5TextLineHeight: number | string | Resource = 22.0 // H5级标题行高
+  heading5TextLetterSpacing: number = 0.0 // H5级标题字母间距
+  heading6BackgroundColor: ResourceColor | undefined = undefined // H6级标题背景颜色
+  heading6MarginTop: Length = 0.0 // H6级标题上外边距
+  heading6MarginRight: Length = 0.0 // H6级标题右外边距
+  heading6MarginBottom: Length = 0.0 // H6级标题下外边距
+  heading6MarginLeft: Length = 0.0 // H6级标题左外边距
+  heading6PaddingTop: Length = 0.0 // H6级标题上内边距
+  heading6PaddingRight: Length = 0.0 // H6级标题右内边距
+  heading6PaddingBottom: Length = 0.0 // H6级标题下内边距
+  heading6PaddingLeft: Length = 0.0 // H6级标题左内边距
+  heading6TextFontColor: ResourceColor = COLOR_FF191919 // H6级标题字体颜色
+  heading6TextFontSize: number | string | Resource = 13.0 // H6级标题字体大小
+  heading6TextFontStyle: FontStyle = FontStyle.Normal // H6级标题字体样式
+  heading6TextFontWeight: number | FontWeight = FontWeight.Bold // H6级标题字体粗细
+  heading6TextFontFamily: string | Resource = 'HarmonyOS Sans' // H6级标题字体族
+  heading6TextLineHeight: number | string | Resource = 22.0 // H6级标题行高
+  heading6TextLetterSpacing: number = 0.0 // H6级标题字母间距
+
+  /**
+   * 设置所有标题等级背景颜色
+   *
+   * @param color 背景颜色
+   * @return HeadingTheme
+   */
+  setBackgroundColorForAllHeading(color: ResourceColor): HeadingTheme {
+    this.heading1BackgroundColor = color;
+    this.heading2BackgroundColor = color;
+    this.heading3BackgroundColor = color;
+    this.heading4BackgroundColor = color;
+    this.heading5BackgroundColor = color;
+    this.heading6BackgroundColor = color;
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级背景颜色
+   *
+   * @param colorList 背景颜色列表
+   * @return HeadingTheme
+   */
+  setBackgroundColorForEachHeading(colorList: ResourceColor[]): HeadingTheme {
+    colorList.forEach((color, index) => {
+      this.setBackgroundColorForDesignateHeading(index + 1, color);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级背景颜色
+   *
+   * @param level 标题等级
+   * @param color 背景颜色
+   * @return HeadingTheme
+   */
+  setBackgroundColorForDesignateHeading(level: number, color: ResourceColor): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1BackgroundColor = color;
+        break;
+      case 2:
+        this.heading2BackgroundColor = color;
+        break;
+      case 3:
+        this.heading3BackgroundColor = color;
+        break;
+      case 4:
+        this.heading4BackgroundColor = color;
+        break;
+      case 5:
+        this.heading5BackgroundColor = color;
+        break;
+      case 6:
+        this.heading6BackgroundColor = color;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级外边距
+   *
+   * @param margin 外边距
+   * @return HeadingTheme
+   */
+  setMarginForAllHeading(margin: Length): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setMarginForDesignateHeading(i, margin);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级外边距
+   *
+   * @param marginList 外边距列表
+   * @return HeadingTheme
+   */
+  setMarginForEachHeading(marginList: Length[]): HeadingTheme {
+    marginList.forEach((margin, index) => {
+      this.setMarginForDesignateHeading(index + 1, margin);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级外边距
+   *
+   * @param level 标题等级
+   * @param options 外边距选项或统一数值
+   * @return HeadingTheme
+   */
+  setMarginForDesignateHeading(level: number, options: Margin | Length): HeadingTheme {
+    let t: Length = 0.0;
+    let r: Length = 0.0;
+    let b: Length = 0.0;
+    let l: Length = 0.0;
+    // 1. 如果是 number 或 string
+    if (typeof options === "number" || typeof options === "string") {
+      t = options;
+      r = options;
+      b = options;
+      l = options;
+    }
+    // 2. 如果是 object
+    else if (typeof options === "object" && options !== null) {
+      // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
+      // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
+      if (isMargin(options)) {
+        // 这里通过类型守卫，编译器已经知道它是 Margin 了
+        const margin = options as Margin;
+        t = margin.top ?? 0.0;
+        r = margin.right ?? 0.0;
+        b = margin.bottom ?? 0.0;
+        l = margin.left ?? 0.0;
+      } else {
+        t = options as Length;
+        r = options as Length;
+        b = options as Length;
+        l = options as Length;
+      }
+    }
+    switch (level) {
+      case 1:
+        this.heading1MarginTop = t;
+        this.heading1MarginRight = r;
+        this.heading1MarginBottom = b;
+        this.heading1MarginLeft = l;
+        break;
+      case 2:
+        this.heading2MarginTop = t;
+        this.heading2MarginRight = r;
+        this.heading2MarginBottom = b;
+        this.heading2MarginLeft = l;
+        break;
+      case 3:
+        this.heading3MarginTop = t;
+        this.heading3MarginRight = r;
+        this.heading3MarginBottom = b;
+        this.heading3MarginLeft = l;
+        break;
+      case 4:
+        this.heading4MarginTop = t;
+        this.heading4MarginRight = r;
+        this.heading4MarginBottom = b;
+        this.heading4MarginLeft = l;
+        break;
+      case 5:
+        this.heading5MarginTop = t;
+        this.heading5MarginRight = r;
+        this.heading5MarginBottom = b;
+        this.heading5MarginLeft = l;
+        break;
+      case 6:
+        this.heading6MarginTop = t;
+        this.heading6MarginRight = r;
+        this.heading6MarginBottom = b;
+        this.heading6MarginLeft = l;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级内边距
+   *
+   * @param padding 内边距
+   * @return HeadingTheme
+   */
+  setPaddingForAllHeading(padding: Length): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setPaddingForDesignateHeading(i, padding);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级内边距
+   *
+   * @param paddingList 内边距列表
+   * @return HeadingTheme
+   */
+  setPaddingForEachHeading(paddingList: Length[]): HeadingTheme {
+    paddingList.forEach((padding, index) => {
+      this.setPaddingForDesignateHeading(index + 1, padding);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级内边距
+   *
+   * @param level 标题等级
+   * @param options 内边距选项或统一数值
+   * @return HeadingTheme
+   */
+  setPaddingForDesignateHeading(level: number, options: Padding | Length): HeadingTheme {
+    let t: Length = 0.0;
+    let r: Length = 0.0;
+    let b: Length = 0.0;
+    let l: Length = 0.0;
+    // 1. 如果是 number 或 string
+    if (typeof options === "number" || typeof options === "string") {
+      t = options;
+      r = options;
+      b = options;
+      l = options;
+    }
+    // 2. 如果是 object
+    else if (typeof options === "object" && options !== null) {
+      // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
+      // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
+      if (isPadding(options)) {
+        // 这里通过类型守卫，编译器已经知道它是 Padding 了
+        const padding = options as Padding;
+        t = padding.top ?? 0.0;
+        r = padding.right ?? 0.0;
+        b = padding.bottom ?? 0.0;
+        l = padding.left ?? 0.0;
+      } else {
+        t = options as Length;
+        r = options as Length;
+        b = options as Length;
+        l = options as Length;
+      }
+    }
+    switch (level) {
+      case 1:
+        this.heading1PaddingTop = t;
+        this.heading1PaddingRight = r;
+        this.heading1PaddingBottom = b;
+        this.heading1PaddingLeft = l;
+        break;
+      case 2:
+        this.heading2PaddingTop = t;
+        this.heading2PaddingRight = r;
+        this.heading2PaddingBottom = b;
+        this.heading2PaddingLeft = l;
+        break;
+      case 3:
+        this.heading3PaddingTop = t;
+        this.heading3PaddingRight = r;
+        this.heading3PaddingBottom = b;
+        this.heading3PaddingLeft = l;
+        break;
+      case 4:
+        this.heading4PaddingTop = t;
+        this.heading4PaddingRight = r;
+        this.heading4PaddingBottom = b;
+        this.heading4PaddingLeft = l;
+        break;
+      case 5:
+        this.heading5PaddingTop = t;
+        this.heading5PaddingRight = r;
+        this.heading5PaddingBottom = b;
+        this.heading5PaddingLeft = l;
+        break;
+      case 6:
+        this.heading6PaddingTop = t;
+        this.heading6PaddingRight = r;
+        this.heading6PaddingBottom = b;
+        this.heading6PaddingLeft = l;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级文本字体颜色
+   *
+   * @param color 字体颜色
+   * @return HeadingTheme
+   */
+  setTextFontColorForAllHeading(color: ResourceColor): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setTextFontColorForDesignateHeading(i, color);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级文本字体颜色
+   *
+   * @param colorList 字体颜色列表
+   * @return HeadingTheme
+   */
+  setTextFontColorForEachHeading(colorList: ResourceColor[]): HeadingTheme {
+    colorList.forEach((color, index) => {
+      this.setTextFontColorForDesignateHeading(index + 1, color);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级文本字体颜色
+   *
+   * @param level 标题等级
+   * @param color 字体颜色
+   * @return HeadingTheme
+   */
+  setTextFontColorForDesignateHeading(level: number, color: ResourceColor): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1TextFontColor = color;
+        break;
+      case 2:
+        this.heading2TextFontColor = color;
+        break;
+      case 3:
+        this.heading3TextFontColor = color;
+        break;
+      case 4:
+        this.heading4TextFontColor = color;
+        break;
+      case 5:
+        this.heading5TextFontColor = color;
+        break;
+      case 6:
+        this.heading6TextFontColor = color;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级文本字体大小
+   *
+   * @param size 字体大小
+   * @return HeadingTheme
+   */
+  setTextFontSizeForAllHeading(size: number | string | Resource): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setTextFontSizeForDesignateHeading(i, size);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级文本字体大小
+   *
+   * @param sizeList 字体大小列表
+   * @return HeadingTheme
+   */
+  setTextFontSizeForEachHeading(sizeList: (number | string | Resource)[]): HeadingTheme {
+    sizeList.forEach((size, index) => {
+      this.setTextFontSizeForDesignateHeading(index + 1, size);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级文本字体大小
+   *
+   * @param level 标题等级
+   * @param size 字体大小
+   * @return HeadingTheme
+   */
+  setTextFontSizeForDesignateHeading(level: number, size: number | string | Resource): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1TextFontSize = size;
+        break;
+      case 2:
+        this.heading2TextFontSize = size;
+        break;
+      case 3:
+        this.heading3TextFontSize = size;
+        break;
+      case 4:
+        this.heading4TextFontSize = size;
+        break;
+      case 5:
+        this.heading5TextFontSize = size;
+        break;
+      case 6:
+        this.heading6TextFontSize = size;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级文本字体样式
+   *
+   * @param style 字体样式
+   * @return HeadingTheme
+   */
+  setTextFontStyleForAllHeading(style: FontStyle): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setTextFontStyleForDesignateHeading(i, style);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级文本字体样式
+   *
+   * @param styleList 字体样式列表
+   * @return HeadingTheme
+   */
+  setTextFontStyleForEachHeading(styleList: FontStyle[]): HeadingTheme {
+    styleList.forEach((style, index) => {
+      this.setTextFontStyleForDesignateHeading(index + 1, style);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级文本字体样式
+   *
+   * @param level 标题等级
+   * @param style 字体样式
+   * @return HeadingTheme
+   */
+  setTextFontStyleForDesignateHeading(level: number, style: FontStyle): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1TextFontStyle = style;
+        break;
+      case 2:
+        this.heading2TextFontStyle = style;
+        break;
+      case 3:
+        this.heading3TextFontStyle = style;
+        break;
+      case 4:
+        this.heading4TextFontStyle = style;
+        break;
+      case 5:
+        this.heading5TextFontStyle = style;
+        break;
+      case 6:
+        this.heading6TextFontStyle = style;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级文本字体粗细
+   *
+   * @param weight 字体粗细
+   * @return HeadingTheme
+   */
+  setTextFontWeightForAllHeading(weight: number | FontWeight): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setTextFontWeightForDesignateHeading(i, weight);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级文本字体粗细
+   *
+   * @param weightList 字体粗细列表
+   * @return HeadingTheme
+   */
+  setTextFontWeightForEachHeading(weightList: (number | FontWeight)[]): HeadingTheme {
+    weightList.forEach((weight, index) => {
+      this.setTextFontWeightForDesignateHeading(index + 1, weight);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级文本字体粗细
+   *
+   * @param level 标题等级
+   * @param weight 字体粗细
+   * @return HeadingTheme
+   */
+  setTextFontWeightForDesignateHeading(level: number, weight: number | FontWeight): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1TextFontWeight = weight;
+        break;
+      case 2:
+        this.heading2TextFontWeight = weight;
+        break;
+      case 3:
+        this.heading3TextFontWeight = weight;
+        break;
+      case 4:
+        this.heading4TextFontWeight = weight;
+        break;
+      case 5:
+        this.heading5TextFontWeight = weight;
+        break;
+      case 6:
+        this.heading6TextFontWeight = weight;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级文本字体族
+   *
+   * @param family 字体族
+   * @return HeadingTheme
+   */
+  setTextFontFamilyForAllHeading(family: string | Resource): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setTextFontFamilyForDesignateHeading(i, family);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级文本字体族
+   *
+   * @param familyList 字体族列表
+   * @return HeadingTheme
+   */
+  setTextFontFamilyForEachHeading(familyList: (string | Resource)[]): HeadingTheme {
+    familyList.forEach((family, index) => {
+      this.setTextFontFamilyForDesignateHeading(index + 1, family);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级文本字体族
+   *
+   * @param level 标题等级
+   * @param family 字体族
+   * @return HeadingTheme
+   */
+  setTextFontFamilyForDesignateHeading(level: number, family: string | Resource): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1TextFontFamily = family;
+        break;
+      case 2:
+        this.heading2TextFontFamily = family;
+        break;
+      case 3:
+        this.heading3TextFontFamily = family;
+        break;
+      case 4:
+        this.heading4TextFontFamily = family;
+        break;
+      case 5:
+        this.heading5TextFontFamily = family;
+        break;
+      case 6:
+        this.heading6TextFontFamily = family;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级文本行高
+   *
+   * @param lineHeight 文本行高
+   * @return HeadingTheme
+   */
+  setTextLineHeightForAllHeading(lineHeight: number | string | Resource): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setTextLineHeightForDesignateHeading(i, lineHeight);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级文本行高
+   *
+   * @param lineHeightList 文本行高列表
+   * @return HeadingTheme
+   */
+  setTextLineHeightForEachHeading(lineHeightList: (number | string | Resource)[]): HeadingTheme {
+    lineHeightList.forEach((lineHeight, index) => {
+      this.setTextLineHeightForDesignateHeading(index + 1, lineHeight);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级文本行高
+   *
+   * @param level 标题等级
+   * @param lineHeight 文本行高
+   * @return HeadingTheme
+   */
+  setTextLineHeightForDesignateHeading(level: number, lineHeight: number | string | Resource): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1TextLineHeight = lineHeight;
+        break;
+      case 2:
+        this.heading2TextLineHeight = lineHeight;
+        break;
+      case 3:
+        this.heading3TextLineHeight = lineHeight;
+        break;
+      case 4:
+        this.heading4TextLineHeight = lineHeight;
+        break;
+      case 5:
+        this.heading5TextLineHeight = lineHeight;
+        break;
+      case 6:
+        this.heading6TextLineHeight = lineHeight;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题等级字母间距
+   *
+   * @param spacing 字母间距
+   * @return HeadingTheme
+   */
+  setTextLetterSpacingForAllHeading(spacing: number): HeadingTheme {
+    for (let i = 1; i <= 6; i++) {
+      this.setTextLetterSpacingForDesignateHeading(i, spacing);
+    }
+    return this;
+  }
+
+  /**
+   * 分别设置每个标题等级字母间距
+   *
+   * @param spacingList 字母间距列表
+   * @return HeadingTheme
+   */
+  setTextLetterSpacingForEachHeading(spacingList: number[]): HeadingTheme {
+    spacingList.forEach((spacing, index) => {
+      this.setTextLetterSpacingForDesignateHeading(index + 1, spacing);
+    });
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级字母间距
+   *
+   * @param level 标题等级
+   * @param spacing 字母间距
+   * @return HeadingTheme
+   */
+  setTextLetterSpacingForDesignateHeading(level: number, spacing: number): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1TextLetterSpacing = spacing;
+        break;
+      case 2:
+        this.heading2TextLetterSpacing = spacing;
+        break;
+      case 3:
+        this.heading3TextLetterSpacing = spacing;
+        break;
+      case 4:
+        this.heading4TextLetterSpacing = spacing;
+        break;
+      case 5:
+        this.heading5TextLetterSpacing = spacing;
+        break;
+      case 6:
+        this.heading6TextLetterSpacing = spacing;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题下划线高度
+   *
+   * @param height 下划线高度
+   * @return HeadingTheme
+   */
+  setUnderlineHeightForAllHeading(height: number): HeadingTheme {
+    this.heading1UnderlineHeight = height;
+    this.heading2UnderlineHeight = height;
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级下划线高度
+   *
+   * @param level 标题等级
+   * @param height 下划线高度
+   * @return HeadingTheme
+   */
+  setUnderlineHeightForDesignateHeading(level: number, height: number): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1UnderlineHeight = height;
+        break;
+      case 2:
+        this.heading2UnderlineHeight = height;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题下划线颜色
+   *
+   * @param color 下划线颜色
+   * @return HeadingTheme
+   */
+  setUnderlineColorForAllHeading(color: ResourceColor): HeadingTheme {
+    this.heading1UnderlineColor = color;
+    this.heading2UnderlineColor = color;
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级下划线颜色
+   *
+   * @param level 标题等级
+   * @param color 下划线颜色
+   * @return HeadingTheme
+   */
+  setUnderlineColorForDesignateHeading(level: number, color: ResourceColor): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1UnderlineColor = color;
+        break;
+      case 2:
+        this.heading2UnderlineColor = color;
+        break;
+    }
+    return this;
+  }
+
+  /**
+   * 设置所有标题下划线间距
+   *
+   * @param spacing 下划线间距
+   * @return HeadingTheme
+   */
+  setUnderlineSpacingForAllHeading(spacing: number): HeadingTheme {
+    this.heading1UnderlineSpacing = spacing;
+    this.heading2UnderlineSpacing = spacing;
+    return this;
+  }
+
+  /**
+   * 设置指定标题等级下划线间距
+   *
+   * @param level 标题等级
+   * @param spacing 下划线间距
+   * @return HeadingTheme
+   */
+  setUnderlineSpacingForDesignateHeading(level: number, spacing: number): HeadingTheme {
+    switch (level) {
+      case 1:
+        this.heading1UnderlineSpacing = spacing;
+        break;
+      case 2:
+        this.heading2UnderlineSpacing = spacing;
+        break;
+    }
+    return this;
+  }
+}

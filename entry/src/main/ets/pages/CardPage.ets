@@ -1,6 +1,6 @@
 import { HotelCard } from '../customuicard/HotelCard';
 import { PlaneCard } from '../customuicard/PlaneTicket';
-import { CJMarkdown, MarkdownPlugin } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin } from '@cangjie-tpc/markdown_hybrid'
 
 globalThis.HotelCard = HotelCard
 globalThis.PlaneCard = PlaneCard
@@ -60,8 +60,9 @@ struct DemoPage {
       Column() {
         CJMarkdown({
           content: this.message,
-          plugin: this.setPlugin()
-
+          config: new MarkdownConfiguration()
+        // ,
+          // plugin: this.setPlugin()
         })
       }
     }
