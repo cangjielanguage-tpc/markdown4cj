@@ -26,7 +26,7 @@ import { MarkdownParagraph } from "./MarkdownParagraph"
  */
 @Component
 export struct MarkdownFootnote {
-  @ObjectLink @Watch('refreshData') node: NodeView // 视频自身节点数据
+  @ObjectLink @Watch('refreshData') node: NodeView // 脚注自身节点数据
   @ObjectLink footnoteDefTheme: FootnoteDefTheme // 内联脚注样式
   @ObjectLink headingTheme: HeadingTheme // 标题样式
   @ObjectLink globalTheme: GlobalTheme // 整体样式

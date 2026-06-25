@@ -12,6 +12,7 @@ import { MarkdownVideo } from "./MarkdownVideo"
 import { MarkdownBanner } from "./MarkdownBanner"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
 import { MarkdownFootnote } from "./MarkdownFootnote"
+import { MarkdownDesc } from "./MarkdownDesc"
 
 @Component
 export struct CJMarkdown {
@@ -138,6 +139,27 @@ export struct CJMarkdown {
               })
             } else if (item.nodeType == "DescList") {
               // 定义列表
+              MarkdownDesc({
+                node: item,
+                headingTheme: this.config.markdownTheme.headingTheme,
+                globalTheme: this.config.markdownTheme.globalTheme,
+                subTheme: this.config.markdownTheme.subTheme,
+                supTheme: this.config.markdownTheme.supTheme,
+                inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
+                boldTheme: this.config.markdownTheme.boldTheme,
+                italicTheme: this.config.markdownTheme.italicTheme,
+                strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
+                highlightTheme: this.config.markdownTheme.highlightTheme,
+                htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
+                linkTheme: this.config.markdownTheme.linkTheme,
+                footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
+                tableTheme: this.config.markdownTheme.tableTheme,
+                paragraphTheme: this.config.markdownTheme.paragraphTheme,
+                blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
+                definitionListTheme: this.config.markdownTheme.definitionListTheme,
+                imageTheme: this.config.markdownTheme.imageTheme,
+                componentWidth: this.componentWidth
+              })
             } else if (item.nodeType == "SlideBlock") {
               // 图片幻灯片
               MarkdownBanner({
