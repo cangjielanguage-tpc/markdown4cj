@@ -1,4 +1,5 @@
-export { HybridParser, testCJ } from "libmarkdown_parser_hybrid.so"
+// export { HybridParser, testCJ } from "libmarkdown_parser_hybrid.so"
+export { MarkdownParser } from "./src/main/ets/MarkdownParser"
 
 export { JsNode } from "./src/main/ets/JsNode"
 

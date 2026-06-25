@@ -1,24 +1,9 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
 import {
-  JsNode,
-  Options,
-  HybridParser,
-  printNode,
-  JsNodeImpl,
-  JsNodeSendableImpl,
+  JsNode, Options, printNode, JsNodeImpl, JsNodeSendableImpl,
 } from '../../../../Index';
-
-function opt(includeSourceSpans: 0 | 1 | 2, factory: (() => JsNode) | undefined): Options {
-  let opt = new Options()
-  opt.jsNodeFactory = factory ?? (() => new JsNodeImpl())
-  opt.includeSourceSpans = includeSourceSpans
-  opt.FootnotePlugin = true
-  opt.LinkifyPlugin = true
-  return opt
-}
-
-let parser = new HybridParser(opt(0, undefined))
+import { getParser } from './md'
 
 export default function aTest() {
   describe('aTest', () => {
@@ -33,8 +18,7 @@ export default function aTest() {
     it('footnote1', 0, async () => {
       let md = `- [^2^]: [异环NTE：免费开放世界RPG封闭测试](https://cg.163.com/static/content/69895252326700b55b0d178b)
 - [^1^]: [百度百科 - 异环](https://baike.baidu.com/item/异环)`
-      let options: Options = opt(0, () => new JsNodeSendableImpl())
-      let parser = new HybridParser(options)
+      let parser = getParser(0, () => new JsNodeSendableImpl())
       let doc = await parser.parse(md)
       let str = printNode(doc)
       console.error(str)
@@ -55,8 +39,7 @@ export default function aTest() {
 - [^3^]: [异环WIKI - 哔哩哔哩](https://wiki.biligame.com/yh/首页)
 - [^4^]: [完美世界收获"二连板" 自研游戏《异环》测试表现亮眼](https://www.stcn.com/article/detail/3635940.html)
 - [^5^]: [德国科隆，进入"中国时间"](http://mp.weixin.qq.com/s?__biz=MjM5MjMwMjcyMA==)`
-      let options: Options = opt(0, () => new JsNodeSendableImpl())
-      let parser = new HybridParser(options)
+      let parser = getParser(0, () => new JsNodeSendableImpl())
       let doc = await parser.parse(md)
       let str = printNode(doc)
       console.error(str)
@@ -65,7 +48,7 @@ export default function aTest() {
       let md = `这是一个带中文的链接：
 https://www.wanuxi.com/为美好的世界献上祝福第三季主视觉图公开
 你好`
-      let doc = await parser.parse(md)
+      let doc = await getParser(0, undefined).parse(md)
       let str = printNode(doc)
       console.error(str)
       expect(doc.firstChild!.firstChild!.next!.next!.destination)

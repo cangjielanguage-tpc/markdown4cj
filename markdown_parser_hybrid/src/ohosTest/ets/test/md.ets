@@ -1,7 +1,7 @@
 import {
   JsNode,
   JsNodeImpl,
-  HybridParser,
+  MarkdownParser,
   Options,
   printNode,
   utf8Index2utf16Index,
@@ -45,13 +45,23 @@ export let opt: Options = (() => {
   return opt
 })()
 
-export let parser = new HybridParser(opt)
+export let parser = new MarkdownParser(opt)
 
 export async function parseIntoJsNode(md: string, includeSourceSpans: 0 | 1 | 2): Promise<JsNode> {
   opt.includeSourceSpans = includeSourceSpans
-  let parser = new HybridParser(opt)
+  let parser = new MarkdownParser(opt)
   let node = await parser.parse(md)
   let nodeTreeStr = printNode(node)
   hilog.info(0, '', nodeTreeStr)
   return node
+}
+
+export function getParser(includeSourceSpans: 0 | 1 | 2, factory: (() => JsNode) | undefined): MarkdownParser {
+  let opt = new Options()
+  opt.jsNodeFactory = factory ?? (() => new JsNodeImpl())
+  opt.includeSourceSpans = includeSourceSpans
+  opt.FootnotePlugin = true
+  opt.LinkifyPlugin = true
+  let parser = new MarkdownParser(opt)
+  return parser
 }

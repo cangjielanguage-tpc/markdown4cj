@@ -16,6 +16,7 @@
     "HarmonyOS"
   ],
   "dependencies": {
+    "libark_interop_loader.so": "file:./src/main/cangjie/loader",
     "libmarkdown_parser_hybrid.so": "file:src/main/cangjie/types/libmarkdown_parser_hybrid"
   }
 }
