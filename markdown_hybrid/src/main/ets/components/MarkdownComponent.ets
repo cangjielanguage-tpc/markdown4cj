@@ -10,6 +10,7 @@ import { image } from "@kit.ImageKit"
 import { MarkdownAudio } from "./MarkdownAudio"
 import { MarkdownVideo } from "./MarkdownVideo"
 import { MarkdownBanner } from "./MarkdownBanner"
+import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
 
 @Component
 export struct CJMarkdown {
@@ -25,7 +26,7 @@ export struct CJMarkdown {
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
-    this.loadPlaceholderImage()
+    this.loadPlaceholderImage() // 占位图处理
   }
 
   build() {
@@ -38,7 +39,7 @@ export struct CJMarkdown {
         (item: NodeView, index: number) => {
           ListItem() {
             if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
-              // 标题
+              // 标题/标题ID
               MarkdownHeading({
                 node: item,
                 headingTheme: this.config.markdownTheme.headingTheme,
@@ -83,11 +84,37 @@ export struct CJMarkdown {
                 imageTheme: this.config.markdownTheme.imageTheme,
                 componentWidth: this.componentWidth
               })
+            } else if (item.nodeType == "FencedCodeBlockListBlock") {
+              // 围栏代码块列表
+            } else if (item.nodeType == "FencedCodeBlock") {
+              // 围栏代码块
+            } else if (item.nodeType == "IndentedCodeBlock") {
+              // 缩进代码块
+              MarkdownCodeIndented({
+                node: item,
+                codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
+                codeCopyCallback: this.config.codeCopyCallback,
+                codeFullScreenCallback: this.config.codeFullScreenCallback
+              })
+            } else if (item.nodeType == "BulletList") {
+              // 无序/任务列表
+            } else if (item.nodeType == "OrderedList") {
+              // 有序列表
+            } else if (item.nodeType == "BlockQuote") {
+              // 块引用
+            } else if (item.nodeType == "LatexMathBlock") {
+              // 数学公式块
+            } else if (item.nodeType == "TableBlock") {
+              // 表格
             } else if (item.nodeType == "ThematicBreak") {
               // 分割线
               MarkdownThematicBreak({
                 dividerTheme: this.config.markdownTheme.dividerTheme
               })
+            } else if (item.nodeType == "FootnoteBlock") {
+              // 脚注
+            } else if (item.nodeType == "DescList") {
+              // 定义列表
             } else if (item.nodeType == "SlideBlock") {
               // 图片幻灯片
               MarkdownBanner({
