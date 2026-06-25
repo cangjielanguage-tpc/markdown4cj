@@ -1,117 +1,46 @@
 import { CodeBlockTheme } from "../theme/CodeBlockTheme"
 
 /**
- * 代码标题栏
+ * 代码行号组件
  *
- * @param codeText 代码内容
- * @param language 代码类型
+ * @param lineArray 行号数组
  * @param codeBlockTheme 代码样式
- * @param codeCopyCallback 复制点击事件
- * @param codeFullScreenCallback 全屏点击事件
  */
-@Builder
-export function codeLine(
-  codeText: string,
-  language: string | undefined,
-  codeBlockTheme: CodeBlockTheme,
-  codeCopyCallback: ((code: string) => void) | undefined,
-  codeFullScreenCallback: ((code: string, language: string | undefined) => void) | undefined
-) {
-  Row() {
-    if (codeText.trim().length > 0) {
-      Row() {
-        Text(language ?? codeBlockTheme.codeBlockTypeText)
-          .fontFamily(codeBlockTheme.codeBlockTypeTextFontFamily ?? codeBlockTheme.codeBlockTextFontFamily)
-          .fontSize(codeBlockTheme.codeBlockTypeTextFontSize ?? codeBlockTheme.codeBlockTextFontSize)
-          .fontWeight(codeBlockTheme.codeBlockTypeTextFontWeight ?? codeBlockTheme.codeBlockTextFontWeight)
-          .fontStyle(codeBlockTheme.codeBlockTypeTextFontStyle ?? codeBlockTheme.codeBlockTextFontStyle)
-          .fontColor(codeBlockTheme.codeBlockTypeTextFontColor ?? codeBlockTheme.codeBlockTextFontColor)
-          .lineHeight(codeBlockTheme.codeBlockTypeTextLineHeight ?? codeBlockTheme.codeBlockTextLineHeight)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .maxLines(1)
-      }
-      .width('30%')
-      .justifyContent(FlexAlign.Start)
-      .margin({ left: codeBlockTheme.codeBlockTypeTextMarginLeft })
+@Component
+export struct CodeLineComponent {
+  @Prop lineArray: Array<number> = []
+  @ObjectLink codeBlockTheme: CodeBlockTheme
 
-      Row() {
-        if (codeBlockTheme.codeBlockCopyButtonIsShow) {
-          Row() {
-            if (codeBlockTheme.codeBlockCopyIcon !== undefined) {
-              Image(codeBlockTheme.codeBlockCopyIcon)
-                .width(codeBlockTheme.codeBlockCopyIconWidth)
-                .height(codeBlockTheme.codeBlockCopyIconHeight)
-                .objectFit(ImageFit.Contain)
-            }
-
-            Blank()
-              .width(codeBlockTheme.codeBlockCopyIconTextSpacing)
-
-            if (codeBlockTheme.codeBlockCopyTextIsShow) {
-              Text(codeBlockTheme.codeBlockCopyText)
-                .fontFamily(codeBlockTheme.codeBlockCopyTextFontFamily ?? codeBlockTheme.codeBlockTextFontFamily)
-                .fontSize(codeBlockTheme.codeBlockCopyTextFontSize ?? codeBlockTheme.codeBlockTextFontSize)
-                .fontWeight(codeBlockTheme.codeBlockCopyTextFontWeight ?? codeBlockTheme.codeBlockTextFontWeight)
-                .fontStyle(codeBlockTheme.codeBlockCopyTextFontStyle ?? codeBlockTheme.codeBlockTextFontStyle)
-                .fontColor(codeBlockTheme.codeBlockCopyTextFontColor ?? codeBlockTheme.codeBlockTextFontColor)
-                .lineHeight(codeBlockTheme.codeBlockCopyTextLineHeight ?? codeBlockTheme.codeBlockTextLineHeight)
-                .align(Alignment.End)
-                .maxLines(1)
-                .textOverflow({ overflow: TextOverflow.Ellipsis })
-            }
-          }
-          .justifyContent(FlexAlign.End)
-          .onClick(() => {
-            codeCopyCallback?.(codeText)
-          })
+  build() {
+    Column() {
+      ForEach(
+        this.lineArray,
+        (item: number) => {
+          Text(item.toString())
+            .fontFamily(this.codeBlockTheme.codeBlockLineNumberTextFontFamily ?? this.codeBlockTheme.codeBlockTextFontFamily)
+            .fontSize(this.codeBlockTheme.codeBlockLineNumberTextFontSize ?? this.codeBlockTheme.codeBlockTextFontSize)
+            .fontWeight(this.codeBlockTheme.codeBlockLineNumberTextFontWeight ?? this.codeBlockTheme.codeBlockTextFontWeight)
+            .fontStyle(this.codeBlockTheme.codeBlockLineNumberTextFontStyle ?? this.codeBlockTheme.codeBlockTextFontStyle)
+            .fontColor(this.codeBlockTheme.codeBlockLineNumberTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
+            .lineHeight(this.codeBlockTheme.codeBlockLineNumberTextLineHeight ?? this.codeBlockTheme.codeBlockTextLineHeight)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+        },
+        (item: number) => {
+          return item.toString()
         }
-
-        Blank()
-          .width(codeBlockTheme.codeBlockCopyFullScreenSpacing)
-
-        if (codeBlockTheme.codeBlockFullScreenButtonIsShow) {
-          Row() {
-            if (codeBlockTheme.codeBlockFullScreenIcon !== undefined) {
-              Image(codeBlockTheme.codeBlockFullScreenIcon)
-                .width(codeBlockTheme.codeBlockFullScreenIconWidth)
-                .height(codeBlockTheme.codeBlockFullScreenIconHeight)
-                .objectFit(ImageFit.Contain)
-            }
-
-            Blank()
-              .width(codeBlockTheme.codeBlockFullScreenIconTextSpacing)
-
-            if (codeBlockTheme.codeBlockFullScreenTextIsShow) {
-              Text(codeBlockTheme.codeBlockFullScreenText)
-                .fontFamily(codeBlockTheme.codeBlockFullScreenTextFontFamily ?? codeBlockTheme.codeBlockTextFontFamily)
-                .fontSize(codeBlockTheme.codeBlockFullScreenTextFontSize ?? codeBlockTheme.codeBlockTextFontSize)
-                .fontWeight(codeBlockTheme.codeBlockFullScreenTextFontWeight ?? codeBlockTheme.codeBlockTextFontWeight)
-                .fontStyle(codeBlockTheme.codeBlockFullScreenTextFontStyle ?? codeBlockTheme.codeBlockTextFontStyle)
-                .fontColor(codeBlockTheme.codeBlockFullScreenTextFontColor ?? codeBlockTheme.codeBlockTextFontColor)
-                .lineHeight(codeBlockTheme.codeBlockFullScreenTextLineHeight ?? codeBlockTheme.codeBlockTextLineHeight)
-                .align(Alignment.End)
-                .maxLines(1)
-                .textOverflow({ overflow: TextOverflow.Ellipsis })
-            }
-          }
-          .justifyContent(FlexAlign.End)
-          .onClick(() => {
-            codeFullScreenCallback?.(codeText, language)
-          })
-        }
-      }
-      .width('70%')
-      .justifyContent(FlexAlign.End)
-    } else {
-      Row()
-        .width('100%')
-        .justifyContent(FlexAlign.Start)
+      )
     }
+    .visibility(this.codeBlockTheme.codeBlockLineNumberIsShow ? Visibility.Visible : Visibility.None)
+    .padding({
+      right: this.codeBlockTheme.codeBlockLineNumberDividerSpacing,
+      left: this.codeBlockTheme.codeBlockLineNumberTextPaddingLeft
+    })
+    .borderWidth({
+      right: this.codeBlockTheme.codeBlockDividerStrokeWidth
+    })
+    .borderColor(this.codeBlockTheme.codeBlockDividerColor ?? this.codeBlockTheme.codeBlockTextFontColor)
+    .borderStyle(BorderStyle.Solid)
+    .alignItems(HorizontalAlign.End)
   }
-  .margin({
-    top: 8.0,
-    right: 8.0,
-    bottom: codeBlockTheme.codeBlockTitleLayoutMarginBottom
-  })
-  .alignItems(VerticalAlign.Center)
 }
