@@ -19,6 +19,7 @@ import { LengthUnit } from "@kit.ArkUI"
 import { COLOR_TRANSPARENT } from "../base/Constants"
 import { OrderedListTheme } from "../theme/OrderedListTheme"
 import { BulletListTheme } from "../theme/BulletListTheme"
+import { FootnoteDefTheme } from "../theme/FootnoteDefTheme"
 
 /**
  * 获取文本字体族
@@ -1182,3 +1183,21 @@ export function listBackgroundColor(
   }
 }
 
+/**
+ * 设置脚注背景颜色
+ *
+ * @param markdownTheme MarkdownTheme
+ * @param nodeView NodeView
+ * @return 脚注背景颜色
+ */
+export function  footnoteBackgroundColor(
+  blockQuoteTheme: BlockQuoteTheme,
+  footnoteDefTheme: FootnoteDefTheme,
+  globalTheme: GlobalTheme,
+  isQuote: boolean
+): ResourceColor {
+  if (isQuote) {
+    return blockQuoteTheme.blockQuoteBackgroundColor // 块引用中的脚注
+  }
+  return footnoteDefTheme.footnoteDefBackgroundColor ?? globalTheme.backgroundColor
+}

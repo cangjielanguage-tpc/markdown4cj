@@ -1,4 +1,3 @@
-import { MarkdownConfiguration } from "../configs/MarkdownConfiguration"
 import { NodeView } from "../model/NodeView"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { BoldTheme } from "../theme/BoldTheme"
@@ -17,7 +16,11 @@ import { StrikethroughTheme } from "../theme/StrikethroughTheme"
 import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
-import { imageUrlHandle, imageWidthAndHeight, spanSoftLineBreak } from "../utils/MarkdownUtils"
+import {
+  imageUrlHandle,
+  imageWidthAndHeight,
+  spanSoftLineBreak
+} from "../utils/MarkdownUtils"
 import {
   paragraphBackgroundColor,
   spanBackgroundColor,

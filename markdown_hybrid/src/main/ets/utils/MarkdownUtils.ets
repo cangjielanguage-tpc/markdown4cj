@@ -128,26 +128,6 @@ export function imageUrlHandle(url?: string): ResourceStr | undefined {
 }
 
 /**
- *
- *
- * @return
- */
-export function imageWidthCalculate(imageDataList: Array<ImageData>, index: number, url?: string): Length {
-
-  return 0
-}
-
-/**
- *
- *
- * @return
- */
-export function imageHeightCalculate(imageDataList: Array<ImageData>, index: number, url?: string): Length {
-
-  return 0
-}
-
-/**
  * 处理图片的宽高
  *
  * @param componentImageWidth 控件宽度

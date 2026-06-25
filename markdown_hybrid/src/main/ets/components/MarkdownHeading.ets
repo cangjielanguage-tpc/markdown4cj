@@ -23,9 +23,11 @@ import { NodeView } from '../model/NodeView'
 import { HeadingTheme } from '../theme/HeadingTheme'
 import { GlobalTheme } from '../theme/GlobalTheme'
 import { BlockQuoteTheme } from '../theme/BlockQuoteTheme'
-import { imageHeightCalculate, imageUrlHandle,
+import {
+  imageUrlHandle,
   imageWidthAndHeight,
-  imageWidthCalculate, spanSoftLineBreak } from '../utils/MarkdownUtils'
+  spanSoftLineBreak
+} from '../utils/MarkdownUtils'
 import { SubTheme } from '../theme/SubTheme'
 import { SupTheme } from '../theme/SupTheme'
 import { InlineCodeTheme } from '../theme/InlineCodeTheme'
@@ -40,7 +42,6 @@ import { TableTheme } from '../theme/TableTheme'
 import { ParagraphTheme } from '../theme/ParagraphTheme'
 import { DefinitionListTheme } from '../theme/DefinitionListTheme'
 import { ImageTheme } from '../theme/ImageTheme'
-import hilog from '@ohos.hilog'
 
 /**
  * 标题控件

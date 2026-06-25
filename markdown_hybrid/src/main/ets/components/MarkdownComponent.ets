@@ -11,6 +11,7 @@ import { MarkdownAudio } from "./MarkdownAudio"
 import { MarkdownVideo } from "./MarkdownVideo"
 import { MarkdownBanner } from "./MarkdownBanner"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
+import { MarkdownFootnote } from "./MarkdownFootnote"
 
 @Component
 export struct CJMarkdown {
@@ -113,6 +114,28 @@ export struct CJMarkdown {
               })
             } else if (item.nodeType == "FootnoteBlock") {
               // 脚注
+              MarkdownFootnote({
+                node: item,
+                headingTheme: this.config.markdownTheme.headingTheme,
+                globalTheme: this.config.markdownTheme.globalTheme,
+                subTheme: this.config.markdownTheme.subTheme,
+                supTheme: this.config.markdownTheme.supTheme,
+                inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
+                boldTheme: this.config.markdownTheme.boldTheme,
+                italicTheme: this.config.markdownTheme.italicTheme,
+                strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
+                highlightTheme: this.config.markdownTheme.highlightTheme,
+                htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
+                linkTheme: this.config.markdownTheme.linkTheme,
+                footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
+                tableTheme: this.config.markdownTheme.tableTheme,
+                paragraphTheme: this.config.markdownTheme.paragraphTheme,
+                blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
+                definitionListTheme: this.config.markdownTheme.definitionListTheme,
+                imageTheme: this.config.markdownTheme.imageTheme,
+                footnoteDefTheme: this.config.markdownTheme.footnoteDefTheme,
+                componentWidth: this.componentWidth
+              })
             } else if (item.nodeType == "DescList") {
               // 定义列表
             } else if (item.nodeType == "SlideBlock") {
