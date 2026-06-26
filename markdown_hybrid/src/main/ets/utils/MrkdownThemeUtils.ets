@@ -692,7 +692,7 @@ export function spanBackgroundColor(
   if (nodeView.isInLineCode) {
     // 内联代码
     return {
-      color: inlineCodeTheme.inlineCodeTextFontColor,
+      color: inlineCodeTheme.inlineCodeTextBackgroundColor,
       radius: {
         topLeft: inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft,
         topRight: inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft,
