@@ -60,11 +60,11 @@ export struct MarkdownParagraph {
   @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
-  @Prop textCopyCallback?: (text: string) => void = undefined // 文本复制的点击事件
-  @Prop footnoteCallback?: (index: string) => void = undefined // 脚注点击事件
-  @Prop tocCallback?: (index: number) => void = undefined // TOC/标题ID点击事件
-  @Prop linkCallback?: (url: string) => void = undefined // 链接点击事件
-  @Prop imageCallback?: (url: string) => void = undefined // 图片点击事件
+  textCopyCallback?: (text: string) => void // 文本复制的点击事件
+  footnoteCallback?: (index: string) => void // 脚注点击事件
+  tocCallback?: (index: number) => void // TOC/标题ID点击事件
+  linkCallback?: (url: string) => void // 链接点击事件
+  imageCallback?: (url: string) => void // 图片点击事件
   @State list: NodeView[] = [] // 标题子节点数据源
   @State isQuote: boolean = false // 是否在快引用中
 

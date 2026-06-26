@@ -9,10 +9,10 @@ import { formatDurationToTime } from "../utils/MarkdownUtils"
 export struct MarkdownVideo {
   @ObjectLink node: NodeView // 视频自身节点数据
   @ObjectLink videoTheme: VideoTheme // 视频样式
-  @Prop videoCallback: (url: string) => void // 视频点击事件
-  @Prop videoImageCallback: (url: string, callback: (url: string, ratio: number, time: number) => void) => void // 视频的图片替换回调
-  @Prop videoReleaseCallback?: (url: string) => void = undefined // 视频发布的点击事件
-  @Prop videoDownloadCallback?: (url: string) => void = undefined // 视频下载的点击事件t
+  videoCallback?: (url: string) => void // 视频点击事件
+  videoImageCallback?: (url: string, callback: (url: string, ratio: number, time: number) => void) => void // 视频的图片替换回调
+  videoReleaseCallback?: (url: string) => void // 视频发布的点击事件
+  videoDownloadCallback?: (url: string) => void // 视频下载点击事件t
   @State imageVideoUrl: string = "" // 视频链接
   @State imageUrl: string = "" // 回调得到的图片
   @State videoRatio: number = 16.0 / 9.0 // 图片宽高比
@@ -20,7 +20,7 @@ export struct MarkdownVideo {
 
   aboutToAppear(): void {
     this.imageVideoUrl = this.node.imageUrl ?? ""
-    this.videoImageCallback(this.imageVideoUrl, (url: string, ratio: number, time: number) => {
+    this.videoImageCallback?.(this.imageVideoUrl, (url: string, ratio: number, time: number) => {
       this.imageUrl = url
       this.videoRatio = ratio
       this.time = formatDurationToTime(time)
@@ -48,7 +48,7 @@ export struct MarkdownVideo {
             })
         }
         .onClick(() => {
-          this.videoCallback(this.imageVideoUrl)
+          this.videoCallback?.(this.imageVideoUrl)
         })
 
         if (this.videoTheme.videoBottomLayoutVisible) {

@@ -43,6 +43,11 @@ export struct MarkdownDescDef {
   @ObjectLink paragraphTheme: ParagraphTheme // 标题样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
+  textCopyCallback?: (text: string) => void // 文本复制的点击事件
+  footnoteCallback?: (index: string) => void // 脚注点击事件
+  tocCallback?: (index: number) => void // TOC/标题ID点击事件
+  linkCallback?: (url: string) => void // 链接点击事件
+  imageCallback?: (url: string) => void // 图片点击事件
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
@@ -77,7 +82,12 @@ export struct MarkdownDescDef {
                 blockQuoteTheme: this.blockQuoteTheme,
                 definitionListTheme: this.definitionListTheme,
                 imageTheme: this.imageTheme,
-                componentWidth: this.componentWidth
+                componentWidth: this.componentWidth,
+                textCopyCallback: this.textCopyCallback,
+                footnoteCallback: this.footnoteCallback,
+                tocCallback: this.tocCallback,
+                linkCallback: this.linkCallback,
+                imageCallback: this.imageCallback
               })
             } else {
               // 其它

@@ -10,7 +10,7 @@ export struct MarkdownBanner {
   @ObjectLink node: NodeView // 轮播图自身节点数据
   @ObjectLink bannerTheme: BannerTheme // 轮播图样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
-  @Prop imageCallback: (url: string) => void // 图片点击事件
+  imageCallback?: (url: string) => void // 图片点击事件
   @State bannerNodeViewList: Array<NodeView> = new Array<NodeView>() // 数据源
   controller: SwiperController = new SwiperController() // 滑动控制器
 
@@ -62,7 +62,7 @@ export struct MarkdownBanner {
         .autoResize(this.imageTheme.imageAutoResize)
         .onClick(() => {
           if (item.imageUrl !== undefined) {
-            this.imageCallback(item.imageUrl)
+            this.imageCallback?.(item.imageUrl)
           }
         })
     } else {
@@ -71,7 +71,7 @@ export struct MarkdownBanner {
         .autoResize(this.imageTheme.imageAutoResize)
         .onClick(() => {
           if (item.imageUrl !== undefined) {
-            this.imageCallback(item.imageUrl)
+            this.imageCallback?.(item.imageUrl)
           }
         })
     }

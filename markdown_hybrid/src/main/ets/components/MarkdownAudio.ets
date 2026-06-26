@@ -8,7 +8,7 @@ import { AudioTheme } from "../theme/AudioTheme"
 export struct MarkdownAudio {
   @ObjectLink node: NodeView // 音频自身节点数据
   @ObjectLink audioTheme: AudioTheme // 音频样式
-  @Prop audioCallback?: (url: string) => void = undefined // 音频的点击事件
+  audioCallback?: (url: string) => void // 音频的点击事件
   @State imageAudioUrl: string = "" // 音频链接
   @State audioTitle: string = "" // 音频标题
   @State audioType: string = "" // 音频类型

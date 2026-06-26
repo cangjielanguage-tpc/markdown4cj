@@ -46,6 +46,11 @@ export struct MarkdownTableRow {
   @Prop tableBlockRowRow: number // 表格的第几行
   @Prop tableBlockRowCellSize: number // 表格总共有几列
   @Prop columnWidths: number[] = [] // 各列宽度快照（来自MarkdownTable的@State）
+  textCopyCallback?: (text: string) => void // 文本复制的点击事件
+  footnoteCallback?: (index: string) => void // 脚注点击事件
+  tocCallback?: (index: number) => void // TOC/标题ID点击事件
+  linkCallback?: (url: string) => void // 链接点击事件
+  imageCallback?: (url: string) => void // 图片点击事件
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
   aboutToAppear(): void {
@@ -78,12 +83,17 @@ export struct MarkdownTableRow {
               blockQuoteTheme: this.blockQuoteTheme,
               definitionListTheme: this.definitionListTheme,
               imageTheme: this.imageTheme,
-              componentWidth: this.componentWidth,
-              tableBlockCellRow: this.tableBlockRowRow,
-              tableBlockCellCell: index,
-              tableBlockCellCellSize: this.tableBlockRowCellSize,
-              columnWidth: this.columnWidths[index] ?? 0
-            })
+               componentWidth: this.componentWidth,
+               tableBlockCellRow: this.tableBlockRowRow,
+               tableBlockCellCell: index,
+               tableBlockCellCellSize: this.tableBlockRowCellSize,
+               columnWidth: this.columnWidths[index] ?? 0,
+               textCopyCallback: this.textCopyCallback,
+               footnoteCallback: this.footnoteCallback,
+               tocCallback: this.tocCallback,
+               linkCallback: this.linkCallback,
+               imageCallback: this.imageCallback
+             })
           } else {
             // 其它
             Text("")
