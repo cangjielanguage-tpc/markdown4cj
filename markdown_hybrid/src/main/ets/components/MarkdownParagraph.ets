@@ -41,7 +41,7 @@ import {
 @Component
 export struct MarkdownParagraph {
   @Consume placeholderPixelMap: PixelMap | undefined // 图片占位图
-  @ObjectLink @Watch('refreshData') node: NodeView // 标题自身节点数据
+  @ObjectLink @Watch('refreshData') node: NodeView // 段落自身节点数据
   @ObjectLink headingTheme: HeadingTheme // 标题样式
   @ObjectLink globalTheme: GlobalTheme // 整体样式
   @ObjectLink blockQuoteTheme: BlockQuoteTheme // 块引用样式
@@ -117,8 +117,7 @@ export struct MarkdownParagraph {
             this.paragraphInlineItem(item, index)
           },
           (item: NodeView, index: number) => {
-            // key包含contentFingerprint，确保内容变化时key也变化，触发Span重建
-            return `${index}-${item.nodeType}-${item.contentFingerprint()}-${item.imageWidth}-${item.imageHeight}`
+            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}`
           }
         )
       }
@@ -130,7 +129,6 @@ export struct MarkdownParagraph {
       .onCopy((str) => {
         this.textCopyCallback?.(str)
       })
-      .bindMenu()
     }
     .alignItems(HorizontalAlign.Start)
     .justifyContent(FlexAlign.Center)

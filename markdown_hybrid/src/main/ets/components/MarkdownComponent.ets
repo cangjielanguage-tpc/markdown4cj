@@ -3,7 +3,7 @@ import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
 import { NodeView } from "../model/NodeView"
-import { nodeToNodeView } from "../utils/MarkdownParserUtils"
+import { nodeToNodeView, computeHashes } from "../utils/MarkdownParserUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
 import { image } from "@kit.ImageKit"
@@ -13,6 +13,7 @@ import { MarkdownBanner } from "./MarkdownBanner"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
 import { MarkdownFootnote } from "./MarkdownFootnote"
 import { MarkdownDesc } from "./MarkdownDesc"
+import { MarkdownTable } from "./MarkdownTable"
 
 @Component
 export struct CJMarkdown {
@@ -24,6 +25,9 @@ export struct CJMarkdown {
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
   private parseVersion: number = 0 // 解析版本号，每次解析递增
   private appliedVersion: number = 0 // 已应用的版本号，用于渐进式更新（避免丢弃所有中间结果）
+  private isThrottled: boolean = false // 解析节流标志
+  private hasPendingRefresh: boolean = false // 节流期间有未处理的刷新请求
+  private static readonly THROTTLE_MS: number = 120 // 解析节流间隔（ms），流式输出时降至~8次/秒
   imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
 
   aboutToAppear(): void {
@@ -108,6 +112,27 @@ export struct CJMarkdown {
               // 数学公式块
             } else if (item.nodeType == "TableBlock") {
               // 表格
+              MarkdownTable({
+                node: item,
+                headingTheme: this.config.markdownTheme.headingTheme,
+                globalTheme: this.config.markdownTheme.globalTheme,
+                subTheme: this.config.markdownTheme.subTheme,
+                supTheme: this.config.markdownTheme.supTheme,
+                inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
+                boldTheme: this.config.markdownTheme.boldTheme,
+                italicTheme: this.config.markdownTheme.italicTheme,
+                strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
+                highlightTheme: this.config.markdownTheme.highlightTheme,
+                htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
+                linkTheme: this.config.markdownTheme.linkTheme,
+                footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
+                tableTheme: this.config.markdownTheme.tableTheme,
+                paragraphTheme: this.config.markdownTheme.paragraphTheme,
+                blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
+                definitionListTheme: this.config.markdownTheme.definitionListTheme,
+                imageTheme: this.config.markdownTheme.imageTheme,
+                componentWidth: this.componentWidth
+              })
             } else if (item.nodeType == "ThematicBreak") {
               // 分割线
               MarkdownThematicBreak({
@@ -225,9 +250,30 @@ export struct CJMarkdown {
   }
 
   /**
-   * 刷新数据
+   * 刷新数据（节流入口）
+   * 流式输出时content高频变化，通过leading-edge节流将解析频率从~30次/秒降至~8次/秒
+   * 首次调用立即执行（无延迟），后续调用在THROTTLE_MS内被合并，最后一次必有trailing调用
    */
   refreshData() {
+    if (this.isThrottled) {
+      this.hasPendingRefresh = true
+      return
+    }
+    this.isThrottled = true
+    this.hasPendingRefresh = false
+    this.executeRefresh()
+    setTimeout(() => {
+      this.isThrottled = false
+      if (this.hasPendingRefresh) {
+        this.refreshData()
+      }
+    }, CJMarkdown.THROTTLE_MS)
+  }
+
+  /**
+   * 执行实际解析与数据更新
+   */
+  private executeRefresh(): void {
     if (this.config.markdownTheme.globalTheme.isMarkdownParserSync) {
       this.refreshSyncData()
     } else {
@@ -257,7 +303,8 @@ export struct CJMarkdown {
         return
       }
       let nodeView: NodeView = new NodeView()
-      nodeToNodeView(node, nodeView, nodeView)
+      nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
+      computeHashes(nodeView)
       if (nodeView.children.length == 0) {
         this.markdownDataSource.clear()
         this.appliedVersion = currentVersion
@@ -288,7 +335,8 @@ export struct CJMarkdown {
       return
     }
     let nodeView: NodeView = new NodeView()
-    nodeToNodeView(node, nodeView, nodeView)
+    nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
+    computeHashes(nodeView)
     if (nodeView.children.length == 0) {
       this.markdownDataSource.clear()
       this.appliedVersion = currentVersion

@@ -37,7 +37,7 @@ export class TableTheme implements MarkdownBaseTheme {
   tableRadiusBottomLeft: Length = 5.0 // 左下圆角
   tableRadiusBottomRight: Length = 5.0 // 右下圆角
   tableScrollBarState: BarState = BarState.Off // 滚动条状态
-  tableScrollBarColor: ResourceColor = COLOR_FF191919 // 滚动条颜色
+  tableScrollBarColor: Color | number | string = '#FF191919' // 滚动条颜色
   tableMinCellWidth: Length = 50.0 // 最小单元格宽度
   tableMaxCellWidth: Length = 300.0 // 最大单元格宽度
   tableFirstColumnIsBold: boolean = false // 第一列加粗
@@ -311,7 +311,7 @@ export class TableTheme implements MarkdownBaseTheme {
    * @param color 颜色
    * @return TableTheme
    */
-  setTableScrollBarColor(color: ResourceColor): TableTheme {
+  setTableScrollBarColor(color: Color | number | string): TableTheme {
     this.tableScrollBarColor = color;
     return this;
   }

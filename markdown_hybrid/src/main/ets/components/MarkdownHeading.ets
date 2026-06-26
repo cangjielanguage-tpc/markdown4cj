@@ -144,8 +144,7 @@ export struct MarkdownHeading {
             this.headingInlineItem(item, index)
           },
           (item: NodeView, index: number) => {
-            // key包含contentFingerprint，确保内容变化时key也变化，触发Span重建
-            return `${index}-${item.nodeType}-${item.contentFingerprint()}-${item.imageWidth}-${item.imageHeight}`
+            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}`
           }
         )
       }

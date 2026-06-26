@@ -1190,7 +1190,7 @@ export function listBackgroundColor(
  * @param nodeView NodeView
  * @return 脚注背景颜色
  */
-export function  footnoteBackgroundColor(
+export function footnoteBackgroundColor(
   blockQuoteTheme: BlockQuoteTheme,
   footnoteDefTheme: FootnoteDefTheme,
   globalTheme: GlobalTheme,
@@ -1200,4 +1200,31 @@ export function  footnoteBackgroundColor(
     return blockQuoteTheme.blockQuoteBackgroundColor // 块引用中的脚注
   }
   return footnoteDefTheme.footnoteDefBackgroundColor ?? globalTheme.backgroundColor
+}
+
+/**
+ * 表格格子背景颜色
+ *
+ * @param isHeader 是否是标题
+ * @param markdownTheme markdown样式
+ * @param rowCount 第几行
+ * @return 表格格子背景颜色
+ */
+export function tableCellBackgroundColor(
+  node: NodeView,
+  blockQuoteTheme: BlockQuoteTheme,
+  tableTheme: TableTheme,
+  isQuote: boolean,
+  rowCount: number
+): ResourceColor {
+  if (isQuote) {
+    return blockQuoteTheme.blockQuoteBackgroundColor // 引用
+  }
+  if (node.isTableHead) {
+    return tableTheme.tableTitleBackgroundColor // 表格标题
+  }
+  if (rowCount % 2 == 0) {
+    return tableTheme.tableContentEvenRowBackgroundColor // 表格内容奇数行
+  }
+  return tableTheme.tableContentOddRowBackgroundColor // 表格内容偶数行
 }
