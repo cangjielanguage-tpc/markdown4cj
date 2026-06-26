@@ -27,6 +27,7 @@ import { TableTheme } from "../theme/TableTheme"
 import { VideoTheme } from "../theme/VideoTheme"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownHeading } from "./MarkdownHeading"
+import { MarkdownCodeFenced } from "./MarkdownCodeFenced"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
 import { MarkdownTable } from "./MarkdownTable"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
@@ -153,8 +154,20 @@ export struct MarkdownQuote {
               })
             } else if (item.nodeType == "FencedCodeBlockListBlock") {
               // 围栏代码块列表
+              MarkdownCodeFenced({
+                node: item,
+                codeBlockTheme: this.codeBlockTheme,
+                codeCopyCallback: this.codeCopyCallback,
+                codeFullScreenCallback: this.codeFullScreenCallback
+              })
             } else if (item.nodeType == "FencedCodeBlock") {
               // 围栏代码块
+              MarkdownCodeFenced({
+                node: item,
+                codeBlockTheme: this.codeBlockTheme,
+                codeCopyCallback: this.codeCopyCallback,
+                codeFullScreenCallback: this.codeFullScreenCallback
+              })
             } else if (item.nodeType == "IndentedCodeBlock") {
               // 缩进代码块
               MarkdownCodeIndented({

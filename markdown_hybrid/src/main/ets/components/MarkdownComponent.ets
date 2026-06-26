@@ -1,15 +1,16 @@
-﻿import { JsNode, JsNodeSendableImpl, Options, parseIntoJsNode } from "@cangjie-tpc/commonmark_hybrid"
+﻿import { JsNode, JsNodeSendableImpl, Options, MarkdownParser } from "@cangjie-tpc/markdown_parser_hybrid"
 import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
 import { NodeView } from "../model/NodeView"
-import { nodeToNodeView, HashContext } from "../utils/MarkdownParserUtils"
+import { nodeToNodeView } from "../utils/MarkdownParserUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
 import { image } from "@kit.ImageKit"
 import { MarkdownAudio } from "./MarkdownAudio"
 import { MarkdownVideo } from "./MarkdownVideo"
 import { MarkdownBanner } from "./MarkdownBanner"
+import { MarkdownCodeFenced } from "./MarkdownCodeFenced"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
 import { MarkdownFootnote } from "./MarkdownFootnote"
 import { MarkdownDesc } from "./MarkdownDesc"
@@ -29,7 +30,6 @@ export struct CJMarkdown {
   private appliedVersion: number = 0 // 已应用的版本号，用于渐进式更新（避免丢弃所有中间结果）
   private isThrottled: boolean = false // 解析节流标志
   private hasPendingRefresh: boolean = false // 节流期间有未处理的刷新请求
-  private hashCtx: HashContext = new HashContext() // 复用的哈希计算上下文
   imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
 
   aboutToAppear(): void {
@@ -104,8 +104,20 @@ export struct CJMarkdown {
               })
             } else if (item.nodeType == "FencedCodeBlockListBlock") {
               // 围栏代码块列表
+              MarkdownCodeFenced({
+                node: item,
+                codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
+                codeCopyCallback: this.config.codeCopyCallback,
+                codeFullScreenCallback: this.config.codeFullScreenCallback
+              })
             } else if (item.nodeType == "FencedCodeBlock") {
               // 围栏代码块
+              MarkdownCodeFenced({
+                node: item,
+                codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
+                codeCopyCallback: this.config.codeCopyCallback,
+                codeFullScreenCallback: this.config.codeFullScreenCallback
+              })
             } else if (item.nodeType == "IndentedCodeBlock") {
               // 缩进代码块
               MarkdownCodeIndented({
@@ -445,13 +457,43 @@ export struct CJMarkdown {
   refreshAsyncData(): void {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
+    // MarkdownParser.
     let op: Options = {
       jsNodeFactory: (): JsNode => { return new JsNodeSendableImpl() },
       includeSourceSpans: 2,
-      cmInlineTags: [],
-      customParsers: undefined
+      ADPlugin: false,
+      BlockAudioPlugin: false,
+      BlockVideoPlugin: false,
+      CodeListPlugin: false,
+      DescListPlugin: false,
+      EmojiPlugin: false,
+      EmojiPlugin_light: false,
+      FootnotePlugin: false,
+      HighlightDelimeterPlugin: false,
+      HtmlPlugin: false,
+      IdHeadingPlugin: false,
+      ImageCollectPlugin: false,
+      ImageSinglePlugin: false,
+      ImageSlidePlugin: false,
+      ImageStylePlugin: false,
+      ImageTextMixPlugin: false,
+      ImageVideoPlugin: false,
+      LatexMathPluginV2: false,
+      LinkifyPlugin: false,
+      LinkifyPlugin_regs: undefined,
+      LinkViewPlugin: false,
+      NodeIdPlugin: true,
+      StrikethroughPlugin: false,
+      SubPlugin: false,
+      SupPlugin: false,
+      TablePlugin: true,
+      TaskListPlugin: true,
+      TocPlugin: false,
+      WhitelistLooseDelimiterPlugin: false,
+      WhitelistLooseDelimiterPlugin_DelimiterFilterMode: "Permissive"
     }
-    parseIntoJsNode(this.content, op).then((node: JsNode) => {
+    let markdownParser:MarkdownParser = new MarkdownParser(op)
+    markdownParser.parse(this.content).then((node: JsNode) => {
       this.applyParseResult(node, currentVersion)
     })
   }
@@ -465,10 +507,39 @@ export struct CJMarkdown {
     let op: Options = {
       jsNodeFactory: (): JsNode => { return new JsNodeSendableImpl() },
       includeSourceSpans: 2,
-      cmInlineTags: [],
-      customParsers: undefined
+      ADPlugin: false,
+      BlockAudioPlugin: false,
+      BlockVideoPlugin: false,
+      CodeListPlugin: false,
+      DescListPlugin: false,
+      EmojiPlugin: false,
+      EmojiPlugin_light: false,
+      FootnotePlugin: false,
+      HighlightDelimeterPlugin: false,
+      HtmlPlugin: false,
+      IdHeadingPlugin: false,
+      ImageCollectPlugin: false,
+      ImageSinglePlugin: false,
+      ImageSlidePlugin: false,
+      ImageStylePlugin: false,
+      ImageTextMixPlugin: false,
+      ImageVideoPlugin: false,
+      LatexMathPluginV2: false,
+      LinkifyPlugin: false,
+      LinkifyPlugin_regs: undefined,
+      LinkViewPlugin: false,
+      NodeIdPlugin: true,
+      StrikethroughPlugin: false,
+      SubPlugin: false,
+      SupPlugin: false,
+      TablePlugin: true,
+      TaskListPlugin: true,
+      TocPlugin: false,
+      WhitelistLooseDelimiterPlugin: false,
+      WhitelistLooseDelimiterPlugin_DelimiterFilterMode: "Permissive"
     }
-    let node: JsNode = await parseIntoJsNode(this.content, op)
+    let markdownParser:MarkdownParser = new MarkdownParser(op)
+    let node: JsNode = await markdownParser.parse(this.content)
     this.applyParseResult(node, currentVersion)
   }
 
@@ -482,7 +553,7 @@ export struct CJMarkdown {
       return
     }
     let nodeView: NodeView = new NodeView()
-    nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, 0, this.hashCtx)
+    nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
     if (nodeView.children.length == 0) {
       this.markdownDataSource.clear()
       this.appliedVersion = currentVersion

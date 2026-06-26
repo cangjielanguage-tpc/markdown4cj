@@ -1,4 +1,4 @@
-import { SourceSpan } from "@cangjie-tpc/commonmark_hybrid"
+import { SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
 
 /**
  * MarkdownNodeView
