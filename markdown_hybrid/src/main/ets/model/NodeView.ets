@@ -1,4 +1,4 @@
-import { SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
+import { SourceSpan, JsNodeSendableImpl, JsNode } from "@cangjie-tpc/markdown_parser_hybrid"
 
 /**
  * MarkdownNodeView
@@ -157,5 +157,44 @@ export class NodeView {
     this.codeListTab = source.codeListTab
     this.cardName = source.cardName
     this.cardData = source.cardData
+  }
+}
+
+export interface JsNodePool {
+  getJsNode(): JsNode
+}
+
+export class JsNodePoolImpl implements JsNodePool {
+  generator: Array<JsNode> = []
+
+  constructor() {
+  }
+
+  put(nodeTree: JsNode) {
+    traverseTree(nodeTree, this.generator)
+  }
+
+  /**
+   * 将节点树中的Node依次取出,若无则返回新Node
+   * @returns
+   */
+  getJsNode(): JsNode {
+    return this.generator.pop() ?? new JsNodeSendableImpl()
+  }
+}
+
+/**
+ * 取出所有可用节点
+ * @param node
+ * @param arr
+ */
+export function traverseTree(node: JsNode | undefined, arr: Array<JsNode>) {
+  if (node) {
+    let child:JsNode|undefined = node.firstChild
+    let next:JsNode|undefined = node.next
+    node.reset()
+    arr.push(node)
+    traverseTree(child, arr)
+    traverseTree(next, arr)
   }
 }

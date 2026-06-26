@@ -1,8 +1,8 @@
-﻿import { JsNode, JsNodeSendableImpl, Options, MarkdownParser } from "@cangjie-tpc/markdown_parser_hybrid"
+﻿import { JsNode, Options, MarkdownParser } from "@cangjie-tpc/markdown_parser_hybrid"
 import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
-import { NodeView } from "../model/NodeView"
+import { JsNodePoolImpl, NodeView } from "../model/NodeView"
 import { nodeToNodeView } from "../utils/MarkdownParserUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
@@ -31,6 +31,7 @@ export struct CJMarkdown {
   private isThrottled: boolean = false // 解析节流标志
   private hasPendingRefresh: boolean = false // 节流期间有未处理的刷新请求
   imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
+  jsNodePoolImpl: JsNodePoolImpl = new JsNodePoolImpl()
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -457,9 +458,8 @@ export struct CJMarkdown {
   refreshAsyncData(): void {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    // MarkdownParser.
     let op: Options = {
-      jsNodeFactory: (): JsNode => { return new JsNodeSendableImpl() },
+      jsNodeFactory: (): JsNode => this.jsNodePoolImpl.getJsNode(),
       includeSourceSpans: 2,
       ADPlugin: false,
       BlockAudioPlugin: false,
@@ -505,7 +505,7 @@ export struct CJMarkdown {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
     let op: Options = {
-      jsNodeFactory: (): JsNode => { return new JsNodeSendableImpl() },
+      jsNodeFactory: (): JsNode => this.jsNodePoolImpl.getJsNode(),
       includeSourceSpans: 2,
       ADPlugin: false,
       BlockAudioPlugin: false,
@@ -561,6 +561,7 @@ export struct CJMarkdown {
     }
     this.markdownDataSource.smartUpdateDataArray(nodeView.children)
     this.appliedVersion = currentVersion
+    this.jsNodePoolImpl.put(node)
   }
 
   /**

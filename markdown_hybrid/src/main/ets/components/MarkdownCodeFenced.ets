@@ -2,7 +2,7 @@ import { codeStringToColorString, PrismBlock, PrismNode, PrismRes } from "@cangj
 import { NodeView } from "../model/NodeView"
 import { CodeBlockTheme } from "../theme/CodeBlockTheme"
 import { CodeLineComponent } from "./MarkdownCodeLine"
-import { codeTitle } from "./MarkdownCodeTitle"
+import { CodeTitleComponent } from "./MarkdownCodeTitle"
 
 /**
  * 围栏代码块控件
@@ -19,6 +19,8 @@ export struct MarkdownCodeFenced {
   @State prismBlocks: Array<PrismBlock> = new Array<PrismBlock>() // 高亮代码块列表
   @State defaultFontColor: number = 0 // 默认文本颜色
   private isAlive: boolean = false // 组件是否存活
+  private parseVersion: number = 0 // 解析版本号，每次解析递增
+  private appliedVersion: number = 0 // 已应用的版本号，用于丢弃过期的异步解析结果
 
   aboutToAppear(): void {
     this.isAlive = true
@@ -31,11 +33,18 @@ export struct MarkdownCodeFenced {
 
   build() {
     Column() {
-      codeTitle(this.codeText, this.info, this.codeBlockTheme, this.codeCopyCallback, this.codeFullScreenCallback)
+      CodeTitleComponent({
+        codeText: this.codeText,
+        info: this.info ?? '',
+        codeBlockTheme: this.codeBlockTheme,
+        codeCopyCallback: this.codeCopyCallback,
+        codeFullScreenCallback: this.codeFullScreenCallback
+      })
       Row() {
         CodeLineComponent({ lineArray: this.lineArray, codeBlockTheme: this.codeBlockTheme })
         this.codeBlockComponent()
       }
+      .alignItems(VerticalAlign.Top)
     }
     .borderRadius({
       topLeft: this.codeBlockTheme.codeBlockRadiusTopLeft,
@@ -94,6 +103,7 @@ export struct MarkdownCodeFenced {
             }
           )
         }
+        .alignItems(HorizontalAlign.Start)
       } else {
         Text(this.codeText)
           .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
@@ -130,31 +140,69 @@ export struct MarkdownCodeFenced {
       lineArr.push(i)
     }
     this.lineArray = lineArr
-    this.parseCode()
+    if (this.codeBlockTheme.codeBlockParserSync) {
+      this.parseCodeSync()
+    } else {
+      this.parseCodeAsync()
+    }
   }
 
   /**
-   * 异步解析代码高亮
+   * 异步解析代码高亮（codeBlockParserSync=false时使用）
+   * 使用.then()回调，不阻塞UI线程
    */
-  async parseCode(): Promise<void> {
+  parseCodeAsync(): void {
     if (this.codeText.length === 0) {
       this.prismBlocks = []
       return
     }
+    this.parseVersion++ // 版本号递增
+    const currentVersion = this.parseVersion
     let isDarkula: boolean = this.codeBlockTheme.codeBlockIsDark ?? false
     let info: string | undefined = (this.info !== undefined && this.info.length > 0) ? this.info : undefined
-    try {
-      let prismRes: PrismRes = await codeStringToColorString(this.codeText, info, isDarkula)
-      if (!this.isAlive) {
+    codeStringToColorString(this.codeText, info, isDarkula).then((prismRes: PrismRes) => {
+      if (!this.isAlive || currentVersion <= this.appliedVersion) {
         return
       }
       this.defaultFontColor = prismRes.getDefaultFontColor()
       this.prismBlocks = Array.from(prismRes.getListColor())
-    } catch (e) {
-      if (!this.isAlive) {
+      this.appliedVersion = currentVersion
+    }).catch(() => {
+      if (!this.isAlive || currentVersion <= this.appliedVersion) {
         return
       }
       this.prismBlocks = []
+      this.appliedVersion = currentVersion
+    })
+  }
+
+  /**
+   * 同步解析代码高亮（codeBlockParserSync=true时使用）
+   * 使用await，在UI线程执行
+   */
+  async parseCodeSync(): Promise<void> {
+    if (this.codeText.length === 0) {
+      this.prismBlocks = []
+      return
+    }
+    this.parseVersion++ // 版本号递增
+    const currentVersion = this.parseVersion
+    let isDarkula: boolean = this.codeBlockTheme.codeBlockIsDark ?? false
+    let info: string | undefined = (this.info !== undefined && this.info.length > 0) ? this.info : undefined
+    try {
+      let prismRes: PrismRes = await codeStringToColorString(this.codeText, info, isDarkula)
+      if (!this.isAlive || currentVersion <= this.appliedVersion) {
+        return
+      }
+      this.defaultFontColor = prismRes.getDefaultFontColor()
+      this.prismBlocks = Array.from(prismRes.getListColor())
+      this.appliedVersion = currentVersion
+    } catch (e) {
+      if (!this.isAlive || currentVersion <= this.appliedVersion) {
+        return
+      }
+      this.prismBlocks = []
+      this.appliedVersion = currentVersion
     }
   }
 }

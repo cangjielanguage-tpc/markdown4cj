@@ -1,7 +1,7 @@
 import { NodeView } from "../model/NodeView"
 import { CodeBlockTheme } from "../theme/CodeBlockTheme"
 import { CodeLineComponent } from "./MarkdownCodeLine"
-import { codeTitle } from "./MarkdownCodeTitle"
+import { CodeTitleComponent } from "./MarkdownCodeTitle"
 
 /**
  * 缩进代码块控件
@@ -23,7 +23,13 @@ export struct MarkdownCodeIndented {
 
   build() {
     Column() {
-      codeTitle(this.codeText, this.info, this.codeBlockTheme, this.codeCopyCallback, this.codeFullScreenCallback)
+      CodeTitleComponent({
+        codeText: this.codeText,
+        info: this.info ?? '',
+        codeBlockTheme: this.codeBlockTheme,
+        codeCopyCallback: this.codeCopyCallback,
+        codeFullScreenCallback: this.codeFullScreenCallback
+      })
       Row() {
         CodeLineComponent({ lineArray: this.lineArray, codeBlockTheme: this.codeBlockTheme })
         this.codeBlockComponent()
