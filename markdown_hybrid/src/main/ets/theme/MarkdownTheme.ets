@@ -659,6 +659,17 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置解析节流间隔
+   *
+   * @param parseThrottleMs 节流间隔（ms），0表示不节流 - 默认200
+   * @return MarkdownTheme
+   */
+  setParseThrottleMs(parseThrottleMs: number): MarkdownTheme {
+    this.globalTheme.setParseThrottleMs(parseThrottleMs)
+    return this
+  }
+
+  /**
    * 设置是否打开长按复制粘贴
    *
    * @param isOnCopy 是否打开长按复制粘贴 - 默认true

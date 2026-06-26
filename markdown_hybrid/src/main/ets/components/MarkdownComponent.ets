@@ -1,9 +1,10 @@
 ﻿import { JsNode, JsNodeSendableImpl, Options, parseIntoJsNode } from "@cangjie-tpc/commonmark_hybrid"
+import { taskpool } from '@kit.ArkTS'
 import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
 import { NodeView } from "../model/NodeView"
-import { nodeToNodeView, computeHashes } from "../utils/MarkdownParserUtils"
+import { nodeToNodeView, HashContext } from "../utils/MarkdownParserUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
 import { image } from "@kit.ImageKit"
@@ -27,7 +28,7 @@ export struct CJMarkdown {
   private appliedVersion: number = 0 // 已应用的版本号，用于渐进式更新（避免丢弃所有中间结果）
   private isThrottled: boolean = false // 解析节流标志
   private hasPendingRefresh: boolean = false // 节流期间有未处理的刷新请求
-  private static readonly THROTTLE_MS: number = 120 // 解析节流间隔（ms），流式输出时降至~8次/秒
+  private hashCtx: HashContext = new HashContext() // 复用的哈希计算上下文
   imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
 
   aboutToAppear(): void {
@@ -252,7 +253,7 @@ export struct CJMarkdown {
   /**
    * 刷新数据（节流入口）
    * 流式输出时content高频变化，通过leading-edge节流将解析频率从~30次/秒降至~8次/秒
-   * 首次调用立即执行（无延迟），后续调用在THROTTLE_MS内被合并，最后一次必有trailing调用
+   * 首次调用立即执行（无延迟），后续调用在parseThrottleMs内被合并，最后一次必有trailing调用
    */
   refreshData() {
     if (this.isThrottled) {
@@ -262,12 +263,17 @@ export struct CJMarkdown {
     this.isThrottled = true
     this.hasPendingRefresh = false
     this.executeRefresh()
-    setTimeout(() => {
+    const throttleMs = this.config.markdownTheme.globalTheme.parseThrottleMs
+    if (throttleMs > 0) {
+      setTimeout(() => {
+        this.isThrottled = false
+        if (this.hasPendingRefresh) {
+          this.refreshData()
+        }
+      }, throttleMs)
+    } else {
       this.isThrottled = false
-      if (this.hasPendingRefresh) {
-        this.refreshData()
-      }
-    }, CJMarkdown.THROTTLE_MS)
+    }
   }
 
   /**
@@ -282,61 +288,50 @@ export struct CJMarkdown {
   }
 
   /**
-   * 异步触发解析数据（不等待结果）
+   * 异步触发解析数据
+   * 流式输出时content高频变化，parseVersion/appliedVersion确保仅应用最新结果
    */
   refreshAsyncData(): void {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
     let op: Options = {
-      jsNodeFactory: () => {
-        return new JsNodeSendableImpl()
-      },
+      jsNodeFactory: (): JsNode => { return new JsNodeSendableImpl() },
       includeSourceSpans: 2,
       cmInlineTags: [],
       customParsers: undefined
     }
-    let promise: Promise<JsNode> = parseIntoJsNode(this.content, op)
-    promise.then((node: JsNode) => {
-      // 渐进式版本追踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
-      // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
-      if (currentVersion <= this.appliedVersion) {
-        return
-      }
-      let nodeView: NodeView = new NodeView()
-      nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
-      computeHashes(nodeView)
-      if (nodeView.children.length == 0) {
-        this.markdownDataSource.clear()
-        this.appliedVersion = currentVersion
-        return
-      }
-      this.markdownDataSource.smartUpdateDataArray(nodeView.children)
-      this.appliedVersion = currentVersion
+    parseIntoJsNode(this.content, op).then((node: JsNode) => {
+      this.applyParseResult(node, currentVersion)
     })
   }
 
   /**
-   * 异步解析数据（可等待）
+   * 同步解析数据（UI线程，isMarkdownParserSync=true时使用）
    */
   async refreshSyncData(): Promise<void> {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
     let op: Options = {
-      jsNodeFactory: () => {
-        return new JsNodeSendableImpl()
-      },
+      jsNodeFactory: (): JsNode => { return new JsNodeSendableImpl() },
       includeSourceSpans: 2,
       cmInlineTags: [],
       customParsers: undefined
     }
     let node: JsNode = await parseIntoJsNode(this.content, op)
-    // 渐进式版本追踪：仅丢弃比已应用版本更旧的结果
+    this.applyParseResult(node, currentVersion)
+  }
+
+  /**
+   * 应用解析结果到数据源（渐进式版本跟踪+增量转换+哈希计算+智能更新）
+   */
+  private applyParseResult(node: JsNode, currentVersion: number): void {
+    // 渐进式版本跟踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
+    // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
     if (currentVersion <= this.appliedVersion) {
       return
     }
     let nodeView: NodeView = new NodeView()
-    nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
-    computeHashes(nodeView)
+    nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, 0, this.hashCtx)
     if (nodeView.children.length == 0) {
       this.markdownDataSource.clear()
       this.appliedVersion = currentVersion

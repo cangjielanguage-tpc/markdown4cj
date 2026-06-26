@@ -17,17 +17,57 @@ function sourceSpansEqual(a: Array<SourceSpan>, b: Array<SourceSpan>): boolean {
 }
 
 /**
- * 解析处理，将JsNode转换成NodeView
+ * 哈希计算上下文 - 复用3个hasher避免per-node分配
+ * 用于nodeToNodeView内联哈希计算，消除单独的computeHashes遍历
+ */
+export class HashContext {
+  posHasher: DefaultHasher = new DefaultHasher()
+  nodeHasher: DefaultHasher = new DefaultHasher()
+  contentHasher: DefaultHasher = new DefaultHasher()
+}
+
+/**
+ * 将NodeView自身属性写入contentHasher（不含children）
+ * 提取为函数避免nodeToNodeView中重复代码
+ */
+function writeNodePropertiesToHasher(node: NodeView, hasher: DefaultHasher): void {
+  hasher.writeString(node.nodeType)
+  hasher.writeString(node.nodeText)
+  hasher.writeInt(node.headingLevel)
+  hasher.writeString(node.headingID ?? "")
+  hasher.writeInt(Number(node.tableAlignment))
+  hasher.writeInt(node.orderedListNumber)
+  hasher.writeInt(node.isTaskListSelected ? 1 : 0)
+  hasher.writeString(node.footnoteID ?? "")
+  hasher.writeString(node.linkUrl ?? "")
+  hasher.writeString(node.linkTitle ?? "")
+  hasher.writeString(node.imageUrl ?? "")
+  hasher.writeString(node.imageTitle ?? "")
+  hasher.writeInt(node.imageWidth)
+  hasher.writeInt(node.imageHeight)
+  hasher.writeString(node.codeInfo ?? "")
+  hasher.writeInt(node.headLinkIndex ?? -1)
+  hasher.writeString(node.cardName ?? "")
+  hasher.writeString(node.cardData ?? "")
+}
+
+/**
+ * 解析处理，将JsNode转换成NodeView，同时内联计算nodeHash/contentHash
  *
  * @param sourceJsNode 源节点JsNode
  * @param targetParentView 目标父节点View - 子节点将添加到此节点
  * @param inheritedStyleView 继承样式上下文 - 用于平铺样式传递
+ * @param previousChildren 上一轮的children，用于增量复用
+ * @param parentPositionHash 父节点的positionHash（用于nodeHash计算）
+ * @param hashCtx 复用的hasher上下文（undefined则不计算哈希）
  */
 export function nodeToNodeView(
   sourceJsNode: JsNode,
   targetParentView: NodeView,
   inheritedStyleView: NodeView,
-  previousChildren?: NodeView[]
+  previousChildren?: NodeView[],
+  parentPositionHash?: number,
+  hashCtx?: HashContext
 ): void {
   let currentJsNode = sourceJsNode.getFirstChild()
   while (currentJsNode !== undefined) {
@@ -50,14 +90,23 @@ export function nodeToNodeView(
     }
     const currentView: NodeView = new NodeView()
     currentView.nodeType = nodeType
-    let prop = currentJsNode.getProps()
-    if (prop !== undefined) {
-      currentView.nodeHash = prop.get("nodeHash") ?? "0"
-      currentView.contentHash = prop.get("contentHash") ?? "0"
-    }
     currentView.sourceSpan = currentJsNode.getSourceSpans()
 
     currentView.copyStyleFrom(inheritedStyleView)
+
+    // 内联计算positionHash和nodeHash（前序：在处理子节点之前）
+    let positionHash: number = 0
+    if (hashCtx !== undefined && parentPositionHash !== undefined) {
+      hashCtx.posHasher.reset()
+      hashCtx.posHasher.writeInt(parentPositionHash)
+      hashCtx.posHasher.writeInt(prevChildPos)
+      positionHash = hashCtx.posHasher.finish()
+
+      hashCtx.nodeHasher.reset()
+      hashCtx.nodeHasher.writeInt(positionHash)
+      hashCtx.nodeHasher.writeString(nodeType)
+      currentView.nodeHash = hashCtx.nodeHasher.finish().toString()
+    }
 
     switch (nodeType) {
       case 'Text': // 文本
@@ -81,28 +130,28 @@ export function nodeToNodeView(
         currentView.isLink = true
         currentView.linkUrl = currentJsNode.getDestination()
         currentView.linkTitle = currentJsNode.getTitle()
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'HeadLink': // 标题链接
         currentView.isLink = true
         currentView.linkUrl = currentJsNode.getDestination()
         currentView.linkTitle = currentJsNode.getTitle()
         currentView.headLinkIndex = currentJsNode.getHeadIndex()
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'SubNode': // 下标
       case 'SubHtmlNode':
         currentView.isSubNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'SupNode': // 上标
       case 'SupHtmlNode':
         currentView.isSupNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'UnderlineNode': // 下划线
         currentView.isUnderlineNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'FontNode':
           currentView.isFontNode = true
@@ -123,7 +172,7 @@ export function nodeToNodeView(
         //     }
         //   } catch (e) {
         //   }
-        //   nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        //   nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'SpanNode':
           currentView.isSpanNode = true
@@ -164,49 +213,49 @@ export function nodeToNodeView(
         //     } catch (e) {
         //     }
         //   }
-        //   nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        //   nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'Emphasis': // 斜体
         currentView.isEmphasis = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'StrongEmphasis': // 粗体
         currentView.isStrongEmphasis = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'Strikethrough': // 删除线
         currentView.isStrikethrough = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'HighlightNode': // 高亮
         currentView.isHighlight = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'Paragraph': // 段落
         if (currentView.isParagraph) {
-          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         } else {
           currentView.isParagraph = true
-          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
           targetParentView.children.push(currentView)
         }
         break
       case 'Heading': // 标题
         currentView.isHeading = true
         currentView.headingLevel = currentJsNode.getLevel() ?? 1
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'IdHeading': // 标题ID
           currentView.isHeading = true
           currentView.headingLevel = currentJsNode.getLevel() ?? 1
           // currentView.headingID =
-          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
           targetParentView.children.push(currentView)
         break
       case 'FencedCodeBlockListBlock': // 代码块列表
           // currentView.codeListTab =
-          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
           targetParentView.children.push(currentView)
         break
       case 'FencedCodeBlock': // 围栏代码块
@@ -220,28 +269,28 @@ export function nodeToNodeView(
         break
       case 'BulletList': // 无序列表
         currentView.isBulletList = true
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'OrderedList': // 有序列表
         currentView.isOrderedList = true
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'ListItem': // 列表项
         // currentView.orderedListNumber =
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'TaskListItem': // 任务列表项
         currentView.isTaskList = true
         currentView.isTaskListSelected = currentJsNode.isDone() ?? false
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'BlockQuote': // 块引用
         currentView.isQuote = true
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'LatexMathBlock': // 数学公式块
@@ -256,35 +305,35 @@ export function nodeToNodeView(
         break
       case 'TableBlock': // 表格
         currentView.isTable = true
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'TableHead': // 表头
         currentView.isTableHead = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'TableBody': // 表体
         currentView.isTableBody = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'TableRow': // 表格行
         currentView.isTableRow = true
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'TableCell': // 表格单元格
         currentView.isTableCell = true
-          currentView.tableAlignment = renderTableCellColumnAlign(currentJsNode.getAlignment())
-          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
-          targetParentView.children.push(currentView)
+        currentView.tableAlignment = renderTableCellColumnAlign(currentJsNode.getAlignment())
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
+        targetParentView.children.push(currentView)
         break
       case 'ThematicBreak': // 分隔线
         targetParentView.children.push(currentView)
         break
       case 'FootnoteBlock': //
-          currentView.footnoteID = currentJsNode.getNoteid()
-          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
-          targetParentView.children.push(currentView)
+        currentView.footnoteID = currentJsNode.getNoteid()
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
+        targetParentView.children.push(currentView)
         break
       case 'Footnote': //
           currentView.isFootnote = true
@@ -294,21 +343,21 @@ export function nodeToNodeView(
         break
       case 'DescList': // 定义列表
         currentView.isDescList = true
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'DescTerm': // 定义列表术语
         currentView.isDescTerm = true
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'DescDef': // 定义列表描述
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'IgnoreBlockNode': // 忽略节点
       case 'IgnoreInlineNode':
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, parentPositionHash, hashCtx)
         break
       case 'HtmlBlock':
       case 'HtmlInline':
@@ -322,7 +371,7 @@ export function nodeToNodeView(
           targetParentView.children.push(currentView)
         break
       case 'SlideBlock': // 幻灯片块
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, positionHash, hashCtx)
         targetParentView.children.push(currentView)
         break
       case 'ImageSingleBlock': // 单图块
@@ -374,6 +423,15 @@ export function nodeToNodeView(
         targetParentView.children.push(currentView)
         break
     }
+    // 内联计算contentHash（后序：子节点已构建完毕，读取children的contentHash）
+    if (hashCtx !== undefined) {
+      hashCtx.contentHasher.reset()
+      writeNodePropertiesToHasher(currentView, hashCtx.contentHasher)
+      for (let i = 0; i < currentView.children.length; i++) {
+        hashCtx.contentHasher.writeInt(parseInt(currentView.children[i].contentHash) || 0)
+      }
+      currentView.contentHash = hashCtx.contentHasher.finish().toString()
+    }
     currentJsNode = currentJsNode.getNext()
   }
 }
@@ -402,6 +460,14 @@ class DefaultHasher {
   reset(): void {
     this.hash = 0
   }
+
+  getHash(): number {
+    return this.hash
+  }
+
+  setHash(value: number): void {
+    this.hash = value
+  }
 }
 
 /**
@@ -423,12 +489,12 @@ export function computeHashes(rootView: NodeView): void {
 
 /**
  * 递归计算nodeHash和contentHash
- * posHasher/nodeHasher/contentHasher跨节点复用（reset+重写），减少GC压力
  *
- * 计算顺序：
- * 1. 前序：用posHasher算positionHash，用nodeHasher算nodeHash
- * 2. 递归子节点，收集contentHash到数组（此时contentHasher被子节点复用，父节点不能同时使用）
- * 3. 后序：用contentHasher写入自身属性+子节点contentHash，算出本节点contentHash
+ * 优化点：
+ * 1. 跳过复用节点：nodeToNodeView复用的子树已有有效hash，直接返回parseInt(contentHash)
+ *    新建节点nodeHash="0"（customParsers未注册时getProps返回undefined），需完整计算
+ * 2. 消除childHashes数组：用getHash/setHash保存恢复contentHasher状态
+ *    每个子节点递归前save，递归后restore+writeInt(childHash)，无需分配数组
  *
  * @param node 当前节点
  * @param parentPositionHash 父节点的positionHash
@@ -446,6 +512,13 @@ function computeHashesRecursive(
   nodeHasher: DefaultHasher,
   contentHasher: DefaultHasher
 ): number {
+  // 复用节点跳过：nodeToNodeView复用的子树已有有效hash
+  // 新建节点nodeHash="0"（getProps无customParsers时返回undefined）
+  // 流式追加场景下复用节点位置不变，positionHash也有效
+  if (node.nodeHash !== "0" && node.contentHash !== "0") {
+    return parseInt(node.contentHash) || 0
+  }
+
   // Pass 1: 计算positionHash和nodeHash（前序）
   posHasher.reset()
   posHasher.writeInt(parentPositionHash)
@@ -457,15 +530,9 @@ function computeHashesRecursive(
   nodeHasher.writeString(node.nodeType)
   node.nodeHash = nodeHasher.finish().toString()
 
-  // Pass 2: 递归子节点，收集contentHash（contentHasher在此期间被子节点复用）
-  const childHashes: number[] = []
-  for (let i = 0; i < node.children.length; i++) {
-    childHashes.push(computeHashesRecursive(node.children[i], positionHash, i, posHasher, nodeHasher, contentHasher))
-  }
-
-  // Pass 3: 计算contentHash（后序：子节点已递归完毕，contentHasher空闲可复用）
+  // Pass 2: 计算contentHash
+  // 写入节点自身属性
   contentHasher.reset()
-  // 节点自身属性
   contentHasher.writeString(node.nodeType)
   contentHasher.writeString(node.nodeText)
   contentHasher.writeInt(node.headingLevel)
@@ -484,9 +551,14 @@ function computeHashesRecursive(
   contentHasher.writeInt(node.headLinkIndex ?? -1)
   contentHasher.writeString(node.cardName ?? "")
   contentHasher.writeString(node.cardData ?? "")
-  // 子节点contentHash
-  for (let i = 0; i < childHashes.length; i++) {
-    contentHasher.writeInt(childHashes[i])
+
+  // 递归子节点并累加contentHash
+  // 用getHash/setHash保存恢复状态，避免分配childHashes数组
+  for (let i = 0; i < node.children.length; i++) {
+    const savedHash = contentHasher.getHash()
+    const childHash = computeHashesRecursive(node.children[i], positionHash, i, posHasher, nodeHasher, contentHasher)
+    contentHasher.setHash(savedHash)
+    contentHasher.writeInt(childHash)
   }
 
   const contentHash = contentHasher.finish()

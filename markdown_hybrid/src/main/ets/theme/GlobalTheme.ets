@@ -9,6 +9,7 @@ export class GlobalTheme implements MarkdownBaseTheme {
   stageContext: Context | undefined = undefined // Stage上下文
   uiAbilityContext: Context | undefined = undefined // UIAbility上下文
   isMarkdownParserSync: boolean = false // 是否使用同步Markdown解析器
+  parseThrottleMs: number = 200 // 解析节流间隔（ms），流式输出时控制解析频率
   isOnCopy: boolean = true // 是否启用复制功能
   blockMarginTop: Length = 0.0 // 区块上外边距
   blockMarginRight: Length = 0.0 // 区块右外边距
@@ -49,6 +50,17 @@ export class GlobalTheme implements MarkdownBaseTheme {
    */
   setIsMarkdownParserSync(parserSync: boolean): GlobalTheme {
     this.isMarkdownParserSync = parserSync;
+    return this;
+  }
+
+  /**
+   * 设置解析节流间隔
+   *
+   * @param throttleMs 节流间隔（ms），0表示不节流 - 默认200
+   * @return GlobalTheme
+   */
+  setParseThrottleMs(throttleMs: number): GlobalTheme {
+    this.parseThrottleMs = throttleMs;
     return this;
   }
 
