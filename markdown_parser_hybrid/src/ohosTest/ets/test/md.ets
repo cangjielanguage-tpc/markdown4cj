@@ -59,7 +59,8 @@ export function getParser(includeSourceSpans: 0 | 1 | 2, factory: (() => JsNode)
     jsNodeFactory: factory ?? (() => new JsNodeImpl()),
     includeSourceSpans: includeSourceSpans,
     FootnotePlugin: true,
-    LinkifyPlugin: true
+    LinkifyPlugin: true,
+    NodeIdPlugin: true
   }
   let parser = new MarkdownParser(opt)
   return parser

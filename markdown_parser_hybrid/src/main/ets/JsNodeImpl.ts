@@ -75,6 +75,30 @@ export class JsNodeImpl implements JsNode {
     this.previous = undefined
   }
 
+  ImageStyles?: Array<string> = undefined
+
+  putImageStyles(...styles: Array<string>): void {
+    this.ImageStyles = styles.concat(this.ImageStyles)
+  }
+
+  SpanNodeAttr?: Map<string, string> = undefined
+
+  putSpanNodeAttr(styleKey: string, styleValue: string): void {
+    if (!this.SpanNodeAttr) {
+      this.SpanNodeAttr = new Map()
+    }
+    this.SpanNodeAttr.set(styleKey, styleValue)
+  }
+
+  SpanNodeStyle?: Map<string, string> = undefined
+
+  putSpanNodeStyle(styleKey: string, styleValue: string): void {
+    if (!this.SpanNodeStyle) {
+      this.SpanNodeStyle = new Map()
+    }
+    this.SpanNodeStyle.set(styleKey, styleValue)
+  }
+
   getProps(): Map<string, string> | undefined {
     return this.props
   }

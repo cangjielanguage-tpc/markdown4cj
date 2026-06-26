@@ -48,7 +48,8 @@ function printNodeDep(node: JsNode | undefined, dep: number, builder: Array<stri
     let str = node.toStr
     let sss = node.getSourceSpans().map((v) => JSON.stringify(v)).join(',')
     let sssize = node.getSourceSpans().length
-    builder.push(`${' '.repeat(dep)}${str}${sssize}:[${sss}]\n`)
+    let props = JSON.stringify(Object.fromEntries(node.getProps()))
+    builder.push(`${' '.repeat(dep)}${str}${sssize}:[${sss}] , ${props}\n`)
     let child = node.firstChild
     printNodeDep(child, dep + 4, builder)
     let next = node.next

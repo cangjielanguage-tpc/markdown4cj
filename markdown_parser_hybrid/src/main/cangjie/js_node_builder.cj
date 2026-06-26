@@ -8,6 +8,16 @@ class JsNodeBuilder {
         jsNode.set('nodeType', instance.getNodeType(), context)
         jsNode.set('toStr', instance.toString(), context)
         setSourceSpans(instance, jsNode)
+        if (let props: HashMap<String, Any> <- instance.custom) {
+            for ((k, v) in props) {
+                let jsv: JSValue = if (let toStr: ToString <- v) {
+                    context.string(toStr.toString()).toJSValue()
+                } else {
+                    context.undefined().toJSValue()
+                }
+                jsNode.callMethod('putProp', context.string(k).toJSValue(), jsv)
+            }
+        }
 
         match (instance) {
             case v: TaskListItem => jsNode.set('isdone', v.isDone(), context)
@@ -21,12 +31,16 @@ class JsNodeBuilder {
             case v: FootnoteBlock =>
                 jsNode.set('noteid', v.noteid, context)
                 jsNode.set('blockIndex', v.blockIndex, context)
-            case v: HeadLink => jsNode.set('headIndex', v.headIndex, context)
             case v: Text => jsNode.set('literal', v.getLiteral(), context)
             case v: HtmlInline => jsNode.set('literal', v.getLiteral(), context)
             case v: Image =>
                 jsNode.set('destination', v.getDestination(), context)
                 jsNode.set('title', v.getTitle(), context)
+                match (v) {
+                    case i: StyleImage => jsNode.put('putStyleImageStyle', i.styles, context)
+                    case i: ImgVideo => jsNode.set('text', i.text, context)
+                    case _ => ()
+                }
             case v: Code => jsNode.set('literal', v.getLiteral(), context)
             case v: LinkReferenceDefinition =>
                 jsNode.set('label', v.getLabel(), context)
@@ -35,8 +49,11 @@ class JsNodeBuilder {
             case v: Link =>
                 jsNode.set('destination', v.getDestination(), context)
                 jsNode.set('title', v.getTitle(), context)
-            case v: StrongEmphasis => jsNode.set('delimiter', v.getOpeningDelimiter(), context)
-            case v: Emphasis => jsNode.set('delimiter', v.getOpeningDelimiter(), context)
+                match (v) {
+                    case l: HeadLink => jsNode.set('headIndex', l.headIndex, context)
+                    case _ => ()
+                }
+            case v: Delimited => jsNode.set('delimiter', v.getOpeningDelimiter(), context)
             case v: HtmlBlock => jsNode.set('literal', v.getLiteral(), context)
             case v: IndentedCodeBlock => jsNode.set('literal', v.getLiteral(), context)
             case v: FencedCodeBlock =>
@@ -57,6 +74,19 @@ class JsNodeBuilder {
                 jsNode.set('isHeader', v.isHeader(), context)
                 jsNode.set('alignment', v.getAlignment()?.toString(), context)
                 jsNode.set('width', v.getWidth(), context)
+            case v: ImageHtmlNode =>
+                jsNode.set('destination', v.getDestination(), context)
+                jsNode.set('width', v.getWidth(), context)
+                jsNode.set('height', v.getHeight(), context)
+            case v: FontNode =>
+                jsNode.set('color', v.getColor(), context)
+                jsNode.set('size', v.getSize(), context)
+            case v: SpanNode =>
+                jsNode.put('putSpanNodeAttr', v.getAttrs(), context)
+                jsNode.put('putSpanNodeAttrStyle', v.getStyle(), context)
+            case v: CardNode =>
+                jsNode.set('name', v.getName(), context)
+                jsNode.set('data', v.getData(), context)
             case _ => ()
         }
         jsNode

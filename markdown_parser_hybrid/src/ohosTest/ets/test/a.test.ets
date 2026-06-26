@@ -54,5 +54,15 @@ https://www.wanuxi.com/为美好的世界献上祝福第三季主视觉图公开
       expect(doc.firstChild!.firstChild!.next!.next!.destination)
         .assertEqual("https://www.wanuxi.com/")
     })
+    it('nodehash', 0, async () => {
+      let md = `这是一个带中文的链接：
+https://www.wanuxi.com/为美好的世界献上祝福第三季主视觉图公开
+你好`
+      let doc = await getParser(2, undefined).parse(md)
+      let str = printNode(doc)
+      console.error(str)
+      expect(doc.firstChild!.firstChild!.next!.next!.destination)
+        .assertEqual("https://www.wanuxi.com/")
+    })
   })
 }

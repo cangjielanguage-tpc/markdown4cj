@@ -85,9 +85,6 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         if (opt.get('LinkViewPlugin', false, context)) {
             builder.usePlugin(LinkViewPlugin.create())
         }
-        if (opt.get('NodeIdPlugin', false, context)) {
-            builder.usePlugin(NodeIdPlugin.create())
-        }
         if (opt.get('StrikethroughPlugin', false, context)) {
             builder.usePlugin(StrikethroughPlugin.create())
         }
@@ -102,9 +99,6 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         }
         if (opt.get('TaskListPlugin', false, context)) {
             builder.usePlugin(TaskListPlugin.create())
-        }
-        if (opt.get('TocPlugin', false, context)) {
-            builder.usePlugin(TocPlugin.create())
         }
         if (opt.get('WhitelistLooseDelimiterPlugin', false, context)) {
             let jv = opt["WhitelistLooseDelimiterPlugin_DelimiterFilterMode"]
@@ -122,6 +116,12 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
             }
             builder.usePlugin(WhitelistLooseDelimiterPlugin.create(mode))
         }
+        if (opt.get('TocPlugin', false, context)) {
+            builder.usePlugin(TocPlugin.create())
+        }
+        if (opt.get('NodeIdPlugin', false, context)) {
+            builder.usePlugin(NodeIdPlugin.create())
+        }
 
         let parser = builder.build()
         let clazz = HybridParser(parser, jsNodeFactory)
@@ -138,7 +138,7 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         let promise = context.promiseCapability()
         spawn {
             try {
-                let doc: Node = parser.parse(md)
+                let doc: Node = parser.toMarkdown(md)
                 context.postJSTask {
                     try {
                         let jsNodeTreeBuilder = JsNodeBuilder(jsNodeFactory, context)

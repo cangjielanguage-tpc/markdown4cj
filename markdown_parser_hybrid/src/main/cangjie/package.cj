@@ -58,6 +58,18 @@ extend JSObject {
             case _ => this[name] = context.undefined().toJSValue()
         }
     }
+    func put(method: String, value: ?ArrayList<String>, context: JSContext): Unit {
+        if (let Some(value) <- value) {
+            this.callMethod(method, value |> map {v => context.string(v).toJSValue()} |> collectArray)
+        }
+    }
+    func put(method: String, value: ?HashMap<String, String>, context: JSContext): Unit {
+        if (let Some(value) <- value) {
+            for ((k, v) in value) {
+                this.callMethod(method, context.string(k).toJSValue(), context.string(v).toJSValue())
+            }
+        }
+    }
     func get<T>(name: String, defaultValue: T, context: JSContext): T where T <: JSInteropType<T> {
         let jsvalue = this[name]
         return if (jsvalue.isUndefined() || jsvalue.isNull()) {

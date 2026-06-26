@@ -75,6 +75,33 @@ export class JsNodeSendableImpl implements JsNode {
     this.previous = undefined
   }
 
+  ImageStyles?: collections.Array<string> = undefined
+
+  putImageStyles(...styles: Array<string>): void {
+    if (!this.ImageStyles) {
+      this.ImageStyles = new collections.Array()
+    }
+    this.ImageStyles.push(...styles)
+  }
+
+  SpanNodeAttr?: collections.Map<string, string> = undefined
+
+  putSpanNodeAttr(styleKey: string, styleValue: string): void {
+    if (!this.SpanNodeAttr) {
+      this.SpanNodeAttr = new collections.Map()
+    }
+    this.SpanNodeAttr.set(styleKey, styleValue)
+  }
+
+  SpanNodeStyle?: collections.Map<string, string> = undefined
+
+  putSpanNodeStyle(styleKey: string, styleValue: string): void {
+    if (!this.SpanNodeStyle) {
+      this.SpanNodeStyle = new collections.Map()
+    }
+    this.SpanNodeStyle.set(styleKey, styleValue)
+  }
+
   getProps(): Map<string, string> | undefined {
     return new Map(this.props)
   }

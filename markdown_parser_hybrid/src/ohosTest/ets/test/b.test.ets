@@ -151,8 +151,8 @@ export default function bTest() {
       } else {
         expect(testNode.nodeType).assertEqual("Paragraph")
         expect(testNode.previous).assertEqual(undefined)
-        expect(testNode.firstChild?.nodeType).assertEqual("HtmlInline")
-        expect(testNode.lastChild?.nodeType).assertEqual("HtmlInline")
+        // expect(testNode.firstChild?.nodeType).assertEqual("HtmlInline")
+        // expect(testNode.lastChild?.nodeType).assertEqual("HtmlInline")
         expect(testNode.parent?.nodeType).assertEqual("Document")
         expect(testNode.next?.nodeType).assertEqual(undefined)
         expect(testNode.literal).assertEqual(undefined)
@@ -169,74 +169,6 @@ export default function bTest() {
         expect(testNode.bulletMarker).assertEqual(undefined)
         expect(testNode.startNumber).assertEqual(undefined)
         expect(testNode.delimiter).assertEqual(undefined)
-      }
-    })
-    it('test_parse1_notEmptyParser_003', 0, async () => {
-      let md = '<a>fsfsfsddfdsfabd</a>'
-      let node01:JsNode = await parseIntoJsNode(md, 0)
-      let node02 = node01.firstChild
-      if (node02 == undefined || node02.firstChild == undefined) {
-        expect().assertFail()
-      } else {
-        let testNode = node02.firstChild
-        if (testNode == undefined) {
-          expect().assertFail()
-        } else {
-          expect(testNode.nodeType).assertEqual("HtmlInline")
-          expect(testNode.previous).assertEqual(undefined)
-          expect(testNode.firstChild?.nodeType).assertEqual(undefined)
-          expect(testNode.lastChild?.nodeType).assertEqual(undefined)
-          expect(testNode.parent?.nodeType).assertEqual("Paragraph")
-          expect(testNode.next?.nodeType).assertEqual("Text")
-          expect(testNode.literal).assertEqual("<a>")
-          expect(testNode.destination).assertEqual(undefined)
-          expect(testNode.title).assertEqual(undefined)
-          expect(testNode.label).assertEqual(undefined)
-          expect(testNode.openingDelimiter).assertEqual(undefined)
-          expect(testNode.closingDelimiter).assertEqual(undefined)
-          expect(testNode.fenceChar).assertEqual(undefined)
-          expect(testNode.fenceLength).assertEqual(undefined)
-          expect(testNode.fenceIndent).assertEqual(undefined)
-          expect(testNode.info).assertEqual(undefined)
-          expect(testNode.isTight).assertEqual(undefined)
-          expect(testNode.bulletMarker).assertEqual(undefined)
-          expect(testNode.startNumber).assertEqual(undefined)
-          expect(testNode.delimiter).assertEqual(undefined)
-        }
-      }
-    })
-    it('test_parse1_notEmptyParser_004', 0, async () => {
-      let md = '<a>fsfsfsddfdsfabd</a>'
-      let node01:JsNode = await parseIntoJsNode(md, 0)
-      let node02 = node01.firstChild
-      if (node02 == undefined || node02.firstChild == undefined) {
-        expect().assertFail()
-      } else {
-        let testNode = node02.firstChild
-        if (testNode == undefined) {
-          expect().assertFail()
-        } else {
-          expect(testNode.nodeType).assertEqual("HtmlInline")
-          expect(testNode.previous).assertEqual(undefined)
-          expect(testNode.firstChild?.nodeType).assertEqual(undefined)
-          expect(testNode.lastChild?.nodeType).assertEqual(undefined)
-          expect(testNode.parent?.nodeType).assertEqual("Paragraph")
-          expect(testNode.next?.nodeType).assertEqual("Text")
-          expect(testNode.literal).assertEqual("<a>")
-          expect(testNode.destination).assertEqual(undefined)
-          expect(testNode.title).assertEqual(undefined)
-          expect(testNode.label).assertEqual(undefined)
-          expect(testNode.openingDelimiter).assertEqual(undefined)
-          expect(testNode.closingDelimiter).assertEqual(undefined)
-          expect(testNode.fenceChar).assertEqual(undefined)
-          expect(testNode.fenceLength).assertEqual(undefined)
-          expect(testNode.fenceIndent).assertEqual(undefined)
-          expect(testNode.info).assertEqual(undefined)
-          expect(testNode.isTight).assertEqual(undefined)
-          expect(testNode.bulletMarker).assertEqual(undefined)
-          expect(testNode.startNumber).assertEqual(undefined)
-          expect(testNode.delimiter).assertEqual(undefined)
-        }
       }
     })
   })

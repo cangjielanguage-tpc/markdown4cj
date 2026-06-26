@@ -4,25 +4,24 @@
 export interface JsNode {
   /* 节点类型 */
   nodeType: string
-
   /* to string */
   toStr: string
-
   /* 父节点 */
-  parent: JsNode | undefined
+  parent?: JsNode
   /* 第一个子节点 */
-  firstChild: JsNode | undefined
+  firstChild?: JsNode
   /* 最后一个子节点 */
-  lastChild: JsNode | undefined
+  lastChild?: JsNode
   /* 前节点 */
-  previous: JsNode | undefined
+  previous?: JsNode
   /* 后节点 */
-  next: JsNode | undefined
+  next?: JsNode
 
   /*
    * 插入子节点
    */
   appendChild(child: JsNode): void
+
   /*
    * 删除关联关系
    */
@@ -32,118 +31,159 @@ export interface JsNode {
    * 文本
    * 适用nodeType:Text/HtmlInline/Code/HtmlBlock/IndentedCodeBlock/FencedCodeBlock
    */
-  literal: string | undefined
+  literal?: string
   /**
    * 目标
-   * 适用nodeType:Image/LinkReferenceDefinition/Link
+   * 适用nodeType:Image/LinkReferenceDefinition/Link/ImageHtmlNode
    */
-  destination: string | undefined
+  destination?: string
   /**
    * 标题
    * 适用nodeType:Image/LinkReferenceDefinition/Link
    */
-  title: string | undefined
+  title?: string
   /**
    * 标签
    * 适用nodeType:LinkReferenceDefinition
    */
-  label: string | undefined
+  label?: string
   /**
    * 定界符
    * 适用nodeType:StrongEmphasis/Emphasis/OrderedList
    */
-  delimiter: string | undefined
+  delimiter?: string
   /**
    * 开始定界符
    * 适用nodeType:Delimited子类系列
    */
-  openingDelimiter: string | undefined
+  openingDelimiter?: string
   /**
    * 结束定界符
    * 适用nodeType:Delimited子类系列
    */
-  closingDelimiter: string | undefined
+  closingDelimiter?: string
   /**
    * 围栏字符
    * 适用nodeType:FencedCodeBlock
    */
-  fenceChar: string | undefined
+  fenceChar?: string
   /**
    * 围栏长度
    * 适用nodeType:FencedCodeBlock
    */
-  fenceLength: number | undefined
+  fenceLength?: number
   /**
    * 围栏缩进长度
    * 适用nodeType:FencedCodeBlock
    */
-  fenceIndent: number | undefined
+  fenceIndent?: number
   /**
    * 等级
    * 适用nodeType:Heading
    */
-  level: number | undefined
+  level?: number
   /**
    * 无序列表标志
    * 适用nodeType:BulletList
    */
-  bulletMarker: string | undefined
+  bulletMarker?: string
   /**
    * 有序列表开始数字
    * 适用nodeType:OrderedList
    */
-  startNumber: number | undefined
+  startNumber?: number
   /**
    * 信息
    * 适用nodeType:FencedCodeBlock
    */
-  info: string | undefined
+  info?: string
   /**
    * 列表密集排布
    * 适用nodeType:BulletList/OrderedList
    */
-  isTight: boolean | undefined
+  isTight?: boolean
   /**
    * 表格头
    * 适用nodeType:TableCell
    */
-  isHeader: boolean | undefined
+  isHeader?: boolean
   /**
    * 表格对齐
    * 适用nodeType:TableCell
    */
-  alignment: string | undefined
+  alignment?: string
   /**
-   * 表格列宽
-   * 适用nodeType:TableCell
+   * 适用: TableCell ImageHtmlNode
    */
-  width: number | undefined
+  width?: number | string
+  /**
+   * 适用: ImageHtmlNode
+   */
+  heigh?: string
   /**
    * 任务列表选中标志
    * 适用nodeType:TaskListItem
    */
-  isdone: boolean | undefined
+  isdone?: boolean
   /**
    * 数学公式
    * 适用nodeType:LatexMathBlock/LatexMathNode
    */
-  latex: string | undefined
-  isClosed: boolean | undefined
+  latex?: string
+  isClosed?: boolean
   /**
    * 脚注id
    * 适用nodeType:Footnote/FootnoteBlock
    */
-  noteid: string | undefined
+  noteid?: string
   /**
    * FootnoteBlock下标
    * 适用nodeType:Footnote/FootnoteBlock
    */
-  blockIndex: number | undefined
+  blockIndex?: number
   /**
    * toc标题链接
    * 适用nodeType:HeadLink
    */
-  headIndex: number | undefined
+  headIndex?: number
+  /**
+   * 适用: ImgVideo
+   */
+  text?: string
+  /**
+   * 适用: FontNode
+   */
+  color?: string
+  /**
+   * 适用: FontNode
+   */
+  size?: string
+  /**
+   * 适用: CardNode
+   */
+  name?: string
+  /**
+   * 适用: CardNode
+   */
+  data?: string
+
+  /**
+   * 添加Style
+   * 适用:StyleImage
+   */
+  putImageStyles(...styles: Array<string>): void
+
+  /**
+   * 添加Style
+   * 适用:SpanNode
+   */
+  putSpanNodeAttr(styleKey: string, styleValue: string): void
+
+  /**
+   * 添加Style
+   * 适用:SpanNode
+   */
+  putSpanNodeStyle(styleKey: string, styleValue: string): void
 
   /**
    * 用于存放自定义解析插件所产生的数据
