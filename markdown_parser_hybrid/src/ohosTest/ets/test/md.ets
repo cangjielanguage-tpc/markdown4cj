@@ -9,41 +9,39 @@ import {
 } from '../../../../Index';
 import { hilog } from "@kit.PerformanceAnalysisKit";
 
-export let opt: Options = (() => {
-  let opt = new Options()
-  opt.jsNodeFactory = () => new JsNodeImpl()
-  opt.includeSourceSpans = 0
+export let opt: Options = {
+  jsNodeFactory: () => new JsNodeImpl(),
+  includeSourceSpans: 0,
 
-  opt.ADPlugin = true
-  opt.BlockAudioPlugin = true
-  opt.BlockVideoPlugin = true
-  opt.CodeListPlugin = true
-  opt.DescListPlugin = true
-  opt.EmojiPlugin = true
-  opt.EmojiPlugin_light = true
-  opt.FootnotePlugin = true
-  opt.HighlightDelimeterPlugin = true
-  opt.HtmlPlugin = true
-  opt.IdHeadingPlugin = true
-  opt.ImageCollectPlugin = true
-  opt.ImageSinglePlugin = true
-  opt.ImageSlidePlugin = true
-  opt.ImageStylePlugin = true
-  opt.ImageTextMixPlugin = true
-  opt.LatexMathPluginV2 = true
-  opt.LinkifyPlugin = true
-  opt.LinkifyPlugin_regs = undefined
-  opt.LinkViewPlugin = true
-  opt.NodeIdPlugin = true
-  opt.StrikethroughPlugin = true
-  opt.SubPlugin = true
-  opt.SupPlugin = true
-  opt.TablePlugin = true
-  opt.TaskListPlugin = true
-  opt.TocPlugin = true
-  opt.WhitelistLooseDelimiterPlugin = true
-  return opt
-})()
+  ADPlugin: true,
+  BlockAudioPlugin: true,
+  BlockVideoPlugin: true,
+  CodeListPlugin: true,
+  DescListPlugin: true,
+  EmojiPlugin: true,
+  EmojiPlugin_light: true,
+  FootnotePlugin: true,
+  HighlightDelimeterPlugin: true,
+  HtmlPlugin: true,
+  IdHeadingPlugin: true,
+  ImageCollectPlugin: true,
+  ImageSinglePlugin: true,
+  ImageSlidePlugin: true,
+  ImageStylePlugin: true,
+  ImageTextMixPlugin: true,
+  LatexMathPluginV2: true,
+  LinkifyPlugin: true,
+  LinkifyPlugin_regs: undefined,
+  LinkViewPlugin: true,
+  NodeIdPlugin: true,
+  StrikethroughPlugin: true,
+  SubPlugin: true,
+  SupPlugin: true,
+  TablePlugin: true,
+  TaskListPlugin: true,
+  TocPlugin: true,
+  WhitelistLooseDelimiterPlugin: true
+}
 
 export let parser = new MarkdownParser(opt)
 
@@ -57,11 +55,12 @@ export async function parseIntoJsNode(md: string, includeSourceSpans: 0 | 1 | 2)
 }
 
 export function getParser(includeSourceSpans: 0 | 1 | 2, factory: (() => JsNode) | undefined): MarkdownParser {
-  let opt = new Options()
-  opt.jsNodeFactory = factory ?? (() => new JsNodeImpl())
-  opt.includeSourceSpans = includeSourceSpans
-  opt.FootnotePlugin = true
-  opt.LinkifyPlugin = true
+  let opt: Options = {
+    jsNodeFactory: factory ?? (() => new JsNodeImpl()),
+    includeSourceSpans: includeSourceSpans,
+    FootnotePlugin: true,
+    LinkifyPlugin: true
+  }
   let parser = new MarkdownParser(opt)
   return parser
 }

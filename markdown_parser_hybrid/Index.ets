@@ -1,7 +1,7 @@
 // export { HybridParser, testCJ } from "libmarkdown_parser_hybrid.so"
 export { MarkdownParser } from "./src/main/ets/MarkdownParser"
 
-export { JsNode } from "./src/main/ets/JsNode"
+export { JsNode, SourceSpan } from "./src/main/ets/JsNode"
 
 export { Options } from "./src/main/ets/Options"
 
