@@ -83,6 +83,14 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "5、数学公式",
+              0xFFFF0000,
+              "pages/LatexMathPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "6、表格",
               0xFFFF0000,
               "pages/TablePage"

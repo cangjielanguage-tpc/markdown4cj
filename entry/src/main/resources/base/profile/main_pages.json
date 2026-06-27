@@ -61,6 +61,8 @@
     "pages/ItalicPage",
     "pages/ItalicDetailsPage",
     "pages/StrikethroughPage",
-    "pages/StrikethroughDetailsPage"
+    "pages/StrikethroughDetailsPage",
+    "pages/LatexMathPage",
+    "pages/LatexMathDetailsPage"
   ]
 }

@@ -5,6 +5,7 @@
  */
 export class CellWidthTracker {
   widths: number[] = []
+  onWidthUpdated?: () => void // LaTeX图片加载完成后回调（不在updateIfWider中触发，避免初始布局卡顿）
 
   constructor(size: number = 0) {
     this.resize(size)

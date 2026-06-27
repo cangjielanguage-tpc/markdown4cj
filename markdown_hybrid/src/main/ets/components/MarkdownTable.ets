@@ -62,6 +62,9 @@ export struct MarkdownTable {
   private static readonly WIDTH_DEBOUNCE_MS: number = 200 // 列宽应用防抖间隔（ms）
 
   aboutToAppear(): void {
+    this.cellWidthTracker.onWidthUpdated = () => {
+      this.scheduleApplyColumnWidths()
+    }
     this.refreshData() // 首次加载（refreshData内会调度applyColumnWidths）
   }
 

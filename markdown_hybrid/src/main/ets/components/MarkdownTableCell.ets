@@ -361,7 +361,10 @@ export struct MarkdownTableCell {
         latexMathStr: item.nodeText,
         latexMathTheme: this.latexMathTheme,
         latexImageCallback: this.latexImageCallback,
-        latexStrCallback: this.latexStrCallback
+        latexStrCallback: this.latexStrCallback,
+        onLatexImageLoaded: () => {
+          this.cellWidthTracker.onWidthUpdated?.()
+        }
       })
     } else {
       // 其它
