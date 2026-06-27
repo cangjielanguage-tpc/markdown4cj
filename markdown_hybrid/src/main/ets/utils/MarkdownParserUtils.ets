@@ -1,6 +1,7 @@
 ﻿import { JsNode, SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
 import { NodeView } from "../model/NodeView"
 import { renderTableCellColumnAlign } from "./MarkdownUtils"
+import hilog from "@ohos.hilog"
 
 /**
  * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
@@ -14,6 +15,27 @@ function sourceSpansEqual(a: Array<SourceSpan>, b: Array<SourceSpan>): boolean {
     if (a[i].getLength() !== b[i].getLength()) return false
   }
   return true
+}
+
+/**
+ * 递归查找节点所有子节点中第一个Image节点的destination
+ */
+function findImageUrlFromDescendants(node: JsNode | undefined): string | undefined {
+  if (node === undefined) {
+    return undefined
+  }
+  let child = node.firstChild
+  while (child !== undefined) {
+    if (child.nodeType == 'Image') {
+      return child.destination
+    }
+    let result = findImageUrlFromDescendants(child)
+    if (result !== undefined) {
+      return result
+    }
+    child = child.next
+  }
+  return undefined
 }
 
 /**
@@ -352,23 +374,11 @@ export function nodeToNodeView(
         //   targetParentView.children.push(currentView)
         break
       case 'BlockVideo':
-        let videoChildren = sourceJsNode.firstChild
-        while (videoChildren !== undefined) {
-          if (videoChildren.nodeType == 'Image') {
-            currentView.imageUrl = videoChildren.destination
-          }
-          videoChildren = sourceJsNode.next
-        }
+        currentView.imageUrl = findImageUrlFromDescendants(sourceJsNode)
         targetParentView.children.push(currentView)
         break
       case 'BlockAudio':
-        let audioChildren = sourceJsNode.firstChild
-        while (audioChildren !== undefined) {
-          if (audioChildren.nodeType == 'Image') {
-            currentView.imageUrl = audioChildren.destination
-          }
-          audioChildren = sourceJsNode.next
-        }
+        currentView.imageUrl = findImageUrlFromDescendants(sourceJsNode)
         targetParentView.children.push(currentView)
         break
       case 'BlockAD':
