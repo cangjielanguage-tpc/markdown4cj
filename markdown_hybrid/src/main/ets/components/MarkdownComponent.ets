@@ -493,9 +493,11 @@ export struct CJMarkdown {
       WhitelistLooseDelimiterPlugin_DelimiterFilterMode: "Permissive"
     }
     let markdownParser:MarkdownParser = new MarkdownParser(op)
-    markdownParser.parse(this.content).then((node: JsNode) => {
-      this.applyParseResult(node, currentVersion)
-    })
+    setTimeout(() => {
+      markdownParser.parse(this.content).then((node: JsNode) => {
+        this.applyParseResult(node, currentVersion)
+      })
+    }, 0)
   }
 
   /**

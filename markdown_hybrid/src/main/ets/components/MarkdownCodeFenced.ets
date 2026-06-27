@@ -160,20 +160,22 @@ export struct MarkdownCodeFenced {
     const currentVersion = this.parseVersion
     let isDarkula: boolean = this.codeBlockTheme.codeBlockIsDark ?? false
     let info: string | undefined = (this.info !== undefined && this.info.length > 0) ? this.info : undefined
-    codeStringToColorString(this.codeText, info, isDarkula).then((prismRes: PrismRes) => {
-      if (!this.isAlive || currentVersion <= this.appliedVersion) {
-        return
-      }
-      this.defaultFontColor = prismRes.getDefaultFontColor()
-      this.prismBlocks = Array.from(prismRes.getListColor())
-      this.appliedVersion = currentVersion
-    }).catch(() => {
-      if (!this.isAlive || currentVersion <= this.appliedVersion) {
-        return
-      }
-      this.prismBlocks = []
-      this.appliedVersion = currentVersion
-    })
+    setTimeout  (() => {
+      codeStringToColorString(this.codeText, info, isDarkula).then((prismRes: PrismRes) => {
+        if (!this.isAlive || currentVersion <= this.appliedVersion) {
+          return
+        }
+        this.defaultFontColor = prismRes.getDefaultFontColor()
+        this.prismBlocks = Array.from(prismRes.getListColor())
+        this.appliedVersion = currentVersion
+      }).catch(() => {
+        if (!this.isAlive || currentVersion <= this.appliedVersion) {
+          return
+        }
+        this.prismBlocks = []
+        this.appliedVersion = currentVersion
+      })
+    }, 0)
   }
 
   /**

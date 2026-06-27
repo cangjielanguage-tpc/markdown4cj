@@ -19,90 +19,85 @@ export struct CodeTitleComponent {
 
   build() {
     Row() {
+      Text(this.info.length > 0 ? this.info : this.codeBlockTheme.codeBlockTypeText)
+        .fontFamily(this.codeBlockTheme.codeBlockTypeTextFontFamily ?? this.codeBlockTheme.codeBlockTextFontFamily)
+        .fontSize(this.codeBlockTheme.codeBlockTypeTextFontSize ?? this.codeBlockTheme.codeBlockTextFontSize)
+        .fontWeight(this.codeBlockTheme.codeBlockTypeTextFontWeight ?? this.codeBlockTheme.codeBlockTextFontWeight)
+        .fontStyle(this.codeBlockTheme.codeBlockTypeTextFontStyle ?? this.codeBlockTheme.codeBlockTextFontStyle)
+        .fontColor(this.codeBlockTheme.codeBlockTypeTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
+        .lineHeight(this.codeBlockTheme.codeBlockTypeTextLineHeight ?? this.codeBlockTheme.codeBlockTextLineHeight)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .maxLines(1)
+        .width('30%')
+        .margin({ left: this.codeBlockTheme.codeBlockTypeTextMarginLeft })
+        .visibility(this.codeText.trim().length > 0 ? Visibility.Visible : Visibility.None)
+
+      Blank()
+        .layoutWeight(1)
+
+      // 复制按钮（始终创建，用visibility控制显隐）
       Row() {
-        Text(this.info.length > 0 ? this.info : this.codeBlockTheme.codeBlockTypeText)
-          .fontFamily(this.codeBlockTheme.codeBlockTypeTextFontFamily ?? this.codeBlockTheme.codeBlockTextFontFamily)
-          .fontSize(this.codeBlockTheme.codeBlockTypeTextFontSize ?? this.codeBlockTheme.codeBlockTextFontSize)
-          .fontWeight(this.codeBlockTheme.codeBlockTypeTextFontWeight ?? this.codeBlockTheme.codeBlockTextFontWeight)
-          .fontStyle(this.codeBlockTheme.codeBlockTypeTextFontStyle ?? this.codeBlockTheme.codeBlockTextFontStyle)
-          .fontColor(this.codeBlockTheme.codeBlockTypeTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
-          .lineHeight(this.codeBlockTheme.codeBlockTypeTextLineHeight ?? this.codeBlockTheme.codeBlockTextLineHeight)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .maxLines(1)
-      }
-      .width('30%')
-      .justifyContent(FlexAlign.Start)
-      .margin({ left: this.codeBlockTheme.codeBlockTypeTextMarginLeft })
-      .visibility(this.codeText.trim().length > 0 ? Visibility.Visible : Visibility.None)
-
-      Row() {
-        // 复制按钮（始终创建，用visibility控制显隐）
-        Row() {
-          Image(this.codeBlockTheme.codeBlockCopyIcon ?? '')
-            .width(this.codeBlockTheme.codeBlockCopyIconWidth)
-            .height(this.codeBlockTheme.codeBlockCopyIconHeight)
-            .objectFit(ImageFit.Contain)
-            .visibility(this.codeBlockTheme.codeBlockCopyIcon !== undefined ? Visibility.Visible : Visibility.None)
-
-          Blank()
-            .width(this.codeBlockTheme.codeBlockCopyIconTextSpacing)
-            .visibility(this.codeBlockTheme.codeBlockCopyIcon !== undefined && this.codeBlockTheme.codeBlockCopyTextIsShow ? Visibility.Visible : Visibility.None)
-
-          Text(this.codeBlockTheme.codeBlockCopyText)
-            .fontFamily(this.codeBlockTheme.codeBlockCopyTextFontFamily ?? this.codeBlockTheme.codeBlockTextFontFamily)
-            .fontSize(this.codeBlockTheme.codeBlockCopyTextFontSize ?? this.codeBlockTheme.codeBlockTextFontSize)
-            .fontWeight(this.codeBlockTheme.codeBlockCopyTextFontWeight ?? this.codeBlockTheme.codeBlockTextFontWeight)
-            .fontStyle(this.codeBlockTheme.codeBlockCopyTextFontStyle ?? this.codeBlockTheme.codeBlockTextFontStyle)
-            .fontColor(this.codeBlockTheme.codeBlockCopyTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
-            .lineHeight(this.codeBlockTheme.codeBlockCopyTextLineHeight ?? this.codeBlockTheme.codeBlockTextLineHeight)
-            .align(Alignment.End)
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .visibility(this.codeBlockTheme.codeBlockCopyTextIsShow ? Visibility.Visible : Visibility.None)
-        }
-        .justifyContent(FlexAlign.End)
-        .onClick(() => {
-          this.codeCopyCallback?.(this.codeText)
-        })
-        .visibility(this.codeBlockTheme.codeBlockCopyButtonIsShow ? Visibility.Visible : Visibility.None)
+        Image(this.codeBlockTheme.codeBlockCopyIcon)
+          .width(this.codeBlockTheme.codeBlockCopyIconWidth)
+          .height(this.codeBlockTheme.codeBlockCopyIconHeight)
+          .objectFit(ImageFit.Contain)
+          .visibility(this.codeBlockTheme.codeBlockCopyIcon !== undefined ? Visibility.Visible : Visibility.None)
 
         Blank()
-          .width(this.codeBlockTheme.codeBlockCopyFullScreenSpacing)
-          .visibility(this.codeBlockTheme.codeBlockCopyButtonIsShow && this.codeBlockTheme.codeBlockFullScreenButtonIsShow ? Visibility.Visible : Visibility.None)
+          .width(this.codeBlockTheme.codeBlockCopyIconTextSpacing)
+          .visibility(this.codeBlockTheme.codeBlockCopyIcon !== undefined && this.codeBlockTheme.codeBlockCopyTextIsShow ? Visibility.Visible : Visibility.None)
 
-        // 全屏按钮（始终创建，用visibility控制显隐）
-        Row() {
-          Image(this.codeBlockTheme.codeBlockFullScreenIcon ?? '')
-            .width(this.codeBlockTheme.codeBlockFullScreenIconWidth)
-            .height(this.codeBlockTheme.codeBlockFullScreenIconHeight)
-            .objectFit(ImageFit.Contain)
-            .visibility(this.codeBlockTheme.codeBlockFullScreenIcon !== undefined ? Visibility.Visible : Visibility.None)
-
-          Blank()
-            .width(this.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
-            .visibility(this.codeBlockTheme.codeBlockFullScreenIcon !== undefined && this.codeBlockTheme.codeBlockFullScreenTextIsShow ? Visibility.Visible : Visibility.None)
-
-          Text(this.codeBlockTheme.codeBlockFullScreenText)
-            .fontFamily(this.codeBlockTheme.codeBlockFullScreenTextFontFamily ?? this.codeBlockTheme.codeBlockTextFontFamily)
-            .fontSize(this.codeBlockTheme.codeBlockFullScreenTextFontSize ?? this.codeBlockTheme.codeBlockTextFontSize)
-            .fontWeight(this.codeBlockTheme.codeBlockFullScreenTextFontWeight ?? this.codeBlockTheme.codeBlockTextFontWeight)
-            .fontStyle(this.codeBlockTheme.codeBlockFullScreenTextFontStyle ?? this.codeBlockTheme.codeBlockTextFontStyle)
-            .fontColor(this.codeBlockTheme.codeBlockFullScreenTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
-            .lineHeight(this.codeBlockTheme.codeBlockFullScreenTextLineHeight ?? this.codeBlockTheme.codeBlockTextLineHeight)
-            .align(Alignment.End)
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .visibility(this.codeBlockTheme.codeBlockFullScreenTextIsShow ? Visibility.Visible : Visibility.None)
-        }
-        .justifyContent(FlexAlign.End)
-        .onClick(() => {
-          this.codeFullScreenCallback?.(this.codeText, this.info.length > 0 ? this.info : undefined)
-        })
-        .visibility(this.codeBlockTheme.codeBlockFullScreenButtonIsShow ? Visibility.Visible : Visibility.None)
+        Text(this.codeBlockTheme.codeBlockCopyText)
+          .fontFamily(this.codeBlockTheme.codeBlockCopyTextFontFamily ?? this.codeBlockTheme.codeBlockTextFontFamily)
+          .fontSize(this.codeBlockTheme.codeBlockCopyTextFontSize ?? this.codeBlockTheme.codeBlockTextFontSize)
+          .fontWeight(this.codeBlockTheme.codeBlockCopyTextFontWeight ?? this.codeBlockTheme.codeBlockTextFontWeight)
+          .fontStyle(this.codeBlockTheme.codeBlockCopyTextFontStyle ?? this.codeBlockTheme.codeBlockTextFontStyle)
+          .fontColor(this.codeBlockTheme.codeBlockCopyTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
+          .lineHeight(this.codeBlockTheme.codeBlockCopyTextLineHeight ?? this.codeBlockTheme.codeBlockTextLineHeight)
+          .align(Alignment.End)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .visibility(this.codeBlockTheme.codeBlockCopyTextIsShow ? Visibility.Visible : Visibility.None)
       }
-      .width('70%')
       .justifyContent(FlexAlign.End)
-      .visibility(this.codeText.trim().length > 0 ? Visibility.Visible : Visibility.None)
+      .onClick(() => {
+        this.codeCopyCallback?.(this.codeText)
+      })
+      .visibility(this.codeBlockTheme.codeBlockCopyButtonIsShow ? Visibility.Visible : Visibility.None)
+
+      Blank()
+        .width(this.codeBlockTheme.codeBlockCopyFullScreenSpacing)
+        .visibility(this.codeBlockTheme.codeBlockCopyButtonIsShow && this.codeBlockTheme.codeBlockFullScreenButtonIsShow ? Visibility.Visible : Visibility.None)
+
+      // 全屏按钮（始终创建，用visibility控制显隐）
+      Row() {
+        Image(this.codeBlockTheme.codeBlockFullScreenIcon)
+          .width(this.codeBlockTheme.codeBlockFullScreenIconWidth)
+          .height(this.codeBlockTheme.codeBlockFullScreenIconHeight)
+          .objectFit(ImageFit.Contain)
+          .visibility(this.codeBlockTheme.codeBlockFullScreenIcon !== undefined ? Visibility.Visible : Visibility.None)
+
+        Blank()
+          .width(this.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
+          .visibility(this.codeBlockTheme.codeBlockFullScreenIcon !== undefined && this.codeBlockTheme.codeBlockFullScreenTextIsShow ? Visibility.Visible : Visibility.None)
+
+        Text(this.codeBlockTheme.codeBlockFullScreenText)
+          .fontFamily(this.codeBlockTheme.codeBlockFullScreenTextFontFamily ?? this.codeBlockTheme.codeBlockTextFontFamily)
+          .fontSize(this.codeBlockTheme.codeBlockFullScreenTextFontSize ?? this.codeBlockTheme.codeBlockTextFontSize)
+          .fontWeight(this.codeBlockTheme.codeBlockFullScreenTextFontWeight ?? this.codeBlockTheme.codeBlockTextFontWeight)
+          .fontStyle(this.codeBlockTheme.codeBlockFullScreenTextFontStyle ?? this.codeBlockTheme.codeBlockTextFontStyle)
+          .fontColor(this.codeBlockTheme.codeBlockFullScreenTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
+          .lineHeight(this.codeBlockTheme.codeBlockFullScreenTextLineHeight ?? this.codeBlockTheme.codeBlockTextLineHeight)
+          .align(Alignment.End)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .visibility(this.codeBlockTheme.codeBlockFullScreenTextIsShow ? Visibility.Visible : Visibility.None)
+      }
+      .justifyContent(FlexAlign.End)
+      .onClick(() => {
+        this.codeFullScreenCallback?.(this.codeText, this.info.length > 0 ? this.info : undefined)
+      })
+      .visibility(this.codeBlockTheme.codeBlockFullScreenButtonIsShow ? Visibility.Visible : Visibility.None)
     }
     .margin({
       top: 8.0,
