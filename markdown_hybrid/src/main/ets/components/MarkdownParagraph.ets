@@ -275,7 +275,18 @@ export struct MarkdownParagraph {
           this.paragraphTheme
         ))
         .onClick(() => {
-
+          if (item.footnoteID !== undefined) {
+            this.footnoteCallback?.(item.footnoteID)
+            return
+          }
+          if (item.headLinkIndex !== undefined) {
+            this.tocCallback?.(item.headLinkIndex)
+            return
+          }
+          if (item.linkUrl !== undefined) {
+            this.linkCallback?.(item.linkUrl)
+            return
+          }
         })
     } else if (item.nodeType == "SoftLineBreak") {
       // 软换行
