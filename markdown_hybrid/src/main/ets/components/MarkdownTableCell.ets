@@ -21,7 +21,6 @@ import {
   imageUrlHandle, imageWidthAndHeight, spanSoftLineBreak
 } from "../utils/MarkdownUtils"
 import {
-  paragraphBackgroundColor,
   spanBackgroundColor,
   spanBaselineOffset,
   spanDecoration,

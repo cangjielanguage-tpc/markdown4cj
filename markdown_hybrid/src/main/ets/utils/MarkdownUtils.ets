@@ -1,7 +1,5 @@
 import { SECONDS_PER_HOUR, SECONDS_PER_MINUTE } from "../base/Constants"
-import { NodeView } from "../model/NodeView"
 import { BulletListTheme } from "../theme/BulletListTheme"
-import { LengthMetrics } from "@kit.ArkUI"
 
 /**
  * 判断软换行是否换行

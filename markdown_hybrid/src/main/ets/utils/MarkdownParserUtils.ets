@@ -1,7 +1,6 @@
 ﻿import { JsNode, SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
 import { NodeView } from "../model/NodeView"
 import { renderTableCellColumnAlign } from "./MarkdownUtils"
-import hilog from "@ohos.hilog"
 
 /**
  * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
