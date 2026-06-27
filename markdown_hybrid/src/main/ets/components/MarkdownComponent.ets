@@ -172,7 +172,9 @@ export struct CJMarkdown {
                 codeCopyCallback: this.config.codeCopyCallback,
                 codeFullScreenCallback: this.config.codeFullScreenCallback,
                 linkCallback: this.config.linkCallback,
-                textCopyCallback: this.config.textCopyCallback
+                textCopyCallback: this.config.textCopyCallback,
+                footnoteCallback: this.footnoteCallback,
+                tocCallback: this.tocCallback
               })
             } else if (item.nodeType == "OrderedList") {
               // 有序列表
@@ -216,7 +218,9 @@ export struct CJMarkdown {
                 codeCopyCallback: this.config.codeCopyCallback,
                 codeFullScreenCallback: this.config.codeFullScreenCallback,
                 linkCallback: this.config.linkCallback,
-                textCopyCallback: this.config.textCopyCallback
+                textCopyCallback: this.config.textCopyCallback,
+                footnoteCallback: this.footnoteCallback,
+                tocCallback: this.tocCallback
               })
             } else if (item.nodeType == "BlockQuote") {
               // 块引用
@@ -259,7 +263,9 @@ export struct CJMarkdown {
                 codeCopyCallback: this.config.codeCopyCallback,
                 codeFullScreenCallback: this.config.codeFullScreenCallback,
                 linkCallback: this.config.linkCallback,
-                textCopyCallback: this.config.textCopyCallback
+                textCopyCallback: this.config.textCopyCallback,
+                footnoteCallback: this.footnoteCallback,
+                tocCallback: this.tocCallback
               })
             } else if (item.nodeType == "LatexMathBlock") {
               // 数学公式块
