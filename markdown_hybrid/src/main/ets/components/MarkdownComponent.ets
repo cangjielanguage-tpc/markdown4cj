@@ -12,6 +12,7 @@ import { MarkdownAudio } from "./MarkdownAudio"
 import { MarkdownVideo } from "./MarkdownVideo"
 import { MarkdownBanner } from "./MarkdownBanner"
 import { MarkdownCodeFenced } from "./MarkdownCodeFenced"
+import { MarkdownCodeBlockList } from "./MarkdownCodeBlockList"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
 import { MarkdownFootnote } from "./MarkdownFootnote"
 import { MarkdownDesc } from "./MarkdownDesc"
@@ -107,7 +108,7 @@ export struct CJMarkdown {
               })
             } else if (item.nodeType == "FencedCodeBlockListBlock") {
               // 围栏代码块列表
-              MarkdownCodeFenced({
+              MarkdownCodeBlockList({
                 node: item,
                 codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
                 codeCopyCallback: this.config.codeCopyCallback,

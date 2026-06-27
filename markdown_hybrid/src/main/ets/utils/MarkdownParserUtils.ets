@@ -39,6 +39,33 @@ function findImageUrlFromDescendants(node: JsNode | undefined): string | undefin
 }
 
 /**
+ * 从JsNode.toStr中解析tabs数组
+ * FencedCodeBlockListBlock的toStr格式类似于: "name:mylist, tabs=[tab1, tab2, tab3]"
+ * 如果解析失败返回undefined
+ */
+function parseTabsFromToStr(toStr: string): Array<string> | undefined {
+  if (!toStr || toStr.length === 0) {
+    return undefined
+  }
+  let tabsKey = 'tabs=['
+  let startIdx = toStr.indexOf(tabsKey)
+  if (startIdx < 0) {
+    return undefined
+  }
+  startIdx += tabsKey.length
+  let endIdx = toStr.indexOf(']', startIdx)
+  if (endIdx < 0) {
+    return undefined
+  }
+  let tabsContent = toStr.substring(startIdx, endIdx)
+  if (tabsContent.length === 0) {
+    return []
+  }
+  let tabs = tabsContent.split(', ')
+  return tabs
+}
+
+/**
  * 解析处理，将JsNode转换成NodeView
  *
  * @param sourceJsNode 源节点JsNode
@@ -65,8 +92,11 @@ export function nodeToNodeView(
         && previousChildren[prevChildPos].nodeType === nodeType)
         ? previousChildren[prevChildPos]
         : undefined
-    if (prevChild !== undefined && sourceSpansEqual(prevChild.sourceSpan, currentJsNode.getSourceSpans())) {
+    if (prevChild !== undefined
+      && nodeType !== 'FencedCodeBlockListBlock'
+      && sourceSpansEqual(prevChild.sourceSpan, currentJsNode.getSourceSpans())) {
       // sourceSpan完全匹配 — 复用整个子树，跳过转换
+      // FencedCodeBlockListBlock例外：其sourceSpan仅从首个代码块设置，新增代码块时不变化
       targetParentView.children.push(prevChild)
       currentJsNode = currentJsNode.next
       continue
@@ -230,7 +260,7 @@ export function nodeToNodeView(
           targetParentView.children.push(currentView)
         break
       case 'FencedCodeBlockListBlock': // 代码块列表
-          // currentView.codeListTab =
+          currentView.codeListTab = parseTabsFromToStr(currentJsNode.toStr)
           nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
           targetParentView.children.push(currentView)
         break

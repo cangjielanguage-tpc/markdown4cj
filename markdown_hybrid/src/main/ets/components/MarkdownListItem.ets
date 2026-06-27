@@ -28,6 +28,7 @@ import { VideoTheme } from "../theme/VideoTheme"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownCodeFenced } from "./MarkdownCodeFenced"
+import { MarkdownCodeBlockList } from "./MarkdownCodeBlockList"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
 import { MarkdownTable } from "./MarkdownTable"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
@@ -159,7 +160,7 @@ export struct MarkdownListItem {
               })
             } else if (item.nodeType == "FencedCodeBlockListBlock") {
               // 围栏代码块列表
-              MarkdownCodeFenced({
+              MarkdownCodeBlockList({
                 node: item,
                 codeBlockTheme: this.codeBlockTheme,
                 codeCopyCallback: this.codeCopyCallback,

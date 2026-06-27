@@ -27,7 +27,7 @@ import { TableTheme } from "../theme/TableTheme"
 import { VideoTheme } from "../theme/VideoTheme"
 import { listPrefixStr } from "../utils/MarkdownUtils"
 import { listBackgroundColor } from "../utils/MrkdownThemeUtils"
-import { MarkdownListItem } from "./MarkdownListIten"
+import { MarkdownListItem } from "./MarkdownListItem"
 
 /**
  * 无序/任务列表、有序列表控件

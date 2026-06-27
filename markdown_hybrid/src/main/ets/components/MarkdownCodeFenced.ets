@@ -72,39 +72,37 @@ export struct MarkdownCodeFenced {
 
   /**
    * 代码块文本内容部分
+   * 不使用if/else切换高亮/原始文本，避免分支不刷新
    */
   @Builder
   codeBlockComponent() {
     Scroll() {
-      if (this.prismBlocks.length > 0) {
-        Column() {
-          ForEach(
-            this.prismBlocks,
-            (block: PrismBlock, index: number) => {
-              Text() {
-                ForEach(
-                  Array.from(block.getList()),
-                  (node: PrismNode) => {
-                    Span(node.text)
-                      .fontColor(node.color ?? this.defaultFontColor)
-                      .letterSpacing(this.codeBlockTheme.codeBlockTextLetterSpacing)
-                  }
-                )
-              }
-              .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
-              .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
-              .fontWeight(this.codeBlockTheme.codeBlockTextFontWeight)
-              .fontStyle(this.codeBlockTheme.codeBlockTextFontStyle)
-              .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
-              .textAlign(TextAlign.Start)
-            },
-            (block: PrismBlock, index: number) => {
-              return `${index}-${block.getText()}`
+      Column() {
+        ForEach(
+          this.prismBlocks,
+          (block: PrismBlock, index: number) => {
+            Text() {
+              ForEach(
+                Array.from(block.getList()),
+                (node: PrismNode) => {
+                  Span(node.text)
+                    .fontColor(node.color ?? this.defaultFontColor)
+                    .letterSpacing(this.codeBlockTheme.codeBlockTextLetterSpacing)
+                }
+              )
             }
-          )
-        }
-        .alignItems(HorizontalAlign.Start)
-      } else {
+            .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
+            .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
+            .fontWeight(this.codeBlockTheme.codeBlockTextFontWeight)
+            .fontStyle(this.codeBlockTheme.codeBlockTextFontStyle)
+            .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
+            .textAlign(TextAlign.Start)
+          },
+          (block: PrismBlock, index: number) => {
+            return `${index}-${block.getText()}`
+          }
+        )
+
         Text(this.codeText)
           .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
           .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
@@ -113,7 +111,9 @@ export struct MarkdownCodeFenced {
           .fontColor(this.codeBlockTheme.codeBlockCopyTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
           .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
           .textAlign(TextAlign.Start)
+          .visibility(this.prismBlocks.length === 0 ? Visibility.Visible : Visibility.None)
       }
+      .alignItems(HorizontalAlign.Start)
     }
     .scrollable(ScrollDirection.Horizontal)
     .scrollBar(BarState.Off)
