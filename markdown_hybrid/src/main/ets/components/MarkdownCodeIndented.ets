@@ -102,4 +102,3 @@ export struct MarkdownCodeIndented {
     this.lineArray = lineArr
   }
 }
-

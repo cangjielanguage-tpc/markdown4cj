@@ -498,6 +498,7 @@ export struct CJMarkdown {
       return
     }
     this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+    this.config.markdownNodeViewString.setRoot(nodeView)
     this.appliedVersion = currentVersion
     this.jsNodePoolImpl.put(node)
   }
