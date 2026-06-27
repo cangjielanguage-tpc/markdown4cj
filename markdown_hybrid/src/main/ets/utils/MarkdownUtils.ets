@@ -61,11 +61,11 @@ export function formatDurationToTime(totalSeconds: number): string {
  * @param markdownTheme markdown样式
  * @return 前缀文本内容
  */
-export function listPrefixStr(item: NodeView, listDepth: number, isOrderList: boolean,
+export function listPrefixStr(index: number, listDepth: number, isOrderList: boolean,
   bulletListTheme: BulletListTheme): string {
   if (isOrderList) {
     // 有序列表
-    return `${item.orderedListNumber}.`
+    return `${index}.`
   }
   if (bulletListTheme.bulletListBulletIsCircle) {
     return `${solidCircleToUnicode()}`

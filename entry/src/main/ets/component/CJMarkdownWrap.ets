@@ -33,7 +33,7 @@ export struct CJMarkdownWrap {
     CJMarkdown({
       content: this.input,
       config: this.setConfiguration(),
-      // plugin: this.setPlugin(),
+      plugin: this.setPlugin(),
       // listScroller: this.setScroller(),
       // incrementalAnalysis: this.incrementalAnalysis
     })

@@ -60,9 +60,9 @@ struct DemoPage {
       Column() {
         CJMarkdown({
           content: this.message,
-          config: new MarkdownConfiguration()
+          config: new MarkdownConfiguration(),
         // ,
-          // plugin: this.setPlugin()
+          plugin: this.setPlugin()
         })
       }
     }

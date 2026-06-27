@@ -127,7 +127,7 @@ struct ABCustomDetailsPage {
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
               config: this.setMarkdownConfig(),
-              // plugin: this.setPlugin(),
+              plugin: this.setPlugin(),
               // useCangjieComponent: !this.isABLoad,
               // customContains: this.showTextBuilder.bind(this)
             })
@@ -137,7 +137,7 @@ struct ABCustomDetailsPage {
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
               config: this.setMarkdownConfig(),
-              // plugin: this.setPlugin(),
+              plugin: this.setPlugin(),
               // useCangjieComponent: !this.isABLoad
             })
           }

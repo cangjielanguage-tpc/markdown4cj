@@ -2,6 +2,7 @@
 import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
+import { MarkdownPlugin } from '../plugin/MarkdownPlugin'
 import { JsNodePoolImpl, NodeView } from "../model/NodeView"
 import { nodeToNodeView } from "../utils/MarkdownParserUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
@@ -32,6 +33,7 @@ export struct CJMarkdown {
   private hasPendingRefresh: boolean = false // 节流期间有未处理的刷新请求
   imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
   jsNodePoolImpl: JsNodePoolImpl = new JsNodePoolImpl()
+  plugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件配置
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -458,40 +460,7 @@ export struct CJMarkdown {
   refreshAsyncData(): void {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let op: Options = {
-      jsNodeFactory: (): JsNode => this.jsNodePoolImpl.getJsNode(),
-      includeSourceSpans: 2,
-      ADPlugin: false,
-      BlockAudioPlugin: false,
-      BlockVideoPlugin: false,
-      CodeListPlugin: false,
-      DescListPlugin: false,
-      EmojiPlugin: false,
-      EmojiPlugin_light: false,
-      FootnotePlugin: false,
-      HighlightDelimeterPlugin: false,
-      HtmlPlugin: false,
-      IdHeadingPlugin: false,
-      ImageCollectPlugin: false,
-      ImageSinglePlugin: false,
-      ImageSlidePlugin: false,
-      ImageStylePlugin: false,
-      ImageTextMixPlugin: false,
-      ImageVideoPlugin: false,
-      LatexMathPluginV2: false,
-      LinkifyPlugin: false,
-      LinkifyPlugin_regs: undefined,
-      LinkViewPlugin: false,
-      NodeIdPlugin: true,
-      StrikethroughPlugin: false,
-      SubPlugin: false,
-      SupPlugin: false,
-      TablePlugin: true,
-      TaskListPlugin: true,
-      TocPlugin: false,
-      WhitelistLooseDelimiterPlugin: false,
-      WhitelistLooseDelimiterPlugin_DelimiterFilterMode: "Permissive"
-    }
+    let op: Options = this.plugin.buildOptions((): JsNode => this.jsNodePoolImpl.getJsNode())
     let markdownParser:MarkdownParser = new MarkdownParser(op)
     setTimeout(() => {
       markdownParser.parse(this.content).then((node: JsNode) => {
@@ -506,40 +475,7 @@ export struct CJMarkdown {
   async refreshSyncData(): Promise<void> {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let op: Options = {
-      jsNodeFactory: (): JsNode => this.jsNodePoolImpl.getJsNode(),
-      includeSourceSpans: 2,
-      ADPlugin: false,
-      BlockAudioPlugin: false,
-      BlockVideoPlugin: false,
-      CodeListPlugin: false,
-      DescListPlugin: false,
-      EmojiPlugin: false,
-      EmojiPlugin_light: false,
-      FootnotePlugin: false,
-      HighlightDelimeterPlugin: false,
-      HtmlPlugin: false,
-      IdHeadingPlugin: false,
-      ImageCollectPlugin: false,
-      ImageSinglePlugin: false,
-      ImageSlidePlugin: false,
-      ImageStylePlugin: false,
-      ImageTextMixPlugin: false,
-      ImageVideoPlugin: false,
-      LatexMathPluginV2: false,
-      LinkifyPlugin: false,
-      LinkifyPlugin_regs: undefined,
-      LinkViewPlugin: false,
-      NodeIdPlugin: true,
-      StrikethroughPlugin: false,
-      SubPlugin: false,
-      SupPlugin: false,
-      TablePlugin: true,
-      TaskListPlugin: true,
-      TocPlugin: false,
-      WhitelistLooseDelimiterPlugin: false,
-      WhitelistLooseDelimiterPlugin_DelimiterFilterMode: "Permissive"
-    }
+    let op: Options = this.plugin.buildOptions((): JsNode => this.jsNodePoolImpl.getJsNode())
     let markdownParser:MarkdownParser = new MarkdownParser(op)
     let node: JsNode = await markdownParser.parse(this.content)
     this.applyParseResult(node, currentVersion)

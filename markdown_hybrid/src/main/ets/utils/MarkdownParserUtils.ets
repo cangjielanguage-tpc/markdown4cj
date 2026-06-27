@@ -203,7 +203,7 @@ export function nodeToNodeView(
       case 'IdHeading': // 标题ID
           currentView.isHeading = true
           currentView.headingLevel = currentJsNode.level ?? 1
-          // currentView.headingID =
+          // currentView.headingID
           nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
           targetParentView.children.push(currentView)
         break
@@ -232,7 +232,6 @@ export function nodeToNodeView(
         targetParentView.children.push(currentView)
         break
       case 'ListItem': // 列表项
-        // currentView.orderedListNumber =
         nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
         targetParentView.children.push(currentView)
         break
@@ -250,7 +249,7 @@ export function nodeToNodeView(
       case 'LatexMathBlock': // 数学公式块
         currentView.isLatexMathBlock = true
         currentView.nodeText = currentJsNode.latex ?? ""
-        // currentView.isLatexMathBlockClose =
+        currentView.isLatexMathBlockClose = currentJsNode.isClosed ?? false
         targetParentView.children.push(currentView)
         break
       case 'LatexMathNode': // 数学公式节点
@@ -337,14 +336,14 @@ export function nodeToNodeView(
         break
       case 'StyleImage':
         //   const imageStyle = currentJsNode as StyleImage
-        //   currentView.imageUrl = imageStyle.destination
-        //   currentView.imageTitle = imageStyle.title
+          currentView.imageUrl = currentJsNode.destination
+          currentView.imageTitle = currentJsNode.title
         //   const picStyle = parsePicStyle(imageStyle.styles)
         //   currentView.imageWidth = picStyle.width
         //   currentView.imageHeight = picStyle.height
         //   currentView.imageRadius = picStyle.borderRadius
         //   currentView.imageAlign = picStyle.align
-        //   targetParentView.children.push(currentView)
+          targetParentView.children.push(currentView)
         break
       case 'CardNode':
         //   const cardNode = currentJsNode as CardNode
@@ -353,22 +352,24 @@ export function nodeToNodeView(
         //   targetParentView.children.push(currentView)
         break
       case 'BlockVideo':
-        //   const videoChildren = currentJsNode.iterateChildren()
-        //   for (const commonmarkNode of videoChildren) {
-        //     if (commonmarkNode instanceof CommonmarkImage) {
-        //       currentView.imageUrl = (commonmarkNode as CommonmarkImage).destination
-        //     }
-        //   }
-        //   targetParentView.children.push(currentView)
+        let videoChildren = sourceJsNode.firstChild
+        while (videoChildren !== undefined) {
+          if (videoChildren.nodeType == 'Image') {
+            currentView.imageUrl = videoChildren.destination
+          }
+          videoChildren = sourceJsNode.next
+        }
+        targetParentView.children.push(currentView)
         break
       case 'BlockAudio':
-        //   const audioChildren = currentJsNode.iterateChildren()
-        //   for (const commonmarkNode of audioChildren) {
-        //     if (commonmarkNode instanceof CommonmarkImage) {
-        //       currentView.imageUrl = (commonmarkNode as CommonmarkImage).destination
-        //     }
-        //   }
-        //   targetParentView.children.push(currentView)
+        let audioChildren = sourceJsNode.firstChild
+        while (audioChildren !== undefined) {
+          if (audioChildren.nodeType == 'Image') {
+            currentView.imageUrl = audioChildren.destination
+          }
+          audioChildren = sourceJsNode.next
+        }
+        targetParentView.children.push(currentView)
         break
       case 'BlockAD':
         targetParentView.children.push(currentView)

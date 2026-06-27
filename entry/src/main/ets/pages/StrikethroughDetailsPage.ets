@@ -179,7 +179,7 @@ struct StrikethroughDetailsPage {
               // incrementalAnalysis: this.incrementalAnalysis,
               // listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
-              // plugin: this.setPlugin()
+              plugin: this.setPlugin()
             })
           }.height("100%")
         } else {
@@ -190,7 +190,7 @@ struct StrikethroughDetailsPage {
               // incrementalAnalysis: this.incrementalAnalysis,
               // listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
-              // plugin: this.setPlugin()
+              plugin: this.setPlugin()
             })
           }
         }

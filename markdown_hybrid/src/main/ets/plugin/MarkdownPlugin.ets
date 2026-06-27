@@ -1,4 +1,5 @@
 import { DelimiterFilterMode } from "../enum/DelimiterFilterMode"
+import { JsNode, Options } from "@cangjie-tpc/markdown_parser_hybrid"
 
 /**
  * Markdown插件配置
@@ -338,6 +339,52 @@ export class MarkdownPlugin {
       this.mode = 2
     } else {
       this.mode = mode
+    }
+  }
+
+  /**
+   * 根据插件配置构建解析器Options
+   *
+   * @param jsNodeFactory JsNode工厂函数
+   * @returns 解析器Options对象
+   */
+  buildOptions(jsNodeFactory: () => JsNode): Options {
+    return {
+      jsNodeFactory: jsNodeFactory,
+      includeSourceSpans: 2,
+      ADPlugin: false,
+      BlockAudioPlugin: this.isBlockAudioPlugin,
+      BlockVideoPlugin: this.isBlockVideoPlugin,
+      CodeListPlugin: this.isCodeListPlugin,
+      DescListPlugin: this.isDescListPlugin,
+      EmojiPlugin: this.isEmojiPlugin,
+      EmojiPlugin_light: this.isEmojiLight,
+      FootnotePlugin: this.isFootnotePlugin,
+      HighlightDelimeterPlugin: this.isHighlightPlugin,
+      HtmlPlugin: this.isHtmlPlugin,
+      IdHeadingPlugin: this.isHeadIDPlugin,
+      ImageCollectPlugin: this.isImageCollectPlugin,
+      ImageSinglePlugin: false,
+      ImageSlidePlugin: this.isImageSlidePlugin,
+      ImageStylePlugin: this.isImageStylePlugin,
+      ImageTextMixPlugin: this.isImageTextMixPlugin,
+      ImageVideoPlugin: false,
+      LatexMathPluginV2: this.isLatexMathPlugin,
+      LinkifyPlugin: this.isLinkifyPlugin,
+      LinkifyPlugin_regs: this.isLinkifyPlugin ? this.regs : undefined,
+      LinkViewPlugin: this.isLinkViewPlugin,
+      NodeIdPlugin: true,
+      StrikethroughPlugin: this.isStrikethroughPlugin,
+      SubPlugin: this.isSubPlugin,
+      SupPlugin: this.isSupPlugin,
+      TablePlugin: this.isTablePlugin,
+      TaskListPlugin: this.isTaskListPlugin,
+      TocPlugin: this.isTocPlugin,
+      WhitelistLooseDelimiterPlugin: this.isWhitelistPlugin,
+      WhitelistLooseDelimiterPlugin_DelimiterFilterMode:
+        this.mode === DelimiterFilterMode.Permissive ? "Permissive" :
+        this.mode === DelimiterFilterMode.Strict ? "Strict" :
+        this.whitelist
     }
   }
 }
