@@ -17,6 +17,7 @@ import { HtmlUnderlineTheme } from "../theme/HtmlUnderlineTheme"
 import { ImageTheme } from "../theme/ImageTheme"
 import { InlineCodeTheme } from "../theme/InlineCodeTheme"
 import { ItalicTheme } from "../theme/ItalicTheme"
+import { LatexMathTheme } from "../theme/LatexMathTheme"
 import { LinkTheme } from "../theme/LinkTheme"
 import { OrderedListTheme } from "../theme/OrderedListTheme"
 import { ParagraphTheme } from "../theme/ParagraphTheme"
@@ -45,6 +46,7 @@ export struct MarkdownList {
   @ObjectLink inlineCodeTheme: InlineCodeTheme // 内联代码样式
   @ObjectLink boldTheme: BoldTheme // 加粗样式
   @ObjectLink italicTheme: ItalicTheme // 斜体样式
+  @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
   @ObjectLink strikethroughTheme: StrikethroughTheme // 删除线样式
   @ObjectLink highlightTheme: HighlightTheme // 高亮样式
   @ObjectLink htmlUnderlineTheme: HtmlUnderlineTheme // 下划线样式
@@ -76,6 +78,8 @@ export struct MarkdownList {
   audioCallback?: (url: string) => void // 音频点击事件
   codeCopyCallback?: (code: string) => void // 代码复制点击事件
   codeFullScreenCallback?: (code: string, language: string | undefined) => void // 代码全屏点击事件
+  latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
+  latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
@@ -123,6 +127,9 @@ export struct MarkdownList {
                   bannerTheme: this.bannerTheme,
                   videoTheme: this.videoTheme,
                   audioTheme: this.audioTheme,
+                  latexMathTheme: this.latexMathTheme,
+                  latexImageCallback: this.latexImageCallback,
+                  latexStrCallback: this.latexStrCallback,
                   isOrdered: this.isOrdered,
                   listDepth: this.listDepth,
                   componentWidth: this.componentWidth,
@@ -174,6 +181,9 @@ export struct MarkdownList {
                   bannerTheme: this.bannerTheme,
                   videoTheme: this.videoTheme,
                   audioTheme: this.audioTheme,
+                  latexMathTheme: this.latexMathTheme,
+                  latexImageCallback: this.latexImageCallback,
+                  latexStrCallback: this.latexStrCallback,
                   isOrdered: this.isOrdered,
                   listDepth: this.listDepth,
                   componentWidth: this.componentWidth,

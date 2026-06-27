@@ -17,6 +17,7 @@ import { HtmlUnderlineTheme } from "../theme/HtmlUnderlineTheme"
 import { ImageTheme } from "../theme/ImageTheme"
 import { InlineCodeTheme } from "../theme/InlineCodeTheme"
 import { ItalicTheme } from "../theme/ItalicTheme"
+import { LatexMathTheme } from "../theme/LatexMathTheme"
 import { LinkTheme } from "../theme/LinkTheme"
 import { OrderedListTheme } from "../theme/OrderedListTheme"
 import { ParagraphTheme } from "../theme/ParagraphTheme"
@@ -38,6 +39,7 @@ import { MarkdownVideo } from "./MarkdownVideo"
 import { MarkdownAudio } from "./MarkdownAudio"
 import { MarkdownList } from "./MarkdownList"
 import { MarkdownQuote } from "./MarkdownQuote"
+import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
 
 /**
  * 列表项控件
@@ -55,6 +57,7 @@ export struct MarkdownListItem {
   @ObjectLink inlineCodeTheme: InlineCodeTheme // 内联代码样式
   @ObjectLink boldTheme: BoldTheme // 加粗样式
   @ObjectLink italicTheme: ItalicTheme // 斜体样式
+  @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
   @ObjectLink strikethroughTheme: StrikethroughTheme // 删除线样式
   @ObjectLink highlightTheme: HighlightTheme // 高亮样式
   @ObjectLink htmlUnderlineTheme: HtmlUnderlineTheme // 下划线样式
@@ -86,6 +89,8 @@ export struct MarkdownListItem {
   audioCallback?: (url: string) => void // 音频点击事件
   codeCopyCallback?: (code: string) => void // 代码复制点击事件
   codeFullScreenCallback?: (code: string, language: string | undefined) => void // 代码全屏点击事件
+  latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
+  latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
@@ -123,6 +128,9 @@ export struct MarkdownListItem {
                 blockQuoteTheme: this.blockQuoteTheme,
                 definitionListTheme: this.definitionListTheme,
                 imageTheme: this.imageTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
                 componentWidth: this.componentWidth,
                 textCopyCallback: this.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
@@ -151,6 +159,9 @@ export struct MarkdownListItem {
                 blockQuoteTheme: this.blockQuoteTheme,
                 definitionListTheme: this.definitionListTheme,
                 imageTheme: this.imageTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
                 componentWidth: this.componentWidth,
                 textCopyCallback: this.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
@@ -211,6 +222,9 @@ export struct MarkdownListItem {
                 bannerTheme: this.bannerTheme,
                 videoTheme: this.videoTheme,
                 audioTheme: this.audioTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
                 isOrdered: false,
                 listDepth: this.listDepth + 1,
                 componentWidth: this.componentWidth,
@@ -257,6 +271,9 @@ export struct MarkdownListItem {
                 bannerTheme: this.bannerTheme,
                 videoTheme: this.videoTheme,
                 audioTheme: this.audioTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
                 isOrdered: true,
                 listDepth: this.listDepth + 1,
                 componentWidth: this.componentWidth,
@@ -303,6 +320,9 @@ export struct MarkdownListItem {
                 bannerTheme: this.bannerTheme,
                 videoTheme: this.videoTheme,
                 audioTheme: this.audioTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
                 componentWidth: this.componentWidth,
                 tableBlockComponentWidth: this.tableBlockComponentWidth,
                 textCopyCallback: this.textCopyCallback,
@@ -321,6 +341,12 @@ export struct MarkdownListItem {
               })
             } else if (item.nodeType == "LatexMathBlock") {
               // 数学公式块
+              MarkdownLatexMathBlock({
+                latexMathBlockStr: item.nodeText,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback
+              })
             } else if (item.nodeType == "TableBlock") {
               // 表格
               MarkdownTable({
@@ -342,6 +368,9 @@ export struct MarkdownListItem {
                 paragraphTheme: this.paragraphTheme,
                 definitionListTheme: this.definitionListTheme,
                 imageTheme: this.imageTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
                 componentWidth: this.tableBlockComponentWidth
               })
             } else if (item.nodeType == "ThematicBreak") {
@@ -371,6 +400,9 @@ export struct MarkdownListItem {
                 paragraphTheme: this.paragraphTheme,
                 definitionListTheme: this.definitionListTheme,
                 imageTheme: this.imageTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
                 componentWidth: this.componentWidth,
                 textCopyCallback: this.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,

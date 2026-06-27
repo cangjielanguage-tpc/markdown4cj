@@ -11,6 +11,7 @@ import { HtmlUnderlineTheme } from "../theme/HtmlUnderlineTheme"
 import { ImageTheme } from "../theme/ImageTheme"
 import { InlineCodeTheme } from "../theme/InlineCodeTheme"
 import { ItalicTheme } from "../theme/ItalicTheme"
+import { LatexMathTheme } from "../theme/LatexMathTheme"
 import { LinkTheme } from "../theme/LinkTheme"
 import { ParagraphTheme } from "../theme/ParagraphTheme"
 import { StrikethroughTheme } from "../theme/StrikethroughTheme"
@@ -33,6 +34,7 @@ import {
   spanLineHeight,
   tableCellBackgroundColor
 } from "../utils/MrkdownThemeUtils"
+import { MarkdownLatexMathInline } from "./MarkdownLatexMathInline"
 
 /**
  * 表格格子控件
@@ -58,12 +60,15 @@ export struct MarkdownTableCell {
   @ObjectLink paragraphTheme: ParagraphTheme // 标题样式
   @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
+  @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
   footnoteCallback?: (index: string) => void // 脚注点击事件
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
   imageCallback?: (url: string) => void // 图片点击事件
+  latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
+  latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   @Prop tableBlockCellRow: number // 表格的第几行
   @Prop tableBlockCellCell: number // 表格的第几条
   @Prop tableBlockCellCellSize: number // 表格总共有几列
@@ -350,6 +355,14 @@ export struct MarkdownTableCell {
             this.list = [...this.list]
           }
         })
+    } else if (item.nodeType == "LatexMathNode") {
+      // 数学公式行内
+      MarkdownLatexMathInline({
+        latexMathStr: item.nodeText,
+        latexMathTheme: this.latexMathTheme,
+        latexImageCallback: this.latexImageCallback,
+        latexStrCallback: this.latexStrCallback
+      })
     } else {
       // 其它
     }

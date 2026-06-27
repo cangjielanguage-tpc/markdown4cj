@@ -15,6 +15,7 @@ import { HtmlUnderlineTheme } from "./HtmlUnderlineTheme"
 import { ImageTheme } from "./ImageTheme"
 import { InlineCodeTheme } from "./InlineCodeTheme"
 import { ItalicTheme } from "./ItalicTheme"
+import { LatexMathTheme } from "./LatexMathTheme"
 import { LinkTheme } from "./LinkTheme"
 import { OrderedListTheme } from "./OrderedListTheme"
 import { ParagraphTheme } from "./ParagraphTheme"
@@ -44,6 +45,7 @@ export class MarkdownTheme {
   imageTheme: ImageTheme = new ImageTheme() // 图片样式
   inlineCodeTheme: InlineCodeTheme = new InlineCodeTheme() // 内联代码样式
   italicTheme: ItalicTheme = new ItalicTheme() // 斜体文本样式
+  latexMathTheme: LatexMathTheme = new LatexMathTheme() // 数学公式样式
   linkTheme: LinkTheme = new LinkTheme() // 链接文本样式
   orderedListTheme: OrderedListTheme = new OrderedListTheme() // 有序列表样式
   paragraphTheme: ParagraphTheme = new ParagraphTheme() // 段落样式
@@ -151,6 +153,10 @@ export class MarkdownTheme {
     this.strikethroughTheme.setStrikethroughTextDecorationColor(0xFF191919) // 删除线文本下划线颜色
     // 代码高亮主题
     this.codeBlockTheme.setCodeBlockIsDark(false)
+    // 数学公式主题
+    this.latexMathTheme.setLatexMathTextColor(0xFF191919)
+    this.latexMathTheme.setLatexMathBackgroundColor(0x00000000)
+    this.latexMathTheme.setLatexMathDefaultTextFontColor(0xFF191919)
     return this
   }
 
@@ -237,6 +243,10 @@ export class MarkdownTheme {
     this.strikethroughTheme.setStrikethroughTextDecorationColor(0xFF404040) // 删除线文本装饰线颜色
     // 代码高亮主题
     this.codeBlockTheme.setCodeBlockIsDark(true)
+    // 数学公式主题
+    this.latexMathTheme.setLatexMathTextColor(0xFFE0E0E0)
+    this.latexMathTheme.setLatexMathBackgroundColor(0x00000000)
+    this.latexMathTheme.setLatexMathDefaultTextFontColor(0xFFE0E0E0)
     return this
   }
 
@@ -402,6 +412,17 @@ export class MarkdownTheme {
    */
   setItalicTheme(italicTheme: ItalicTheme): MarkdownTheme {
     this.italicTheme = italicTheme
+    return this
+  }
+
+  /**
+   * 设置数学公式样式
+   *
+   * @param latexMathTheme 数学公式样式
+   * @return MarkdownTheme
+   */
+  setLatexMathTheme(latexMathTheme: LatexMathTheme): MarkdownTheme {
+    this.latexMathTheme = latexMathTheme
     return this
   }
 

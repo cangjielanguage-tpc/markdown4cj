@@ -20,6 +20,8 @@ export class MarkdownConfiguration {
   codeFullScreenCallback?: (code: string, language: string | undefined) => void = undefined // 代码全屏按钮的点击事件
   tocIndexCallback?: (index: number | undefined) => void = undefined // TOC跳转指定位置
   footnoteCallback?: (index: number | undefined) => void = undefined // 脚注跳转指定位置
+  latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void = undefined // 数学公式图片点击事件
+  latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
   markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown默认样式
 
@@ -172,6 +174,26 @@ export class MarkdownConfiguration {
    */
   setFootnoteCallback(cb: (index: number | undefined) => void): MarkdownConfiguration {
     this.footnoteCallback = cb
+    return this
+  }
+
+  /**
+   * 设置数学公式图片点击回调
+   *
+   * @param cb 数学公式图片点击回调(data：图片数据,height：图片高度-单位px,width：图片宽度-单位px) --- 需要加载formula_hybrid
+   */
+  setLatexImageCallback(cb: (data: ArrayBuffer, height: number, width: number) => void): MarkdownConfiguration {
+    this.latexImageCallback = cb
+    return this
+  }
+
+  /**
+   * 设置数学公式数据处理事件
+   *
+   * @param cb 数学公式数据处理事件(str：数学公式文本 返回值是处理后的数学公式文本) --- 需要加载formula_hybrid
+   */
+  setLatexStrCallback(cb: (str: string) => string): MarkdownConfiguration {
+    this.latexStrCallback = cb
     return this
   }
 

@@ -11,6 +11,7 @@ import { HtmlUnderlineTheme } from "../theme/HtmlUnderlineTheme"
 import { ImageTheme } from "../theme/ImageTheme"
 import { InlineCodeTheme } from "../theme/InlineCodeTheme"
 import { ItalicTheme } from "../theme/ItalicTheme"
+import { LatexMathTheme } from "../theme/LatexMathTheme"
 import { LinkTheme } from "../theme/LinkTheme"
 import { ParagraphTheme } from "../theme/ParagraphTheme"
 import { StrikethroughTheme } from "../theme/StrikethroughTheme"
@@ -34,6 +35,7 @@ export struct MarkdownTableRow {
   @ObjectLink inlineCodeTheme: InlineCodeTheme // 内联代码样式
   @ObjectLink boldTheme: BoldTheme // 加粗样式
   @ObjectLink italicTheme: ItalicTheme // 斜体样式
+  @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
   @ObjectLink strikethroughTheme: StrikethroughTheme // 删除线样式
   @ObjectLink highlightTheme: HighlightTheme // 高亮样式
   @ObjectLink htmlUnderlineTheme: HtmlUnderlineTheme // 下划线样式
@@ -51,6 +53,8 @@ export struct MarkdownTableRow {
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
   imageCallback?: (url: string) => void // 图片点击事件
+  latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
+  latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
   aboutToAppear(): void {
@@ -83,6 +87,9 @@ export struct MarkdownTableRow {
               blockQuoteTheme: this.blockQuoteTheme,
               definitionListTheme: this.definitionListTheme,
               imageTheme: this.imageTheme,
+              latexMathTheme: this.latexMathTheme,
+              latexImageCallback: this.latexImageCallback,
+              latexStrCallback: this.latexStrCallback,
                componentWidth: this.componentWidth,
                tableBlockCellRow: this.tableBlockRowRow,
                tableBlockCellCell: index,

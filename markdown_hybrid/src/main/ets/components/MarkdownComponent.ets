@@ -19,6 +19,7 @@ import { MarkdownDesc } from "./MarkdownDesc"
 import { MarkdownTable } from "./MarkdownTable"
 import { MarkdownList } from "./MarkdownList"
 import { MarkdownQuote } from "./MarkdownQuote"
+import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
 
 @Component
 export struct CJMarkdown {
@@ -71,6 +72,9 @@ export struct CJMarkdown {
                 blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
                 definitionListTheme: this.config.markdownTheme.definitionListTheme,
                 imageTheme: this.config.markdownTheme.imageTheme,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback,
                 componentWidth: this.componentWidth,
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
@@ -99,6 +103,9 @@ export struct CJMarkdown {
                 blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
                 definitionListTheme: this.config.markdownTheme.definitionListTheme,
                 imageTheme: this.config.markdownTheme.imageTheme,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback,
                 componentWidth: this.componentWidth,
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
@@ -159,6 +166,9 @@ export struct CJMarkdown {
                 bannerTheme: this.config.markdownTheme.bannerTheme,
                 videoTheme: this.config.markdownTheme.videoTheme,
                 audioTheme: this.config.markdownTheme.audioTheme,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback,
                 isOrdered: false,
                 listDepth: 0,
                 componentWidth: this.componentWidth,
@@ -205,6 +215,9 @@ export struct CJMarkdown {
                 bannerTheme: this.config.markdownTheme.bannerTheme,
                 videoTheme: this.config.markdownTheme.videoTheme,
                 audioTheme: this.config.markdownTheme.audioTheme,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback,
                 isOrdered: true,
                 listDepth: 0,
                 componentWidth: this.componentWidth,
@@ -251,6 +264,9 @@ export struct CJMarkdown {
                 bannerTheme: this.config.markdownTheme.bannerTheme,
                 videoTheme: this.config.markdownTheme.videoTheme,
                 audioTheme: this.config.markdownTheme.audioTheme,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback,
                 componentWidth: this.componentWidth,
                 tableBlockComponentWidth: this.componentWidth,
                 listDepth: 0,
@@ -269,6 +285,12 @@ export struct CJMarkdown {
               })
             } else if (item.nodeType == "LatexMathBlock") {
               // 数学公式块
+              MarkdownLatexMathBlock({
+                latexMathBlockStr: item.nodeText,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback
+              })
             } else if (item.nodeType == "TableBlock") {
               // 表格
               MarkdownTable({
@@ -290,6 +312,9 @@ export struct CJMarkdown {
                 blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
                 definitionListTheme: this.config.markdownTheme.definitionListTheme,
                 imageTheme: this.config.markdownTheme.imageTheme,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback,
                 componentWidth: this.componentWidth,
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
@@ -324,6 +349,9 @@ export struct CJMarkdown {
                 definitionListTheme: this.config.markdownTheme.definitionListTheme,
                 imageTheme: this.config.markdownTheme.imageTheme,
                 footnoteDefTheme: this.config.markdownTheme.footnoteDefTheme,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback,
                 componentWidth: this.componentWidth,
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
@@ -352,6 +380,9 @@ export struct CJMarkdown {
                 blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
                 definitionListTheme: this.config.markdownTheme.definitionListTheme,
                 imageTheme: this.config.markdownTheme.imageTheme,
+                latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                latexImageCallback: this.config.latexImageCallback,
+                latexStrCallback: this.config.latexStrCallback,
                 componentWidth: this.componentWidth,
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
