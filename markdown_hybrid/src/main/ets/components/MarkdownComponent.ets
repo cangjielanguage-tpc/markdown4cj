@@ -520,14 +520,14 @@ export struct CJMarkdown {
   /**
    * 图片点击回调
    */
-  imageCallback(url: string): void {
+  imageCallback: (url: string) => void = (url: string) => {
     this.config.imageCallback?.(url, this.imageAndVideoList)
   }
 
   /**
    * 视频点击回调
    */
-  videoCallback(url: string): void {
+  videoCallback: (url: string) => void = (url: string) => {
     this.config.videoCallback?.(url, this.imageAndVideoList)
   }
 
@@ -535,7 +535,7 @@ export struct CJMarkdown {
    * 脚注点击回调
    * 组件传入脚注ID（字符串），转换为数值索引后回调config
    */
-  footnoteCallback(id: string): void {
+  footnoteCallback: (id: string) => void = (id: string) => {
     const idx = Number(id)
     if (!isNaN(idx)) {
       this.config.footnoteCallback?.(idx)
@@ -545,7 +545,7 @@ export struct CJMarkdown {
   /**
    * TOC/标题ID点击回调
    */
-  tocCallback(index: number): void {
+  tocCallback: (index: number) => void = (index: number) => {
     this.config.tocIndexCallback?.(index)
   }
 }
