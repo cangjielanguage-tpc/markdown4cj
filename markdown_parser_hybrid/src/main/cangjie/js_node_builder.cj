@@ -37,7 +37,7 @@ class JsNodeBuilder {
                 jsNode.set('destination', v.getDestination(), context)
                 jsNode.set('title', v.getTitle(), context)
                 match (v) {
-                    case i: StyleImage => jsNode.put('putStyleImageStyle', i.styles, context)
+                    case i: StyleImage => jsNode.put('putImageStyles', i.styles, context)
                     case i: ImgVideo => jsNode.set('text', i.text, context)
                     case _ => ()
                 }
@@ -83,7 +83,7 @@ class JsNodeBuilder {
                 jsNode.set('size', v.getSize(), context)
             case v: SpanNode =>
                 jsNode.put('putSpanNodeAttr', v.getAttrs(), context)
-                jsNode.put('putSpanNodeAttrStyle', v.getStyle(), context)
+                jsNode.put('putSpanNodeStyle', v.getStyle(), context)
             case v: CardNode =>
                 jsNode.set('name', v.getName(), context)
                 jsNode.set('data', v.getData(), context)

@@ -54,13 +54,18 @@ export async function parseIntoJsNode(md: string, includeSourceSpans: 0 | 1 | 2)
   return node
 }
 
-export function getParser(includeSourceSpans: 0 | 1 | 2, factory: (() => JsNode) | undefined): MarkdownParser {
-  let opt: Options = {
-    jsNodeFactory: factory ?? (() => new JsNodeImpl()),
-    includeSourceSpans: includeSourceSpans,
-    FootnotePlugin: true,
-    LinkifyPlugin: true,
-    NodeIdPlugin: true
+export function getParser(opt?: Options): MarkdownParser {
+  if (!opt) {
+    opt = {
+      jsNodeFactory: () => new JsNodeImpl(),
+      includeSourceSpans: 2
+    }
+  }
+  if (!opt.jsNodeFactory) {
+    opt.jsNodeFactory = () => new JsNodeImpl()
+  }
+  if (!opt.includeSourceSpans) {
+    opt.includeSourceSpans = 2
   }
   let parser = new MarkdownParser(opt)
   return parser

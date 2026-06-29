@@ -9,6 +9,7 @@ internal import markdown.plugin.*
 internal import markdown.plugin.emoji.*
 internal import std.collection.*
 internal import ohos.ark_interop.*
+internal import ohos.hilog.Hilog
 
 func testCJ(runtime: JSContext, callInfo: JSCallInfo): JSValue {
     let result = "Hello ${callInfo[0].toString(runtime)}"

@@ -1,7 +1,6 @@
 package markdown_parser_hybrid
 
 import ohos.ark_interop_macro.Interop
-import ohos.hilog.Hilog
 
 public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
     static init() {
@@ -33,45 +32,17 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         if (opt.get('CodeListPlugin', false, context)) {
             builder.usePlugin(CodeListPlugin.create())
         }
-        if (opt.get('DescListPlugin', false, context)) {
-            builder.usePlugin(DescListPlugin.create())
-        }
-        if (opt.get('EmojiPlugin', false, context)) {
-            let EmojiPlugin_light = opt.get('EmojiPlugin_light', false, context)
-            builder.usePlugin(EmojiPlugin.create(EmojiPlugin_light))
-        }
-        if (opt.get('FootnotePlugin', false, context)) {
-            builder.usePlugin(FootnotePlugin.create())
-        }
-        if (opt.get('HighlightDelimeterPlugin', false, context)) {
-            builder.usePlugin(HighlightDelimeterPlugin.create())
-        }
         if (opt.get('HtmlPlugin', false, context)) {
             builder.usePlugin(HtmlPlugin.create())
         }
-        if (opt.get('IdHeadingPlugin', false, context)) {
-            builder.usePlugin(IdHeadingPlugin.create())
+        if (opt.get('TablePlugin', false, context)) {
+            builder.usePlugin(TablePlugin.create())
         }
-        if (opt.get('ImageCollectPlugin', false, context)) {
-            builder.usePlugin(ImageCollectPlugin.create())
+        if (opt.get('TaskListPlugin', false, context)) {
+            builder.usePlugin(TaskListPlugin.create())
         }
-        if (opt.get('ImageSinglePlugin', false, context)) {
-            builder.usePlugin(ImageSinglePlugin.create())
-        }
-        if (opt.get('ImageSlidePlugin', false, context)) {
-            builder.usePlugin(ImageSlidePlugin.create())
-        }
-        if (opt.get('ImageStylePlugin', false, context)) {
-            builder.usePlugin(ImageStylePlugin.create())
-        }
-        if (opt.get('ImageTextMixPlugin', false, context)) {
-            builder.usePlugin(ImageTextMixPlugin.create())
-        }
-        if (opt.get('ImageVideoPlugin', false, context)) {
-            builder.usePlugin(ImageVideoPlugin.create())
-        }
-        if (opt.get('LatexMathPluginV2', false, context)) {
-            builder.usePlugin(LatexMathPluginV2.create())
+        if (opt.get('StrikethroughPlugin', false, context)) {
+            builder.usePlugin(StrikethroughPlugin.create())
         }
         if (opt.get('LinkifyPlugin', false, context)) {
             var LinkifyPlugin_regs: Array<String> = if (let Some(jsarray) <- opt.get<JSArrayEx<String>>(
@@ -85,8 +56,29 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         if (opt.get('LinkViewPlugin', false, context)) {
             builder.usePlugin(LinkViewPlugin.create())
         }
-        if (opt.get('StrikethroughPlugin', false, context)) {
-            builder.usePlugin(StrikethroughPlugin.create())
+        if (opt.get('LatexMathPluginV2', false, context)) {
+            builder.usePlugin(LatexMathPluginV2.create())
+        }
+        if (opt.get('ImageStylePlugin', false, context)) {
+            builder.usePlugin(ImageStylePlugin.create())
+        }
+        if (opt.get('ImageSlidePlugin', false, context)) {
+            builder.usePlugin(ImageSlidePlugin.create())
+        }
+        if (opt.get('ImageTextMixPlugin', false, context)) {
+            builder.usePlugin(ImageTextMixPlugin.create())
+        }
+        if (opt.get('DescListPlugin', false, context)) {
+            builder.usePlugin(DescListPlugin.create())
+        }
+        if (opt.get('IdHeadingPlugin', false, context)) {
+            builder.usePlugin(IdHeadingPlugin.create())
+        }
+        if (opt.get('FootnotePlugin', false, context)) {
+            builder.usePlugin(FootnotePlugin.create())
+        }
+        if (opt.get('ImageCollectPlugin', false, context)) {
+            builder.usePlugin(ImageCollectPlugin.create())
         }
         if (opt.get('SubPlugin', false, context)) {
             builder.usePlugin(SubPlugin.create())
@@ -94,11 +86,12 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         if (opt.get('SupPlugin', false, context)) {
             builder.usePlugin(SupPlugin.create())
         }
-        if (opt.get('TablePlugin', false, context)) {
-            builder.usePlugin(TablePlugin.create())
+        if (opt.get('EmojiPlugin', false, context)) {
+            let EmojiPlugin_light = opt.get('EmojiPlugin_light', false, context)
+            builder.usePlugin(EmojiPlugin.create(EmojiPlugin_light))
         }
-        if (opt.get('TaskListPlugin', false, context)) {
-            builder.usePlugin(TaskListPlugin.create())
+        if (opt.get('HighlightDelimeterPlugin', false, context)) {
+            builder.usePlugin(HighlightDelimeterPlugin.create())
         }
         if (opt.get('WhitelistLooseDelimiterPlugin', false, context)) {
             let jv = opt["WhitelistLooseDelimiterPlugin_DelimiterFilterMode"]
