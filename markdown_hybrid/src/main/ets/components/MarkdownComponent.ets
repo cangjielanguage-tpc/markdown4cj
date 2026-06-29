@@ -12,6 +12,7 @@ import { MarkdownAudio } from "./MarkdownAudio"
 import { MarkdownVideo } from "./MarkdownVideo"
 import { MarkdownBanner } from "./MarkdownBanner"
 import { MarkdownCodeFenced } from "./MarkdownCodeFenced"
+import { MarkdownCodeSeparate } from "./MarkdownCodeSeparate"
 import { MarkdownCodeBlockList } from "./MarkdownCodeBlockList"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
 import { MarkdownFootnote } from "./MarkdownFootnote"
@@ -46,6 +47,55 @@ export struct CJMarkdown {
   }
 
   build() {
+    if (this.config.markdownTheme.codeBlockTheme.codeBlockIsSeparate) {
+      List({
+        scroller: this.scroller,
+        space: this.config.markdownTheme.globalTheme.markdownBlockSpacing
+      }) {
+        LazyForEach(
+          this.markdownDataSource,
+          (item: NodeView, index: number) => {
+            ListItem() {
+              if (index == 0 && (item.nodeType == "FencedCodeBlock" || item.nodeType == "IndentedCodeBlock")) {
+                MarkdownCodeSeparate({
+                  node: item,
+                  codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
+                  codeCopyCallback: this.config.codeCopyCallback,
+                  codeFullScreenCallback: this.config.codeFullScreenCallback
+                })
+              } else {
+                Text("")
+              }
+            }
+          },
+          (item: NodeView, index: number) => {
+            return `${index}-${item.nodeType}`
+          }
+        )
+      }
+      .margin(
+        {
+          top: this.config.markdownTheme.globalTheme.blockMarginTop,
+          right: this.config.markdownTheme.globalTheme.blockMarginRight,
+          bottom: this.config.markdownTheme.globalTheme.blockMarginBottom,
+          left: this.config.markdownTheme.globalTheme.blockMarginLeft
+        }
+      )
+      .backgroundColor(this.config.markdownTheme.globalTheme.backgroundColor)
+      .listDirection(Axis.Vertical)
+      .alignListItem(ListItemAlign.Start)
+      .scrollBar(BarState.Off)
+      .enableScrollInteraction(this.config.markdownTheme.globalTheme.openGestureSwipe)
+      .onSizeChange((oldValue, newValue) => {
+        let newWidth: number = 0
+        if (typeof newValue.width === 'number') {
+          newWidth = newValue.width
+        }
+        if (this.componentWidth != newWidth) {
+          this.componentWidth = newWidth
+        }
+      })
+    } else {
     List({
       scroller: this.scroller,
       space: this.config.markdownTheme.globalTheme.markdownBlockSpacing
@@ -462,6 +512,7 @@ export struct CJMarkdown {
         this.componentWidth = newWidth
       }
     })
+    }
   }
 
   /**
