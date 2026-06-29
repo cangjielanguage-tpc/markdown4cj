@@ -85,7 +85,6 @@ struct ThematicPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
-
   // ---------------- 专有
   // 分割线上外边距列表
   dividerMarginTopList: Array<number> = marginListGeneralData
@@ -131,9 +130,11 @@ struct ThematicPage {
   dividerStyleList: Array<LineCapStyle> = [LineCapStyle.Butt, LineCapStyle.Round, LineCapStyle.Square]
   @State // 分割线端点样式
   dividerStyle: LineCapStyle = LineCapStyle.Butt
-
   @State // 配置数据内容
   thematicData: ThematicData = new ThematicData()
+  heightMD: number = 30 * 1 // 乘以行数
+  @State isExpanded1: boolean = false // 控制展开/折叠状态
+  @State isExpanded2: boolean = false // 控制展开/折叠状态
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -147,223 +148,300 @@ struct ThematicPage {
         true,
         this.safeTop
       )
+
+      // md文档展示部分
+      Column() {
+        GridRow({
+          columns: 3,
+          gutter: { x: 5, y: 5 },
+          breakpoints: {
+            value: ['400vp', '600vp', '800vp'],
+            reference: BreakpointsReference.ComponentSize
+          },
+          direction: GridRowDirection.Row
+        }) {
+          ForEach(this.folderList, (item: string, index: number) => {
+            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor(0xFFFFFFFF)
+                .backgroundColor(0xFF2196F3)
+                .height(25).width('100%')
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                  this.thematicData._isFull = this.isFull
+                  this.thematicData._incrementalAnalysis = this.incrementalAnalysis
+                  this.thematicData._time = this.time
+                  this.thematicData._textNumber = this.textNumber
+                  this.thematicData._isMarkdownParserSync = this.isMarkdownParserSync
+                  this.thematicData._isOnCopy = this.isOnCopy
+                  this.thematicData._blockMarginTop = this.blockMarginTop
+                  this.thematicData._blockMarginRight = this.blockMarginRight
+                  this.thematicData._blockMarginBottom = this.blockMarginBottom
+                  this.thematicData._blockMarginLeft = this.blockMarginLeft
+                  this.thematicData._markdownBlockSpacing = this.markdownBlockSpacing
+                  this.thematicData._isLineBreak = this.isLineBreak
+                  this.thematicData._backgroundColor = this.globalBackgroundColor
+                  this.thematicData._openGestureSwipe = this.openGestureSwipe
+                  this.thematicData._openGestureSwipeTest = this.openGestureSwipeTest
+                  this.thematicData._pagePath = `${this.rawFilePath}/${item}`
+
+                  // ---------- 专有
+                  this.thematicData.dividerMarginTop = this.dividerMarginTop
+                  this.thematicData.dividerMarginRight = this.dividerMarginRight
+                  this.thematicData.dividerMarginBottom = this.dividerMarginBottom
+                  this.thematicData.dividerMarginLeft = this.dividerMarginLeft
+                  this.thematicData.dividerPaddingTop = this.dividerPaddingTop
+                  this.thematicData.dividerPaddingRight = this.dividerPaddingRight
+                  this.thematicData.dividerPaddingBottom = this.dividerPaddingBottom
+                  this.thematicData.dividerPaddingLeft = this.dividerPaddingLeft
+                  this.thematicData.dividerColor = this.dividerColor
+                  this.thematicData.dividerStrokeWidth = this.dividerStrokeWidth
+                  this.thematicData.dividerStyle = this.dividerStyle
+                  // ---------- 跳转到详情
+                  router.pushUrl({ url: "pages/ThematicDetailsPage", params: this.thematicData })
+                })
+            }
+          })
+        }.width('100%').height('100%')
+      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+
       Scroll() {
         Column() {
-          // ------------ 通用
-          BaseTabComponent({
-            titleStr: "是否全量加载Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isFullList,
-            allData: this.isFull
-          })
-          BaseTabComponent({
-            titleStr: "是否增量解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.incrementalAnalysisList,
-            allData: this.incrementalAnalysis
-          })
-          BaseTabComponent({
-            titleStr: "增量加载每次间隔时间 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.timeList,
-            allData: this.time
-          })
-          BaseTabComponent({
-            titleStr: "增量每次增量文本数量 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.textNumberList,
-            allData: this.textNumber
-          })
-          BaseTabComponent({
-            titleStr: "是否同步解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isMarkdownParserSyncList,
-            allData: this.isMarkdownParserSync
-          })
-          BaseTabComponent({
-            titleStr: "是否打开长按复制粘贴效果 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isOnCopyList,
-            allData: this.isOnCopy
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局上外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginTopList,
-            allData: this.blockMarginTop
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局右外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginRightList,
-            allData: this.blockMarginRight
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局下外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginBottomList,
-            allData: this.blockMarginBottom
-          })
-          BaseTabComponent({
-            titleStr: "markdown全局左外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockMarginLeftList,
-            allData: this.blockMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "模块间上下间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.markdownBlockSpacingList,
-            allData: this.markdownBlockSpacing
-          })
-          BaseTabComponent({
-            titleStr: "软换行是否换行 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isLineBreakList,
-            allData: this.isLineBreak
-          })
-          BaseTabComponent({
-            titleStr: "背景颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.globalBackgroundColorList,
-            allData: this.globalBackgroundColor
-          })
-          BaseTabComponent({
-            titleStr: "是否开启响应滑动测试 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeTestList,
-            allData: this.openGestureSwipeTest
-          })
-          BaseTabComponent({
-            titleStr: "是否允许markdown控件自身响应滑动 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeList,
-            allData: this.openGestureSwipe
-          })
-
-          // ---------------- 专有
-          BaseTabComponent({
-            titleStr: "分割线上外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerMarginTopList,
-            allData: this.dividerMarginTop
-          })
-          BaseTabComponent({
-            titleStr: "分割线右外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerMarginRightList,
-            allData: this.dividerMarginRight
-          })
-          BaseTabComponent({
-            titleStr: "分割线下外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerMarginBottomList,
-            allData: this.dividerMarginBottom
-          })
-          BaseTabComponent({
-            titleStr: "分割线左外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerMarginLeftList,
-            allData: this.dividerMarginLeft
-          })
-          BaseTabComponent({
-            titleStr: "分割线上内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerPaddingTopList,
-            allData: this.dividerPaddingTop
-          })
-          BaseTabComponent({
-            titleStr: "分割线右内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerPaddingRightList,
-            allData: this.dividerPaddingRight
-          })
-          BaseTabComponent({
-            titleStr: "分割线下内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerPaddingBottomList,
-            allData: this.dividerPaddingBottom
-          })
-          BaseTabComponent({
-            titleStr: "分割线左内边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerPaddingLeftList,
-            allData: this.dividerPaddingLeft
-          })
-          BaseTabComponent({
-            titleStr: "分割线颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.dividerColorList,
-            allData: this.dividerColor
-          })
-          BaseTabComponent({
-            titleStr: "分割线宽度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.dividerStrokeWidthList,
-            allData: this.dividerStrokeWidth
-          })
-          BaseTabComponent({
-            titleStr: "分割线端点样式 - ",
-            typeEnum: TypeEnum.IS_LINE_CAP_STYLE,
-            allListData: this.dividerStyleList,
-            allData: this.dividerStyle
-          })
-
-          // 列表显示
-          List() {
-            ForEach(this.folderList, (item: string, index: number) => {
-              ListItem() {
-                Button(`${index + 1}、${item}`)
-                  .height(40)
-                  .width('80%')
-                  .type(ButtonType.Capsule)
-                  .fontColor(0xFFFFFFFF)
-                  .backgroundColor(0xFF317AFF)
-                  .margin({ top: 5, bottom: 5 })
-                  .align(Alignment.Center)
-                  .fontSize(16)
-                  .onClick(() => {
-                    // ---------- 通用
-                    this.thematicData.isFull = this.isFull
-                    this.thematicData.incrementalAnalysis = this.incrementalAnalysis
-                    this.thematicData.time = this.time
-                    this.thematicData.textNumber = this.textNumber
-                    this.thematicData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.thematicData.isOnCopy = this.isOnCopy
-                    this.thematicData.blockMarginTop = this.blockMarginTop
-                    this.thematicData.blockMarginRight = this.blockMarginRight
-                    this.thematicData.blockMarginBottom = this.blockMarginBottom
-                    this.thematicData.blockMarginLeft = this.blockMarginLeft
-                    this.thematicData.markdownBlockSpacing = this.markdownBlockSpacing
-                    this.thematicData.isLineBreak = this.isLineBreak
-                    this.thematicData.backgroundColor = this.globalBackgroundColor
-                    this.thematicData.openGestureSwipe = this.openGestureSwipe
-                    this.thematicData.openGestureSwipeTest = this.openGestureSwipeTest
-                    this.thematicData.pagePath = `${this.rawFilePath}/${item}`
-                    // ---------- 专有
-                    this.thematicData.dividerMarginTop = this.dividerMarginTop
-                    this.thematicData.dividerMarginRight = this.dividerMarginRight
-                    this.thematicData.dividerMarginBottom = this.dividerMarginBottom
-                    this.thematicData.dividerMarginLeft = this.dividerMarginLeft
-                    this.thematicData.dividerPaddingTop = this.dividerPaddingTop
-                    this.thematicData.dividerPaddingRight = this.dividerPaddingRight
-                    this.thematicData.dividerPaddingBottom = this.dividerPaddingBottom
-                    this.thematicData.dividerPaddingLeft = this.dividerPaddingLeft
-                    this.thematicData.dividerColor = this.dividerColor
-                    this.thematicData.dividerStrokeWidth = this.dividerStrokeWidth
-                    this.thematicData.dividerStyle = this.dividerStyle
-                    // ---------- 跳转到详情
-                    router.pushUrl({ url: "pages/ThematicDetailsPage", params: this.thematicData })
-                  })
-              }
+          Column() {
+            Row() {
+              Text("通用样式配置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded1 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded1 = !this.isExpanded1
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded1 = !this.isExpanded1
             })
+
+            if (this.isExpanded1) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否全量加载Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isFullList,
+                  allData: this.isFull
+                })
+                BaseTabComponent({
+                  titleStr: "是否增量解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.incrementalAnalysisList,
+                  allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "增量加载每次间隔时间 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.timeList,
+                  allData: this.time
+                })
+                BaseTabComponent({
+                  titleStr: "增量每次增量文本数量 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.textNumberList,
+                  allData: this.textNumber
+                })
+                BaseTabComponent({
+                  titleStr: "是否同步解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isMarkdownParserSyncList,
+                  allData: this.isMarkdownParserSync
+                })
+                BaseTabComponent({
+                  titleStr: "是否打开长按复制粘贴效果 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isOnCopyList,
+                  allData: this.isOnCopy
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局上外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginTopList,
+                  allData: this.blockMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginRightList,
+                  allData: this.blockMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginBottomList,
+                  allData: this.blockMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginLeftList,
+                  allData: this.blockMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "模块间上下间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.markdownBlockSpacingList,
+                  allData: this.markdownBlockSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "软换行是否换行 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isLineBreakList,
+                  allData: this.isLineBreak
+                })
+                BaseTabComponent({
+                  titleStr: "背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.globalBackgroundColorList,
+                  allData: this.globalBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "是否开启响应滑动测试 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeTestList,
+                  allData: this.openGestureSwipeTest
+                })
+                BaseTabComponent({
+                  titleStr: "是否允许markdown控件自身响应滑动 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeList,
+                  allData: this.openGestureSwipe
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
           }
-          .alignListItem(ListItemAlign.Center)
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          Column() {
+            Row() {
+              Text("专有样式配置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded2 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded2 = !this.isExpanded2
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded2 = !this.isExpanded2
+            })
+
+            if (this.isExpanded2) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "分割线上外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerMarginTopList,
+                  allData: this.dividerMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "分割线右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerMarginRightList,
+                  allData: this.dividerMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "分割线下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerMarginBottomList,
+                  allData: this.dividerMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "分割线左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerMarginLeftList,
+                  allData: this.dividerMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "分割线上内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerPaddingTopList,
+                  allData: this.dividerPaddingTop
+                })
+                BaseTabComponent({
+                  titleStr: "分割线右内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerPaddingRightList,
+                  allData: this.dividerPaddingRight
+                })
+                BaseTabComponent({
+                  titleStr: "分割线下内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerPaddingBottomList,
+                  allData: this.dividerPaddingBottom
+                })
+                BaseTabComponent({
+                  titleStr: "分割线左内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerPaddingLeftList,
+                  allData: this.dividerPaddingLeft
+                })
+                BaseTabComponent({
+                  titleStr: "分割线颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.dividerColorList,
+                  allData: this.dividerColor
+                })
+                BaseTabComponent({
+                  titleStr: "分割线宽度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.dividerStrokeWidthList,
+                  allData: this.dividerStrokeWidth
+                })
+                BaseTabComponent({
+                  titleStr: "分割线端点样式 - ",
+                  typeEnum: TypeEnum.IS_LINE_CAP_STYLE,
+                  allListData: this.dividerStyleList,
+                  allData: this.dividerStyle
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
         }
-        .padding({ bottom: 100 })
+        .padding({ top: 10, bottom: 100 })
       }
     }
     .backgroundColor(0xFFEAEAEA)
-    .height("100%")
+    .height("90%")
   }
 }
