@@ -24,19 +24,15 @@ class HighlightDelimiterProcessor <: DelimiterProcessor {
         return 2
     }
     public override func process(openingRun: DelimiterRun, closingRun: DelimiterRun): Int {
-        if (openingRun.getLength() != closingRun.getLength() || openingRun.getLength() != 2) {
-            return 0
-        }
         let opener = openingRun.getOpener()
-        let delimiter = if (openingRun.getLength() == 1) {
-            opener.getLiteral()
-        } else {
-            opener.getLiteral() + opener.getLiteral()
+        let closer = closingRun.getCloser()
+        if (openingRun.getLength() < 2 || closingRun.getLength() < 2) {
+            return 0
         }
         let hl = HighlightNode()
         let sourceSpans = SourceSpans()
         sourceSpans.addAllFromTexts(openingRun.getOpeners(openingRun.getLength()))
-        for (node in Nodes.between(opener, closingRun.getCloser())) {
+        for (node in Nodes.between(opener, closer)) {
             hl.appendChild(node)
             sourceSpans.addAll(node.getSourceSpans())
         }
