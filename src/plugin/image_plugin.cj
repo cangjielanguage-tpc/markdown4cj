@@ -27,15 +27,11 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
     public override func process(openingRun: DelimiterRun, closingRun: DelimiterRun): Int {
         let opener = openingRun.getOpener()
         let closer = closingRun.getCloser()
-        if (!process(opener, closer)) {
-            if (let Some(n: Text) <- opener.getNext()) {
-                n.setLiteral("{" + n.getLiteral())
-            }
-            if (let Some(p: Text) <- closer.getPrevious()) {
-                p.setLiteral(p.getLiteral() + "}")
-            }
+        if (process(opener, closer)) {
+            return 1
+        } else {
+            return 0
         }
-        1
     }
 
     /*
@@ -45,23 +41,27 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
      */
     func process(opener: Text, closer: Text): Bool {
         // 处理style
-        if (let Some(style: Text) <- opener.getNext()) {
-            if (style.getNext() != closer) {
+        var str = ""
+        for (n in Nodes.between(opener, closer)) {
+            if (let n: Text <- n) {
+                str += n.getLiteral()
+            } else {
                 return false
             }
-            let str = style.getLiteral()
-            if (reg.matches(str)) {
-                // 处理style前的Image
-                if (let Some(image: Image) <- opener.getPrevious()) {
-                    match (image) {
-                        case v: StyleImage => v.styles.add(str)
-                        case _ =>
-                            let styleImage = StyleImage(str, image)
-                            image.replaceWith(styleImage)
-                    }
-                    style.unlink()
-                    return true
+        }
+        if (reg.matches(str)) {
+            // 处理style前的Image
+            if (let Some(image: Image) <- opener.getPrevious()) {
+                match (image) {
+                    case v: StyleImage => v.styles.add(str)
+                    case _ =>
+                        let styleImage = StyleImage(str, image)
+                        image.replaceWith(styleImage)
                 }
+                for (n in Nodes.between(opener, closer)) {
+                    n.unlink()
+                }
+                return true
             }
         }
         return false
