@@ -59,6 +59,11 @@ export class NodeView {
   imageHeight: number = 0 // 控件高度
   imageRadius?: Length = undefined // 图片圆角
   imageAlign?: HorizontalAlign = undefined // 图片对齐方式
+  latexPixelMap: PixelMap | undefined = undefined // 数学公式图片PixelMap（异步加载后设置）
+  latexImageData: ArrayBuffer | undefined = undefined // 数学公式图片原始数据
+  latexImageWidth: number = 0 // 数学公式图片宽度 - 单位px
+  latexImageHeight: number = 0 // 数学公式图片高度 - 单位px
+  latexIsLoading: boolean = false // 数学公式是否正在加载
   codeInfo?: string = undefined // 代码块的代码类型
   codeListTab?: Array<string> = undefined // 代码块列表标题
   cardName?: string = undefined // 卡片名称

@@ -158,7 +158,7 @@ export function nodeToNodeView(
         currentView.isUnderlineNode = true
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
         break
-      case 'FontNode':
+      case 'FontNode': // FontNode标签
           currentView.isFontNode = true
         //   const fontNode = currentJsNode as FontNode
         //   try {
@@ -179,7 +179,7 @@ export function nodeToNodeView(
         //   }
         //   nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
         break
-      case 'SpanNode':
+      case 'SpanNode': // SpanNode标签
           currentView.isSpanNode = true
         //   const spanNode = currentJsNode as SpanNode
         //   const style: Map<string, string> | undefined = spanNode.style
@@ -334,12 +334,12 @@ export function nodeToNodeView(
       case 'ThematicBreak': // 分隔线
         targetParentView.children.push(currentView)
         break
-      case 'FootnoteBlock': //
+      case 'FootnoteBlock': // 脚注
         currentView.footnoteID = currentJsNode.noteid
         nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
         targetParentView.children.push(currentView)
         break
-      case 'Footnote': //
+      case 'Footnote': // 脚注
           currentView.isFootnote = true
           currentView.footnoteID = currentJsNode.noteid
           currentView.nodeText = currentJsNode.noteid ?? ""
@@ -367,9 +367,9 @@ export function nodeToNodeView(
       case 'HtmlInline':
       case 'ImgVideo':
         break
-      case 'ImageHtmlNode':
+      case 'ImageHtmlNode': // HTML图片
         //   const imageHtmlNode = currentJsNode as ImageHtmlNode
-        currentView.imageUrl = currentJsNode.destination
+          currentView.imageUrl = currentJsNode.destination
         //   currentView.imageWidth = strToLength(imageHtmlNode.width)
         //   currentView.imageHeight = strToLength(imageHtmlNode.height)
           targetParentView.children.push(currentView)
@@ -385,7 +385,7 @@ export function nodeToNodeView(
         currentView.imageTitle = currentJsNode.title
         targetParentView.children.push(currentView)
         break
-      case 'StyleImage':
+      case 'StyleImage': // 样式图片
         //   const imageStyle = currentJsNode as StyleImage
           currentView.imageUrl = currentJsNode.destination
           currentView.imageTitle = currentJsNode.title
@@ -396,21 +396,15 @@ export function nodeToNodeView(
         //   currentView.imageAlign = picStyle.align
           targetParentView.children.push(currentView)
         break
-      case 'CardNode':
-        //   const cardNode = currentJsNode as CardNode
-        //   currentView.cardName = cardNode.name
-        //   currentView.cardData = cardNode.data
-        //   targetParentView.children.push(currentView)
-        break
-      case 'BlockVideo':
+      case 'BlockVideo': // 视频
         currentView.imageUrl = findImageUrlFromDescendants(sourceJsNode)
         targetParentView.children.push(currentView)
         break
-      case 'BlockAudio':
+      case 'BlockAudio': // 音频
         currentView.imageUrl = findImageUrlFromDescendants(sourceJsNode)
         targetParentView.children.push(currentView)
         break
-      case 'BlockAD':
+      case 'BlockAD': // 广告
         targetParentView.children.push(currentView)
         break
       default: // 未知节点类型

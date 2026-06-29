@@ -1,4 +1,7 @@
+import { image } from "@kit.ImageKit"
+import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import { CellWidthTracker } from "../model/CellWidthTracker"
+import { LatexParseQueue } from "../model/LatexParseQueue"
 import { NodeView } from "../model/NodeView"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { BoldTheme } from "../theme/BoldTheme"
@@ -34,7 +37,6 @@ import {
   spanLineHeight,
   tableCellBackgroundColor
 } from "../utils/MrkdownThemeUtils"
-import { MarkdownLatexMathInline } from "./MarkdownLatexMathInline"
 
 /**
  * 表格格子控件
@@ -74,10 +76,26 @@ export struct MarkdownTableCell {
   @Prop tableBlockCellCellSize: number // 表格总共有几列
   @Prop columnWidth: number = 0 // 本列宽度（来自父组件@State快照）
   @Consume cellWidthTracker: CellWidthTracker // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
-  @State list: NodeView[] = [] // 表格格子子节点数据源
+  @Consume isLatexMathEnabled: boolean // 数学公式插件是否启用
+  @State @Watch('onListChanged') list: NodeView[] = [] // 表格格子子节点数据源
+  private isAlive: boolean = true // 组件是否存活
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
+  }
+
+  aboutToDisappear(): void {
+    this.isAlive = false
+    for (const item of this.list) {
+      if (item.latexPixelMap !== undefined) {
+        item.latexPixelMap.release()
+        item.latexPixelMap = undefined
+        item.latexImageData = undefined
+        item.latexImageWidth = 0
+        item.latexImageHeight = 0
+        item.latexIsLoading = false
+      }
+    }
   }
 
   build() {
@@ -128,7 +146,7 @@ export struct MarkdownTableCell {
           this.tableCellInlineItem(item, index)
         },
         (item: NodeView, index: number) => {
-          return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}`
+          return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}`
         }
       )
     }
@@ -325,7 +343,7 @@ export struct MarkdownTableCell {
         .objectFit(this.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
         .constraintSize({
-          maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
+          maxWidth: this.columnWidth > 0 ? this.columnWidth : (this.imageTheme.imageMaxWidth ?? '100%'),
           maxHeight: this.imageTheme.imageMaxHeight
         })
         .onClick(() => {
@@ -353,19 +371,24 @@ export struct MarkdownTableCell {
           item.imageHeight = h
           if (this.list.indexOf(item) >= 0) {
             this.list = [...this.list]
+            this.cellWidthTracker.onWidthUpdated?.() // 图片加载后触发列宽重算
           }
         })
     } else if (item.nodeType == "LatexMathNode") {
-      // 数学公式行内
-      MarkdownLatexMathInline({
-        latexMathStr: item.nodeText,
-        latexMathTheme: this.latexMathTheme,
-        latexImageCallback: this.latexImageCallback,
-        latexStrCallback: this.latexStrCallback,
-        onLatexImageLoaded: () => {
-          this.cellWidthTracker.onWidthUpdated?.()
-        }
-      })
+      // 数学公式行内 - 和图片一样直接用ImageSpan
+      if (this.isLatexMathEnabled && item.latexPixelMap !== undefined && item.latexImageWidth > 0 && item.latexImageHeight > 0) {
+        ImageSpan(item.latexPixelMap)
+          .height(this.latexMathTheme.latexMathTextSize)
+          .width((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize)
+          .verticalAlign(ImageSpanAlignment.CENTER)
+          .onClick(() => {
+            if (this.latexImageCallback !== undefined && item.latexImageData !== undefined) {
+              this.latexImageCallback(item.latexImageData, item.latexImageHeight, item.latexImageWidth)
+            }
+          })
+      } else {
+        Span(item.nodeText)
+      }
     } else {
       // 其它
     }
@@ -424,5 +447,91 @@ export struct MarkdownTableCell {
       }
     }
     this.list = [...children]
+  }
+
+  /**
+   * list变化时触发数学公式异步加载（从refreshData移出，避免每次流式输出都跑for循环）
+   */
+  onListChanged() {
+    if (!this.isLatexMathEnabled) {
+      return
+    }
+    for (const child of this.list) {
+      if (child.nodeType === "LatexMathNode" && !child.latexIsLoading && child.latexPixelMap === undefined) {
+        child.latexIsLoading = true
+        LatexParseQueue.enqueue(() => {
+          if (this.isAlive) {
+            this.loadLatexImage(child)
+          } else {
+            LatexParseQueue.notifyDone()
+          }
+        })
+      }
+    }
+  }
+
+  /**
+   * 异步加载数学公式图片（通过全局队列串行调用latexStringToImage）
+   */
+  private loadLatexImage(item: NodeView): void {
+    const strLatexMath: string = this.latexStrCallback(item.nodeText)
+    const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
+    const textColor: number = this.resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
+    const bgColor: number = this.resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
+    const colorFormat: LatexMathColorFormat = this.latexMathTheme.latexMathColorFormat === 0
+      ? LatexMathColorFormat.COLOR_FORMAT_RGB_565
+      : LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+    const resPath: string | undefined = this.latexMathTheme.latexMathResPath
+
+    latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
+      .then((buffer: ArrayBuffer) => {
+        if (!this.isAlive) {
+          LatexParseQueue.notifyDone()
+          return
+        }
+        const imageSource: image.ImageSource = image.createImageSource(buffer)
+        imageSource.createPixelMap().then((pm: PixelMap) => {
+          if (!this.isAlive) {
+            pm.release()
+            LatexParseQueue.notifyDone()
+            return
+          }
+          pm.getImageInfo().then((info: image.ImageInfo) => {
+            if (!this.isAlive) {
+              pm.release()
+              LatexParseQueue.notifyDone()
+              return
+            }
+            item.latexPixelMap = pm
+            item.latexImageData = buffer
+            item.latexImageWidth = info.size.width
+            item.latexImageHeight = info.size.height
+            item.latexIsLoading = false
+            this.list = [...this.list] // 触发重渲染
+            this.cellWidthTracker.onWidthUpdated?.() // 触发列宽重算
+            LatexParseQueue.notifyDone()
+          }).catch(() => {
+            item.latexIsLoading = false
+            LatexParseQueue.notifyDone()
+          })
+        }).catch(() => {
+          item.latexIsLoading = false
+          LatexParseQueue.notifyDone()
+        })
+      })
+      .catch(() => {
+        item.latexIsLoading = false
+        LatexParseQueue.notifyDone()
+      })
+  }
+
+  /**
+   * ResourceColor转number
+   */
+  private resourceColorToNumber(color: ResourceColor): number {
+    if (typeof color === 'number') {
+      return color
+    }
+    return 0xFF000000
   }
 }

@@ -1,4 +1,7 @@
+import { image } from "@kit.ImageKit"
+import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import { NodeView } from "../model/NodeView"
+import { LatexParseQueue } from "../model/LatexParseQueue"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { BoldTheme } from "../theme/BoldTheme"
 import { DefinitionListTheme } from "../theme/DefinitionListTheme"
@@ -35,7 +38,6 @@ import {
   spanLetterSpacing,
   spanLineHeight
 } from "../utils/MrkdownThemeUtils"
-import { MarkdownLatexMathInline } from "./MarkdownLatexMathInline"
 
 /**
  * 段落控件
@@ -43,6 +45,7 @@ import { MarkdownLatexMathInline } from "./MarkdownLatexMathInline"
 @Component
 export struct MarkdownParagraph {
   @Consume placeholderPixelMap: PixelMap | undefined // 图片占位图
+  @Consume isLatexMathEnabled: boolean // 数学公式插件是否启用
   @ObjectLink @Watch('refreshData') node: NodeView // 段落自身节点数据
   @ObjectLink headingTheme: HeadingTheme // 标题样式
   @ObjectLink globalTheme: GlobalTheme // 整体样式
@@ -70,11 +73,26 @@ export struct MarkdownParagraph {
   imageCallback?: (url: string) => void // 图片点击事件
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
-  @State list: NodeView[] = [] // 标题子节点数据源
+  @State @Watch('onListChanged') list: NodeView[] = [] // 标题子节点数据源
   @State isQuote: boolean = false // 是否在快引用中
+  private isAlive: boolean = true // 组件是否存活
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
+  }
+
+  aboutToDisappear(): void {
+    this.isAlive = false
+    for (const item of this.list) {
+      if (item.latexPixelMap !== undefined) {
+        item.latexPixelMap.release()
+        item.latexPixelMap = undefined
+        item.latexImageData = undefined
+        item.latexImageWidth = 0
+        item.latexImageHeight = 0
+        item.latexIsLoading = false
+      }
+    }
   }
 
   build() {
@@ -122,7 +140,7 @@ export struct MarkdownParagraph {
             this.paragraphInlineItem(item, index)
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}`
+            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}`
           }
         )
       }
@@ -351,13 +369,20 @@ export struct MarkdownParagraph {
           }
         })
     } else if (item.nodeType == "LatexMathNode") {
-      // 数学公式行内
-      MarkdownLatexMathInline({
-        latexMathStr: item.nodeText,
-        latexMathTheme: this.latexMathTheme,
-        latexImageCallback: this.latexImageCallback,
-        latexStrCallback: this.latexStrCallback
-      })
+      // 数学公式行内 - 和图片一样直接用ImageSpan
+      if (this.isLatexMathEnabled && item.latexPixelMap !== undefined && item.latexImageWidth > 0 && item.latexImageHeight > 0) {
+        ImageSpan(item.latexPixelMap)
+          .height(this.latexMathTheme.latexMathTextSize)
+          .width((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize)
+          .verticalAlign(ImageSpanAlignment.CENTER)
+          .onClick(() => {
+            if (this.latexImageCallback !== undefined && item.latexImageData !== undefined) {
+              this.latexImageCallback(item.latexImageData, item.latexImageHeight, item.latexImageWidth)
+            }
+          })
+      } else {
+        Span(item.nodeText)
+      }
     } else {
       // 其它
     }
@@ -388,5 +413,90 @@ export struct MarkdownParagraph {
       }
     }
     this.list = [...children]
+  }
+
+  /**
+   * list变化时触发数学公式异步加载（从refreshData移出，避免每次流式输出都跑for循环）
+   */
+  onListChanged() {
+    if (!this.isLatexMathEnabled) {
+      return
+    }
+    for (const child of this.list) {
+      if (child.nodeType === "LatexMathNode" && !child.latexIsLoading && child.latexPixelMap === undefined) {
+        child.latexIsLoading = true
+        LatexParseQueue.enqueue(() => {
+          if (this.isAlive) {
+            this.loadLatexImage(child)
+          } else {
+            LatexParseQueue.notifyDone()
+          }
+        })
+      }
+    }
+  }
+
+  /**
+   * 异步加载数学公式图片
+   */
+  private loadLatexImage(item: NodeView): void {
+    const strLatexMath: string = this.latexStrCallback(item.nodeText)
+    const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
+    const textColor: number = this.resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
+    const bgColor: number = this.resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
+    const colorFormat: LatexMathColorFormat = this.latexMathTheme.latexMathColorFormat === 0
+      ? LatexMathColorFormat.COLOR_FORMAT_RGB_565
+      : LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+    const resPath: string | undefined = this.latexMathTheme.latexMathResPath
+
+    latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
+      .then((buffer: ArrayBuffer) => {
+        if (!this.isAlive) {
+          LatexParseQueue.notifyDone()
+          return
+        }
+        const imageSource: image.ImageSource = image.createImageSource(buffer)
+        imageSource.createPixelMap().then((pm: PixelMap) => {
+          if (!this.isAlive) {
+            pm.release()
+            LatexParseQueue.notifyDone()
+            return
+          }
+          pm.getImageInfo().then((info: image.ImageInfo) => {
+            if (!this.isAlive) {
+              pm.release()
+              LatexParseQueue.notifyDone()
+              return
+            }
+            item.latexPixelMap = pm
+            item.latexImageData = buffer
+            item.latexImageWidth = info.size.width
+            item.latexImageHeight = info.size.height
+            item.latexIsLoading = false
+            this.list = [...this.list]
+            LatexParseQueue.notifyDone()
+          }).catch(() => {
+            item.latexIsLoading = false
+            LatexParseQueue.notifyDone()
+          })
+        }).catch(() => {
+          item.latexIsLoading = false
+          LatexParseQueue.notifyDone()
+        })
+      })
+      .catch(() => {
+        item.latexIsLoading = false
+        LatexParseQueue.notifyDone()
+      })
+  }
+
+  /**
+   * ResourceColor转number
+   */
+  private resourceColorToNumber(color: ResourceColor): number {
+    if (typeof color === 'number') {
+      return color
+    }
+    return 0xFF000000
   }
 }

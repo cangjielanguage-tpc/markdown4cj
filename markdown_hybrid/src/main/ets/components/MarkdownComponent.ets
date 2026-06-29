@@ -26,6 +26,7 @@ export struct CJMarkdown {
   @Prop @Watch('refreshData') content: string // 外部传入的Markdown文档
   @ObjectLink config: MarkdownConfiguration // markdown配置项
   @Provide placeholderPixelMap: PixelMap | undefined = undefined // 图片占位图
+  @Provide isLatexMathEnabled: boolean = false // 数学公式插件是否启用（控制是否调用latexStringToImage）
   @State componentWidth: number = 0.0 // markdown控件宽度
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
@@ -38,6 +39,7 @@ export struct CJMarkdown {
   plugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件配置
 
   aboutToAppear(): void {
+    this.isLatexMathEnabled = this.plugin.isLatexMathPlugin
     this.refreshData() // 首次加载
     this.loadPlaceholderImage() // 占位图处理
   }
@@ -285,12 +287,19 @@ export struct CJMarkdown {
               })
             } else if (item.nodeType == "LatexMathBlock") {
               // 数学公式块
-              MarkdownLatexMathBlock({
-                latexMathBlockStr: item.nodeText,
-                latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                latexImageCallback: this.config.latexImageCallback,
-                latexStrCallback: this.config.latexStrCallback
-              })
+              if (this.isLatexMathEnabled) {
+                MarkdownLatexMathBlock({
+                  latexMathBlockStr: item.nodeText,
+                  latexMathTheme: this.config.markdownTheme.latexMathTheme,
+                  latexImageCallback: this.config.latexImageCallback,
+                  latexStrCallback: this.config.latexStrCallback
+                })
+              } else {
+                Text(item.nodeText)
+                  .width('100%')
+                  .textAlign(TextAlign.Center)
+                  .padding(10)
+              }
             } else if (item.nodeType == "TableBlock") {
               // 表格
               MarkdownTable({
@@ -495,51 +504,61 @@ export struct CJMarkdown {
    * 异步触发解析数据
    * 流式输出时content高频变化，parseVersion/appliedVersion确保仅应用最新结果
    */
-  refreshAsyncData(): void {
-    this.parseVersion++ // 版本号递增
-    const currentVersion = this.parseVersion
-    let op: Options = this.plugin.buildOptions((): JsNode => this.jsNodePoolImpl.getJsNode())
-    let markdownParser:MarkdownParser = new MarkdownParser(op)
-    setTimeout(() => {
-      markdownParser.parse(this.content).then((node: JsNode) => {
-        this.applyParseResult(node, currentVersion)
-      })
-    }, 0)
-  }
+   refreshAsyncData(): void {
+     this.parseVersion++ // 版本号递增
+     const currentVersion = this.parseVersion
+     let op: Options = this.plugin.buildOptions((): JsNode => this.jsNodePoolImpl.getJsNode())
+     let markdownParser:MarkdownParser = new MarkdownParser(op)
+     setTimeout(() => {
+       markdownParser.parse(this.content).then((node: JsNode) => {
+         this.applyParseResult(node, currentVersion)
+       }).catch(() => {
+         // 解析失败时静默处理，保留上一次成功的结果
+       })
+     }, 0)
+   }
 
   /**
    * 同步解析数据（UI线程，isMarkdownParserSync=true时使用）
    */
-  async refreshSyncData(): Promise<void> {
-    this.parseVersion++ // 版本号递增
-    const currentVersion = this.parseVersion
-    let op: Options = this.plugin.buildOptions((): JsNode => this.jsNodePoolImpl.getJsNode())
-    let markdownParser:MarkdownParser = new MarkdownParser(op)
-    let node: JsNode = await markdownParser.parse(this.content)
-    this.applyParseResult(node, currentVersion)
-  }
+   async refreshSyncData(): Promise<void> {
+     this.parseVersion++ // 版本号递增
+     const currentVersion = this.parseVersion
+     let op: Options = this.plugin.buildOptions((): JsNode => this.jsNodePoolImpl.getJsNode())
+     let markdownParser:MarkdownParser = new MarkdownParser(op)
+     try {
+       let node: JsNode = await markdownParser.parse(this.content)
+       this.applyParseResult(node, currentVersion)
+     } catch (e) {
+       // 解析失败时静默处理，保留上一次成功的结果
+     }
+   }
 
   /**
    * 应用解析结果到数据源（渐进式版本跟踪+增量转换+哈希计算+智能更新）
    */
-  private applyParseResult(node: JsNode, currentVersion: number): void {
-    // 渐进式版本跟踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
-    // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
-    if (currentVersion <= this.appliedVersion) {
-      return
-    }
-    let nodeView: NodeView = new NodeView()
-    nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
-    if (nodeView.children.length == 0) {
-      this.markdownDataSource.clear()
-      this.appliedVersion = currentVersion
-      return
-    }
-    this.markdownDataSource.smartUpdateDataArray(nodeView.children)
-    this.config.markdownNodeViewString.setRoot(nodeView)
-    this.appliedVersion = currentVersion
-    this.jsNodePoolImpl.put(node)
-  }
+   private applyParseResult(node: JsNode, currentVersion: number): void {
+     // 渐进式版本跟踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
+     // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
+     if (currentVersion <= this.appliedVersion) {
+       return
+     }
+     let nodeView: NodeView = new NodeView()
+     try {
+       nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
+     } catch (e) {
+       // nodeToNodeView失败时静默处理
+     }
+     if (nodeView.children.length == 0) {
+       this.markdownDataSource.clear()
+       this.appliedVersion = currentVersion
+       return
+     }
+     this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+     this.config.markdownNodeViewString.setRoot(nodeView)
+     this.appliedVersion = currentVersion
+     this.jsNodePoolImpl.put(node)
+   }
 
   /**
    * 异步处理图片占位图（可等待）
