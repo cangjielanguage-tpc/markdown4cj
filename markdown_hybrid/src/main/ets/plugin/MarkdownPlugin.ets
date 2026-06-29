@@ -1,5 +1,5 @@
 import { DelimiterFilterMode } from "../enum/DelimiterFilterMode"
-import { JsNode, Options } from "@cangjie-tpc/markdown_parser_hybrid"
+import { JsNodeImpl, Options } from "@cangjie-tpc/markdown_parser_hybrid"
 
 /**
  * Markdown插件配置
@@ -348,7 +348,7 @@ export class MarkdownPlugin {
    * @param jsNodeFactory JsNode工厂函数
    * @returns 解析器Options对象
    */
-  buildOptions(jsNodeFactory: () => JsNode): Options {
+  buildOptions(jsNodeFactory: () => JsNodeImpl): Options {
     return {
       jsNodeFactory: jsNodeFactory,
       includeSourceSpans: 2,

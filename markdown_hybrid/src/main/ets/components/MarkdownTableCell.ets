@@ -330,10 +330,10 @@ export struct MarkdownTableCell {
           left: this.imageTheme.imageMarginLeft
         })
         .borderRadius({
-          topLeft: this.imageTheme.imageRadiusTopLeft,
-          topRight: this.imageTheme.imageRadiusTopRight,
-          bottomLeft: this.imageTheme.imageRadiusBottomLeft,
-          bottomRight: this.imageTheme.imageRadiusBottomRight
+          topLeft: item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
+          topRight: item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
+          bottomLeft: item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
+          bottomRight: item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
         })
         .borderWidth(this.imageTheme.imageBorderWidth)
         .borderColor(this.imageTheme.imageBorderColor)

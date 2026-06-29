@@ -1,11 +1,12 @@
-﻿import { JsNode, SourceSpan, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
+﻿import { JsNodeImpl, JsNode, SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
 import { NodeView } from "../model/NodeView"
 import {
   renderTableCellColumnAlign,
-  strToLengthNumber,
   sizeStringToSize,
+  colorStringToColor,
   fontWeightToValue,
-  colorStringToColor
+  strToLengthNumber,
+  parsePicStyle
 } from "./MarkdownUtils"
 
 /**
@@ -25,7 +26,7 @@ function sourceSpansEqual(a: Array<SourceSpan>, b: Array<SourceSpan>): boolean {
 /**
  * 递归查找节点所有子节点中第一个Image节点的destination
  */
-function findImageUrlFromDescendants(node: JsNode | undefined): string | undefined {
+function findImageUrlFromDescendants(node: JsNodeImpl | undefined): string | undefined {
   if (node === undefined) {
     return undefined
   }
@@ -79,7 +80,7 @@ function parseTabsFromToStr(toStr: string): Array<string> | undefined {
  * @param previousChildren 上一轮的children，用于增量复用
  */
 export function nodeToNodeView(
-  sourceJsNode: JsNode,
+  sourceJsNode: JsNodeImpl,
   targetParentView: NodeView,
   inheritedStyleView: NodeView,
   previousChildren?: NodeView[]
@@ -166,17 +167,18 @@ export function nodeToNodeView(
         break
       case 'FontNode': { // FontNode标签
         currentView.isFontNode = true
+        const fontNode = currentJsNode as JsNode
         // size属性
-        const fontSizeStr: string | undefined = currentJsNode.size
-        if (fontSizeStr !== undefined) {
+        const fontSizeStr: string | undefined = fontNode.size
+        if (fontSizeStr !== undefined && fontSizeStr.length > 0) {
           const size = sizeStringToSize(fontSizeStr)
           if (size !== undefined) {
             currentView.fontNodeSize = size
           }
         }
         // color属性
-        const fontColorStr: string | undefined = currentJsNode.color
-        if (fontColorStr !== undefined) {
+        const fontColorStr: string | undefined = fontNode.color
+        if (fontColorStr !== undefined && fontColorStr.length > 0) {
           const color = colorStringToColor(fontColorStr)
           if (color !== undefined) {
             currentView.fontNodeColor = color
@@ -187,9 +189,8 @@ export function nodeToNodeView(
       }
       case 'SpanNode': { // SpanNode标签
         currentView.isSpanNode = true
-        // 通过JsNodeImpl访问SpanNodeStyle字段（JsNode接口未暴露该字段）
-        const spanNode = currentJsNode as JsNodeImpl
-        const style = spanNode.SpanNodeStyle
+        // SpanNodeStyle直接在JsNodeImpl类上声明，可直接访问
+        const style: Map<string, string> | undefined = currentJsNode.SpanNodeStyle
         if (style !== undefined) {
           // font-size
           const sizeStr = style.get('font-size')
@@ -367,25 +368,29 @@ export function nodeToNodeView(
       case 'ImgVideo':
         break
       case 'ImageHtmlNode': { // HTML图片
-          currentView.imageUrl = currentJsNode.destination
-          // width属性（number|string）
-          const imgWidth: number | string | undefined = currentJsNode.width
-          if (imgWidth !== undefined) {
-            const widthStr = typeof imgWidth === 'number' ? String(imgWidth) : imgWidth
-            const w = strToLengthNumber(widthStr)
-            if (w !== undefined) {
-              currentView.imageStyleWidth = w
-            }
+        currentView.imageUrl = currentJsNode.destination
+        currentView.imageTitle = currentJsNode.title
+        // 通过JsNode接口访问width/heigh/color等HTML属性字段
+        // （JsNodeImpl类声明中仅部分字段显式声明，JsNode接口包含完整字段定义）
+        const imgHtmlNode = currentJsNode as JsNode
+        // width属性（number|string）
+        const imgWidth: number | string | undefined = imgHtmlNode.width
+        if (imgWidth !== undefined) {
+          const widthStr = typeof imgWidth === 'number' ? String(imgWidth) : imgWidth
+          const w = strToLengthNumber(widthStr)
+          if (w !== undefined) {
+            currentView.imageStyleWidth = w
           }
-          // heigh属性（注意JsNode接口字段拼写为heigh，非height）
-          const imgHeight: string | undefined = currentJsNode.heigh
-          if (imgHeight !== undefined) {
-            const h = strToLengthNumber(imgHeight)
-            if (h !== undefined) {
-              currentView.imageStyleHeight = h
-            }
+        }
+        // heigh属性（注意JsNode接口字段拼写为heigh，非height）
+        const imgHeight: string | undefined = imgHtmlNode.heigh
+        if (imgHeight !== undefined) {
+          const h = strToLengthNumber(imgHeight)
+          if (h !== undefined) {
+            currentView.imageStyleHeight = h
           }
-          targetParentView.children.push(currentView)
+        }
+        targetParentView.children.push(currentView)
         break
       }
       case 'SlideBlock': // 幻灯片块
@@ -399,17 +404,30 @@ export function nodeToNodeView(
         currentView.imageTitle = currentJsNode.title
         targetParentView.children.push(currentView)
         break
-      case 'StyleImage': // 样式图片
-        //   const imageStyle = currentJsNode as StyleImage
-          currentView.imageUrl = currentJsNode.destination
-          currentView.imageTitle = currentJsNode.title
-        //   const picStyle = parsePicStyle(imageStyle.styles)
-        //   currentView.imageWidth = picStyle.width
-        //   currentView.imageHeight = picStyle.height
-        //   currentView.imageRadius = picStyle.borderRadius
-        //   currentView.imageAlign = picStyle.align
-          targetParentView.children.push(currentView)
+      case 'StyleImage': { // 样式图片
+        currentView.imageUrl = currentJsNode.destination
+        currentView.imageTitle = currentJsNode.title
+        // ImageStyles直接在JsNodeImpl类上声明，可直接访问
+        // 先判空再传入parsePicStyle，避免undefined/null导致.length异常
+        const imageStyles: Array<string> | undefined = currentJsNode.ImageStyles
+        if (imageStyles !== undefined && imageStyles !== null && imageStyles.length > 0) {
+          const picStyle = parsePicStyle(imageStyles)
+          if (picStyle.width !== undefined) {
+            currentView.imageStyleWidth = picStyle.width
+          }
+          if (picStyle.height !== undefined) {
+            currentView.imageStyleHeight = picStyle.height
+          }
+          if (picStyle.borderRadius !== undefined) {
+            currentView.imageRadius = picStyle.borderRadius
+          }
+          if (picStyle.align !== undefined) {
+            currentView.imageAlign = picStyle.align
+          }
+        }
+        targetParentView.children.push(currentView)
         break
+      }
       case 'BlockVideo': // 视频
         currentView.imageUrl = findImageUrlFromDescendants(sourceJsNode)
         targetParentView.children.push(currentView)

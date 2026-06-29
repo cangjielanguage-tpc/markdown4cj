@@ -1,4 +1,4 @@
-import { SourceSpan, JsNode, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
+import { SourceSpan, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
 
 /**
  * MarkdownNodeView
@@ -166,16 +166,16 @@ export class NodeView {
 }
 
 export interface JsNodePool {
-  getJsNode(): JsNode
+  getJsNode(): JsNodeImpl
 }
 
 export class JsNodePoolImpl implements JsNodePool {
-  generator: Array<JsNode> = []
+  generator: Array<JsNodeImpl> = []
 
   constructor() {
   }
 
-  put(nodeTree: JsNode) {
+  put(nodeTree: JsNodeImpl) {
     traverseTree(nodeTree, this.generator)
   }
 
@@ -183,7 +183,7 @@ export class JsNodePoolImpl implements JsNodePool {
    * 将节点树中的Node依次取出,若无则返回新Node
    * @returns
    */
-  getJsNode(): JsNode {
+  getJsNode(): JsNodeImpl {
     return this.generator.pop() ?? new JsNodeImpl()
   }
 }
@@ -193,10 +193,10 @@ export class JsNodePoolImpl implements JsNodePool {
  * @param node
  * @param arr
  */
-export function traverseTree(node: JsNode | undefined, arr: Array<JsNode>) {
+export function traverseTree(node: JsNodeImpl | undefined, arr: Array<JsNodeImpl>) {
   if (node) {
-    let child:JsNode|undefined = node.firstChild
-    let next:JsNode|undefined = node.next
+    let child:JsNodeImpl|undefined = node.firstChild
+    let next:JsNodeImpl|undefined = node.next
     node.reset()
     arr.push(node)
     traverseTree(child, arr)

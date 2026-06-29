@@ -599,3 +599,158 @@ export function colorStringToColor(colorString: string): ResourceColor | undefin
   return undefined
 }
 
+/**
+ * StyleImage样式解析结果
+ */
+export interface PicStyleObj {
+  width: number | undefined
+  height: number | undefined
+  borderRadius: Length | undefined
+  align: HorizontalAlign | undefined
+}
+
+/**
+ * 对StyleImage的style数组进行解析
+ * 样式格式如 ":width=100px"、":height=200px"、":align=center"、":border-radius=10px"
+ *
+ * @param picStyle 样式字符串数组
+ * @return PicStyleObj对象
+ */
+export function parsePicStyle(picStyle: Array<string> | undefined): PicStyleObj {
+  const picStyleObj: PicStyleObj = {
+    width: undefined,
+    height: undefined,
+    borderRadius: undefined,
+    align: undefined
+  }
+  // 分步判空，避免||短路求值在ArkTS运行时不可靠导致undefined.length异常
+  if (picStyle === undefined) {
+    return picStyleObj
+  }
+  if (picStyle === null) {
+    return picStyleObj
+  }
+  if (picStyle.length === 0) {
+    return picStyleObj
+  }
+  for (let i = 0; i < picStyle.length; i++) {
+    const str: string | undefined = picStyle[i]
+    if (str === undefined || str === null || str.length === 0) {
+      continue
+    }
+    try {
+      // 去除空格、引号、花括号，转小写
+      let style = str.replace(/ /g, '').replace(/"/g, '').replace(/'/g, '')
+        .replace(/{/g, '').replace(/}/g, '').toLowerCase()
+      // 去除开头的冒号（如 ":width=200" → "width=200"）
+      if (style.startsWith(':')) {
+        style = style.substring(1)
+      }
+      if (style.length === 0) {
+        continue
+      }
+      // 处理 style= 复合CSS属性（如 style=width:200px;height:100px;border-radius:10px）
+      if (style.startsWith('style=')) {
+        const cssContent = style.substring(6)
+        const cssProps = cssContent.split(';')
+        for (let j = 0; j < cssProps.length; j++) {
+          applyStyleProp(cssProps[j], picStyleObj)
+        }
+      } else {
+        // 单个属性，如 width=200、width:200、border-radius=20、align=left
+        applyStyleProp(style, picStyleObj)
+      }
+    } catch (e) {
+      // 忽略解析错误
+    }
+  }
+  return picStyleObj
+}
+
+/**
+ * 应用单个样式属性到PicStyleObj
+ * 支持两种分隔符：=（如 width=200）和 :（如 width:200px）
+ *
+ * @param prop 样式属性字符串（如 "width=200"、"border-radius:10px"）
+ * @param picStyleObj 待填充的样式对象
+ */
+function applyStyleProp(prop: string, picStyleObj: PicStyleObj): void {
+  if (prop.length === 0) {
+    return
+  }
+  // 查找分隔符（= 或 :），取最先出现的作为键值分隔
+  const eqIdx = prop.indexOf('=')
+  const colonIdx = prop.indexOf(':')
+  let sepIdx = -1
+  if (eqIdx >= 0 && colonIdx >= 0) {
+    sepIdx = Math.min(eqIdx, colonIdx)
+  } else if (eqIdx >= 0) {
+    sepIdx = eqIdx
+  } else if (colonIdx >= 0) {
+    sepIdx = colonIdx
+  } else {
+    return
+  }
+  const key = prop.substring(0, sepIdx)
+  const value = prop.substring(sepIdx + 1)
+  if (key === 'width') {
+    const w = parseStyleLength(value)
+    if (w !== undefined) {
+      picStyleObj.width = w
+    }
+  } else if (key === 'height') {
+    const h = parseStyleLength(value)
+    if (h !== undefined) {
+      picStyleObj.height = h
+    }
+  } else if (key === 'border-radius') {
+    if (value.endsWith('px')) {
+      const num = Number.parseFloat(value.substring(0, value.length - 2))
+      if (!Number.isNaN(num)) {
+        picStyleObj.borderRadius = num
+      }
+    } else {
+      const num = Number.parseFloat(value)
+      if (!Number.isNaN(num)) {
+        picStyleObj.borderRadius = num
+      }
+    }
+  } else if (key === 'align') {
+    if (value === 'left') {
+      picStyleObj.align = HorizontalAlign.Start
+    } else if (value === 'center') {
+      picStyleObj.align = HorizontalAlign.Center
+    } else if (value === 'right') {
+      picStyleObj.align = HorizontalAlign.End
+    }
+  }
+}
+
+/**
+ * 解析样式中的长度值（支持px和纯数字）
+ *
+ * @param value 长度字符串（如 "100px"、"100"）
+ * @return 数值（px），解析失败返回undefined
+ */
+function parseStyleLength(value: string): number | undefined {
+  if (value.length === 0) {
+    return undefined
+  }
+  if (value.endsWith('px')) {
+    const num = Number.parseFloat(value.substring(0, value.length - 2))
+    if (!Number.isNaN(num)) {
+      return num
+    }
+    return undefined
+  }
+  if (value.endsWith('%')) {
+    // 百分比暂不支持，返回undefined
+    return undefined
+  }
+  const num = Number.parseFloat(value)
+  if (!Number.isNaN(num)) {
+    return num
+  }
+  return undefined
+}
+

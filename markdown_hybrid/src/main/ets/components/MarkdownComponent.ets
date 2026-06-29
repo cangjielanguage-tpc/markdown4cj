@@ -1,4 +1,4 @@
-﻿import { JsNode, Options, MarkdownParser } from "@cangjie-tpc/markdown_parser_hybrid"
+﻿import { Options, MarkdownParser, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
 import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
@@ -20,6 +20,7 @@ import { MarkdownTable } from "./MarkdownTable"
 import { MarkdownList } from "./MarkdownList"
 import { MarkdownQuote } from "./MarkdownQuote"
 import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
+import hilog from "@ohos.hilog"
 
 @Component
 export struct CJMarkdown {
@@ -507,11 +508,11 @@ export struct CJMarkdown {
    refreshAsyncData(): void {
      this.parseVersion++ // 版本号递增
      const currentVersion = this.parseVersion
-     let op: Options = this.plugin.buildOptions((): JsNode => this.jsNodePoolImpl.getJsNode())
+     let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
      let markdownParser:MarkdownParser = new MarkdownParser(op)
      setTimeout(() => {
-       markdownParser.parse(this.content).then((node: JsNode) => {
-         this.applyParseResult(node, currentVersion)
+       markdownParser.parse(this.content).then((node) => {
+         this.applyParseResult(node as JsNodeImpl, currentVersion)
        }).catch(() => {
          // 解析失败时静默处理，保留上一次成功的结果
        })
@@ -524,10 +525,10 @@ export struct CJMarkdown {
    async refreshSyncData(): Promise<void> {
      this.parseVersion++ // 版本号递增
      const currentVersion = this.parseVersion
-     let op: Options = this.plugin.buildOptions((): JsNode => this.jsNodePoolImpl.getJsNode())
+     let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
      let markdownParser:MarkdownParser = new MarkdownParser(op)
      try {
-       let node: JsNode = await markdownParser.parse(this.content)
+       let node: JsNodeImpl = await markdownParser.parse(this.content) as JsNodeImpl
        this.applyParseResult(node, currentVersion)
      } catch (e) {
        // 解析失败时静默处理，保留上一次成功的结果
@@ -537,7 +538,7 @@ export struct CJMarkdown {
   /**
    * 应用解析结果到数据源（渐进式版本跟踪+增量转换+哈希计算+智能更新）
    */
-   private applyParseResult(node: JsNode, currentVersion: number): void {
+   private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
      // 渐进式版本跟踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
      // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
      if (currentVersion <= this.appliedVersion) {
@@ -548,6 +549,7 @@ export struct CJMarkdown {
        nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
      } catch (e) {
        // nodeToNodeView失败时静默处理
+       hilog.error(1,"1",`-----------e:${e}`)
      }
      if (nodeView.children.length == 0) {
        this.markdownDataSource.clear()
