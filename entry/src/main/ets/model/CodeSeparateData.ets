@@ -1,6 +1,6 @@
-import { BaseMDData } from "./BaseMDData"
+import { CodeBlockData } from "./CodeBlockData"
 
-export class CodeSeparateData extends BaseMDData {
+export class CodeSeparateData extends CodeBlockData {
   _isSeparateCodeBlock: boolean = false
   _separateCodeBlockWidth: number = 50
   _separateCodeIsBottom: boolean = false

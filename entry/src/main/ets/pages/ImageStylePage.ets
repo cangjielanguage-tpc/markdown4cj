@@ -6,6 +6,7 @@ import { BaseTabComponent } from '../component/BaseTabComponent'
 import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
+  colorListGeneralData,
   marginListGeneralData,
   textNumberListGeneralData,
   timeListGeneralData
@@ -57,6 +58,9 @@ struct ImageStylePage {
   // 软换行是否换行列表
   isLineBreakList: Array<boolean> = booleanListGeneralData
   @State isLineBreak: boolean = false // 软换行是否换行
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State globalBackgroundColor: number | undefined = undefined // 背景颜色
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
@@ -116,6 +120,7 @@ struct ImageStylePage {
                   this.imageStyle._blockMarginLeft = this.blockMarginLeft
                   this.imageStyle._markdownBlockSpacing = this.markdownBlockSpacing
                   this.imageStyle._isLineBreak = this.isLineBreak
+                  this.imageStyle._backgroundColor = this.globalBackgroundColor
                   this.imageStyle._openGestureSwipe = this.openGestureSwipe
                   this.imageStyle._openGestureSwipeTest = this.openGestureSwipeTest
                   this.imageStyle._pagePath = `${this.rawFilePath}/${item}`
@@ -224,6 +229,12 @@ struct ImageStylePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.isLineBreakList,
                   allData: this.isLineBreak
+                })
+                BaseTabComponent({
+                  titleStr: "背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.globalBackgroundColorList,
+                  allData: this.globalBackgroundColor
                 })
                 BaseTabComponent({
                   titleStr: "是否开启响应滑动测试 - ",

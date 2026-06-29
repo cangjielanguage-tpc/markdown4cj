@@ -445,7 +445,7 @@ struct CodeBlockPage {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .backgroundColor(0xFFEE82EE)
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -476,7 +476,7 @@ struct CodeBlockPage {
                   this.codeBlockData.codeBlockUseTab = this.codeBlockUseTab
                   this.codeBlockData.codeBlockIndentWidth = this.codeBlockIndentWidth
                   this.codeBlockData.codeBlockParserSync = this.codeBlockParserSync
-                  this.codeBlockData.codeBlockBackgroundColor = this.codeBlockBackgroundColor
+                  this.codeBlockData._codeBlockBackgroundColor = this.codeBlockBackgroundColor
                   this.codeBlockData.codeBlockMarginTop = this.codeBlockMarginTop
                   this.codeBlockData.codeBlockMarginRight = this.codeBlockMarginRight
                   this.codeBlockData.codeBlockMarginBottom = this.codeBlockMarginBottom
@@ -648,6 +648,12 @@ struct CodeBlockPage {
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.markdownBlockSpacingList,
                   allData: this.markdownBlockSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.globalBackgroundColorList,
+                  allData: this.globalBackgroundColor
                 })
                 BaseTabComponent({
                   titleStr: "是否开启响应滑动测试 - ",
@@ -919,6 +925,12 @@ struct CodeBlockPage {
 
             if (this.isExpanded4) {
               Column() {
+                BaseTabComponent({
+                  titleStr: "代码块代码复制和代码全屏间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockCopyFullScreenSpacingList,
+                  allData: this.codeBlockCopyFullScreenSpacing
+                })
                 BaseTabComponent({
                   titleStr: "代码块代码复制按钮是否显示 - ",
                   typeEnum: TypeEnum.IS_BOOLEAN,
@@ -1249,6 +1261,36 @@ struct CodeBlockPage {
 
             if (this.isExpanded7) {
               Column() {
+                BaseTabComponent({
+                  titleStr: "是否格式化围栏代码块内容 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockIsCodeFormatList,
+                  allData: this.codeBlockIsCodeFormat
+                })
+                BaseTabComponent({
+                  titleStr: "代码深浅色模式 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockIsDarkList,
+                  allData: this.codeBlockIsDark
+                })
+                BaseTabComponent({
+                  titleStr: "codeformat是否用制表符 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockUseTabList,
+                  allData: this.codeBlockUseTab
+                })
+                BaseTabComponent({
+                  titleStr: "codeformat空格缩进数量 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.codeBlockIndentWidthList,
+                  allData: this.codeBlockIndentWidth
+                })
+                BaseTabComponent({
+                  titleStr: "围栏代码块代码高亮是否同步解析 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.codeBlockParserSyncList,
+                  allData: this.codeBlockParserSync
+                })
                 BaseTabComponent({
                   titleStr: "代码块文本颜色 - ",
                   typeEnum: TypeEnum.IS_COLOR,

@@ -174,7 +174,7 @@ struct CodeLinePage {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .backgroundColor(0xFFEE82EE)
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -412,6 +412,12 @@ struct CodeLinePage {
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.inlineCodeTextLetterSpacingList,
                   allData: this.inlineCodeTextLetterSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "内联代码文本背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.inlineCodeTextBackgroundColorList,
+                  allData: this.inlineCodeTextBackgroundColor
                 })
                 BaseTabComponent({
                   titleStr: "内联代码文本背景左上圆角 - ",

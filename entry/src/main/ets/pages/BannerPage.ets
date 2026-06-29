@@ -6,6 +6,7 @@ import { BaseTabComponent } from '../component/BaseTabComponent'
 import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
+  colorListGeneralData,
   marginListGeneralData,
   textNumberListGeneralData,
   timeListGeneralData
@@ -57,6 +58,9 @@ struct BannerPage {
   // 软换行是否换行列表
   isLineBreakList: Array<boolean> = booleanListGeneralData
   @State isLineBreak: boolean = false // 软换行是否换行
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State globalBackgroundColor: number | undefined = undefined // 背景颜色
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
@@ -122,7 +126,7 @@ struct BannerPage {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .backgroundColor(0xFFEE82EE)
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -142,9 +146,19 @@ struct BannerPage {
                   this.bannerData._blockMarginLeft = this.blockMarginLeft
                   this.bannerData._markdownBlockSpacing = this.markdownBlockSpacing
                   this.bannerData._isLineBreak = this.isLineBreak
+                  this.bannerData._backgroundColor = this.globalBackgroundColor
                   this.bannerData._openGestureSwipe = this.openGestureSwipe
                   this.bannerData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.bannerData._pagePath = `${this.rawFilePath}/${item}`
+                  // ---------- 专有
+                  this.bannerData.bannerMarginTop = this.bannerMarginTop
+                  this.bannerData.bannerMarginRight = this.bannerMarginRight
+                  this.bannerData.bannerMarginBottom = this.bannerMarginBottom
+                  this.bannerData.bannerMarginLeft = this.bannerMarginLeft
+                  this.bannerData.bannerPaddingTop = this.bannerPaddingTop
+                  this.bannerData.bannerPaddingRight = this.bannerPaddingRight
+                  this.bannerData.bannerPaddingBottom = this.bannerPaddingBottom
+                  this.bannerData.bannerPaddingLeft = this.bannerPaddingLeft
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/BannerDetailsPage", params: this.bannerData })
                 })
@@ -252,6 +266,12 @@ struct BannerPage {
                   allData: this.isLineBreak
                 })
                 BaseTabComponent({
+                  titleStr: "背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.globalBackgroundColorList,
+                  allData: this.globalBackgroundColor
+                })
+                BaseTabComponent({
                   titleStr: "是否开启响应滑动测试 - ",
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.openGestureSwipeTestList,
@@ -263,11 +283,89 @@ struct BannerPage {
                   allListData: this.openGestureSwipeList,
                   allData: this.openGestureSwipe
                 })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 专有样式配置
+          Column() {
+            Row() {
+              Text("专有样式配置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded2 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded2 = !this.isExpanded2
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded2 = !this.isExpanded2
+            })
+
+            if (this.isExpanded2) {
+              Column() {
                 BaseTabComponent({
                   titleStr: "banner上外边距 - ",
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.bannerMarginTopList,
                   allData: this.bannerMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "banner右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.bannerMarginRightList,
+                  allData: this.bannerMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "banner下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.bannerMarginBottomList,
+                  allData: this.bannerMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "banner左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.bannerMarginLeftList,
+                  allData: this.bannerMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "banner上内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.bannerPaddingTopList,
+                  allData: this.bannerPaddingTop
+                })
+                BaseTabComponent({
+                  titleStr: "banner右内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.bannerPaddingRightList,
+                  allData: this.bannerPaddingRight
+                })
+                BaseTabComponent({
+                  titleStr: "banner下内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.bannerPaddingBottomList,
+                  allData: this.bannerPaddingBottom
+                })
+                BaseTabComponent({
+                  titleStr: "banner左内边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.bannerPaddingLeftList,
+                  allData: this.bannerPaddingLeft
                 })
               }
               .width('100%')

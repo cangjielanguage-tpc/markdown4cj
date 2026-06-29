@@ -6,6 +6,7 @@ import { BaseTabComponent } from '../component/BaseTabComponent'
 import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
+  colorListGeneralData,
   marginListGeneralData,
   textNumberListGeneralData,
   timeListGeneralData
@@ -57,6 +58,10 @@ struct TocPage {
   // 软换行是否换行列表
   isLineBreakList: Array<boolean> = booleanListGeneralData
   @State isLineBreak: boolean = false // 软换行是否换行
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State // 背景颜色
+  globalBackgroundColor: number | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
@@ -97,7 +102,7 @@ struct TocPage {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .backgroundColor(0xFFEE82EE)
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -117,6 +122,7 @@ struct TocPage {
                   this.tocData._blockMarginLeft = this.blockMarginLeft
                   this.tocData._markdownBlockSpacing = this.markdownBlockSpacing
                   this.tocData._isLineBreak = this.isLineBreak
+                  this.tocData._backgroundColor = this.globalBackgroundColor
                   this.tocData._openGestureSwipe = this.openGestureSwipe
                   this.tocData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.tocData._pagePath = `${this.rawFilePath}/${item}`
@@ -225,6 +231,12 @@ struct TocPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.isLineBreakList,
                   allData: this.isLineBreak
+                })
+                BaseTabComponent({
+                  titleStr: "背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.globalBackgroundColorList,
+                  allData: this.globalBackgroundColor
                 })
                 BaseTabComponent({
                   titleStr: "是否开启响应滑动测试 - ",
