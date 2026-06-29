@@ -1,6 +1,12 @@
-﻿import { JsNode, SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
+﻿import { JsNode, SourceSpan, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
 import { NodeView } from "../model/NodeView"
-import { renderTableCellColumnAlign } from "./MarkdownUtils"
+import {
+  renderTableCellColumnAlign,
+  strToLengthNumber,
+  sizeStringToSize,
+  fontWeightToValue,
+  colorStringToColor
+} from "./MarkdownUtils"
 
 /**
  * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
@@ -158,68 +164,61 @@ export function nodeToNodeView(
         currentView.isUnderlineNode = true
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
         break
-      case 'FontNode': // FontNode标签
-          currentView.isFontNode = true
-        //   const fontNode = currentJsNode as FontNode
-        //   try {
-        //     const sizeString: string | undefined = fontNode.size
-        //     if (sizeString !== undefined && sizeString !== null) {
-        //       const sizeInt = parseInt(sizeString)
-        //       currentView.fontNodeSize = sizeInt
-        //     }
-        //   } catch (e) {
-        //   }
-        //   try {
-        //     const colorString: string | undefined = fontNode.color
-        //     if (colorString !== undefined && colorString !== null) {
-        //       const colorUInt32 = parseInt(colorString.replace('#', '0x'))
-        //       currentView.fontNodeColor = Color(colorUInt32)
-        //     }
-        //   } catch (e) {
-        //   }
-        //   nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+      case 'FontNode': { // FontNode标签
+        currentView.isFontNode = true
+        // size属性
+        const fontSizeStr: string | undefined = currentJsNode.size
+        if (fontSizeStr !== undefined) {
+          const size = sizeStringToSize(fontSizeStr)
+          if (size !== undefined) {
+            currentView.fontNodeSize = size
+          }
+        }
+        // color属性
+        const fontColorStr: string | undefined = currentJsNode.color
+        if (fontColorStr !== undefined) {
+          const color = colorStringToColor(fontColorStr)
+          if (color !== undefined) {
+            currentView.fontNodeColor = color
+          }
+        }
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
         break
-      case 'SpanNode': // SpanNode标签
-          currentView.isSpanNode = true
-        //   const spanNode = currentJsNode as SpanNode
-        //   const style: Map<string, string> | undefined = spanNode.style
-        //   if (style !== undefined && style !== null) {
-        //     try {
-        //       const sizeStr = style.get('font-size')
-        //       if (sizeStr !== undefined) {
-        //         const size = sizeStringToSize(sizeStr)
-        //         if (size !== undefined) {
-        //           currentView.spanNodeSize = size
-        //         }
-        //       }
-        //     } catch (e) {
-        //     }
-        //     try {
-        //       const weightStr = style.get('font-weight')
-        //       if (weightStr !== undefined) {
-        //         const weight = fontWeightToValue(weightStr)
-        //         currentView.spanNodeWeight = weight
-        //       }
-        //     } catch (e) {
-        //     }
-        //     try {
-        //       const colorStr = style.get('color')
-        //       if (colorStr !== undefined) {
-        //         const color = colorStringToColor(colorStr)
-        //         if (color !== undefined) {
-        //           currentView.spanNodeColor = color
-        //         } else {
-        //           if (colorStr.startsWith('#')) {
-        //             const colorUInt32 = parseInt(colorStr.replace('#', '0x'))
-        //             currentView.spanNodeColor = Color(colorUInt32)
-        //           }
-        //         }
-        //       }
-        //     } catch (e) {
-        //     }
-        //   }
-        //   nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+      }
+      case 'SpanNode': { // SpanNode标签
+        currentView.isSpanNode = true
+        // 通过JsNodeImpl访问SpanNodeStyle字段（JsNode接口未暴露该字段）
+        const spanNode = currentJsNode as JsNodeImpl
+        const style = spanNode.SpanNodeStyle
+        if (style !== undefined) {
+          // font-size
+          const sizeStr = style.get('font-size')
+          if (sizeStr !== undefined) {
+            const size = sizeStringToSize(sizeStr)
+            if (size !== undefined) {
+              currentView.spanNodeSize = size
+            }
+          }
+          // font-weight
+          const weightStr = style.get('font-weight')
+          if (weightStr !== undefined) {
+            const weight = fontWeightToValue(weightStr)
+            if (weight !== undefined) {
+              currentView.spanNodeWeight = weight
+            }
+          }
+          // color
+          const colorStr = style.get('color')
+          if (colorStr !== undefined) {
+            const color = colorStringToColor(colorStr)
+            if (color !== undefined) {
+              currentView.spanNodeColor = color
+            }
+          }
+        }
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
         break
+      }
       case 'Emphasis': // 斜体
         currentView.isEmphasis = true
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
@@ -367,13 +366,28 @@ export function nodeToNodeView(
       case 'HtmlInline':
       case 'ImgVideo':
         break
-      case 'ImageHtmlNode': // HTML图片
-        //   const imageHtmlNode = currentJsNode as ImageHtmlNode
+      case 'ImageHtmlNode': { // HTML图片
           currentView.imageUrl = currentJsNode.destination
-        //   currentView.imageWidth = strToLength(imageHtmlNode.width)
-        //   currentView.imageHeight = strToLength(imageHtmlNode.height)
+          // width属性（number|string）
+          const imgWidth: number | string | undefined = currentJsNode.width
+          if (imgWidth !== undefined) {
+            const widthStr = typeof imgWidth === 'number' ? String(imgWidth) : imgWidth
+            const w = strToLengthNumber(widthStr)
+            if (w !== undefined) {
+              currentView.imageStyleWidth = w
+            }
+          }
+          // heigh属性（注意JsNode接口字段拼写为heigh，非height）
+          const imgHeight: string | undefined = currentJsNode.heigh
+          if (imgHeight !== undefined) {
+            const h = strToLengthNumber(imgHeight)
+            if (h !== undefined) {
+              currentView.imageStyleHeight = h
+            }
+          }
           targetParentView.children.push(currentView)
         break
+      }
       case 'SlideBlock': // 幻灯片块
         nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
         targetParentView.children.push(currentView)

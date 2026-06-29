@@ -147,15 +147,11 @@ export function spanFontSize(
   if (nodeView.isSupNode) {
     return supTheme.supTextFontSize // 上标
   }
-  if (nodeView.isFontNode) {
-    if (nodeView.fontNodeSize !== undefined) {
-      return nodeView.fontNodeSize // FontNode
-    }
+  if (nodeView.isFontNode && nodeView.fontNodeSize !== undefined) {
+    return nodeView.fontNodeSize // FontNode
   }
-  if (nodeView.isSpanNode) {
-    if (nodeView.spanNodeSize !== undefined) {
-      return nodeView.spanNodeSize // SpanNode
-    }
+  if (nodeView.isSpanNode && nodeView.spanNodeSize !== undefined) {
+    return nodeView.spanNodeSize // SpanNode
   }
   if (nodeView.isInLineCode && inlineCodeTheme.inlineCodeTextFontSize !== undefined) {
     return inlineCodeTheme.inlineCodeTextFontSize! // 内联代码
@@ -455,15 +451,11 @@ export function spanFontColor(
   if (nodeView.isSupNode && supTheme.supTextFontColor !== undefined) {
     return supTheme.supTextFontColor! // 上标
   }
-  if (nodeView.isFontNode) {
-    if (nodeView.fontNodeColor !== undefined) {
-      return nodeView.fontNodeColor // FontNode
-    }
+  if (nodeView.isFontNode && nodeView.fontNodeColor !== undefined) {
+    return nodeView.fontNodeColor // FontNode
   }
-  if (nodeView.isSpanNode) {
-    if (nodeView.spanNodeColor !== undefined) {
-      return nodeView.spanNodeColor // SpanNode
-    }
+  if (nodeView.isSpanNode && nodeView.spanNodeColor !== undefined) {
+    return nodeView.spanNodeColor // SpanNode
   }
   if (nodeView.isInLineCode && inlineCodeTheme.inlineCodeTextFontColor !== undefined) {
     return inlineCodeTheme.inlineCodeTextFontColor! // 内联代码

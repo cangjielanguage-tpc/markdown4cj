@@ -1,4 +1,4 @@
-import { SourceSpan, JsNodeSendableImpl, JsNode } from "@cangjie-tpc/markdown_parser_hybrid"
+import { SourceSpan, JsNode, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
 
 /**
  * MarkdownNodeView
@@ -34,11 +34,11 @@ export class NodeView {
   isLatexMathBlockClose: boolean = false // 块结构数学公式是否结束
   isFontNode: boolean = false // 是否在FontNode中
   fontNodeSize?: number = undefined // FontNode文本大小
-  fontNodeColor?: Color = undefined // FontNode文本颜色
+  fontNodeColor?: ResourceColor = undefined // FontNode文本颜色
   isSpanNode: boolean = false // 是否在SpanNode中
   spanNodeSize?: number = undefined // SpanNode文本大小
   spanNodeWeight?: FontWeight = undefined // SpanNode文本加粗
-  spanNodeColor?: Color = undefined // SpanNode文本颜色
+  spanNodeColor?: ResourceColor = undefined // SpanNode文本颜色
   isEmphasis: boolean = false // 是否在斜体中
   isStrongEmphasis: boolean = false // 是否在粗体中
   isUnderlineNode: boolean = false // 是否在下划线中
@@ -184,7 +184,7 @@ export class JsNodePoolImpl implements JsNodePool {
    * @returns
    */
   getJsNode(): JsNode {
-    return this.generator.pop() ?? new JsNodeSendableImpl()
+    return this.generator.pop() ?? new JsNodeImpl()
   }
 }
 
