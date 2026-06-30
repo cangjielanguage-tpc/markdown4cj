@@ -21,21 +21,23 @@ export struct MarkdownBanner {
   }
 
   build() {
-    Swiper(this.controller) {
-      ForEach(
-        this.bannerNodeViewList,
-        (item: NodeView, index: number) => {
-          if (item.nodeType == "Image") {
-            // 图片节点
-            this.imageBannerCommonmarkComponent(item)
-          } else {
-            // 其他节点
+    Row() {
+      Swiper(this.controller) {
+        ForEach(
+          this.bannerNodeViewList,
+          (item: NodeView, index: number) => {
+            if (item.nodeType == "Image") {
+              // 图片节点
+              this.imageBannerCommonmarkComponent(item)
+            } else {
+              // 其他节点
+            }
           }
-        }
-      )
+        )
+      }
+      .autoPlay(false)
+      .layoutWeight(1)
     }
-    .autoPlay(false)
-    .width('100%')
     .padding({
       top: this.bannerTheme.bannerPaddingTop,
       right: this.bannerTheme.bannerPaddingRight,

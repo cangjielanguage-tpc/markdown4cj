@@ -21,7 +21,6 @@ import { MarkdownTable } from "./MarkdownTable"
 import { MarkdownList } from "./MarkdownList"
 import { MarkdownQuote } from "./MarkdownQuote"
 import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
-import hilog from "@ohos.hilog"
 
 @Component
 export struct CJMarkdown {
@@ -616,7 +615,6 @@ export struct CJMarkdown {
        nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
      } catch (e) {
        // nodeToNodeView失败时静默处理
-       hilog.error(1,"1",`-----------e:${e}`)
      }
      if (nodeView.children.length == 0) {
        this.markdownDataSource.clear()

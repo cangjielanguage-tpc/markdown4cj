@@ -97,45 +97,48 @@ export struct MarkdownCodeBlockList {
   }
 
   build() {
-    Column() {
-      this.codeBlockTitleComponent()
+    Row() {
       Column() {
-        CodeTitleComponent({
-          codeText: this.strText.length > 0 ? this.strText[this.idxSelect] : '',
-          info: this.strInfoText.length > 0 ? this.strInfoText[this.idxSelect] : '',
-          codeBlockTheme: this.codeBlockTheme,
-          codeCopyCallback: this.codeCopyCallback,
-          codeFullScreenCallback: this.codeFullScreenCallback
-        })
-        Row() {
-          CodeLineComponent({ lineArray: this.lineArray, codeBlockTheme: this.codeBlockTheme })
-          this.codeBlockComponent()
+        this.codeBlockTitleComponent()
+        Column() {
+          CodeTitleComponent({
+            codeText: this.strText.length > 0 ? this.strText[this.idxSelect] : '',
+            info: this.strInfoText.length > 0 ? this.strInfoText[this.idxSelect] : '',
+            codeBlockTheme: this.codeBlockTheme,
+            codeCopyCallback: this.codeCopyCallback,
+            codeFullScreenCallback: this.codeFullScreenCallback
+          })
+          Row() {
+            CodeLineComponent({ lineArray: this.lineArray, codeBlockTheme: this.codeBlockTheme })
+            this.codeBlockComponent()
+          }
+          .alignItems(VerticalAlign.Top)
         }
-        .alignItems(VerticalAlign.Top)
+        .borderRadius({
+          topLeft: this.codeBlockTheme.codeBlockRadiusTopLeft,
+          topRight: this.codeBlockTheme.codeBlockRadiusTopRight,
+          bottomLeft: this.codeBlockTheme.codeBlockRadiusBottomLeft,
+          bottomRight: this.codeBlockTheme.codeBlockRadiusBottomRight
+        })
+        .borderColor(this.codeBlockTheme.codeBlockBorderColor)
+        .borderWidth(this.codeBlockTheme.codeBlockBorderWidth)
+        .borderStyle(this.codeBlockTheme.codeBlockBorderStyle)
+        .backgroundColor(this.codeBlockTheme.codeBlockBackgroundColor)
       }
-      .borderRadius({
-        topLeft: this.codeBlockTheme.codeBlockRadiusTopLeft,
-        topRight: this.codeBlockTheme.codeBlockRadiusTopRight,
-        bottomLeft: this.codeBlockTheme.codeBlockRadiusBottomLeft,
-        bottomRight: this.codeBlockTheme.codeBlockRadiusBottomRight
-      })
-      .borderColor(this.codeBlockTheme.codeBlockBorderColor)
-      .borderWidth(this.codeBlockTheme.codeBlockBorderWidth)
-      .borderStyle(this.codeBlockTheme.codeBlockBorderStyle)
-      .backgroundColor(this.codeBlockTheme.codeBlockBackgroundColor)
-      .padding({
-        top: this.codeBlockTheme.codeBlockPaddingTop,
-        right: this.codeBlockTheme.codeBlockPaddingRight,
-        bottom: this.codeBlockTheme.codeBlockPaddingBottom,
-        left: this.codeBlockTheme.codeBlockPaddingLeft
-      })
-      .margin({
-        top: this.codeBlockTheme.codeBlockMarginTop,
-        right: this.codeBlockTheme.codeBlockMarginRight,
-        bottom: this.codeBlockTheme.codeBlockMarginBottom,
-        left: this.codeBlockTheme.codeBlockMarginLeft
-      })
+      .layoutWeight(1)
     }
+    .padding({
+      top: this.codeBlockTheme.codeBlockPaddingTop,
+      right: this.codeBlockTheme.codeBlockPaddingRight,
+      bottom: this.codeBlockTheme.codeBlockPaddingBottom,
+      left: this.codeBlockTheme.codeBlockPaddingLeft
+    })
+    .margin({
+      top: this.codeBlockTheme.codeBlockMarginTop,
+      right: this.codeBlockTheme.codeBlockMarginRight,
+      bottom: this.codeBlockTheme.codeBlockMarginBottom,
+      left: this.codeBlockTheme.codeBlockMarginLeft
+    })
   }
 
   /**
