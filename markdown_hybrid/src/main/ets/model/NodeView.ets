@@ -55,8 +55,8 @@ export class NodeView {
   imageTitle?: string = undefined // 图片标题
   imageStyleWidth?: number = undefined // 图片样式宽度
   imageStyleHeight?: number = undefined // 图片样式高度
-  imageWidth: number = 0 // 控件宽度
-  imageHeight: number = 0 // 控件高度
+  imageWidth?: number = undefined // 控件宽度
+  imageHeight?: number = undefined // 控件高度
   imageRadius?: Length = undefined // 图片圆角
   imageAlign?: HorizontalAlign = undefined // 图片对齐方式
   imageReplacePixelMap: PixelMap | undefined = undefined // 图片替换PixelMap（imageReplaceCallback异步加载后设置）

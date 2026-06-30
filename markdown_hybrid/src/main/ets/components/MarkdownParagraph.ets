@@ -358,7 +358,7 @@ export struct MarkdownParagraph {
         .borderWidth(this.imageTheme.imageBorderWidth)
         .borderColor(this.imageTheme.imageBorderColor)
         .borderStyle(this.imageTheme.imageBorderStyle)
-        .width(item.imageWidth)
+        .width(item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
         .height(item.imageHeight)
         .objectFit(this.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
@@ -421,7 +421,7 @@ export struct MarkdownParagraph {
     }
     const oldImageSizes: Map<string, number[]> = new Map()
     for (const oldChild of this.list) {
-      if (oldChild.imageUrl && oldChild.imageWidth > 0) {
+      if (oldChild.imageUrl && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
         oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
       }
     }
@@ -476,7 +476,8 @@ export struct MarkdownParagraph {
           if (this.list.indexOf(child) < 0) {
             return
           }
-          const imageSource: image.ImageSource = image.createImageSource(buffer)
+          const buf = buffer as Uint8Array | ArrayBuffer
+          const imageSource: image.ImageSource = image.createImageSource(buf instanceof Uint8Array ? buf.buffer : buf)
           imageSource.createPixelMap().then((pm: PixelMap) => {
             if (!this.isAlive || this.list.indexOf(child) < 0) {
               return

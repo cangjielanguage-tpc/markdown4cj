@@ -56,7 +56,7 @@ export struct MarkdownImageBlock {
           .borderWidth(this.imageTheme.imageBorderWidth)
           .borderColor(this.imageTheme.imageBorderColor)
           .borderStyle(this.imageTheme.imageBorderStyle)
-          .width(this.item.imageWidth)
+          .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
           .height(this.item.imageHeight)
           .objectFit(this.imageTheme.imageFitType)
           .constraintSize({ maxWidth: this.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.imageTheme.imageMaxHeight })
@@ -98,7 +98,7 @@ export struct MarkdownImageBlock {
           .borderWidth(this.imageTheme.imageBorderWidth)
           .borderColor(this.imageTheme.imageBorderColor)
           .borderStyle(this.imageTheme.imageBorderStyle)
-          .width(this.item.imageWidth)
+          .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
           .height(this.item.imageHeight)
           .objectFit(this.imageTheme.imageFitType)
           .autoResize(this.imageTheme.imageAutoResize)
@@ -189,7 +189,8 @@ export struct MarkdownImageBlock {
       if (!this.isAlive || buffer === undefined) {
         return
       }
-      const imageSource: image.ImageSource = image.createImageSource(buffer)
+      const buf = buffer as Uint8Array | ArrayBuffer
+      const imageSource: image.ImageSource = image.createImageSource(buf instanceof Uint8Array ? buf.buffer : buf)
       imageSource.createPixelMap().then((pm: PixelMap) => {
         if (!this.isAlive) {
           return

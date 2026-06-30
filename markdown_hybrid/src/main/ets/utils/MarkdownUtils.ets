@@ -159,7 +159,7 @@ export function imageWidthAndHeight(
     const aspectRatioNew: number = imageHeightPx / imageWidthPx
     let widthNew = (imageFixedRatioWidth !== undefined)
       ? componentImageWidth * imageFixedRatioWidth
-      : imageWidthPx * imageMaximumWidth
+      : Math.min(imageWidthPx, componentImageWidthNew) * imageMaximumWidth
     widthNew = Math.min(widthNew, componentImageWidthNew)
     let heightNew: number = widthNew * aspectRatioNew
     if (imageMaxHeight !== undefined) {
@@ -179,7 +179,7 @@ export function imageWidthAndHeight(
   } else if (imageWidthPx !== undefined && imageHeightPx === undefined) {
     let widthNew = (imageFixedRatioWidth !== undefined)
       ? componentImageWidth * imageFixedRatioWidth
-      : imageWidthPx * imageMaximumWidth
+      : Math.min(imageWidthPx, componentImageWidthNew) * imageMaximumWidth
     widthNew = Math.min(widthNew, componentImageWidthNew)
     let heightNew: number = widthNew * aspectRatio
     if (imageMaxHeight !== undefined) {
@@ -199,7 +199,7 @@ export function imageWidthAndHeight(
   } else if (imageWidthPx === undefined && imageHeightPx !== undefined) {
     let widthNew = (imageFixedRatioWidth !== undefined)
       ? componentImageWidth * imageFixedRatioWidth
-      : (imageHeightPx / aspectRatio) * imageMaximumWidth
+      : Math.min(imageHeightPx / aspectRatio, componentImageWidthNew) * imageMaximumWidth
     widthNew = Math.min(widthNew, componentImageWidthNew)
     let heightNew: number = widthNew * aspectRatio
     if (imageMaxHeight !== undefined) {
@@ -219,7 +219,7 @@ export function imageWidthAndHeight(
   } else {
     let widthNew = (imageFixedRatioWidth !== undefined)
       ? componentImageWidth * imageFixedRatioWidth
-      : imageResWidth * imageMaximumWidth
+      : Math.min(imageResWidth, componentImageWidthNew) * imageMaximumWidth
     widthNew = Math.min(widthNew, componentImageWidthNew)
     let heightNew: number = widthNew * aspectRatio
     if (imageMaxHeight !== undefined) {

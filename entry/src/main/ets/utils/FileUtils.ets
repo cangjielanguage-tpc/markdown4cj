@@ -29,9 +29,9 @@ export function getFileContextStr(str: string): string {
 /**
  * 读取路径下文件内容
  */
-export function getFileContextArr(str: string): Uint8Array | undefined {
+export function getFileContextArr(str: string): ArrayBuffer | undefined {
   try {
-    return baseManager!.getRawFileContentSync(str)
+    return baseManager!.getRawFileContentSync(str).buffer as ArrayBuffer
   } catch (e) {
     return undefined
   }
