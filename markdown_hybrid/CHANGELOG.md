@@ -45,6 +45,7 @@
 43. MarkdownTheme 中的接口 setVideoDownloadTexSize(videoDownloadTexSize: number): void 替换成 setVideoDownloadTextSize(videoDownloadTextSize: number): void
 44. MarkdownTheme 中的接口 setImageDownloadTexSize(imageDownloadTexSize: number): void 替换成 setImageDownloadTextSize(imageDownloadTextSize: number): void
 45. 支持宽松/严格/白名单限定符设置
+46. 支持高亮语法
 
 # 1.3.7
 

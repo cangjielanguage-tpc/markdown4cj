@@ -49,6 +49,8 @@ struct ImageStyleDetailsPage {
   markdownBlockSpacing: number = 8
   @State // 软换行是否换行
   isLineBreak: boolean = false
+  @State // 背景颜色
+  globalBackgroundColor: number | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -95,6 +97,7 @@ struct ImageStyleDetailsPage {
       this.blockMarginLeft = imageStyle._blockMarginLeft
       this.markdownBlockSpacing = imageStyle._markdownBlockSpacing
       this.isLineBreak = imageStyle._isLineBreak
+      this.globalBackgroundColor = imageStyle._backgroundColor
       this.openGestureSwipe = imageStyle._openGestureSwipe
       this.openGestureSwipeTest = imageStyle._openGestureSwipeTest
     } catch (e) {
@@ -225,6 +228,9 @@ struct ImageStyleDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    if (this.globalBackgroundColor !== undefined) {
+      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+    }
     theme.setGlobalTheme(globalTheme)
     
     return theme

@@ -60,6 +60,160 @@ struct CodeListDetailsPage {
   isInputEnded: boolean = false
 
   // ---------- 专有
+  @State // 代码深浅色模式
+  codeBlockIsDark: boolean = false
+  @State // 是否格式化围栏代码块内容
+  codeBlockIsCodeFormat: boolean = false
+  @State // codeformat是否用制表符
+  codeBlockUseTab: boolean = false
+  @State // codeformat空格缩进数量
+  codeBlockIndentWidth: number = 4
+  @State // 围栏代码块代码高亮是否同步解析
+  codeBlockParserSync: boolean = false
+  @State // 代码块背景颜色
+  codeBlockBackgroundColor: number | undefined = undefined
+  @State // 代码块上外边距
+  codeBlockMarginTop: number = 8
+  @State // 代码块右外边距
+  codeBlockMarginRight: number = 0
+  @State // 代码块下外边距
+  codeBlockMarginBottom: number = 8
+  @State // 代码块左外边距
+  codeBlockMarginLeft: number = 0
+  @State // 代码块上内边距
+  codeBlockPaddingTop: number = 12
+  @State // 代码块右内边距
+  codeBlockPaddingRight: number = 12
+  @State // 代码块下内边距
+  codeBlockPaddingBottom: number = 12
+  @State // 代码块左内边距
+  codeBlockPaddingLeft: number = 12
+  @State // 代码块边框样式
+  codeBlockBorderStyle: BorderStyle = BorderStyle.Solid
+  @State // 代码块边框宽度
+  codeBlockBorderWidth: number = 0
+  @State // 代码块边框颜色
+  codeBlockBorderColor: number | undefined = undefined
+  @State // 代码块边框左上圆角
+  codeBlockRadiusTopLeft: number = 8
+  @State // 代码块边框右上圆角
+  codeBlockRadiusTopRight: number = 8
+  @State // 代码块边框左下圆角
+  codeBlockRadiusBottomLeft: number = 8
+  @State // 代码块边框右下圆角
+  codeBlockRadiusBottomRight: number = 8
+  @State // 代码块类型和代码块内容间距
+  codeBlockTitleLayoutMarginBottom: number = 8
+  @State // 代码块类型左边距
+  codeBlockTypeTextMarginLeft: number = 8
+  @State // 代码块没有代码类型时默认显示文本
+  codeBlockTypeText: string = "Code"
+  @State // 代码块类型文本颜色
+  codeBlockTypeTextFontColor: number | undefined = undefined
+  @State // 代码块类型文本尺寸
+  codeBlockTypeTextFontSize: number | undefined = undefined
+  @State // 代码块类型文本字体样式
+  codeBlockTypeTextFontStyle: FontStyle | undefined = undefined
+  @State // 代码块类型文本字体粗细
+  codeBlockTypeTextFontWeight: FontWeight | undefined = undefined
+  @State // 代码块类型文本字体
+  codeBlockTypeTextFontFamily: string | undefined = undefined
+  @State // 代码块类型文本行高
+  codeBlockTypeTextLineHeight: number | undefined = undefined
+  @State // 代码块代码复制和代码全屏间距
+  codeBlockCopyFullScreenSpacing: number = 8
+  @State // 代码块代码复制按钮是否显示
+  codeBlockCopyButtonIsShow: boolean = true
+  @State // 代码块代码复制文本是否显示
+  codeBlockCopyTextIsShow: boolean = true
+  codeBlockCopyIcon: Resource | undefined = undefined // 代码块代码复制按钮默认图标
+  @State // 代码块代码复制图标宽度
+  codeBlockCopyIconWidth: number = 18
+  @State // 代码块代码复制图标高度
+  codeBlockCopyIconHeight: number = 18
+  @State // 代码块代码复制图标和文本间距
+  codeBlockCopyIconTextSpacing: number = 4
+  @State // 代码块代码复制默认文本内容
+  codeBlockCopyText: string = "Copy"
+  @State // 代码块代码复制文本颜色
+  codeBlockCopyTextFontColor: number | undefined = undefined
+  @State // 代码块代码复制文本尺寸
+  codeBlockCopyTextFontSize: number | undefined = undefined
+  @State // 代码块代码复制文本字体样式
+  codeBlockCopyTextFontStyle: FontStyle | undefined = undefined
+  @State // 代码块代码复制文本字体粗细
+  codeBlockCopyTextFontWeight: FontWeight | undefined = undefined
+  @State // 代码块代码复制文本字体
+  codeBlockCopyTextFontFamily: string | undefined = undefined
+  @State // 代码块代码复制文本行高
+  codeBlockCopyTextLineHeight: number | undefined = undefined
+  @State // 代码块代码全屏按钮是否显示
+  codeBlockFullScreenButtonIsShow: boolean = true
+  @State // 代码块代码全屏文本是否显示
+  codeBlockFullScreenTextIsShow: boolean = true
+  codeBlockFullScreenIcon: Resource | undefined = undefined // 代码块代码全屏按钮默认图标
+  @State // 代码块代码全屏图标宽度
+  codeBlockFullScreenIconWidth: number = 18
+  @State // 代码块代码全屏图标高度
+  codeBlockFullScreenIconHeight: number = 18
+  @State // 代码块代码全屏图标和文本间距
+  codeBlockFullScreenIconTextSpacing: number = 4
+  @State // 代码块代码全屏默认文本内容
+  codeBlockFullScreenText: string = "Full Screen"
+  @State // 代码块代码全屏文本颜色
+  codeBlockFullScreenTextFontColor: number | undefined = undefined
+  @State // 代码块代码全屏文本尺寸
+  codeBlockFullScreenTextFontSize: number | undefined = undefined
+  @State // 代码块代码全屏文本字体样式
+  codeBlockFullScreenTextFontStyle: FontStyle | undefined = undefined
+  @State // 代码块代码全屏文本字体粗细
+  codeBlockFullScreenTextFontWeight: FontWeight | undefined = undefined
+  @State // 代码块代码全屏文本字体
+  codeBlockFullScreenTextFontFamily: string | undefined = undefined
+  @State // 代码块代码全屏文本行高
+  codeBlockFullScreenTextLineHeight: number | undefined = undefined
+  @State // 代码块代码行号是否显示
+  codeBlockLineNumberIsShow: boolean = false
+  @State // 代码块代码行号左内边距
+  codeBlockLineNumberTextPaddingLeft: number = 8
+  @State // 代码块代码行号文本颜色
+  codeBlockLineNumberTextFontColor: number | undefined = undefined
+  @State // 代码块代码行号文本尺寸
+  codeBlockLineNumberTextFontSize: number | undefined = undefined
+  @State // 代码块代码行号文本字体样式
+  codeBlockLineNumberTextFontStyle: FontStyle | undefined = undefined
+  @State // 代码块代码行号文本字体粗细
+  codeBlockLineNumberTextFontWeight: FontWeight | undefined = undefined
+  @State // 代码块代码行号文本字体
+  codeBlockLineNumberTextFontFamily: string | undefined = undefined
+  @State // 代码块代码行号文本行高
+  codeBlockLineNumberTextLineHeight: number | undefined = undefined
+  @State // 代码块代码行号和代码块中间分割线颜色
+  codeBlockDividerColor: number | undefined = undefined
+  @State // 代码块代码行号和代码块中间分割线宽度
+  codeBlockDividerStrokeWidth: number = 1
+  @State // 代码块代码行号和分割线间距
+  codeBlockLineNumberDividerSpacing: number = 8
+  @State // 代码块文本颜色
+  codeBlockTextFontColor: number | undefined = undefined
+  @State // 代码块代码文本右外边距
+  codeBlockTextMarginRight: number = 0
+  @State // 代码块代码文本左外边距
+  codeBlockTextMarginLeft: number = 0
+  @State // 代码块文本尺寸
+  codeBlockTextFontSize: number | undefined = undefined
+  @State // 代码块文本字体样式
+  codeBlockTextFontStyle: FontStyle | undefined = undefined
+  @State // 代码块文本字体粗细
+  codeBlockTextFontWeight: FontWeight | undefined = undefined
+  @State // 代码块文本字体
+  codeBlockTextFontFamily: string | undefined = undefined
+  @State // 代码块文本行高
+  codeBlockTextLineHeight: number | undefined = undefined
+  @State // 代码块文本字符间距
+  codeBlockTextLetterSpacing: number = 0
+
+  // ---------- 组合代码块专有
   @State // 组合代码块未选中标题字体大小
   codeBlockListTitleTextSize: number = 14
   @State // 组合代码块选中标题字体大小
@@ -115,6 +269,85 @@ struct CodeListDetailsPage {
       this.globalBackgroundColor = codeListData._backgroundColor
       this.openGestureSwipe = codeListData._openGestureSwipe
       this.openGestureSwipeTest = codeListData._openGestureSwipeTest
+      // ---------- 专有
+      this.codeBlockIsDark = codeListData._codeBlockIsDark
+      this.codeBlockIsCodeFormat = codeListData._codeBlockIsCodeFormat
+      this.codeBlockUseTab = codeListData._codeBlockUseTab
+      this.codeBlockIndentWidth = codeListData._codeBlockIndentWidth
+      this.codeBlockParserSync = codeListData._codeBlockParserSync
+      this.codeBlockBackgroundColor = codeListData._codeBlockBackgroundColor
+      this.codeBlockMarginTop = codeListData._codeBlockMarginTop
+      this.codeBlockMarginRight = codeListData._codeBlockMarginRight
+      this.codeBlockMarginBottom = codeListData._codeBlockMarginBottom
+      this.codeBlockMarginLeft = codeListData._codeBlockMarginLeft
+      this.codeBlockPaddingTop = codeListData._codeBlockPaddingTop
+      this.codeBlockPaddingRight = codeListData._codeBlockPaddingRight
+      this.codeBlockPaddingBottom = codeListData._codeBlockPaddingBottom
+      this.codeBlockPaddingLeft = codeListData._codeBlockPaddingLeft
+      this.codeBlockBorderStyle = codeListData._codeBlockBorderStyle
+      this.codeBlockBorderWidth = codeListData._codeBlockBorderWidth
+      this.codeBlockBorderColor = codeListData._codeBlockBorderColor
+      this.codeBlockRadiusTopLeft = codeListData._codeBlockRadiusTopLeft
+      this.codeBlockRadiusTopRight = codeListData._codeBlockRadiusTopRight
+      this.codeBlockRadiusBottomLeft = codeListData._codeBlockRadiusBottomLeft
+      this.codeBlockRadiusBottomRight = codeListData._codeBlockRadiusBottomRight
+      this.codeBlockTitleLayoutMarginBottom = codeListData._codeBlockTitleLayoutMarginBottom
+      this.codeBlockTypeTextMarginLeft = codeListData._codeBlockTypeTextMarginLeft
+      this.codeBlockTypeText = codeListData._codeBlockTypeText
+      this.codeBlockTypeTextFontColor = codeListData._codeBlockTypeTextFontColor
+      this.codeBlockTypeTextFontSize = codeListData._codeBlockTypeTextFontSize
+      this.codeBlockTypeTextFontStyle = codeListData._codeBlockTypeTextFontStyle
+      this.codeBlockTypeTextFontWeight = codeListData._codeBlockTypeTextFontWeight
+      this.codeBlockTypeTextFontFamily = codeListData._codeBlockTypeTextFontFamily
+      this.codeBlockTypeTextLineHeight = codeListData._codeBlockTypeTextLineHeight
+      this.codeBlockCopyFullScreenSpacing = codeListData._codeBlockCopyFullScreenSpacing
+      this.codeBlockCopyButtonIsShow = codeListData._codeBlockCopyButtonIsShow
+      this.codeBlockCopyTextIsShow = codeListData._codeBlockCopyTextIsShow
+      this.codeBlockCopyIcon = codeListData._codeBlockCopyIcon
+      this.codeBlockCopyIconWidth = codeListData._codeBlockCopyIconWidth
+      this.codeBlockCopyIconHeight = codeListData._codeBlockCopyIconHeight
+      this.codeBlockCopyIconTextSpacing = codeListData._codeBlockCopyIconTextSpacing
+      this.codeBlockCopyText = codeListData._codeBlockCopyText
+      this.codeBlockCopyTextFontColor = codeListData._codeBlockCopyTextFontColor
+      this.codeBlockCopyTextFontSize = codeListData._codeBlockCopyTextFontSize
+      this.codeBlockCopyTextFontStyle = codeListData._codeBlockCopyTextFontStyle
+      this.codeBlockCopyTextFontWeight = codeListData._codeBlockCopyTextFontWeight
+      this.codeBlockCopyTextFontFamily = codeListData._codeBlockCopyTextFontFamily
+      this.codeBlockCopyTextLineHeight = codeListData._codeBlockCopyTextLineHeight
+      this.codeBlockFullScreenButtonIsShow = codeListData._codeBlockFullScreenButtonIsShow
+      this.codeBlockFullScreenTextIsShow = codeListData._codeBlockFullScreenTextIsShow
+      this.codeBlockFullScreenIcon = codeListData._codeBlockFullScreenIcon
+      this.codeBlockFullScreenIconWidth = codeListData._codeBlockFullScreenIconWidth
+      this.codeBlockFullScreenIconHeight = codeListData._codeBlockFullScreenIconHeight
+      this.codeBlockFullScreenIconTextSpacing = codeListData._codeBlockFullScreenIconTextSpacing
+      this.codeBlockFullScreenText = codeListData._codeBlockFullScreenText
+      this.codeBlockFullScreenTextFontColor = codeListData._codeBlockFullScreenTextFontColor
+      this.codeBlockFullScreenTextFontSize = codeListData._codeBlockFullScreenTextFontSize
+      this.codeBlockFullScreenTextFontStyle = codeListData._codeBlockFullScreenTextFontStyle
+      this.codeBlockFullScreenTextFontWeight = codeListData._codeBlockFullScreenTextFontWeight
+      this.codeBlockFullScreenTextFontFamily = codeListData._codeBlockFullScreenTextFontFamily
+      this.codeBlockFullScreenTextLineHeight = codeListData._codeBlockFullScreenTextLineHeight
+      this.codeBlockLineNumberIsShow = codeListData._codeBlockLineNumberIsShow
+      this.codeBlockLineNumberTextPaddingLeft = codeListData._codeBlockLineNumberTextPaddingLeft
+      this.codeBlockLineNumberTextFontColor = codeListData._codeBlockLineNumberTextFontColor
+      this.codeBlockLineNumberTextFontSize = codeListData._codeBlockLineNumberTextFontSize
+      this.codeBlockLineNumberTextFontStyle = codeListData._codeBlockLineNumberTextFontStyle
+      this.codeBlockLineNumberTextFontWeight = codeListData._codeBlockLineNumberTextFontWeight
+      this.codeBlockLineNumberTextFontFamily = codeListData._codeBlockLineNumberTextFontFamily
+      this.codeBlockLineNumberTextLineHeight = codeListData._codeBlockLineNumberTextLineHeight
+      this.codeBlockDividerColor = codeListData._codeBlockDividerColor
+      this.codeBlockDividerStrokeWidth = codeListData._codeBlockDividerStrokeWidth
+      this.codeBlockLineNumberDividerSpacing = codeListData._codeBlockLineNumberDividerSpacing
+      this.codeBlockTextFontColor = codeListData._codeBlockTextFontColor
+      this.codeBlockTextMarginRight = codeListData._codeBlockTextMarginRight
+      this.codeBlockTextMarginLeft = codeListData._codeBlockTextMarginLeft
+      this.codeBlockTextFontSize = codeListData._codeBlockTextFontSize
+      this.codeBlockTextFontStyle = codeListData._codeBlockTextFontStyle
+      this.codeBlockTextFontWeight = codeListData._codeBlockTextFontWeight
+      this.codeBlockTextFontFamily = codeListData._codeBlockTextFontFamily
+      this.codeBlockTextLineHeight = codeListData._codeBlockTextLineHeight
+      this.codeBlockTextLetterSpacing = codeListData._codeBlockTextLetterSpacing
+
       // ---------- 专有
       this.codeBlockListTitleTextSize = codeListData._codeListTitleTextSize
       this.codeBlockListTitleSelectTextSize = codeListData._codeListTitleSelectTextSize
@@ -250,9 +483,148 @@ struct CodeListDetailsPage {
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
     theme.setGlobalTheme(globalTheme)
-    
-    // ---------- 专有
+
+    // ---------- 专有 - CodeBlock
     let codeBlockTheme = new CodeBlockTheme()
+    codeBlockTheme.setCodeBlockIsDark(this.codeBlockIsDark)
+    codeBlockTheme.setCodeBlockIsCodeFormat(this.codeBlockIsCodeFormat)
+    codeBlockTheme.setCodeBlockUseTab(this.codeBlockUseTab)
+    codeBlockTheme.setCodeBlockIndentWidth(this.codeBlockIndentWidth)
+    codeBlockTheme.setCodeBlockParserSync(this.codeBlockParserSync)
+    if (this.codeBlockBackgroundColor !== undefined) {
+      codeBlockTheme.setCodeBlockBackgroundColor(this.codeBlockBackgroundColor)
+    }
+    codeBlockTheme.setCodeBlockMargin({top: this.codeBlockMarginTop, right: this.codeBlockMarginRight, bottom: this.codeBlockMarginBottom, left: this.codeBlockMarginLeft})
+    codeBlockTheme.setCodeBlockPadding({top: this.codeBlockPaddingTop, right: this.codeBlockPaddingRight, bottom: this.codeBlockPaddingBottom, left: this.codeBlockPaddingLeft})
+    codeBlockTheme.setCodeBlockBorderStyle(this.codeBlockBorderStyle)
+    codeBlockTheme.setCodeBlockBorderWidth(this.codeBlockBorderWidth)
+    if (this.codeBlockBorderColor !== undefined) {
+      codeBlockTheme.setCodeBlockBorderColor(this.codeBlockBorderColor)
+    }
+    codeBlockTheme.setCodeBlockRadius({topLeft: this.codeBlockRadiusTopLeft, topRight: this.codeBlockRadiusTopRight, bottomLeft: this.codeBlockRadiusBottomLeft, bottomRight: this.codeBlockRadiusBottomRight})
+    codeBlockTheme.setCodeBlockTitleLayoutMarginBottom(this.codeBlockTitleLayoutMarginBottom)
+    codeBlockTheme.setCodeBlockTypeTextMarginLeft(this.codeBlockTypeTextMarginLeft)
+    codeBlockTheme.setCodeBlockTypeText(this.codeBlockTypeText)
+    if (this.codeBlockTypeTextFontColor !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontColor(this.codeBlockTypeTextFontColor)
+    }
+    if (this.codeBlockTypeTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontSize(this.codeBlockTypeTextFontSize)
+    }
+    if (this.codeBlockTypeTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontStyle(this.codeBlockTypeTextFontStyle)
+    }
+    if (this.codeBlockTypeTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontWeight(this.codeBlockTypeTextFontWeight)
+    }
+    if (this.codeBlockTypeTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontFamily(this.codeBlockTypeTextFontFamily)
+    }
+    if (this.codeBlockTypeTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextLineHeight(this.codeBlockTypeTextLineHeight)
+    }
+    codeBlockTheme.setCodeBlockCopyFullScreenSpacing(this.codeBlockCopyFullScreenSpacing)
+    codeBlockTheme.setCodeBlockCopyButtonIsShow(this.codeBlockCopyButtonIsShow)
+    codeBlockTheme.setCodeBlockCopyTextIsShow(this.codeBlockCopyTextIsShow)
+    if (this.codeBlockCopyIcon !== undefined) {
+      codeBlockTheme.setCodeBlockCopyIcon(this.codeBlockCopyIcon)
+    }
+    codeBlockTheme.setCodeBlockCopyIconWidth(this.codeBlockCopyIconWidth)
+    codeBlockTheme.setCodeBlockCopyIconHeight(this.codeBlockCopyIconHeight)
+    codeBlockTheme.setCodeBlockCopyIconTextSpacing(this.codeBlockCopyIconTextSpacing)
+    codeBlockTheme.setCodeBlockCopyText(this.codeBlockCopyText)
+    if (this.codeBlockCopyTextFontColor !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontColor(this.codeBlockCopyTextFontColor)
+    }
+    if (this.codeBlockCopyTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontSize(this.codeBlockCopyTextFontSize)
+    }
+    if (this.codeBlockCopyTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontStyle(this.codeBlockCopyTextFontStyle)
+    }
+    if (this.codeBlockCopyTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontWeight(this.codeBlockCopyTextFontWeight)
+    }
+    if (this.codeBlockCopyTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontFamily(this.codeBlockCopyTextFontFamily)
+    }
+    if (this.codeBlockCopyTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextLineHeight(this.codeBlockCopyTextLineHeight)
+    }
+    codeBlockTheme.setCodeBlockFullScreenButtonIsShow(this.codeBlockFullScreenButtonIsShow)
+    codeBlockTheme.setCodeBlockFullScreenTextIsShow(this.codeBlockFullScreenTextIsShow)
+    if (this.codeBlockFullScreenIcon !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenIcon(this.codeBlockFullScreenIcon)
+    }
+    codeBlockTheme.setCodeBlockFullScreenIconWidth(this.codeBlockFullScreenIconWidth)
+    codeBlockTheme.setCodeBlockFullScreenIconHeight(this.codeBlockFullScreenIconHeight)
+    codeBlockTheme.setCodeBlockFullScreenIconTextSpacing(this.codeBlockFullScreenIconTextSpacing)
+    codeBlockTheme.setCodeBlockFullScreenText(this.codeBlockFullScreenText)
+    if (this.codeBlockFullScreenTextFontColor !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontColor(this.codeBlockFullScreenTextFontColor)
+    }
+    if (this.codeBlockFullScreenTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontSize(this.codeBlockFullScreenTextFontSize)
+    }
+    if (this.codeBlockFullScreenTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontStyle(this.codeBlockFullScreenTextFontStyle)
+    }
+    if (this.codeBlockFullScreenTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontWeight(this.codeBlockFullScreenTextFontWeight)
+    }
+    if (this.codeBlockFullScreenTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontFamily(this.codeBlockFullScreenTextFontFamily)
+    }
+    if (this.codeBlockFullScreenTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextLineHeight(this.codeBlockFullScreenTextLineHeight)
+    }
+    codeBlockTheme.setCodeBlockLineNumberIsShow(this.codeBlockLineNumberIsShow)
+    codeBlockTheme.setCodeBlockLineNumberTextPaddingLeft(this.codeBlockLineNumberTextPaddingLeft)
+    if (this.codeBlockLineNumberTextFontColor !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontColor(this.codeBlockLineNumberTextFontColor)
+    }
+    if (this.codeBlockLineNumberTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontSize(this.codeBlockLineNumberTextFontSize)
+    }
+    if (this.codeBlockLineNumberTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontStyle(this.codeBlockLineNumberTextFontStyle)
+    }
+    if (this.codeBlockLineNumberTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontWeight(this.codeBlockLineNumberTextFontWeight)
+    }
+    if (this.codeBlockLineNumberTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontFamily(this.codeBlockLineNumberTextFontFamily)
+    }
+    if (this.codeBlockLineNumberTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextLineHeight(this.codeBlockLineNumberTextLineHeight)
+    }
+    if (this.codeBlockDividerColor !== undefined) {
+      codeBlockTheme.setCodeBlockDividerColor(this.codeBlockDividerColor)
+    }
+    codeBlockTheme.setCodeBlockDividerStrokeWidth(this.codeBlockDividerStrokeWidth)
+    codeBlockTheme.setCodeBlockLineNumberDividerSpacing(this.codeBlockLineNumberDividerSpacing)
+    if (this.codeBlockTextFontColor !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontColor(this.codeBlockTextFontColor)
+    }
+    codeBlockTheme.setCodeBlockTextMarginRight(this.codeBlockTextMarginRight)
+    codeBlockTheme.setCodeBlockTextMarginLeft(this.codeBlockTextMarginLeft)
+    if (this.codeBlockTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontSize(this.codeBlockTextFontSize)
+    }
+    if (this.codeBlockTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontStyle(this.codeBlockTextFontStyle)
+    }
+    if (this.codeBlockTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontWeight(this.codeBlockTextFontWeight)
+    }
+    if (this.codeBlockTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontFamily(this.codeBlockTextFontFamily)
+    }
+    if (this.codeBlockTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockTextLineHeight(this.codeBlockTextLineHeight)
+    }
+    codeBlockTheme.setCodeBlockTextLetterSpacing(this.codeBlockTextLetterSpacing)
+
     codeBlockTheme.setCodeBlockListTitleTextSize(this.codeBlockListTitleTextSize)
     codeBlockTheme.setCodeBlockListTitleSelectTextSize(this.codeBlockListTitleSelectTextSize)
     if (this.codeBlockListTitleSelectTextColor !== undefined) {
