@@ -79,6 +79,8 @@ export struct MarkdownQuote {
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
   imageCallback?: (url: string) => void // 图片点击事件
+  imageDownloadCallback?: (url: string) => void // 图片下载点击事件
+  imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   videoCallback?: (url: string) => void // 视频点击事件
   videoImageCallback?: (url: string, callback: (url: string, ratio: number, time: number) => void) => void // 视频图片替换回调
   videoReleaseCallback?: (url: string) => void // 视频发布点击事件
@@ -131,7 +133,9 @@ export struct MarkdownQuote {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback
               })
             } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
               // 标题/标题ID
@@ -162,7 +166,9 @@ export struct MarkdownQuote {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback
               })
             } else if (item.nodeType == "FencedCodeBlockListBlock") {
               // 围栏代码块列表
@@ -229,6 +235,8 @@ export struct MarkdownQuote {
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback,
                 videoCallback: this.videoCallback,
                 videoImageCallback: this.videoImageCallback,
                 videoReleaseCallback: this.videoReleaseCallback,
@@ -278,6 +286,8 @@ export struct MarkdownQuote {
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback,
                 videoCallback: this.videoCallback,
                 videoImageCallback: this.videoImageCallback,
                 videoReleaseCallback: this.videoReleaseCallback,
@@ -325,6 +335,8 @@ export struct MarkdownQuote {
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback,
                 videoCallback: this.videoCallback,
                 videoImageCallback: this.videoImageCallback,
                 videoReleaseCallback: this.videoReleaseCallback,
@@ -403,7 +415,9 @@ export struct MarkdownQuote {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback
               })
             } else if (item.nodeType == "SlideBlock") {
               // 图片幻灯片

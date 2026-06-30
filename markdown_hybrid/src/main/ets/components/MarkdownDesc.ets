@@ -51,6 +51,8 @@ export struct MarkdownDesc {
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
   imageCallback?: (url: string) => void // 图片点击事件
+  imageDownloadCallback?: (url: string) => void // 图片下载事件
+  imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   scroller: Scroller = new Scroller() // list控制器
@@ -95,7 +97,9 @@ export struct MarkdownDesc {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback
               })
             } else if (item.nodeType == "DescTerm") {
               // 定义列表术语
@@ -126,7 +130,9 @@ export struct MarkdownDesc {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback
               })
             } else {
               // 其它

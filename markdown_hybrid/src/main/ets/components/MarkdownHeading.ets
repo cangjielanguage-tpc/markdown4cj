@@ -46,6 +46,7 @@ import { TableTheme } from '../theme/TableTheme'
 import { ParagraphTheme } from '../theme/ParagraphTheme'
 import { DefinitionListTheme } from '../theme/DefinitionListTheme'
 import { ImageTheme } from '../theme/ImageTheme'
+import { MarkdownImageBlock } from './MarkdownImageBlock'
 
 /**
  * 标题控件
@@ -79,6 +80,8 @@ export struct MarkdownHeading {
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
   imageCallback?: (url: string) => void // 图片点击事件
+  imageDownloadCallback?: (url: string) => void // 图片下载点击事件
+  imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   @State @Watch('onListChanged') list: NodeView[] = [] // 标题子节点数据源
@@ -87,6 +90,7 @@ export struct MarkdownHeading {
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
+    this.tryReplaceImages()
   }
 
   aboutToDisappear(): void {
@@ -99,6 +103,11 @@ export struct MarkdownHeading {
         item.latexImageWidth = 0
         item.latexImageHeight = 0
         item.latexIsLoading = false
+      }
+      if (item.imageReplacePixelMap !== undefined) {
+        item.imageReplacePixelMap.release()
+        item.imageReplacePixelMap = undefined
+        item.imageReplaceTried = false
       }
     }
   }
@@ -160,6 +169,18 @@ export struct MarkdownHeading {
   @Builder
   headingColumn() {
     Column() {
+      if (!this.imageTheme.isImageMixedLayout
+        && this.list.length == 1
+        && (this.list[0].nodeType == "Image" || this.list[0].nodeType == "StyleImage" || this.list[0].nodeType == "ImageHtmlNode")) {
+        MarkdownImageBlock({
+          item: this.list[0],
+          imageTheme: this.imageTheme,
+          componentWidth: this.componentWidth,
+          imageCallback: this.imageCallback,
+          imageDownloadCallback: this.imageDownloadCallback,
+          imageReplaceCallback: this.imageReplaceCallback
+        })
+      } else {
       Text() {
         ForEach(
           this.list,
@@ -167,7 +188,7 @@ export struct MarkdownHeading {
             this.headingInlineItem(item, index)
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}`
+            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.imageReplacePixelMap !== undefined}`
           }
         )
       }
@@ -179,6 +200,7 @@ export struct MarkdownHeading {
       .onCopy((str) => {
         this.textCopyCallback?.(str)
       })
+      }
 
       this.headingUnderline()
     }
@@ -351,7 +373,7 @@ export struct MarkdownHeading {
 
     } else if (item.nodeType == "Image" || item.nodeType == "StyleImage" || item.nodeType == "ImageHtmlNode") {
       // 图片/图片Style/HTML图片
-      ImageSpan(imageUrlHandle(item.imageUrl))
+      ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
         .alt(this.placeholderPixelMap)
         .margin({
           top: this.imageTheme.imageMarginTop,
@@ -469,6 +491,7 @@ export struct MarkdownHeading {
    * list变化时触发数学公式异步加载（从refreshData移出，避免每次流式输出都跑for循环）
    */
   onListChanged() {
+    this.tryReplaceImages()
     if (!this.isLatexMathEnabled) {
       return
     }
@@ -481,6 +504,38 @@ export struct MarkdownHeading {
           } else {
             LatexParseQueue.notifyDone()
           }
+        })
+      }
+    }
+  }
+
+  /**
+   * 异步替换图片：调用imageReplaceCallback获取原始字节→转为PixelMap→更新ImageSpan渲染
+   */
+  private tryReplaceImages(): void {
+    if (this.imageReplaceCallback === undefined) {
+      return
+    }
+    for (const child of this.list) {
+      if (child.imageUrl !== undefined && !child.imageReplaceTried) {
+        child.imageReplaceTried = true
+        this.imageReplaceCallback(child.imageUrl).then((buffer: ArrayBuffer | undefined) => {
+          if (!this.isAlive || buffer === undefined) {
+            return
+          }
+          if (this.list.indexOf(child) < 0) {
+            return
+          }
+          const imageSource: image.ImageSource = image.createImageSource(buffer)
+          imageSource.createPixelMap().then((pm: PixelMap) => {
+            if (!this.isAlive || this.list.indexOf(child) < 0) {
+              return
+            }
+            child.imageReplacePixelMap = pm
+            this.list = [...this.list]
+          }).catch(() => {
+          })
+        }).catch(() => {
         })
       }
     }

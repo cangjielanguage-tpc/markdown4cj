@@ -59,6 +59,8 @@ export class NodeView {
   imageHeight: number = 0 // 控件高度
   imageRadius?: Length = undefined // 图片圆角
   imageAlign?: HorizontalAlign = undefined // 图片对齐方式
+  imageReplacePixelMap: PixelMap | undefined = undefined // 图片替换PixelMap（imageReplaceCallback异步加载后设置）
+  imageReplaceTried: boolean = false // 图片替换是否已尝试（防止重复请求）
   latexPixelMap: PixelMap | undefined = undefined // 数学公式图片PixelMap（异步加载后设置）
   latexImageData: ArrayBuffer | undefined = undefined // 数学公式图片原始数据
   latexImageWidth: number = 0 // 数学公式图片宽度 - 单位px

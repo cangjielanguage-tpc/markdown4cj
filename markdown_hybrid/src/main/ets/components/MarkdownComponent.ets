@@ -133,7 +133,9 @@ export struct CJMarkdown {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.config.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.config.imageDownloadCallback,
+                imageReplaceCallback: this.config.imageReplaceCallback
               })
             } else if (item.nodeType == "Paragraph") {
               // 段落
@@ -164,7 +166,9 @@ export struct CJMarkdown {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.config.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.config.imageDownloadCallback,
+                imageReplaceCallback: this.config.imageReplaceCallback
               })
             } else if (item.nodeType == "FencedCodeBlockListBlock") {
               // 围栏代码块列表
@@ -227,6 +231,8 @@ export struct CJMarkdown {
                 componentWidth: this.componentWidth,
                 tableBlockComponentWidth: this.componentWidth,
                 imageCallback: this.imageCallback,
+                imageDownloadCallback: this.config.imageDownloadCallback,
+                imageReplaceCallback: this.config.imageReplaceCallback,
                 videoCallback: this.videoCallback,
                 videoImageCallback: this.config.videoImageCallback,
                 videoReleaseCallback: this.config.videoReleaseCallback,
@@ -276,6 +282,8 @@ export struct CJMarkdown {
                 componentWidth: this.componentWidth,
                 tableBlockComponentWidth: this.componentWidth,
                 imageCallback: this.imageCallback,
+                imageDownloadCallback: this.config.imageDownloadCallback,
+                imageReplaceCallback: this.config.imageReplaceCallback,
                 videoCallback: this.videoCallback,
                 videoImageCallback: this.config.videoImageCallback,
                 videoReleaseCallback: this.config.videoReleaseCallback,
@@ -324,6 +332,8 @@ export struct CJMarkdown {
                 tableBlockComponentWidth: this.componentWidth,
                 listDepth: 0,
                 imageCallback: this.imageCallback,
+                imageDownloadCallback: this.config.imageDownloadCallback,
+                imageReplaceCallback: this.config.imageReplaceCallback,
                 videoCallback: this.videoCallback,
                 videoImageCallback: this.config.videoImageCallback,
                 videoReleaseCallback: this.config.videoReleaseCallback,
@@ -380,7 +390,9 @@ export struct CJMarkdown {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.config.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.config.imageDownloadCallback,
+                imageReplaceCallback: this.config.imageReplaceCallback
               })
             } else if (item.nodeType == "ThematicBreak") {
               // 分割线
@@ -417,7 +429,9 @@ export struct CJMarkdown {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.config.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.config.imageDownloadCallback,
+                imageReplaceCallback: this.config.imageReplaceCallback
               })
             } else if (item.nodeType == "DescList") {
               // 定义列表
@@ -448,7 +462,9 @@ export struct CJMarkdown {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.config.linkCallback,
-                imageCallback: this.imageCallback
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.config.imageDownloadCallback,
+                imageReplaceCallback: this.config.imageReplaceCallback
               })
             } else if (item.nodeType == "SlideBlock") {
               // 图片幻灯片

@@ -92,22 +92,29 @@ export struct MarkdownCodeSeparate {
                   this.prismBlocks,
                   (block: PrismBlock, index: number) => {
                     ListItem() {
-                      Text() {
-                        ForEach(
-                          Array.from(block.getList()),
-                          (node: PrismNode) => {
-                            Span(node.text)
-                              .fontColor(node.color ?? this.defaultFontColor)
-                              .letterSpacing(this.codeBlockTheme.codeBlockTextLetterSpacing)
-                          }
-                        )
+                      if (block.getList().length > 0) {
+                        Text() {
+                          ForEach(
+                            Array.from(block.getList()),
+                            (node: PrismNode) => {
+                              Span(node.text)
+                                .fontColor(node.color ?? this.defaultFontColor)
+                                .letterSpacing(this.codeBlockTheme.codeBlockTextLetterSpacing)
+                            }
+                          )
+                        }
+                        .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
+                        .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
+                        .fontWeight(this.codeBlockTheme.codeBlockTextFontWeight)
+                        .fontStyle(this.codeBlockTheme.codeBlockTextFontStyle)
+                        .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
+                        .textAlign(TextAlign.Start)
+                      } else {
+                        Text(" ")
+                          .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
+                          .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
+                          .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
                       }
-                      .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
-                      .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
-                      .fontWeight(this.codeBlockTheme.codeBlockTextFontWeight)
-                      .fontStyle(this.codeBlockTheme.codeBlockTextFontStyle)
-                      .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
-                      .textAlign(TextAlign.Start)
                     }
                   },
                   (block: PrismBlock, index: number) => `${index}-${block.getText()}`
@@ -117,7 +124,7 @@ export struct MarkdownCodeSeparate {
                   this.rawLines,
                   (line: string, index: number) => {
                     ListItem() {
-                      Text(line)
+                      Text(line.length > 0 ? line : " ")
                         .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
                         .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
                         .fontWeight(this.codeBlockTheme.codeBlockTextFontWeight)
@@ -190,9 +197,6 @@ export struct MarkdownCodeSeparate {
     this.codeText = this.node.nodeText
     this.info = this.node.codeInfo
     let arr = this.codeText.split("\n") // 代码块数据分割
-    if (arr.length > 1 && arr[arr.length - 1] === "") {
-      arr.pop()
-    }
     let lineArr: number[] = []
     for (let i = 1; i <= arr.length; i++) {
       lineArr.push(i)
