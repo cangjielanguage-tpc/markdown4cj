@@ -1,12 +1,12 @@
-export const COLOR_WHITE: ResourceColor = Color.White
+export const COLOR_WHITE: ResourceColor = '#FFFFFFFF'
 
-export const COLOR_RED: ResourceColor = Color.Red
+export const COLOR_RED: ResourceColor = '#FFFF0000'
 
-export const COLOR_BLACK: ResourceColor = Color.Black
+export const COLOR_BLACK: ResourceColor = '#FF000000'
 
-export const COLOR_TRANSPARENT: ResourceColor = Color.Transparent
+export const COLOR_TRANSPARENT: ResourceColor = '#00000000'
 
-export const COLOR_GRAY: ResourceColor = Color.Gray
+export const COLOR_GRAY: ResourceColor = '#FF888888'
 
 export const COLOR_FF191919: ResourceColor = '#FF191919'
 

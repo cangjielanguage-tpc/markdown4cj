@@ -27,6 +27,10 @@ import {
   spanSoftLineBreak
 } from "../utils/MarkdownUtils"
 import {
+  generateLinkIconPixelMap,
+  LinkIconResult
+} from "../utils/MarkdownLinkIconGenerator"
+import {
   paragraphBackgroundColor,
   spanBackgroundColor,
   spanBaselineOffset,
@@ -83,6 +87,7 @@ export struct MarkdownParagraph {
   aboutToAppear(): void {
     this.refreshData() // 首次加载
     this.tryReplaceImages()
+    this.tryGenerateLinkIcons()
   }
 
   aboutToDisappear(): void {
@@ -100,6 +105,13 @@ export struct MarkdownParagraph {
         item.imageReplacePixelMap.release()
         item.imageReplacePixelMap = undefined
         item.imageReplaceTried = false
+      }
+      if (item.linkIconPixelMap !== undefined) {
+        item.linkIconPixelMap.release()
+        item.linkIconPixelMap = undefined
+        item.linkIconTried = false
+        item.linkIconWidth = 0
+        item.linkIconHeight = 0
       }
     }
   }
@@ -161,7 +173,7 @@ export struct MarkdownParagraph {
             this.paragraphInlineItem(item, index)
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.imageReplacePixelMap !== undefined}`
+            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
           }
         )
       }
@@ -339,6 +351,38 @@ export struct MarkdownParagraph {
     } else if (item.nodeType == "HardLineBreak") {
       // 硬换行
       Span("\n")
+    } else if (item.nodeType == "Link" || item.nodeType == "HeadLink") {
+      if ((item.isBulletList || item.isOrderedList || item.isQuote || item.isDescList) && this.isSingleLinkNode() && !this.linkTheme.linkListIsIcon) {
+        Span(item.nodeText)
+          .fontColor(this.linkTheme.linkTextFontColor)
+          .fontSize(this.paragraphTheme.paragraphTextFontSize)
+          .onClick(() => {
+            if (item.linkUrl !== undefined) {
+              this.linkCallback?.(item.linkUrl)
+            }
+          })
+      } else {
+        if (item.linkIconPixelMap !== undefined && item.linkIconWidth > 0 && item.linkIconHeight > 0) {
+          ImageSpan(item.linkIconPixelMap)
+            .width(px2vp(item.linkIconWidth))
+            .height(px2vp(item.linkIconHeight))
+            .verticalAlign(ImageSpanAlignment.CENTER)
+            .onClick(() => {
+              if (item.linkUrl !== undefined) {
+                this.linkCallback?.(item.linkUrl)
+              }
+            })
+        } else {
+          Span(item.nodeText)
+            .fontColor(this.linkTheme.linkTextFontColor)
+            .fontSize(this.paragraphTheme.paragraphTextFontSize)
+            .onClick(() => {
+              if (item.linkUrl !== undefined) {
+                this.linkCallback?.(item.linkUrl)
+              }
+            })
+        }
+      }
     } else if (item.nodeType == "Image" || item.nodeType == "StyleImage" || item.nodeType == "ImageHtmlNode") {
       // 图片/图片Style/HTML图片
       ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
@@ -442,6 +486,7 @@ export struct MarkdownParagraph {
    */
   onListChanged() {
     this.tryReplaceImages()
+    this.tryGenerateLinkIcons()
     if (!this.isLatexMathEnabled) {
       return
     }
@@ -455,6 +500,42 @@ export struct MarkdownParagraph {
             LatexParseQueue.notifyDone()
           }
         })
+      }
+    }
+  }
+
+  /**
+   * 判断当前list是否仅含一个Link节点（用于列表上下文是否图片化判断）
+   */
+  private isSingleLinkNode(): boolean {
+    if (this.list.length !== 1) {
+      return false
+    }
+    const node = this.list[0]
+    return node.nodeType === "Link" || node.nodeType === "HeadLink"
+  }
+
+  /**
+   * 异步生成链接图标PixelMap（通过C++原生绘图）
+   */
+  private tryGenerateLinkIcons(): void {
+    for (const child of this.list) {
+      if ((child.nodeType === "Link" || child.nodeType === "HeadLink") && child.isLinkStyle && !child.linkIconTried) {
+        child.linkIconTried = true
+        generateLinkIconPixelMap(child.nodeText, child.linkUrl ?? "", this.linkTheme)
+          .then((result: LinkIconResult | undefined) => {
+            if (!this.isAlive || result === undefined) {
+              return
+            }
+            if (this.list.indexOf(child) < 0) {
+              result.pixelMap.release()
+              return
+            }
+            child.linkIconPixelMap = result.pixelMap
+            child.linkIconWidth = result.width
+            child.linkIconHeight = result.height
+            this.list = [...this.list]
+          })
       }
     }
   }

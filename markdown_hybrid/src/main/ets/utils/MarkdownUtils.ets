@@ -754,3 +754,121 @@ function parseStyleLength(value: string): number | undefined {
   return undefined
 }
 
+/**
+ * URL-safe Base64解码
+ *
+ * 将URL-safe Base64（使用_和-）转换为标准Base64后解码为UTF-8字符串。
+ * 用于解析非HTTP链接URL中编码的文件类型信息。
+ *
+ * @param v URL-safe Base64字符串
+ * @return 解码后的UTF-8字符串
+ */
+export function urlSafeBase64Decode(v: string): string {
+  try {
+    let vNew = v.replaceAll('_', '/').replaceAll('-', '+')
+    // 补齐Base64填充
+    const pad = vNew.length % 4
+    if (pad === 1) {
+      return ''
+    }
+    if (pad === 2) {
+      vNew += '=='
+    } else if (pad === 3) {
+      vNew += '='
+    }
+    // Base64解码
+    const decoded = base64Decode(vNew)
+    // 查找file-name=xxx.yyy模式
+    const match = decoded.match(/file-name=([^&]+)/)
+    if (match !== null && match.length > 1 && match[1] !== undefined) {
+      const parts = match[1].split('.')
+      if (parts.length > 1) {
+        return parts[parts.length - 1].toUpperCase()
+      }
+    }
+    return ''
+  } catch (e) {
+    return ''
+  }
+}
+
+/**
+ * 纯TypeScript Base64解码（UTF-8/ASCII）
+ *
+ * @param input 标准Base64字符串
+ * @return 解码后的字符串
+ */
+function base64Decode(input: string): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+  let str = input.replace(/[^A-Za-z0-9+/]/g, '')
+  const bytes: number[] = []
+
+  for (let i = 0; i < str.length; i += 4) {
+    const a = chars.indexOf(str.charAt(i))
+    const b = chars.indexOf(str.charAt(i + 1))
+    const c = chars.indexOf(str.charAt(i + 2))
+    const d = chars.indexOf(str.charAt(i + 3))
+
+    if (a === -1 || b === -1) {
+      break
+    }
+
+    const n = (a << 18) | (b << 12) | ((c !== -1 ? c : 0) << 6) | (d !== -1 ? d : 0)
+
+    bytes.push((n >> 16) & 0xFF)
+    if (c !== -1) {
+      bytes.push((n >> 8) & 0xFF)
+    }
+    if (d !== -1) {
+      bytes.push(n & 0xFF)
+    }
+  }
+
+  // 将字节数组转为字符串（兼容UTF-8多字节字符）
+  let result = ''
+  let i = 0
+  while (i < bytes.length) {
+    const b = bytes[i]
+    if (b < 0x80) {
+      result += String.fromCharCode(b)
+      i++
+    } else if (b < 0xC0) {
+      // 无效的UTF-8起始字节，跳过
+      i++
+    } else if (b < 0xE0) {
+      if (i + 1 < bytes.length) {
+        const c2 = bytes[i + 1]
+        result += String.fromCharCode(((b & 0x1F) << 6) | (c2 & 0x3F))
+        i += 2
+      } else {
+        i++
+      }
+    } else if (b < 0xF0) {
+      if (i + 2 < bytes.length) {
+        const c2 = bytes[i + 1]
+        const c3 = bytes[i + 2]
+        result += String.fromCharCode(((b & 0x0F) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F))
+        i += 3
+      } else {
+        i++
+      }
+    } else {
+      if (i + 3 < bytes.length) {
+        const c2 = bytes[i + 1]
+        const c3 = bytes[i + 2]
+        const c4 = bytes[i + 3]
+        const cp = ((b & 0x07) << 18) | ((c2 & 0x3F) << 12) | ((c3 & 0x3F) << 6) | (c4 & 0x3F)
+        // 转为UTF-16代理对
+        const offset = cp - 0x10000
+        result += String.fromCharCode(0xD800 + (offset >> 10))
+        result += String.fromCharCode(0xDC00 + (offset & 0x3FF))
+        i += 4
+      } else {
+        i++
+      }
+    }
+  }
+
+  return result
+}
+

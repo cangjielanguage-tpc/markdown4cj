@@ -8,6 +8,7 @@ import {
   strToLengthNumber,
   parsePicStyle
 } from "./MarkdownUtils"
+import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
 
 /**
  * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
@@ -69,6 +70,41 @@ function parseTabsFromToStr(toStr: string): Array<string> | undefined {
   }
   let tabs = tabsContent.split(', ')
   return tabs
+}
+
+/**
+ * 递归提取Link节点下所有子节点的文本
+ * 用于链接块状化时获取链接显示文本
+ *
+ * @param node JsNode起始节点
+ * @return 拼接后的链接文本
+ */
+function getLinkText(node: JsNodeImpl | undefined): string {
+  if (node === undefined) {
+    return ""
+  }
+  let text = ""
+  let child = node.firstChild
+  while (child !== undefined) {
+    const childType = child.nodeType
+    if (childType === 'Text' || childType === 'Code') {
+      text += child.literal ?? ""
+    } else if (childType === 'LatexMathNode') {
+      text += child.latex ?? ""
+    } else if (childType === 'Footnote') {
+      text += child.noteid ?? ""
+    } else if (childType === 'SoftLineBreak') {
+      text += " "
+    } else if (childType === 'HardLineBreak') {
+      text += "\n"
+    } else if (childType === 'Link' || childType === 'HeadLink') {
+      text += getLinkText(child)
+    } else {
+      text += getLinkText(child)
+    }
+    child = child.next
+  }
+  return text
 }
 
 /**
@@ -142,14 +178,30 @@ export function nodeToNodeView(
         currentView.isLink = true
         currentView.linkUrl = currentJsNode.destination
         currentView.linkTitle = currentJsNode.title
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        if (inheritedStyleView.isLinkStyle) {
+          currentView.nodeText = getLinkText(currentJsNode)
+          const iconInfo = computeLinkIconInfo(currentView.linkUrl ?? '', currentView.nodeText)
+          currentView.linkIconType = iconInfo.iconType
+          currentView.linkTypeStr = iconInfo.typeStr
+          targetParentView.children.push(currentView)
+        } else {
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        }
         break
       case 'HeadLink': // 标题链接
         currentView.isLink = true
         currentView.linkUrl = currentJsNode.destination
         currentView.linkTitle = currentJsNode.title
         currentView.headLinkIndex = currentJsNode.headIndex
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        if (inheritedStyleView.isLinkStyle) {
+          currentView.nodeText = getLinkText(currentJsNode)
+          const iconInfo = computeLinkIconInfo(currentView.linkUrl ?? '', currentView.nodeText)
+          currentView.linkIconType = iconInfo.iconType
+          currentView.linkTypeStr = iconInfo.typeStr
+          targetParentView.children.push(currentView)
+        } else {
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        }
         break
       case 'SubNode': // 下标
       case 'SubHtmlNode':

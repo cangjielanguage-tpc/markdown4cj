@@ -71,6 +71,13 @@ export class NodeView {
   cardName?: string = undefined // 卡片名称
   cardData?: string = undefined // 卡片内容
   sourceSpan: Array<SourceSpan> = new Array<SourceSpan>() // 每个节点位置信息
+  isLinkStyle: boolean = false // 链接是否块状化（isLinkStyle=true时Link节点作为独立节点，不扁平化）
+  linkIconType: number = 0 // 链接图标类型（0=圆形,1=方形,2=空心方形带类型标签）
+  linkTypeStr: string = '' // 链接类型字符串（iconType=2时使用）
+  linkIconPixelMap: PixelMap | undefined = undefined // 链接图标PixelMap（C++原生绘图异步加载后设置）
+  linkIconTried: boolean = false // 链接图标是否已尝试生成（防止重复请求）
+  linkIconWidth: number = 0 // 链接图标宽度 - 单位px
+  linkIconHeight: number = 0 // 链接图标高度 - 单位px
 
   /**
    * 递归计算内容指纹（所有后代节点的nodeText拼接）
@@ -164,6 +171,13 @@ export class NodeView {
     this.codeListTab = source.codeListTab
     this.cardName = source.cardName
     this.cardData = source.cardData
+    this.isLinkStyle = source.isLinkStyle
+    this.linkIconType = source.linkIconType
+    this.linkTypeStr = source.linkTypeStr
+    this.linkIconPixelMap = source.linkIconPixelMap
+    this.linkIconTried = source.linkIconTried
+    this.linkIconWidth = source.linkIconWidth
+    this.linkIconHeight = source.linkIconHeight
   }
 }
 

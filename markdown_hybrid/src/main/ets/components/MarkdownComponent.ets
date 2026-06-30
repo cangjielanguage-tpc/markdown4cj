@@ -610,9 +610,10 @@ export struct CJMarkdown {
      if (currentVersion <= this.appliedVersion) {
        return
      }
-     let nodeView: NodeView = new NodeView()
-     try {
-       nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
+      let nodeView: NodeView = new NodeView()
+      nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
+      try {
+        nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
      } catch (e) {
        // nodeToNodeView失败时静默处理
      }
