@@ -70,7 +70,7 @@ export struct MarkdownCodeIndented {
         .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
         .fontWeight(this.codeBlockTheme.codeBlockTextFontWeight)
         .fontStyle(this.codeBlockTheme.codeBlockTextFontStyle)
-        .fontColor(this.codeBlockTheme.codeBlockCopyTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
+        .fontColor(this.codeBlockTheme.codeBlockTextFontColor)
         .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
         .textAlign(TextAlign.Start)
     }

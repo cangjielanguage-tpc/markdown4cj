@@ -31,7 +31,7 @@ export class MarkdownNodeViewString {
    * - 处理行内节点（Text/Code/换行等）
    * - block节点尾插换行
    *
-   * @returns 全局文本
+    * @return 全局文本
    */
   toString(): string {
     if (!this.isBuilt && this.root !== undefined) {
@@ -99,7 +99,7 @@ export class MarkdownNodeViewString {
    * 处理不需要遍历children的叶子节点
    *
    * @param node 当前节点
-   * @returns 是否为叶子节点
+    * @return 是否为叶子节点
    */
   private leafNode(node: NodeView): boolean {
     switch (node.nodeType) {

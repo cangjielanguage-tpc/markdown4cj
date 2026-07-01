@@ -198,6 +198,9 @@ export struct MarkdownCodeSeparate {
     this.codeText = this.node.nodeText
     this.info = this.node.codeInfo
     let arr = this.codeText.split("\n") // 代码块数据分割
+    if (arr.length > 1 && arr[arr.length - 1] === '') {
+      arr.pop()
+    }
     let lineArr: number[] = []
     for (let i = 1; i <= arr.length; i++) {
       lineArr.push(i)

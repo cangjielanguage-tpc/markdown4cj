@@ -209,7 +209,7 @@ export const SECONDS_PER_MINUTE: number = 60
 /**
  * 判断是否是Margin对象
  * @param obj obj
- * @returns 是否是Margin对象
+ * @return 是否是Margin对象
  */
 export function isMargin(obj: Object): boolean {
   const keys = Object.keys(obj)
@@ -222,7 +222,7 @@ export function isMargin(obj: Object): boolean {
 /**
  * 判断是否是Padding对象
  * @param obj obj
- * @returns 是否是Padding对象
+ * @return 是否是Padding对象
  */
 export function isPadding(obj: Object): boolean {
   const keys = Object.keys(obj)
@@ -235,7 +235,7 @@ export function isPadding(obj: Object): boolean {
 /**
  * 判断是否是BorderRadiuses对象
  * @param obj obj
- * @returns 是否是BorderRadiuses对象
+ * @return 是否是BorderRadiuses对象
  */
 export function isBorderRadiuses(obj: Object): boolean {
   const keys = Object.keys(obj)

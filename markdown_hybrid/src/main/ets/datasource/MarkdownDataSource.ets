@@ -126,7 +126,7 @@ export class MarkdownDataSource implements IDataSource {
    * @param index 一条数据
    */
   public deleteData(index: number): void {
-    this.dataArray.splice(0, index)
+    this.dataArray.splice(index, 1)
     this.notifyDataDeleteChange(index)
   }
 

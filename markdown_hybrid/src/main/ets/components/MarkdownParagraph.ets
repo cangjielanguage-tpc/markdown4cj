@@ -67,7 +67,7 @@ export struct MarkdownParagraph {
   @ObjectLink linkTheme: LinkTheme // 链接样式
   @ObjectLink footnoteRefTheme: FootnoteRefTheme // 内联脚注样式
   @ObjectLink tableTheme: TableTheme // 表格样式
-  @ObjectLink paragraphTheme: ParagraphTheme // 标题样式
+  @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
@@ -81,7 +81,7 @@ export struct MarkdownParagraph {
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
-  @State @Watch('onListChanged') list: NodeView[] = [] // 标题子节点数据源
+  @State @Watch('onListChanged') list: NodeView[] = [] // 段落子节点数据源
   @State isQuote: boolean = false // 是否在块引用中
   private isAlive: boolean = true // 组件是否存活
 

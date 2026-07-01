@@ -269,8 +269,8 @@ export struct MarkdownList {
   @Builder
   listPrefixCheckboxINCComponent(item: NodeView) {
     Checkbox()
-      .height(this.bulletListTheme.bulletListCheckboxWidth)
-      .width(this.bulletListTheme.bulletListCheckboxHeight)
+      .height(this.bulletListTheme.bulletListCheckboxHeight)
+      .width(this.bulletListTheme.bulletListCheckboxWidth)
       .margin({ right: this.bulletListTheme.bulletListCheckboxSpacing })
       .shape(this.bulletListTheme.bulletListCheckboxShape)
       .selectedColor(this.bulletListTheme.bulletListCheckboxSelectedColor)

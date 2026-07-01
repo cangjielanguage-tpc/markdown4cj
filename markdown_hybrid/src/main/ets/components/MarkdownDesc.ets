@@ -43,7 +43,7 @@ export struct MarkdownDesc {
   @ObjectLink linkTheme: LinkTheme // 链接样式
   @ObjectLink footnoteRefTheme: FootnoteRefTheme // 内联脚注样式
   @ObjectLink tableTheme: TableTheme // 表格样式
-  @ObjectLink paragraphTheme: ParagraphTheme // 标题样式
+  @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件

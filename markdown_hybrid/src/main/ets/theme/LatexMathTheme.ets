@@ -1,4 +1,4 @@
-import { COLOR_TRANSPARENT, COLOR_FF191919, COLOR_BLACK, COLOR_TRANSPARENT_SCB } from '../base/Constants'
+import { COLOR_FF191919, COLOR_BLACK, COLOR_TRANSPARENT_SCB } from '../base/Constants'
 import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**

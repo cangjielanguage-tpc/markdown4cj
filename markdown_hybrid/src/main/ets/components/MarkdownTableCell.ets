@@ -64,7 +64,7 @@ export struct MarkdownTableCell {
   @ObjectLink linkTheme: LinkTheme // 链接样式
   @ObjectLink footnoteRefTheme: FootnoteRefTheme // 内联脚注样式
   @ObjectLink tableTheme: TableTheme // 表格样式
-  @ObjectLink paragraphTheme: ParagraphTheme // 标题样式
+  @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式

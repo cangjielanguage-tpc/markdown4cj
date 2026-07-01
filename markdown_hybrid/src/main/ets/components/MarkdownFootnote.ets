@@ -28,7 +28,7 @@ import { MarkdownParagraph } from "./MarkdownParagraph"
 @Component
 export struct MarkdownFootnote {
   @ObjectLink @Watch('refreshData') node: NodeView // 脚注自身节点数据
-  @ObjectLink footnoteDefTheme: FootnoteDefTheme // 内联脚注样式
+  @ObjectLink footnoteDefTheme: FootnoteDefTheme // 脚注定义样式
   @ObjectLink headingTheme: HeadingTheme // 标题样式
   @ObjectLink globalTheme: GlobalTheme // 整体样式
   @ObjectLink blockQuoteTheme: BlockQuoteTheme // 块引用样式
@@ -44,7 +44,7 @@ export struct MarkdownFootnote {
   @ObjectLink linkTheme: LinkTheme // 链接样式
   @ObjectLink footnoteRefTheme: FootnoteRefTheme // 内联脚注样式
   @ObjectLink tableTheme: TableTheme // 表格样式
-  @ObjectLink paragraphTheme: ParagraphTheme // 标题样式
+  @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @Prop componentWidth: number = 0.0 // 父布局控件宽度

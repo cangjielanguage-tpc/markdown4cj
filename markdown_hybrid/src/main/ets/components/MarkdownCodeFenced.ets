@@ -108,7 +108,7 @@ export struct MarkdownCodeFenced {
           .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
           .fontWeight(this.codeBlockTheme.codeBlockTextFontWeight)
           .fontStyle(this.codeBlockTheme.codeBlockTextFontStyle)
-          .fontColor(this.codeBlockTheme.codeBlockCopyTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
+          .fontColor(this.codeBlockTheme.codeBlockTextFontColor)
           .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
           .textAlign(TextAlign.Start)
           .visibility(this.prismBlocks.length === 0 ? Visibility.Visible : Visibility.None)

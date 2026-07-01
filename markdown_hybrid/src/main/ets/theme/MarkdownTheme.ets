@@ -998,7 +998,7 @@ export class MarkdownTheme {
   }
 
   /**
-   * 圆角矩形图片格式链接文字大小
+   * 设置圆角矩形图片格式链接文字大小
    *
    * @param linkRectImageTextSize 圆角矩形图片格式链接文字大小 - 默认14.0fp
    * @deprecated since 1.4.0
@@ -1024,7 +1024,7 @@ export class MarkdownTheme {
   }
 
   /**
-   * 圆角矩形图片格式链接控件高度
+   * 设置圆角矩形图片格式链接控件高度
    *
    * @param linkRectImageHeight 圆角矩形图片格式链接控件高度 - 默认20.0vp
    * @deprecated since 1.4.0
@@ -1037,7 +1037,7 @@ export class MarkdownTheme {
   }
 
   /**
-   * 圆角矩形图片格式链接左右内边距
+   * 设置圆角矩形图片格式链接左右内边距
    *
    * @param linkRectImagePadding 圆角矩形图片格式链接左右内边距 - 默认6.0vp
    * @deprecated since 1.4.0
@@ -1050,7 +1050,7 @@ export class MarkdownTheme {
   }
 
   /**
-   * 圆角矩形图片格式链接圆角半径
+   * 设置圆角矩形图片格式链接圆角半径
    *
    * @param linkRectImageRadius 圆角矩形图片格式链接圆角半径 - 默认6.0vp
    * @deprecated since 1.4.0
@@ -1063,7 +1063,7 @@ export class MarkdownTheme {
   }
 
   /**
-   * 圆角矩形图片格式链接左右外边距
+   * 设置圆角矩形图片格式链接左右外边距
    *
    * @param linkRectImageMargin 圆角矩形图片格式链接左右外边距 - 默认6.0vp
    * @deprecated since 1.4.0
@@ -1093,11 +1093,11 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageButtonBackgroundColor 空心圆角矩形图片格式链接控件背景颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
-   * @useinstead LinkTheme#setLinkRectToolIconBackgroundColor
+   * @useinstead LinkTheme#setLinkRectToolIconButtonBackgroundColor
    * @return MarkdownTheme
    */
   setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): MarkdownTheme {
-    this.linkTheme.setLinkRectToolIconBackgroundColor(linkRectToolImageButtonBackgroundColor)
+    this.linkTheme.setLinkRectToolIconButtonBackgroundColor(linkRectToolImageButtonBackgroundColor)
     return this
   }
 
