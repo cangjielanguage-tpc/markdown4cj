@@ -13,6 +13,10 @@ import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
 /**
  * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
  * 用于增量nodeToNodeView的稳定子树判断
+ *
+ * @param a 源位置数组A
+ * @param b 源位置数组B
+ * @return 是否相等
  */
 function sourceSpansEqual(a: Array<SourceSpan>, b: Array<SourceSpan>): boolean {
   if (a.length !== b.length) return false
@@ -26,6 +30,9 @@ function sourceSpansEqual(a: Array<SourceSpan>, b: Array<SourceSpan>): boolean {
 
 /**
  * 递归查找节点所有子节点中第一个Image节点的destination
+ *
+ * @param node 起始节点
+ * @return 找到的图片URL，未找到返回undefined
  */
 function findImageUrlFromDescendants(node: JsNodeImpl | undefined): string | undefined {
   if (node === undefined) {
@@ -49,6 +56,9 @@ function findImageUrlFromDescendants(node: JsNodeImpl | undefined): string | und
  * 从JsNode.toStr中解析tabs数组
  * FencedCodeBlockListBlock的toStr格式类似于: "name:mylist, tabs=[tab1, tab2, tab3]"
  * 如果解析失败返回undefined
+ *
+ * @param toStr to字符串
+ * @return 解析出的标签数组，无法解析时返回undefined
  */
 function parseTabsFromToStr(toStr: string): Array<string> | undefined {
   if (!toStr || toStr.length === 0) {

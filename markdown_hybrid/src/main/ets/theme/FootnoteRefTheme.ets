@@ -25,7 +25,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本字体颜色
    *
-   * @param fontColor 脚注引用文本字体颜色
+   * @param color 脚注引用文本字体颜色
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontColor(color: ResourceColor): FootnoteRefTheme {
@@ -36,7 +36,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本字体大小
    *
-   * @param fontSize 脚注引用文本字体大小
+   * @param size 脚注引用文本字体大小
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontSize(size: number | string | Resource): FootnoteRefTheme {
@@ -47,7 +47,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本字体样式
    *
-   * @param fontStyle 脚注引用文本字体样式
+   * @param style 脚注引用文本字体样式
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontStyle(style: FontStyle): FootnoteRefTheme {
@@ -58,7 +58,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本字体粗细
    *
-   * @param fontWeight 脚注引用文本字体粗细
+   * @param weight 脚注引用文本字体粗细
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontWeight(weight: number | FontWeight): FootnoteRefTheme {
@@ -69,7 +69,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本字体族
    *
-   * @param fontFamily 脚注引用文本字体族
+   * @param family 脚注引用文本字体族
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontFamily(family: string | Resource): FootnoteRefTheme {
@@ -91,7 +91,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本字间距
    *
-   * @param letterSpacing 脚注引用文本字间距
+   * @param spacing 脚注引用文本字间距
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextLetterSpacing(spacing: number): FootnoteRefTheme {
@@ -113,7 +113,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本装饰颜色
    *
-   * @param decorationColor 脚注引用文本装饰颜色
+   * @param color 脚注引用文本装饰颜色
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextDecorationColor(color: ResourceColor): FootnoteRefTheme {
@@ -124,7 +124,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本装饰样式
    *
-   * @param decorationStyle 脚注引用文本装饰样式
+   * @param style 脚注引用文本装饰样式
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextDecorationStyle(style: TextDecorationStyle): FootnoteRefTheme {
@@ -135,7 +135,7 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   /**
    * 设置脚注引用文本背景颜色
    *
-   * @param backgroundColor 脚注引用文本背景颜色
+   * @param color 脚注引用文本背景颜色
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextBackgroundColor(color: ResourceColor): FootnoteRefTheme {

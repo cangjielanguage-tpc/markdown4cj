@@ -43,7 +43,7 @@ import {
   spanFontWeight,
   spanLetterSpacing,
   spanLineHeight
-} from "../utils/MrkdownThemeUtils"
+} from "../utils/MarkdownThemeUtils"
 
 /**
  * 段落控件
@@ -195,6 +195,9 @@ export struct MarkdownParagraph {
 
   /**
    * 渲染单个内联节点（文本/代码/链接/加粗等）
+   *
+   * @param item 节点视图
+   * @param index 索引
    */
   @Builder
   paragraphInlineItem(item: NodeView, index: number) {
@@ -576,6 +579,8 @@ export struct MarkdownParagraph {
 
   /**
    * 异步加载数学公式图片
+   *
+   * @param item 节点视图
    */
   private loadLatexImage(item: NodeView): void {
     const strLatexMath: string = this.latexStrCallback(item.nodeText)

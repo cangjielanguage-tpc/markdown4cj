@@ -1197,7 +1197,7 @@ export function tableCellBackgroundColor(
     return tableTheme.tableTitleBackgroundColor // 表格标题
   }
   if (rowCount % 2 == 0) {
-    return tableTheme.tableContentEvenRowBackgroundColor // 表格内容奇数行
+    return tableTheme.tableContentEvenRowBackgroundColor // 表格内容偶数行
   }
-  return tableTheme.tableContentOddRowBackgroundColor // 表格内容偶数行
+  return tableTheme.tableContentOddRowBackgroundColor // 表格内容奇数行
 }

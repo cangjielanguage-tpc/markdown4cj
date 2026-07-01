@@ -20,7 +20,7 @@ export class MarkdownDataSource implements IDataSource {
   /**
    * 注销数据改变的监听器
    *
-   * @param _ 监听器
+   * @param listener 监听器
    */
   unregisterDataChangeListener(listener: DataChangeListener): void {
     this.listener = undefined

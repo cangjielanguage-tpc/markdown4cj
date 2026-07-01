@@ -1,4 +1,4 @@
-import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
+import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
 import { AudioTheme } from "../theme/AudioTheme"
 import { BannerTheme } from "../theme/BannerTheme"
@@ -27,7 +27,7 @@ import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import { VideoTheme } from "../theme/VideoTheme"
 import { listPrefixStr } from "../utils/MarkdownUtils"
-import { listBackgroundColor } from "../utils/MrkdownThemeUtils"
+import { listBackgroundColor } from "../utils/MarkdownThemeUtils"
 import { MarkdownListItem } from "./MarkdownListItem"
 
 /**
@@ -244,6 +244,8 @@ export struct MarkdownList {
 
   /**
    * 无序/有序列表的前缀文本
+   *
+   * @param index 索引
    */
   @Builder
   listPrefixTextINCComponent(index: number) {
@@ -261,6 +263,8 @@ export struct MarkdownList {
 
   /**
    * 任务列表的前缀多选框
+   *
+   * @param item 节点视图
    */
   @Builder
   listPrefixCheckboxINCComponent(item: NodeView) {

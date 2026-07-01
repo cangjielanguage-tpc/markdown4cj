@@ -1,5 +1,5 @@
-﻿import { Options, MarkdownParser, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
-import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
+import { Options, MarkdownParser, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
+import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
 import { MarkdownPlugin } from '../plugin/MarkdownPlugin'
@@ -605,10 +605,13 @@ export struct CJMarkdown {
      }
    }
 
-  /**
-   * 应用解析结果到数据源（渐进式版本跟踪+增量转换+哈希计算+智能更新）
-   */
-   private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
+   /**
+    * 应用解析结果到数据源（渐进式版本跟踪+增量转换+哈希计算+智能更新）
+    *
+    * @param node 节点
+    * @param currentVersion 当前版本
+    */
+    private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
      // 渐进式版本跟踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
      // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
      if (currentVersion <= this.appliedVersion) {

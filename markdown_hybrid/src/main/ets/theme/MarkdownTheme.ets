@@ -97,7 +97,7 @@ export class MarkdownTheme {
   }
 
   /**
-   * 
+   * 设置默认浅色主题
    *
    * @return MarkdownTheme
    */
@@ -187,7 +187,7 @@ export class MarkdownTheme {
   }
 
   /**
-   * 
+   * 设置Darcula深色主题
    *
    * @return MarkdownTheme
    */
@@ -1892,7 +1892,6 @@ export class MarkdownTheme {
    * 设置标题文本大小数组
    *
    * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
-     * @return MarkdownTheme
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontSizeForEachHeading
    * @return MarkdownTheme
@@ -1987,7 +1986,6 @@ export class MarkdownTheme {
    * 设置标题文本颜色
    *
    * @param headingTextColor 标题文本颜色 - 默认0xFF191919
-     * @return MarkdownTheme
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForAllHeading
    * @return MarkdownTheme
@@ -2001,7 +1999,6 @@ export class MarkdownTheme {
    * 设置H1、H2标题下分割线颜色
    *
    * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0xFF191919
-     * @return MarkdownTheme
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setUnderlineColorForAllHeading
    * @return MarkdownTheme
@@ -2495,7 +2492,7 @@ export class MarkdownTheme {
   /**
    * 设置音频标题文字颜色
    *
-   * @param audioTitleTextColor音频标题文字颜色 - 默认0xFF000000
+   * @param audioTitleTextColor 音频标题文字颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTitleTextFontColor
    * @return MarkdownTheme
@@ -3374,7 +3371,7 @@ export class MarkdownTheme {
   /**
    * 设置表格最大宽度
    *
-   * @param tableMaxTextWidth 表格最大宽度- 默认300.0vp
+   * @param tableMaxTextWidth 表格最大宽度 - 默认300.0vp
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableMaxCellWidth
    * @return MarkdownTheme

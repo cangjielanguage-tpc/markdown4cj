@@ -1,4 +1,4 @@
-import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
+import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { CellWidthTracker } from "../model/CellWidthTracker"
 import { NodeView } from "../model/NodeView"
 import { GlobalTheme } from "../theme/GlobalTheme"

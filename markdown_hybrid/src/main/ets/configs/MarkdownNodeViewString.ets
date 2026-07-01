@@ -142,10 +142,22 @@ export class MarkdownNodeViewString {
     }
   }
 
+  /**
+   * 追加字符串到builder
+   *
+   * @param s 待追加的字符串
+   */
   private add(s: string): void {
     this.builder += s
   }
 
+  /**
+   * 将字符串重复n次
+   *
+   * @param s 源字符串
+   * @param n 重复次数
+   * @return 重复后的字符串
+   */
   private repeatString(s: string, n: number): string {
     let result = ""
     for (let i = 0; i < n; i++) {

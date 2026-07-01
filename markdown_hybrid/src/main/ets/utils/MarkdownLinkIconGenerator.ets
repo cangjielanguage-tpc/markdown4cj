@@ -42,6 +42,9 @@ interface TypeColorPairNum {
  * 1. Color枚举索引(0-11) → 映射到ARGB值
  * 2. 数字ARGB值(>11) → 直接返回
  * 3. 字符串hex色值(#AARRGGBB) → 解析为数字
+ *
+ * @param color 资源颜色
+ * @return 颜色的数字值
  */
 function resourceColorToNumber(color: ResourceColor): number {
   if (typeof color === 'number') {
@@ -82,6 +85,9 @@ function resourceColorToNumber(color: ResourceColor): number {
 
 /**
  * Length转number
+ *
+ * @param length 长度
+ * @return 长度的数字值
  */
 function lengthToNumber(length: Length): number {
   if (typeof length === 'number') {
@@ -92,6 +98,9 @@ function lengthToNumber(length: Length): number {
 
 /**
  * 根据类型字符串返回前景色和背景色（数值型 ARGB）
+ *
+ * @param str 类型字符串
+ * @return 类型颜色对
  */
 function typeStringColorNum(str: string): TypeColorPairNum {
   let fg: number = NUM_FF000000
@@ -119,6 +128,10 @@ function typeStringColorNum(str: string): TypeColorPairNum {
 
 /**
  * 根据链接URL和文本计算图标类型和类型字符串
+ *
+ * @param url 链接URL
+ * @param text 链接文本
+ * @return 链接图标信息
  */
 export function computeLinkIconInfo(url: string, text: string): LinkIconInfo {
   const isHttp = url.startsWith('http://') || url.startsWith('https://')
@@ -144,6 +157,11 @@ export function computeLinkIconInfo(url: string, text: string): LinkIconInfo {
 
 /**
  * 生成链接图标PixelMap（通过C++原生绘图）
+ *
+ * @param text 链接文本
+ * @param url 链接URL
+ * @param linkTheme 链接样式
+ * @return 链接图标像素图结果
  */
 export function generateLinkIconPixelMap(
   text: string,

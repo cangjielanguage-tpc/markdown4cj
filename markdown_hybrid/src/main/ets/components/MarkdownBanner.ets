@@ -54,6 +54,8 @@ export struct MarkdownBanner {
 
   /**
    * 滑动容器，提供切换子组件显示的能力
+   *
+   * @param item 节点视图
    */
   @Builder
   imageBannerCommonmarkComponent(item: NodeView) {

@@ -5,12 +5,18 @@
  */
 export class CellWidthTracker {
   widths: number[] = []
-  onWidthUpdated?: () => void // LaTeX图片加载完成后回调（不在updateIfWider中触发，避免初始布局卡顿）
+  onWidthUpdated?: () => void // 列宽更新回调（在MarkdownTable中设置，触发scheduleApplyColumnWidths）
 
   constructor(size: number = 0) {
     this.resize(size)
   }
 
+  /**
+   * 更新指定列的最大宽度（仅在更宽时更新）
+   *
+   * @param index 列索引
+   * @param width 列宽度
+   */
   updateIfWider(index: number, width: number): void {
     if (index >= 0 && index < this.widths.length) {
       if (width > this.widths[index]) {
@@ -19,6 +25,12 @@ export class CellWidthTracker {
     }
   }
 
+  /**
+   * 获取指定列的宽度
+   *
+   * @param index 列索引
+   * @return 列宽度，索引越界时返回0
+   */
   getWidth(index: number): number {
     if (index >= 0 && index < this.widths.length) {
       return this.widths[index]
@@ -26,10 +38,20 @@ export class CellWidthTracker {
     return 0
   }
 
+  /**
+   * 获取所有列宽快照
+   *
+   * @return 列宽数组
+   */
   getWidths(): number[] {
     return this.widths
   }
 
+  /**
+   * 调整列数，重置所有列宽为0
+   *
+   * @param size 新的列数
+   */
   resize(size: number): void {
     if (size !== this.widths.length) {
       this.widths = new Array(size).fill(0)

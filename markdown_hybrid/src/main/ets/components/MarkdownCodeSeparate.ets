@@ -288,6 +288,8 @@ export struct MarkdownCodeSeparate {
 
   /**
    * 判断滑动距离和是否手指触摸
+   *
+   * @param offset 偏移量
    */
   checkScroll(offset: number): void {
     if (offset < -0.5 && this.chatTouch) {
@@ -297,6 +299,8 @@ export struct MarkdownCodeSeparate {
 
   /**
    * 手指触摸判断
+   *
+   * @param event 触摸事件
    */
   chatOnTouch(event: TouchEvent): void {
     if (event.type === TouchType.Down) {

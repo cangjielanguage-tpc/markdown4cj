@@ -274,6 +274,8 @@ export struct MarkdownCodeBlockList {
   /**
    * 解析变化的代码块高亮
    * 调整blocksDataList大小后，原地修改CodeBlockData属性触发子组件@ObjectLink刷新
+   *
+   * @param changedIndices 变化的索引数组
    */
   parseChangedCode(changedIndices: number[]): void {
     // 调整数组大小：保留已有CodeBlockData实例（保持@ObjectLink绑定），新增空的
@@ -301,6 +303,8 @@ export struct MarkdownCodeBlockList {
   /**
    * 异步解析变化的代码块高亮
    * 原地修改CodeBlockData.blocks属性，@ObjectLink触发子组件原地刷新
+   *
+   * @param changedIndices 变化的索引数组
    */
   parseChangedCodeAsync(changedIndices: number[]): void {
     this.parseVersion++
@@ -334,6 +338,9 @@ export struct MarkdownCodeBlockList {
   /**
    * 同步解析变化的代码块高亮
    * 原地修改CodeBlockData.blocks属性，@ObjectLink触发子组件原地刷新
+   *
+   * @param changedIndices 变化的索引数组
+   * @return Promise<void>，解析完成后resolve
    */
   async parseChangedCodeSync(changedIndices: number[]): Promise<void> {
     this.parseVersion++

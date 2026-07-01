@@ -1,4 +1,4 @@
-import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
+import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
 import { FootnoteDefTheme } from "../theme/FootnoteDefTheme"
 import { GlobalTheme } from "../theme/GlobalTheme"
@@ -19,7 +19,7 @@ import { StrikethroughTheme } from "../theme/StrikethroughTheme"
 import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
-import { footnoteBackgroundColor } from "../utils/MrkdownThemeUtils"
+import { footnoteBackgroundColor } from "../utils/MarkdownThemeUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 
 /**

@@ -162,9 +162,10 @@ export function imageUrlHandle(url?: string): ResourceStr | undefined {
  * @param componentImageWidth 控件宽度
  * @param imageResWidth 图片真实宽度
  * @param imageResHeight 图片真实高度
- * @param imageWidth 图片设置宽度
- * @param imageHeight 图片设置高度
- * @param imageMaxWidth 图片设置宽度
+ * @param imageWidthPx 图片设置宽度
+ * @param imageHeightPx 图片设置高度
+ * @param imageMaxWidth 图片最大宽度
+ * @param imageMaxHeight 图片最大高度
  * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比
  * @param imageMaximumWidth 图片基于自身宽度缩放百分比
  * @return 图片的宽高单位是PX

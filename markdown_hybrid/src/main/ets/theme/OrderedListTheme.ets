@@ -28,7 +28,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表背景颜色
    *
-   * @param backgroundColor 有序列表背景颜色
+   * @param color 有序列表背景颜色
    * @return OrderedListTheme
    */
   setOrderedListBackgroundColor(color: ResourceColor): OrderedListTheme {
@@ -125,7 +125,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表子项间距
    *
-   * @param childSpacing 有序列表子项间距
+   * @param spacing 有序列表子项间距
    * @return OrderedListTheme
    */
   setOrderedListChildSpacing(spacing: number): OrderedListTheme {
@@ -136,7 +136,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表子子项间距
    *
-   * @param childChildSpacing 有序列表子子项间距
+   * @param spacing 有序列表子子项间距
    * @return OrderedListTheme
    */
   setOrderedListChildChildSpacing(spacing: number): OrderedListTheme {
@@ -147,7 +147,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表标记间距
    *
-   * @param markerSpacing 有序列表标记间距
+   * @param spacing 有序列表标记间距
    * @return OrderedListTheme
    */
   setOrderedListMarkerSpacing(spacing: number): OrderedListTheme {
@@ -158,7 +158,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表标记文本字体颜色
    *
-   * @param markerTextFontColor 有序列表标记文本字体颜色
+   * @param color 有序列表标记文本字体颜色
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontColor(color: ResourceColor): OrderedListTheme {
@@ -169,7 +169,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表标记文本字体大小
    *
-   * @param markerTextFontSize 有序列表标记文本字体大小
+   * @param size 有序列表标记文本字体大小
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontSize(size: number | string | Resource): OrderedListTheme {
@@ -180,7 +180,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表标记文本字体样式
    *
-   * @param markerTextFontStyle 有序列表标记文本字体样式
+   * @param style 有序列表标记文本字体样式
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontStyle(style: FontStyle): OrderedListTheme {
@@ -191,7 +191,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表标记文本字体粗细
    *
-   * @param markerTextFontWeight 有序列表标记文本字体粗细
+   * @param weight 有序列表标记文本字体粗细
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontWeight(weight: number | FontWeight): OrderedListTheme {
@@ -202,7 +202,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表标记文本字体族
    *
-   * @param markerTextFontFamily 有序列表标记文本字体族
+   * @param family 有序列表标记文本字体族
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontFamily(family: string | Resource): OrderedListTheme {
@@ -213,7 +213,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   /**
    * 设置有序列表标记文本行高
    *
-   * @param markerTextLineHeight 有序列表标记文本行高
+   * @param lineHeight 有序列表标记文本行高
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextLineHeight(lineHeight: number | string | Resource): OrderedListTheme {

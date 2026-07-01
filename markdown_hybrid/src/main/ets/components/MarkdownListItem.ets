@@ -1,4 +1,4 @@
-import { MarkdownDataSource } from "../datasorce/MarkdownDataSource"
+import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
 import { AudioTheme } from "../theme/AudioTheme"
 import { BannerTheme } from "../theme/BannerTheme"

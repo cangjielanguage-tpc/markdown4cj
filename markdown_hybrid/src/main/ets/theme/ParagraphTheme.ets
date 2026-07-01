@@ -26,7 +26,7 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   /**
    * 设置段落背景颜色
    *
-   * @param backgroundColor 段落背景颜色
+   * @param color 段落背景颜色
    * @return ParagraphTheme
    */
   setParagraphBackgroundColor(color: ResourceColor): ParagraphTheme {
@@ -123,7 +123,7 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   /**
    * 设置段落文本字体颜色
    *
-   * @param fontColor 段落文本字体颜色
+   * @param color 段落文本字体颜色
    * @return ParagraphTheme
    */
   setParagraphTextFontColor(color: ResourceColor): ParagraphTheme {
@@ -134,7 +134,7 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   /**
    * 设置段落文本字体大小
    *
-   * @param fontSize 段落文本字体大小
+   * @param size 段落文本字体大小
    * @return ParagraphTheme
    */
   setParagraphTextFontSize(size: number | string | Resource): ParagraphTheme {
@@ -145,7 +145,7 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   /**
    * 设置段落文本字体样式
    *
-   * @param fontStyle 段落文本字体样式
+   * @param style 段落文本字体样式
    * @return ParagraphTheme
    */
   setParagraphTextFontStyle(style: FontStyle): ParagraphTheme {
@@ -156,7 +156,7 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   /**
    * 设置段落文本字体粗细
    *
-   * @param fontWeight 段落文本字体粗细
+   * @param weight 段落文本字体粗细
    * @return ParagraphTheme
    */
   setParagraphTextFontWeight(weight: number | FontWeight): ParagraphTheme {
@@ -167,7 +167,7 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   /**
    * 设置段落文本字体族
    *
-   * @param fontFamily 段落文本字体族
+   * @param family 段落文本字体族
    * @return ParagraphTheme
    */
   setParagraphTextFontFamily(family: string | Resource): ParagraphTheme {
@@ -189,7 +189,7 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   /**
    * 设置段落文本字间距
    *
-   * @param letterSpacing 段落文本字间距
+   * @param spacing 段落文本字间距
    * @return ParagraphTheme
    */
   setParagraphTextLetterSpacing(spacing: number): ParagraphTheme {

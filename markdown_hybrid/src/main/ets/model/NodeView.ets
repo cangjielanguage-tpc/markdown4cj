@@ -191,13 +191,19 @@ export class JsNodePoolImpl implements JsNodePool {
   constructor() {
   }
 
+  /**
+   * 将节点树回收到对象池中
+   *
+   * @param nodeTree 节点树
+   */
   put(nodeTree: JsNodeImpl) {
     traverseTree(nodeTree, this.generator)
   }
 
   /**
    * 将节点树中的Node依次取出,若无则返回新Node
-   * @returns
+   *
+   * @return 节点对象，池为空时返回新实例
    */
   getJsNode(): JsNodeImpl {
     return this.generator.pop() ?? new JsNodeImpl()
@@ -205,9 +211,10 @@ export class JsNodePoolImpl implements JsNodePool {
 }
 
 /**
- * 取出所有可用节点
- * @param node
- * @param arr
+ * 递归遍历节点树，将所有节点reset后存入数组（用于节点池回收）
+ *
+ * @param node 当前节点
+ * @param arr 存放回收节点的数组
  */
 export function traverseTree(node: JsNodeImpl | undefined, arr: Array<JsNodeImpl>) {
   if (node) {

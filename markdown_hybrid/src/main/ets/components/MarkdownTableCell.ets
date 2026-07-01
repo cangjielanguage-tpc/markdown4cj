@@ -41,7 +41,7 @@ import {
   spanLetterSpacing,
   spanLineHeight,
   tableCellBackgroundColor
-} from "../utils/MrkdownThemeUtils"
+} from "../utils/MarkdownThemeUtils"
 
 /**
  * 表格格子控件
@@ -183,6 +183,9 @@ export struct MarkdownTableCell {
 
   /**
    * 渲染单个内联节点（文本/代码/链接/加粗等）
+   *
+   * @param item 节点视图
+   * @param index 索引
    */
   @Builder
   tableCellInlineItem(item: NodeView, index: number) {
@@ -597,6 +600,8 @@ export struct MarkdownTableCell {
 
   /**
    * 异步加载数学公式图片（通过全局队列串行调用latexStringToImage）
+   *
+   * @param item 节点视图
    */
   private loadLatexImage(item: NodeView): void {
     const strLatexMath: string = this.latexStrCallback(item.nodeText)
