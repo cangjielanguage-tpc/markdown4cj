@@ -23,8 +23,7 @@ struct ListDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -55,7 +54,7 @@ struct ListDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -65,88 +64,88 @@ struct ListDetailsPage {
 
   // ---------- 专有
   @State // 有序列表背景颜色
-  orderedListBackgroundColor: number | undefined = undefined
+  orderedListBackgroundColor: ResourceColor | undefined = undefined
   @State // 有序列表上外边距
-  orderedListMarginTop: number = 8
+  orderedListMarginTop: Length = 8.0
   @State // 有序列表右外边距
-  orderedListMarginRight: number = 0
+  orderedListMarginRight: Length = 0.0
   @State // 有序列表下外边距
-  orderedListMarginBottom: number = 8
+  orderedListMarginBottom: Length = 8.0
   @State // 有序列表左外边距
-  orderedListMarginLeft: number = 0
+  orderedListMarginLeft: Length = 0.0
   @State // 有序列表上内边距
-  orderedListPaddingTop: number = 0
+  orderedListPaddingTop: Length = 0.0
   @State // 有序列表右内边距
-  orderedListPaddingRight: number = 0
+  orderedListPaddingRight: Length = 0.0
   @State // 有序列表下内边距
-  orderedListPaddingBottom: number = 0
+  orderedListPaddingBottom: Length = 0.0
   @State // 有序列表左内边距
-  orderedListPaddingLeft: number = 0
+  orderedListPaddingLeft: Length = 0.0
   @State // 有序列表子模块上下间距
-  orderedListChildSpacing: number = 4
+  orderedListChildSpacing: number = 8.0
   @State // 有序列表子模块中子模块上下间距
-  orderedListChildChildSpacing: number = 4
+  orderedListChildChildSpacing: number = 8.0
   @State // 有序列表列表编号和列表内容间距
-  orderedListMarkerSpacing: number = 8
+  orderedListMarkerSpacing: number = 8.0
   @State // 有序列表列表编号文本颜色
-  orderedListMarkerTextFontColor: number | undefined = undefined
+  orderedListMarkerTextFontColor: ResourceColor | undefined = undefined
   @State // 有序列表列表编号文本尺寸
-  orderedListMarkerTextFontSize: number = 14
+  orderedListMarkerTextFontSize: number | string | Resource | undefined = undefined
   @State // 有序列表列表编号文本字体样式
-  orderedListMarkerTextFontStyle: FontStyle = FontStyle.Normal
+  orderedListMarkerTextFontStyle: FontStyle | undefined = undefined
   @State // 有序列表列表编号文本字体粗细
-  orderedListMarkerTextFontWeight: FontWeight = FontWeight.Normal
+  orderedListMarkerTextFontWeight: number | FontWeight | undefined = undefined
   @State // 有序列表列表编号文本字体
-  orderedListMarkerTextFontFamily: string = 'HarmonyOS Sans'
+  orderedListMarkerTextFontFamily: string | Resource | undefined = undefined
   @State // 有序列表列表编号文本行高
-  orderedListMarkerTextLineHeight: number = 22
+  orderedListMarkerTextLineHeight: number | string | Resource | undefined = undefined
 
   @State // 无序/任务背景颜色
-  bulletListBackgroundColor: number | undefined = undefined
+  bulletListBackgroundColor: ResourceColor | undefined = undefined
   @State // 无序/任务上外边距
-  bulletListMarginTop: number = 8
+  bulletListMarginTop: Length = 8.0
   @State // 无序/任务右外边距
-  bulletListMarginRight: number = 0
+  bulletListMarginRight: Length = 0.0
   @State // 无序/任务下外边距
-  bulletListMarginBottom: number = 8
+  bulletListMarginBottom: Length = 8.0
   @State // 无序/任务左外边距
-  bulletListMarginLeft: number = 0
+  bulletListMarginLeft: Length = 0.0
   @State // 无序/任务上内边距
-  bulletListPaddingTop: number = 0
+  bulletListPaddingTop: Length = 0.0
   @State // 无序/任务右内边距
-  bulletListPaddingRight: number = 0
+  bulletListPaddingRight: Length = 0.0
   @State // 无序/任务下内边距
-  bulletListPaddingBottom: number = 0
+  bulletListPaddingBottom: Length = 0.0
   @State // 无序/任务左内边距
-  bulletListPaddingLeft: number = 0
+  bulletListPaddingLeft: Length = 0.0
   @State // 无序/任务子模块上下间距
-  bulletListChildSpacing: number = 4
+  bulletListChildSpacing: number = 8.0
   @State // 无序/任务子模块中子模块上下间距
-  bulletListChildChildSpacing: number = 4
+  bulletListChildChildSpacing: number = 8.0
   @State // 无序列表列表符号和列表内容间距
-  bulletListBulletSpacing: number = 8
+  bulletListBulletSpacing: number = 8.0
   @State // 无序列表列表符号是否全部是实心圆型
   bulletListBulletIsCircle: boolean = false
   @State // 无序列表列表符号文本颜色
-  bulletListBulletTextFontColor: number | undefined = undefined
+  bulletListBulletTextFontColor: ResourceColor | undefined = undefined
   @State // 无序列表列表符号文本尺寸
-  bulletListBulletTextFontSize: number = 14
+  bulletListBulletTextFontSize: number | string | Resource | undefined = undefined
   @State // 无序列表列表符号文本字体样式
-  bulletListBulletTextFontStyle: FontStyle = FontStyle.Normal
+  bulletListBulletTextFontStyle: FontStyle | undefined = undefined
   @State // 无序列表列表符号文本字体粗细
-  bulletListBulletTextFontWeight: FontWeight = FontWeight.Normal
+  bulletListBulletTextFontWeight: number | FontWeight | undefined = undefined
   @State // 无序列表列表符号文本字体
-  bulletListBulletTextFontFamily: string = 'HarmonyOS Sans'
+  bulletListBulletTextFontFamily: string | Resource | undefined = undefined
   @State // 无序列表列表符号文本行高
-  bulletListBulletTextLineHeight: number = 22
+  bulletListBulletTextLineHeight: number | string | Resource | undefined = undefined
   @State // 任务列表多选框和列表内容间距
-  bulletListCheckboxSpacing: number = 8
+  bulletListCheckboxSpacing: number = 8.0
   @State // 任务列表多选框宽度
-  bulletListCheckboxWidth: number = 15
+  bulletListCheckboxWidth: Length = 15.0
   @State // 任务列表多选框高度
-  bulletListCheckboxHeight: number = 15
+  bulletListCheckboxHeight: Length = 15.0
   @State // 任务列表多选框选中颜色
-  bulletListCheckboxSelectedColor: number | undefined = undefined
+  bulletListCheckboxSelectedColor: ResourceColor | undefined = undefined
   @State // 任务列表多选框形状
   bulletListCheckboxShape: CheckBoxShape = CheckBoxShape.CIRCLE
 
@@ -156,24 +155,6 @@ struct ListDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -245,6 +226,27 @@ struct ListDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -255,85 +257,27 @@ struct ListDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }
@@ -387,11 +331,21 @@ struct ListDetailsPage {
     if (this.orderedListMarkerTextFontColor !== undefined) {
       orderedListTheme.setOrderedListMarkerTextFontColor(this.orderedListMarkerTextFontColor)
     }
-    orderedListTheme.setOrderedListMarkerTextFontSize(this.orderedListMarkerTextFontSize)
-    orderedListTheme.setOrderedListMarkerTextFontStyle(this.orderedListMarkerTextFontStyle)
-    orderedListTheme.setOrderedListMarkerTextFontWeight(this.orderedListMarkerTextFontWeight)
-    orderedListTheme.setOrderedListMarkerTextFontFamily(this.orderedListMarkerTextFontFamily)
-    orderedListTheme.setOrderedListMarkerTextLineHeight(this.orderedListMarkerTextLineHeight)
+    if (this.orderedListMarkerTextFontSize !== undefined) {
+      orderedListTheme.setOrderedListMarkerTextFontSize(this.orderedListMarkerTextFontSize)
+    }
+    if (this.orderedListMarkerTextFontStyle !== undefined) {
+      orderedListTheme.setOrderedListMarkerTextFontStyle(this.orderedListMarkerTextFontStyle)
+    }
+    if (this.orderedListMarkerTextFontWeight !== undefined) {
+      orderedListTheme.setOrderedListMarkerTextFontWeight(this.orderedListMarkerTextFontWeight)
+    }
+    if (this.orderedListMarkerTextFontFamily !== undefined) {
+      orderedListTheme.setOrderedListMarkerTextFontFamily(this.orderedListMarkerTextFontFamily)
+    }
+    if (this.orderedListMarkerTextLineHeight !== undefined) {
+      orderedListTheme.setOrderedListMarkerTextLineHeight(this.orderedListMarkerTextLineHeight)
+    }
     theme.setOrderedListTheme(orderedListTheme)
     
     // ---------- 专有 - BulletList
@@ -408,11 +362,21 @@ struct ListDetailsPage {
     if (this.bulletListBulletTextFontColor !== undefined) {
       bulletListTheme.setBulletListBulletTextFontColor(this.bulletListBulletTextFontColor)
     }
-    bulletListTheme.setBulletListBulletTextFontSize(this.bulletListBulletTextFontSize)
-    bulletListTheme.setBulletListBulletTextFontStyle(this.bulletListBulletTextFontStyle)
-    bulletListTheme.setBulletListBulletTextFontWeight(this.bulletListBulletTextFontWeight)
-    bulletListTheme.setBulletListBulletTextFontFamily(this.bulletListBulletTextFontFamily)
-    bulletListTheme.setBulletListBulletTextLineHeight(this.bulletListBulletTextLineHeight)
+    if (this.bulletListBulletTextFontSize !== undefined) {
+      bulletListTheme.setBulletListBulletTextFontSize(this.bulletListBulletTextFontSize)
+    }
+    if (this.bulletListBulletTextFontStyle !== undefined) {
+      bulletListTheme.setBulletListBulletTextFontStyle(this.bulletListBulletTextFontStyle)
+    }
+    if (this.bulletListBulletTextFontWeight !== undefined) {
+      bulletListTheme.setBulletListBulletTextFontWeight(this.bulletListBulletTextFontWeight)
+    }
+    if (this.bulletListBulletTextFontFamily !== undefined) {
+      bulletListTheme.setBulletListBulletTextFontFamily(this.bulletListBulletTextFontFamily)
+    }
+    if (this.bulletListBulletTextLineHeight !== undefined) {
+      bulletListTheme.setBulletListBulletTextLineHeight(this.bulletListBulletTextLineHeight)
+    }
     bulletListTheme.setBulletListCheckboxSpacing(this.bulletListCheckboxSpacing)
     bulletListTheme.setBulletListCheckboxWidth(this.bulletListCheckboxWidth)
     bulletListTheme.setBulletListCheckboxHeight(this.bulletListCheckboxHeight)

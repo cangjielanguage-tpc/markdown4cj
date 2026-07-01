@@ -19,8 +19,7 @@ struct TableDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -51,7 +50,7 @@ struct TableDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -61,87 +60,87 @@ struct TableDetailsPage {
 
   // ---------- 专有
   @State // 表格标题背景颜色
-  tableTitleBackgroundColor: number | undefined = undefined
+  tableTitleBackgroundColor: ResourceColor | undefined = undefined
   @State // 表格内容奇数行背景颜色
-  tableContentOddRowBackgroundColor: number | undefined = undefined
+  tableContentOddRowBackgroundColor: ResourceColor | undefined = undefined
   @State // 表格内容偶数行背景颜色
-  tableContentEvenRowBackgroundColor: number | undefined = undefined
+  tableContentEvenRowBackgroundColor: ResourceColor | undefined = undefined
   @State // 表格上外边距
-  tableMarginTop: number = 0
+  tableMarginTop: Length = 0.0
   @State // 表格右外边距
-  tableMarginRight: number = 0
+  tableMarginRight: Length = 0.0
   @State // 表格下外边距
-  tableMarginBottom: number = 0
+  tableMarginBottom: Length = 0.0
   @State // 表格左外边距
-  tableMarginLeft: number = 0
+  tableMarginLeft: Length = 0.0
   @State // 表格上内边距
-  tablePaddingTop: number = 0
+  tablePaddingTop: Length = 0.0
   @State // 表格右内边距
-  tablePaddingRight: number = 0
+  tablePaddingRight: Length = 0.0
   @State // 表格下内边距
-  tablePaddingBottom: number = 0
+  tablePaddingBottom: Length = 0.0
   @State // 表格左内边距
-  tablePaddingLeft: number = 0
+  tablePaddingLeft: Length = 0.0
   @State // 表格内容上内边距
-  tableCellPaddingTop: number = 4
+  tableCellPaddingTop: Length = 4.0
   @State // 表格内容右内边距
-  tableCellPaddingRight: number = 4
+  tableCellPaddingRight: Length = 4.0
   @State // 表格内容下内边距
-  tableCellPaddingBottom: number = 4
+  tableCellPaddingBottom: Length = 4.0
   @State // 表格内容左内边距
-  tableCellPaddingLeft: number = 4
+  tableCellPaddingLeft: Length = 4.0
   @State // 表格边框样式
   tableBorderStyle: BorderStyle = BorderStyle.Solid
   @State // 表格边框宽度
-  tableBorderWidth: number = 1
+  tableBorderWidth: Length = 1.0
   @State // 表格边框颜色
-  tableBorderColor: number | undefined = undefined
+  tableBorderColor: ResourceColor | undefined = undefined
   @State // 表格边框左上圆角
-  tableRadiusTopLeft: number = 5
+  tableRadiusTopLeft: Length = 5.0
   @State // 表格边框右上圆角
-  tableRadiusTopRight: number = 5
+  tableRadiusTopRight: Length = 5.0
   @State // 表格边框左下圆角
-  tableRadiusBottomLeft: number = 5
+  tableRadiusBottomLeft: Length = 5.0
   @State // 表格边框右下圆角
-  tableRadiusBottomRight: number = 5
+  tableRadiusBottomRight: Length = 5.0
   @State // 表格滚动条状态
   tableScrollBarState: BarState = BarState.Off
   @State // 表格滚动条颜色
-  tableScrollBarColor: number | undefined = undefined
+  tableScrollBarColor: ResourceColor | undefined = undefined
   @State // 表格一格最小宽度
-  tableMinCellWidth: number = 50
+  tableMinCellWidth: Length = 50.0
   @State // 表格一格最大宽度
-  tableMaxCellWidth: number = 300
+  tableMaxCellWidth: Length = 300.0
   @State // 表格第一列是否加粗
   tableFirstColumnIsBold: boolean = false
   @State // 表格标题文本颜色
-  tableTitleTextFontColor: number | undefined = undefined
+  tableTitleTextFontColor: ResourceColor | undefined = undefined
   @State // 表格标题文本尺寸
-  tableTitleTextFontSize: number = 14
+  tableTitleTextFontSize: number | string | Resource = 14.0
   @State // 表格标题文本字体样式
   tableTitleTextFontStyle: FontStyle = FontStyle.Normal
   @State // 表格标题文本字体粗细
-  tableTitleTextFontWeight: FontWeight = FontWeight.Normal
+  tableTitleTextFontWeight: number | FontWeight = FontWeight.Bold
   @State // 表格标题文本字体
-  tableTitleTextFontFamily: string = 'HarmonyOS Sans'
+  tableTitleTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 表格标题文本行高
-  tableTitleTextLineHeight: number = 22
+  tableTitleTextLineHeight: number | string | Resource = 22.0
   @State // 表格标题文本字符间距
-  tableTitleTextLetterSpacing: number = 0
+  tableTitleTextLetterSpacing: number = 0.0
   @State // 表格内容文本颜色
-  tableContentTextFontColor: number | undefined = undefined
+  tableContentTextFontColor: ResourceColor | undefined = undefined
   @State // 表格内容文本尺寸
-  tableContentTextFontSize: number = 14
+  tableContentTextFontSize: number | string | Resource = 14.0
   @State // 表格内容文本字体样式
   tableContentTextFontStyle: FontStyle = FontStyle.Normal
   @State // 表格内容文本字体粗细
-  tableContentTextFontWeight: FontWeight = FontWeight.Normal
+  tableContentTextFontWeight: number | FontWeight = FontWeight.Normal
   @State // 表格内容文本字体
-  tableContentTextFontFamily: string = 'HarmonyOS Sans'
+  tableContentTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 表格内容文本行高
-  tableContentTextLineHeight: number = 22
+  tableContentTextLineHeight: number | string | Resource = 22.0
   @State // 表格内容文本字符间距
-  tableContentTextLetterSpacing: number = 0
+  tableContentTextLetterSpacing: number = 0.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -149,24 +148,6 @@ struct TableDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -236,6 +217,27 @@ struct TableDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -246,85 +248,27 @@ struct TableDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试,生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }
@@ -381,7 +325,7 @@ struct TableDetailsPage {
     tableTheme.setTableRadius({topLeft: this.tableRadiusTopLeft, topRight: this.tableRadiusTopRight, bottomLeft: this.tableRadiusBottomLeft, bottomRight: this.tableRadiusBottomRight})
     tableTheme.setTableScrollBarState(this.tableScrollBarState)
     if (this.tableScrollBarColor !== undefined) {
-      tableTheme.setTableScrollBarColor(this.tableScrollBarColor)
+      tableTheme.setTableScrollBarColor(this.tableScrollBarColor.toString())
     }
     tableTheme.setTableMinCellWidth(this.tableMinCellWidth)
     tableTheme.setTableMaxCellWidth(this.tableMaxCellWidth)

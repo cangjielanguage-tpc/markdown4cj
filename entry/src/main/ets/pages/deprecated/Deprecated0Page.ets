@@ -70,7 +70,7 @@ struct Deprecated0Page {
 
   // ---------------- 其他配置
   // 删除线颜色列表
-  strikethroughColorList: Array<number | undefined> = colorListGeneralData
+  strikethroughColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State strikethroughColor: number = 0xFF191919 // 删除线颜色
   // 删除线样式列表
   strikethroughStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DASHED, TextDecorationStyle.DOTTED, TextDecorationStyle.WAVY]
@@ -85,7 +85,7 @@ struct Deprecated0Page {
   descListDefMarginsList: Array<number> = marginListGeneralData
   @State descListDefMargins: number = 8 // 定义列表定义行间距
   // 下标字体颜色列表
-  subTextColorList: Array<number | undefined> = colorListGeneralData
+  subTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State subTextColor: number = 0xFF191919 // 下标字体颜色
   // 下标字体大小列表
   subTextSizeList: Array<number> = [6, 7, 8, 9, 10]
@@ -94,7 +94,7 @@ struct Deprecated0Page {
   subOffsetDistList: Array<number> = [0, 1, 2, 3, 4]
   @State subOffsetDist: number = 0 // 下标偏移距离
   // 上标字体颜色列表
-  supTextColorList: Array<number | undefined> = colorListGeneralData
+  supTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State supTextColor: number = 0xFF191919 // 上标字体颜色
   // 上标字体大小列表
   supTextSizeList: Array<number> = [6, 7, 8, 9, 10]
@@ -114,10 +114,10 @@ struct Deprecated0Page {
   blockQuoteWidthList: Array<number> = [0, 1, 2, 3, 4]
   @State blockQuoteWidth: number = 1 // 块引用左边线条宽度
   // 块引用左边线条颜色列表
-  blockQuoteColorList: Array<number | undefined> = colorListGeneralData
+  blockQuoteColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State blockQuoteColor: number = 0xFF191919 // 块引用左边线条颜色
   // 块引用背景颜色列表
-  blockQuoteBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  blockQuoteBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State blockQuoteBackGroupColor: number = 0xFFEAEAEA // 块引用背景颜色
   // 块引用子模块上下间距列表
   blockQuoteTopAndBottomMarginsList: Array<number> = marginListGeneralData

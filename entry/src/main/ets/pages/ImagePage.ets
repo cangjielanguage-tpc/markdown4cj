@@ -87,9 +87,9 @@ struct ImagePage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -101,8 +101,8 @@ struct ImagePage {
   // ---------------- 专有
   // 是否触发图片替换事件列表
   imageReplaceList: Array<boolean> = booleanListGeneralData
-  @State // 是否触发图片替换事件
-  imageReplace: boolean = false
+  // @State // 是否触发图片替换事件
+  // imageReplace: boolean = false
   // 网络图片是否压缩列表
   imageAutoResizeList: Array<boolean> = booleanListGeneralData
   @State // 网络图片是否压缩
@@ -116,49 +116,49 @@ struct ImagePage {
   @State // 是否图文混排
   isImageMixedLayout: boolean = true
   // 图片上外边距列表
-  imageMarginTopList: Array<number> = marginListGeneralData
+  imageMarginTopList: Array<Length> = marginListGeneralData
   @State // 图片上外边距
-  imageMarginTop: number = 0
+  imageMarginTop: Length = 0.0
   // 图片右外边距列表
-  imageMarginRightList: Array<number> = marginListGeneralData
+  imageMarginRightList: Array<Length> = marginListGeneralData
   @State // 图片右外边距
-  imageMarginRight: number = 0
+  imageMarginRight: Length = 0.0
   // 图片下外边距列表
-  imageMarginBottomList: Array<number> = marginListGeneralData
+  imageMarginBottomList: Array<Length> = marginListGeneralData
   @State // 图片下外边距
-  imageMarginBottom: number = 0
+  imageMarginBottom: Length = 0.0
   // 图片左外边距列表
-  imageMarginLeftList: Array<number> = marginListGeneralData
+  imageMarginLeftList: Array<Length> = marginListGeneralData
   @State // 图片左外边距
-  imageMarginLeft: number = 0
+  imageMarginLeft: Length = 0.0
   // 图片边框左上圆角列表
-  imageRadiusTopLeftList: Array<number> = radiusListGeneraData
+  imageRadiusTopLeftList: Array<Length> = radiusListGeneraData
   @State // 图片边框左上圆角
-  imageRadiusTopLeft: number = 0
+  imageRadiusTopLeft: Length = 0.0
   // 图片边框右上圆角列表
-  imageRadiusTopRightList: Array<number> = radiusListGeneraData
+  imageRadiusTopRightList: Array<Length> = radiusListGeneraData
   @State // 图片边框右上圆角
-  imageRadiusTopRight: number = 0
+  imageRadiusTopRight: Length = 0.0
   // 图片边框左下圆角列表
-  imageRadiusBottomLeftList: Array<number> = radiusListGeneraData
+  imageRadiusBottomLeftList: Array<Length> = radiusListGeneraData
   @State // 图片边框左下圆角
-  imageRadiusBottomLeft: number = 0
+  imageRadiusBottomLeft: Length = 0.0
   // 图片边框右下圆角列表
-  imageRadiusBottomRightList: Array<number> = radiusListGeneraData
+  imageRadiusBottomRightList: Array<Length> = radiusListGeneraData
   @State // 图片边框右下圆角
-  imageRadiusBottomRight: number = 0
+  imageRadiusBottomRight: Length = 0.0
   // 图片边框样式列表
   imageBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State // 图片边框样式
   imageBorderStyle: BorderStyle = BorderStyle.Solid
   // 图片边框宽度列表
-  imageBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
+  imageBorderWidthList: Array<Length> = lineOrBorderWidthListGeneraData
   @State // 图片边框宽度
-  imageBorderWidth: number = 0
+  imageBorderWidth: Length = 0.0
   // 图片边框颜色列表
-  imageBorderColorList: Array<number | undefined> = colorListGeneralData
+  imageBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 图片边框颜色
-  imageBorderColor: number | undefined = undefined
+  imageBorderColor: ResourceColor | undefined = undefined
   // 图片基于自身宽度缩放百分比列表
   imageMaximumWidthList: Array<number> = [0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
   @State // 图片基于自身宽度缩放百分比
@@ -188,85 +188,85 @@ struct ImagePage {
   @State // 图片缩放类型
   imageFitType: ImageFit = ImageFit.Contain
   // 底部布局距离图片上边距列表
-  imageBottomLayoutMarginTopList: Array<number> = marginListGeneralData
+  imageBottomLayoutMarginTopList: Array<Length> = marginListGeneralData
   @State // 底部布局距离图片上边距
-  imageBottomLayoutMarginTop: number = 14
+  imageBottomLayoutMarginTop: Length = 14.0
   // 图片下载按钮是否显示列表
   imageDownloadButtonVisibleList: Array<boolean> = booleanListGeneralData
   @State // 图片下载按钮是否显示
   imageDownloadButtonVisible: boolean = false
   // 图片下载按钮宽度列表
-  imageDownloadButtonWidthList: Array<number> = widthOrHeightListGeneralData
+  imageDownloadButtonWidthList: Array<Length> = widthOrHeightListGeneralData
   @State // 图片下载按钮宽度
-  imageDownloadButtonWidth: number = 296
+  imageDownloadButtonWidth: Length = 296.0
   // 图片下载按钮高度列表
-  imageDownloadButtonHeightList: Array<number> = widthOrHeightListGeneralData
+  imageDownloadButtonHeightList: Array<Length> = widthOrHeightListGeneralData
   @State // 图片下载按钮高度
-  imageDownloadButtonHeight: number = 44
+  imageDownloadButtonHeight: Length = 44.0
   // 图片下载按钮左上圆角列表
-  imageDownloadButtonRadiusTopLeftList: Array<number> = radiusListGeneraData
+  imageDownloadButtonRadiusTopLeftList: Array<Length> = radiusListGeneraData
   @State // 图片下载按钮左上圆角
-  imageDownloadButtonRadiusTopLeft: number = 22
+  imageDownloadButtonRadiusTopLeft: Length = 22.0
   // 图片下载按钮右上圆角列表
-  imageDownloadButtonRadiusTopRightList: Array<number> = radiusListGeneraData
+  imageDownloadButtonRadiusTopRightList: Array<Length> = radiusListGeneraData
   @State // 图片下载按钮右上圆角
-  imageDownloadButtonRadiusTopRight: number = 22
+  imageDownloadButtonRadiusTopRight: Length = 22.0
   // 图片下载按钮左下圆角列表
-  imageDownloadButtonRadiusBottomLeftList: Array<number> = radiusListGeneraData
+  imageDownloadButtonRadiusBottomLeftList: Array<Length> = radiusListGeneraData
   @State // 图片下载按钮左下圆角
-  imageDownloadButtonRadiusBottomLeft: number = 22
+  imageDownloadButtonRadiusBottomLeft: Length = 22.0
   // 图片下载按钮右下圆角列表
-  imageDownloadButtonRadiusBottomRightList: Array<number> = radiusListGeneraData
+  imageDownloadButtonRadiusBottomRightList: Array<Length> = radiusListGeneraData
   @State // 图片下载按钮右下圆角
-  imageDownloadButtonRadiusBottomRight: number = 22
+  imageDownloadButtonRadiusBottomRight: Length = 22.0
   // 图片下载按钮图标列表
   imageDownloadButtonIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon')]
   @State // 图片下载按钮图标
   imageDownloadButtonIcon: Resource | undefined = undefined
   // 图片下载按钮图标宽度列表
-  imageDownloadButtonIconWidthList: Array<number> = widthOrHeightListGeneralData
+  imageDownloadButtonIconWidthList: Array<Length> = widthOrHeightListGeneralData
   @State // 图片下载按钮图标宽度
-  imageDownloadButtonIconWidth: number = 18
+  imageDownloadButtonIconWidth: Length = 18.0
   // 图片下载按钮图标高度列表
-  imageDownloadButtonIconHeightList: Array<number> = widthOrHeightListGeneralData
+  imageDownloadButtonIconHeightList: Array<Length> = widthOrHeightListGeneralData
   @State // 图片下载按钮图标高度
-  imageDownloadButtonIconHeight: number = 18
+  imageDownloadButtonIconHeight: Length = 18.0
   // 图片下载按钮图标和文本间距列表
   imageDownloadButtonIconTextGapList: Array<number> = spaceListGeneralData
   @State // 图片下载按钮图标和文本间距
-  imageDownloadButtonIconTextGap: number = 6
+  imageDownloadButtonIconTextGap: number = 6.0
   // 图片下载按钮背景颜色列表
-  imageDownloadButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  imageDownloadButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 图片下载按钮背景颜色
-  imageDownloadButtonBackgroundColor: number | undefined = undefined
+  imageDownloadButtonBackgroundColor: ResourceColor | undefined = undefined
   // 图片下载按钮默认文本内容列表
   imageDownloadButtonTextList: Array<string> = ["下载", "提交", "下载图片"]
   @State // 图片下载按钮默认文本内容
   imageDownloadButtonText: string = "下载图片"
   // 图片下载按钮文本颜色列表
-  imageDownloadButtonTextFontColorList: Array<number | undefined> = colorListGeneralData
+  imageDownloadButtonTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 图片下载按钮文本颜色
-  imageDownloadButtonTextFontColor: number | undefined = undefined
+  imageDownloadButtonTextFontColor: ResourceColor | undefined = undefined
   // 图片下载按钮文本尺寸列表
-  imageDownloadButtonTextFontSizeList: Array<number> = textSizeListGeneralData
+  imageDownloadButtonTextFontSizeList: Array<number | string | Resource> = textSizeListGeneralData
   @State // 图片下载按钮文本尺寸
-  imageDownloadButtonTextFontSize: number = 16
+  imageDownloadButtonTextFontSize: number | string | Resource = 16.0
   // 图片下载按钮文本字体样式列表
   imageDownloadButtonTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 图片下载按钮文本字体样式
   imageDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal
   // 图片下载按钮文本字体粗细列表
-  imageDownloadButtonTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  imageDownloadButtonTextFontWeightList: Array<number | FontWeight> = fontWeightListGeneraData
   @State // 图片下载按钮文本字体粗细
-  imageDownloadButtonTextFontWeight: FontWeight = FontWeight.Medium
+  imageDownloadButtonTextFontWeight: number | FontWeight = FontWeight.Medium
   // 图片下载按钮文本字体列表
-  imageDownloadButtonTextFontFamilyList: Array<string> = textTypefaceListGeneralData
+  imageDownloadButtonTextFontFamilyList: Array<string | Resource> = textTypefaceListGeneralData
   @State // 图片下载按钮文本字体
-  imageDownloadButtonTextFontFamily: string = 'HarmonyOS Sans'
+  imageDownloadButtonTextFontFamily: string | Resource = 'HarmonyOS Sans'
   // 图片下载按钮文本行高列表
-  imageDownloadButtonTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  imageDownloadButtonTextLineHeightList: Array<number | string | Resource> = textLineHeightListGeneralData
   @State // 图片下载按钮文本行高
-  imageDownloadButtonTextLineHeight: number = 22
+  imageDownloadButtonTextLineHeight: number | string | Resource = 22.0
   @State // 配置数据内容
   imageDataMD: ImageDataMD = new ImageDataMD()
   heightMD: number = 30 * 2 // 乘以行数
@@ -303,8 +303,8 @@ struct ImagePage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -330,7 +330,7 @@ struct ImagePage {
 
                   // ---------- 专有
                   this.imageDataMD._pagePath = `${this.rawFilePath}/${item}`
-                  this.imageDataMD.imageReplace = this.imageReplace
+                  // this.imageDataMD.imageReplace = this.imageReplace
                   this.imageDataMD.imageAutoResize = this.imageAutoResize
                   this.imageDataMD.imagePlaceholder = this.imagePlaceholder
                   this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout
@@ -387,12 +387,12 @@ struct ImagePage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -513,12 +513,12 @@ struct ImagePage {
             Row() {
               Text("图片边距和边框")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -615,12 +615,12 @@ struct ImagePage {
             Row() {
               Text("图片设置和其他")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -635,12 +635,12 @@ struct ImagePage {
 
             if (this.isExpanded3) {
               Column() {
-                BaseTabComponent({
-                  titleStr: "是否触发图片替换事件 - ",
-                  typeEnum: TypeEnum.IS_BOOLEAN,
-                  allListData: this.imageReplaceList,
-                  allData: this.imageReplace
-                })
+                // BaseTabComponent({
+                //   titleStr: "是否触发图片替换事件 - ",
+                //   typeEnum: TypeEnum.IS_BOOLEAN,
+                //   allListData: this.imageReplaceList,
+                //   allData: this.imageReplace
+                // })
                 BaseTabComponent({
                   titleStr: "网络图片是否压缩 - ",
                   typeEnum: TypeEnum.IS_BOOLEAN,
@@ -723,12 +723,12 @@ struct ImagePage {
             Row() {
               Text("图片下载按钮")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded4 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded4 = !this.isExpanded4
@@ -871,7 +871,7 @@ struct ImagePage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

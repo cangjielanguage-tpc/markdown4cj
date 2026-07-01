@@ -83,9 +83,9 @@ struct TablePage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -96,17 +96,17 @@ struct TablePage {
   openGestureSwipeTest: boolean = false
   // ---------------- 专有
   // 表格标题背景颜色列表
-  tableTitleBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  tableTitleBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表格标题背景颜色
-  tableTitleBackgroundColor: number | undefined = undefined
+  tableTitleBackgroundColor: ResourceColor | undefined = undefined
   // 表格内容奇数行背景颜色列表
-  tableContentOddRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  tableContentOddRowBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表格内容奇数行背景颜色
-  tableContentOddRowBackgroundColor: number | undefined = undefined
+  tableContentOddRowBackgroundColor: ResourceColor | undefined = undefined
   // 表格内容偶数行背景颜色列表
-  tableContentEvenRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  tableContentEvenRowBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表格内容偶数行背景颜色
-  tableContentEvenRowBackgroundColor: number | undefined = undefined
+  tableContentEvenRowBackgroundColor: ResourceColor | undefined = undefined
   // 表格上外边距列表
   tableMarginTopList: Array<number> = marginListGeneralData
   @State // 表格上外边距
@@ -164,9 +164,9 @@ struct TablePage {
   @State // 表格边框宽度
   tableBorderWidth: number = 1
   // 表格边框颜色列表
-  tableBorderColorList: Array<number | undefined> = colorListGeneralData
+  tableBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表格边框颜色
-  tableBorderColor: number | undefined = undefined
+  tableBorderColor: ResourceColor | undefined = undefined
   // 表格边框左上圆角列表
   tableRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State // 表格边框左上圆角
@@ -188,9 +188,9 @@ struct TablePage {
   @State // 表格滚动条状态
   tableScrollBarState: BarState = BarState.Off
   // 表格滚动条颜色列表
-  tableScrollBarColorList: Array<number | undefined> = colorListGeneralData
+  tableScrollBarColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表格滚动条颜色
-  tableScrollBarColor: number | undefined = undefined
+  tableScrollBarColor: ResourceColor | undefined = undefined
   // 表格一格最小宽度列表
   tableMinCellWidthList: Array<number> = widthOrHeightListGeneralData
   @State // 表格一格最小宽度
@@ -204,9 +204,9 @@ struct TablePage {
   @State // 表格第一列是否加粗
   tableFirstColumnIsBold: boolean = false
   // 表格标题文本颜色列表
-  tableTitleTextFontColorList: Array<number | undefined> = colorListGeneralData
+  tableTitleTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表格标题文本颜色
-  tableTitleTextFontColor: number | undefined = undefined
+  tableTitleTextFontColor: ResourceColor | undefined = undefined
   // 表格标题文本尺寸列表
   tableTitleTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 表格标题文本尺寸
@@ -232,9 +232,9 @@ struct TablePage {
   @State // 表格标题文本字符间距
   tableTitleTextLetterSpacing: number = 0
   // 表格内容文本颜色列表
-  tableContentTextFontColorList: Array<number | undefined> = colorListGeneralData
+  tableContentTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表格内容文本颜色
-  tableContentTextFontColor: number | undefined = undefined
+  tableContentTextFontColor: ResourceColor | undefined = undefined
   // 表格内容文本尺寸列表
   tableContentTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 表格内容文本尺寸
@@ -297,8 +297,8 @@ struct TablePage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -379,12 +379,12 @@ struct TablePage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -505,12 +505,12 @@ struct TablePage {
             Row() {
               Text("边距设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -613,12 +613,12 @@ struct TablePage {
             Row() {
               Text("边框设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -691,12 +691,12 @@ struct TablePage {
             Row() {
               Text("滚动条和其他设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded4 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded4 = !this.isExpanded4
@@ -757,12 +757,12 @@ struct TablePage {
             Row() {
               Text("标题文本设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded5 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded5 = !this.isExpanded5
@@ -835,12 +835,12 @@ struct TablePage {
             Row() {
               Text("内容文本设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded6 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded6 = !this.isExpanded6
@@ -911,7 +911,7 @@ struct TablePage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

@@ -19,8 +19,7 @@ struct VideoDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -51,7 +50,7 @@ struct VideoDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -61,141 +60,141 @@ struct VideoDetailsPage {
 
   // ---------- 专有
   @State // 视频背景颜色
-  videoBackgroundColor: number | undefined = undefined
+  videoBackgroundColor: ResourceColor | undefined = undefined
   @State // 视频上外边距
-  videoMarginTop: number = 10
+  videoMarginTop: Length = 0.0
   @State // 视频右外边距
-  videoMarginRight: number = 0
+  videoMarginRight: Length = 0.0
   @State // 视频下外边距
-  videoMarginBottom: number = 10
+  videoMarginBottom: Length = 0.0
   @State // 视频左外边距
-  videoMarginLeft: number = 0
+  videoMarginLeft: Length = 0.0
   @State // 视频上内边距
-  videoPaddingTop: number = 0
+  videoPaddingTop: Length = 0.0
   @State // 视频右内边距
-  videoPaddingRight: number = 0
+  videoPaddingRight: Length = 0.0
   @State // 视频下内边距
-  videoPaddingBottom: number = 0
+  videoPaddingBottom: Length = 0.0
   @State // 视频左内边距
-  videoPaddingLeft: number = 0
+  videoPaddingLeft: Length = 0.0
   @State // 视频边框左上圆角
-  videoRadiusTopLeft: number = 10
+  videoRadiusTopLeft: Length = 10.0
   @State // 视频边框右上圆角
-  videoRadiusTopRight: number = 10
+  videoRadiusTopRight: Length = 10.0
   @State // 视频边框左下圆角
-  videoRadiusBottomLeft: number = 10
+  videoRadiusBottomLeft: Length = 10.0
   @State // 视频边框右下圆角
-  videoRadiusBottomRight: number = 10
+  videoRadiusBottomRight: Length = 10.0
   @State // 视频边框样式
   videoBorderStyle: BorderStyle = BorderStyle.Solid
   @State // 视频边框宽度
-  videoBorderWidth: number = 0
+  videoBorderWidth: Length = 0.0
   @State // 视频边框颜色
-  videoBorderColor: number | undefined = undefined
+  videoBorderColor: ResourceColor | undefined = undefined
   videoPlaceholder: Resource | undefined = undefined // 视频占位图
   @State // 视频图片缩放类型
   videoImageFitType: ImageFit = ImageFit.Contain
   videoPlayIcon: Resource | undefined = undefined // 播放按钮默认图片
   @State // 播放按钮图标宽度
-  videoPlayIconWidth: number = 40
+  videoPlayIconWidth: Length = 60.0
   @State // 播放按钮图标高度
-  videoPlayIconHeight: number = 60
+  videoPlayIconHeight: Length = 60.0
   @State // 播放按钮图标缩放类型
   videoPlayIconFitType: ImageFit = ImageFit.Contain
   @State // 视频时间文本颜色
-  videoTimeTextFontColor: number | undefined = undefined
+  videoTimeTextFontColor: ResourceColor | undefined = undefined
   @State // 视频时间文本尺寸
-  videoTimeTextFontSize: number = 14
+  videoTimeTextFontSize: number | string | Resource = 14.0
   @State // 视频时间文本字体样式
   videoTimeTextFontStyle: FontStyle = FontStyle.Normal
   @State // 视频时间文本字体粗细
-  videoTimeTextFontWeight: FontWeight = FontWeight.Normal
+  videoTimeTextFontWeight: number | FontWeight = FontWeight.Normal
   @State // 视频时间文本字体
-  videoTimeTextFontFamily: string = 'HarmonyOS Sans'
+  videoTimeTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 视频时间文本行高
-  videoTimeTextLineHeight: number = 22
+  videoTimeTextLineHeight: number | string | Resource = 22.0
   @State // 视频时间文本居右边距
-  videoTimeTextMarginRight: number = 10
+  videoTimeTextMarginRight: Length = 10.0
   @State // 视频时间文本居底边距
-  videoTimeTextMarginBottom: number = 10
+  videoTimeTextMarginBottom: Length = 10.0
   @State // 底部布局是否显示（视频发布/下载按钮）
   videoBottomLayoutVisible: boolean = false
   @State // 底部布局距离视频上边距
-  videoBottomLayoutMarginTop: number = 14
+  videoBottomLayoutMarginTop: Length = 14.0
   @State // 视频发布按钮是否显示
   videoReleaseButtonVisible: boolean = true
   @State // 视频发布按钮背景颜色
-  videoReleaseButtonBackgroundColor: number | undefined = undefined
+  videoReleaseButtonBackgroundColor: ResourceColor | undefined = undefined
   @State // 视频发布按钮宽度
-  videoReleaseButtonWidth: number = 144
+  videoReleaseButtonWidth: Length = 144.0
   @State // 视频发布按钮高度
-  videoReleaseButtonHeight: number = 44
+  videoReleaseButtonHeight: Length = 44.0
   @State // 视频发布按钮左上圆角
-  videoReleaseButtonRadiusTopLeft: number = 22
+  videoReleaseButtonRadiusTopLeft: Length = 22.0
   @State // 视频发布按钮右上圆角
-  videoReleaseButtonRadiusTopRight: number = 22
+  videoReleaseButtonRadiusTopRight: Length = 22.0
   @State // 视频发布按钮左下圆角
-  videoReleaseButtonRadiusBottomLeft: number = 22
+  videoReleaseButtonRadiusBottomLeft: Length = 22.0
   @State // 视频发布按钮右下圆角
-  videoReleaseButtonRadiusBottomRight: number = 22
+  videoReleaseButtonRadiusBottomRight: Length = 22.0
   @State // 视频发布按钮图标和文本间距
-  videoReleaseButtonIconTextGap: number = 6
+  videoReleaseButtonIconTextGap: number = 6.0
   videoReleaseButtonIcon: Resource | undefined = undefined // 视频发布按钮图标
   @State // 视频发布按钮图标宽度
-  videoReleaseButtonIconWidth: number = 18
+  videoReleaseButtonIconWidth: Length = 18.0
   @State // 视频发布按钮图标高度
-  videoReleaseButtonIconHeight: number = 18
+  videoReleaseButtonIconHeight: Length = 18.0
   @State // 视频发布按钮默认文本内容
   videoReleaseButtonText: string = "发布视频"
   @State // 视频发布按钮文本颜色
-  videoReleaseButtonTextFontColor: number | undefined = undefined
+  videoReleaseButtonTextFontColor: ResourceColor | undefined = undefined
   @State // 视频发布按钮文本尺寸
-  videoReleaseButtonTextFontSize: number = 16
+  videoReleaseButtonTextFontSize: number | string | Resource = 16.0
   @State // 视频发布按钮文本字体样式
   videoReleaseButtonTextFontStyle: FontStyle = FontStyle.Normal
   @State // 视频发布按钮文本字体粗细
-  videoReleaseButtonTextFontWeight: FontWeight = FontWeight.Medium
+  videoReleaseButtonTextFontWeight: number | FontWeight = FontWeight.Medium
   @State // 视频发布按钮文本字体
-  videoReleaseButtonTextFontFamily: string = 'HarmonyOS Sans'
+  videoReleaseButtonTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 视频发布按钮文本行高
-  videoReleaseButtonTextLineHeight: number = 22
+  videoReleaseButtonTextLineHeight: number | string | Resource = 22.0
   @State // 视频下载按钮是否显示
   videoDownloadButtonVisible: boolean = true
   @State // 视频下载按钮背景颜色
-  videoDownloadButtonBackgroundColor: number | undefined = undefined
+  videoDownloadButtonBackgroundColor: ResourceColor | undefined = undefined
   @State // 视频下载按钮宽度
-  videoDownloadButtonWidth: number = 144
+  videoDownloadButtonWidth: Length = 144.0
   @State // 视频下载按钮高度
-  videoDownloadButtonHeight: number = 44
+  videoDownloadButtonHeight: Length = 44.0
   @State // 视频下载按钮左上圆角
-  videoDownloadButtonRadiusTopLeft: number = 22
+  videoDownloadButtonRadiusTopLeft: Length = 22.0
   @State // 视频下载按钮右上圆角
-  videoDownloadButtonRadiusTopRight: number = 22
+  videoDownloadButtonRadiusTopRight: Length = 22.0
   @State // 视频下载按钮左下圆角
-  videoDownloadButtonRadiusBottomLeft: number = 22
+  videoDownloadButtonRadiusBottomLeft: Length = 22.0
   @State // 视频下载按钮右下圆角
-  videoDownloadButtonRadiusBottomRight: number = 22
+  videoDownloadButtonRadiusBottomRight: Length = 22.0
   @State // 视频下载按钮图标和文本间距
-  videoDownloadButtonIconTextGap: number = 6
+  videoDownloadButtonIconTextGap: number = 6.0
   videoDownloadButtonIcon: Resource | undefined = undefined // 视频下载按钮图标
   @State // 视频下载按钮图标宽度
-  videoDownloadButtonIconWidth: number = 18
+  videoDownloadButtonIconWidth: Length = 18.0
   @State // 视频下载按钮图标高度
-  videoDownloadButtonIconHeight: number = 18
+  videoDownloadButtonIconHeight: Length = 18.0
   @State // 视频下载按钮默认文本内容
   videoDownloadButtonText: string = "下载视频"
   @State // 视频下载按钮文本颜色
-  videoDownloadButtonTextFontColor: number | undefined = undefined
+  videoDownloadButtonTextFontColor: ResourceColor | undefined = undefined
   @State // 视频下载按钮文本尺寸
-  videoDownloadButtonTextFontSize: number = 16
+  videoDownloadButtonTextFontSize: number | string | Resource = 16.0
   @State // 视频下载按钮文本字体样式
   videoDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal
   @State // 视频下载按钮文本字体粗细
-  videoDownloadButtonTextFontWeight: FontWeight = FontWeight.Medium
+  videoDownloadButtonTextFontWeight: number | FontWeight = FontWeight.Medium
   @State // 视频下载按钮文本字体
-  videoDownloadButtonTextFontFamily: string = 'HarmonyOS Sans'
+  videoDownloadButtonTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 视频下载按钮文本行高
-  videoDownloadButtonTextLineHeight: number = 22
+  videoDownloadButtonTextLineHeight: number | string | Resource = 22.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -203,21 +202,6 @@ struct VideoDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -316,6 +300,27 @@ struct VideoDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -326,85 +331,27 @@ struct VideoDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }

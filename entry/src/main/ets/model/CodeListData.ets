@@ -1,35 +1,35 @@
 import { CodeBlockData } from "./CodeBlockData"
 
 export class CodeListData extends CodeBlockData {
-  _codeListTitleTextSize: number = 13
-  _codeListTitleSelectTextSize: number = 13
-  _codeListTitleSelectTextColor: number | undefined = undefined
-  _codeListTitleUnSelectTextColor: number | undefined = undefined
-  _codeListTitleSelectBackGroupColor: number | undefined = undefined
-  _codeListTitleUnSelectBackGroupColor: number | undefined = undefined
+  _codeBlockListTitleTextSize: number = 13.0 // 组合代码块未选中标题字体大小
+  _codeBlockListTitleSelectTextSize: number = 13.0 // 组合代码块选中标题字体大小
+  _codeBlockListTitleSelectTextColor: ResourceColor | undefined = undefined // 组合代码块选中标题文本颜色
+  _codeBlockListTitleUnselectTextColor: ResourceColor | undefined = undefined // 组合代码块未选中标题文本颜色
+  _codeBlockListTitleSelectBackgroundColor: ResourceColor | undefined = undefined // 组合代码块选中标题背景颜色
+  _codeBlockListTitleUnselectBackgroundColor: ResourceColor | undefined = undefined // 组合代码块未选中标题背景颜色
 
-  public set codeListTitleTextSize(value: number) {
-    this._codeListTitleTextSize = value
+  public set codeBlockListTitleTextSize(value: number) {
+    this._codeBlockListTitleTextSize = value
   }
 
-  public set codeListTitleSelectTextSize(value: number) {
-    this._codeListTitleSelectTextSize = value
+  public set codeBlockListTitleSelectTextSize(value: number) {
+    this._codeBlockListTitleSelectTextSize = value
   }
 
-  public set codeListTitleSelectTextColor(value: number | undefined) {
-    this._codeListTitleSelectTextColor = value
+  public set codeBlockListTitleSelectTextColor(value: ResourceColor | undefined) {
+    this._codeBlockListTitleSelectTextColor = value
   }
 
-  public set codeListTitleUnSelectTextColor(value: number | undefined) {
-    this._codeListTitleUnSelectTextColor = value
+  public set codeBlockListTitleUnselectTextColor(value: ResourceColor | undefined) {
+    this._codeBlockListTitleUnselectTextColor = value
   }
 
-  public set codeListTitleSelectBackGroupColor(value: number | undefined) {
-    this._codeListTitleSelectBackGroupColor = value
+  public set codeBlockListTitleSelectBackgroundColor(value: ResourceColor | undefined) {
+    this._codeBlockListTitleSelectBackgroundColor = value
   }
 
-  public set codeListTitleUnSelectBackGroupColor(value: number | undefined) {
-    this._codeListTitleUnSelectBackGroupColor = value
+  public set codeBlockListTitleUnselectBackgroundColor(value: ResourceColor | undefined) {
+    this._codeBlockListTitleUnselectBackgroundColor = value
   }
 
   constructor() {

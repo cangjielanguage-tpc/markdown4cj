@@ -21,8 +21,7 @@ struct ImageDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -53,7 +52,7 @@ struct ImageDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -62,8 +61,8 @@ struct ImageDetailsPage {
   isInputEnded: boolean = false
 
   // ---------- 专有
-  @State // 图片是否替换
-  imageReplace: boolean = true
+  // @State // 图片是否替换
+  // imageReplace: boolean = true
   @State // 网络图片是否压缩
   imageAutoResize: boolean = true
   @State // 图片默认占位图
@@ -71,27 +70,27 @@ struct ImageDetailsPage {
   @State // 是否图文混排
   isImageMixedLayout: boolean = true
   @State // 图片上外边距
-  imageMarginTop: number = 10
+  imageMarginTop: Length = 10.0
   @State // 图片右外边距
-  imageMarginRight: number = 0
+  imageMarginRight: Length = 0.0
   @State // 图片下外边距
-  imageMarginBottom: number = 10
+  imageMarginBottom: Length = 10.0
   @State // 图片左外边距
-  imageMarginLeft: number = 0
+  imageMarginLeft: Length = 0.0
   @State // 图片边框左上圆角
-  imageRadiusTopLeft: number = 0
+  imageRadiusTopLeft: Length = 0.0
   @State // 图片边框右上圆角
-  imageRadiusTopRight: number = 0
+  imageRadiusTopRight: Length = 0.0
   @State // 图片边框左下圆角
-  imageRadiusBottomLeft: number = 0
+  imageRadiusBottomLeft: Length = 0.0
   @State // 图片边框右下圆角
-  imageRadiusBottomRight: number = 0
+  imageRadiusBottomRight: Length = 0.0
   @State // 图片边框样式
   imageBorderStyle: BorderStyle = BorderStyle.Solid
   @State // 图片边框宽度
-  imageBorderWidth: number = 0
+  imageBorderWidth: Length = 0.0
   @State // 图片边框颜色
-  imageBorderColor: number | undefined = undefined
+  imageBorderColor: ResourceColor | undefined = undefined
   @State // 图片基于自身宽度缩放百分比
   imageMaximumWidth: number = 1.0
   @State // 图片基于父布局宽度缩放百分比
@@ -107,45 +106,45 @@ struct ImageDetailsPage {
   @State // 图片缩放类型
   imageFitType: ImageFit = ImageFit.Contain
   @State // 底部布局距离图片上边距
-  imageBottomLayoutMarginTop: number = 14
+  imageBottomLayoutMarginTop: Length = 14.0
   @State // 图片下载按钮是否显示
   imageDownloadButtonVisible: boolean = true
   @State // 图片下载按钮宽度
-  imageDownloadButtonWidth: number = 144
+  imageDownloadButtonWidth: Length = 144.0
   @State // 图片下载按钮高度
-  imageDownloadButtonHeight: number = 44
+  imageDownloadButtonHeight: Length = 44.0
   @State // 图片下载按钮左上圆角
-  imageDownloadButtonRadiusTopLeft: number = 22
+  imageDownloadButtonRadiusTopLeft: Length = 22.0
   @State // 图片下载按钮右上圆角
-  imageDownloadButtonRadiusTopRight: number = 22
+  imageDownloadButtonRadiusTopRight: Length = 22.0
   @State // 图片下载按钮左下圆角
-  imageDownloadButtonRadiusBottomLeft: number = 22
+  imageDownloadButtonRadiusBottomLeft: Length = 22.0
   @State // 图片下载按钮右下圆角
-  imageDownloadButtonRadiusBottomRight: number = 22
+  imageDownloadButtonRadiusBottomRight: Length = 22.0
   @State // 图片下载按钮图标
   imageDownloadButtonIcon: Resource | undefined = undefined
   @State // 图片下载按钮图标宽度
-  imageDownloadButtonIconWidth: number = 18
+  imageDownloadButtonIconWidth: Length = 18.0
   @State // 图片下载按钮图标高度
-  imageDownloadButtonIconHeight: number = 18
+  imageDownloadButtonIconHeight: Length = 18.0
   @State // 图片下载按钮图标和文本间距
-  imageDownloadButtonIconTextGap: number = 6
+  imageDownloadButtonIconTextGap: number = 6.0
   @State // 图片下载按钮背景颜色
-  imageDownloadButtonBackgroundColor: number | undefined = undefined
+  imageDownloadButtonBackgroundColor: ResourceColor | undefined = undefined
   @State // 图片下载按钮默认文本内容
   imageDownloadButtonText: string = "下载图片"
   @State // 图片下载按钮文本颜色
-  imageDownloadButtonTextFontColor: number | undefined = undefined
+  imageDownloadButtonTextFontColor: ResourceColor | undefined = undefined
   @State // 图片下载按钮文本尺寸
-  imageDownloadButtonTextFontSize: number = 16
+  imageDownloadButtonTextFontSize: number | string | Resource = 16.0
   @State // 图片下载按钮文本字体样式
   imageDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal
   @State // 图片下载按钮文本字体粗细
-  imageDownloadButtonTextFontWeight: FontWeight = FontWeight.Medium
+  imageDownloadButtonTextFontWeight: number | FontWeight = FontWeight.Medium
   @State // 图片下载按钮文本字体
-  imageDownloadButtonTextFontFamily: string = 'HarmonyOS Sans'
+  imageDownloadButtonTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 图片下载按钮文本行高
-  imageDownloadButtonTextLineHeight: number = 22
+  imageDownloadButtonTextLineHeight: number | string | Resource = 22.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -153,24 +152,6 @@ struct ImageDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -193,7 +174,7 @@ struct ImageDetailsPage {
       this.openGestureSwipe = imageDataMD._openGestureSwipe
       this.openGestureSwipeTest = imageDataMD._openGestureSwipeTest
       // ---------- 专有
-      this.imageReplace = imageDataMD._imageReplace
+      // this.imageReplace = imageDataMD._imageReplace
       this.imageAutoResize = imageDataMD._imageAutoResize
       this.imagePlaceholder = imageDataMD._imagePlaceholder
       this.isImageMixedLayout = imageDataMD._isImageMixedLayout
@@ -241,6 +222,27 @@ struct ImageDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -251,85 +253,27 @@ struct ImageDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }
@@ -342,9 +286,9 @@ struct ImageDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setImageCallback(this.setImageCallback) // 图片点击回调
-    if (this.imageReplace) {
-      config.setImageCallbackCallback(this.setImageReplaceCallback) // 图片替换事件
-    }
+    // if (this.imageReplace) {
+    //   config.setImageCallbackCallback(this.setImageReplaceCallback) // 图片替换事件
+    // }
     config.setImageDownloadCallback(this.setImageDownloadCallback) // 图片下载的点击事件
     return config
   }
@@ -414,7 +358,7 @@ struct ImageDetailsPage {
     }
     imageTheme.setImageDownloadButtonIconWidth(this.imageDownloadButtonIconWidth)
     imageTheme.setImageDownloadButtonIconHeight(this.imageDownloadButtonIconHeight)
-    imageTheme.setImageDownloadButtonIconTextGap(this.imageDownloadButtonIconTextGap)
+    imageTheme.setImageDownloadButtonIconTextGap(this.imageDownloadButtonIconTextGap.valueOf() as number)
     if (this.imageDownloadButtonBackgroundColor !== undefined) {
       imageTheme.setImageDownloadButtonBackgroundColor(this.imageDownloadButtonBackgroundColor)
     }

@@ -78,9 +78,9 @@ struct LatexMathPage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -127,9 +127,9 @@ struct LatexMathPage {
   @State // 数学公式未加载状态是否显示文字
   latexMathDefaultText: boolean = true
   // 数学公式未加载状态文本颜色列表
-  latexMathDefaultTextFontColorList: Array<number | undefined> = colorListGeneralData
+  latexMathDefaultTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 数学公式未加载状态文本颜色
-  latexMathDefaultTextFontColor: number | undefined = undefined
+  latexMathDefaultTextFontColor: ResourceColor | undefined = undefined
   // 数学公式未加载状态文本尺寸列表
   latexMathDefaultTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 数学公式未加载状态文本尺寸
@@ -151,13 +151,13 @@ struct LatexMathPage {
   @State // 数学公式文本大小
   latexMathTextSize: number = 16
   // 数学公式背景色列表
-  latexMathBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  latexMathBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 数学公式背景色
-  latexMathBackgroundColor: number | undefined = undefined
+  latexMathBackgroundColor: ResourceColor | undefined = undefined
   // 数学公式文本颜色列表
-  latexMathTextColorList: Array<number | undefined> = colorListGeneralData
+  latexMathTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 数学公式文本颜色
-  latexMathTextColor: number | undefined = undefined
+  latexMathTextColor: ResourceColor | undefined = undefined
   // 数学公式生成图片格式列表
   // latexMathColorFormatList: Array<number> = [LatexMathColorFormat.COLOR_FORMAT_BGRA_8888, LatexMathColorFormat.COLOR_FORMAT_RGB_565]
   @State // 数学公式生成图片格式
@@ -205,8 +205,8 @@ struct LatexMathPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -266,12 +266,12 @@ struct LatexMathPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -392,12 +392,12 @@ struct LatexMathPage {
             Row() {
               Text("边距和其他设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -494,12 +494,12 @@ struct LatexMathPage {
             Row() {
               Text("文本设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -583,7 +583,7 @@ struct LatexMathPage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

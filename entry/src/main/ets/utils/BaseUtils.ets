@@ -7,15 +7,19 @@ import hilog from "@ohos.hilog";
  * @param color 文本颜色颜色
  * @return 反转之后的颜色
  */
-export function colorSwitch(color: number): number {
+export function colorSwitch(color: ResourceColor): ResourceColor {
   switch (color) {
     case 0xFFE0E0E0:
+    case '#FFE0E0E0':
       return 0xFF000000
     case 0xFFFFFFFF:
+    case '#FFFFFFFF':
       return 0xFF000000
     case 0xFFEAEAEA:
+    case '#FFEAEAEA':
       return 0xFF000000
     case 0xFFF5F5F5:
+    case '#FFF5F5F5':
       return 0xFF000000
     default:
       return 0xFFFFFFFF
@@ -27,9 +31,10 @@ export function colorSwitch(color: number): number {
  * @param color 文本颜色颜色
  * @return 反转之后的颜色
  */
-export function colorSwitch1(color: number): number {
+export function colorSwitch1(color: ResourceColor): ResourceColor {
   switch (color) {
     case 0xFF808080:
+    case '#FF808080':
       return 0xFF000000
     default:
       return 0xFF808080
@@ -58,7 +63,7 @@ export function uint8ArrayToString(array: Uint8Array) {
 export function numberArrayToColorString(color: Array<number>): string {
   let returnString = ""
   for (let index = 0; index < color.length; index++) {
-    returnString = returnString + numberToColorString(color[index]) + " ";
+    returnString = returnString + resourceColorString(color[index]) + " ";
   }
   return returnString
 }
@@ -66,57 +71,82 @@ export function numberArrayToColorString(color: Array<number>): string {
 /**
  * 颜色转换文本
  */
-export function numberToColorString(color: number | undefined): string {
+export function resourceColorString(color: ResourceColor | undefined): string {
   switch (color) {
     case 0xFF000000:
+    case '#FF000000':
       return "黑"
     case 0xFFFFFFFF:
+    case '#FFFFFFFF':
       return "白"
     case 0xFFFF0000:
+    case '#FFFF0000':
       return "红"
     case 0xFF00FF00:
+    case '#FF00FF00':
       return "绿"
     case 0xFF0000FF:
+    case '#FF0000FF':
       return "蓝"
     case 0xFFE0E0E0:
+    case '#FFE0E0E0':
       return "银灰"
     case 0xFF333333:
+    case '#FF333333':
       return "深灰"
     case 0xFF808080:
+    case '#FF808080':
       return "灰"
     case 0xFFCCCCCC:
+    case '#FFCCCCCC':
       return "浅灰"
     case 0xFF4CAF50:
+    case '#FF4CAF50':
       return "翠绿"
     case 0xFFFFC107:
+    case '#FFFFC107':
       return "橙黄"
     case 0xFFF44336:
+    case '#FFF44336':
       return "鲜红"
     case 0xFF2196F3:
+    case '#FF2196F3':
       return "天蓝"
     case 0xFF1976D2:
+    case '#FF1976D2':
       return "深蓝"
     case 0xFFF5F5F5:
+    case '#FFF5F5F5':
       return "烟白"
     case 0xFF191919:
+    case '#FF191919':
       return "炭黑"
     case 0xFF00F5FF:
+    case '#FF00F5FF':
       return "绿松石"
     case 0xFF6A5ACD:
+    case '#FF6A5ACD':
       return "板岩蓝"
     case 0xFF32CD32:
+    case '#FF32CD32':
       return "酸橙绿"
     case 0xFFFFD700:
+    case '#FFFFD700':
       return "金"
     case 0xFFFA8072:
+    case '#FFFA8072':
       return "肉粉"
     case 0xFFEE82EE:
+    case '#FFEE82EE':
       return "紫罗兰"
     case 0xFF7EC0EE:
+    case '#FF7EC0EE':
       return "天空蓝"
     case 0xFF8B0000:
+    case '#FF8B0000':
       return "深红"
     case 0x00000000:
+    case '#00000000':
       return "透明"
     case undefined:
       return "null"

@@ -84,9 +84,9 @@ struct CodeSeparatePage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -110,103 +110,103 @@ struct CodeSeparatePage {
   @State // codeformat是否用制表符
   codeBlockUseTab: boolean = false
   // codeformat空格缩进数量列表
-  codeBlockIndentWidthList: Array<number> = [0, 2, 4, 6, 8, 10]
+  codeBlockIndentWidthList: Array<Length> = [0, 2, 4, 6, 8, 10]
   @State // codeformat空格缩进数量
-  codeBlockIndentWidth: number = 4
+  codeBlockIndentWidth: Length = 4
   // 围栏代码块代码高亮是否同步解析列表
   codeBlockParserSyncList: Array<boolean> = booleanListGeneralData
   @State // 围栏代码块代码高亮是否同步解析
   codeBlockParserSync: boolean = false
   // 代码块背景颜色列表
-  codeBlockBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  codeBlockBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块背景颜色
-  codeBlockBackgroundColor: number | undefined = undefined
+  codeBlockBackgroundColor: ResourceColor | undefined = undefined
   // 代码块上外边距列表
-  codeBlockMarginTopList: Array<number> = marginListGeneralData
+  codeBlockMarginTopList: Array<Length> = marginListGeneralData
   @State // 代码块上外边距
-  codeBlockMarginTop: number = 0
+  codeBlockMarginTop: Length = 0.0
   // 代码块右外边距列表
-  codeBlockMarginRightList: Array<number> = marginListGeneralData
+  codeBlockMarginRightList: Array<Length> = marginListGeneralData
   @State // 代码块右外边距
-  codeBlockMarginRight: number = 0
+  codeBlockMarginRight: Length = 0.0
   // 代码块下外边距列表
-  codeBlockMarginBottomList: Array<number> = marginListGeneralData
+  codeBlockMarginBottomList: Array<Length> = marginListGeneralData
   @State // 代码块下外边距
-  codeBlockMarginBottom: number = 0
+  codeBlockMarginBottom: Length = 0.0
   // 代码块左外边距列表
-  codeBlockMarginLeftList: Array<number> = marginListGeneralData
+  codeBlockMarginLeftList: Array<Length> = marginListGeneralData
   @State // 代码块左外边距
-  codeBlockMarginLeft: number = 0
+  codeBlockMarginLeft: Length = 0.0
   // 代码块上内边距列表
-  codeBlockPaddingTopList: Array<number> = paddingListGeneralData
+  codeBlockPaddingTopList: Array<Length> = paddingListGeneralData
   @State // 代码块上内边距
-  codeBlockPaddingTop: number = 0
+  codeBlockPaddingTop: Length = 0.0
   // 代码块右内边距列表
-  codeBlockPaddingRightList: Array<number> = paddingListGeneralData
+  codeBlockPaddingRightList: Array<Length> = paddingListGeneralData
   @State // 代码块右内边距
-  codeBlockPaddingRight: number = 8
+  codeBlockPaddingRight: Length = 8.0
   // 代码块下内边距列表
-  codeBlockPaddingBottomList: Array<number> = paddingListGeneralData
+  codeBlockPaddingBottomList: Array<Length> = paddingListGeneralData
   @State // 代码块下内边距
-  codeBlockPaddingBottom: number = 8
+  codeBlockPaddingBottom: Length = 8.0
   // 代码块左内边距列表
-  codeBlockPaddingLeftList: Array<number> = paddingListGeneralData
+  codeBlockPaddingLeftList: Array<Length> = paddingListGeneralData
   @State // 代码块左内边距
-  codeBlockPaddingLeft: number = 0
+  codeBlockPaddingLeft: Length = 0.0
   // 代码块边框样式列表
   codeBlockBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State // 代码块边框样式
   codeBlockBorderStyle: BorderStyle = BorderStyle.Solid
   // 代码块边框宽度列表
-  codeBlockBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
+  codeBlockBorderWidthList: Array<Length> = lineOrBorderWidthListGeneraData
   @State // 代码块边框宽度
-  codeBlockBorderWidth: number = 0
+  codeBlockBorderWidth: Length = 0.0
   // 代码块边框颜色列表
-  codeBlockBorderColorList: Array<number | undefined> = colorListGeneralData
+  codeBlockBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块边框颜色
-  codeBlockBorderColor: number | undefined = undefined
+  codeBlockBorderColor: ResourceColor | undefined = undefined
   // 代码块边框左上圆角列表
-  codeBlockRadiusTopLeftList: Array<number> = radiusListGeneraData
+  codeBlockRadiusTopLeftList: Array<Length> = radiusListGeneraData
   @State // 代码块边框左上圆角
-  codeBlockRadiusTopLeft: number = 8
+  codeBlockRadiusTopLeft: Length = 8.0
   // 代码块边框右上圆角列表
-  codeBlockRadiusTopRightList: Array<number> = radiusListGeneraData
+  codeBlockRadiusTopRightList: Array<Length> = radiusListGeneraData
   @State // 代码块边框右上圆角
-  codeBlockRadiusTopRight: number = 8
+  codeBlockRadiusTopRight: Length = 8.0
   // 代码块边框左下圆角列表
-  codeBlockRadiusBottomLeftList: Array<number> = radiusListGeneraData
+  codeBlockRadiusBottomLeftList: Array<Length> = radiusListGeneraData
   @State // 代码块边框左下圆角
-  codeBlockRadiusBottomLeft: number = 8
+  codeBlockRadiusBottomLeft: Length = 8.0
   // 代码块边框右下圆角列表
-  codeBlockRadiusBottomRightList: Array<number> = radiusListGeneraData
+  codeBlockRadiusBottomRightList: Array<Length> = radiusListGeneraData
   @State // 代码块边框右下圆角
-  codeBlockRadiusBottomRight: number = 8
+  codeBlockRadiusBottomRight: Length = 8.0
   // 代码块类型和代码块内容间距列表
-  codeBlockTitleLayoutMarginBottomList: Array<number> = marginListGeneralData
+  codeBlockTitleLayoutMarginBottomList: Array<Length> = marginListGeneralData
   @State // 代码块类型和代码块内容间距
-  codeBlockTitleLayoutMarginBottom: number = 0
+  codeBlockTitleLayoutMarginBottom: Length = 0.0
   // 代码块类型左边距列表
-  codeBlockTypeTextMarginLeftList: Array<number> = marginListGeneralData
+  codeBlockTypeTextMarginLeftList: Array<Length> = marginListGeneralData
   @State // 代码块类型左边距
-  codeBlockTypeTextMarginLeft: number = 8
+  codeBlockTypeTextMarginLeft: Length = 8.0
   // 代码块没有代码类型时默认显示文本列表
   codeBlockTypeTextList: Array<string> = ['Code', '代码', '']
   @State // 代码块没有代码类型时默认显示文本
   codeBlockTypeText: string = 'Code'
   // 代码块类型文本颜色列表
-  codeBlockTypeTextFontColorList: Array<number | undefined> = colorListGeneralData
+  codeBlockTypeTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块类型文本颜色
-  codeBlockTypeTextFontColor: number | undefined = undefined
+  codeBlockTypeTextFontColor: ResourceColor | undefined = undefined
   // 代码块类型文本尺寸列表
-  codeBlockTypeTextFontSizeList: Array<number> = textSizeListGeneralData
+  codeBlockTypeTextFontSizeList: Array<number | string | Resource | undefined> = textSizeListGeneralData
   @State // 代码块类型文本尺寸
-  codeBlockTypeTextFontSize: number | undefined = undefined
+  codeBlockTypeTextFontSize: number | string | Resource | undefined = undefined
   // 代码块类型文本字体样式列表
   codeBlockTypeTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块类型文本字体样式
   codeBlockTypeTextFontStyle: FontStyle | undefined = undefined
   // 代码块类型文本字体粗细列表
-  codeBlockTypeTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  codeBlockTypeTextFontWeightList: Array<FontWeight | undefined> = fontWeightListGeneraData
   @State // 代码块类型文本字体粗细
   codeBlockTypeTextFontWeight: FontWeight | undefined = undefined
   // 代码块类型文本字体列表
@@ -214,9 +214,9 @@ struct CodeSeparatePage {
   @State // 代码块类型文本字体
   codeBlockTypeTextFontFamily: string | undefined = undefined
   // 代码块类型文本行高列表
-  codeBlockTypeTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  codeBlockTypeTextLineHeightList: Array<number | string | Resource | undefined> = textLineHeightListGeneralData
   @State // 代码块类型文本行高
-  codeBlockTypeTextLineHeight: number | undefined = undefined
+  codeBlockTypeTextLineHeight: number | string | Resource | undefined = undefined
   // 代码块代码复制和代码全屏间距列表
   codeBlockCopyFullScreenSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码复制和代码全屏间距
@@ -234,13 +234,13 @@ struct CodeSeparatePage {
   @State // 代码块代码复制按钮默认图标
   codeBlockCopyIcon: Resource | undefined = undefined
   // 代码块代码复制图标宽度列表
-  codeBlockCopyIconWidthList: Array<number> = widthOrHeightListGeneralData
+  codeBlockCopyIconWidthList: Array<Length> = widthOrHeightListGeneralData
   @State // 代码块代码复制图标宽度
-  codeBlockCopyIconWidth: number = 24
+  codeBlockCopyIconWidth: Length = 24.0
   // 代码块代码复制图标高度列表
-  codeBlockCopyIconHeightList: Array<number> = widthOrHeightListGeneralData
+  codeBlockCopyIconHeightList: Array<Length> = widthOrHeightListGeneralData
   @State // 代码块代码复制图标高度
-  codeBlockCopyIconHeight: number = 24
+  codeBlockCopyIconHeight: Length = 24.0
   // 代码块代码复制图标和文本间距列表
   codeBlockCopyIconTextSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码复制图标和文本间距
@@ -250,19 +250,19 @@ struct CodeSeparatePage {
   @State // 代码块代码复制默认文本内容
   codeBlockCopyText: string = 'Copy'
   // 代码块代码复制文本颜色列表
-  codeBlockCopyTextFontColorList: Array<number | undefined> = colorListGeneralData
+  codeBlockCopyTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块代码复制文本颜色
-  codeBlockCopyTextFontColor: number | undefined = undefined
+  codeBlockCopyTextFontColor: ResourceColor | undefined = undefined
   // 代码块代码复制文本尺寸列表
-  codeBlockCopyTextFontSizeList: Array<number> = textSizeListGeneralData
+  codeBlockCopyTextFontSizeList: Array<number | string | Resource | undefined> = textSizeListGeneralData
   @State // 代码块代码复制文本尺寸
-  codeBlockCopyTextFontSize: number | undefined = undefined
+  codeBlockCopyTextFontSize: number | string | Resource | undefined = undefined
   // 代码块代码复制文本字体样式列表
   codeBlockCopyTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块代码复制文本字体样式
   codeBlockCopyTextFontStyle: FontStyle | undefined = undefined
   // 代码块代码复制文本字体粗细列表
-  codeBlockCopyTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  codeBlockCopyTextFontWeightList: Array<FontWeight | undefined> = fontWeightListGeneraData
   @State // 代码块代码复制文本字体粗细
   codeBlockCopyTextFontWeight: FontWeight | undefined = undefined
   // 代码块代码复制文本字体列表
@@ -270,9 +270,9 @@ struct CodeSeparatePage {
   @State // 代码块代码复制文本字体
   codeBlockCopyTextFontFamily: string | undefined = undefined
   // 代码块代码复制文本行高列表
-  codeBlockCopyTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  codeBlockCopyTextLineHeightList: Array<number | string | Resource | undefined> = textLineHeightListGeneralData
   @State // 代码块代码复制文本行高
-  codeBlockCopyTextLineHeight: number | undefined = undefined
+  codeBlockCopyTextLineHeight: number | string | Resource | undefined = undefined
   // 代码块代码全屏按钮是否显示列表
   codeBlockFullScreenButtonIsShowList: Array<boolean> = booleanListGeneralData
   @State // 代码块代码全屏按钮是否显示
@@ -286,13 +286,13 @@ struct CodeSeparatePage {
   @State // 代码块代码全屏按钮默认图标
   codeBlockFullScreenIcon: Resource | undefined = undefined
   // 代码块代码全屏图标宽度列表
-  codeBlockFullScreenIconWidthList: Array<number> = widthOrHeightListGeneralData
+  codeBlockFullScreenIconWidthList: Array<Length> = widthOrHeightListGeneralData
   @State // 代码块代码全屏图标宽度
-  codeBlockFullScreenIconWidth: number = 24
+  codeBlockFullScreenIconWidth: Length = 24.0
   // 代码块代码全屏图标高度列表
-  codeBlockFullScreenIconHeightList: Array<number> = widthOrHeightListGeneralData
+  codeBlockFullScreenIconHeightList: Array<Length> = widthOrHeightListGeneralData
   @State // 代码块代码全屏图标高度
-  codeBlockFullScreenIconHeight: number = 24
+  codeBlockFullScreenIconHeight: Length = 24.0
   // 代码块代码全屏图标和文本间距列表
   codeBlockFullScreenIconTextSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码全屏图标和文本间距
@@ -302,19 +302,19 @@ struct CodeSeparatePage {
   @State // 代码块代码全屏默认文本内容
   codeBlockFullScreenText: string = 'Full Screen'
   // 代码块代码全屏文本颜色列表
-  codeBlockFullScreenTextFontColorList: Array<number | undefined> = colorListGeneralData
+  codeBlockFullScreenTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块代码全屏文本颜色
-  codeBlockFullScreenTextFontColor: number | undefined = undefined
+  codeBlockFullScreenTextFontColor: ResourceColor | undefined = undefined
   // 代码块代码全屏文本尺寸列表
-  codeBlockFullScreenTextFontSizeList: Array<number> = textSizeListGeneralData
+  codeBlockFullScreenTextFontSizeList: Array<number | string | Resource | undefined> = textSizeListGeneralData
   @State // 代码块代码全屏文本尺寸
-  codeBlockFullScreenTextFontSize: number | undefined = undefined
+  codeBlockFullScreenTextFontSize: number | string | Resource | undefined = undefined
   // 代码块代码全屏文本字体样式列表
   codeBlockFullScreenTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块代码全屏文本字体样式
   codeBlockFullScreenTextFontStyle: FontStyle | undefined = undefined
   // 代码块代码全屏文本字体粗细列表
-  codeBlockFullScreenTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  codeBlockFullScreenTextFontWeightList: Array<FontWeight | undefined> = fontWeightListGeneraData
   @State // 代码块代码全屏文本字体粗细
   codeBlockFullScreenTextFontWeight: FontWeight | undefined = undefined
   // 代码块代码全屏文本字体列表
@@ -322,31 +322,31 @@ struct CodeSeparatePage {
   @State // 代码块代码全屏文本字体
   codeBlockFullScreenTextFontFamily: string | undefined = undefined
   // 代码块代码全屏文本行高列表
-  codeBlockFullScreenTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  codeBlockFullScreenTextLineHeightList: Array<number | string | Resource | undefined> = textLineHeightListGeneralData
   @State // 代码块代码全屏文本行高
-  codeBlockFullScreenTextLineHeight: number | undefined = undefined
+  codeBlockFullScreenTextLineHeight: number | string | Resource | undefined = undefined
   // 代码块代码行号是否显示列表
   codeBlockLineNumberIsShowList: Array<boolean> = booleanListGeneralData
   @State // 代码块代码行号是否显示
   codeBlockLineNumberIsShow: boolean = true
   // 代码块代码行号左内边距列表
-  codeBlockLineNumberTextPaddingLeftList: Array<number> = spaceListGeneralData
+  codeBlockLineNumberTextPaddingLeftList: Array<Length> = spaceListGeneralData
   @State // 代码块代码行号左内边距
-  codeBlockLineNumberTextPaddingLeft: number = 8
+  codeBlockLineNumberTextPaddingLeft: Length = 8.0
   // 代码块代码行号文本颜色列表
-  codeBlockLineNumberTextFontColorList: Array<number | undefined> = colorListGeneralData
+  codeBlockLineNumberTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块代码行号文本颜色
-  codeBlockLineNumberTextFontColor: number | undefined = undefined
+  codeBlockLineNumberTextFontColor: ResourceColor | undefined = undefined
   // 代码块代码行号文本尺寸列表
-  codeBlockLineNumberTextFontSizeList: Array<number> = textSizeListGeneralData
+  codeBlockLineNumberTextFontSizeList: Array<number | string | Resource | undefined> = textSizeListGeneralData
   @State // 代码块代码行号文本尺寸
-  codeBlockLineNumberTextFontSize: number | undefined = undefined
+  codeBlockLineNumberTextFontSize: number | string | Resource | undefined = undefined
   // 代码块代码行号文本字体样式列表
   codeBlockLineNumberTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块代码行号文本字体样式
   codeBlockLineNumberTextFontStyle: FontStyle | undefined = undefined
   // 代码块代码行号文本字体粗细列表
-  codeBlockLineNumberTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  codeBlockLineNumberTextFontWeightList: Array<FontWeight | undefined> = fontWeightListGeneraData
   @State // 代码块代码行号文本字体粗细
   codeBlockLineNumberTextFontWeight: FontWeight | undefined = undefined
   // 代码块代码行号文本字体列表
@@ -354,53 +354,53 @@ struct CodeSeparatePage {
   @State // 代码块代码行号文本字体
   codeBlockLineNumberTextFontFamily: string | undefined = undefined
   // 代码块代码行号文本行高列表
-  codeBlockLineNumberTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  codeBlockLineNumberTextLineHeightList: Array<number | string | Resource | undefined> = textLineHeightListGeneralData
   @State // 代码块代码行号文本行高
-  codeBlockLineNumberTextLineHeight: number | undefined = undefined
+  codeBlockLineNumberTextLineHeight: number | string | Resource | undefined = undefined
   // 代码块代码行号和代码块中间分割线颜色列表
-  codeBlockDividerColorList: Array<number | undefined> = colorListGeneralData
+  codeBlockDividerColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块代码行号和代码块中间分割线颜色
-  codeBlockDividerColor: number | undefined = undefined
+  codeBlockDividerColor: ResourceColor | undefined = undefined
   // 代码块代码行号和代码块中间分割线宽度列表
-  codeBlockDividerStrokeWidthList: Array<number> = lineOrBorderWidthListGeneraData
+  codeBlockDividerStrokeWidthList: Array<Length> = lineOrBorderWidthListGeneraData
   @State // 代码块代码行号和代码块中间分割线宽度
-  codeBlockDividerStrokeWidth: number = 0.5
+  codeBlockDividerStrokeWidth: Length = 0.5
   // 代码块代码行号和分割线间距列表
   codeBlockLineNumberDividerSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码行号和分割线间距
   codeBlockLineNumberDividerSpacing: number = 8
   // 代码块文本颜色列表
-  codeBlockTextFontColorList: Array<number | undefined> = colorListGeneralData
+  codeBlockTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块文本颜色
-  codeBlockTextFontColor: number | undefined = undefined
+  codeBlockTextFontColor: ResourceColor | undefined = undefined
   // 代码块代码文本右外边距列表
-  codeBlockTextMarginRightList: Array<number> = marginListGeneralData
+  codeBlockTextMarginRightList: Array<Length> = marginListGeneralData
   @State // 代码块代码文本右外边距
-  codeBlockTextMarginRight: number = 8
+  codeBlockTextMarginRight: Length = 8.0
   // 代码块代码文本左外边距列表
-  codeBlockTextMarginLeftList: Array<number> = marginListGeneralData
+  codeBlockTextMarginLeftList: Array<Length> = marginListGeneralData
   @State // 代码块代码文本左外边距
-  codeBlockTextMarginLeft: number = 8
+  codeBlockTextMarginLeft: Length = 8.0
   // 代码块文本尺寸列表
-  codeBlockTextFontSizeList: Array<number> = textSizeListGeneralData
+  codeBlockTextFontSizeList: Array<number | string | Resource> = textSizeListGeneralData
   @State // 代码块文本尺寸
-  codeBlockTextFontSize: number | undefined = undefined
+  codeBlockTextFontSize: number | string | Resource = 13.0
   // 代码块文本字体样式列表
   codeBlockTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块文本字体样式
-  codeBlockTextFontStyle: FontStyle | undefined = undefined
+  codeBlockTextFontStyle: FontStyle = FontStyle.Normal
   // 代码块文本字体粗细列表
-  codeBlockTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  codeBlockTextFontWeightList: Array<number | FontWeight> = fontWeightListGeneraData
   @State // 代码块文本字体粗细
-  codeBlockTextFontWeight: FontWeight | undefined = undefined
+  codeBlockTextFontWeight: number | FontWeight = FontWeight.Normal
   // 代码块文本字体列表
-  codeBlockTextFontFamilyList: Array<string> = textTypefaceListGeneralData
+  codeBlockTextFontFamilyList: Array<string | Resource> = textTypefaceListGeneralData
   @State // 代码块文本字体
-  codeBlockTextFontFamily: string | undefined = undefined
+  codeBlockTextFontFamily: string | Resource = 'HarmonyOS Sans'
   // 代码块文本行高列表
-  codeBlockTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  codeBlockTextLineHeightList: Array<number | string | Resource> = textLineHeightListGeneralData
   @State // 代码块文本行高
-  codeBlockTextLineHeight: number | undefined = undefined
+  codeBlockTextLineHeight: number | string | Resource = 22.0
   // 代码块文本字符间距列表
   codeBlockTextLetterSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块文本字符间距
@@ -408,9 +408,9 @@ struct CodeSeparatePage {
 
   // ---------------- 单独代码块专有
   // 单独代码块行号宽度列表
-  separateCodeBlockWidthList: Array<number> = widthOrHeightListGeneralData
+  codeBlockSeparateWidthList: Array<Length> = widthOrHeightListGeneralData
   @State // 单独代码块行号宽度
-  separateCodeBlockWidth: number = 50
+  codeBlockSeparateWidth: Length = 50.0
   // 是否滑动到底部列表
   separateCodeIsBottomList: Array<boolean> = booleanListGeneralData
   @State // 是否滑动到底部
@@ -457,8 +457,8 @@ struct CodeSeparatePage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -563,9 +563,9 @@ struct CodeSeparatePage {
                   this.codeSeparateData.codeBlockTextLetterSpacing = this.codeBlockTextLetterSpacing
 
                   // ---------- 单独代码块专有
-                  this.codeSeparateData.isSeparateCodeBlock = true // 固定设置开启单独代码块
-                  this.codeSeparateData.separateCodeBlockWidth = this.separateCodeBlockWidth
-                  this.codeSeparateData.separateCodeIsBottom = this.separateCodeIsBottom
+                  this.codeSeparateData.codeBlockIsSeparate = true // 固定设置开启单独代码块
+                  this.codeSeparateData.codeBlockSeparateWidth = this.codeBlockSeparateWidth
+                  this.codeSeparateData.codeBlockSeparateIsBottom = this.separateCodeIsBottom
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/CodeSeparateDetailsPage", params: this.codeSeparateData })
                 })
@@ -580,12 +580,12 @@ struct CodeSeparatePage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -706,12 +706,12 @@ struct CodeSeparatePage {
             Row() {
               Text("代码块边距和边框")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -838,12 +838,12 @@ struct CodeSeparatePage {
             Row() {
               Text("代码块类型文本")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -928,12 +928,12 @@ struct CodeSeparatePage {
             Row() {
               Text("代码块复制相关")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded4 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded4 = !this.isExpanded4
@@ -1048,12 +1048,12 @@ struct CodeSeparatePage {
             Row() {
               Text("代码块全屏相关")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded5 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded5 = !this.isExpanded5
@@ -1162,12 +1162,12 @@ struct CodeSeparatePage {
             Row() {
               Text("代码块行号")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded6 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded6 = !this.isExpanded6
@@ -1264,12 +1264,12 @@ struct CodeSeparatePage {
             Row() {
               Text("代码块文本")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded7 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded7 = !this.isExpanded7
@@ -1383,12 +1383,12 @@ struct CodeSeparatePage {
             Row() {
               Text("专有样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded8 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded8 = !this.isExpanded8
@@ -1406,8 +1406,8 @@ struct CodeSeparatePage {
                 BaseTabComponent({
                   titleStr: "单独代码块行号宽度 - ",
                   typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.separateCodeBlockWidthList,
-                  allData: this.separateCodeBlockWidth
+                  allListData: this.codeBlockSeparateWidthList,
+                  allData: this.codeBlockSeparateWidth
                 })
                 BaseTabComponent({
                   titleStr: "是否滑动到底部 - ",
@@ -1429,7 +1429,7 @@ struct CodeSeparatePage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

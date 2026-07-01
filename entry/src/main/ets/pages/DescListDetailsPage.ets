@@ -21,8 +21,7 @@ struct DescListDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   // 文件文本
   @State
@@ -68,7 +67,7 @@ struct DescListDetailsPage {
   isLineBreak: boolean = false
   // 全局背景色
   @State
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动
   @State
   openGestureSwipe: boolean = false
@@ -82,46 +81,46 @@ struct DescListDetailsPage {
   // ---------- 专有
   // 定义列表背景颜色
   @State
-  definitionListBackgroundColor: number | undefined = undefined
+  definitionListBackgroundColor: ResourceColor | undefined = undefined
   // 定义列表上外边距
   @State
-  definitionListMarginTop: number = 8
+  definitionListMarginTop: Length = 8.0
   // 定义列表右外边距
   @State
-  definitionListMarginRight: number = 0
+  definitionListMarginRight: Length = 0.0
   // 定义列表下外边距
   @State
-  definitionListMarginBottom: number = 8
+  definitionListMarginBottom: Length = 8.0
   // 定义列表左外边距
   @State
-  definitionListMarginLeft: number = 0
+  definitionListMarginLeft: Length = 0.0
   // 定义列表上内边距
   @State
-  definitionListPaddingTop: number = 0
+  definitionListPaddingTop: Length = 0.0
   // 定义列表右内边距
   @State
-  definitionListPaddingRight: number = 0
+  definitionListPaddingRight: Length = 0.0
   // 定义列表下内边距
   @State
-  definitionListPaddingBottom: number = 0
+  definitionListPaddingBottom: Length = 0.0
   // 定义列表左内边距
   @State
-  definitionListPaddingLeft: number = 0
+  definitionListPaddingLeft: Length = 0.0
   // 定义列表术语和定义行之间间距
   @State
-  definitionListTermToDescriptionSpacing: number = 4
+  definitionListTermToDescriptionSpacing: number = 8.0
   // 定义列表术语文本字体粗细
   @State
-  definitionListTermTextFontWeight: FontWeight = FontWeight.Bold
+  definitionListTermTextFontWeight: number | FontWeight = FontWeight.Bold
   // 定义列表术语文本字体样式
   @State
-  definitionListTermTextFontStyle: FontStyle = FontStyle.Normal
+  definitionListTermTextFontStyle: FontStyle = FontStyle.Italic
   // 定义列表定义行之间间距
   @State
-  definitionListDescriptionItemSpacing: number = 4
+  definitionListDescriptionItemSpacing: number = 8.0
   // 定义列表定义行左缩进距离
   @State
-  definitionListDescriptionIndent: number = 16
+  definitionListDescriptionIndent: number = 8.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -129,24 +128,6 @@ struct DescListDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -189,6 +170,23 @@ struct DescListDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr[index]
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index === this.fileStr.length - 1) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        index++
+      }, this.time)
+    }
   }
 
   build() {
@@ -199,82 +197,27 @@ struct DescListDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
-        .onClick(
-          () => {
-            // 点击动作触发该方法调用
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                index++
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }

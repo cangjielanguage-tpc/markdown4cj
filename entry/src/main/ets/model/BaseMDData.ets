@@ -15,7 +15,7 @@ export class BaseMDData {
   _blockMarginLeft: number = 0 // markdown全局左外边距
   _markdownBlockSpacing: number = 8 // 模块间上下间距
   _isLineBreak: boolean = false // 软换行是否换行
-  _backgroundColor: number | undefined = undefined // 背景颜色
+  _backgroundColor: ResourceColor | undefined = undefined // 背景颜色
   _openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
   _openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
   _pagePath: string = "" // Markdown文本rawfile路径
@@ -84,7 +84,7 @@ export class BaseMDData {
     this._isLineBreak = value
   }
 
-  public set backgroundColor(value: number | undefined) {
+  public set backgroundColor(value: ResourceColor | undefined) {
     this._backgroundColor = value
   }
 

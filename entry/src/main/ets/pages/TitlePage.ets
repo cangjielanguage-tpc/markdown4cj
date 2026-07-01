@@ -67,8 +67,8 @@ struct TitlePage {
   isLineBreakList: Array<boolean> = booleanListGeneralData
   @State isLineBreak: boolean = false // 软换行是否换行
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State globalBackgroundColor: number | undefined = undefined // 背景颜色
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State globalBackgroundColor: ResourceColor | undefined = undefined // 背景颜色
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
@@ -77,8 +77,8 @@ struct TitlePage {
   @State openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
   // ---------------- 专有
   // 一级标题背景颜色列表
-  heading1BackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State heading1BackgroundColor: number | undefined = undefined // 一级标题背景颜色
+  heading1BackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading1BackgroundColor: ResourceColor | undefined = undefined // 一级标题背景颜色
   // 一级标题上外边距列表
   heading1MarginTopList: Array<number> = marginListGeneralData
   @State heading1MarginTop: number = 0 // 一级标题上外边距
@@ -104,8 +104,8 @@ struct TitlePage {
   heading1PaddingLeftList: Array<number> = marginListGeneralData
   @State heading1PaddingLeft: number = 0 // 一级标题左内边距
   // 一级标题文本颜色列表
-  heading1TextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State heading1TextFontColor: number | undefined = undefined // 一级标题文本颜色
+  heading1TextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading1TextFontColor: ResourceColor | undefined = undefined // 一级标题文本颜色
   // 一级标题文本尺寸列表
   heading1TextFontSizeList: Array<number> = textSizeListGeneralData
   @State heading1TextFontSize: number = 20 // 一级标题文本尺寸
@@ -128,14 +128,14 @@ struct TitlePage {
   heading1UnderlineHeightList: Array<number> = lineOrBorderWidthListGeneraData
   @State heading1UnderlineHeight: number = 0.5 // 一级标题下划线高度
   // 一级标题下划线颜色列表
-  heading1UnderlineColorList: Array<number | undefined> = colorListGeneralData
-  @State heading1UnderlineColor: number | undefined = undefined // 一级标题下划线颜色
+  heading1UnderlineColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading1UnderlineColor: ResourceColor | undefined = undefined // 一级标题下划线颜色
   // 一级标题距离标题文本间距列表
   heading1UnderlineSpacingList: Array<number> = spaceListGeneralData
   @State heading1UnderlineSpacing: number = 0 // 一级标题距离标题文本间距
   // 二级标题背景颜色列表
-  heading2BackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State heading2BackgroundColor: number | undefined = undefined // 二级标题背景颜色
+  heading2BackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading2BackgroundColor: ResourceColor | undefined = undefined // 二级标题背景颜色
   // 二级标题上外边距列表
   heading2MarginTopList: Array<number> = marginListGeneralData
   @State heading2MarginTop: number = 0 // 二级标题上外边距
@@ -161,8 +161,8 @@ struct TitlePage {
   heading2PaddingLeftList: Array<number> = marginListGeneralData
   @State heading2PaddingLeft: number = 0 // 二级标题左内边距
   // 二级标题文本颜色列表
-  heading2TextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State heading2TextFontColor: number | undefined = undefined // 二级标题文本颜色
+  heading2TextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading2TextFontColor: ResourceColor | undefined = undefined // 二级标题文本颜色
   // 二级标题文本尺寸列表
   heading2TextFontSizeList: Array<number> = textSizeListGeneralData
   @State heading2TextFontSize: number = 17 // 二级标题文本尺寸
@@ -185,14 +185,14 @@ struct TitlePage {
   heading2UnderlineHeightList: Array<number> = lineOrBorderWidthListGeneraData
   @State heading2UnderlineHeight: number = 0.5 // 二级标题下划线高度
   // 二级标题下划线颜色列表
-  heading2UnderlineColorList: Array<number | undefined> = colorListGeneralData
-  @State heading2UnderlineColor: number | undefined = undefined // 二级标题下划线颜色
+  heading2UnderlineColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading2UnderlineColor: ResourceColor | undefined = undefined // 二级标题下划线颜色
   // 二级标题距离标题文本间距列表
   heading2UnderlineSpacingList: Array<number> = spaceListGeneralData
   @State heading2UnderlineSpacing: number = 0 // 二级标题距离标题文本间距
   // 三级标题背景颜色列表
-  heading3BackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State heading3BackgroundColor: number | undefined = undefined // 三级标题背景颜色
+  heading3BackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading3BackgroundColor: ResourceColor | undefined = undefined // 三级标题背景颜色
   // 三级标题上外边距列表
   heading3MarginTopList: Array<number> = marginListGeneralData
   @State heading3MarginTop: number = 0 // 三级标题上外边距
@@ -218,8 +218,8 @@ struct TitlePage {
   heading3PaddingLeftList: Array<number> = marginListGeneralData
   @State heading3PaddingLeft: number = 0 // 三级标题左内边距
   // 三级标题文本颜色列表
-  heading3TextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State heading3TextFontColor: number | undefined = undefined // 三级标题文本颜色
+  heading3TextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading3TextFontColor: ResourceColor | undefined = undefined // 三级标题文本颜色
   // 三级标题文本尺寸列表
   heading3TextFontSizeList: Array<number> = textSizeListGeneralData
   @State heading3TextFontSize: number = 16 // 三级标题文本尺寸
@@ -239,8 +239,8 @@ struct TitlePage {
   heading3TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading3TextLetterSpacing: number = 0 // 三级标题文本字符间距
   // 四级标题背景颜色列表
-  heading4BackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State heading4BackgroundColor: number | undefined = undefined // 四级标题背景颜色
+  heading4BackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading4BackgroundColor: ResourceColor | undefined = undefined // 四级标题背景颜色
   // 四级标题上外边距列表
   heading4MarginTopList: Array<number> = marginListGeneralData
   @State heading4MarginTop: number = 0 // 四级标题上外边距
@@ -266,8 +266,8 @@ struct TitlePage {
   heading4PaddingLeftList: Array<number> = marginListGeneralData
   @State heading4PaddingLeft: number = 0 // 四级标题左内边距
   // 四级标题文本颜色列表
-  heading4TextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State heading4TextFontColor: number | undefined = undefined // 四级标题文本颜色
+  heading4TextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading4TextFontColor: ResourceColor | undefined = undefined // 四级标题文本颜色
   // 四级标题文本尺寸列表
   heading4TextFontSizeList: Array<number> = textSizeListGeneralData
   @State heading4TextFontSize: number = 15 // 四级标题文本尺寸
@@ -287,8 +287,8 @@ struct TitlePage {
   heading4TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading4TextLetterSpacing: number = 0 // 四级标题文本字符间距
   // 五级标题背景颜色列表
-  heading5BackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State heading5BackgroundColor: number | undefined = undefined // 五级标题背景颜色
+  heading5BackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading5BackgroundColor: ResourceColor | undefined = undefined // 五级标题背景颜色
   // 五级标题上外边距列表
   heading5MarginTopList: Array<number> = marginListGeneralData
   @State heading5MarginTop: number = 0 // 五级标题上外边距
@@ -314,8 +314,8 @@ struct TitlePage {
   heading5PaddingLeftList: Array<number> = marginListGeneralData
   @State heading5PaddingLeft: number = 0 // 五级标题左内边距
   // 五级标题文本颜色列表
-  heading5TextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State heading5TextFontColor: number | undefined = undefined // 五级标题文本颜色
+  heading5TextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading5TextFontColor: ResourceColor | undefined = undefined // 五级标题文本颜色
   // 五级标题文本尺寸列表
   heading5TextFontSizeList: Array<number> = textSizeListGeneralData
   @State heading5TextFontSize: number = 15 // 五级标题文本尺寸
@@ -335,8 +335,8 @@ struct TitlePage {
   heading5TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading5TextLetterSpacing: number = 0 // 五级标题文本字符间距
   // 六级标题背景颜色列表
-  heading6BackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State heading6BackgroundColor: number | undefined = undefined // 六级标题背景颜色
+  heading6BackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading6BackgroundColor: ResourceColor | undefined = undefined // 六级标题背景颜色
   // 六级标题上外边距列表
   heading6MarginTopList: Array<number> = marginListGeneralData
   @State heading6MarginTop: number = 0 // 六级标题上外边距
@@ -362,8 +362,8 @@ struct TitlePage {
   heading6PaddingLeftList: Array<number> = marginListGeneralData
   @State heading6PaddingLeft: number = 0 // 六级标题左内边距
   // 六级标题文本颜色列表
-  heading6TextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State heading6TextFontColor: number | undefined = undefined // 六级标题文本颜色
+  heading6TextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State heading6TextFontColor: ResourceColor | undefined = undefined // 六级标题文本颜色
   // 六级标题文本尺寸列表
   heading6TextFontSizeList: Array<number> = textSizeListGeneralData
   @State heading6TextFontSize: number = 13 // 六级标题文本尺寸
@@ -420,8 +420,8 @@ struct TitlePage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -567,12 +567,12 @@ struct TitlePage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -693,12 +693,12 @@ struct TitlePage {
             Row() {
               Text("一级标题")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -837,12 +837,12 @@ struct TitlePage {
             Row() {
               Text("二级标题")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -981,12 +981,12 @@ struct TitlePage {
             Row() {
               Text("三级标题")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded4 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded4 = !this.isExpanded4
@@ -1107,12 +1107,12 @@ struct TitlePage {
             Row() {
               Text("四级标题")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded5 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded5 = !this.isExpanded5
@@ -1233,12 +1233,12 @@ struct TitlePage {
             Row() {
               Text("五级标题")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded6 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded6 = !this.isExpanded6
@@ -1359,12 +1359,12 @@ struct TitlePage {
             Row() {
               Text("六级标题")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded7 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded7 = !this.isExpanded7
@@ -1483,7 +1483,7 @@ struct TitlePage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

@@ -70,7 +70,7 @@ struct AIChatPage {
         .height(40)// 高度
         .width('80%')// 宽度
         .type(ButtonType.Capsule)// 圆角
-        .fontColor(0xFFFFFFFF)// 文本颜色
+        .fontColor('#FFFFFFFF')// 文本颜色
         .backgroundColor(0xFF317AFF)// 背景颜色
         .margin({ top: 5, bottom: 5 })// 外边距
         .align(Alignment.Center)// 内容对齐方式
@@ -84,7 +84,7 @@ struct AIChatPage {
         .height(40)// 高度
         .width('80%')// 宽度
         .type(ButtonType.Capsule)// 圆角
-        .fontColor(0xFFFFFFFF)// 文本颜色
+        .fontColor('#FFFFFFFF')// 文本颜色
         .backgroundColor(0xFF317AFF)// 背景颜色
         .margin({ top: 5, bottom: 5 })// 外边距
         .align(Alignment.Center)// 内容对齐方式
@@ -94,7 +94,7 @@ struct AIChatPage {
           router.pushUrl({ url: "pages/AIChatLazyDetailsPage", params: this.aiChatDataMD })
         })
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("100%")
   }
 }

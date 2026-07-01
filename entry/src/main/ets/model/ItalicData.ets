@@ -1,30 +1,30 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class ItalicData extends BaseMDData {
-  _italicTextFontColor: number | undefined = undefined // 斜体文本颜色
-  _italicTextFontSize: number | undefined = undefined // 斜体文本尺寸
-  _italicTextFontWeight: FontWeight | undefined = undefined // 斜体文本字体粗细
-  _italicTextFontFamily: string | undefined = undefined // 斜体文本字体
-  _italicTextLineHeight: number | undefined = undefined // 斜体文本行高
+  _italicTextFontColor: ResourceColor | undefined = undefined // 斜体文本颜色
+  _italicTextFontSize: number | string | Resource | undefined = undefined // 斜体文本尺寸
+  _italicTextFontWeight: number | FontWeight | undefined = undefined // 斜体文本字体粗细
+  _italicTextFontFamily: string | Resource | undefined = undefined // 斜体文本字体
+  _italicTextLineHeight: number | string | Resource | undefined = undefined // 斜体文本行高
   _italicTextLetterSpacing: number | undefined = undefined // 斜体文本字符间距
 
-  public set italicTextFontColor(value: number | undefined) {
+  public set italicTextFontColor(value: ResourceColor | undefined) {
     this._italicTextFontColor = value
   }
 
-  public set italicTextFontSize(value: number | undefined) {
+  public set italicTextFontSize(value: number | string | Resource | undefined) {
     this._italicTextFontSize = value
   }
 
-  public set italicTextFontWeight(value: FontWeight| undefined) {
+  public set italicTextFontWeight(value: number | FontWeight | undefined) {
     this._italicTextFontWeight = value
   }
 
-  public set italicTextFontFamily(value: string| undefined) {
+  public set italicTextFontFamily(value: string | Resource | undefined) {
     this._italicTextFontFamily = value
   }
 
-  public set italicTextLineHeight(value: number | undefined) {
+  public set italicTextLineHeight(value: number | string | Resource | undefined) {
     this._italicTextLineHeight = value
   }
 

@@ -89,8 +89,8 @@ struct Deprecated5Page {
   isDarkList: Array<boolean> = booleanListGeneralData
   @State isDark: boolean = false // 代码深浅色模式
   // 代码块代码文本颜色列表
-  codeBlockTextColorList: Array<number | undefined> = colorListGeneralData
-  @State codeBlockTextColor: number | undefined = undefined // 代码块代码文本颜色
+  codeBlockTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State codeBlockTextColor: ResourceColor | undefined = undefined // 代码块代码文本颜色
   // 围栏代码块代码高亮是否同步解析列表
   isCodeBlockParserSyncList: Array<boolean> = booleanListGeneralData
   @State isCodeBlockParserSync: boolean = false // 围栏代码块代码高亮是否同步解析
@@ -101,8 +101,8 @@ struct Deprecated5Page {
   isCodeFullScreenList: Array<boolean> = booleanListGeneralData
   @State isCodeFullScreen: boolean = true // 代码块代码全屏按钮是否显示
   // 代码块代码类型文本颜色列表
-  codeBlockTypeTextColorList: Array<number | undefined> = colorListGeneralData
-  @State codeBlockTypeTextColor: number | undefined = undefined // 代码块代码类型文本颜色
+  codeBlockTypeTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State codeBlockTypeTextColor: ResourceColor | undefined = undefined // 代码块代码类型文本颜色
   // 代码块代码类型文本列表
   codeBlockTypeTextStrList: Array<string> = ["", "Code", "JavaScript", "Python"]
   @State codeBlockTypeTextStr: string = "" // 代码块代码类型文本
@@ -113,8 +113,8 @@ struct Deprecated5Page {
   codeBlockIconTextHideList: Array<boolean> = booleanListGeneralData
   @State codeBlockIconTextHide: boolean = true // 代码块复制、全屏图片文字是否显示
   // 代码块背景颜色列表
-  codeBlockBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State codeBlockBackgroundColor: number | undefined = undefined // 代码块背景颜色
+  codeBlockBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State codeBlockBackgroundColor: ResourceColor | undefined = undefined // 代码块背景颜色
   // 代码块左边距列表
   codeMultilineMarginList: Array<number> = marginListGeneralData
   @State codeMultilineMargin: number = 8 // 代码块左边距
@@ -140,16 +140,16 @@ struct Deprecated5Page {
   codeListTitleSelectTextSizeList: Array<number> = textNumberListGeneralData
   @State codeListTitleSelectTextSize: number = 13 // 组合代码选中标题字体大小
   // 组合代码选中标题文本颜色列表
-  codeListTitleSelectTextColorList: Array<number | undefined> = colorListGeneralData
+  codeListTitleSelectTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State codeListTitleSelectTextColor: number = 0xFFFF0000 // 组合代码选中标题文本颜色
   // 组合代码未选中标题文本颜色列表
-  codeListTitleUnSelectTextColorList: Array<number | undefined> = colorListGeneralData
+  codeListTitleUnSelectTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State codeListTitleUnSelectTextColor: number = 0xFF000000 // 组合代码未选中标题文本颜色
   // 组合代码选中标题背景颜色列表
-  codeListTitleSelectBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  codeListTitleSelectBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State codeListTitleSelectBackGroupColor: number = 0xFF808080 // 组合代码选中标题背景颜色
   // 组合代码未选中标题背景颜色列表
-  codeListTitleUnSelectBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  codeListTitleUnSelectBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State codeListTitleUnSelectBackGroupColor: number = 0x00000000 // 组合代码未选中标题背景颜色
   // 是否单独代码块显示列表
   isSeparateCodeBlockList: Array<boolean> = booleanListGeneralData

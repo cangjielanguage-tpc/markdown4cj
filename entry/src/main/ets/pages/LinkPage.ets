@@ -84,9 +84,9 @@ struct LinkPage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -105,33 +105,33 @@ struct LinkPage {
   @State // 列表中的单行链接是否是图片显示
   linkListIsIcon: boolean = false
   // 文本格式链接文本颜色列表
-  linkTextFontColorList: Array<number | undefined> = colorListGeneralData
+  linkTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 文本格式链接文本颜色
-  linkTextFontColor: number | undefined = undefined
+  linkTextFontColor: ResourceColor | undefined = undefined
   // 文本格式链接文字大小列表
   linkTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 文本格式链接文字大小
   linkTextFontSize: number | undefined = undefined
   // 文本格式链接背景颜色列表
-  linkTextBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  linkTextBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 文本格式链接背景颜色
-  linkTextBackgroundColor: number | undefined = undefined
+  linkTextBackgroundColor: ResourceColor | undefined = undefined
   // 圆形图片格式链接主题背景颜色列表
-  linkCircleIconBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  linkCircleIconBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 圆形图片格式链接主题背景颜色
-  linkCircleIconBackgroundColor: number | undefined = undefined
+  linkCircleIconBackgroundColor: ResourceColor | undefined = undefined
   // 圆形图片格式链接控件背景颜色列表
-  linkCircleIconButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  linkCircleIconButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 圆形图片格式链接控件背景颜色
-  linkCircleIconButtonBackgroundColor: number | undefined = undefined
+  linkCircleIconButtonBackgroundColor: ResourceColor | undefined = undefined
   // 圆形图片格式链接文字大小列表
   linkCircleIconTextSizeList: Array<number> = textSizeListGeneralData
   @State // 圆形图片格式链接文字大小
   linkCircleIconTextSize: number = 14
   // 圆形图片格式链接文字颜色列表
-  linkCircleIconTextColorList: Array<number | undefined> = colorListGeneralData
+  linkCircleIconTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 圆形图片格式链接文字颜色
-  linkCircleIconTextColor: number | undefined = undefined
+  linkCircleIconTextColor: ResourceColor | undefined = undefined
   // 圆形图片格式链接半径列表
   linkCircleIconRadiusList: Array<number> = radiusListGeneraData
   @State // 圆形图片格式链接半径
@@ -141,21 +141,21 @@ struct LinkPage {
   @State // 圆形图片格式链接左右外边距
   linkCircleIconMargin: number = 6
   // 圆角矩形图片格式链接主题背景颜色列表
-  linkRectIconBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  linkRectIconBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 圆角矩形图片格式链接主题背景颜色
-  linkRectIconBackgroundColor: number | undefined = undefined
+  linkRectIconBackgroundColor: ResourceColor | undefined = undefined
   // 圆角矩形图片格式链接控件背景颜色列表
-  linkRectIconButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  linkRectIconButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 圆角矩形图片格式链接控件背景颜色
-  linkRectIconButtonBackgroundColor: number | undefined = undefined
+  linkRectIconButtonBackgroundColor: ResourceColor | undefined = undefined
   // 圆角矩形图片格式链接文字大小列表
   linkRectIconTextSizeList: Array<number> = textSizeListGeneralData
   @State // 圆角矩形图片格式链接文字大小
   linkRectIconTextSize: number = 14
   // 圆角矩形图片格式链接文字颜色列表
-  linkRectIconTextColorList: Array<number | undefined> = colorListGeneralData
+  linkRectIconTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 圆角矩形图片格式链接文字颜色
-  linkRectIconTextColor: number | undefined = undefined
+  linkRectIconTextColor: ResourceColor | undefined = undefined
   // 圆角矩形图片格式链接控件高度列表
   linkRectIconHeightList: Array<number> = widthOrHeightListGeneralData
   @State // 圆角矩形图片格式链接控件高度
@@ -173,13 +173,13 @@ struct LinkPage {
   @State // 圆角矩形图片格式链接左右外边距
   linkRectIconMargin: number = 6
   // 空心圆角矩形图片格式链接主题背景颜色列表
-  linkRectToolIconBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  linkRectToolIconBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 空心圆角矩形图片格式链接主题背景颜色
-  linkRectToolIconBackgroundColor: number | undefined = undefined
+  linkRectToolIconBackgroundColor: ResourceColor | undefined = undefined
   // 空心圆角矩形图片格式链接控件背景颜色列表
-  linkRectToolIconButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  linkRectToolIconButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 空心圆角矩形图片格式链接控件背景颜色
-  linkRectToolIconButtonBackgroundColor: number | undefined = undefined
+  linkRectToolIconButtonBackgroundColor: ResourceColor | undefined = undefined
   // 空心圆角矩形图片格式链接文字大小列表
   linkRectToolIconTextSizeList: Array<number> = textSizeListGeneralData
   @State // 空心圆角矩形图片格式链接文字大小
@@ -237,9 +237,9 @@ struct LinkPage {
   @State // 链接文本装饰线类型
   linkTextDecorationType: TextDecorationType = TextDecorationType.None
   // 链接文本装饰线颜色列表
-  linkTextDecorationColorList: Array<number | undefined> = colorListGeneralData
+  linkTextDecorationColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 链接文本装饰线颜色
-  linkTextDecorationColor: number | undefined = undefined
+  linkTextDecorationColor: ResourceColor | undefined = undefined
   // 链接文本装饰线样式列表
   linkTextDecorationStyleList: Array<TextDecorationStyle> = textDecorationStyleListGeneralData
   @State // 链接文本装饰线样式
@@ -296,8 +296,8 @@ struct LinkPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -378,12 +378,12 @@ struct LinkPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -504,12 +504,12 @@ struct LinkPage {
             Row() {
               Text("圆形图片和其他设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -588,12 +588,12 @@ struct LinkPage {
             Row() {
               Text("圆角矩形设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -672,12 +672,12 @@ struct LinkPage {
             Row() {
               Text("空心圆角矩形设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded4 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded4 = !this.isExpanded4
@@ -768,12 +768,12 @@ struct LinkPage {
             Row() {
               Text("链接文本设置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded5 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded5 = !this.isExpanded5
@@ -892,7 +892,7 @@ struct LinkPage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

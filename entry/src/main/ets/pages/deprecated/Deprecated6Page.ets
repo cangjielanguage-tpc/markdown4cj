@@ -74,13 +74,13 @@ struct Deprecated6Page {
   tableCellPaddingList: Array<number> = [2, 3, 4, 5, 6]
   @State tableCellPadding: number = 4 // 表格内容内边距
   // 表格边框颜色列表
-  tableBorderColorList: Array<number | undefined> = colorListGeneralData
+  tableBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State tableBorderColor: number = 0xFF000000 // 表格边框颜色
   // 表格奇数行背景色列表
-  tableOddRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  tableOddRowBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State tableOddRowBackgroundColor: number = 0xFFFFFFFF // 表格奇数行背景色
   // 表格偶数行背景色列表
-  tableEvenRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  tableEvenRowBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State tableEvenRowBackgroundColor: number = 0xFFE0E0E0 // 表格偶数行背景色
   // 表格第一列是否加粗列表
   tableFirstColumnBoldList: Array<boolean> = booleanListGeneralData
@@ -92,10 +92,10 @@ struct Deprecated6Page {
   tableBorderWidthList: Array<number> = [0, 1, 2, 3, 4]
   @State tableBorderWidth: number = 1 // 表格边框宽度
   // 表格标题背景色列表
-  tableHeaderRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  tableHeaderRowBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State tableHeaderRowBackgroundColor: number = 0xFFFFFFFF // 表格标题背景色
   // 表格标题文本颜色列表
-  tableTitleTextColorList: Array<number | undefined> = colorListGeneralData
+  tableTitleTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State tableTitleTextColor: number = 0xFF191919 // 表格标题文本颜色
   // 表格标题文本大小列表
   tableTitleTextSizeList: Array<number> = textNumberListGeneralData
@@ -104,7 +104,7 @@ struct Deprecated6Page {
   tableTitleLineHeightList: Array<number> = textNumberListGeneralData
   @State tableTitleLineHeight: number = 22 // 表格标题文本行高
   // 表格内容文本颜色列表
-  tableContentTextColorList: Array<number | undefined> = colorListGeneralData
+  tableContentTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State tableContentTextColor: number = 0xFF191919 // 表格内容文本颜色
   // 表格内容文本大小列表
   tableContentTextSizeList: Array<number> = textNumberListGeneralData
@@ -122,7 +122,7 @@ struct Deprecated6Page {
   tableMaxTextWidthList: Array<number> = [200, 250, 300, 350, 400]
   @State tableMaxTextWidth: number = 300 // 表格最大宽度
   // 表格滚动条颜色列表
-  tableScrollBarColorList: Array<number | undefined> = colorListGeneralData
+  tableScrollBarColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State tableScrollBarColor: number = 0xFF191919 // 表格滚动条颜色
 
   // ---------------- 列表配置
@@ -139,7 +139,7 @@ struct Deprecated6Page {
   orderedListItemPrefixBoldList: Array<boolean> = booleanListGeneralData
   @State orderedListItemPrefixBold: boolean = false // 有序列表前缀文本是否加粗
   // 有序列表前缀文本颜色列表
-  orderedListItemColorList: Array<number | undefined> = colorListGeneralData
+  orderedListItemColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State orderedListItemColor: number = 0xFF191919 // 有序列表前缀文本颜色
   // 有序列表前缀文本大小列表
   orderedListItemSizeList: Array<number> = textNumberListGeneralData
@@ -151,7 +151,7 @@ struct Deprecated6Page {
   bulletListItemCircleList: Array<boolean> = booleanListGeneralData
   @State bulletListItemCircle: boolean = false // 无序列表前缀是否全部是实心圆型
   // 无序列表前缀文本颜色列表
-  bulletListItemColorList: Array<number | undefined> = colorListGeneralData
+  bulletListItemColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State bulletListItemColor: number = 0xFF191919 // 无序列表前缀文本颜色
   // 无序列表前缀文本大小列表
   bulletListItemSizeList: Array<number> = [2, 3, 4, 5, 6]

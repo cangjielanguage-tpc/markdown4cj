@@ -19,7 +19,7 @@ struct Deprecated5DetailsPage {
   scroller: Scroller = new Scroller()
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') safeTop: number = 0
-  @StorageProp('currentColorMode') @Watch('onColorModeChange')
+  @StorageProp('currentColorMode')
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State fileStr: string = ""
   @State content: string = ""
@@ -42,13 +42,13 @@ struct Deprecated5DetailsPage {
   @State indentWidth: number = 4
   @State isDark: boolean = false
   @State isCodeBlockParserSync: boolean = false
-  @State codeBlockTextColor: number | undefined = undefined
-  @State codeBlockTypeTextColor: number | undefined = undefined
+  @State codeBlockTextColor: ResourceColor | undefined = undefined
+  @State codeBlockTypeTextColor: ResourceColor | undefined = undefined
   @State codeBlockTypeTextStr: string = ""
   @State codeBlockTypeTextPadding: number = 0
   @State codeBlockIconTextHide: boolean = true
   @State codeBlockLineNumberHide: boolean = true
-  @State codeBlockBackgroundColor: number | undefined = undefined
+  @State codeBlockBackgroundColor: ResourceColor | undefined = undefined
   @State codeMultilineMargin: number = 8
   @State codeBlockTypeface: string = "HarmonyOS Sans"
   @State codeBlockTextSize: number = 13
@@ -68,17 +68,6 @@ struct Deprecated5DetailsPage {
   @State markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
   @State markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      this.markdownTheme.setDefaultTheme()
-    } else {
-      this.markdownTheme.setDarculaTheme()
-    }
-    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -133,84 +122,49 @@ struct Deprecated5DetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr[index]
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index === this.fileStr.length - 1) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        index++
+      }, this.time)
+    }
   }
 
   build() {
     Column() {
       titleComponent("废弃接口用例5", 0xFF317AFF, true, this.safeTop)
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(() => {
-          if (this.isFull) {
-            this.isInputEnded = true
-            this.content = this.fileStr
-          } else {
-            this.isInputEnded = false
-            let index = 0
-            let id = setInterval(() => {
-              this.content = this.content + this.fileStr[index]
-              this.scroller.scrollEdge(Edge.Bottom)
-              if (index === this.fileStr.length - 1) {
-                this.isInputEnded = true
-                clearInterval(id)
-              }
-              index++
-            }, this.time)
-          }
-        })
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }.align(Alignment.TopStart).layoutWeight(1)
@@ -260,17 +214,17 @@ struct Deprecated5DetailsPage {
     // theme.setIsDark(this.isDark)
     theme.setIsCodeBlockParserSync(this.isCodeBlockParserSync)
     if (this.codeBlockTextColor !== undefined) {
-      theme.setCodeBlockTextColor(this.codeBlockTextColor)
+      theme.setCodeBlockTextColor(this.codeBlockTextColor.valueOf() as number)
     }
     if (this.codeBlockTypeTextColor !== undefined) {
-      theme.setCodeBlockTypeTextColor(this.codeBlockTypeTextColor)
+      theme.setCodeBlockTypeTextColor(this.codeBlockTypeTextColor.valueOf() as number)
     }
     theme.setCodeBlockTypeTextStr(this.codeBlockTypeTextStr)
     theme.setCodeBlockTypeTextPadding(this.codeBlockTypeTextPadding)
     theme.setCodeBlockIconTextHide(this.codeBlockIconTextHide)
     theme.setCodeBlockLineNumberHide(this.codeBlockLineNumberHide)
     if (this.codeBlockBackgroundColor !== undefined) {
-      theme.setCodeBlockBackgroundColor(this.codeBlockBackgroundColor)
+      theme.setCodeBlockBackgroundColor(this.codeBlockBackgroundColor.valueOf() as number)
     }
     theme.setCodeMultilineMargin(this.codeMultilineMargin)
     theme.setCodeBlockTypeface(this.codeBlockTypeface)

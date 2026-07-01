@@ -59,8 +59,8 @@ struct BannerPage {
   isLineBreakList: Array<boolean> = booleanListGeneralData
   @State isLineBreak: boolean = false // 软换行是否换行
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State globalBackgroundColor: number | undefined = undefined // 背景颜色
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State globalBackgroundColor: ResourceColor | undefined = undefined // 背景颜色
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
@@ -125,8 +125,8 @@ struct BannerPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFFEE82EE)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FFEE82EE')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -173,12 +173,12 @@ struct BannerPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -299,12 +299,12 @@ struct BannerPage {
             Row() {
               Text("专有样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2

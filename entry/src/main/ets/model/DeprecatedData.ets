@@ -161,9 +161,9 @@ export class DeprecatedData {
   // 围栏代码块代码高亮是否同步解析
   _isCodeBlockParserSync: boolean = false
   // 代码块代码文本颜色
-  _codeBlockTextColor: number | undefined = undefined
+  _codeBlockTextColor: ResourceColor | undefined = undefined
   // 代码块代码类型文本颜色
-  _codeBlockTypeTextColor: number | undefined = undefined
+  _codeBlockTypeTextColor: ResourceColor | undefined = undefined
   // 代码块代码类型文本
   _codeBlockTypeTextStr: string = ""
   // 代码类型和代码块距离
@@ -173,7 +173,7 @@ export class DeprecatedData {
   // 代码块代码行号是否显示
   _codeBlockLineNumberHide: boolean = true
   // 代码块背景颜色
-  _codeBlockBackgroundColor: number | undefined = undefined
+  _codeBlockBackgroundColor: ResourceColor | undefined = undefined
   // 代码块左边距
   _codeMultilineMargin: number = 8
   // 代码块字体
@@ -800,11 +800,11 @@ export class DeprecatedData {
     this._isCodeBlockParserSync = value
   }
 
-  public set codeBlockTextColor(value: number | undefined) {
+  public set codeBlockTextColor(value: ResourceColor | undefined) {
     this._codeBlockTextColor = value
   }
 
-  public set codeBlockTypeTextColor(value: number | undefined) {
+  public set codeBlockTypeTextColor(value: ResourceColor | undefined) {
     this._codeBlockTypeTextColor = value
   }
 
@@ -824,7 +824,7 @@ export class DeprecatedData {
     this._codeBlockLineNumberHide = value
   }
 
-  public set codeBlockBackgroundColor(value: number | undefined) {
+  public set codeBlockBackgroundColor(value: ResourceColor | undefined) {
     this._codeBlockBackgroundColor = value
   }
 

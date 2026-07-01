@@ -80,9 +80,9 @@ struct HighlightPage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -95,19 +95,19 @@ struct HighlightPage {
   highlightData: HighlightData = new HighlightData()
   // ---------------- 专有
   // 高亮文本颜色列表
-  highlightTextFontColorList: Array<number | undefined> = colorListGeneralData
+  highlightTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 高亮文本颜色
-  highlightTextFontColor: number | undefined = undefined
+  highlightTextFontColor: ResourceColor | undefined = undefined
   // 高亮文本尺寸列表
-  highlightTextFontSizeList: Array<number> = textSizeListGeneralData
+  highlightTextFontSizeList: Array<number | string | Resource | undefined> = textSizeListGeneralData
   @State // 高亮文本尺寸
-  highlightTextFontSize: number | undefined = undefined
+  highlightTextFontSize: number | string | Resource | undefined = undefined
   // 高亮文本字体样式列表
   highlightTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 高亮文本字体样式
   highlightTextFontStyle: FontStyle | undefined = undefined
   // 高亮文本字体粗细列表
-  highlightTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  highlightTextFontWeightList: Array<FontWeight | undefined> = fontWeightListGeneraData
   @State // 高亮文本字体粗细
   highlightTextFontWeight: FontWeight = FontWeight.Bold
   // 高亮文本字体列表
@@ -115,33 +115,33 @@ struct HighlightPage {
   @State // 高亮文本字体
   highlightTextFontFamily: string | undefined = undefined
   // 高亮文本行高列表
-  highlightTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  highlightTextLineHeightList: Array<number | string | Resource | undefined> = textLineHeightListGeneralData
   @State // 高亮文本行高
-  highlightTextLineHeight: number | undefined = undefined
+  highlightTextLineHeight: number | string | Resource | undefined = undefined
   // 高亮文本字符间距列表
   highlightTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 高亮文本字符间距
   highlightTextLetterSpacing: number | undefined = undefined
   // 高亮文本背景颜色列表
-  highlightTextBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  highlightTextBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 高亮文本背景颜色
-  highlightTextBackgroundColor: number | undefined = undefined
+  highlightTextBackgroundColor: ResourceColor | undefined = undefined
   // 高亮文本背景左上圆角列表
-  highlightTextBackgroundRadiusTopLeftList: Array<number> = textSizeListGeneralData
+  highlightTextBackgroundRadiusTopLeftList: Array<Length> = textSizeListGeneralData
   @State // 高亮文本背景左上圆角
-  highlightTextBackgroundRadiusTopLeft: number | undefined = undefined
+  highlightTextBackgroundRadiusTopLeft: Length = 0.0
   // 高亮文本背景右上圆角列表
-  highlightTextBackgroundRadiusTopRightList: Array<number> = textSizeListGeneralData
+  highlightTextBackgroundRadiusTopRightList: Array<Length> = textSizeListGeneralData
   @State // 高亮文本背景右上圆角
-  highlightTextBackgroundRadiusTopRight: number | undefined = undefined
+  highlightTextBackgroundRadiusTopRight: Length = 0.0
   // 高亮文本背景左下圆角列表
-  highlightTextBackgroundRadiusBottomLeftList: Array<number> = textSizeListGeneralData
+  highlightTextBackgroundRadiusBottomLeftList: Array<Length> = textSizeListGeneralData
   @State // 高亮文本背景左下圆角
-  highlightTextBackgroundRadiusBottomLeft: number | undefined = undefined
+  highlightTextBackgroundRadiusBottomLeft: Length = 0.0
   // 高亮文本背景右下圆角列表
-  highlightTextBackgroundRadiusBottomRightList: Array<number> = textSizeListGeneralData
+  highlightTextBackgroundRadiusBottomRightList: Array<Length> = textSizeListGeneralData
   @State // 高亮文本背景右下圆角
-  highlightTextBackgroundRadiusBottomRight: number | undefined = undefined
+  highlightTextBackgroundRadiusBottomRight: Length = 0.0
   heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
   @State isExpanded2: boolean = false // 控制展开/折叠状态
@@ -174,8 +174,8 @@ struct HighlightPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25)
                 .padding(5)
                 .borderRadius(5)
@@ -229,12 +229,12 @@ struct HighlightPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -354,12 +354,12 @@ struct HighlightPage {
             Row() {
               Text("专有样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -454,7 +454,7 @@ struct HighlightPage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

@@ -122,28 +122,28 @@ struct Deprecated3Page {
   headingTextLineHeight6List: Array<number> = textNumberListGeneralData
   @State headingTextLineHeight6: number = 22 // 六级标题文本行高
   // 一级标题文本颜色列表
-  headingTextColor1List: Array<number | undefined> = colorListGeneralData
+  headingTextColor1List: Array<ResourceColor | undefined> = colorListGeneralData
   @State headingTextColor1: number = 0xFF191919 // 一级标题文本颜色
   // H1标题下分割线颜色列表
-  headingBreakColor1List: Array<number | undefined> = colorListGeneralData
+  headingBreakColor1List: Array<ResourceColor | undefined> = colorListGeneralData
   @State headingBreakColor1: number = 0xFF191919 // H1标题下分割线颜色
   // 二级标题文本颜色列表
-  headingTextColor2List: Array<number | undefined> = colorListGeneralData
+  headingTextColor2List: Array<ResourceColor | undefined> = colorListGeneralData
   @State headingTextColor2: number = 0xFF191919 // 二级标题文本颜色
   // H2标题下分割线颜色列表
-  headingBreakColor2List: Array<number | undefined> = colorListGeneralData
+  headingBreakColor2List: Array<ResourceColor | undefined> = colorListGeneralData
   @State headingBreakColor2: number = 0xFF191919 // H2标题下分割线颜色
   // 三级标题文本颜色列表
-  headingTextColor3List: Array<number | undefined> = colorListGeneralData
+  headingTextColor3List: Array<ResourceColor | undefined> = colorListGeneralData
   @State headingTextColor3: number = 0xFF191919 // 三级标题文本颜色
   // 四级标题文本颜色列表
-  headingTextColor4List: Array<number | undefined> = colorListGeneralData
+  headingTextColor4List: Array<ResourceColor | undefined> = colorListGeneralData
   @State headingTextColor4: number = 0xFF191919 // 四级标题文本颜色
   // 五级标题文本颜色列表
-  headingTextColor5List: Array<number | undefined> = colorListGeneralData
+  headingTextColor5List: Array<ResourceColor | undefined> = colorListGeneralData
   @State headingTextColor5: number = 0xFF191919 // 五级标题文本颜色
   // 六级标题文本颜色列表
-  headingTextColor6List: Array<number | undefined> = colorListGeneralData
+  headingTextColor6List: Array<ResourceColor | undefined> = colorListGeneralData
   @State headingTextColor6: number = 0xFF191919 // 六级标题文本颜色
 
   // ---------------- 段落配置
@@ -151,7 +151,7 @@ struct Deprecated3Page {
   paragraphTextSizeList: Array<number> = textNumberListGeneralData
   @State paragraphTextSize: number = 14 // 段落文本大小
   // 段落文本颜色列表
-  paragraphTextColorList: Array<number | undefined> = colorListGeneralData
+  paragraphTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State paragraphTextColor: number = 0xFF191919 // 段落文本颜色
   // 段落文本字体列表
   paragraphTypefaceList: Array<string> = ["HarmonyOS Sans", "HarmonyOS Sans SC", "monospace"]
@@ -171,7 +171,7 @@ struct Deprecated3Page {
 
   // ---------------- 分割线配置
   // 分割线颜色列表
-  thematicBreakColorList: Array<number | undefined> = colorListGeneralData
+  thematicBreakColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State thematicBreakColor: number = 0xFF191919 // 分割线颜色
   // 分割线高度列表
   thematicBreakHeightList: Array<number> = [0, 0.5, 1, 2, 3]
@@ -185,10 +185,10 @@ struct Deprecated3Page {
 
   // ---------------- 内联代码配置
   // 内联代码文本颜色列表
-  codeTextColorList: Array<number | undefined> = colorListGeneralData
+  codeTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State codeTextColor: number = 0xFF000000 // 内联代码文本颜色
   // 内联代码背景颜色列表
-  codeBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  codeBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State codeBackgroundColor: number = 0xFFEAEAEA // 内联代码背景颜色
   // 内联代码文本大小列表
   codeTextSizeList: Array<number> = textNumberListGeneralData

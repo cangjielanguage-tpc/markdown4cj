@@ -9,7 +9,7 @@ import {
   fontStyleToString,
   fontWeightToString,
   imageFitToString,
-  numberToColorString,
+  resourceColorString,
   styleToString,
   resToString,
   lineCapStyleToString } from "../utils/BaseUtils"
@@ -21,10 +21,10 @@ import {
 export struct BaseTabComponent {
   titleStr: string = ""
   typeEnum: TypeEnum = TypeEnum.IS_STRING
-  allListData: Array<string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle | undefined> =
-    Array<string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle | undefined>()
+  allListData: Array<string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle | undefined> =
+    Array<string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle | undefined>()
   @Link
-  allData: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle | undefined
+  allData: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle | undefined
 
   build() {
     Column() {
@@ -64,9 +64,9 @@ export struct BaseTabComponent {
           }
         } else if (this.typeEnum == TypeEnum.IS_COLOR) {
           if (this.allData !== undefined) {
-            Text(numberToColorString(this.allData as number))
-              .backgroundColor(this.allData as number)
-              .fontColor(colorSwitch(this.allData as number))
+            Text(resourceColorString(this.allData as ResourceColor))
+              .backgroundColor(this.allData as ResourceColor)
+              .fontColor(colorSwitch(this.allData as ResourceColor))
               .fontSize(16)
               .padding(2)
               .textAlign(TextAlign.Start)
@@ -190,7 +190,7 @@ export struct BaseTabComponent {
 
       Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
         if (this.typeEnum == TypeEnum.IS_STRING) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${item}`)
                 .type(ButtonType.Capsule)
@@ -217,7 +217,7 @@ export struct BaseTabComponent {
 
           })
         } else if (this.typeEnum == TypeEnum.IS_NUMBER) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${item}`)
                 .type(ButtonType.Capsule)
@@ -244,7 +244,7 @@ export struct BaseTabComponent {
 
           })
         } else if (this.typeEnum == TypeEnum.IS_BOOLEAN) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${item}`)
                 .type(ButtonType.Capsule)
@@ -271,18 +271,18 @@ export struct BaseTabComponent {
 
           })
         } else if (this.typeEnum == TypeEnum.IS_COLOR) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
-              Button(numberToColorString(item as number))
+              Button(resourceColorString(item as ResourceColor))
                 .type(ButtonType.Capsule)
-                .fontColor(colorSwitch1(item as number))
+                .fontColor(colorSwitch1(item as ResourceColor))
                 .stateEffect(true)
                 .height(25)
                 .margin(2)
-                .backgroundColor(item as number)
-                .fontSize(14)
+                .backgroundColor(item as ResourceColor)
+                .fontSize(12)
                 .onClick(() => {
-                  this.allData = item as number
+                  this.allData = item as ResourceColor
                 })
             } else {
               Button("undefined")
@@ -291,7 +291,7 @@ export struct BaseTabComponent {
                 .height(25)
                 .margin(2)
                 .backgroundColor(0xFF317AFF)
-                .fontSize(14)
+                .fontSize(12)
                 .onClick(() => {
                   this.allData = undefined
                 })
@@ -299,7 +299,7 @@ export struct BaseTabComponent {
 
           })
         } else if (this.typeEnum == TypeEnum.IS_RESOURCE) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(resToString(item as Resource))
                 .type(ButtonType.Capsule)
@@ -326,7 +326,7 @@ export struct BaseTabComponent {
 
           })
         } else if (this.typeEnum == TypeEnum.IS_LATEX_FORMAT) {
-          // ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          // ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
           //   if (item !== undefined) {
           //     Button(`${enumToString(item as number)}`)
           //       .type(ButtonType.Capsule)
@@ -352,7 +352,7 @@ export struct BaseTabComponent {
           //   }
           // })
         } else if (this.typeEnum == TypeEnum.IS_DECORATION_STYLE) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${styleToString(item as number)}`)
                 .type(ButtonType.Capsule)
@@ -378,7 +378,7 @@ export struct BaseTabComponent {
             }
           })
         } else if (this.typeEnum == TypeEnum.IS_DECORATION_TYPE) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${decorationTypeToString(item as TextDecorationType)}`)
                 .type(ButtonType.Capsule)
@@ -404,7 +404,7 @@ export struct BaseTabComponent {
             }
           })
         } else if (this.typeEnum == TypeEnum.IS_IMAGE_FIT) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${imageFitToString(item as ImageFit)}`)
                 .type(ButtonType.Capsule)
@@ -430,7 +430,7 @@ export struct BaseTabComponent {
             }
           })
         } else if (this.typeEnum == TypeEnum.IS_BAR_STATE) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${barStateToString(item as BarState)}`)
                 .type(ButtonType.Capsule)
@@ -456,7 +456,7 @@ export struct BaseTabComponent {
             }
           })
         } else if (this.typeEnum == TypeEnum.IS_BORDER_STYLE) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${borderStyleToString(item as BorderStyle)}`)
                 .type(ButtonType.Capsule)
@@ -482,7 +482,7 @@ export struct BaseTabComponent {
             }
           })
         } else if (this.typeEnum == TypeEnum.IS_FONT_STYLE) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${fontStyleToString(item as FontStyle)}`)
                 .type(ButtonType.Capsule)
@@ -508,7 +508,7 @@ export struct BaseTabComponent {
             }
           })
         } else if (this.typeEnum == TypeEnum.IS_FONT_WEIGHT) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${fontWeightToString(item as FontWeight)}`)
                 .type(ButtonType.Capsule)
@@ -534,7 +534,7 @@ export struct BaseTabComponent {
             }
           })
         } else if (this.typeEnum == TypeEnum.IS_LINE_CAP_STYLE) {
-          ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {
               Button(`${lineCapStyleToString(item as LineCapStyle)}`)
                 .type(ButtonType.Capsule)
