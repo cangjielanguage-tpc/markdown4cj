@@ -71,9 +71,10 @@ export function renderTableCellColumnAlign(alignment ?: string): HorizontalAlign
  * @return 返回时分秒文本
  */
 export function formatDurationToTime(totalSeconds: number): string {
-  const hours = Math.floor(totalSeconds / SECONDS_PER_HOUR)
-  const minutes = Math.floor((totalSeconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE)
-  const seconds = totalSeconds % SECONDS_PER_MINUTE
+  const t = Math.floor(totalSeconds)
+  const hours = Math.floor(t / SECONDS_PER_HOUR)
+  const minutes = Math.floor((t % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE)
+  const seconds = t % SECONDS_PER_MINUTE
   const strHours = String(hours).padStart(2, '0')
   const strMinutes = String(minutes).padStart(2, '0')
   const strSeconds = String(seconds).padStart(2, '0')

@@ -111,7 +111,7 @@ export struct MarkdownTableRow {
           }
         },
         (item: NodeView, index: number) => {
-          return `${index}-${item.nodeType}`
+          return `${index}-${item.nodeType}-${item.contentHash}`
         }
       )
     }

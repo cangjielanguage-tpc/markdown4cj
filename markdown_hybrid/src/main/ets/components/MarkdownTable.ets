@@ -127,7 +127,7 @@ export struct MarkdownTable {
             }
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}`
+            return `${index}-${item.nodeType}-${item.contentHash}`
           }
         )
       }
@@ -203,9 +203,24 @@ export struct MarkdownTable {
 
   /**
    * 对比tracker中的列宽与当前@State，仅在变化时更新以避免不必要重渲染
+   * 若tracker尚无有效数据（全0），用componentWidth均分作为初始值，确保列对齐
    */
   private applyColumnWidths(): void {
-    const newWidths = this.cellWidthTracker.getWidths()
+    const trackerWidths = this.cellWidthTracker.getWidths()
+    const newWidths: number[] = [...trackerWidths]
+    let hasData = false
+    for (let i = 0; i < newWidths.length; i++) {
+      if (newWidths[i] > 0) {
+        hasData = true
+        break
+      }
+    }
+    if (!hasData && newWidths.length > 0 && this.componentWidth > 0) {
+      const evenWidth = this.componentWidth / newWidths.length
+      for (let i = 0; i < newWidths.length; i++) {
+        newWidths[i] = evenWidth
+      }
+    }
     let changed = newWidths.length !== this.columnWidths.length
     for (let i = 0; !changed && i < newWidths.length; i++) {
       if (newWidths[i] !== this.columnWidths[i]) {

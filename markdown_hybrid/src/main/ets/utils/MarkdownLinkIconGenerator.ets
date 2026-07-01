@@ -228,6 +228,7 @@ export function generateLinkIconPixelMap(
         })
     })
     .catch(() => {
+      imageSource.release()
       return undefined
     })
 }

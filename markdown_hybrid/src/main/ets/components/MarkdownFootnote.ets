@@ -59,7 +59,6 @@ export struct MarkdownFootnote {
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
-  @State isQuote: boolean = false // 是否在块引用中
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -115,7 +114,7 @@ export struct MarkdownFootnote {
         }
       )
     }
-    .backgroundColor(footnoteBackgroundColor(this.blockQuoteTheme, this.footnoteDefTheme, this.globalTheme, this.isQuote))
+    .backgroundColor(footnoteBackgroundColor(this.blockQuoteTheme, this.footnoteDefTheme, this.globalTheme, false))
     .listDirection(Axis.Vertical)
     .alignListItem(ListItemAlign.Start)
     .padding({

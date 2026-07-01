@@ -88,9 +88,7 @@ export struct MarkdownTableCell {
   private isAlive: boolean = true // 组件是否存活
 
   aboutToAppear(): void {
-    this.refreshData() // 首次加载
-    this.tryReplaceImages()
-    this.tryGenerateLinkIcons()
+    this.refreshData() // 首次加载（refreshData内会调用tryReplaceImages/tryGenerateLinkIcons）
   }
 
   aboutToDisappear(): void {
@@ -148,7 +146,7 @@ export struct MarkdownTableCell {
         newWidth = newValue.width
       }
       if (newWidth > 0) {
-        this.cellWidthTracker.updateIfWider(this.tableBlockCellCell, newWidth)
+        this.cellWidthTracker.updateCellWidth(this.tableBlockCellRow, this.tableBlockCellCell, newWidth)
       }
     })
   }
@@ -362,7 +360,7 @@ export struct MarkdownTableCell {
         .borderWidth(this.imageTheme.imageBorderWidth)
         .borderColor(this.imageTheme.imageBorderColor)
         .borderStyle(this.imageTheme.imageBorderStyle)
-        .width(item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
+        .width(item.imageWidth ?? undefined)
         .height(item.imageHeight)
         .objectFit(this.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
@@ -379,7 +377,7 @@ export struct MarkdownTableCell {
         })
         .onComplete((imageLoadResult) => {
           const l = imageWidthAndHeight(
-            this.componentWidth,
+            this.columnWidth > 0 ? this.columnWidth : this.componentWidth,
             imageLoadResult.width,
             imageLoadResult.height,
             item.imageStyleWidth ?? this.imageTheme.imageWidth,
@@ -395,7 +393,6 @@ export struct MarkdownTableCell {
           item.imageHeight = h
           if (this.list.indexOf(item) >= 0) {
             this.list = [...this.list]
-            this.cellWidthTracker.onWidthUpdated?.() // 图片加载后触发列宽重算
           }
         })
     } else if (item.nodeType == "Link" || item.nodeType == "HeadLink") {
@@ -437,6 +434,7 @@ export struct MarkdownTableCell {
           .height(this.latexMathTheme.latexMathTextSize)
           .width((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize)
           .verticalAlign(ImageSpanAlignment.CENTER)
+          .constraintSize({ maxWidth: this.columnWidth > 0 ? this.columnWidth : undefined })
           .onClick(() => {
             if (this.latexImageCallback !== undefined && item.latexImageData !== undefined) {
               this.latexImageCallback(item.latexImageData, item.latexImageHeight, item.latexImageWidth)
@@ -503,14 +501,14 @@ export struct MarkdownTableCell {
       }
     }
     this.list = [...children]
+    this.tryReplaceImages()
+    this.tryGenerateLinkIcons()
   }
 
   /**
-   * list变化时触发数学公式异步加载（从refreshData移出，避免每次流式输出都跑for循环）
+   * list变化时触发数学公式异步加载（从refreshData移出tryReplaceImages/tryGenerateLinkIcons，避免每次this.list=[...this.list]都重跑）
    */
   onListChanged() {
-    this.tryReplaceImages()
-    this.tryGenerateLinkIcons()
     if (!this.isLatexMathEnabled) {
       return
     }
@@ -597,7 +595,6 @@ export struct MarkdownTableCell {
             child.linkIconWidth = result.width
             child.linkIconHeight = result.height
             this.list = [...this.list]
-            this.cellWidthTracker.onWidthUpdated?.()
           })
       }
     }
@@ -644,7 +641,6 @@ export struct MarkdownTableCell {
             item.latexImageHeight = info.size.height
             item.latexIsLoading = false
             this.list = [...this.list] // 触发重渲染
-            this.cellWidthTracker.onWidthUpdated?.() // 触发列宽重算
             LatexParseQueue.notifyDone()
           }).catch(() => {
             item.latexIsLoading = false

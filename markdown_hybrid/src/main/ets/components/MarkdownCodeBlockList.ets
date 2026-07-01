@@ -356,11 +356,11 @@ export struct MarkdownCodeBlockList {
         ? this.strInfoText[idx] : undefined
       try {
         if (!this.isAlive || currentVersion < this.parseVersion) {
-          return
+          break
         }
         let prismRes: PrismRes = await codeStringToColorString(codeText, info, this.codeBlockTheme.codeBlockIsDark)
         if (!this.isAlive || currentVersion < this.parseVersion) {
-          return
+          break
         }
         // 原地修改CodeBlockData属性，@ObjectLink触发子组件刷新（不重建）
         this.blocksDataList[idx].blocks = Array.from(prismRes.getListColor())

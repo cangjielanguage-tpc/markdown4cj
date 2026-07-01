@@ -23,7 +23,6 @@ export class LatexParseQueue {
    * 通知当前任务已完成，触发下一个任务
    */
   static notifyDone(): void {
-    LatexParseQueue.isRunning = false
     setTimeout(() => {
       LatexParseQueue.processNext()
     }, 0)

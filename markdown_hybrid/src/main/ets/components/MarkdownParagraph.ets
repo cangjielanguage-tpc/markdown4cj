@@ -82,7 +82,6 @@ export struct MarkdownParagraph {
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   @State @Watch('onListChanged') list: NodeView[] = [] // 段落子节点数据源
-  @State isQuote: boolean = false // 是否在块引用中
   private isAlive: boolean = true // 组件是否存活
 
   aboutToAppear(): void {
