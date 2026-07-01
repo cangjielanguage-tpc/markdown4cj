@@ -531,11 +531,15 @@ export struct CJMarkdown {
   }
 
   /**
-   * 刷新数据（节流入口）
-   * 流式输出时content高频变化，通过leading-edge节流将解析频率从~30次/秒降至~8次/秒
-   * 首次调用立即执行（无延迟），后续调用在parseThrottleMs内被合并，最后一次必有trailing调用
+   * 刷新数据
+   * enableParseThrottle为true时，通过leading-edge节流控制解析频率
+   * enableParseThrottle为false时，直接触发解析，由调用方自行控制节流
    */
   refreshData() {
+    if (!this.config.markdownTheme.globalTheme.enableParseThrottle) {
+      this.executeRefresh()
+      return
+    }
     if (this.isThrottled) {
       this.hasPendingRefresh = true
       return

@@ -706,6 +706,17 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置是否启用解析节流
+   *
+   * @param enableParseThrottle 是否启用解析节流，true为markdown控制节流，false为用户自行控制 - 默认true
+   * @return MarkdownTheme
+   */
+  setEnableParseThrottle(enableParseThrottle: boolean): MarkdownTheme {
+    this.globalTheme.setEnableParseThrottle(enableParseThrottle)
+    return this
+  }
+
+  /**
    * 设置解析节流间隔
    *
    * @param parseThrottleMs 节流间隔（ms），0表示不节流 - 默认200
