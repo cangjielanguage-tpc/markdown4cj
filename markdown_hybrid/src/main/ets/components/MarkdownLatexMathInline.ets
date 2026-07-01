@@ -1,4 +1,5 @@
 import { image } from "@kit.ImageKit"
+import { NUM_FF000000, resourceColorToNumber } from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import { LatexMathTheme } from "../theme/LatexMathTheme"
 import { LatexParseQueue } from "../model/LatexParseQueue"
@@ -97,8 +98,8 @@ export struct MarkdownLatexMathInline {
     this.isParserEnd = false
     const strLatexMath: string = this.latexStrCallback(this.latexMathStr)
     const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
-    const textColor: number = this.resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
-    const bgColor: number = this.resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
+    const textColor: number = resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
+    const bgColor: number = resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
     const colorFormat: LatexMathColorFormat = this.latexMathTheme.latexMathColorFormat === 0
       ? LatexMathColorFormat.COLOR_FORMAT_RGB_565
       : LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
@@ -150,13 +151,4 @@ export struct MarkdownLatexMathInline {
       })
   }
 
-  /**
-   * ResourceColor转number
-   */
-  private resourceColorToNumber(color: ResourceColor): number {
-    if (typeof color === 'number') {
-      return color
-    }
-    return 0xFF000000
-  }
 }

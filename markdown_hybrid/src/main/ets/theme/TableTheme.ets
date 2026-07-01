@@ -4,6 +4,7 @@ import {
   COLOR_BLACK,
   COLOR_FF191919,
   COLOR_FFE0E0E0,
+  COLOR_FF191919_SCB,
   isMargin,
   isPadding,
   isBorderRadiuses
@@ -37,7 +38,7 @@ export class TableTheme implements MarkdownBaseTheme {
   tableRadiusBottomLeft: Length = 5.0 // 左下圆角
   tableRadiusBottomRight: Length = 5.0 // 右下圆角
   tableScrollBarState: BarState = BarState.Off // 滚动条状态
-  tableScrollBarColor: Color | number | string = '#FF191919' // 滚动条颜色
+  tableScrollBarColor: Color | number | string = COLOR_FF191919_SCB // 滚动条颜色
   tableMinCellWidth: Length = 50.0 // 最小单元格宽度
   tableMaxCellWidth: Length = 300.0 // 最大单元格宽度
   tableFirstColumnIsBold: boolean = false // 第一列加粗

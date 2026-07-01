@@ -2,6 +2,7 @@ import { image } from "@kit.ImageKit"
 import { drawCircleImage, drawRectImage, drawRectToolImage } from 'libtext_to_img.so'
 import { LinkTheme } from "../theme/LinkTheme"
 import { urlSafeBase64Decode } from "./MarkdownUtils"
+import { NUM_00000000, NUM_33000000, NUM_333D73CF, NUM_33B41700, NUM_FF000000, NUM_FF0000FF, NUM_FF00FF00, NUM_FF3D73CF, NUM_FF888888, NUM_FF884800, NUM_FFB41700, NUM_FFFFFF00, NUM_FFFFFFFF, NUM_FFFF0000, NUM_FFFFA500, NUM_FFFFC0CB } from "../base/Constants"
 
 /**
  * 链接图标类型枚举
@@ -47,19 +48,19 @@ function resourceColorToNumber(color: ResourceColor): number {
     const num = color
     if (num >= 0 && num <= 11) {
       switch (num) {
-        case 0: return 0xFFFFFFFF
-        case 1: return 0xFF000000
-        case 2: return 0xFF0000FF
-        case 3: return 0xFF884800
-        case 4: return 0xFF888888
-        case 5: return 0xFF888888
-        case 6: return 0xFF00FF00
-        case 7: return 0xFFFFFF00
-        case 8: return 0xFFFF0000
-        case 9: return 0xFFFFC0CB
-        case 10: return 0xFFFFA500
-        case 11: return 0x00000000
-        default: return 0xFF000000
+        case 0: return NUM_FFFFFFFF
+        case 1: return NUM_FF000000
+        case 2: return NUM_FF0000FF
+        case 3: return NUM_FF884800
+        case 4: return NUM_FF888888
+        case 5: return NUM_FF888888
+        case 6: return NUM_FF00FF00
+        case 7: return NUM_FFFFFF00
+        case 8: return NUM_FFFF0000
+        case 9: return NUM_FFFFC0CB
+        case 10: return NUM_FFFFA500
+        case 11: return NUM_00000000
+        default: return NUM_FF000000
       }
     }
     return num >>> 0
@@ -76,7 +77,7 @@ function resourceColorToNumber(color: ResourceColor): number {
       }
     }
   }
-  return 0xFF000000
+  return NUM_FF000000
 }
 
 /**
@@ -93,21 +94,21 @@ function lengthToNumber(length: Length): number {
  * 根据类型字符串返回前景色和背景色（数值型 ARGB）
  */
 function typeStringColorNum(str: string): TypeColorPairNum {
-  let fg: number = 0xFF000000
-  let bg: number = 0x33000000
+  let fg: number = NUM_FF000000
+  let bg: number = NUM_33000000
   switch (str) {
     case 'PDF':
-      fg = 0xFFB41700
-      bg = 0x33B41700
+      fg = NUM_FFB41700
+      bg = NUM_33B41700
       break
     case 'DOC':
     case 'DOCX':
-      fg = 0xFF3D73CF
-      bg = 0x333D73CF
+      fg = NUM_FF3D73CF
+      bg = NUM_333D73CF
       break
     case 'TXT':
-      fg = 0xFF000000
-      bg = 0x33000000
+      fg = NUM_FF000000
+      bg = NUM_33000000
       break
     default:
       break

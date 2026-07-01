@@ -1,3 +1,4 @@
+import { COLOR_TRANSPARENT, COLOR_FF191919, COLOR_BLACK, COLOR_TRANSPARENT_SCB } from '../base/Constants'
 import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
@@ -14,14 +15,14 @@ export class LatexMathTheme implements MarkdownBaseTheme {
   latexMathPaddingBottom: number = 0.0 // 下内边距
   latexMathPaddingLeft: number = 0.0 // 左内边距
   latexMathDefaultText: boolean = true // 未加载状态是否显示文字
-  latexMathDefaultTextFontColor: ResourceColor = 0xFF191919 // 未加载状态文本颜色
+  latexMathDefaultTextFontColor: ResourceColor = COLOR_FF191919 // 未加载状态文本颜色
   latexMathDefaultTextFontSize: number | string | Resource = 14.0 // 未加载状态文本尺寸
   latexMathDefaultTextFontStyle: FontStyle = FontStyle.Normal // 未加载状态文本字体样式
   latexMathDefaultTextFontWeight: number | FontWeight = FontWeight.Normal // 未加载状态文本字体粗细
   latexMathDefaultTextFontFamily: string | Resource | undefined = undefined // 未加载状态文本字体
   latexMathTextSize: number = 14.0 // 数学公式文本大小 - 单位fp
-  latexMathBackgroundColor: ResourceColor = 0x00000000 // 数学公式背景颜色
-  latexMathTextColor: ResourceColor = 0xFF000000 // 数学公式文本颜色
+  latexMathBackgroundColor: ResourceColor = COLOR_TRANSPARENT_SCB // 数学公式背景颜色
+  latexMathTextColor: ResourceColor = COLOR_BLACK // 数学公式文本颜色
   latexMathColorFormat: number = 1 // 数学公式生成图片格式 - 0:RGB_565, 1:BGRA_8888
   latexMathBlockCenter: boolean = true // 块结构的数学公式是否居中
   latexMathResPath: string | undefined = undefined // 数学公式资源路径

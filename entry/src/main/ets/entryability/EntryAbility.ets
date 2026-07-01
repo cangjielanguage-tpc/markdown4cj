@@ -1,4 +1,4 @@
-import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
+import { AbilityConstant, ConfigurationConstant, UIAbility, Want, Configuration } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { resourceManager } from '@kit.LocalizationKit';
@@ -11,6 +11,8 @@ export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
+    // 初始化时缓存当前设备的颜色模式
+    AppStorage.setOrCreate('currentColorMode', this.context.config.colorMode)
   }
 
   onDestroy(): void {
@@ -53,5 +55,15 @@ export default class EntryAbility extends UIAbility {
   onBackground(): void {
     // Ability has back to background
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
+  }
+
+  onConfigurationUpdate(newConfig: Configuration): void {
+    // 获取变更后的颜色模式
+    let newColorMode = newConfig.colorMode
+    // 可选：比较当前存储的模式，避免重复更新
+    let currentColorMode = AppStorage.get<ConfigurationConstant.ColorMode>('currentColorMode')
+    if (newColorMode !== currentColorMode) {
+      AppStorage.setOrCreate('currentColorMode', newColorMode)
+    }
   }
 }
