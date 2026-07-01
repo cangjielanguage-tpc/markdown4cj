@@ -687,9 +687,9 @@ export function spanBackgroundColor(
       color: inlineCodeTheme.inlineCodeTextBackgroundColor,
       radius: {
         topLeft: inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft,
-        topRight: inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft,
-        bottomLeft: inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft,
-        bottomRight: inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft,
+        topRight: inlineCodeTheme.inlineCodeTextBackgroundRadiusTopRight,
+        bottomLeft: inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomLeft,
+        bottomRight: inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomRight,
       }
     }
   }

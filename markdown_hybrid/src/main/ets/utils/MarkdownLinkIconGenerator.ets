@@ -2,7 +2,7 @@ import { image } from "@kit.ImageKit"
 import { drawCircleImage, drawRectImage, drawRectToolImage } from 'libtext_to_img.so'
 import { LinkTheme } from "../theme/LinkTheme"
 import { urlSafeBase64Decode } from "./MarkdownUtils"
-import { NUM_00000000, NUM_33000000, NUM_333D73CF, NUM_33B41700, NUM_FF000000, NUM_FF0000FF, NUM_FF00FF00, NUM_FF3D73CF, NUM_FF888888, NUM_FF884800, NUM_FFB41700, NUM_FFFFFF00, NUM_FFFFFFFF, NUM_FFFF0000, NUM_FFFFA500, NUM_FFFFC0CB } from "../base/Constants"
+import { NUM_00000000, NUM_33000000, NUM_333D73CF, NUM_33B41700, NUM_FF000000, NUM_FF0000FF, NUM_FF008000, NUM_FF00FF00, NUM_FF3D73CF, NUM_FF888888, NUM_FF884800, NUM_FFB41700, NUM_FFFFFF00, NUM_FFFFFFFF, NUM_FFFF0000, NUM_FFFFA500, NUM_FFFFC0CB } from "../base/Constants"
 
 /**
  * 链接图标类型枚举
@@ -53,7 +53,7 @@ function resourceColorToNumber(color: ResourceColor): number {
         case 2: return NUM_FF0000FF
         case 3: return NUM_FF884800
         case 4: return NUM_FF888888
-        case 5: return NUM_FF888888
+        case 5: return NUM_FF008000
         case 6: return NUM_FF00FF00
         case 7: return NUM_FFFFFF00
         case 8: return NUM_FFFF0000

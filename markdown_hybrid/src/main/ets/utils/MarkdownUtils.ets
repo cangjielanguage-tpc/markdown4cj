@@ -57,7 +57,7 @@ export function renderTableCellColumnAlign(alignment ?: string): HorizontalAlign
       return HorizontalAlign.Start
     case "CENTER":
       return HorizontalAlign.Center
-    case "LEFT":
+    case "RIGHT":
       return HorizontalAlign.End
     default:
       return HorizontalAlign.Start
