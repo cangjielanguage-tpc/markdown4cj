@@ -55,6 +55,7 @@ export class CellWidthTracker {
     if (!this.cellWidths.delete(row)) {
       return
     }
+    let changed = false
     for (let col = 0; col < this.widths.length; col++) {
       const oldMax = this.widths[col]
       let newMax = 0
@@ -65,9 +66,12 @@ export class CellWidthTracker {
       })
       if (newMax !== oldMax) {
         this.widths[col] = newMax
+        changed = true
       }
     }
-    this.onWidthUpdated?.()
+    if (changed) {
+      this.onWidthUpdated?.()
+    }
   }
 
   /**
@@ -89,7 +93,7 @@ export class CellWidthTracker {
    * @return 列宽数组
    */
   getWidths(): number[] {
-    return this.widths
+    return [...this.widths]
   }
 
   /**

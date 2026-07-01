@@ -543,8 +543,7 @@ export struct MarkdownTableCell {
           if (this.list.indexOf(child) < 0) {
             return
           }
-          const buf = buffer as Uint8Array | ArrayBuffer
-          const imageSource: image.ImageSource = image.createImageSource(buf instanceof Uint8Array ? buf.buffer : buf)
+          const imageSource: image.ImageSource = image.createImageSource(buffer)
           imageSource.createPixelMap().then((pm: PixelMap) => {
             imageSource.release()
             if (!this.isAlive || this.list.indexOf(child) < 0) {
@@ -554,6 +553,7 @@ export struct MarkdownTableCell {
             child.imageReplacePixelMap = pm
             this.list = [...this.list]
           }).catch(() => {
+            imageSource.release()
           })
         }).catch(() => {
         })
@@ -643,10 +643,12 @@ export struct MarkdownTableCell {
             this.list = [...this.list] // 触发重渲染
             LatexParseQueue.notifyDone()
           }).catch(() => {
+            pm.release()
             item.latexIsLoading = false
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
+          imageSource.release()
           item.latexIsLoading = false
           LatexParseQueue.notifyDone()
         })

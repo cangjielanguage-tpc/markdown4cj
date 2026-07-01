@@ -14,7 +14,7 @@ export struct MarkdownCodeIndented {
   codeFullScreenCallback?: (code: string, language: string | undefined) => void // 代码全屏点击事件
   @State codeText: string = "" // 代码内容
   @State info: string | undefined = undefined // 代码类型
-  @State lines: number = 0 // 代码行数
+  private lines: number = 0 // 代码行数
   @State lineArray: Array<number> = new Array<number>() // 代码行数显示数据列表
 
   aboutToAppear(): void {

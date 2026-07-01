@@ -37,7 +37,15 @@ export class LatexParseQueue {
       return
     }
     LatexParseQueue.isRunning = true
-    const task = LatexParseQueue.queue.shift()!
-    task()
+    const task = LatexParseQueue.queue.shift()
+    if (task === undefined) {
+      LatexParseQueue.isRunning = false
+      return
+    }
+    try {
+      task()
+    } catch (e) {
+      LatexParseQueue.notifyDone()
+    }
   }
 }

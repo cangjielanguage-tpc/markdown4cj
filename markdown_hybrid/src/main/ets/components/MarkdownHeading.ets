@@ -1,5 +1,5 @@
 import { image } from "@kit.ImageKit"
-import { NUM_FF000000, resourceColorToNumber } from "../base/Constants"
+import { resourceColorToNumber } from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import {
   headingBackgroundColor,
@@ -94,8 +94,6 @@ export struct MarkdownHeading {
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
-    this.tryReplaceImages()
-    this.tryGenerateLinkIcons()
   }
 
   aboutToDisappear(): void {
@@ -387,6 +385,7 @@ export struct MarkdownHeading {
       if ((item.isBulletList || item.isOrderedList || item.isQuote || item.isDescList) && this.isSingleLinkNode() && !this.linkTheme.linkListIsIcon) {
         Span(item.nodeText)
           .fontColor(this.linkTheme.linkTextFontColor)
+          .fontSize(this.paragraphTheme.paragraphTextFontSize)
           .onClick(() => {
             if (item.linkUrl !== undefined) {
               this.linkCallback?.(item.linkUrl)
@@ -406,6 +405,22 @@ export struct MarkdownHeading {
         } else {
           Span(item.nodeText)
             .fontColor(this.linkTheme.linkTextFontColor)
+            .fontSize(spanFontSize(
+              item,
+              this.subTheme,
+              this.supTheme,
+              this.inlineCodeTheme,
+              this.boldTheme,
+              this.italicTheme,
+              this.strikethroughTheme,
+              this.highlightTheme,
+              this.htmlUnderlineTheme,
+              this.linkTheme,
+              this.footnoteRefTheme,
+              this.headingTheme,
+              this.tableTheme,
+              this.paragraphTheme
+            ))
             .onClick(() => {
               if (item.linkUrl !== undefined) {
                 this.linkCallback?.(item.linkUrl)
@@ -608,8 +623,7 @@ export struct MarkdownHeading {
           if (this.list.indexOf(child) < 0) {
             return
           }
-          const buf = buffer as Uint8Array | ArrayBuffer
-          const imageSource: image.ImageSource = image.createImageSource(buf instanceof Uint8Array ? buf.buffer : buf)
+          const imageSource: image.ImageSource = image.createImageSource(buffer)
           imageSource.createPixelMap().then((pm: PixelMap) => {
             imageSource.release()
             if (!this.isAlive || this.list.indexOf(child) < 0) {
@@ -619,6 +633,7 @@ export struct MarkdownHeading {
             child.imageReplacePixelMap = pm
             this.list = [...this.list]
           }).catch(() => {
+            imageSource.release()
           })
         }).catch(() => {
         })
@@ -669,10 +684,12 @@ export struct MarkdownHeading {
             this.list = [...this.list]
             LatexParseQueue.notifyDone()
           }).catch(() => {
+            pm.release()
             item.latexIsLoading = false
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
+          imageSource.release()
           item.latexIsLoading = false
           LatexParseQueue.notifyDone()
         })

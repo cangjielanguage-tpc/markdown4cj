@@ -17,14 +17,23 @@ export struct MarkdownVideo {
   @State imageUrl: string = "" // 回调得到的图片
   @State videoRatio: number = 16.0 / 9.0 // 图片宽高比
   @State time: string = "" // 视频时长
+  private isAlive: boolean = false // 组件是否存活
 
   aboutToAppear(): void {
+    this.isAlive = true
     this.imageVideoUrl = this.node.imageUrl ?? ""
     this.videoImageCallback?.(this.imageVideoUrl, (url: string, ratio: number, time: number) => {
+      if (!this.isAlive) {
+        return
+      }
       this.imageUrl = url
       this.videoRatio = ratio
       this.time = formatDurationToTime(time)
     })
+  }
+
+  aboutToDisappear(): void {
+    this.isAlive = false
   }
 
   build() {

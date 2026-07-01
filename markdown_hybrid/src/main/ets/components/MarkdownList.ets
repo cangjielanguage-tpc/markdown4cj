@@ -101,7 +101,7 @@ export struct MarkdownList {
             if (item.nodeType == "ListItem") {
               // 普通列表项
               Row() {
-                this.listPrefixTextINCComponent(index)
+                this.listPrefixTextINCComponent(item, index)
                 MarkdownListItem({
                   node: item,
                   blockQuoteTheme: this.blockQuoteTheme,
@@ -245,11 +245,12 @@ export struct MarkdownList {
   /**
    * 无序/有序列表的前缀文本
    *
+   * @param item 节点视图
    * @param index 索引
    */
   @Builder
-  listPrefixTextINCComponent(index: number) {
-    Text(listPrefixStr(index + 1, this.listDepth, this.isOrdered, this.bulletListTheme))
+  listPrefixTextINCComponent(item: NodeView, index: number) {
+    Text(listPrefixStr(this.isOrdered && item.orderedListNumber > 0 ? item.orderedListNumber : index + 1, this.listDepth, this.isOrdered, this.bulletListTheme))
       .fontFamily(this.isOrdered ? this.orderedListTheme.orderedListMarkerTextFontFamily : this.bulletListTheme.bulletListBulletTextFontFamily)
       .fontSize(this.isOrdered ? this.orderedListTheme.orderedListMarkerTextFontSize : this.bulletListTheme.bulletListBulletTextFontSize)
       .fontWeight(this.isOrdered ? this.orderedListTheme.orderedListMarkerTextFontWeight : this.bulletListTheme.bulletListBulletTextFontWeight)

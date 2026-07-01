@@ -308,7 +308,7 @@ export struct MarkdownCodeSeparate {
   chatOnTouch(event: TouchEvent): void {
     if (event.type === TouchType.Down) {
       this.chatTouch = true
-    } else if (event.type === TouchType.Up) {
+    } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
       this.chatTouch = false
     }
   }

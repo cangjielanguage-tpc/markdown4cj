@@ -1,5 +1,5 @@
 import { image } from "@kit.ImageKit"
-import { NUM_FF000000, resourceColorToNumber } from "../base/Constants"
+import { resourceColorToNumber } from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import { LatexMathTheme } from "../theme/LatexMathTheme"
 import { LatexParseQueue } from "../model/LatexParseQueue"
@@ -132,12 +132,15 @@ export struct MarkdownLatexMathInline {
             this.onLatexImageLoaded?.()
             LatexParseQueue.notifyDone()
           }).catch(() => {
+            pm.release()
+            this.pixelMap = undefined
             if (this.isAlive) {
               this.isParserEnd = true
             }
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
+          imageSource.release()
           if (this.isAlive) {
             this.isParserEnd = true
           }

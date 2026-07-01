@@ -187,6 +187,9 @@ export function imageWidthAndHeight(
   const componentImageWidthNew = (imageMaxWidth !== undefined)
     ? Math.min(vp2px(imageMaxWidth), componentImageWidth)
     : componentImageWidth
+  if (imageResWidth === 0 || imageResHeight === 0) {
+    return [0, 0]
+  }
   const aspectRatio: number = imageResHeight / imageResWidth
   if (imageWidthPx !== undefined && imageHeightPx !== undefined) {
     const aspectRatioNew: number = imageHeightPx / imageWidthPx
@@ -602,7 +605,7 @@ export function colorStringToColor(colorString: string): ResourceColor | undefin
   if (colorStr.startsWith('0x') || colorStr.startsWith('-0x')) {
     const num = Number.parseInt(colorStr, 16)
     if (!Number.isNaN(num)) {
-      return num
+      return num >>> 0
     }
     return undefined
   }
@@ -833,14 +836,16 @@ export function urlSafeBase64Decode(v: string): string {
  */
 function base64Decode(input: string): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-  let str = input.replace(/[^A-Za-z0-9+/]/g, '')
+  let str = input.replace(/[^A-Za-z0-9+/=]/g, '')
   const bytes: number[] = []
 
   for (let i = 0; i < str.length; i += 4) {
     const a = chars.indexOf(str.charAt(i))
     const b = chars.indexOf(str.charAt(i + 1))
-    const c = chars.indexOf(str.charAt(i + 2))
-    const d = chars.indexOf(str.charAt(i + 3))
+    const cChar = str.charAt(i + 2)
+    const dChar = str.charAt(i + 3)
+    const c = cChar === '=' ? -1 : chars.indexOf(cChar)
+    const d = dChar === '=' ? -1 : chars.indexOf(dChar)
 
     if (a === -1 || b === -1) {
       break

@@ -1,5 +1,5 @@
 import { image } from "@kit.ImageKit"
-import { NUM_FF000000, resourceColorToNumber } from "../base/Constants"
+import { resourceColorToNumber } from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import { NodeView } from "../model/NodeView"
 import { LatexParseQueue } from "../model/LatexParseQueue"
@@ -86,8 +86,6 @@ export struct MarkdownParagraph {
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
-    this.tryReplaceImages()
-    this.tryGenerateLinkIcons()
   }
 
   aboutToDisappear(): void {
@@ -563,8 +561,7 @@ export struct MarkdownParagraph {
           if (this.list.indexOf(child) < 0) {
             return
           }
-          const buf = buffer as Uint8Array | ArrayBuffer
-          const imageSource: image.ImageSource = image.createImageSource(buf instanceof Uint8Array ? buf.buffer : buf)
+          const imageSource: image.ImageSource = image.createImageSource(buffer)
           imageSource.createPixelMap().then((pm: PixelMap) => {
             imageSource.release()
             if (!this.isAlive || this.list.indexOf(child) < 0) {
@@ -574,6 +571,7 @@ export struct MarkdownParagraph {
             child.imageReplacePixelMap = pm
             this.list = [...this.list]
           }).catch(() => {
+            imageSource.release()
           })
         }).catch(() => {
         })
@@ -624,10 +622,12 @@ export struct MarkdownParagraph {
             this.list = [...this.list]
             LatexParseQueue.notifyDone()
           }).catch(() => {
+            pm.release()
             item.latexIsLoading = false
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
+          imageSource.release()
           item.latexIsLoading = false
           LatexParseQueue.notifyDone()
         })

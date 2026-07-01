@@ -220,28 +220,22 @@ export class HeadingTheme implements MarkdownBaseTheme {
    * @return HeadingTheme
    */
   setMarginForDesignateHeading(level: number, options: Margin | Length): HeadingTheme {
-    let t: Length = 0.0;
-    let r: Length = 0.0;
-    let b: Length = 0.0;
-    let l: Length = 0.0;
-    // 1. 如果是 number 或 string
+    let t: Length | undefined = undefined;
+    let r: Length | undefined = undefined;
+    let b: Length | undefined = undefined;
+    let l: Length | undefined = undefined;
     if (typeof options === "number" || typeof options === "string") {
       t = options;
       r = options;
       b = options;
       l = options;
-    }
-    // 2. 如果是 object
-    else if (typeof options === "object" && options !== null) {
-      // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
-      // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
+    } else if (typeof options === "object" && options !== null) {
       if (isMargin(options)) {
-        // 这里通过类型守卫，编译器已经知道它是 Margin 了
         const margin = options as Margin;
-        t = margin.top ?? 0.0;
-        r = margin.right ?? 0.0;
-        b = margin.bottom ?? 0.0;
-        l = margin.left ?? 0.0;
+        t = margin.top;
+        r = margin.right;
+        b = margin.bottom;
+        l = margin.left;
       } else {
         t = options as Length;
         r = options as Length;
@@ -251,40 +245,40 @@ export class HeadingTheme implements MarkdownBaseTheme {
     }
     switch (level) {
       case 1:
-        this.heading1MarginTop = t;
-        this.heading1MarginRight = r;
-        this.heading1MarginBottom = b;
-        this.heading1MarginLeft = l;
+        if (t !== undefined) this.heading1MarginTop = t;
+        if (r !== undefined) this.heading1MarginRight = r;
+        if (b !== undefined) this.heading1MarginBottom = b;
+        if (l !== undefined) this.heading1MarginLeft = l;
         break;
       case 2:
-        this.heading2MarginTop = t;
-        this.heading2MarginRight = r;
-        this.heading2MarginBottom = b;
-        this.heading2MarginLeft = l;
+        if (t !== undefined) this.heading2MarginTop = t;
+        if (r !== undefined) this.heading2MarginRight = r;
+        if (b !== undefined) this.heading2MarginBottom = b;
+        if (l !== undefined) this.heading2MarginLeft = l;
         break;
       case 3:
-        this.heading3MarginTop = t;
-        this.heading3MarginRight = r;
-        this.heading3MarginBottom = b;
-        this.heading3MarginLeft = l;
+        if (t !== undefined) this.heading3MarginTop = t;
+        if (r !== undefined) this.heading3MarginRight = r;
+        if (b !== undefined) this.heading3MarginBottom = b;
+        if (l !== undefined) this.heading3MarginLeft = l;
         break;
       case 4:
-        this.heading4MarginTop = t;
-        this.heading4MarginRight = r;
-        this.heading4MarginBottom = b;
-        this.heading4MarginLeft = l;
+        if (t !== undefined) this.heading4MarginTop = t;
+        if (r !== undefined) this.heading4MarginRight = r;
+        if (b !== undefined) this.heading4MarginBottom = b;
+        if (l !== undefined) this.heading4MarginLeft = l;
         break;
       case 5:
-        this.heading5MarginTop = t;
-        this.heading5MarginRight = r;
-        this.heading5MarginBottom = b;
-        this.heading5MarginLeft = l;
+        if (t !== undefined) this.heading5MarginTop = t;
+        if (r !== undefined) this.heading5MarginRight = r;
+        if (b !== undefined) this.heading5MarginBottom = b;
+        if (l !== undefined) this.heading5MarginLeft = l;
         break;
       case 6:
-        this.heading6MarginTop = t;
-        this.heading6MarginRight = r;
-        this.heading6MarginBottom = b;
-        this.heading6MarginLeft = l;
+        if (t !== undefined) this.heading6MarginTop = t;
+        if (r !== undefined) this.heading6MarginRight = r;
+        if (b !== undefined) this.heading6MarginBottom = b;
+        if (l !== undefined) this.heading6MarginLeft = l;
         break;
     }
     return this;
@@ -341,28 +335,22 @@ export class HeadingTheme implements MarkdownBaseTheme {
    * @return HeadingTheme
    */
   setPaddingForDesignateHeading(level: number, options: Padding | Length): HeadingTheme {
-    let t: Length = 0.0;
-    let r: Length = 0.0;
-    let b: Length = 0.0;
-    let l: Length = 0.0;
-    // 1. 如果是 number 或 string
+    let t: Length | undefined = undefined;
+    let r: Length | undefined = undefined;
+    let b: Length | undefined = undefined;
+    let l: Length | undefined = undefined;
     if (typeof options === "number" || typeof options === "string") {
       t = options;
       r = options;
       b = options;
       l = options;
-    }
-    // 2. 如果是 object
-    else if (typeof options === "object" && options !== null) {
-      // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
-      // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
+    } else if (typeof options === "object" && options !== null) {
       if (isPadding(options)) {
-        // 这里通过类型守卫，编译器已经知道它是 Padding 了
         const padding = options as Padding;
-        t = padding.top ?? 0.0;
-        r = padding.right ?? 0.0;
-        b = padding.bottom ?? 0.0;
-        l = padding.left ?? 0.0;
+        t = padding.top;
+        r = padding.right;
+        b = padding.bottom;
+        l = padding.left;
       } else {
         t = options as Length;
         r = options as Length;
@@ -372,40 +360,40 @@ export class HeadingTheme implements MarkdownBaseTheme {
     }
     switch (level) {
       case 1:
-        this.heading1PaddingTop = t;
-        this.heading1PaddingRight = r;
-        this.heading1PaddingBottom = b;
-        this.heading1PaddingLeft = l;
+        if (t !== undefined) this.heading1PaddingTop = t;
+        if (r !== undefined) this.heading1PaddingRight = r;
+        if (b !== undefined) this.heading1PaddingBottom = b;
+        if (l !== undefined) this.heading1PaddingLeft = l;
         break;
       case 2:
-        this.heading2PaddingTop = t;
-        this.heading2PaddingRight = r;
-        this.heading2PaddingBottom = b;
-        this.heading2PaddingLeft = l;
+        if (t !== undefined) this.heading2PaddingTop = t;
+        if (r !== undefined) this.heading2PaddingRight = r;
+        if (b !== undefined) this.heading2PaddingBottom = b;
+        if (l !== undefined) this.heading2PaddingLeft = l;
         break;
       case 3:
-        this.heading3PaddingTop = t;
-        this.heading3PaddingRight = r;
-        this.heading3PaddingBottom = b;
-        this.heading3PaddingLeft = l;
+        if (t !== undefined) this.heading3PaddingTop = t;
+        if (r !== undefined) this.heading3PaddingRight = r;
+        if (b !== undefined) this.heading3PaddingBottom = b;
+        if (l !== undefined) this.heading3PaddingLeft = l;
         break;
       case 4:
-        this.heading4PaddingTop = t;
-        this.heading4PaddingRight = r;
-        this.heading4PaddingBottom = b;
-        this.heading4PaddingLeft = l;
+        if (t !== undefined) this.heading4PaddingTop = t;
+        if (r !== undefined) this.heading4PaddingRight = r;
+        if (b !== undefined) this.heading4PaddingBottom = b;
+        if (l !== undefined) this.heading4PaddingLeft = l;
         break;
       case 5:
-        this.heading5PaddingTop = t;
-        this.heading5PaddingRight = r;
-        this.heading5PaddingBottom = b;
-        this.heading5PaddingLeft = l;
+        if (t !== undefined) this.heading5PaddingTop = t;
+        if (r !== undefined) this.heading5PaddingRight = r;
+        if (b !== undefined) this.heading5PaddingBottom = b;
+        if (l !== undefined) this.heading5PaddingLeft = l;
         break;
       case 6:
-        this.heading6PaddingTop = t;
-        this.heading6PaddingRight = r;
-        this.heading6PaddingBottom = b;
-        this.heading6PaddingLeft = l;
+        if (t !== undefined) this.heading6PaddingTop = t;
+        if (r !== undefined) this.heading6PaddingRight = r;
+        if (b !== undefined) this.heading6PaddingBottom = b;
+        if (l !== undefined) this.heading6PaddingLeft = l;
         break;
     }
     return this;

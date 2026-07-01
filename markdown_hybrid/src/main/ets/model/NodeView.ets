@@ -110,13 +110,22 @@ export class NodeView {
     this.headingLevel = source.headingLevel
     this.headingID = source.headingID
     this.copyStyleFrom(source)
+    if (this.imageReplacePixelMap !== undefined && this.imageReplacePixelMap !== source.imageReplacePixelMap) {
+      this.imageReplacePixelMap.release()
+    }
     this.imageReplacePixelMap = source.imageReplacePixelMap
     this.imageReplaceTried = source.imageReplaceTried
+    if (this.latexPixelMap !== undefined && this.latexPixelMap !== source.latexPixelMap) {
+      this.latexPixelMap.release()
+    }
     this.latexPixelMap = source.latexPixelMap
     this.latexImageData = source.latexImageData
     this.latexImageWidth = source.latexImageWidth
     this.latexImageHeight = source.latexImageHeight
     this.latexIsLoading = source.latexIsLoading
+    if (this.linkIconPixelMap !== undefined && this.linkIconPixelMap !== source.linkIconPixelMap) {
+      this.linkIconPixelMap.release()
+    }
     this.linkIconPixelMap = source.linkIconPixelMap
     this.linkIconTried = source.linkIconTried
     this.linkIconWidth = source.linkIconWidth

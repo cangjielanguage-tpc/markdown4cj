@@ -193,15 +193,18 @@ export struct MarkdownImageBlock {
       if (!this.isAlive || buffer === undefined) {
         return
       }
-      const buf = buffer as Uint8Array | ArrayBuffer
-      const imageSource: image.ImageSource = image.createImageSource(buf instanceof Uint8Array ? buf.buffer : buf)
+      const imageSource: image.ImageSource = image.createImageSource(buffer)
       imageSource.createPixelMap().then((pm: PixelMap) => {
         imageSource.release()
         if (!this.isAlive) {
           return
         }
+        if (this.replacePixelMap !== undefined) {
+          this.replacePixelMap.release()
+        }
         this.replacePixelMap = pm
       }).catch(() => {
+        imageSource.release()
       })
     }).catch(() => {
     })

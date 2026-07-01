@@ -828,7 +828,7 @@ export class MarkdownTheme {
    */
   setIsLinkSize(isLinkSize: boolean): MarkdownTheme {
     if (isLinkSize) {
-      if (this.linkTheme.linkTextFontSize == undefined) {
+      if (this.linkTheme.linkTextFontSize === undefined) {
         this.linkTheme.setLinkTextFontSize(14.0)
       }
     } else {
@@ -1584,28 +1584,28 @@ export class MarkdownTheme {
   /**
    * 设置代码块复制、全屏图片文字是否显示
    *
-   * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
+   * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否隐藏 - true：隐藏；false：显示。默认false
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenTextIsShow
    *             codeBlockTheme#setCodeBlockCopyTextIsShow
    * @return MarkdownTheme
    */
   setCodeBlockIconTextHide(codeBlockIconTextHide: boolean): MarkdownTheme {
-    this.codeBlockTheme.setCodeBlockFullScreenTextIsShow(codeBlockIconTextHide)
-    this.codeBlockTheme.setCodeBlockCopyTextIsShow(codeBlockIconTextHide)
+    this.codeBlockTheme.setCodeBlockFullScreenTextIsShow(!codeBlockIconTextHide)
+    this.codeBlockTheme.setCodeBlockCopyTextIsShow(!codeBlockIconTextHide)
     return this
   }
 
   /**
    * 设置代码块代码行号是否显示
    *
-   * @param codeBlockLineNumberHide 代码块代码行号是否显示 - true：显示；false：不显示。默认true
+   * @param codeBlockLineNumberHide 代码块代码行号是否隐藏 - true：隐藏；false：显示。默认false
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockLineNumberIsShow
    * @return MarkdownTheme
    */
   setCodeBlockLineNumberHide(codeBlockLineNumberHide: boolean): MarkdownTheme {
-    this.codeBlockTheme.setCodeBlockLineNumberIsShow(codeBlockLineNumberHide)
+    this.codeBlockTheme.setCodeBlockLineNumberIsShow(!codeBlockLineNumberHide)
     return this
   }
 
@@ -1897,7 +1897,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): MarkdownTheme {
-    if (headingTextSizeMultipliers.length != 6) {
+    if (headingTextSizeMultipliers.length !== 6) {
       return this
     }
     this.headingTheme.setTextFontSizeForEachHeading(headingTextSizeMultipliers)
