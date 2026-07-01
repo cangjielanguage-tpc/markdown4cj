@@ -16,11 +16,11 @@ struct SwitchDataPage {
   scroller: Scroller = new Scroller() // 滑动控制器
   @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
   // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
-  @StorageProp('currentColorMode') @Watch('onColorModeChange') currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT // 深浅色模式
+  @StorageProp('currentColorMode') currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT // 深浅色模式
   @State markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration() // markdown配置
   @State markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown主题
   @State markdownPlugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件
-  @State isRefresh: boolean = true // 刷新标志
+  // @State isRefresh: boolean = true // 刷新标志
   rawFilePath: string = "033_FullTextSwitch" // rawfile路径
   @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
   @State mdList: Array<string> = new Array<string>() // markdown文档列表
@@ -52,7 +52,7 @@ struct SwitchDataPage {
         .width("80%")
         .type(ButtonType.Capsule)
         .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
+        .fontColor('#FFFFFFFF')
         .backgroundColor(0xFF317AFF)
         .align(Alignment.Center)
         .fontSize(16)
@@ -67,11 +67,7 @@ struct SwitchDataPage {
         )
       Scroll(this.scroller) {
         Column() {
-          if (this.isRefresh) {
-            this.MarkdownBlock()
-          } else {
-            this.MarkdownBlock()
-          }
+          this.MarkdownBlock()
         }
       }
       .align(Alignment.TopStart)
@@ -86,26 +82,10 @@ struct SwitchDataPage {
       content: this.content,
       // isInputEnded: true,
       // incrementalAnalysis: false,
-      // listScroller: this.markdownScroller,
+      scroller: this.scroller,
       config: this.setMarkdownConfig(),
       plugin: this.setPlugin()
     })
-  }
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
   }
 
   setMarkdownConfig(): MarkdownConfiguration {

@@ -21,8 +21,7 @@ struct LinkDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -53,7 +52,7 @@ struct LinkDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -67,83 +66,83 @@ struct LinkDetailsPage {
   @State // 列表中的单行链接是否是图片显示
   linkListIsIcon: boolean = false
   @State // 链接文本颜色
-  linkTextFontColor: number | undefined = undefined
+  linkTextFontColor: ResourceColor | undefined = undefined
   @State // 链接文本尺寸
-  linkTextFontSize: number | undefined = undefined
+  linkTextFontSize: number | string | Resource | undefined = undefined
   @State // 链接文本字体样式
   linkTextFontStyle: FontStyle | undefined = undefined
   @State // 链接文本字体粗细
-  linkTextFontWeight: FontWeight | undefined = undefined
+  linkTextFontWeight: number | FontWeight | undefined = undefined
   @State // 链接文本字体
-  linkTextFontFamily: string | undefined = undefined
+  linkTextFontFamily: string | Resource | undefined = undefined
   @State // 链接文本行高
-  linkTextLineHeight: number | undefined = undefined
+  linkTextLineHeight: number | string | Resource | undefined = undefined
   @State // 链接文本字符间距
   linkTextLetterSpacing: number | undefined = undefined
   @State // 链接文本装饰线类型
   linkTextDecorationType: TextDecorationType = TextDecorationType.None
   @State // 链接文本装饰线颜色
-  linkTextDecorationColor: number | undefined = undefined
+  linkTextDecorationColor: ResourceColor | undefined = undefined
   @State // 链接文本装饰线样式
   linkTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   @State // 链接文本背景颜色
-  linkTextBackgroundColor: number | undefined = undefined
+  linkTextBackgroundColor: ResourceColor | undefined = undefined
   @State // 链接文本背景左上圆角
-  linkTextBackgroundRadiusTopLeft: number = 0
+  linkTextBackgroundRadiusTopLeft: Length = 0.0
   @State // 链接文本背景右上圆角
-  linkTextBackgroundRadiusTopRight: number = 0
+  linkTextBackgroundRadiusTopRight: Length = 0.0
   @State // 链接文本背景左下圆角
-  linkTextBackgroundRadiusBottomLeft: number = 0
+  linkTextBackgroundRadiusBottomLeft: Length = 0.0
   @State // 链接文本背景右下圆角
-  linkTextBackgroundRadiusBottomRight: number = 0
+  linkTextBackgroundRadiusBottomRight: Length = 0.0
   @State // 圆形图片格式链接主题背景颜色
-  linkCircleIconBackgroundColor: number | undefined = undefined
+  linkCircleIconBackgroundColor: ResourceColor | undefined = undefined
   @State // 圆形图片格式链接控件背景颜色
-  linkCircleIconButtonBackgroundColor: number | undefined = undefined
+  linkCircleIconButtonBackgroundColor: ResourceColor | undefined = undefined
   @State // 圆形图片格式链接文字大小
-  linkCircleIconTextSize: number = 14
+  linkCircleIconTextSize: number = 14.0
   @State // 圆形图片格式链接文字颜色
-  linkCircleIconTextColor: number | undefined = undefined
+  linkCircleIconTextColor: ResourceColor | undefined = undefined
   @State // 圆形图片格式链接半径
-  linkCircleIconRadius: number = 20
+  linkCircleIconRadius: number = 20.0
   @State // 圆形图片格式链接左右外边距
-  linkCircleIconMargin: number = 6
+  linkCircleIconMargin: number = 6.0
   @State // 圆角矩形图片格式链接主题背景颜色
-  linkRectIconBackgroundColor: number | undefined = undefined
+  linkRectIconBackgroundColor: ResourceColor | undefined = undefined
   @State // 圆角矩形图片格式链接控件背景颜色
-  linkRectIconButtonBackgroundColor: number | undefined = undefined
+  linkRectIconButtonBackgroundColor: ResourceColor | undefined = undefined
   @State // 圆角矩形图片格式链接文字大小
-  linkRectIconTextSize: number = 14
+  linkRectIconTextSize: number = 14.0
   @State // 圆角矩形图片格式链接文字颜色
-  linkRectIconTextColor: number | undefined = undefined
+  linkRectIconTextColor: ResourceColor | undefined = undefined
   @State // 圆角矩形图片格式链接控件高度
-  linkRectIconHeight: number = 20
+  linkRectIconHeight: Length = 20.0
   @State // 圆角矩形图片格式链接左右内边距
-  linkRectIconPadding: number = 6
+  linkRectIconPadding: number = 6.0
   @State // 圆角矩形图片格式链接圆角半径
-  linkRectIconRadius: number = 6
+  linkRectIconRadius: number = 6.0
   @State // 圆角矩形图片格式链接左右外边距
-  linkRectIconMargin: number = 6
+  linkRectIconMargin: number = 6.0
   @State // 空心圆角矩形图片格式链接主题背景颜色
-  linkRectToolIconBackgroundColor: number | undefined = undefined
+  linkRectToolIconBackgroundColor: ResourceColor | undefined = undefined
   @State // 空心圆角矩形图片格式链接控件背景颜色
-  linkRectToolIconButtonBackgroundColor: number | undefined = undefined
+  linkRectToolIconButtonBackgroundColor: ResourceColor | undefined = undefined
   @State // 空心圆角矩形图片格式链接文字大小
-  linkRectToolIconTextSize: number = 14
+  linkRectToolIconTextSize: number = 14.0
   @State // 空心圆角矩形图片格式链接控件高度
-  linkRectToolIconHeight: number = 21
+  linkRectToolIconHeight: Length = 21.0
   @State // 空心圆角矩形图片格式链接左右内边距
-  linkRectToolIconPadding: number = 6
+  linkRectToolIconPadding: number = 6.0
   @State // 空心圆角矩形图片格式链接边框宽度
-  linkRectToolIconBorderWidth: number = 1
+  linkRectToolIconBorderWidth: Length = 1.0
   @State // 空心圆角矩形图片格式链接分割线宽度
-  linkRectToolIconDividingLineWidth: number = 1
+  linkRectToolIconDividingLineWidth: Length = 1.0
   @State // 空心圆角矩形图片格式链接左右外边距
-  linkRectToolIconMargin: number = 6
+  linkRectToolIconMargin: number = 6.0
   @State // 空心圆角矩形图片格式分割线和文本左边距
-  linkRectToolIconLineLeftPadding: number = 3
+  linkRectToolIconLineLeftPadding: number = 3.0
   @State // 空心圆角矩形图片格式分割线和文本右边距
-  linkRectToolIconLineRightPadding: number = 3
+  linkRectToolIconLineRightPadding: number = 3.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -151,24 +150,6 @@ struct LinkDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -238,6 +219,27 @@ struct LinkDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -248,85 +250,27 @@ struct LinkDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }
@@ -406,8 +350,6 @@ struct LinkDetailsPage {
     if (this.linkCircleIconTextColor !== undefined) {
       linkTheme.setLinkCircleIconTextColor(this.linkCircleIconTextColor)
     }
-    linkTheme.setLinkCircleIconRadius(this.linkCircleIconRadius)
-    linkTheme.setLinkCircleIconMargin(this.linkCircleIconMargin)
     if (this.linkRectIconBackgroundColor !== undefined) {
       linkTheme.setLinkRectIconBackgroundColor(this.linkRectIconBackgroundColor)
     }
@@ -422,20 +364,6 @@ struct LinkDetailsPage {
     linkTheme.setLinkRectIconPadding(this.linkRectIconPadding)
     linkTheme.setLinkRectIconRadius(this.linkRectIconRadius)
     linkTheme.setLinkRectIconMargin(this.linkRectIconMargin)
-    if (this.linkRectToolIconBackgroundColor !== undefined) {
-      linkTheme.setLinkRectToolIconBackgroundColor(this.linkRectToolIconBackgroundColor)
-    }
-    if (this.linkRectToolIconButtonBackgroundColor !== undefined) {
-      linkTheme.setLinkRectToolIconButtonBackgroundColor(this.linkRectToolIconButtonBackgroundColor)
-    }
-    linkTheme.setLinkRectToolIconTextSize(this.linkRectToolIconTextSize)
-    linkTheme.setLinkRectToolIconHeight(this.linkRectToolIconHeight)
-    linkTheme.setLinkRectToolIconPadding(this.linkRectToolIconPadding)
-    linkTheme.setLinkRectToolIconBorderWidth(this.linkRectToolIconBorderWidth)
-    linkTheme.setLinkRectToolIconDividingLineWidth(this.linkRectToolIconDividingLineWidth)
-    linkTheme.setLinkRectToolIconMargin(this.linkRectToolIconMargin)
-    linkTheme.setLinkRectToolIconLineLeftPadding(this.linkRectToolIconLineLeftPadding)
-    linkTheme.setLinkRectToolIconLineRightPadding(this.linkRectToolIconLineRightPadding)
     theme.setLinkTheme(linkTheme)
     
     return theme

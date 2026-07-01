@@ -84,10 +84,10 @@ struct Deprecated4Page {
   latexMathResStrList: Array<string> = ["/data/storage/el1/bundle/entry/resources/resfile/res"]
   @State latexMathResStr: string = "/data/storage/el1/bundle/entry/resources/resfile/res" // 数学公式字体路径
   // 数学公式背景色列表
-  latexMathBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  latexMathBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State latexMathBackGroupColor: number = 0x00000000 // 数学公式背景色
   // 数学公式文本颜色列表
-  latexMathTextColorList: Array<number | undefined> = colorListGeneralData
+  latexMathTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State latexMathTextColor: number = 0xFF000000 // 数学公式文本颜色
   // 数学公式生成图片格式列表
   // latexMathColorFormatList: Array<LatexMathColorFormat> = [LatexMathColorFormat.COLOR_FORMAT_BGRA_8888, LatexMathColorFormat.COLOR_FORMAT_RGB_565]
@@ -122,7 +122,7 @@ struct Deprecated4Page {
   imageBorderWidthList: Array<number> = [0, 1, 2, 3, 4]
   @State imageBorderWidth: number = 0 // 图片边框宽度
   // 图片边框颜色列表
-  imageBorderColorList: Array<number | undefined> = colorListGeneralData
+  imageBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State imageBorderColor: number = 0xFF000000 // 图片边框颜色
   // 网络图片是否压缩列表
   isAutoResizeList: Array<boolean> = booleanListGeneralData
@@ -158,10 +158,10 @@ struct Deprecated4Page {
   imageDownloadTexSizeList: Array<number> = textNumberListGeneralData
   @State imageDownloadTexSize: number = 16 // 图片下载按钮文本大小
   // 图片下载按钮文本颜色列表
-  imageDownloadTexColorList: Array<number | undefined> = colorListGeneralData
+  imageDownloadTexColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State imageDownloadTexColor: number = 0xE6000000 // 图片下载按钮文本颜色
   // 图片下载按钮背景颜色列表
-  imageDownloadBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  imageDownloadBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State imageDownloadBackgroundColor: number = 0xFFF5F5F5 // 图片下载按钮背景颜色
 
   @State deprecatedData: DeprecatedData = new DeprecatedData() // 配置数据内容

@@ -1,35 +1,35 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class SupData extends BaseMDData {
-  _supTextFontColor: number | undefined = undefined // 上标文本颜色
-  _supTextFontSize: number = 8 // 上标文本尺寸
-  _supTextFontStyle: FontStyle = FontStyle.Normal // 上标文本字体样式
-  _supTextFontWeight: FontWeight = FontWeight.Normal // 上标文本字体粗细
-  _supTextFontFamily: string = 'HarmonyOS Sans' // 上标文本字体
-  _supTextLetterSpacing: number = 0 // 上标文本字符间距
-  _supTextBaselineOffset: number = 6 // 上标文本基线的偏移量
+  _supTextFontColor: ResourceColor | undefined = undefined // 上标文本颜色
+  _supTextFontSize: number | string | Resource = 8.0 // 上标文本尺寸
+  _supTextFontStyle: FontStyle | undefined = undefined // 上标文本字体样式
+  _supTextFontWeight: number | FontWeight | undefined = undefined // 上标文本字体粗细
+  _supTextFontFamily: string | Resource | undefined = undefined // 上标文本字体
+  _supTextLetterSpacing: number | undefined = undefined // 上标文本字符间距
+  _supTextBaselineOffset: number = 6.0 // 上标文本基线的偏移量
 
-  public set supTextFontColor(value: number | undefined) {
+  public set supTextFontColor(value: ResourceColor | undefined) {
     this._supTextFontColor = value
   }
 
-  public set supTextFontSize(value: number) {
+  public set supTextFontSize(value: number | string | Resource) {
     this._supTextFontSize = value
   }
 
-  public set supTextFontStyle(value: FontStyle) {
+  public set supTextFontStyle(value: FontStyle | undefined) {
     this._supTextFontStyle = value
   }
 
-  public set supTextFontWeight(value: FontWeight) {
+  public set supTextFontWeight(value: number | FontWeight | undefined) {
     this._supTextFontWeight = value
   }
 
-  public set supTextFontFamily(value: string) {
+  public set supTextFontFamily(value: string | Resource | undefined) {
     this._supTextFontFamily = value
   }
 
-  public set supTextLetterSpacing(value: number) {
+  public set supTextLetterSpacing(value: number | undefined) {
     this._supTextLetterSpacing = value
   }
 

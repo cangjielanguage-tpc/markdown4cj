@@ -101,8 +101,8 @@ struct BigDataPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -128,12 +128,12 @@ struct BigDataPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -181,7 +181,7 @@ struct BigDataPage {
       }
 
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

@@ -83,10 +83,10 @@ struct Deprecated2Page {
 
   // ---------------- 音频配置
   // 音频阴影颜色值列表
-  audioShadowColorList: Array<number | undefined> = colorListGeneralData
+  audioShadowColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State audioShadowColor: number = 0x1A000000 // 音频阴影颜色值
   // 音频边框颜色列表
-  audioBorderColorList: Array<number | undefined> = colorListGeneralData
+  audioBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State audioBorderColor: number = 0x33000000 // 音频边框颜色
   // 音频边框粗细列表
   audioBorderWidthList: Array<number> = [0, 0.5, 1, 1.5, 2]
@@ -95,10 +95,10 @@ struct Deprecated2Page {
   audioBorderRadiusList: Array<number> = [8, 10, 12, 14, 16]
   @State audioBorderRadius: number = 12 // 音频边框圆角
   // 音频按钮背景颜色列表
-  audioButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  audioButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State audioButtonBackgroundColor: number = 0xFF000000 // 音频按钮背景颜色
   // 音频按钮文字颜色列表
-  audioButtonTextColorList: Array<number | undefined> = colorListGeneralData
+  audioButtonTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State audioButtonTextColor: number = 0xFFFFFFFF // 音频按钮文字颜色
   // 音频按钮文字大小列表
   audioButtonTextSizeList: Array<number> = textNumberListGeneralData
@@ -113,7 +113,7 @@ struct Deprecated2Page {
   audioTitleTextSizeList: Array<number> = textNumberListGeneralData
   @State audioTitleTextSize: number = 15 // 音频标题文字大小
   // 音频标题文字颜色列表
-  audioTitleTextColorList: Array<number | undefined> = colorListGeneralData
+  audioTitleTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State audioTitleTextColor: number = 0xFF000000 // 音频标题文字颜色
   // 音频标题文字行高列表
   audioTitleTextLineHeightList: Array<number> = textNumberListGeneralData
@@ -122,7 +122,7 @@ struct Deprecated2Page {
   audioTypeTextSizeList: Array<number> = [9, 10, 11, 12, 13]
   @State audioTypeTextSize: number = 11 // 音频类型文字大小
   // 音频类型文字颜色列表
-  audioTypeTextColorList: Array<number | undefined> = colorListGeneralData
+  audioTypeTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State audioTypeTextColor: number = 0x80000000 // 音频类型文字颜色
   // 音频类型文字行高列表
   audioTypeTextLineHeightList: Array<number> = textNumberListGeneralData
@@ -139,7 +139,7 @@ struct Deprecated2Page {
   videoBorderRadiusList: Array<number> = [5, 8, 10, 12, 15]
   @State videoBorderRadius: number = 10 // 视频圆角
   // 视频时间文本颜色列表
-  videoTimeTextColorList: Array<number | undefined> = colorListGeneralData
+  videoTimeTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State videoTimeTextColor: number = 0xFFFFFFFF // 视频时间文本颜色
   // 视频时间文本大小列表
   videoTimeTextSizeList: Array<number> = textNumberListGeneralData
@@ -178,10 +178,10 @@ struct Deprecated2Page {
   videoReleaseTexSizeList: Array<number> = textNumberListGeneralData
   @State videoReleaseTexSize: number = 16 // 视频发布按钮文本大小
   // 视频发布按钮文本颜色列表
-  videoReleaseTexColorList: Array<number | undefined> = colorListGeneralData
+  videoReleaseTexColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State videoReleaseTexColor: number = 0xE6000000 // 视频发布按钮文本颜色
   // 视频发布按钮背景颜色列表
-  videoReleaseBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  videoReleaseBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State videoReleaseBackgroundColor: number = 0xFFF5F5F5 // 视频发布按钮背景颜色
   // 视频下载按钮图片宽度和高度列表
   videoDownloadImageWidthHeightList: Array<number> = [15, 16, 18, 20, 22]
@@ -202,10 +202,10 @@ struct Deprecated2Page {
   videoDownloadTexSizeList: Array<number> = textNumberListGeneralData
   @State videoDownloadTexSize: number = 16 // 视频下载按钮文本大小
   // 视频下载按钮文本颜色列表
-  videoDownloadTexColorList: Array<number | undefined> = colorListGeneralData
+  videoDownloadTexColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State videoDownloadTexColor: number = 0xE6000000 // 视频下载按钮文本颜色
   // 视频下载按钮背景颜色列表
-  videoDownloadBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  videoDownloadBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State videoDownloadBackgroundColor: number = 0xFFF5F5F5 // 视频下载按钮背景颜色
 
   @State deprecatedData: DeprecatedData = new DeprecatedData() // 配置数据内容

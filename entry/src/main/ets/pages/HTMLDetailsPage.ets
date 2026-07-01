@@ -21,8 +21,7 @@ struct HTMLDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   // 文件文本
   @State
@@ -68,7 +67,7 @@ struct HTMLDetailsPage {
   isLineBreak: boolean = false
   // 全局背景色
   @State
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动
   @State
   openGestureSwipe: boolean = false
@@ -82,28 +81,28 @@ struct HTMLDetailsPage {
   // ---------- 专有
   // HTML下划线文本颜色
   @State
-  htmlUnderlineTextFontColor: number | undefined = undefined
+  htmlUnderlineTextFontColor: ResourceColor | undefined = undefined
   // HTML下划线文本尺寸
   @State
-  htmlUnderlineTextFontSize: number | undefined = undefined
+  htmlUnderlineTextFontSize: number | string | Resource | undefined = undefined
   // HTML下划线文本字体样式
   @State
   htmlUnderlineTextFontStyle: FontStyle | undefined = undefined
   // HTML下划线文本字体粗细
   @State
-  htmlUnderlineTextFontWeight: FontWeight | undefined = undefined
+  htmlUnderlineTextFontWeight: number | FontWeight | undefined = undefined
   // HTML下划线文本字体
   @State
-  htmlUnderlineTextFontFamily: string | undefined = undefined
+  htmlUnderlineTextFontFamily: string | Resource | undefined = undefined
   // HTML下划线文本行高
   @State
-  htmlUnderlineTextLineHeight: number | undefined = undefined
+  htmlUnderlineTextLineHeight: number | string | Resource | undefined = undefined
   // HTML下划线文本字符间距
   @State
   htmlUnderlineTextLetterSpacing: number | undefined = undefined
   // HTML下划线文本装饰线颜色
   @State
-  htmlUnderlineTextDecorationColor: number | undefined = undefined
+  htmlUnderlineTextDecorationColor: ResourceColor | undefined = undefined
   // HTML下划线文本装饰线样式
   @State
   htmlUnderlineTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
@@ -114,24 +113,6 @@ struct HTMLDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -169,6 +150,23 @@ struct HTMLDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr[index]
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index === this.fileStr.length - 1) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        index++
+      }, this.time)
+    }
   }
 
   build() {
@@ -179,81 +177,27 @@ struct HTMLDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                index++
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }

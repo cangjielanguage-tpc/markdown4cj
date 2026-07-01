@@ -24,8 +24,7 @@ struct HighlightDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -56,7 +55,7 @@ struct HighlightDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -66,29 +65,29 @@ struct HighlightDetailsPage {
 
   // ---------- 专有
   @State // 高亮文本颜色
-  highlightTextFontColor: number | undefined = undefined
+  highlightTextFontColor: ResourceColor | undefined = undefined
   @State // 高亮文本尺寸
-  highlightTextFontSize: number | undefined = undefined
+  highlightTextFontSize: number | string | Resource | undefined = undefined
   @State // 高亮文本字体样式
   highlightTextFontStyle: FontStyle | undefined = undefined
   @State // 高亮文本字体粗细
-  highlightTextFontWeight: FontWeight = FontWeight.Bold
+  highlightTextFontWeight: number | FontWeight | undefined = undefined
   @State // 高亮文本字体
-  highlightTextFontFamily: string | undefined = undefined
+  highlightTextFontFamily: string | Resource | undefined = undefined
   @State // 高亮文本行高
-  highlightTextLineHeight: number | undefined = undefined
+  highlightTextLineHeight: number | string | Resource | undefined = undefined
   @State // 高亮文本字符间距
   highlightTextLetterSpacing: number | undefined = undefined
   @State // 高亮文本背景颜色
-  highlightTextBackgroundColor: number | undefined = undefined
+  highlightTextBackgroundColor: ResourceColor | undefined = undefined
   @State // 高亮文本背景左上圆角
-  highlightTextBackgroundRadiusTopLeft: number | undefined = undefined
+  highlightTextBackgroundRadiusTopLeft: Length = 0.0
   @State // 高亮文本背景右上圆角
-  highlightTextBackgroundRadiusTopRight: number | undefined = undefined
+  highlightTextBackgroundRadiusTopRight: Length = 0.0
   @State // 高亮文本背景左下圆角
-  highlightTextBackgroundRadiusBottomLeft: number | undefined = undefined
+  highlightTextBackgroundRadiusBottomLeft: Length = 0.0
   @State // 高亮文本背景右下圆角
-  highlightTextBackgroundRadiusBottomRight: number | undefined = undefined
+  highlightTextBackgroundRadiusBottomRight: Length = 0.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -96,24 +95,6 @@ struct HighlightDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -154,6 +135,27 @@ struct HighlightDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -164,85 +166,27 @@ struct HighlightDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }

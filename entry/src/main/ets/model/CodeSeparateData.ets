@@ -1,20 +1,20 @@
 import { CodeBlockData } from "./CodeBlockData"
 
 export class CodeSeparateData extends CodeBlockData {
-  _isSeparateCodeBlock: boolean = false
-  _separateCodeBlockWidth: number = 50
-  _separateCodeIsBottom: boolean = false
+  _codeBlockIsSeparate: boolean = false // 是否单独代码块显示
+  _codeBlockSeparateWidth: Length = 50.0 // 单独代码块行号宽度
+  _codeBlockSeparateIsBottom: boolean = false // 单独代码块是否居底显示
 
-  public set isSeparateCodeBlock(value: boolean) {
-    this._isSeparateCodeBlock = value
+  public set codeBlockIsSeparate(value: boolean) {
+    this._codeBlockIsSeparate = value
   }
 
-  public set separateCodeBlockWidth(value: number) {
-    this._separateCodeBlockWidth = value
+  public set codeBlockSeparateWidth(value: Length) {
+    this._codeBlockSeparateWidth = value
   }
 
-  public set separateCodeIsBottom(value: boolean) {
-    this._separateCodeIsBottom = value
+  public set codeBlockSeparateIsBottom(value: boolean) {
+    this._codeBlockSeparateIsBottom = value
   }
 
   constructor() {

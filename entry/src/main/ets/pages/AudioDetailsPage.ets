@@ -23,8 +23,7 @@ struct AudioDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -55,7 +54,7 @@ struct AudioDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -65,37 +64,37 @@ struct AudioDetailsPage {
 
   // ---------- 专有
   @State // 音频背景颜色
-  audioBackgroundColor: number | undefined = undefined
+  audioBackgroundColor: ResourceColor | undefined = undefined
   @State // 音频上外边距
-  audioMarginTop: number = 10
+  audioMarginTop: Length = 0.0
   @State // 音频右外边距
-  audioMarginRight: number = 0
+  audioMarginRight: Length = 0.0
   @State // 音频下外边距
-  audioMarginBottom: number = 10
+  audioMarginBottom: Length = 0.0
   @State // 音频左外边距
-  audioMarginLeft: number = 0
+  audioMarginLeft: Length = 0.0
   @State // 音频上内边距
-  audioPaddingTop: number = 0
+  audioPaddingTop: Length = 12.0
   @State // 音频右内边距
-  audioPaddingRight: number = 0
+  audioPaddingRight: Length = 16.0
   @State // 音频下内边距
-  audioPaddingBottom: number = 0
+  audioPaddingBottom: Length = 12.0
   @State // 音频左内边距
-  audioPaddingLeft: number = 0
+  audioPaddingLeft: Length = 12.0
   @State // 音频边框样式
   audioBorderStyle: BorderStyle = BorderStyle.Solid
   @State // 音频边框宽度
-  audioBorderWidth: number = 0.5
+  audioBorderWidth: Length = 0.5
   @State // 音频边框颜色
-  audioBorderColor: number | undefined = undefined
+  audioBorderColor: ResourceColor | undefined = undefined
   @State // 音频边框左上圆角
-  audioRadiusTopLeft: number = 12
+  audioRadiusTopLeft: Length = 12.0
   @State // 音频边框右上圆角
-  audioRadiusTopRight: number = 12
+  audioRadiusTopRight: Length = 12.0
   @State // 音频边框左下圆角
-  audioRadiusBottomLeft: number = 12
+  audioRadiusBottomLeft: Length = 12.0
   @State // 音频边框右下圆角
-  audioRadiusBottomRight: number = 12
+  audioRadiusBottomRight: Length = 12.0
   @State // 音频阴影模糊半径
   audioShadowRadius: number = 0
   @State // 音频阴影X轴偏移量
@@ -103,82 +102,82 @@ struct AudioDetailsPage {
   @State // 音频阴影Y轴偏移量
   audioShadowOffsetY: number = 0
   @State // 音频阴影颜色值
-  audioShadowColor: number | undefined = undefined
+  audioShadowColor: ResourceColor | undefined = undefined
   audioIcon: Resource | undefined = undefined // 音频图标
   @State // 音频图标宽度
-  audioIconWidth: number = 40
+  audioIconWidth: Length = 40.0
   @State // 音频图标高度
-  audioIconHeight: number = 40
+  audioIconHeight: Length = 40.0
   @State // 音频图标左上圆角
-  audioIconRadiusTopLeft: number = 0
+  audioIconRadiusTopLeft: Length = 8.0
   @State // 音频图标右上圆角
-  audioIconRadiusTopRight: number = 0
+  audioIconRadiusTopRight: Length = 8.0
   @State // 音频图标左下圆角
-  audioIconRadiusBottomLeft: number = 0
+  audioIconRadiusBottomLeft: Length = 8.0
   @State // 音频图标右下圆角
-  audioIconRadiusBottomRight: number = 0
+  audioIconRadiusBottomRight: Length = 8.0
   @State // 音频图标缩放类型
   audioIconFitType: ImageFit = ImageFit.Contain
   @State // 音频标题文本和类型文本间距
   audioTitleToTypeSpacing: number = 8
   @State // 音频按钮宽度
-  audioButtonWidth: number = 100
+  audioButtonWidth: Length = 84.0
   @State // 音频按钮高度
-  audioButtonHeight: number = 32
+  audioButtonHeight: Length = 32.0
   @State // 音频按钮背景颜色
-  audioButtonBackgroundColor: number | undefined = undefined
+  audioButtonBackgroundColor: ResourceColor | undefined = undefined
   @State // 音频按钮边框样式
   audioButtonBorderStyle: BorderStyle = BorderStyle.Solid
   @State // 音频按钮边框宽度
-  audioButtonBorderWidth: number = 0
+  audioButtonBorderWidth: Length = 0.0
   @State // 音频按钮边框颜色
-  audioButtonBorderColor: number | undefined = undefined
+  audioButtonBorderColor: ResourceColor | undefined = undefined
   @State // 音频按钮边框左上圆角
-  audioButtonRadiusTopLeft: number = 16
+  audioButtonRadiusTopLeft: Length = 16.0
   @State // 音频按钮边框右上圆角
-  audioButtonRadiusTopRight: number = 16
+  audioButtonRadiusTopRight: Length = 16.0
   @State // 音频按钮边框左下圆角
-  audioButtonRadiusBottomLeft: number = 16
+  audioButtonRadiusBottomLeft: Length = 16.0
   @State // 音频按钮边框右下圆角
-  audioButtonRadiusBottomRight: number = 16
+  audioButtonRadiusBottomRight: Length = 16.0
   @State // 音频按钮默认文本内容
   audioButtonText: string = "立即播放"
   @State // 音频按钮文本颜色
-  audioButtonTextFontColor: number | undefined = undefined
+  audioButtonTextFontColor: ResourceColor | undefined = undefined
   @State // 音频按钮文本尺寸
-  audioButtonTextFontSize: number = 14
+  audioButtonTextFontSize: number | string | Resource = 14.0
   @State // 音频按钮文本字体样式
   audioButtonTextFontStyle: FontStyle = FontStyle.Normal
   @State // 音频按钮文本字体粗细
-  audioButtonTextFontWeight: FontWeight = FontWeight.Medium
+  audioButtonTextFontWeight: number | FontWeight = FontWeight.Medium
   @State // 音频按钮文本字体
-  audioButtonTextFontFamily: string = 'HarmonyOS Sans'
+  audioButtonTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 音频按钮文本行高
-  audioButtonTextLineHeight: number = 22
+  audioButtonTextLineHeight: number | string | Resource = 22.0
   @State // 音频标题文本颜色
-  audioTitleTextFontColor: number | undefined = undefined
+  audioTitleTextFontColor: ResourceColor | undefined = undefined
   @State // 音频标题文本尺寸
-  audioTitleTextFontSize: number = 15
+  audioTitleTextFontSize: number | string | Resource = 15.0
   @State // 音频标题文本字体样式
   audioTitleTextFontStyle: FontStyle = FontStyle.Normal
   @State // 音频标题文本字体粗细
-  audioTitleTextFontWeight: FontWeight = FontWeight.Normal
+  audioTitleTextFontWeight: number | FontWeight = FontWeight.Bold
   @State // 音频标题文本字体
-  audioTitleTextFontFamily: string = 'HarmonyOS Sans'
+  audioTitleTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 音频标题文本行高
-  audioTitleTextLineHeight: number = 20
+  audioTitleTextLineHeight: number | string | Resource = 20.0
   @State // 音频类型文本颜色
-  audioTypeTextFontColor: number | undefined = undefined
+  audioTypeTextFontColor: ResourceColor | undefined = undefined
   @State // 音频类型文本尺寸
-  audioTypeTextFontSize: number = 11
+  audioTypeTextFontSize: number | string | Resource = 11.0
   @State // 音频类型文本字体样式
   audioTypeTextFontStyle: FontStyle = FontStyle.Normal
   @State // 音频类型文本字体粗细
-  audioTypeTextFontWeight: FontWeight = FontWeight.Normal
+  audioTypeTextFontWeight: number | FontWeight = FontWeight.Normal
   @State // 音频类型文本字体
-  audioTypeTextFontFamily: string = 'HarmonyOS Sans'
+  audioTypeTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 音频类型文本行高
-  audioTypeTextLineHeight: number = 15
+  audioTypeTextLineHeight: number | string | Resource = 15.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -186,24 +185,6 @@ struct AudioDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -290,6 +271,23 @@ struct AudioDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr[index]
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index === this.fileStr.length - 1) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        index++
+      }, this.time)
+    }
   }
 
   build() {
@@ -300,82 +298,27 @@ struct AudioDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
-        .onClick(
-          () => {
-            // 点击动作触发该方法调用
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                index++
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }

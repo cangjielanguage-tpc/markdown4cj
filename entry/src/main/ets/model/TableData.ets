@@ -1,105 +1,105 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class TableData extends BaseMDData {
-  _tableTitleBackgroundColor: number | undefined = undefined // 表格标题背景颜色
-  _tableContentOddRowBackgroundColor: number | undefined = undefined // 表格内容奇数行背景颜色
-  _tableContentEvenRowBackgroundColor: number | undefined = undefined // 表格内容偶数行背景颜色
-  _tableMarginTop: number = 8 // 表格上外边距
-  _tableMarginRight: number = 8 // 表格右外边距
-  _tableMarginBottom: number = 8 // 表格下外边距
-  _tableMarginLeft: number = 8 // 表格左外边距
-  _tablePaddingTop: number = 0 // 表格上内边距
-  _tablePaddingRight: number = 0 // 表格右内边距
-  _tablePaddingBottom: number = 0 // 表格下内边距
-  _tablePaddingLeft: number = 0 // 表格左内边距
-  _tableCellPaddingTop: number = 4 // 表格内容上内边距
-  _tableCellPaddingRight: number = 4 // 表格内容右内边距
-  _tableCellPaddingBottom: number = 4 // 表格内容下内边距
-  _tableCellPaddingLeft: number = 4 // 表格内容左内边距
+  _tableTitleBackgroundColor: ResourceColor | undefined = undefined // 表格标题背景颜色
+  _tableContentOddRowBackgroundColor: ResourceColor | undefined = undefined // 表格内容奇数行背景颜色
+  _tableContentEvenRowBackgroundColor: ResourceColor | undefined = undefined // 表格内容偶数行背景颜色
+  _tableMarginTop: Length = 0.0 // 表格上外边距
+  _tableMarginRight: Length = 0.0 // 表格右外边距
+  _tableMarginBottom: Length = 0.0 // 表格下外边距
+  _tableMarginLeft: Length = 0.0 // 表格左外边距
+  _tablePaddingTop: Length = 0.0 // 表格上内边距
+  _tablePaddingRight: Length = 0.0 // 表格右内边距
+  _tablePaddingBottom: Length = 0.0 // 表格下内边距
+  _tablePaddingLeft: Length = 0.0 // 表格左内边距
+  _tableCellPaddingTop: Length = 4.0 // 表格内容上内边距
+  _tableCellPaddingRight: Length = 4.0 // 表格内容右内边距
+  _tableCellPaddingBottom: Length = 4.0 // 表格内容下内边距
+  _tableCellPaddingLeft: Length = 4.0 // 表格内容左内边距
   _tableBorderStyle: BorderStyle = BorderStyle.Solid // 表格边框样式
-  _tableBorderWidth: number = 1 // 表格边框宽度
-  _tableBorderColor: number | undefined = undefined // 表格边框颜色
-  _tableRadiusTopLeft: number = 5 // 表格边框左上圆角
-  _tableRadiusTopRight: number = 5 // 表格边框右上圆角
-  _tableRadiusBottomLeft: number = 5 // 表格边框左下圆角
-  _tableRadiusBottomRight: number = 5 // 表格边框右下圆角
+  _tableBorderWidth: Length = 1.0 // 表格边框宽度
+  _tableBorderColor: ResourceColor | undefined = undefined // 表格边框颜色
+  _tableRadiusTopLeft: Length = 5.0 // 表格边框左上圆角
+  _tableRadiusTopRight: Length = 5.0 // 表格边框右上圆角
+  _tableRadiusBottomLeft: Length = 5.0 // 表格边框左下圆角
+  _tableRadiusBottomRight: Length = 5.0 // 表格边框右下圆角
   _tableScrollBarState: BarState = BarState.Off // 表格滚动条状态
-  _tableScrollBarColor: number | undefined = undefined // 表格滚动条颜色
-  _tableMinCellWidth: number = 50 // 表格一格最小宽度
-  _tableMaxCellWidth: number = 300 // 表格一格最大宽度
+  _tableScrollBarColor: ResourceColor | undefined = undefined // 表格滚动条颜色
+  _tableMinCellWidth: Length = 50.0 // 表格一格最小宽度
+  _tableMaxCellWidth: Length = 300.0 // 表格一格最大宽度
   _tableFirstColumnIsBold: boolean = false // 表格第一列是否加粗
-  _tableTitleTextFontColor: number | undefined = undefined // 表格标题文本颜色
-  _tableTitleTextFontSize: number = 14 // 表格标题文本尺寸
+  _tableTitleTextFontColor: ResourceColor | undefined = undefined // 表格标题文本颜色
+  _tableTitleTextFontSize: number | string | Resource = 14.0 // 表格标题文本尺寸
   _tableTitleTextFontStyle: FontStyle = FontStyle.Normal // 表格标题文本字体样式
-  _tableTitleTextFontWeight: FontWeight = FontWeight.Normal // 表格标题文本字体粗细
-  _tableTitleTextFontFamily: string = 'HarmonyOS Sans' // 表格标题文本字体
-  _tableTitleTextLineHeight: number = 22 // 表格标题文本行高
-  _tableTitleTextLetterSpacing: number = 0 // 表格标题文本字符间距
-  _tableContentTextFontColor: number | undefined = undefined // 表格内容文本颜色
-  _tableContentTextFontSize: number = 14 // 表格内容文本尺寸
+  _tableTitleTextFontWeight: number | FontWeight = FontWeight.Bold // 表格标题文本字体粗细
+  _tableTitleTextFontFamily: string | Resource = 'HarmonyOS Sans' // 表格标题文本字体
+  _tableTitleTextLineHeight: number | string | Resource = 22.0 // 表格标题文本行高
+  _tableTitleTextLetterSpacing: number = 0.0 // 表格标题文本字符间距
+  _tableContentTextFontColor: ResourceColor | undefined = undefined // 表格内容文本颜色
+  _tableContentTextFontSize: number | string | Resource = 14.0 // 表格内容文本尺寸
   _tableContentTextFontStyle: FontStyle = FontStyle.Normal // 表格内容文本字体样式
-  _tableContentTextFontWeight: FontWeight = FontWeight.Normal // 表格内容文本字体粗细
-  _tableContentTextFontFamily: string = 'HarmonyOS Sans' // 表格内容文本字体
-  _tableContentTextLineHeight: number = 22 // 表格内容文本行高
-  _tableContentTextLetterSpacing: number = 0 // 表格内容文本字符间距
+  _tableContentTextFontWeight: number | FontWeight = FontWeight.Normal // 表格内容文本字体粗细
+  _tableContentTextFontFamily: string | Resource = 'HarmonyOS Sans' // 表格内容文本字体
+  _tableContentTextLineHeight: number | string | Resource = 22.0 // 表格内容文本行高
+  _tableContentTextLetterSpacing: number = 0.0 // 表格内容文本字符间距
 
-  public set tableTitleBackgroundColor(value: number | undefined) {
+  public set tableTitleBackgroundColor(value: ResourceColor | undefined) {
     this._tableTitleBackgroundColor = value
   }
 
-  public set tableContentOddRowBackgroundColor(value: number | undefined) {
+  public set tableContentOddRowBackgroundColor(value: ResourceColor | undefined) {
     this._tableContentOddRowBackgroundColor = value
   }
 
-  public set tableContentEvenRowBackgroundColor(value: number | undefined) {
+  public set tableContentEvenRowBackgroundColor(value: ResourceColor | undefined) {
     this._tableContentEvenRowBackgroundColor = value
   }
 
-  public set tableMarginTop(value: number) {
+  public set tableMarginTop(value: Length) {
     this._tableMarginTop = value
   }
 
-  public set tableMarginRight(value: number) {
+  public set tableMarginRight(value: Length) {
     this._tableMarginRight = value
   }
 
-  public set tableMarginBottom(value: number) {
+  public set tableMarginBottom(value: Length) {
     this._tableMarginBottom = value
   }
 
-  public set tableMarginLeft(value: number) {
+  public set tableMarginLeft(value: Length) {
     this._tableMarginLeft = value
   }
 
-  public set tablePaddingTop(value: number) {
+  public set tablePaddingTop(value: Length) {
     this._tablePaddingTop = value
   }
 
-  public set tablePaddingRight(value: number) {
+  public set tablePaddingRight(value: Length) {
     this._tablePaddingRight = value
   }
 
-  public set tablePaddingBottom(value: number) {
+  public set tablePaddingBottom(value: Length) {
     this._tablePaddingBottom = value
   }
 
-  public set tablePaddingLeft(value: number) {
+  public set tablePaddingLeft(value: Length) {
     this._tablePaddingLeft = value
   }
 
-  public set tableCellPaddingTop(value: number) {
+  public set tableCellPaddingTop(value: Length) {
     this._tableCellPaddingTop = value
   }
 
-  public set tableCellPaddingRight(value: number) {
+  public set tableCellPaddingRight(value: Length) {
     this._tableCellPaddingRight = value
   }
 
-  public set tableCellPaddingBottom(value: number) {
+  public set tableCellPaddingBottom(value: Length) {
     this._tableCellPaddingBottom = value
   }
 
-  public set tableCellPaddingLeft(value: number) {
+  public set tableCellPaddingLeft(value: Length) {
     this._tableCellPaddingLeft = value
   }
 
@@ -107,27 +107,27 @@ export class TableData extends BaseMDData {
     this._tableBorderStyle = value
   }
 
-  public set tableBorderWidth(value: number) {
+  public set tableBorderWidth(value: Length) {
     this._tableBorderWidth = value
   }
 
-  public set tableBorderColor(value: number | undefined) {
+  public set tableBorderColor(value: ResourceColor | undefined) {
     this._tableBorderColor = value
   }
 
-  public set tableRadiusTopLeft(value: number) {
+  public set tableRadiusTopLeft(value: Length) {
     this._tableRadiusTopLeft = value
   }
 
-  public set tableRadiusTopRight(value: number) {
+  public set tableRadiusTopRight(value: Length) {
     this._tableRadiusTopRight = value
   }
 
-  public set tableRadiusBottomLeft(value: number) {
+  public set tableRadiusBottomLeft(value: Length) {
     this._tableRadiusBottomLeft = value
   }
 
-  public set tableRadiusBottomRight(value: number) {
+  public set tableRadiusBottomRight(value: Length) {
     this._tableRadiusBottomRight = value
   }
 
@@ -135,15 +135,15 @@ export class TableData extends BaseMDData {
     this._tableScrollBarState = value
   }
 
-  public set tableScrollBarColor(value: number | undefined) {
+  public set tableScrollBarColor(value: ResourceColor | undefined) {
     this._tableScrollBarColor = value
   }
 
-  public set tableMinCellWidth(value: number) {
+  public set tableMinCellWidth(value: Length) {
     this._tableMinCellWidth = value
   }
 
-  public set tableMaxCellWidth(value: number) {
+  public set tableMaxCellWidth(value: Length) {
     this._tableMaxCellWidth = value
   }
 
@@ -151,11 +151,11 @@ export class TableData extends BaseMDData {
     this._tableFirstColumnIsBold = value
   }
 
-  public set tableTitleTextFontColor(value: number | undefined) {
+  public set tableTitleTextFontColor(value: ResourceColor | undefined) {
     this._tableTitleTextFontColor = value
   }
 
-  public set tableTitleTextFontSize(value: number) {
+  public set tableTitleTextFontSize(value: number | string | Resource) {
     this._tableTitleTextFontSize = value
   }
 
@@ -163,15 +163,15 @@ export class TableData extends BaseMDData {
     this._tableTitleTextFontStyle = value
   }
 
-  public set tableTitleTextFontWeight(value: FontWeight) {
+  public set tableTitleTextFontWeight(value: number | FontWeight) {
     this._tableTitleTextFontWeight = value
   }
 
-  public set tableTitleTextFontFamily(value: string) {
+  public set tableTitleTextFontFamily(value: string | Resource) {
     this._tableTitleTextFontFamily = value
   }
 
-  public set tableTitleTextLineHeight(value: number) {
+  public set tableTitleTextLineHeight(value: number | string | Resource) {
     this._tableTitleTextLineHeight = value
   }
 
@@ -179,11 +179,11 @@ export class TableData extends BaseMDData {
     this._tableTitleTextLetterSpacing = value
   }
 
-  public set tableContentTextFontColor(value: number | undefined) {
+  public set tableContentTextFontColor(value: ResourceColor | undefined) {
     this._tableContentTextFontColor = value
   }
 
-  public set tableContentTextFontSize(value: number) {
+  public set tableContentTextFontSize(value: number | string | Resource) {
     this._tableContentTextFontSize = value
   }
 
@@ -191,15 +191,15 @@ export class TableData extends BaseMDData {
     this._tableContentTextFontStyle = value
   }
 
-  public set tableContentTextFontWeight(value: FontWeight) {
+  public set tableContentTextFontWeight(value: number | FontWeight) {
     this._tableContentTextFontWeight = value
   }
 
-  public set tableContentTextFontFamily(value: string) {
+  public set tableContentTextFontFamily(value: string | Resource) {
     this._tableContentTextFontFamily = value
   }
 
-  public set tableContentTextLineHeight(value: number) {
+  public set tableContentTextLineHeight(value: number | string | Resource) {
     this._tableContentTextLineHeight = value
   }
 

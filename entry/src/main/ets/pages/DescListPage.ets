@@ -75,9 +75,9 @@ struct DescListPage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -89,9 +89,9 @@ struct DescListPage {
   @State descListData: DescListData = new DescListData() // 配置数据内容
   // ---------------- 专有
   // 定义列表背景颜色列表
-  definitionListBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  definitionListBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 定义列表背景颜色
-  definitionListBackgroundColor: number | undefined = undefined
+  definitionListBackgroundColor: ResourceColor | undefined = undefined
   // 定义列表上外边距列表
   definitionListMarginTopList: Array<number> = marginListGeneralData
   @State // 定义列表上外边距
@@ -176,8 +176,8 @@ struct DescListPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -231,12 +231,12 @@ struct DescListPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -356,12 +356,12 @@ struct DescListPage {
             Row() {
               Text("专有样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -468,7 +468,7 @@ struct DescListPage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

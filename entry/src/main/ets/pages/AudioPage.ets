@@ -74,8 +74,8 @@ struct AudioPage {
   isLineBreakList: Array<boolean> = booleanListGeneralData
   @State isLineBreak: boolean = false // 软换行是否换行
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State globalBackgroundColor: number | undefined = undefined // 背景颜色
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State globalBackgroundColor: ResourceColor | undefined = undefined // 背景颜色
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
@@ -85,8 +85,8 @@ struct AudioPage {
   @State audioData: AudioMDData = new AudioMDData() // 配置数据内容
   // ---------------- 专有
   // 音频背景颜色列表
-  audioBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State audioBackgroundColor: number | undefined = undefined // 音频背景颜色
+  audioBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State audioBackgroundColor: ResourceColor | undefined = undefined // 音频背景颜色
   // 音频上外边距列表
   audioMarginTopList: Array<number> = marginListGeneralData
   @State audioMarginTop: number = 0 // 音频上外边距
@@ -118,8 +118,8 @@ struct AudioPage {
   audioBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State audioBorderWidth: number = 0.5 // 音频边框宽度
   // 音频边框颜色列表
-  audioBorderColorList: Array<number | undefined> = colorListGeneralData
-  @State audioBorderColor: number | undefined = 0x33000000 // 音频边框颜色
+  audioBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State audioBorderColor: ResourceColor | undefined = '#33000000' // 音频边框颜色
   // 音频边框左上圆角列表
   audioRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State audioRadiusTopLeft: number = 12 // 音频边框左上圆角
@@ -142,8 +142,8 @@ struct AudioPage {
   audioShadowOffsetYList: Array<number> = offsetListGeneralData
   @State audioShadowOffsetY: number = 2 // 音频阴影Y轴偏移量
   // 音频阴影颜色值列表
-  audioShadowColorList: Array<number | undefined> = colorListGeneralData
-  @State audioShadowColor: number | undefined = undefined // 音频阴影颜色值
+  audioShadowColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State audioShadowColor: ResourceColor | undefined = undefined // 音频阴影颜色值
   // 音频图标列表
   audioIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon'), $r('app.media.app_icon')]
   @State audioIcon: Resource | undefined = undefined // 音频图标
@@ -178,8 +178,8 @@ struct AudioPage {
   audioButtonHeightList: Array<number> = widthOrHeightListGeneralData
   @State audioButtonHeight: number = 32 // 音频按钮高度
   // 音频按钮背景颜色列表
-  audioButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State audioButtonBackgroundColor: number | undefined = 0xFF000000 // 音频按钮背景颜色
+  audioButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State audioButtonBackgroundColor: ResourceColor | undefined = '#FF000000' // 音频按钮背景颜色
   // 音频按钮边框样式列表
   audioButtonBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State audioButtonBorderStyle: BorderStyle = BorderStyle.Solid // 音频按钮边框样式
@@ -187,8 +187,8 @@ struct AudioPage {
   audioButtonBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State audioButtonBorderWidth: number = 0 // 音频按钮边框宽度
   // 音频按钮边框颜色列表
-  audioButtonBorderColorList: Array<number | undefined> = colorListGeneralData
-  @State audioButtonBorderColor: number | undefined = undefined // 音频按钮边框颜色
+  audioButtonBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State audioButtonBorderColor: ResourceColor | undefined = undefined // 音频按钮边框颜色
   // 音频按钮边框左上圆角列表
   audioButtonRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State audioButtonRadiusTopLeft: number = 16 // 音频按钮边框左上圆角
@@ -205,8 +205,8 @@ struct AudioPage {
   audioButtonTextList: Array<string> = ['立即播放', '播放', '超长长长长长长长的按钮']
   @State audioButtonText: string = '立即播放' // 音频按钮默认文本内容
   // 音频按钮文本颜色列表
-  audioButtonTextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State audioButtonTextFontColor: number | undefined = undefined // 音频按钮文本颜色
+  audioButtonTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State audioButtonTextFontColor: ResourceColor | undefined = undefined // 音频按钮文本颜色
   // 音频按钮文本尺寸列表
   audioButtonTextFontSizeList: Array<number> = textSizeListGeneralData
   @State audioButtonTextFontSize: number = 14 // 音频按钮文本尺寸
@@ -223,8 +223,8 @@ struct AudioPage {
   audioButtonTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State audioButtonTextLineHeight: number = 22 // 音频按钮文本行高
   // 音频标题文本颜色列表
-  audioTitleTextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State audioTitleTextFontColor: number | undefined = undefined // 音频标题文本颜色
+  audioTitleTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State audioTitleTextFontColor: ResourceColor | undefined = undefined // 音频标题文本颜色
   // 音频标题文本尺寸列表
   audioTitleTextFontSizeList: Array<number> = textSizeListGeneralData
   @State audioTitleTextFontSize: number = 15 // 音频标题文本尺寸
@@ -241,8 +241,8 @@ struct AudioPage {
   audioTitleTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State audioTitleTextLineHeight: number = 20 // 音频标题文本行高
   // 音频类型文本颜色列表
-  audioTypeTextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State audioTypeTextFontColor: number | undefined = 0x80000000 // 音频类型文本颜色
+  audioTypeTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State audioTypeTextFontColor: ResourceColor | undefined = '#80000000' // 音频类型文本颜色
   // 音频类型文本尺寸列表
   audioTypeTextFontSizeList: Array<number> = textSizeListGeneralData
   @State audioTypeTextFontSize: number = 11 // 音频类型文本尺寸
@@ -293,8 +293,8 @@ struct AudioPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -393,12 +393,12 @@ struct AudioPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -519,12 +519,12 @@ struct AudioPage {
             Row() {
               Text("音频边距和边框")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -675,12 +675,12 @@ struct AudioPage {
             Row() {
               Text("音频图标和其他")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -765,12 +765,12 @@ struct AudioPage {
             Row() {
               Text("音频按钮")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded4 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded4 = !this.isExpanded4
@@ -903,12 +903,12 @@ struct AudioPage {
             Row() {
               Text("音频标题和类型文本")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded5 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded5 = !this.isExpanded5
@@ -1010,7 +1010,7 @@ struct AudioPage {
       }
 
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

@@ -69,6 +69,27 @@ struct BigDataDetailsPage {
       // ---------- 专有
     } catch (e) {
     }
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -79,43 +100,10 @@ struct BigDataDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
         CJMarkdown({
           content: this.content,
           // isInputEnded: this.isInputEnded,
-          // listScroller: this.markdownScroller,
+          scroller: this.scroller,
           config: this.setMarkdownConfig(),
           plugin: this.setPlugin()
         })

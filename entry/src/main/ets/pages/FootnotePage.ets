@@ -82,9 +82,9 @@ struct FootnotePage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -96,9 +96,9 @@ struct FootnotePage {
   @State footnoteData: FootnoteData = new FootnoteData() // 配置数据内容
   // ---------------- 专有
   // 脚注定义背景颜色列表
-  footnoteDefBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  footnoteDefBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 脚注定义背景颜色
-  footnoteDefBackgroundColor: number | undefined = undefined
+  footnoteDefBackgroundColor: ResourceColor | undefined = undefined
   // 脚注定义上外边距列表
   footnoteDefMarginTopList: Array<number> = marginListGeneralData
   @State // 脚注定义上外边距
@@ -132,9 +132,9 @@ struct FootnotePage {
   @State // 脚注定义左内边距
   footnoteDefPaddingLeft: number = 0
   // 脚注引用文本颜色列表
-  footnoteRefTextFontColorList: Array<number | undefined> = colorListGeneralData
+  footnoteRefTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 脚注引用文本颜色
-  footnoteRefTextFontColor: number | undefined = undefined
+  footnoteRefTextFontColor: ResourceColor | undefined = undefined
   // 脚注引用文本尺寸列表
   footnoteRefTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 脚注引用文本尺寸
@@ -164,17 +164,17 @@ struct FootnotePage {
   @State // 脚注引用文本装饰线类型
   footnoteRefTextDecorationType: TextDecorationType = TextDecorationType.Underline
   // 脚注引用文本装饰线颜色列表
-  footnoteRefTextDecorationColorList: Array<number | undefined> = colorListGeneralData
+  footnoteRefTextDecorationColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 脚注引用文本装饰线颜色
-  footnoteRefTextDecorationColor: number | undefined = undefined
+  footnoteRefTextDecorationColor: ResourceColor | undefined = undefined
   // 脚注引用文本装饰线样式列表
   footnoteRefTextDecorationStyleList: Array<TextDecorationStyle> = textDecorationStyleListGeneralData
   @State // 脚注引用文本装饰线样式
   footnoteRefTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   // 脚注引用文本背景颜色列表
-  footnoteRefTextBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  footnoteRefTextBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 脚注引用文本背景颜色
-  footnoteRefTextBackgroundColor: number | undefined = undefined
+  footnoteRefTextBackgroundColor: ResourceColor | undefined = undefined
   // 脚注引用文本背景左上圆角列表
   footnoteRefTextBackgroundRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State // 脚注引用文本背景左上圆角
@@ -224,8 +224,8 @@ struct FootnotePage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -290,12 +290,12 @@ struct FootnotePage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -416,12 +416,12 @@ struct FootnotePage {
             Row() {
               Text("脚注定义")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -506,12 +506,12 @@ struct FootnotePage {
             Row() {
               Text("脚注引用")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -630,7 +630,7 @@ struct FootnotePage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

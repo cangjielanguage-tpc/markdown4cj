@@ -79,7 +79,7 @@ struct Deprecated1Page {
   isLineBreakList: Array<boolean> = booleanListGeneralData
   @State isLineBreak: boolean = false // 软换行是否换行
   // 下划线颜色列表
-  underlineColorList: Array<number | undefined> = colorListGeneralData
+  underlineColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State underlineColor: number = 0xFF191919 // 下划线颜色
   // 下划线样式列表
   underlineStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DASHED, TextDecorationStyle.DOTTED, TextDecorationStyle.WAVY]
@@ -93,7 +93,7 @@ struct Deprecated1Page {
   isListLinkStyleList: Array<boolean> = booleanListGeneralData
   @State isListLinkStyle: boolean = false // 列表中的单行链接是否是图片显示
   // 文本格式链接文本颜色列表
-  linkColorList: Array<number | undefined> = colorListGeneralData
+  linkColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkColor: number = 0xFF0000FF // 文本格式链接文本颜色
   // 文本格式链接文字大小列表
   isLinkSizeList: Array<boolean> = booleanListGeneralData
@@ -105,22 +105,22 @@ struct Deprecated1Page {
   linkLineHeightList: Array<number> = textNumberListGeneralData
   @State linkLineHeight: number = 20 // 文本格式链接文字行高
   // 文本格式链接背景颜色列表
-  linkBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  linkBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkBackGroupColor: number = 0x00000000 // 文本格式链接背景颜色
   // 文本格式是否显示链接下划线列表
   isLinkUnderlinedList: Array<boolean> = booleanListGeneralData
   @State isLinkUnderlined: boolean = true // 文本格式是否显示链接下划线
   // 圆形图片格式链接主题背景颜色列表
-  linkCircleImageBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  linkCircleImageBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkCircleImageBackGroupColor: number = 0x00000000 // 圆形图片格式链接主题背景颜色
   // 圆形图片格式链接控件背景颜色列表
-  linkCircleImageButtonBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  linkCircleImageButtonBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkCircleImageButtonBackGroupColor: number = 0xFF000000 // 圆形图片格式链接控件背景颜色
   // 圆形图片格式链接文字大小列表
   linkCircleImageTextSizeList: Array<number> = textNumberListGeneralData
   @State linkCircleImageTextSize: number = 14 // 圆形图片格式链接文字大小
   // 圆形图片格式链接文字颜色列表
-  linkCircleImageTextColorList: Array<number | undefined> = colorListGeneralData
+  linkCircleImageTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkCircleImageTextColor: number = 0xFFFFFFFF // 圆形图片格式链接文字颜色
   // 圆形图片格式链接半径列表
   linkCircleImageRadiusList: Array<number> = [10, 15, 20, 25, 30]
@@ -129,16 +129,16 @@ struct Deprecated1Page {
   linkCircleImageMarginList: Array<number> = marginListGeneralData
   @State linkCircleImageMargin: number = 6 // 圆形图片格式链接左右外边距
   // 圆角矩形图片格式链接主题背景颜色列表
-  linkRectImageBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  linkRectImageBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkRectImageBackGroupColor: number = 0x00000000 // 圆角矩形图片格式链接主题背景颜色
   // 圆角矩形图片格式链接控件背景颜色列表
-  linkRectImageButtonBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  linkRectImageButtonBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkRectImageButtonBackGroupColor: number = 0xFF000000 // 圆角矩形图片格式链接控件背景颜色
   // 圆角矩形图片格式链接文字大小列表
   linkRectImageTextSizeList: Array<number> = textNumberListGeneralData
   @State linkRectImageTextSize: number = 14 // 圆角矩形图片格式链接文字大小
   // 圆角矩形图片格式链接文字颜色列表
-  linkRectImageTextColorList: Array<number | undefined> = colorListGeneralData
+  linkRectImageTextColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkRectImageTextColor: number = 0xFFFFFFFF // 圆角矩形图片格式链接文字颜色
   // 圆角矩形图片格式链接控件高度列表
   linkRectImageHeightList: Array<number> = [15, 18, 20, 22, 25]
@@ -153,10 +153,10 @@ struct Deprecated1Page {
   linkRectImageMarginList: Array<number> = marginListGeneralData
   @State linkRectImageMargin: number = 6 // 圆角矩形图片格式链接左右外边距
   // 空心圆角矩形图片格式链接主题背景颜色列表
-  linkRectToolImageBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  linkRectToolImageBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkRectToolImageBackGroupColor: number = 0x00000000 // 空心圆角矩形图片格式链接主题背景颜色
   // 空心圆角矩形图片格式链接控件背景颜色列表
-  linkRectToolImageButtonBackGroupColorList: Array<number | undefined> = colorListGeneralData
+  linkRectToolImageButtonBackGroupColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State linkRectToolImageButtonBackGroupColor: number = 0xFFFFFFFF // 空心圆角矩形图片格式链接控件背景颜色
   // 空心圆角矩形图片格式链接文字大小列表
   linkRectToolImageTextSizeList: Array<number> = textNumberListGeneralData

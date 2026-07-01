@@ -1,24 +1,24 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class QuoteData extends BaseMDData {
-  _blockQuoteBackgroundColor: number | undefined = undefined // 块引用背景颜色
-  _blockQuoteMarginTop: number = 8 // 块引用上外边距
-  _blockQuoteMarginRight: number = 8 // 块引用右外边距
-  _blockQuoteMarginBottom: number = 8 // 块引用下外边距
-  _blockQuoteMarginLeft: number = 8 // 块引用左外边距
-  _blockQuotePaddingTop: number = 8 // 块引用上内边距
-  _blockQuotePaddingRight: number = 8 // 块引用右内边距
-  _blockQuotePaddingBottom: number = 8 // 块引用下内边距
-  _blockQuotePaddingLeft: number = 8 // 块引用左内边距
-  _blockQuoteRadiusTopLeft: number = 0 // 块引用边框左上圆角
-  _blockQuoteRadiusTopRight: number = 0 // 块引用边框右上圆角
-  _blockQuoteRadiusBottomLeft: number = 0 // 块引用边框左下圆角
-  _blockQuoteRadiusBottomRight: number = 0 // 块引用边框右下圆角
-  _blockQuoteLeftBorderWidth: number = 4 // 块引用左侧边框宽度
-  _blockQuoteLeftBorderColor: number | undefined = undefined // 块引用左侧边框颜色
-  _blockQuoteChildSpacing: number = 4 // 块引用子模块上下间距
+  _blockQuoteBackgroundColor: ResourceColor | undefined = undefined // 块引用背景颜色
+  _blockQuoteMarginTop: Length = 0.0 // 块引用上外边距
+  _blockQuoteMarginRight: Length = 0.0 // 块引用右外边距
+  _blockQuoteMarginBottom: Length = 0.0 // 块引用下外边距
+  _blockQuoteMarginLeft: Length = 8.0 // 块引用左外边距
+  _blockQuotePaddingTop: Length = 0.0 // 块引用上内边距
+  _blockQuotePaddingRight: Length = 0.0 // 块引用右内边距
+  _blockQuotePaddingBottom: Length = 0.0 // 块引用下内边距
+  _blockQuotePaddingLeft: Length = 8.0 // 块引用左内边距
+  _blockQuoteRadiusTopLeft: Length = 0.0 // 块引用左上圆角
+  _blockQuoteRadiusTopRight: Length = 0.0 // 块引用右上圆角
+  _blockQuoteRadiusBottomLeft: Length = 0.0 // 块引用左下圆角
+  _blockQuoteRadiusBottomRight: Length = 0.0 // 块引用右下圆角
+  _blockQuoteLeftBorderWidth: Length = 1.0 // 块引用左边框宽度
+  _blockQuoteLeftBorderColor: ResourceColor | undefined = undefined // 块引用左边框颜色
+  _blockQuoteChildSpacing: number = 8 // 块引用子项间距
 
-  public set blockQuoteBackgroundColor(value: number | undefined) {
+  public set blockQuoteBackgroundColor(value: ResourceColor | undefined) {
     this._blockQuoteBackgroundColor = value
   }
 
@@ -74,7 +74,7 @@ export class QuoteData extends BaseMDData {
     this._blockQuoteLeftBorderWidth = value
   }
 
-  public set blockQuoteLeftBorderColor(value: number | undefined) {
+  public set blockQuoteLeftBorderColor(value: ResourceColor | undefined) {
     this._blockQuoteLeftBorderColor = value
   }
 

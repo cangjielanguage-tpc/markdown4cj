@@ -22,8 +22,7 @@ struct FootnoteDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   // 文件文本
   @State
@@ -69,7 +68,7 @@ struct FootnoteDetailsPage {
   isLineBreak: boolean = false
   // 全局背景色
   @State
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动
   @State
   openGestureSwipe: boolean = false
@@ -83,76 +82,76 @@ struct FootnoteDetailsPage {
   // ---------- 专有
   // 脚注定义背景颜色
   @State
-  footnoteDefBackgroundColor: number | undefined = undefined
+  footnoteDefBackgroundColor: ResourceColor | undefined = undefined
   // 脚注定义上外边距
   @State
-  footnoteDefMarginTop: number = 0
+  footnoteDefMarginTop: Length = 0.0
   // 脚注定义右外边距
   @State
-  footnoteDefMarginRight: number = 0
+  footnoteDefMarginRight: Length = 0.0
   // 脚注定义下外边距
   @State
-  footnoteDefMarginBottom: number = 0
+  footnoteDefMarginBottom: Length = 0.0
   // 脚注定义左外边距
   @State
-  footnoteDefMarginLeft: number = 0
+  footnoteDefMarginLeft: Length = 0.0
   // 脚注定义上内边距
   @State
-  footnoteDefPaddingTop: number = 0
+  footnoteDefPaddingTop: Length = 0.0
   // 脚注定义右内边距
   @State
-  footnoteDefPaddingRight: number = 0
+  footnoteDefPaddingRight: Length = 0.0
   // 脚注定义下内边距
   @State
-  footnoteDefPaddingBottom: number = 0
+  footnoteDefPaddingBottom: Length = 0.0
   // 脚注定义左内边距
   @State
-  footnoteDefPaddingLeft: number = 0
+  footnoteDefPaddingLeft: Length = 0.0
   // 脚注引用文本颜色
   @State
-  footnoteRefTextFontColor: number | undefined = undefined
+  footnoteRefTextFontColor: ResourceColor | undefined = undefined
   // 脚注引用文本尺寸
   @State
-  footnoteRefTextFontSize: number = 12
+  footnoteRefTextFontSize: number | string | Resource | undefined = undefined
   // 脚注引用文本字体样式
   @State
-  footnoteRefTextFontStyle: FontStyle = FontStyle.Normal
+  footnoteRefTextFontStyle: FontStyle | undefined = undefined
   // 脚注引用文本字体粗细
   @State
-  footnoteRefTextFontWeight: FontWeight = FontWeight.Normal
+  footnoteRefTextFontWeight: number | FontWeight | undefined = undefined
   // 脚注引用文本字体
   @State
-  footnoteRefTextFontFamily: string = 'HarmonyOS Sans'
+  footnoteRefTextFontFamily: string | Resource | undefined = undefined
   // 脚注引用文本行高
   @State
-  footnoteRefTextLineHeight: number = 18
+  footnoteRefTextLineHeight: number | string | Resource | undefined = undefined
   // 脚注引用文本字符间距
   @State
-  footnoteRefTextLetterSpacing: number = 0
+  footnoteRefTextLetterSpacing: number | undefined = undefined
   // 脚注引用文本装饰线类型
   @State
   footnoteRefTextDecorationType: TextDecorationType = TextDecorationType.None
   // 脚注引用文本装饰线颜色
   @State
-  footnoteRefTextDecorationColor: number | undefined = undefined
+  footnoteRefTextDecorationColor: ResourceColor | undefined = undefined
   // 脚注引用文本装饰线样式
   @State
   footnoteRefTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   // 脚注引用文本背景颜色
   @State
-  footnoteRefTextBackgroundColor: number | undefined = undefined
+  footnoteRefTextBackgroundColor: ResourceColor | undefined = undefined
   // 脚注引用文本背景左上圆角
   @State
-  footnoteRefTextBackgroundRadiusTopLeft: number = 0
+  footnoteRefTextBackgroundRadiusTopLeft: Length = 0.0
   // 脚注引用文本背景右上圆角
   @State
-  footnoteRefTextBackgroundRadiusTopRight: number = 0
+  footnoteRefTextBackgroundRadiusTopRight: Length = 0.0
   // 脚注引用文本背景左下圆角
   @State
-  footnoteRefTextBackgroundRadiusBottomLeft: number = 0
+  footnoteRefTextBackgroundRadiusBottomLeft: Length = 0.0
   // 脚注引用文本背景右下圆角
   @State
-  footnoteRefTextBackgroundRadiusBottomRight: number = 0
+  footnoteRefTextBackgroundRadiusBottomRight: Length = 0.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -160,24 +159,6 @@ struct FootnoteDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -230,6 +211,23 @@ struct FootnoteDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr[index]
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index === this.fileStr.length - 1) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        index++
+      }, this.time)
+    }
   }
 
   build() {
@@ -240,82 +238,27 @@ struct FootnoteDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
-        .onClick(
-          () => {
-            // 点击动作触发该方法调用
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                index++
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }
@@ -364,12 +307,24 @@ struct FootnoteDetailsPage {
     if (this.footnoteRefTextFontColor !== undefined) {
       footnoteRefTheme.setFootnoteRefTextFontColor(this.footnoteRefTextFontColor)
     }
-    footnoteRefTheme.setFootnoteRefTextFontSize(this.footnoteRefTextFontSize)
-    footnoteRefTheme.setFootnoteRefTextFontStyle(this.footnoteRefTextFontStyle)
-    footnoteRefTheme.setFootnoteRefTextFontWeight(this.footnoteRefTextFontWeight)
-    footnoteRefTheme.setFootnoteRefTextFontFamily(this.footnoteRefTextFontFamily)
-    footnoteRefTheme.setFootnoteRefTextLineHeight(this.footnoteRefTextLineHeight)
-    footnoteRefTheme.setFootnoteRefTextLetterSpacing(this.footnoteRefTextLetterSpacing)
+    if (this.footnoteRefTextFontSize !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextFontSize(this.footnoteRefTextFontSize)
+    }
+    if (this.footnoteRefTextFontStyle !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextFontStyle(this.footnoteRefTextFontStyle)
+    }
+    if (this.footnoteRefTextFontWeight !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextFontWeight(this.footnoteRefTextFontWeight)
+    }
+    if (this.footnoteRefTextFontFamily !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextFontFamily(this.footnoteRefTextFontFamily)
+    }
+    if (this.footnoteRefTextLineHeight !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextLineHeight(this.footnoteRefTextLineHeight)
+    }
+    if (this.footnoteRefTextLetterSpacing !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextLetterSpacing(this.footnoteRefTextLetterSpacing)
+    }
     footnoteRefTheme.setFootnoteRefTextDecorationType(this.footnoteRefTextDecorationType)
     if (this.footnoteRefTextDecorationColor !== undefined) {
       footnoteRefTheme.setFootnoteRefTextDecorationColor(this.footnoteRefTextDecorationColor)

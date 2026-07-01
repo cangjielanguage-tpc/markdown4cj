@@ -24,7 +24,6 @@ struct CodeLineDetailsPage {
   safeTop: number = 0
   // 深浅色模式
   @StorageProp('currentColorMode')
-  @Watch('onColorModeChange')
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   // 文件文本
   @State
@@ -70,7 +69,7 @@ struct CodeLineDetailsPage {
   isLineBreak: boolean = false
   // 全局背景色
   @State
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动
   @State
   openGestureSwipe: boolean = false
@@ -84,40 +83,40 @@ struct CodeLineDetailsPage {
   // ---------- 专有
   // 内联代码文本颜色
   @State
-  inlineCodeTextFontColor: number | undefined = undefined
+  inlineCodeTextFontColor: ResourceColor | undefined = undefined
   // 内联代码文本尺寸
   @State
-  inlineCodeTextFontSize: number | undefined = undefined
+  inlineCodeTextFontSize: number | string | Resource | undefined = undefined
   // 内联代码文本字体样式
   @State
   inlineCodeTextFontStyle: FontStyle | undefined = undefined
   // 内联代码文本字体粗细
   @State
-  inlineCodeTextFontWeight: FontWeight | undefined = undefined
+  inlineCodeTextFontWeight: number | FontWeight | undefined = undefined
   // 内联代码文本字体
   @State
-  inlineCodeTextFontFamily: string | undefined = undefined
+  inlineCodeTextFontFamily: string | Resource | undefined = undefined
   // 内联代码文本行高
   @State
-  inlineCodeTextLineHeight: number | undefined = undefined
+  inlineCodeTextLineHeight: number | string | Resource | undefined = undefined
   // 内联代码文本字符间距
   @State
   inlineCodeTextLetterSpacing: number | undefined = undefined
   // 内联代码文本背景颜色
   @State
-  inlineCodeTextBackgroundColor: number | undefined = undefined
+  inlineCodeTextBackgroundColor: ResourceColor | undefined = undefined
   // 内联代码文本背景左上圆角
   @State
-  inlineCodeTextBackgroundRadiusTopLeft: number = 4
+  inlineCodeTextBackgroundRadiusTopLeft: Length = 0.0
   // 内联代码文本背景右上圆角
   @State
-  inlineCodeTextBackgroundRadiusTopRight: number = 4
+  inlineCodeTextBackgroundRadiusTopRight: Length = 0.0
   // 内联代码文本背景左下圆角
   @State
-  inlineCodeTextBackgroundRadiusBottomLeft: number = 4
+  inlineCodeTextBackgroundRadiusBottomLeft: Length = 0.0
   // 内联代码文本背景右下圆角
   @State
-  inlineCodeTextBackgroundRadiusBottomRight: number = 4
+  inlineCodeTextBackgroundRadiusBottomRight: Length = 0.0
   // markdown配置
   @State
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -127,25 +126,6 @@ struct CodeLineDetailsPage {
   // markdown插件
   @State
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  // 刷新标志
-  @State
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    // 根据 this.currentColorMode 更新 UI 或状态栏
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      // 浅色模式处理
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      // 深色模式处理
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -186,6 +166,27 @@ struct CodeLineDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -196,85 +197,27 @@ struct CodeLineDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }

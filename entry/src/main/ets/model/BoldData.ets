@@ -1,19 +1,19 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class BoldData extends BaseMDData {
-  _boldTextFontColor: number | undefined = undefined // 加粗文本颜色
-  _boldTextFontSize: number | undefined = undefined // 加粗文本尺寸
-  _boldTextFontStyle: FontStyle | undefined = undefined // 加粗文本字体样式
-  _boldTextFontWeight: FontWeight = FontWeight.Bold // 加粗文本字体粗细
-  _boldTextFontFamily: string | undefined = undefined // 加粗文本字体
-  _boldTextLineHeight: number | undefined = undefined // 加粗文本行高
-  _boldTextLetterSpacing: number | undefined = undefined // 加粗文本字符间距
+  _boldTextFontColor: ResourceColor | undefined = undefined // 字体颜色
+  _boldTextFontSize: number | string | Resource | undefined = undefined // 字体大小
+  _boldTextFontStyle: FontStyle | undefined = undefined // 字体样式
+  _boldTextFontWeight: number | FontWeight = FontWeight.Bold // 字体粗细
+  _boldTextFontFamily: string | Resource | undefined = undefined // 字体族
+  _boldTextLineHeight: number | string | Resource | undefined = undefined // 行高
+  _boldTextLetterSpacing: number | undefined = undefined // 字间距
 
-  public set boldTextFontColor(value: number | undefined) {
+  public set boldTextFontColor(value: ResourceColor | undefined) {
     this._boldTextFontColor = value
   }
 
-  public set boldTextFontSize(value: number | undefined) {
+  public set boldTextFontSize(value: number | string | Resource | undefined) {
     this._boldTextFontSize = value
   }
 
@@ -21,15 +21,15 @@ export class BoldData extends BaseMDData {
     this._boldTextFontStyle = value
   }
 
-  public set boldTextFontWeight(value: FontWeight) {
+  public set boldTextFontWeight(value: number | FontWeight) {
     this._boldTextFontWeight = value
   }
 
-  public set boldTextFontFamily(value: string | undefined) {
+  public set boldTextFontFamily(value: string | Resource | undefined) {
     this._boldTextFontFamily = value
   }
 
-  public set boldTextLineHeight(value: number | undefined) {
+  public set boldTextLineHeight(value: number | string | Resource | undefined) {
     this._boldTextLineHeight = value
   }
 

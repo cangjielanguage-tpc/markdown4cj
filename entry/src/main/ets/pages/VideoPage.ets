@@ -72,8 +72,8 @@ struct VideoPage {
   isLineBreakList: Array<boolean> = booleanListGeneralData
   @State isLineBreak: boolean = false // 软换行是否换行
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State globalBackgroundColor: number | undefined = undefined // 背景颜色
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State globalBackgroundColor: ResourceColor | undefined = undefined // 背景颜色
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
@@ -82,8 +82,8 @@ struct VideoPage {
   @State openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
   // ---------------- 专有
   // 视频背景颜色列表
-  videoBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State videoBackgroundColor: number | undefined = undefined // 视频背景颜色
+  videoBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State videoBackgroundColor: ResourceColor | undefined = undefined // 视频背景颜色
   // 视频上外边距列表
   videoMarginTopList: Array<number> = marginListGeneralData
   @State videoMarginTop: number = 0 // 视频上外边距
@@ -127,8 +127,8 @@ struct VideoPage {
   videoBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State videoBorderWidth: number = 0 // 视频边框宽度
   // 视频边框颜色列表
-  videoBorderColorList: Array<number | undefined> = colorListGeneralData
-  @State videoBorderColor: number | undefined = undefined // 视频边框颜色
+  videoBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State videoBorderColor: ResourceColor | undefined = undefined // 视频边框颜色
   // 视频占位图列表
   videoPlaceholderList: Array<Resource | undefined> = [undefined, $r('app.media.background'), $r('app.media.you')]
   @State videoPlaceholder: Resource | undefined = undefined // 视频占位图
@@ -148,8 +148,8 @@ struct VideoPage {
   videoPlayIconFitTypeList: Array<ImageFit> = imageFitListData
   @State videoPlayIconFitType: ImageFit = ImageFit.Contain // 播放按钮图标缩放类型
   // 视频时间文本颜色列表
-  videoTimeTextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State videoTimeTextFontColor: number | undefined = undefined // 视频时间文本颜色
+  videoTimeTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State videoTimeTextFontColor: ResourceColor | undefined = undefined // 视频时间文本颜色
   // 视频时间文本尺寸列表
   videoTimeTextFontSizeList: Array<number> = textSizeListGeneralData
   @State videoTimeTextFontSize: number = 14 // 视频时间文本尺寸
@@ -181,8 +181,8 @@ struct VideoPage {
   videoReleaseButtonVisibleList: Array<boolean> = booleanListGeneralData
   @State videoReleaseButtonVisible: boolean = true // 视频发布按钮是否显示
   // 视频发布按钮背景颜色列表
-  videoReleaseButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State videoReleaseButtonBackgroundColor: number | undefined = undefined // 视频发布按钮背景颜色
+  videoReleaseButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State videoReleaseButtonBackgroundColor: ResourceColor | undefined = undefined // 视频发布按钮背景颜色
   // 视频发布按钮宽度列表
   videoReleaseButtonWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoReleaseButtonWidth: number = 144 // 视频发布按钮宽度
@@ -218,8 +218,8 @@ struct VideoPage {
   videoReleaseButtonTextList: Array<string> = ['发布视频', '发布', '提交']
   @State videoReleaseButtonText: string = "发布视频" // 视频发布按钮默认文本内容
   // 视频发布按钮文本颜色列表
-  videoReleaseButtonTextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State videoReleaseButtonTextFontColor: number | undefined = undefined // 视频发布按钮文本颜色
+  videoReleaseButtonTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State videoReleaseButtonTextFontColor: ResourceColor | undefined = undefined // 视频发布按钮文本颜色
   // 视频发布按钮文本尺寸列表
   videoReleaseButtonTextFontSizeList: Array<number> = textSizeListGeneralData
   @State videoReleaseButtonTextFontSize: number = 16 // 视频发布按钮文本尺寸
@@ -239,8 +239,8 @@ struct VideoPage {
   videoDownloadButtonVisibleList: Array<boolean> = booleanListGeneralData
   @State videoDownloadButtonVisible: boolean = true // 视频下载按钮是否显示
   // 视频下载按钮背景颜色列表
-  videoDownloadButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State videoDownloadButtonBackgroundColor: number | undefined = undefined // 视频下载按钮背景颜色
+  videoDownloadButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State videoDownloadButtonBackgroundColor: ResourceColor | undefined = undefined // 视频下载按钮背景颜色
   // 视频下载按钮宽度列表
   videoDownloadButtonWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoDownloadButtonWidth: number = 144 // 视频下载按钮宽度
@@ -276,8 +276,8 @@ struct VideoPage {
   videoDownloadButtonTextList: Array<string> = ['下载视频', '下载', '保存']
   @State videoDownloadButtonText: string = "下载视频" // 视频下载按钮默认文本内容
   // 视频下载按钮文本颜色列表
-  videoDownloadButtonTextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State videoDownloadButtonTextFontColor: number | undefined = undefined // 视频下载按钮文本颜色
+  videoDownloadButtonTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State videoDownloadButtonTextFontColor: ResourceColor | undefined = undefined // 视频下载按钮文本颜色
   // 视频下载按钮文本尺寸列表
   videoDownloadButtonTextFontSizeList: Array<number> = textSizeListGeneralData
   @State videoDownloadButtonTextFontSize: number = 16 // 视频下载按钮文本尺寸
@@ -330,8 +330,8 @@ struct VideoPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -444,12 +444,12 @@ struct VideoPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -570,12 +570,12 @@ struct VideoPage {
             Row() {
               Text("视频基本属性")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -708,12 +708,12 @@ struct VideoPage {
             Row() {
               Text("播放按钮")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded3 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded3 = !this.isExpanded3
@@ -768,12 +768,12 @@ struct VideoPage {
             Row() {
               Text("视频时间文本和底部布局")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded4 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded4 = !this.isExpanded4
@@ -864,12 +864,12 @@ struct VideoPage {
             Row() {
               Text("发布按钮")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded5 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded5 = !this.isExpanded5
@@ -1014,12 +1014,12 @@ struct VideoPage {
             Row() {
               Text("下载按钮")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded6 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded6 = !this.isExpanded6
@@ -1162,7 +1162,7 @@ struct VideoPage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

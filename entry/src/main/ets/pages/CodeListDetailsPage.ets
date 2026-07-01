@@ -19,8 +19,7 @@ struct CodeListDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -51,7 +50,7 @@ struct CodeListDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -67,51 +66,51 @@ struct CodeListDetailsPage {
   @State // codeformat是否用制表符
   codeBlockUseTab: boolean = false
   @State // codeformat空格缩进数量
-  codeBlockIndentWidth: number = 4
+  codeBlockIndentWidth: Length = 4
   @State // 围栏代码块代码高亮是否同步解析
   codeBlockParserSync: boolean = false
   @State // 代码块背景颜色
-  codeBlockBackgroundColor: number | undefined = undefined
+  codeBlockBackgroundColor: ResourceColor | undefined = undefined
   @State // 代码块上外边距
-  codeBlockMarginTop: number = 8
+  codeBlockMarginTop: Length = 0.0
   @State // 代码块右外边距
-  codeBlockMarginRight: number = 0
+  codeBlockMarginRight: Length = 0.0
   @State // 代码块下外边距
-  codeBlockMarginBottom: number = 8
+  codeBlockMarginBottom: Length = 0.0
   @State // 代码块左外边距
-  codeBlockMarginLeft: number = 0
+  codeBlockMarginLeft: Length = 0.0
   @State // 代码块上内边距
-  codeBlockPaddingTop: number = 12
+  codeBlockPaddingTop: Length = 0.0
   @State // 代码块右内边距
-  codeBlockPaddingRight: number = 12
+  codeBlockPaddingRight: Length = 8.0
   @State // 代码块下内边距
-  codeBlockPaddingBottom: number = 12
+  codeBlockPaddingBottom: Length = 8.0
   @State // 代码块左内边距
-  codeBlockPaddingLeft: number = 12
+  codeBlockPaddingLeft: Length = 0.0
   @State // 代码块边框样式
   codeBlockBorderStyle: BorderStyle = BorderStyle.Solid
   @State // 代码块边框宽度
-  codeBlockBorderWidth: number = 0
+  codeBlockBorderWidth: Length = 0.0
   @State // 代码块边框颜色
-  codeBlockBorderColor: number | undefined = undefined
+  codeBlockBorderColor: ResourceColor | undefined = undefined
   @State // 代码块边框左上圆角
-  codeBlockRadiusTopLeft: number = 8
+  codeBlockRadiusTopLeft: Length = 8.0
   @State // 代码块边框右上圆角
-  codeBlockRadiusTopRight: number = 8
+  codeBlockRadiusTopRight: Length = 8.0
   @State // 代码块边框左下圆角
-  codeBlockRadiusBottomLeft: number = 8
+  codeBlockRadiusBottomLeft: Length = 8.0
   @State // 代码块边框右下圆角
-  codeBlockRadiusBottomRight: number = 8
+  codeBlockRadiusBottomRight: Length = 8.0
   @State // 代码块类型和代码块内容间距
-  codeBlockTitleLayoutMarginBottom: number = 8
+  codeBlockTitleLayoutMarginBottom: Length = 0.0
   @State // 代码块类型左边距
-  codeBlockTypeTextMarginLeft: number = 8
+  codeBlockTypeTextMarginLeft: Length = 8.0
   @State // 代码块没有代码类型时默认显示文本
   codeBlockTypeText: string = "Code"
   @State // 代码块类型文本颜色
-  codeBlockTypeTextFontColor: number | undefined = undefined
+  codeBlockTypeTextFontColor: ResourceColor | undefined = undefined
   @State // 代码块类型文本尺寸
-  codeBlockTypeTextFontSize: number | undefined = undefined
+  codeBlockTypeTextFontSize: number | string | Resource | undefined = undefined
   @State // 代码块类型文本字体样式
   codeBlockTypeTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块类型文本字体粗细
@@ -119,7 +118,7 @@ struct CodeListDetailsPage {
   @State // 代码块类型文本字体
   codeBlockTypeTextFontFamily: string | undefined = undefined
   @State // 代码块类型文本行高
-  codeBlockTypeTextLineHeight: number | undefined = undefined
+  codeBlockTypeTextLineHeight: number | string | Resource | undefined = undefined
   @State // 代码块代码复制和代码全屏间距
   codeBlockCopyFullScreenSpacing: number = 8
   @State // 代码块代码复制按钮是否显示
@@ -128,17 +127,17 @@ struct CodeListDetailsPage {
   codeBlockCopyTextIsShow: boolean = true
   codeBlockCopyIcon: Resource | undefined = undefined // 代码块代码复制按钮默认图标
   @State // 代码块代码复制图标宽度
-  codeBlockCopyIconWidth: number = 18
+  codeBlockCopyIconWidth: Length = 24.0
   @State // 代码块代码复制图标高度
-  codeBlockCopyIconHeight: number = 18
+  codeBlockCopyIconHeight: Length = 24.0
   @State // 代码块代码复制图标和文本间距
   codeBlockCopyIconTextSpacing: number = 4
   @State // 代码块代码复制默认文本内容
   codeBlockCopyText: string = "Copy"
   @State // 代码块代码复制文本颜色
-  codeBlockCopyTextFontColor: number | undefined = undefined
+  codeBlockCopyTextFontColor: ResourceColor | undefined = undefined
   @State // 代码块代码复制文本尺寸
-  codeBlockCopyTextFontSize: number | undefined = undefined
+  codeBlockCopyTextFontSize: number | string | Resource | undefined = undefined
   @State // 代码块代码复制文本字体样式
   codeBlockCopyTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块代码复制文本字体粗细
@@ -146,24 +145,24 @@ struct CodeListDetailsPage {
   @State // 代码块代码复制文本字体
   codeBlockCopyTextFontFamily: string | undefined = undefined
   @State // 代码块代码复制文本行高
-  codeBlockCopyTextLineHeight: number | undefined = undefined
+  codeBlockCopyTextLineHeight: number | string | Resource | undefined = undefined
   @State // 代码块代码全屏按钮是否显示
   codeBlockFullScreenButtonIsShow: boolean = true
   @State // 代码块代码全屏文本是否显示
   codeBlockFullScreenTextIsShow: boolean = true
   codeBlockFullScreenIcon: Resource | undefined = undefined // 代码块代码全屏按钮默认图标
   @State // 代码块代码全屏图标宽度
-  codeBlockFullScreenIconWidth: number = 18
+  codeBlockFullScreenIconWidth: Length = 24.0
   @State // 代码块代码全屏图标高度
-  codeBlockFullScreenIconHeight: number = 18
+  codeBlockFullScreenIconHeight: Length = 24.0
   @State // 代码块代码全屏图标和文本间距
   codeBlockFullScreenIconTextSpacing: number = 4
   @State // 代码块代码全屏默认文本内容
   codeBlockFullScreenText: string = "Full Screen"
   @State // 代码块代码全屏文本颜色
-  codeBlockFullScreenTextFontColor: number | undefined = undefined
+  codeBlockFullScreenTextFontColor: ResourceColor | undefined = undefined
   @State // 代码块代码全屏文本尺寸
-  codeBlockFullScreenTextFontSize: number | undefined = undefined
+  codeBlockFullScreenTextFontSize: number | string | Resource | undefined = undefined
   @State // 代码块代码全屏文本字体样式
   codeBlockFullScreenTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块代码全屏文本字体粗细
@@ -171,15 +170,15 @@ struct CodeListDetailsPage {
   @State // 代码块代码全屏文本字体
   codeBlockFullScreenTextFontFamily: string | undefined = undefined
   @State // 代码块代码全屏文本行高
-  codeBlockFullScreenTextLineHeight: number | undefined = undefined
+  codeBlockFullScreenTextLineHeight: number | string | Resource | undefined = undefined
   @State // 代码块代码行号是否显示
   codeBlockLineNumberIsShow: boolean = false
   @State // 代码块代码行号左内边距
-  codeBlockLineNumberTextPaddingLeft: number = 8
+  codeBlockLineNumberTextPaddingLeft: Length = 8.0
   @State // 代码块代码行号文本颜色
-  codeBlockLineNumberTextFontColor: number | undefined = undefined
+  codeBlockLineNumberTextFontColor: ResourceColor | undefined = undefined
   @State // 代码块代码行号文本尺寸
-  codeBlockLineNumberTextFontSize: number | undefined = undefined
+  codeBlockLineNumberTextFontSize: number | string | Resource | undefined = undefined
   @State // 代码块代码行号文本字体样式
   codeBlockLineNumberTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块代码行号文本字体粗细
@@ -187,45 +186,45 @@ struct CodeListDetailsPage {
   @State // 代码块代码行号文本字体
   codeBlockLineNumberTextFontFamily: string | undefined = undefined
   @State // 代码块代码行号文本行高
-  codeBlockLineNumberTextLineHeight: number | undefined = undefined
+  codeBlockLineNumberTextLineHeight: number | string | Resource | undefined = undefined
   @State // 代码块代码行号和代码块中间分割线颜色
-  codeBlockDividerColor: number | undefined = undefined
+  codeBlockDividerColor: ResourceColor | undefined = undefined
   @State // 代码块代码行号和代码块中间分割线宽度
-  codeBlockDividerStrokeWidth: number = 1
+  codeBlockDividerStrokeWidth: Length = 0.5
   @State // 代码块代码行号和分割线间距
   codeBlockLineNumberDividerSpacing: number = 8
   @State // 代码块文本颜色
-  codeBlockTextFontColor: number | undefined = undefined
+  codeBlockTextFontColor: ResourceColor | undefined = undefined
   @State // 代码块代码文本右外边距
-  codeBlockTextMarginRight: number = 0
+  codeBlockTextMarginRight: Length = 8.0
   @State // 代码块代码文本左外边距
-  codeBlockTextMarginLeft: number = 0
+  codeBlockTextMarginLeft: Length = 8.0
   @State // 代码块文本尺寸
-  codeBlockTextFontSize: number | undefined = undefined
+  codeBlockTextFontSize: number | string | Resource = 13.0
   @State // 代码块文本字体样式
-  codeBlockTextFontStyle: FontStyle | undefined = undefined
+  codeBlockTextFontStyle: FontStyle = FontStyle.Normal
   @State // 代码块文本字体粗细
-  codeBlockTextFontWeight: FontWeight | undefined = undefined
+  codeBlockTextFontWeight: number | FontWeight = FontWeight.Normal
   @State // 代码块文本字体
-  codeBlockTextFontFamily: string | undefined = undefined
+  codeBlockTextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 代码块文本行高
-  codeBlockTextLineHeight: number | undefined = undefined
+  codeBlockTextLineHeight: number | string | Resource = 22.0
   @State // 代码块文本字符间距
   codeBlockTextLetterSpacing: number = 0
 
   // ---------- 组合代码块专有
   @State // 组合代码块未选中标题字体大小
-  codeBlockListTitleTextSize: number = 14
+  codeBlockListTitleTextSize: number = 13.0
   @State // 组合代码块选中标题字体大小
-  codeBlockListTitleSelectTextSize: number = 15
+  codeBlockListTitleSelectTextSize: number = 13.0
   @State // 组合代码块选中标题文本颜色
-  codeBlockListTitleSelectTextColor: number | undefined = undefined
+  codeBlockListTitleSelectTextColor: ResourceColor | undefined = undefined
   @State // 组合代码块未选中标题文本颜色
-  codeBlockListTitleUnselectTextColor: number | undefined = undefined
+  codeBlockListTitleUnselectTextColor: ResourceColor | undefined = undefined
   @State // 组合代码块选中标题背景颜色
-  codeBlockListTitleSelectBackgroundColor: number | undefined = undefined
+  codeBlockListTitleSelectBackgroundColor: ResourceColor | undefined = undefined
   @State // 组合代码块未选中标题背景颜色
-  codeBlockListTitleUnselectBackgroundColor: number | undefined = undefined
+  codeBlockListTitleUnselectBackgroundColor: ResourceColor | undefined = undefined
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -233,21 +232,6 @@ struct CodeListDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -349,18 +333,39 @@ struct CodeListDetailsPage {
       this.codeBlockTextLetterSpacing = codeListData._codeBlockTextLetterSpacing
 
       // ---------- 专有
-      this.codeBlockListTitleTextSize = codeListData._codeListTitleTextSize
-      this.codeBlockListTitleSelectTextSize = codeListData._codeListTitleSelectTextSize
-      this.codeBlockListTitleSelectTextColor = codeListData._codeListTitleSelectTextColor
-      this.codeBlockListTitleUnselectTextColor = codeListData._codeListTitleUnSelectTextColor
-      this.codeBlockListTitleSelectBackgroundColor = codeListData._codeListTitleSelectBackGroupColor
-      this.codeBlockListTitleUnselectBackgroundColor = codeListData._codeListTitleUnSelectBackGroupColor
+      this.codeBlockListTitleTextSize = codeListData._codeBlockListTitleTextSize
+      this.codeBlockListTitleSelectTextSize = codeListData._codeBlockListTitleSelectTextSize
+      this.codeBlockListTitleSelectTextColor = codeListData._codeBlockListTitleSelectTextColor
+      this.codeBlockListTitleUnselectTextColor = codeListData._codeBlockListTitleUnselectTextColor
+      this.codeBlockListTitleSelectBackgroundColor = codeListData._codeBlockListTitleSelectBackgroundColor
+      this.codeBlockListTitleUnselectBackgroundColor = codeListData._codeBlockListTitleUnselectBackgroundColor
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -371,85 +376,27 @@ struct CodeListDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }

@@ -79,9 +79,9 @@ struct SupPage {
   @State // 软换行是否换行
   isLineBreak: boolean = false
   // 背景颜色列表
-  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  globalBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 背景颜色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
   @State // 是否允许markdown控件自身响应滑动
@@ -92,9 +92,9 @@ struct SupPage {
   openGestureSwipeTest: boolean = false
   // ---------------- 专有
   // 上标文本颜色列表
-  supTextFontColorList: Array<number | undefined> = colorListGeneralData
+  supTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 上标文本颜色
-  supTextFontColor: number | undefined = undefined
+  supTextFontColor: ResourceColor | undefined = undefined
   // 上标文本尺寸列表
   supTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 上标文本尺寸
@@ -153,8 +153,8 @@ struct SupPage {
             GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
               Text(`${item}`)
                 .fontSize(12)
-                .fontColor(0xFFFFFFFF)
-                .backgroundColor(0xFF2196F3)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
                 .height(25).width('100%')
                 .padding(5)
                 .borderRadius(5)
@@ -201,12 +201,12 @@ struct SupPage {
             Row() {
               Text("通用样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded1 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded1 = !this.isExpanded1
@@ -326,12 +326,12 @@ struct SupPage {
             Row() {
               Text("专有样式配置")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
-                .fontColor(0xFFF5F5F5)
+                .fontColor('#FFF5F5F5')
                 .padding({ right: 20 })
                 .onClick(() => {
                   this.isExpanded2 = !this.isExpanded2
@@ -402,7 +402,7 @@ struct SupPage {
         .padding({ top: 10, bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor('#FFEAEAEA')
     .height("90%")
   }
 }

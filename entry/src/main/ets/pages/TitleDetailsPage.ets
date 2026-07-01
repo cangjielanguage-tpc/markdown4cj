@@ -19,8 +19,7 @@ struct TitleDetailsPage {
   // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  @StorageProp('currentColorMode')
-  @Watch('onColorModeChange') // 深浅色模式
+  @StorageProp('currentColorMode') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -51,7 +50,7 @@ struct TitleDetailsPage {
   @State // 是否换行
   isLineBreak: boolean = false
   @State // 全局背景色
-  globalBackgroundColor: number | undefined = undefined
+  globalBackgroundColor: ResourceColor | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -61,214 +60,214 @@ struct TitleDetailsPage {
 
   // ---------- 专有
   @State // 一级标题背景颜色
-  heading1BackgroundColor: number | undefined = undefined
+  heading1BackgroundColor: ResourceColor | undefined = undefined
   @State // 一级标题上外边距
-  heading1MarginTop: number = 0
+  heading1MarginTop: Length = 0.0
   @State // 一级标题右外边距
-  heading1MarginRight: number = 0
+  heading1MarginRight: Length = 0.0
   @State // 一级标题下外边距
-  heading1MarginBottom: number = 0
+  heading1MarginBottom: Length = 0.0
   @State // 一级标题左外边距
-  heading1MarginLeft: number = 0
+  heading1MarginLeft: Length = 0.0
   @State // 一级标题上内边距
-  heading1PaddingTop: number = 0
+  heading1PaddingTop: Length = 0.0
   @State // 一级标题右内边距
-  heading1PaddingRight: number = 0
+  heading1PaddingRight: Length = 0.0
   @State // 一级标题下内边距
-  heading1PaddingBottom: number = 0
+  heading1PaddingBottom: Length = 0.0
   @State // 一级标题左内边距
-  heading1PaddingLeft: number = 0
+  heading1PaddingLeft: Length = 0.0
   @State // 一级标题文本颜色
-  heading1TextFontColor: number | undefined = undefined
+  heading1TextFontColor: ResourceColor | undefined = undefined
   @State // 一级标题文本尺寸
-  heading1TextFontSize: number = 20
+  heading1TextFontSize: number | string | Resource = 20.0
   @State // 一级标题文本字体样式
   heading1TextFontStyle: FontStyle = FontStyle.Normal
   @State // 一级标题文本字体粗细
-  heading1TextFontWeight: FontWeight = FontWeight.Bold
+  heading1TextFontWeight: number | FontWeight = FontWeight.Bold
   @State // 一级标题文本字体
-  heading1TextFontFamily: string = 'HarmonyOS Sans'
+  heading1TextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 一级标题文本行高
-  heading1TextLineHeight: number = 22
+  heading1TextLineHeight: number | string | Resource = 22.0
   @State // 一级标题文本字符间距
-  heading1TextLetterSpacing: number = 0
+  heading1TextLetterSpacing: number = 0.0
   @State // 一级标题下划线高度
   heading1UnderlineHeight: number = 0.5
   @State // 一级标题下划线颜色
-  heading1UnderlineColor: number | undefined = undefined
+  heading1UnderlineColor: ResourceColor | undefined = undefined
   @State // 一级标题距离标题文本间距
-  heading1UnderlineSpacing: number = 0
+  heading1UnderlineSpacing: number = 0.0
 
   @State // 二级标题背景颜色
-  heading2BackgroundColor: number | undefined = undefined
+  heading2BackgroundColor: ResourceColor | undefined = undefined
   @State // 二级标题上外边距
-  heading2MarginTop: number = 0
+  heading2MarginTop: Length = 0.0
   @State // 二级标题右外边距
-  heading2MarginRight: number = 0
+  heading2MarginRight: Length = 0.0
   @State // 二级标题下外边距
-  heading2MarginBottom: number = 0
+  heading2MarginBottom: Length = 0.0
   @State // 二级标题左外边距
-  heading2MarginLeft: number = 0
+  heading2MarginLeft: Length = 0.0
   @State // 二级标题上内边距
-  heading2PaddingTop: number = 0
+  heading2PaddingTop: Length = 0.0
   @State // 二级标题右内边距
-  heading2PaddingRight: number = 0
+  heading2PaddingRight: Length = 0.0
   @State // 二级标题下内边距
-  heading2PaddingBottom: number = 0
+  heading2PaddingBottom: Length = 0.0
   @State // 二级标题左内边距
-  heading2PaddingLeft: number = 0
+  heading2PaddingLeft: Length = 0.0
   @State // 二级标题文本颜色
-  heading2TextFontColor: number | undefined = undefined
+  heading2TextFontColor: ResourceColor | undefined = undefined
   @State // 二级标题文本尺寸
-  heading2TextFontSize: number = 17
+  heading2TextFontSize: number | string | Resource = 17.0
   @State // 二级标题文本字体样式
   heading2TextFontStyle: FontStyle = FontStyle.Normal
   @State // 二级标题文本字体粗细
-  heading2TextFontWeight: FontWeight = FontWeight.Bold
+  heading2TextFontWeight: number | FontWeight = FontWeight.Bold
   @State // 二级标题文本字体
-  heading2TextFontFamily: string = 'HarmonyOS Sans'
+  heading2TextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 二级标题文本行高
-  heading2TextLineHeight: number = 22
+  heading2TextLineHeight: number | string | Resource = 22.0
   @State // 二级标题文本字符间距
-  heading2TextLetterSpacing: number = 0
+  heading2TextLetterSpacing: number = 0.0
   @State // 二级标题下划线高度
   heading2UnderlineHeight: number = 0.5
   @State // 二级标题下划线颜色
-  heading2UnderlineColor: number | undefined = undefined
+  heading2UnderlineColor: ResourceColor | undefined = undefined
   @State // 二级标题距离标题文本间距
-  heading2UnderlineSpacing: number = 0
+  heading2UnderlineSpacing: number = 0.0
 
   @State // 三级标题背景颜色
-  heading3BackgroundColor: number | undefined = undefined
+  heading3BackgroundColor: ResourceColor | undefined = undefined
   @State // 三级标题上外边距
-  heading3MarginTop: number = 0
+  heading3MarginTop: Length = 0.0
   @State // 三级标题右外边距
-  heading3MarginRight: number = 0
+  heading3MarginRight: Length = 0.0
   @State // 三级标题下外边距
-  heading3MarginBottom: number = 0
+  heading3MarginBottom: Length = 0.0
   @State // 三级标题左外边距
-  heading3MarginLeft: number = 0
+  heading3MarginLeft: Length = 0.0
   @State // 三级标题上内边距
-  heading3PaddingTop: number = 0
+  heading3PaddingTop: Length = 0.0
   @State // 三级标题右内边距
-  heading3PaddingRight: number = 0
+  heading3PaddingRight: Length = 0.0
   @State // 三级标题下内边距
-  heading3PaddingBottom: number = 0
+  heading3PaddingBottom: Length = 0.0
   @State // 三级标题左内边距
-  heading3PaddingLeft: number = 0
+  heading3PaddingLeft: Length = 0.0
   @State // 三级标题文本颜色
-  heading3TextFontColor: number | undefined = undefined
+  heading3TextFontColor: ResourceColor | undefined = undefined
   @State // 三级标题文本尺寸
-  heading3TextFontSize: number = 16
+  heading3TextFontSize: number | string | Resource = 16.0
   @State // 三级标题文本字体样式
   heading3TextFontStyle: FontStyle = FontStyle.Normal
   @State // 三级标题文本字体粗细
-  heading3TextFontWeight: FontWeight = FontWeight.Bold
+  heading3TextFontWeight: number | FontWeight = FontWeight.Bold
   @State // 三级标题文本字体
-  heading3TextFontFamily: string = 'HarmonyOS Sans'
+  heading3TextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 三级标题文本行高
-  heading3TextLineHeight: number = 22
+  heading3TextLineHeight: number | string | Resource = 22.0
   @State // 三级标题文本字符间距
-  heading3TextLetterSpacing: number = 0
+  heading3TextLetterSpacing: number = 0.0
 
   @State // 四级标题背景颜色
-  heading4BackgroundColor: number | undefined = undefined
+  heading4BackgroundColor: ResourceColor | undefined = undefined
   @State // 四级标题上外边距
-  heading4MarginTop: number = 0
+  heading4MarginTop: Length = 0.0
   @State // 四级标题右外边距
-  heading4MarginRight: number = 0
+  heading4MarginRight: Length = 0.0
   @State // 四级标题下外边距
-  heading4MarginBottom: number = 0
+  heading4MarginBottom: Length = 0.0
   @State // 四级标题左外边距
-  heading4MarginLeft: number = 0
+  heading4MarginLeft: Length = 0.0
   @State // 四级标题上内边距
-  heading4PaddingTop: number = 0
+  heading4PaddingTop: Length = 0.0
   @State // 四级标题右内边距
-  heading4PaddingRight: number = 0
+  heading4PaddingRight: Length = 0.0
   @State // 四级标题下内边距
-  heading4PaddingBottom: number = 0
+  heading4PaddingBottom: Length = 0.0
   @State // 四级标题左内边距
-  heading4PaddingLeft: number = 0
+  heading4PaddingLeft: Length = 0.0
   @State // 四级标题文本颜色
-  heading4TextFontColor: number | undefined = undefined
+  heading4TextFontColor: ResourceColor | undefined = undefined
   @State // 四级标题文本尺寸
-  heading4TextFontSize: number = 15
+  heading4TextFontSize: number | string | Resource = 15.0
   @State // 四级标题文本字体样式
   heading4TextFontStyle: FontStyle = FontStyle.Normal
   @State // 四级标题文本字体粗细
-  heading4TextFontWeight: FontWeight = FontWeight.Bold
+  heading4TextFontWeight: number | FontWeight = FontWeight.Bold
   @State // 四级标题文本字体
-  heading4TextFontFamily: string = 'HarmonyOS Sans'
+  heading4TextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 四级标题文本行高
-  heading4TextLineHeight: number = 22
+  heading4TextLineHeight: number | string | Resource = 22.0
   @State // 四级标题文本字符间距
-  heading4TextLetterSpacing: number = 0
+  heading4TextLetterSpacing: number = 0.0
 
   @State // 五级标题背景颜色
-  heading5BackgroundColor: number | undefined = undefined
+  heading5BackgroundColor: ResourceColor | undefined = undefined
   @State // 五级标题上外边距
-  heading5MarginTop: number = 0
+  heading5MarginTop: Length = 0.0
   @State // 五级标题右外边距
-  heading5MarginRight: number = 0
+  heading5MarginRight: Length = 0.0
   @State // 五级标题下外边距
-  heading5MarginBottom: number = 0
+  heading5MarginBottom: Length = 0.0
   @State // 五级标题左外边距
-  heading5MarginLeft: number = 0
+  heading5MarginLeft: Length = 0.0
   @State // 五级标题上内边距
-  heading5PaddingTop: number = 0
+  heading5PaddingTop: Length = 0.0
   @State // 五级标题右内边距
-  heading5PaddingRight: number = 0
+  heading5PaddingRight: Length = 0.0
   @State // 五级标题下内边距
-  heading5PaddingBottom: number = 0
+  heading5PaddingBottom: Length = 0.0
   @State // 五级标题左内边距
-  heading5PaddingLeft: number = 0
+  heading5PaddingLeft: Length = 0.0
   @State // 五级标题文本颜色
-  heading5TextFontColor: number | undefined = undefined
+  heading5TextFontColor: ResourceColor | undefined = undefined
   @State // 五级标题文本尺寸
-  heading5TextFontSize: number = 14
+  heading5TextFontSize: number | string | Resource = 15.0
   @State // 五级标题文本字体样式
   heading5TextFontStyle: FontStyle = FontStyle.Normal
   @State // 五级标题文本字体粗细
-  heading5TextFontWeight: FontWeight = FontWeight.Bold
+  heading5TextFontWeight: number | FontWeight = FontWeight.Bold
   @State // 五级标题文本字体
-  heading5TextFontFamily: string = 'HarmonyOS Sans'
+  heading5TextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 五级标题文本行高
-  heading5TextLineHeight: number = 22
+  heading5TextLineHeight: number | string | Resource = 22.0
   @State // 五级标题文本字符间距
-  heading5TextLetterSpacing: number = 0
+  heading5TextLetterSpacing: number = 0.0
 
   @State // 六级标题背景颜色
-  heading6BackgroundColor: number | undefined = undefined
+  heading6BackgroundColor: ResourceColor | undefined = undefined
   @State // 六级标题上外边距
-  heading6MarginTop: number = 0
+  heading6MarginTop: Length = 0.0
   @State // 六级标题右外边距
-  heading6MarginRight: number = 0
+  heading6MarginRight: Length = 0.0
   @State // 六级标题下外边距
-  heading6MarginBottom: number = 0
+  heading6MarginBottom: Length = 0.0
   @State // 六级标题左外边距
-  heading6MarginLeft: number = 0
+  heading6MarginLeft: Length = 0.0
   @State // 六级标题上内边距
-  heading6PaddingTop: number = 0
+  heading6PaddingTop: Length = 0.0
   @State // 六级标题右内边距
-  heading6PaddingRight: number = 0
+  heading6PaddingRight: Length = 0.0
   @State // 六级标题下内边距
-  heading6PaddingBottom: number = 0
+  heading6PaddingBottom: Length = 0.0
   @State // 六级标题左内边距
-  heading6PaddingLeft: number = 0
+  heading6PaddingLeft: Length = 0.0
   @State // 六级标题文本颜色
-  heading6TextFontColor: number | undefined = undefined
+  heading6TextFontColor: ResourceColor | undefined = undefined
   @State // 六级标题文本尺寸
-  heading6TextFontSize: number = 13
+  heading6TextFontSize: number | string | Resource = 13.0
   @State // 六级标题文本字体样式
   heading6TextFontStyle: FontStyle = FontStyle.Normal
   @State // 六级标题文本字体粗细
-  heading6TextFontWeight: FontWeight = FontWeight.Bold
+  heading6TextFontWeight: number | FontWeight = FontWeight.Bold
   @State // 六级标题文本字体
-  heading6TextFontFamily: string = 'HarmonyOS Sans'
+  heading6TextFontFamily: string | Resource = 'HarmonyOS Sans'
   @State // 六级标题文本行高
-  heading6TextLineHeight: number = 22
+  heading6TextLineHeight: number | string | Resource = 22.0
   @State // 六级标题文本字符间距
-  heading6TextLetterSpacing: number = 0
+  heading6TextLetterSpacing: number = 0.0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -276,21 +275,6 @@ struct TitleDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
-  @State // 刷新标志
-  isRefresh: boolean = true
-
-  onColorModeChange(): void {
-    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
-      this.markdownTheme.setDefaultTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '浅色模式')
-    } else {
-      this.markdownTheme.setDarculaTheme()
-      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
-      hilog.error(1, 'onColorModeChange', '深色模式')
-    }
-    this.isRefresh = !this.isRefresh
-  }
 
   aboutToAppear(): void {
     try {
@@ -426,6 +410,27 @@ struct TitleDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -436,85 +441,27 @@ struct TitleDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
-        if (this.isRefresh) {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
-          }
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              // incrementalAnalysis: this.incrementalAnalysis,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }.height("100%")
         } else {
-          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // incrementalAnalysis: this.incrementalAnalysis,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }.height("100%")
-          } else {
-            Column() {
-              CJMarkdown({
-                content: this.content,
-                // isInputEnded: this.isInputEnded,
-                // listScroller: this.markdownScroller,
-                config: this.markdownConfiguration,
-                plugin: this.markdownPlugin
-              })
-            }
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              // isInputEnded: this.isInputEnded,
+              scroller: this.scroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
           }
         }
       }
