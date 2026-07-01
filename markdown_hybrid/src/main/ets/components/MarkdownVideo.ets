@@ -7,7 +7,7 @@ import { formatDurationToTime } from "../utils/MarkdownUtils"
  */
 @Component
 export struct MarkdownVideo {
-  @ObjectLink node: NodeView // 视频自身节点数据
+  @ObjectLink @Watch('refreshData') node: NodeView // 视频自身节点数据
   @ObjectLink videoTheme: VideoTheme // 视频样式
   videoCallback?: (url: string) => void // 视频点击事件
   videoImageCallback?: (url: string, callback: (url: string, ratio: number, time: number) => void) => void // 视频的图片替换回调
@@ -21,19 +21,34 @@ export struct MarkdownVideo {
 
   aboutToAppear(): void {
     this.isAlive = true
-    this.imageVideoUrl = this.node.imageUrl ?? ""
-    this.videoImageCallback?.(this.imageVideoUrl, (url: string, ratio: number, time: number) => {
-      if (!this.isAlive) {
-        return
-      }
-      this.imageUrl = url
-      this.videoRatio = ratio
-      this.time = formatDurationToTime(time)
-    })
+    this.refreshData()
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
+  }
+
+  /**
+   * 刷新数据
+   */
+  refreshData(): void {
+    this.imageVideoUrl = this.node.imageUrl ?? ""
+    this.imageUrl = ""
+    this.videoRatio = 16.0 / 9.0
+    this.time = ""
+    try {
+      this.videoImageCallback?.(this.imageVideoUrl, (url: string, ratio: number, time: number) => {
+        if (!this.isAlive) {
+          return
+        }
+        this.imageUrl = url
+        if (ratio > 0) {
+          this.videoRatio = ratio
+        }
+        this.time = formatDurationToTime(time)
+      })
+    } catch (e) {
+    }
   }
 
   build() {
@@ -88,7 +103,7 @@ export struct MarkdownVideo {
   imgVideoComponent() {
     Image(this.imageUrl == "" ? this.videoTheme.videoPlaceholder : this.imageUrl)
       .width('100%')
-      .aspectRatio(this.videoRatio)
+      .aspectRatio(this.videoRatio > 0 ? this.videoRatio : 16.0 / 9.0)
       .objectFit(this.videoTheme.videoImageFitType)
       .borderRadius({
         topLeft: this.videoTheme.videoRadiusTopLeft,

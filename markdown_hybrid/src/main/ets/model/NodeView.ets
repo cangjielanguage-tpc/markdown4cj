@@ -105,6 +105,9 @@ export class NodeView {
     this.nodeText = source.nodeText
     this.nodeHash = source.nodeHash
     this.contentHash = source.contentHash
+    if (this.children !== source.children) {
+      this.releaseChildrenPixelMaps()
+    }
     this.children = source.children
     this.sourceSpan = source.sourceSpan
     this.headingLevel = source.headingLevel
@@ -130,6 +133,34 @@ export class NodeView {
     this.linkIconTried = source.linkIconTried
     this.linkIconWidth = source.linkIconWidth
     this.linkIconHeight = source.linkIconHeight
+  }
+
+  /**
+   * 递归释放子树中所有节点持有的PixelMap资源
+   */
+  releaseChildrenPixelMaps(): void {
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i]
+      try {
+        if (child.imageReplacePixelMap !== undefined) {
+          child.imageReplacePixelMap.release()
+        }
+      } catch (e) {
+      }
+      try {
+        if (child.latexPixelMap !== undefined) {
+          child.latexPixelMap.release()
+        }
+      } catch (e) {
+      }
+      try {
+        if (child.linkIconPixelMap !== undefined) {
+          child.linkIconPixelMap.release()
+        }
+      } catch (e) {
+      }
+      child.releaseChildrenPixelMaps()
+    }
   }
 
   /**

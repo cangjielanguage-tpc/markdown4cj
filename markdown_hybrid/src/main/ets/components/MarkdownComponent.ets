@@ -100,7 +100,7 @@ export struct CJMarkdown {
         if (typeof newValue.width === 'number') {
           newWidth = newValue.width
         }
-        if (this.componentWidth != newWidth) {
+        if (this.componentWidth !== newWidth) {
           this.componentWidth = newWidth
         }
       })
@@ -549,7 +549,7 @@ export struct CJMarkdown {
       if (typeof newValue.width === 'number') {
         newWidth = newValue.width
       }
-      if (this.componentWidth != newWidth) {
+      if (this.componentWidth !== newWidth) {
         this.componentWidth = newWidth
       }
     })
@@ -653,7 +653,7 @@ export struct CJMarkdown {
           // nodeToNodeView失败时静默处理
         }
         this.collectImageAndVideoUrls(node)
-        if (nodeView.children.length == 0) {
+        if (nodeView.children.length === 0) {
           this.markdownDataSource.clear()
           this.appliedVersion = currentVersion
           return

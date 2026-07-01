@@ -64,7 +64,7 @@ export struct CodeBlockTextItem {
         .visibility(this.data.blocks.length === 0 ? Visibility.Visible : Visibility.None)
     }
     .alignItems(HorizontalAlign.Start)
-    .visibility(this.idx == this.idxSelect ? Visibility.Visible : Visibility.None)
+    .visibility(this.idx === this.idxSelect ? Visibility.Visible : Visibility.None)
   }
 }
 
@@ -86,6 +86,7 @@ export struct MarkdownCodeBlockList {
   @State blocksDataList: Array<CodeBlockData> = [] // 所有代码块的高亮数据（@Observed，子组件@ObjectLink原地监听）
   private isAlive: boolean = false // 组件是否存活
   private parseVersion: number = 0 // 解析版本号
+  private timerIds: number[] = [] // setTimeout定时器ID列表
 
   aboutToAppear(): void {
     this.isAlive = true
@@ -94,6 +95,10 @@ export struct MarkdownCodeBlockList {
 
   aboutToDisappear(): void {
     this.isAlive = false
+    for (let i = 0; i < this.timerIds.length; i++) {
+      clearTimeout(this.timerIds[i])
+    }
+    this.timerIds = []
   }
 
   build() {
@@ -152,14 +157,14 @@ export struct MarkdownCodeBlockList {
           this.strInfos,
           (item: string, idx: number) => {
             Text(item)
-              .fontColor(idx == this.idxSelect
+              .fontColor(idx === this.idxSelect
                 ? this.codeBlockTheme.codeBlockListTitleSelectTextColor
                 : this.codeBlockTheme.codeBlockListTitleUnselectTextColor)
-              .backgroundColor(idx == this.idxSelect
+              .backgroundColor(idx === this.idxSelect
                 ? this.codeBlockTheme.codeBlockListTitleSelectBackgroundColor
                 : this.codeBlockTheme.codeBlockListTitleUnselectBackgroundColor)
               .maxLines(1)
-              .fontSize(idx == this.idxSelect
+              .fontSize(idx === this.idxSelect
                 ? this.codeBlockTheme.codeBlockListTitleSelectTextSize
                 : this.codeBlockTheme.codeBlockListTitleTextSize)
               .padding({ left: 14, right: 14, top: 5, bottom: 5 })
@@ -278,6 +283,10 @@ export struct MarkdownCodeBlockList {
    * @param changedIndices 变化的索引数组
    */
   parseChangedCode(changedIndices: number[]): void {
+    // 始终递增版本号，确保数组收缩时未完成的回调被作废
+    this.parseVersion++
+    const currentVersion = this.parseVersion
+
     // 调整数组大小：保留已有CodeBlockData实例（保持@ObjectLink绑定），新增空的
     let dataList: Array<CodeBlockData> = []
     for (let i = 0; i < this.strText.length; i++) {
@@ -294,9 +303,9 @@ export struct MarkdownCodeBlockList {
     }
 
     if (this.codeBlockTheme.codeBlockParserSync) {
-      this.parseChangedCodeSync(changedIndices)
+      this.parseChangedCodeSync(changedIndices, currentVersion)
     } else {
-      this.parseChangedCodeAsync(changedIndices)
+      this.parseChangedCodeAsync(changedIndices, currentVersion)
     }
   }
 
@@ -306,10 +315,7 @@ export struct MarkdownCodeBlockList {
    *
    * @param changedIndices 变化的索引数组
    */
-  parseChangedCodeAsync(changedIndices: number[]): void {
-    this.parseVersion++
-    const currentVersion = this.parseVersion
-
+  parseChangedCodeAsync(changedIndices: number[], currentVersion: number): void {
     for (let i = 0; i < changedIndices.length; i++) {
       let idx = changedIndices[i]
       let codeText = this.strText[idx]
@@ -318,12 +324,15 @@ export struct MarkdownCodeBlockList {
       }
       let info: string | undefined = (this.strInfoText[idx] !== undefined && this.strInfoText[idx].length > 0)
         ? this.strInfoText[idx] : undefined
-      setTimeout(() => {
+      let timerId = setTimeout(() => {
         if (!this.isAlive || currentVersion < this.parseVersion) {
           return
         }
         codeStringToColorString(codeText, info, this.codeBlockTheme.codeBlockIsDark).then((prismRes: PrismRes) => {
           if (!this.isAlive || currentVersion < this.parseVersion) {
+            return
+          }
+          if (idx >= this.blocksDataList.length) {
             return
           }
           // 原地修改CodeBlockData属性，@ObjectLink触发子组件刷新（不重建）
@@ -332,6 +341,7 @@ export struct MarkdownCodeBlockList {
         }).catch(() => {
         })
       }, 0)
+      this.timerIds.push(timerId)
     }
   }
 
@@ -342,10 +352,7 @@ export struct MarkdownCodeBlockList {
    * @param changedIndices 变化的索引数组
    * @return Promise<void>，解析完成后resolve
    */
-  async parseChangedCodeSync(changedIndices: number[]): Promise<void> {
-    this.parseVersion++
-    const currentVersion = this.parseVersion
-
+  async parseChangedCodeSync(changedIndices: number[], currentVersion: number): Promise<void> {
     for (let i = 0; i < changedIndices.length; i++) {
       let idx = changedIndices[i]
       let codeText = this.strText[idx]
@@ -360,6 +367,9 @@ export struct MarkdownCodeBlockList {
         }
         let prismRes: PrismRes = await codeStringToColorString(codeText, info, this.codeBlockTheme.codeBlockIsDark)
         if (!this.isAlive || currentVersion < this.parseVersion) {
+          break
+        }
+        if (idx >= this.blocksDataList.length) {
           break
         }
         // 原地修改CodeBlockData属性，@ObjectLink触发子组件刷新（不重建）

@@ -121,7 +121,7 @@ export struct MarkdownTableRow {
    * 刷新数据
    */
   refreshData() {
-    if (this.node.children.length == 0) {
+    if (this.node.children.length === 0) {
       this.markdownDataSource.clear()
       return
     }

@@ -27,6 +27,7 @@ export struct MarkdownCodeSeparate {
   private chatTouch: boolean = false // 手指是否触摸
   private parseVersion: number = 0 // 解析版本号，每次解析递增
   private appliedVersion: number = 0 // 已应用的版本号，用于丢弃过期的异步解析结果
+  private timerId: number = -1 // setTimeout定时器ID
   private lineScroller: Scroller = new Scroller() // 行号list控制器
   private codeScroller: Scroller = new Scroller() // 代码list控制器
 
@@ -37,6 +38,10 @@ export struct MarkdownCodeSeparate {
 
   aboutToDisappear(): void {
     this.isAlive = false
+    if (this.timerId !== -1) {
+      clearTimeout(this.timerId)
+      this.timerId = -1
+    }
   }
 
   build() {
@@ -225,7 +230,10 @@ export struct MarkdownCodeSeparate {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
     let info: string | undefined = (this.info !== undefined && this.info.length > 0) ? this.info : undefined
-    setTimeout(() => {
+    this.timerId = setTimeout(() => {
+      if (!this.isAlive || currentVersion <= this.appliedVersion) {
+        return
+      }
       codeStringToColorString(this.codeText, info, this.codeBlockTheme.codeBlockIsDark).then((prismRes: PrismRes) => {
         if (!this.isAlive || currentVersion <= this.appliedVersion) {
           return

@@ -6,6 +6,7 @@
 export class LatexParseQueue {
   private static queue: Array<() => void> = []
   private static isRunning: boolean = false
+  private static isNotifyScheduled: boolean = false
 
   /**
    * 将LaTeX解析任务加入队列，若当前无任务在执行则立即开始
@@ -23,7 +24,12 @@ export class LatexParseQueue {
    * 通知当前任务已完成，触发下一个任务
    */
   static notifyDone(): void {
+    if (LatexParseQueue.isNotifyScheduled) {
+      return
+    }
+    LatexParseQueue.isNotifyScheduled = true
     setTimeout(() => {
+      LatexParseQueue.isNotifyScheduled = false
       LatexParseQueue.processNext()
     }, 0)
   }

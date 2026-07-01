@@ -180,7 +180,7 @@ export struct MarkdownHeading {
   headingColumn() {
     Column() {
       if (!this.imageTheme.isImageMixedLayout
-        && this.list.length == 1
+        && this.list.length === 1
         && (this.list[0].nodeType == "Image" || this.list[0].nodeType == "StyleImage" || this.list[0].nodeType == "ImageHtmlNode")) {
         MarkdownImageBlock({
           item: this.list[0],
@@ -504,12 +504,12 @@ export struct MarkdownHeading {
    */
   @Builder
   headingUnderline() {
-    if (this.node.headingLevel == 1) {
+    if (this.node.headingLevel === 1) {
       Divider()
         .color(this.headingTheme.heading1UnderlineColor)
         .strokeWidth(this.headingTheme.heading1UnderlineHeight)
         .margin({ top: this.headingTheme.heading1UnderlineSpacing })
-    } else if (this.node.headingLevel == 2) {
+    } else if (this.node.headingLevel === 2) {
       Divider()
         .color(this.headingTheme.heading2UnderlineColor)
         .strokeWidth(this.headingTheme.heading2UnderlineHeight)
@@ -522,7 +522,7 @@ export struct MarkdownHeading {
    */
   refreshData() {
     const children = this.node.children
-    if (children.length == 0) {
+    if (children.length === 0) {
       this.list = []
       return
     }

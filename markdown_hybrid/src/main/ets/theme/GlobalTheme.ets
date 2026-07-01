@@ -9,7 +9,7 @@ export class GlobalTheme implements MarkdownBaseTheme {
   stageContext: Context | undefined = undefined // Stage上下文
   uiAbilityContext: Context | undefined = undefined // UIAbility上下文
   isMarkdownParserSync: boolean = false // 是否使用同步Markdown解析器
-  enableParseThrottle: boolean = false // 是否启用解析节流，true为markdown控制节流，false为用户自行控制
+  enableParseThrottle: boolean = false // 是否启用解析节流，true为markdown控制节流，false为用户自行控制 - 默认false
   parseThrottleMs: number = 200 // 解析节流间隔（ms），enableParseThrottle为true时生效，0表示不节流
   isOnCopy: boolean = true // 是否启用复制功能
   blockMarginTop: Length = 0.0 // 区块上外边距

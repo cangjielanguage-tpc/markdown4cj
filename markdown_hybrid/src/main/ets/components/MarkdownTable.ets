@@ -165,7 +165,7 @@ export struct MarkdownTable {
    * 刷新数据
    */
   refreshData() {
-    if (this.node.children.length == 0) {
+    if (this.node.children.length === 0) {
       this.markdownDataSource.clear()
       this.tableBlockCellSize = 0
       this.cellWidthTracker.resize(0)
@@ -177,7 +177,7 @@ export struct MarkdownTable {
     if (this.node.children.length > 0) {
       cellSize = this.node.children[0].children.length
     }
-    if (cellSize != this.tableBlockCellSize) {
+    if (cellSize !== this.tableBlockCellSize) {
       this.tableBlockCellSize = cellSize
       this.cellWidthTracker.resize(cellSize)
     }

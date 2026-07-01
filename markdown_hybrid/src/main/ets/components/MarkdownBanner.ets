@@ -7,7 +7,7 @@ import { ImageTheme } from "../theme/ImageTheme"
  */
 @Component
 export struct MarkdownBanner {
-  @ObjectLink node: NodeView // 轮播图自身节点数据
+  @ObjectLink @Watch('refreshData') node: NodeView // 轮播图自身节点数据
   @ObjectLink bannerTheme: BannerTheme // 轮播图样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   imageCallback?: (url: string) => void // 图片点击事件
@@ -15,9 +15,14 @@ export struct MarkdownBanner {
   controller: SwiperController = new SwiperController() // 滑动控制器
 
   aboutToAppear(): void {
-    for (let index = 0; index < this.node.children.length; index++) {
-      this.bannerNodeViewList.push(this.node.children[index])
-    }
+    this.refreshData()
+  }
+
+  /**
+   * 刷新数据
+   */
+  refreshData(): void {
+    this.bannerNodeViewList = this.node.children.slice()
   }
 
   build() {

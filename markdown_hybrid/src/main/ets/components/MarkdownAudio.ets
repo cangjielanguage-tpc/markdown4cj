@@ -6,7 +6,7 @@ import { AudioTheme } from "../theme/AudioTheme"
  */
 @Component
 export struct MarkdownAudio {
-  @ObjectLink node: NodeView // 音频自身节点数据
+  @ObjectLink @Watch('refreshData') node: NodeView // 音频自身节点数据
   @ObjectLink audioTheme: AudioTheme // 音频样式
   audioCallback?: (url: string) => void // 音频的点击事件
   @State imageAudioUrl: string = "" // 音频链接
@@ -14,6 +14,13 @@ export struct MarkdownAudio {
   @State audioType: string = "" // 音频类型
 
   aboutToAppear(): void {
+    this.refreshData()
+  }
+
+  /**
+   * 刷新数据
+   */
+  refreshData(): void {
     this.imageAudioUrl = this.node.imageUrl ?? "" // 获取音频图片URL
     // 通过分割音频url获取音频类型和标题
     const path = this.imageAudioUrl.split('?')[0].split('#')[0]

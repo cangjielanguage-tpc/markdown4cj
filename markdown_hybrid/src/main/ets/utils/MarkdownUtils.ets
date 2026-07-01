@@ -99,10 +99,10 @@ export function listPrefixStr(index: number, listDepth: number, isOrderList: boo
   if (bulletListTheme.bulletListBulletIsCircle) {
     return `${solidCircleToUnicode()}`
   }
-  if (listDepth == 0) {
+  if (listDepth === 0) {
     return `${solidCircleToUnicode()}`
   }
-  if (listDepth == 1) {
+  if (listDepth === 1) {
     return `${hollowCircleToUnicode()}`
   }
   return `${solidSquareToUnicode()}`
@@ -187,12 +187,12 @@ export function imageWidthAndHeight(
   const componentImageWidthNew = (imageMaxWidth !== undefined)
     ? Math.min(vp2px(imageMaxWidth), componentImageWidth)
     : componentImageWidth
-  if (imageResWidth === 0 || imageResHeight === 0) {
+  if (imageResWidth <= 0 || imageResHeight <= 0) {
     return [0, 0]
   }
   const aspectRatio: number = imageResHeight / imageResWidth
   if (imageWidthPx !== undefined && imageHeightPx !== undefined) {
-    const aspectRatioNew: number = imageHeightPx / imageWidthPx
+    const aspectRatioNew: number = imageWidthPx > 0 ? imageHeightPx / imageWidthPx : aspectRatio
     let widthNew = (imageFixedRatioWidth !== undefined)
       ? componentImageWidth * imageFixedRatioWidth
       : Math.min(imageWidthPx, componentImageWidthNew) * imageMaximumWidth
@@ -203,10 +203,13 @@ export function imageWidthAndHeight(
       if (heightNew < imageMaxHeightPX) {
         width = widthNew
         height = heightNew
-      } else {
+      } else if (heightNew > 0) {
         const aspectRatioHeightNew = imageMaxHeightPX / heightNew
         width = widthNew * aspectRatioHeightNew
         height = imageMaxHeightPX
+      } else {
+        width = 0
+        height = 0
       }
     } else {
       width = widthNew
@@ -223,10 +226,13 @@ export function imageWidthAndHeight(
       if (heightNew < imageMaxHeightPX) {
         width = widthNew
         height = heightNew
-      } else {
+      } else if (heightNew > 0) {
         const aspectRatioHeightNew = imageMaxHeightPX / heightNew
         width = widthNew * aspectRatioHeightNew
         height = imageMaxHeightPX
+      } else {
+        width = 0
+        height = 0
       }
     } else {
       width = widthNew
@@ -243,10 +249,13 @@ export function imageWidthAndHeight(
       if (heightNew < imageMaxHeightPX) {
         width = widthNew
         height = heightNew
-      } else {
+      } else if (heightNew > 0) {
         const aspectRatioHeightNew = imageMaxHeightPX / heightNew
         width = widthNew * aspectRatioHeightNew
         height = imageMaxHeightPX
+      } else {
+        width = 0
+        height = 0
       }
     } else {
       width = widthNew
@@ -263,10 +272,13 @@ export function imageWidthAndHeight(
       if (heightNew < imageMaxHeightPX) {
         width = widthNew
         height = heightNew
-      } else {
+      } else if (heightNew > 0) {
         const aspectRatioHeightNew = imageMaxHeightPX / heightNew
         width = widthNew * aspectRatioHeightNew
         height = imageMaxHeightPX
+      } else {
+        width = 0
+        height = 0
       }
     } else {
       width = widthNew

@@ -86,6 +86,9 @@ export class MarkdownDataSource implements IDataSource {
    * @return 数据
    */
   public getData(index: number): NodeView {
+    if (index < 0 || index >= this.dataArray.length) {
+      return this.dataArray[0]
+    }
     return this.dataArray[index]
   }
 
@@ -126,6 +129,9 @@ export class MarkdownDataSource implements IDataSource {
    * @param index 一条数据
    */
   public deleteData(index: number): void {
+    if (index < 0 || index >= this.dataArray.length) {
+      return
+    }
     this.dataArray.splice(index, 1)
     this.notifyDataDeleteChange(index)
   }
@@ -137,6 +143,9 @@ export class MarkdownDataSource implements IDataSource {
    * @param data 一条数据
    */
   public replaceData(index: number, data: NodeView): void {
+    if (index < 0 || index >= this.dataArray.length) {
+      return
+    }
     this.dataArray[index] = data
     this.notifyDataChange(index)
   }

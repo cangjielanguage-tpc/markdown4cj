@@ -147,7 +147,7 @@ export struct MarkdownParagraph {
   paragraphColumn() {
     Column() {
       if (!this.imageTheme.isImageMixedLayout
-        && this.list.length == 1
+        && this.list.length === 1
         && (this.list[0].nodeType == "Image" || this.list[0].nodeType == "StyleImage" || this.list[0].nodeType == "ImageHtmlNode")) {
         MarkdownImageBlock({
           item: this.list[0],
@@ -460,7 +460,7 @@ export struct MarkdownParagraph {
    */
   refreshData() {
     const children = this.node.children
-    if (children.length == 0) {
+    if (children.length === 0) {
       this.list = []
       return
     }

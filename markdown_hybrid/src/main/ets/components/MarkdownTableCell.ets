@@ -94,25 +94,34 @@ export struct MarkdownTableCell {
   aboutToDisappear(): void {
     this.isAlive = false
     for (const item of this.list) {
-      if (item.latexPixelMap !== undefined) {
-        item.latexPixelMap.release()
-        item.latexPixelMap = undefined
-        item.latexImageData = undefined
-        item.latexImageWidth = 0
-        item.latexImageHeight = 0
-        item.latexIsLoading = false
+      try {
+        if (item.latexPixelMap !== undefined) {
+          item.latexPixelMap.release()
+          item.latexPixelMap = undefined
+          item.latexImageData = undefined
+          item.latexImageWidth = 0
+          item.latexImageHeight = 0
+          item.latexIsLoading = false
+        }
+      } catch (e) {
       }
-      if (item.imageReplacePixelMap !== undefined) {
-        item.imageReplacePixelMap.release()
-        item.imageReplacePixelMap = undefined
-        item.imageReplaceTried = false
+      try {
+        if (item.imageReplacePixelMap !== undefined) {
+          item.imageReplacePixelMap.release()
+          item.imageReplacePixelMap = undefined
+          item.imageReplaceTried = false
+        }
+      } catch (e) {
       }
-      if (item.linkIconPixelMap !== undefined) {
-        item.linkIconPixelMap.release()
-        item.linkIconPixelMap = undefined
-        item.linkIconTried = false
-        item.linkIconWidth = 0
-        item.linkIconHeight = 0
+      try {
+        if (item.linkIconPixelMap !== undefined) {
+          item.linkIconPixelMap.release()
+          item.linkIconPixelMap = undefined
+          item.linkIconTried = false
+          item.linkIconWidth = 0
+          item.linkIconHeight = 0
+        }
+      } catch (e) {
       }
     }
   }
@@ -459,14 +468,14 @@ export struct MarkdownTableCell {
    * 表格右部边框宽度
    */
   rightWidths(): Length {
-    return this.tableBlockCellCell == this.tableBlockCellCellSize - 1 ? 0 : this.tableTheme.tableBorderWidth
+    return this.tableBlockCellCell === this.tableBlockCellCellSize - 1 ? 0 : this.tableTheme.tableBorderWidth
   }
 
   /**
    * 表格顶部边框宽度
    */
   topWidths(): Length {
-    return this.tableBlockCellRow == 0 ? 0 : this.tableTheme.tableBorderWidth
+    return this.tableBlockCellRow === 0 ? 0 : this.tableTheme.tableBorderWidth
   }
 
   /**
@@ -481,7 +490,7 @@ export struct MarkdownTableCell {
    */
   refreshData() {
     const children = this.node.children
-    if (children.length == 0) {
+    if (children.length === 0) {
       this.list = []
       return
     }
@@ -591,10 +600,15 @@ export struct MarkdownTableCell {
               result.pixelMap.release()
               return
             }
+            if (child.linkIconPixelMap !== undefined) {
+              try { child.linkIconPixelMap.release() } catch (e) {}
+            }
             child.linkIconPixelMap = result.pixelMap
             child.linkIconWidth = result.width
             child.linkIconHeight = result.height
             this.list = [...this.list]
+          })
+          .catch(() => {
           })
       }
     }
@@ -606,16 +620,17 @@ export struct MarkdownTableCell {
    * @param item 节点视图
    */
   private loadLatexImage(item: NodeView): void {
-    const strLatexMath: string = this.latexStrCallback(item.nodeText)
-    const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
-    const textColor: number = resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
-    const bgColor: number = resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
-    const colorFormat: LatexMathColorFormat = this.latexMathTheme.latexMathColorFormat === 0
-      ? LatexMathColorFormat.COLOR_FORMAT_RGB_565
-      : LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-    const resPath: string | undefined = this.latexMathTheme.latexMathResPath
+    try {
+      const strLatexMath: string = this.latexStrCallback(item.nodeText)
+      const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
+      const textColor: number = resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
+      const bgColor: number = resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
+      const colorFormat: LatexMathColorFormat = this.latexMathTheme.latexMathColorFormat === 0
+        ? LatexMathColorFormat.COLOR_FORMAT_RGB_565
+        : LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+      const resPath: string | undefined = this.latexMathTheme.latexMathResPath
 
-    latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
+      latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
       .then((buffer: ArrayBuffer) => {
         if (!this.isAlive) {
           LatexParseQueue.notifyDone()
@@ -657,6 +672,10 @@ export struct MarkdownTableCell {
         item.latexIsLoading = false
         LatexParseQueue.notifyDone()
       })
+    } catch (e) {
+      item.latexIsLoading = false
+      LatexParseQueue.notifyDone()
+    }
   }
 
 }
