@@ -183,6 +183,23 @@ export class HeadingTheme implements MarkdownBaseTheme {
   }
 
   /**
+   * 设置标题的4个外边距：设置H1-H6级标题，所有等级的某一个外边距为统一值
+   *
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时所有外边距设为相同值
+   *                  入参 MarkdownMarginOptions 类型时设置H1-H6级的top（right, bottom, left）外边距为统一值
+   */
+  setMarginForAllHeadingEachLevel(options: Margin | Length): HeadingTheme {
+    this.setMarginForDesignateHeading(1, options)
+    this.setMarginForDesignateHeading(2, options)
+    this.setMarginForDesignateHeading(3, options)
+    this.setMarginForDesignateHeading(4, options)
+    this.setMarginForDesignateHeading(5, options)
+    this.setMarginForDesignateHeading(6, options)
+    return this
+  }
+
+  /**
    * 分别设置每个标题等级外边距
    *
    * @param marginList 外边距列表
@@ -284,6 +301,23 @@ export class HeadingTheme implements MarkdownBaseTheme {
       this.setPaddingForDesignateHeading(i, padding);
     }
     return this;
+  }
+
+  /**
+   * 设置标题的4个内边距：设置H1-H6级标题，所有等级的内边距为统一值，或某一个内边距6个级别为统一值
+   *
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时所有内边距设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时设置H1-H6级的top（right, bottom, left）内边距为统一值
+   */
+  setPaddingForAllHeadingEachLevel(options: Padding | Length): HeadingTheme {
+    this.setPaddingForDesignateHeading(1, options)
+    this.setPaddingForDesignateHeading(2, options)
+    this.setPaddingForDesignateHeading(3, options)
+    this.setPaddingForDesignateHeading(4, options)
+    this.setPaddingForDesignateHeading(5, options)
+    this.setPaddingForDesignateHeading(6, options)
+    return this
   }
 
   /**

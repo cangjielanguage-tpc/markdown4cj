@@ -1860,7 +1860,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setHeadingTopMargins(headingTopMargins: number): MarkdownTheme {
-    // this.headingTheme.setMarginForAllHeadingEachLevel({top: headingTopMargins})
+    this.headingTheme.setMarginForAllHeadingEachLevel({top: headingTopMargins})
     return this
   }
 
@@ -1873,7 +1873,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setHeadingBottomMargins(headingBottomMargins: number): MarkdownTheme {
-    // this.headingTheme.setMargiN({bottom: headingBottomMargins})
+    this.headingTheme.setMarginForAllHeadingEachLevel({bottom: headingBottomMargins})
     return this
   }
 
@@ -3424,10 +3424,11 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockIsDark
    * @return MarkdownTheme
    */
-  // setIsDark(isDark: boolean): MarkdownTheme {
-  // this.codeBlockTheme.setCodeBlockIsDark(isDark)
-  // return this
-  // }
+  setIsDark(isDark: boolean): MarkdownTheme {
+    this.codeBlockTheme.setCodeBlockIsDark(isDark)
+    return this
+  }
+
   /**
    * 设置删除线颜色
    *

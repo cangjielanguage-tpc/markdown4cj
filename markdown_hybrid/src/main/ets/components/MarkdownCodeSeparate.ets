@@ -221,10 +221,9 @@ export struct MarkdownCodeSeparate {
     }
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let isDarkula: boolean = this.codeBlockTheme.codeBlockIsDark ?? false
     let info: string | undefined = (this.info !== undefined && this.info.length > 0) ? this.info : undefined
     setTimeout(() => {
-      codeStringToColorString(this.codeText, info, isDarkula).then((prismRes: PrismRes) => {
+      codeStringToColorString(this.codeText, info, this.codeBlockTheme.codeBlockIsDark).then((prismRes: PrismRes) => {
         if (!this.isAlive || currentVersion <= this.appliedVersion) {
           return
         }
@@ -252,10 +251,9 @@ export struct MarkdownCodeSeparate {
     }
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let isDarkula: boolean = this.codeBlockTheme.codeBlockIsDark ?? false
     let info: string | undefined = (this.info !== undefined && this.info.length > 0) ? this.info : undefined
     try {
-      let prismRes: PrismRes = await codeStringToColorString(this.codeText, info, isDarkula)
+      let prismRes: PrismRes = await codeStringToColorString(this.codeText, info, this.codeBlockTheme.codeBlockIsDark)
       if (!this.isAlive || currentVersion <= this.appliedVersion) {
         return
       }

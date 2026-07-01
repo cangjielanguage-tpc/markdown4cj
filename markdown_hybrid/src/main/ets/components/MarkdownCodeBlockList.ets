@@ -305,7 +305,6 @@ export struct MarkdownCodeBlockList {
   parseChangedCodeAsync(changedIndices: number[]): void {
     this.parseVersion++
     const currentVersion = this.parseVersion
-    let isDarkula: boolean = this.codeBlockTheme.codeBlockIsDark ?? false
 
     for (let i = 0; i < changedIndices.length; i++) {
       let idx = changedIndices[i]
@@ -319,7 +318,7 @@ export struct MarkdownCodeBlockList {
         if (!this.isAlive || currentVersion < this.parseVersion) {
           return
         }
-        codeStringToColorString(codeText, info, isDarkula).then((prismRes: PrismRes) => {
+        codeStringToColorString(codeText, info, this.codeBlockTheme.codeBlockIsDark).then((prismRes: PrismRes) => {
           if (!this.isAlive || currentVersion < this.parseVersion) {
             return
           }
@@ -339,7 +338,6 @@ export struct MarkdownCodeBlockList {
   async parseChangedCodeSync(changedIndices: number[]): Promise<void> {
     this.parseVersion++
     const currentVersion = this.parseVersion
-    let isDarkula: boolean = this.codeBlockTheme.codeBlockIsDark ?? false
 
     for (let i = 0; i < changedIndices.length; i++) {
       let idx = changedIndices[i]
@@ -353,7 +351,7 @@ export struct MarkdownCodeBlockList {
         if (!this.isAlive || currentVersion < this.parseVersion) {
           return
         }
-        let prismRes: PrismRes = await codeStringToColorString(codeText, info, isDarkula)
+        let prismRes: PrismRes = await codeStringToColorString(codeText, info, this.codeBlockTheme.codeBlockIsDark)
         if (!this.isAlive || currentVersion < this.parseVersion) {
           return
         }

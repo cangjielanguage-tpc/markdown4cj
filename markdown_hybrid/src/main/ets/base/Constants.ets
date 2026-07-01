@@ -40,6 +40,8 @@ export const COLOR_FF404040: ResourceColor = 0xFF404040
 
 export const COLOR_FF2D2D2D: ResourceColor = 0xFF2D2D2D
 
+export const COLOR_FFA9B7C6: ResourceColor = 0xFFA9B7C6
+
 export const COLOR_FF1E1E1E: ResourceColor = 0xFF1E1E1E
 
 export const COLOR_FF252526: ResourceColor = 0xFF252526

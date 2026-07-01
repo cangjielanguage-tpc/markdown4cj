@@ -8,7 +8,9 @@ import {
   isPadding,
   isBorderRadiuses,
   COLOR_FFF5F2F0,
-  COLOR_DD000000
+  COLOR_DD000000,
+  COLOR_FF2D2D2D,
+  COLOR_FFA9B7C6
 } from "../base/Constants";
 
 /**
@@ -16,7 +18,7 @@ import {
  */
 @Observed
 export class CodeBlockTheme implements MarkdownBaseTheme {
-  codeBlockIsDark?: boolean = undefined; // 代码深浅色模式
+  codeBlockIsDark: boolean = false // 代码深浅色模式
   codeBlockIsCodeFormat: boolean = false // 是否为代码格式
   codeBlockUseTab: boolean = false // 是否使用Tab缩进
   codeBlockIndentWidth: Length = 4 // 缩进宽度
@@ -110,7 +112,14 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockIsDark(isDark: boolean): CodeBlockTheme {
-    this.codeBlockIsDark = isDark;
+    if (isDark) {
+      this.codeBlockBackgroundColor = COLOR_FF2D2D2D
+      this.codeBlockTextFontColor = COLOR_FFA9B7C6
+    } else {
+      this.codeBlockBackgroundColor = COLOR_FFF5F2F0
+      this.codeBlockTextFontColor = COLOR_DD000000
+    }
+    this.codeBlockIsDark = isDark
     return this;
   }
 
