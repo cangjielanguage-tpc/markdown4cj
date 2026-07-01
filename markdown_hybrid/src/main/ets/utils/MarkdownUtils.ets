@@ -83,10 +83,10 @@ export function formatDurationToTime(totalSeconds: number): string {
 /**
  * 有序/无序前缀文本内容
  *
- * @param item NodeView
+ * @param index 序号
  * @param listDepth 列表深度
- * @param isBullet 是否是无序列表
- * @param markdownTheme markdown样式
+ * @param isOrderList 是否是有序列表
+ * @param bulletListTheme 无序列表样式
  * @return 前缀文本内容
  */
 export function listPrefixStr(index: number, listDepth: number, isOrderList: boolean,
@@ -141,9 +141,10 @@ export function solidSquareToUnicode(): string {
 }
 
 /**
+ * 处理图片URL，若为相对路径（./开头）则转换为rawfile资源
  *
- *
- * @return
+ * @param url 图片URL，可选
+ * @return ResourceStr资源或undefined
  */
 export function imageUrlHandle(url?: string): ResourceStr | undefined {
   if (url?.startsWith("./")) {

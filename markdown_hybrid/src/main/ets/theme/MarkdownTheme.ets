@@ -1289,7 +1289,7 @@ export class MarkdownTheme {
    * @param blockOrderedAndBulletTopAndBottomMargins 有序列表、无序列表、任务列表子模块上下间距 - 默认0.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListChildSpacing
-   *             orderedListThemeTheme#setBulletListChildSpacing
+   *             orderedListTheme#setBulletListChildSpacing
    * @return MarkdownTheme
    */
   setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: number): MarkdownTheme {
@@ -1304,7 +1304,7 @@ export class MarkdownTheme {
    * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMargin
-   *             orderedListThemeTheme#setBulletListMargin
+   *             orderedListTheme#setBulletListMargin
    * @return MarkdownTheme
    */
   setBlockLeftMargin(blockLeftMargin: number): MarkdownTheme {
@@ -1319,7 +1319,7 @@ export class MarkdownTheme {
    * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMargin
-   *             orderedListThemeTheme#setBulletListMargin
+   *             orderedListTheme#setBulletListMargin
    * @return MarkdownTheme
    */
   setBlockRightMargin(blockRightMargin: number): MarkdownTheme {
@@ -1442,7 +1442,7 @@ export class MarkdownTheme {
    * @param taskListItemLength 任务列表选择框宽高 - 默认15.0vp
    * @deprecated since 1.4.0
    * @useinstead BulletListTheme#setBulletListCheckboxWidth
-   *             bulletListThemeTheme#setBulletListCheckboxHeight
+   *             bulletListTheme#setBulletListCheckboxHeight
    * @return MarkdownTheme
    */
   setTaskListItemLength(taskListItemLength: number): MarkdownTheme {
@@ -1587,7 +1587,7 @@ export class MarkdownTheme {
    * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenTextIsShow
-   *             codeBlockThemeTheme#setCodeBlockCopyTextIsShow
+   *             codeBlockTheme#setCodeBlockCopyTextIsShow
    * @return MarkdownTheme
    */
   setCodeBlockIconTextHide(codeBlockIconTextHide: boolean): MarkdownTheme {
@@ -1706,9 +1706,9 @@ export class MarkdownTheme {
    * @param iconWidthAndHeight 代码块代码全屏、代码复制按钮宽高 - 默认24.0vp
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenIconHeight
-   *             codeBlockThemeTheme#setCodeBlockFullScreenIconWidth
-   *             codeBlockThemeTheme#setCodeBlockCopyIconHeight
-   *             codeBlockThemeTheme#setCodeBlockCopyIconWidth
+   *             codeBlockTheme#setCodeBlockFullScreenIconWidth
+   *             codeBlockTheme#setCodeBlockCopyIconHeight
+   *             codeBlockTheme#setCodeBlockCopyIconWidth
    * @return MarkdownTheme
    */
   setIconWidthAndHeight(iconWidthAndHeight: Length): MarkdownTheme {
@@ -2693,7 +2693,7 @@ export class MarkdownTheme {
    * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonIconWidth
-   *             videoThemeTheme#setVideoReleaseButtonIconHeight
+   *             videoTheme#setVideoReleaseButtonIconHeight
    * @return MarkdownTheme
    */
   setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Length): MarkdownTheme {
@@ -2799,7 +2799,7 @@ export class MarkdownTheme {
    * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonIconWidth
-   *             videoThemeTheme#setVideoDownloadButtonIconHeight
+   *             videoTheme#setVideoDownloadButtonIconHeight
    * @return MarkdownTheme
    */
   setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Length): MarkdownTheme {
@@ -3074,7 +3074,7 @@ export class MarkdownTheme {
    * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonIconWidth
-   *             imageThemeTheme#setImageDownloadButtonIconHeight
+   *             imageTheme#setImageDownloadButtonIconHeight
    * @return MarkdownTheme
    */
   setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: Length): MarkdownTheme {
@@ -3271,7 +3271,7 @@ export class MarkdownTheme {
    * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentTextLineHeight
-   *             tableThemeTheme#setTableTitleTextLineHeight
+   *             tableTheme#setTableTitleTextLineHeight
    * @return MarkdownTheme
    */
   setTableTextLineHeight(tableTextLineHeight: number): MarkdownTheme {

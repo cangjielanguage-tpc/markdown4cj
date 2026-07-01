@@ -59,7 +59,7 @@ export struct MarkdownFootnote {
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
-  @State isQuote: boolean = false // 是否在快引用中
+  @State isQuote: boolean = false // 是否在块引用中
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载

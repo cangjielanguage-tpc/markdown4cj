@@ -12,7 +12,7 @@ export struct MarkdownVideo {
   videoCallback?: (url: string) => void // 视频点击事件
   videoImageCallback?: (url: string, callback: (url: string, ratio: number, time: number) => void) => void // 视频的图片替换回调
   videoReleaseCallback?: (url: string) => void // 视频发布的点击事件
-  videoDownloadCallback?: (url: string) => void // 视频下载点击事件t
+  videoDownloadCallback?: (url: string) => void // 视频下载点击事件
   @State imageVideoUrl: string = "" // 视频链接
   @State imageUrl: string = "" // 回调得到的图片
   @State videoRatio: number = 16.0 / 9.0 // 图片宽高比
