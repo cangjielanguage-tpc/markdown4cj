@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { itemListComponent, titleComponent } from '../component/BaseComponent'
 import { font } from '@kit.ArkUI'
 
@@ -179,9 +176,41 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "17、加粗",
+              0xFFFF0000,
+              "pages/BoldPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "18、斜体",
+              0xFFFF0000,
+              "pages/ItalicPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "19、删除线",
               0xFFFF0000,
               "pages/StrikethroughPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "20、图片style",
+              0xFFFF0000,
+              "pages/ImageStylePage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "21、Toc目录",
+              0xFFFF0000,
+              "pages/TocPage"
             )
           }
 
@@ -250,9 +279,9 @@ struct IndexPage {
           }
           ListItem() {
             itemListComponent(
-              "30、card",
+              "30、Banner",
               0xFFFF0000,
-              "pages/CardPage"
+              "pages/BannerPage"
             )
           }
           ListItem() {
@@ -267,6 +296,42 @@ struct IndexPage {
               "32、AI聊天懒加载",
               0xFFFF0000,
               "pages/AIChatPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "33、文本全量切换",
+              0xFFFF0000,
+              "pages/SwitchDataPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "34、超大数据",
+              0xFFFF0000,
+              "pages/BigDataPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "35、高亮文本",
+              0xFFFF0000,
+              "pages/HighlightPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "36、card",
+              0xFFFF0000,
+              "pages/CardPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "【已废弃接口】",
+              0xFFFF0000,
+              "pages/deprecated/DeprecatedIndexPage"
             )
           }
         }

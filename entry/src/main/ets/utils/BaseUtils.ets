@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { util } from "@kit.ArkTS";
+import hilog from "@ohos.hilog";
 
 /**
  * 文本颜色需要反转颜色，显示更清楚
@@ -85,7 +83,7 @@ export function numberToColorString(color: number | undefined): string {
     case 0xFF333333:
       return "深灰"
     case 0xFF808080:
-      return "中灰"
+      return "灰"
     case 0xFFCCCCCC:
       return "浅灰"
     case 0xFF4CAF50:
@@ -119,9 +117,9 @@ export function numberToColorString(color: number | undefined): string {
     case 0xFF8B0000:
       return "深红"
     case 0x00000000:
-      return "透明色"
+      return "透明"
     case undefined:
-      return "undefined"
+      return "null"
   }
   return ""
 }
@@ -167,6 +165,150 @@ export function styleToString(style: TextDecorationStyle): string {
     case TextDecorationStyle.WAVY:
       return "波浪线"
     default :
-      return "undefined"
+      return "null"
+  }
+}
+
+/**
+ * 数学公式生成图片格式转文本
+ */
+// export function enumToString(e: LatexMathColorFormat): string {
+//   switch (e) {
+//     case LatexMathColorFormat.COLOR_FORMAT_RGB_565:
+//       return "COLOR_FORMAT_RGB_565"
+//     case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888:
+//       return "COLOR_FORMAT_BGRA_8888"
+//     default :
+//       return "null"
+//   }
+// }
+
+/**
+ * BorderStyle样式转文本
+ */
+export function borderStyleToString(style: BorderStyle): string {
+  switch (style) {
+    case BorderStyle.Solid:
+      return "实线"
+    case BorderStyle.Dashed:
+      return "虚线"
+    case BorderStyle.Dotted:
+      return "点线"
+    default:
+      return "null"
+  }
+}
+
+/**
+ * FontStyle样式转文本
+ */
+export function fontStyleToString(style: FontStyle): string {
+  switch (style) {
+    case FontStyle.Normal:
+      return "正常"
+    case FontStyle.Italic:
+      return "斜体"
+    default:
+      return "正常"
+  }
+}
+
+/**
+ * FontWeight样式转文本
+ */
+export function fontWeightToString(weight: FontWeight): string {
+  switch (weight) {
+    case FontWeight.Normal:
+      return "正常"
+    case FontWeight.Lighter:
+      return "较细"
+    case FontWeight.Medium:
+      return "适中"
+    case FontWeight.Regular:
+      return "稍粗"
+    case FontWeight.Bold:
+      return "加粗"
+    case FontWeight.Bolder:
+      return "非常粗"
+    default:
+      return "正常"
+  }
+}
+
+/**
+ * TextDecorationType样式转文本
+ */
+export function decorationTypeToString(decorationType: TextDecorationType): string {
+  switch (decorationType) {
+    case TextDecorationType.None:
+      return "无"
+    case TextDecorationType.Underline:
+      return "下划线"
+    case TextDecorationType.LineThrough:
+      return "删除线"
+    case TextDecorationType.Overline:
+      return "上划线"
+    default:
+      return "无"
+  }
+}
+
+/**
+ * ImageFit样式转文本
+ */
+export function imageFitToString(fitType: ImageFit): string {
+  switch (fitType) {
+    case ImageFit.Contain:
+      return "Contain"
+    case ImageFit.Cover:
+      return "Cover"
+    case ImageFit.Fill:
+      return "Fill"
+    case ImageFit.ScaleDown:
+      return "ScaleDown"
+    case ImageFit.None:
+      return "None"
+    default:
+      return "Contain"
+  }
+}
+
+/**
+ * BarState样式转文本
+ */
+export function barStateToString(state: BarState): string {
+  switch (state) {
+    case BarState.Off:
+      return "Off"
+    case BarState.On:
+      return "On"
+    case BarState.Auto:
+      return "Auto"
+    default:
+      return "Off"
+  }
+}
+
+/**
+ * 分割线端点样式转文本
+ */
+export function lineCapStyleToString(state: LineCapStyle): string {
+  switch (state) {
+    case LineCapStyle.Butt:
+      return "平行线"
+    case LineCapStyle.Round:
+      return "半圆"
+    case LineCapStyle.Square:
+      return "延伸半圆"
+    default:
+      return "平行线"
+  }
+}
+
+export function resToString(item: Resource | undefined): string {
+  if (item !== undefined) {
+    return item.id.toString()
+  } else {
+    return "undefined"
   }
 }

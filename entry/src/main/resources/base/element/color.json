@@ -3,6 +3,14 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
+    },
+    {
+      "name": "base_tab_component_background",
+      "value": "#FFE0E0E0"
+    },
+    {
+      "name": "page_background",
+      "value": "#FFEAEAEA"
     }
   ]
 }

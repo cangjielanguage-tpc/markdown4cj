@@ -60,9 +60,8 @@ struct DemoPage {
       Column() {
         CJMarkdown({
           content: this.message,
-          config: new MarkdownConfiguration(),
-        // ,
-          plugin: this.setPlugin()
+          plugin: this.setPlugin(),
+          config: this.setMarkdownConfig()
         })
       }
     }
@@ -75,6 +74,11 @@ struct DemoPage {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     plugin.setIsHtmlPlugin(true) // HTML插件
     return plugin
+  }
+
+  setMarkdownConfig(): MarkdownConfiguration {
+    let config = new MarkdownConfiguration()
+    return config
   }
 }
 

@@ -1,7 +1,4 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
-import { CJMarkdown, MarkdownConfiguration} from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin} from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -61,12 +58,18 @@ struct DemoPage {
     'Heading level 2\n' +
     '-\n';
 
+  @State // markdown配置
+  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
+  @State // markdown插件
+  markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+
   build() {
     Column() {
       Column() {
         CJMarkdown({
           content: this.message,
-          config: new MarkdownConfiguration()
+          config: this.markdownConfiguration,
+          plugin: this.markdownPlugin
         })
       }
     }

@@ -6,8 +6,15 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
+  textDecorationStyleListGeneralData,
+  textLineHeightListGeneralData,
   textNumberListGeneralData,
+  textSizeListGeneralData,
+  textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { StrikethroughData } from '../model/StrikethroughData'
@@ -16,148 +23,116 @@ import { StrikethroughData } from '../model/StrikethroughData'
 @Component
 struct StrikethroughPage {
   // ---------------- 通用
-  /**
-   * 滑动控制器
-   */
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * rawfile路径
-   */
-  rawFilePath: string = "019_删除线"
-  /**
-   * rawfile文件夹列表
-   */
-  @State
+  // rawfile路径
+  rawFilePath: string = "019_Strikethrough"
+  @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
-  /**
-   * 是否全量加载Markdown文本列表
-   */
+  // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本列表
-   */
+  // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间列表
-   */
+  // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  /**
-   * 增量每次增量文本数量列表
-   */
+  // 增量每次增量文本数量列表
   textNumberList: Array<number> = textNumberListGeneralData
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本列表
-   */
+  // 是否同步解析Markdown文本列表
   isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果列表
-   */
+  // 是否打开长按复制粘贴效果列表
   isOnCopyList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距列表
-   */
-  blockFirstTopMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距列表
-   */
-  blockLastBottomMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距列表
-   */
-  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动列表
-   */
+  // markdown全局上外边距列表
+  blockMarginTopList: Array<number> = marginListGeneralData
+  @State // markdown全局上外边距
+  blockMarginTop: number = 0
+  // markdown全局右外边距列表
+  blockMarginRightList: Array<number> = marginListGeneralData
+  @State // markdown全局右外边距
+  blockMarginRight: number = 0
+  // markdown全局下外边距列表
+  blockMarginBottomList: Array<number> = marginListGeneralData
+  @State // markdown全局下外边距
+  blockMarginBottom: number = 0
+  // markdown全局左外边距列表
+  blockMarginLeftList: Array<number> = marginListGeneralData
+  @State // markdown全局左外边距
+  blockMarginLeft: number = 0
+  // 模块间上下间距列表
+  markdownBlockSpacingList: Array<number> = marginListGeneralData
+  @State // 模块间上下间距
+  markdownBlockSpacing: number = 8
+  // 软换行是否换行列表
+  isLineBreakList: Array<boolean> = booleanListGeneralData
+  @State // 软换行是否换行
+  isLineBreak: boolean = false
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State // 背景颜色
+  globalBackgroundColor: number | undefined = undefined
+  // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试列表
-   */
+  // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
-  /**
-   * 配置数据内容
-   */
-  @State
-  strikethroughData: StrikethroughData = new StrikethroughData()
-
   // ---------------- 专有
-  /**
-   * 删除线颜色列表
-   */
-  strikethroughColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 删除线颜色
-   */
-  @State
-  strikethroughColor: number | undefined = undefined
-  /**
-   * 删除线样式
-   */
-  @State
-  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
-  /**
-   * 删除线样式
-   */
-  strikethroughStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DOTTED, TextDecorationStyle.DASHED, TextDecorationStyle.WAVY]
+  // 删除线文本颜色列表
+  strikethroughTextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State // 删除线文本颜色
+  strikethroughTextFontColor: number | undefined = undefined
+  // 删除线文本尺寸列表
+  strikethroughTextFontSizeList: Array<number> = textSizeListGeneralData
+  @State // 删除线文本尺寸
+  strikethroughTextFontSize: number | undefined = undefined
+  // 删除线文本字体样式列表
+  strikethroughTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
+  @State // 删除线文本字体样式
+  strikethroughTextFontStyle: FontStyle | undefined = undefined
+  // 删除线文本字体粗细列表
+  strikethroughTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  @State // 删除线文本字体粗细
+  strikethroughTextFontWeight: FontWeight | undefined = undefined
+  // 删除线文本字体列表
+  strikethroughTextFontFamilyList: Array<string> = textTypefaceListGeneralData
+  @State // 删除线文本字体
+  strikethroughTextFontFamily: string | undefined = undefined
+  // 删除线文本行高列表
+  strikethroughTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State // 删除线文本行高
+  strikethroughTextLineHeight: number | undefined = undefined
+  // 删除线文本字符间距列表
+  strikethroughTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
+  @State // 删除线文本字符间距
+  strikethroughTextLetterSpacing: number | undefined = undefined
+  // 删除线文本装饰线颜色列表
+  strikethroughTextDecorationColorList: Array<number | undefined> = colorListGeneralData
+  @State // 删除线文本装饰线颜色
+  strikethroughTextDecorationColor: number | undefined = undefined
+  // 删除线文本装饰线样式列表
+  strikethroughTextDecorationStyleList: Array<TextDecorationStyle> = textDecorationStyleListGeneralData
+  @State // 删除线文本装饰线样式
+  strikethroughTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  @State // 配置数据内容
+  strikethroughData: StrikethroughData = new StrikethroughData()
+  heightMD: number = 30 * 1 // 乘以行数
+  @State isExpanded1: boolean = false // 控制展开/折叠状态
+  @State isExpanded2: boolean = false // 控制展开/折叠状态
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -171,131 +146,286 @@ struct StrikethroughPage {
         true,
         this.safeTop
       )
+
+      // md文档展示部分
+      Column() {
+        GridRow({
+          columns: 3,
+          gutter: { x: 5, y: 5 },
+          breakpoints: {
+            value: ['400vp', '600vp', '800vp'],
+            reference: BreakpointsReference.ComponentSize
+          },
+          direction: GridRowDirection.Row
+        }) {
+          ForEach(this.folderList, (item: string, index: number) => {
+            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor(0xFFFFFFFF)
+                .backgroundColor(0xFF2196F3)
+                .height(25).width('100%')
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                  this.strikethroughData._isFull = this.isFull
+                  this.strikethroughData._incrementalAnalysis = this.incrementalAnalysis
+                  this.strikethroughData._time = this.time
+                  this.strikethroughData._textNumber = this.textNumber
+                  this.strikethroughData._isMarkdownParserSync = this.isMarkdownParserSync
+                  this.strikethroughData._isOnCopy = this.isOnCopy
+                  this.strikethroughData._blockMarginTop = this.blockMarginTop
+                  this.strikethroughData._blockMarginRight = this.blockMarginRight
+                  this.strikethroughData._blockMarginBottom = this.blockMarginBottom
+                  this.strikethroughData._blockMarginLeft = this.blockMarginLeft
+                  this.strikethroughData._markdownBlockSpacing = this.markdownBlockSpacing
+                  this.strikethroughData._isLineBreak = this.isLineBreak
+                  this.strikethroughData._backgroundColor = this.globalBackgroundColor
+                  this.strikethroughData._openGestureSwipe = this.openGestureSwipe
+                  this.strikethroughData._openGestureSwipeTest = this.openGestureSwipeTest
+                  this.strikethroughData._pagePath = `${this.rawFilePath}/${item}`
+
+                  // ---------- 专有
+                  this.strikethroughData.strikethroughTextFontColor = this.strikethroughTextFontColor
+                  this.strikethroughData.strikethroughTextFontSize = this.strikethroughTextFontSize
+                  this.strikethroughData.strikethroughTextFontStyle = this.strikethroughTextFontStyle
+                  this.strikethroughData.strikethroughTextFontWeight = this.strikethroughTextFontWeight
+                  this.strikethroughData.strikethroughTextFontFamily = this.strikethroughTextFontFamily
+                  this.strikethroughData.strikethroughTextLineHeight = this.strikethroughTextLineHeight
+                  this.strikethroughData.strikethroughTextLetterSpacing = this.strikethroughTextLetterSpacing
+                  this.strikethroughData.strikethroughTextDecorationColor = this.strikethroughTextDecorationColor
+                  this.strikethroughData.strikethroughTextDecorationStyle = this.strikethroughTextDecorationStyle
+                  // ---------- 跳转到详情
+                  router.pushUrl({ url: "pages/StrikethroughDetailsPage", params: this.strikethroughData })
+                })
+            }
+          })
+        }.width('100%').height('100%')
+      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+
       Scroll() {
         Column() {
-          // ------------ 通用
-          BaseTabComponent({
-            titleStr: "是否全量加载Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isFullList,
-            allData: this.isFull
-          })
-          BaseTabComponent({
-            titleStr: "是否增量解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.incrementalAnalysisList,
-            allData: this.incrementalAnalysis
-          })
-          BaseTabComponent({
-            titleStr: "增量加载每次间隔时间 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.timeList,
-            allData: this.time
-          })
-          BaseTabComponent({
-            titleStr: "增量每次增量文本数量 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.textNumberList,
-            allData: this.textNumber
-          })
-          BaseTabComponent({
-            titleStr: "是否同步解析Markdown文本 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isMarkdownParserSyncList,
-            allData: this.isMarkdownParserSync
-          })
-          BaseTabComponent({
-            titleStr: "是否打开长按复制粘贴效果 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.isOnCopyList,
-            allData: this.isOnCopy
-          })
-          BaseTabComponent({
-            titleStr: "Markdown文本第一个模块上边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockFirstTopMarginList,
-            allData: this.blockFirstTopMargin
-          })
-          BaseTabComponent({
-            titleStr: "Markdown文本最后一个模块下边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockLastBottomMarginList,
-            allData: this.blockLastBottomMargin
-          })
-          BaseTabComponent({
-            titleStr: "Markdown文本模块间上下间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockTopAndBottomMarginsList,
-            allData: this.blockTopAndBottomMargins
-          })
-          BaseTabComponent({
-            titleStr: "是否开启响应滑动测试 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeTestList,
-            allData: this.openGestureSwipeTest
-          })
-          BaseTabComponent({
-            titleStr: "是否允许markdown控件自身响应滑动 - ",
-            typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.openGestureSwipeList,
-            allData: this.openGestureSwipe
-          })
-
-          // ---------------- 专有
-          BaseTabComponent({
-            titleStr: "HTML下划线颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.strikethroughColorList,
-            allData: this.strikethroughColor
-          })
-          BaseTabComponent({
-            titleStr: "HTML下划线样式 - ",
-            typeEnum: TypeEnum.IS_DECORATION_STYLE,
-            allListData: this.strikethroughStyleList,
-            allData: this.strikethroughStyle
-          })
-
-          List() {
-            ForEach(this.folderList, (item: string, index: number) => {
-              ListItem() {
-                Button(`${index + 1}、${item}`)
-                  .height(40)
-                  .width('80%')
-                  .type(ButtonType.Capsule)
-                  .fontColor(0xFFFFFFFF)
-                  .backgroundColor(0xFF317AFF)
-                  .margin({ top: 5, bottom: 5 })
-                  .align(Alignment.Center)
-                  .fontSize(16)
-                  .onClick(() => {
-                    // ---------- 通用
-                    this.strikethroughData.isFull = this.isFull
-                    this.strikethroughData.incrementalAnalysis = this.incrementalAnalysis
-                    this.strikethroughData.time = this.time
-                    this.strikethroughData.textNumber = this.textNumber
-                    this.strikethroughData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.strikethroughData.isOnCopy = this.isOnCopy
-                    this.strikethroughData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.strikethroughData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.strikethroughData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                    this.strikethroughData.openGestureSwipe = this.openGestureSwipe
-                    this.strikethroughData.openGestureSwipeTest = this.openGestureSwipeTest
-                    this.strikethroughData.pagePath = `${this.rawFilePath}/${item}`
-                    // ---------- 专有
-                    this.strikethroughData.strikethroughColor = this.strikethroughColor
-                    this.strikethroughData.strikethroughStyle = this.strikethroughStyle
-                    // ---------- 跳转到详情
-                    router.pushUrl({ url: "pages/StrikethroughDetailsPage", params: this.strikethroughData })
-                  })
-              }
+          Column() {
+            Row() {
+              Text("通用样式配置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded1 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded1 = !this.isExpanded1
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded1 = !this.isExpanded1
             })
+
+            if (this.isExpanded1) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否全量加载Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isFullList,
+                  allData: this.isFull
+                })
+                BaseTabComponent({
+                  titleStr: "是否增量解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.incrementalAnalysisList,
+                  allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "增量加载每次间隔时间 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.timeList,
+                  allData: this.time
+                })
+                BaseTabComponent({
+                  titleStr: "增量每次增量文本数量 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.textNumberList,
+                  allData: this.textNumber
+                })
+                BaseTabComponent({
+                  titleStr: "是否同步解析Markdown文本 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isMarkdownParserSyncList,
+                  allData: this.isMarkdownParserSync
+                })
+                BaseTabComponent({
+                  titleStr: "是否打开长按复制粘贴效果 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isOnCopyList,
+                  allData: this.isOnCopy
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局上外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginTopList,
+                  allData: this.blockMarginTop
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginRightList,
+                  allData: this.blockMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局下外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginBottomList,
+                  allData: this.blockMarginBottom
+                })
+                BaseTabComponent({
+                  titleStr: "markdown全局左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.blockMarginLeftList,
+                  allData: this.blockMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "模块间上下间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.markdownBlockSpacingList,
+                  allData: this.markdownBlockSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "软换行是否换行 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isLineBreakList,
+                  allData: this.isLineBreak
+                })
+                BaseTabComponent({
+                  titleStr: "背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.globalBackgroundColorList,
+                  allData: this.globalBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "是否开启响应滑动测试 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeTestList,
+                  allData: this.openGestureSwipeTest
+                })
+                BaseTabComponent({
+                  titleStr: "是否允许markdown控件自身响应滑动 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.openGestureSwipeList,
+                  allData: this.openGestureSwipe
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
           }
-          .alignListItem(ListItemAlign.Center)
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          Column() {
+            Row() {
+              Text("专有样式配置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded2 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded2 = !this.isExpanded2
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded2 = !this.isExpanded2
+            })
+
+            if (this.isExpanded2) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "删除线文本颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.strikethroughTextFontColorList,
+                  allData: this.strikethroughTextFontColor
+                })
+                BaseTabComponent({
+                  titleStr: "删除线文本尺寸 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.strikethroughTextFontSizeList,
+                  allData: this.strikethroughTextFontSize
+                })
+                BaseTabComponent({
+                  titleStr: "删除线文本字体样式 - ",
+                  typeEnum: TypeEnum.IS_FONT_STYLE,
+                  allListData: this.strikethroughTextFontStyleList,
+                  allData: this.strikethroughTextFontStyle
+                })
+                BaseTabComponent({
+                  titleStr: "删除线文本字体粗细 - ",
+                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
+                  allListData: this.strikethroughTextFontWeightList,
+                  allData: this.strikethroughTextFontWeight
+                })
+                BaseTabComponent({
+                  titleStr: "删除线文本字体 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.strikethroughTextFontFamilyList,
+                  allData: this.strikethroughTextFontFamily
+                })
+                BaseTabComponent({
+                  titleStr: "删除线文本行高 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.strikethroughTextLineHeightList,
+                  allData: this.strikethroughTextLineHeight
+                })
+                BaseTabComponent({
+                  titleStr: "删除线文本字符间距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.strikethroughTextLetterSpacingList,
+                  allData: this.strikethroughTextLetterSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "删除线文本装饰线颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.strikethroughTextDecorationColorList,
+                  allData: this.strikethroughTextDecorationColor
+                })
+                BaseTabComponent({
+                  titleStr: "删除线文本装饰线样式 - ",
+                  typeEnum: TypeEnum.IS_DECORATION_STYLE,
+                  allListData: this.strikethroughTextDecorationStyleList,
+                  allData: this.strikethroughTextDecorationStyle
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
         }
-        .padding({ bottom: 100 })
+        .padding({ top: 10, bottom: 100 })
       }
     }
     .backgroundColor(0xFFEAEAEA)
-    .height("100%")
+    .height("90%")
   }
 }

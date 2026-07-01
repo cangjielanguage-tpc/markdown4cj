@@ -1,165 +1,210 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class LinkData extends BaseMDData {
-  _isLinkStyle: boolean = false
-  _isListLinkStyle: boolean = false
-  _linkColor: number | undefined = undefined
-  _isLinkSize: boolean = true
-  _linkSize: number = 14
-  _linkBackGroupColor: number | undefined = undefined
-  _isLinkUnderlined: boolean = true
-  _linkCircleImageBackGroupColor: number | undefined = undefined
-  _linkCircleImageButtonBackGroupColor: number | undefined = undefined
-  _linkCircleImageTextColor: number | undefined = undefined
-  _linkCircleImageTextSize: number = 14
-  _linkCircleImageRadius: number = 20
-  _linkCircleImageMargin: number = 6
-  _linkRectImageBackGroupColor: number | undefined = undefined
-  _linkRectImageButtonBackGroupColor: number | undefined = undefined
-  _linkRectImageTextSize: number = 14
-  _linkRectImageTextColor: number | undefined = undefined
-  _linkRectImageHeight: number = 20
-  _linkRectImagePadding: number = 6
-  _linkRectImageRadius: number = 6
-  _linkRectImageMargin: number = 6
-  _linkRectToolImageBackGroupColor: number | undefined = undefined
-  _linkRectToolImageButtonBackGroupColor: number | undefined = undefined
-  _linkRectToolImageTextSize: number = 14
-  _linkRectToolImageHeight: number = 21
-  _linkRectToolImagePadding: number = 6
-  _linkRectToolImageBorderWidth: number = 1
-  _linkRectToolImageDividingLineWidth: number = 1
-  _linkRectToolImageMargin: number = 6
-  _linkRectToolImageLineLeftPadding: number = 3
-  _linkRectToolImageLineRightPadding: number = 3
-  _linkLineHeight: number = 22
+  _linkIsIcon: boolean = false // 链接是否是图片显示
+  _linkListIsIcon: boolean = false // 列表中的单行链接是否是图片显示
+  _linkTextFontColor: number | undefined = undefined // 链接文本颜色
+  _linkTextFontSize: number | undefined = undefined // 链接文本尺寸
+  _linkTextFontStyle: FontStyle = FontStyle.Normal // 链接文本字体样式
+  _linkTextFontWeight: FontWeight = FontWeight.Normal // 链接文本字体粗细
+  _linkTextFontFamily: string = 'HarmonyOS Sans' // 链接文本字体
+  _linkTextLineHeight: number | undefined = undefined // 链接文本行高
+  _linkTextLetterSpacing: number = 0 // 链接文本字符间距
+  _linkTextDecorationType: TextDecorationType = TextDecorationType.None // 链接文本装饰线类型
+  _linkTextDecorationColor: number | undefined = undefined // 链接文本装饰线颜色
+  _linkTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID // 链接文本装饰线样式
+  _linkTextBackgroundColor: number | undefined = undefined // 链接文本背景颜色
+  _linkTextBackgroundRadiusTopLeft: number = 0 // 链接文本背景左上圆角
+  _linkTextBackgroundRadiusTopRight: number = 0 // 链接文本背景右上圆角
+  _linkTextBackgroundRadiusBottomLeft: number = 0 // 链接文本背景左下圆角
+  _linkTextBackgroundRadiusBottomRight: number = 0 // 链接文本背景右下圆角
+  _linkCircleIconBackgroundColor: number | undefined = undefined // 圆形图片格式链接主题背景颜色
+  _linkCircleIconButtonBackgroundColor: number | undefined = undefined // 圆形图片格式链接控件背景颜色
+  _linkCircleIconTextSize: number = 14 // 圆形图片格式链接文字大小
+  _linkCircleIconTextColor: number | undefined = undefined // 圆形图片格式链接文字颜色
+  _linkCircleIconRadius: number = 20 // 圆形图片格式链接半径
+  _linkCircleIconMargin: number = 6 // 圆形图片格式链接左右外边距
+  _linkRectIconBackgroundColor: number | undefined = undefined // 圆角矩形图片格式链接主题背景颜色
+  _linkRectIconButtonBackgroundColor: number | undefined = undefined // 圆角矩形图片格式链接控件背景颜色
+  _linkRectIconTextSize: number = 14 // 圆角矩形图片格式链接文字大小
+  _linkRectIconTextColor: number | undefined = undefined // 圆角矩形图片格式链接文字颜色
+  _linkRectIconHeight: number = 20 // 圆角矩形图片格式链接控件高度
+  _linkRectIconPadding: number = 6 // 圆角矩形图片格式链接左右内边距
+  _linkRectIconRadius: number = 6 // 圆角矩形图片格式链接圆角半径
+  _linkRectIconMargin: number = 6 // 圆角矩形图片格式链接左右外边距
+  _linkRectToolIconBackgroundColor: number | undefined = undefined // 空心圆角矩形图片格式链接主题背景颜色
+  _linkRectToolIconButtonBackgroundColor: number | undefined = undefined // 空心圆角矩形图片格式链接控件背景颜色
+  _linkRectToolIconTextSize: number = 14 // 空心圆角矩形图片格式链接文字大小
+  _linkRectToolIconHeight: number = 21 // 空心圆角矩形图片格式链接控件高度
+  _linkRectToolIconPadding: number = 6 // 空心圆角矩形图片格式链接左右内边距
+  _linkRectToolIconBorderWidth: number = 1 // 空心圆角矩形图片格式链接边框宽度
+  _linkRectToolIconDividingLineWidth: number = 1 // 空心圆角矩形图片格式链接分割线宽度
+  _linkRectToolIconMargin: number = 6 // 空心圆角矩形图片格式链接左右外边距
+  _linkRectToolIconLineLeftPadding: number = 3 // 空心圆角矩形图片格式分割线和文本左边距
+  _linkRectToolIconLineRightPadding: number = 3 // 空心圆角矩形图片格式分割线和文本右边距
 
-  public set isLinkStyle(value: boolean) {
-    this._isLinkStyle = value
+  public set linkIsIcon(value: boolean) {
+    this._linkIsIcon = value
   }
 
-  public set isListLinkStyle(value: boolean) {
-    this._isListLinkStyle = value
+  public set linkListIsIcon(value: boolean) {
+    this._linkListIsIcon = value
   }
 
-  public set linkColor(value: number | undefined) {
-    this._linkColor = value
+  public set linkTextFontColor(value: number | undefined) {
+    this._linkTextFontColor = value
   }
 
-  public set isLinkSize(value: boolean) {
-    this._isLinkSize = value
+  public set linkTextFontSize(value: number | undefined) {
+    this._linkTextFontSize = value
   }
 
-  public set linkSize(value: number) {
-    this._linkSize = value
+  public set linkTextFontStyle(value: FontStyle) {
+    this._linkTextFontStyle = value
   }
 
-  public set linkBackGroupColor(value: number | undefined) {
-    this._linkBackGroupColor = value
+  public set linkTextFontWeight(value: FontWeight) {
+    this._linkTextFontWeight = value
   }
 
-  public set isLinkUnderlined(value: boolean) {
-    this._isLinkUnderlined = value
+  public set linkTextFontFamily(value: string) {
+    this._linkTextFontFamily = value
   }
 
-  public set linkCircleImageBackGroupColor(value: number | undefined) {
-    this._linkCircleImageBackGroupColor = value
+  public set linkTextLineHeight(value: number | undefined) {
+    this._linkTextLineHeight = value
   }
 
-  public set linkCircleImageButtonBackGroupColor(value: number | undefined) {
-    this._linkCircleImageButtonBackGroupColor = value
+  public set linkTextLetterSpacing(value: number) {
+    this._linkTextLetterSpacing = value
   }
 
-  public set linkCircleImageTextSize(value: number) {
-    this._linkCircleImageTextSize = value
+  public set linkTextDecorationType(value: TextDecorationType) {
+    this._linkTextDecorationType = value
   }
 
-  public set linkCircleImageTextColor(value: number | undefined) {
-    this._linkCircleImageTextColor = value
+  public set linkTextDecorationColor(value: number | undefined) {
+    this._linkTextDecorationColor = value
   }
 
-  public set linkCircleImageRadius(value: number) {
-    this._linkCircleImageRadius = value
+  public set linkTextDecorationStyle(value: TextDecorationStyle) {
+    this._linkTextDecorationStyle = value
   }
 
-  public set linkCircleImageMargin(value: number) {
-    this._linkCircleImageMargin = value
+  public set linkTextBackgroundColor(value: number | undefined) {
+    this._linkTextBackgroundColor = value
   }
 
-  public set linkRectImageBackGroupColor(value: number | undefined) {
-    this._linkRectImageBackGroupColor = value
+  public set linkTextBackgroundRadiusTopLeft(value: number) {
+    this._linkTextBackgroundRadiusTopLeft = value
   }
 
-  public set linkRectImageButtonBackGroupColor(value: number | undefined) {
-    this._linkRectImageButtonBackGroupColor = value
+  public set linkTextBackgroundRadiusTopRight(value: number) {
+    this._linkTextBackgroundRadiusTopRight = value
   }
 
-  public set linkRectImageTextSize(value: number) {
-    this._linkRectImageTextSize = value
+  public set linkTextBackgroundRadiusBottomLeft(value: number) {
+    this._linkTextBackgroundRadiusBottomLeft = value
   }
 
-  public set linkRectImageTextColor(value: number | undefined) {
-    this._linkRectImageTextColor = value
+  public set linkTextBackgroundRadiusBottomRight(value: number) {
+    this._linkTextBackgroundRadiusBottomRight = value
   }
 
-  public set linkRectImageHeight(value: number) {
-    this._linkRectImageHeight = value
+  public set linkCircleIconBackgroundColor(value: number | undefined) {
+    this._linkCircleIconBackgroundColor = value
   }
 
-  public set linkRectImagePadding(value: number) {
-    this._linkRectImagePadding = value
+  public set linkCircleIconButtonBackgroundColor(value: number | undefined) {
+    this._linkCircleIconButtonBackgroundColor = value
   }
 
-  public set linkRectImageRadius(value: number) {
-    this._linkRectImageRadius = value
+  public set linkCircleIconTextSize(value: number) {
+    this._linkCircleIconTextSize = value
   }
 
-  public set linkRectImageMargin(value: number) {
-    this._linkRectImageMargin = value
+  public set linkCircleIconTextColor(value: number | undefined) {
+    this._linkCircleIconTextColor = value
   }
 
-  public set linkRectToolImageBackGroupColor(value: number | undefined) {
-    this._linkRectToolImageBackGroupColor = value
+  public set linkCircleIconRadius(value: number) {
+    this._linkCircleIconRadius = value
   }
 
-  public set linkRectToolImageButtonBackGroupColor(value: number | undefined) {
-    this._linkRectToolImageButtonBackGroupColor = value
+  public set linkCircleIconMargin(value: number) {
+    this._linkCircleIconMargin = value
   }
 
-  public set linkRectToolImageTextSize(value: number) {
-    this._linkRectToolImageTextSize = value
+  public set linkRectIconBackgroundColor(value: number | undefined) {
+    this._linkRectIconBackgroundColor = value
   }
 
-  public set linkRectToolImageHeight(value: number) {
-    this._linkRectToolImageHeight = value
+  public set linkRectIconButtonBackgroundColor(value: number | undefined) {
+    this._linkRectIconButtonBackgroundColor = value
   }
 
-  public set linkRectToolImagePadding(value: number) {
-    this._linkRectToolImagePadding = value
+  public set linkRectIconTextSize(value: number) {
+    this._linkRectIconTextSize = value
   }
 
-  public set linkRectToolImageBorderWidth(value: number) {
-    this._linkRectToolImageBorderWidth = value
+  public set linkRectIconTextColor(value: number | undefined) {
+    this._linkRectIconTextColor = value
   }
 
-  public set linkRectToolImageDividingLineWidth(value: number) {
-    this._linkRectToolImageDividingLineWidth = value
+  public set linkRectIconHeight(value: number) {
+    this._linkRectIconHeight = value
   }
 
-  public set linkRectToolImageMargin(value: number) {
-    this._linkRectToolImageMargin = value
+  public set linkRectIconPadding(value: number) {
+    this._linkRectIconPadding = value
   }
 
-  public set linkRectToolImageLineLeftPadding(value: number) {
-    this._linkRectToolImageLineLeftPadding = value
+  public set linkRectIconRadius(value: number) {
+    this._linkRectIconRadius = value
   }
 
-  public set linkRectToolImageLineRightPadding(value: number) {
-    this._linkRectToolImageLineRightPadding = value
+  public set linkRectIconMargin(value: number) {
+    this._linkRectIconMargin = value
   }
 
-  public set linkLineHeight(value: number) {
-    this._linkLineHeight = value
+  public set linkRectToolIconBackgroundColor(value: number | undefined) {
+    this._linkRectToolIconBackgroundColor = value
+  }
+
+  public set linkRectToolIconButtonBackgroundColor(value: number | undefined) {
+    this._linkRectToolIconButtonBackgroundColor = value
+  }
+
+  public set linkRectToolIconTextSize(value: number) {
+    this._linkRectToolIconTextSize = value
+  }
+
+  public set linkRectToolIconHeight(value: number) {
+    this._linkRectToolIconHeight = value
+  }
+
+  public set linkRectToolIconPadding(value: number) {
+    this._linkRectToolIconPadding = value
+  }
+
+  public set linkRectToolIconBorderWidth(value: number) {
+    this._linkRectToolIconBorderWidth = value
+  }
+
+  public set linkRectToolIconDividingLineWidth(value: number) {
+    this._linkRectToolIconDividingLineWidth = value
+  }
+
+  public set linkRectToolIconMargin(value: number) {
+    this._linkRectToolIconMargin = value
+  }
+
+  public set linkRectToolIconLineLeftPadding(value: number) {
+    this._linkRectToolIconLineLeftPadding = value
+  }
+
+  public set linkRectToolIconLineRightPadding(value: number) {
+    this._linkRectToolIconLineRightPadding = value
   }
 
   constructor() {
