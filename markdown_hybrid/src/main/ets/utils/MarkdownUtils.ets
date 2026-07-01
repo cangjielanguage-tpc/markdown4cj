@@ -793,7 +793,7 @@ function parseStyleLength(value: string): number | undefined {
  * 用于解析非HTTP链接URL中编码的文件类型信息。
  *
  * @param v URL-safe Base64字符串
- * @return 解码后的UTF-8字符串
+ * @return 解码后提取的文件扩展名（大写），无法提取时返回空字符串
  */
 export function urlSafeBase64Decode(v: string): string {
   try {

@@ -574,6 +574,9 @@ export struct MarkdownHeading {
         generateLinkIconPixelMap(child.nodeText, child.linkUrl ?? "", this.linkTheme)
           .then((result: LinkIconResult | undefined) => {
             if (!this.isAlive || result === undefined) {
+              if (result !== undefined) {
+                result.pixelMap.release()
+              }
               return
             }
             if (this.list.indexOf(child) < 0) {
@@ -609,7 +612,9 @@ export struct MarkdownHeading {
           const buf = buffer as Uint8Array | ArrayBuffer
           const imageSource: image.ImageSource = image.createImageSource(buf instanceof Uint8Array ? buf.buffer : buf)
           imageSource.createPixelMap().then((pm: PixelMap) => {
+            imageSource.release()
             if (!this.isAlive || this.list.indexOf(child) < 0) {
+              pm.release()
               return
             }
             child.imageReplacePixelMap = pm
@@ -645,6 +650,7 @@ export struct MarkdownHeading {
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
         imageSource.createPixelMap().then((pm: PixelMap) => {
+          imageSource.release()
           if (!this.isAlive) {
             pm.release()
             LatexParseQueue.notifyDone()

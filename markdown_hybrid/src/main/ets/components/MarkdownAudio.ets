@@ -16,11 +16,11 @@ export struct MarkdownAudio {
   aboutToAppear(): void {
     this.imageAudioUrl = this.node.imageUrl ?? "" // 获取音频图片URL
     // 通过分割音频url获取音频类型和标题
-    const titleList = this.imageAudioUrl.split("/")
-    const audioName = titleList[titleList.length - 1]
-    const typeList = audioName.split(".")
-    this.audioType = typeList[typeList.length - 1]
-    this.audioTitle = typeList[0]
+    const path = this.imageAudioUrl.split('?')[0].split('#')[0]
+    const audioName = path.substring(path.lastIndexOf('/') + 1)
+    const dotIdx = audioName.lastIndexOf('.')
+    this.audioTitle = dotIdx > 0 ? audioName.substring(0, dotIdx) : audioName
+    this.audioType = dotIdx > 0 ? audioName.substring(dotIdx + 1) : ''
   }
 
   build() {

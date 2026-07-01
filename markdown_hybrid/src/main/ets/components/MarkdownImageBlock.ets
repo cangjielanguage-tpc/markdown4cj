@@ -34,6 +34,10 @@ export struct MarkdownImageBlock {
 
   aboutToDisappear(): void {
     this.isAlive = false
+    if (this.replacePixelMap !== undefined) {
+      this.replacePixelMap.release()
+      this.replacePixelMap = undefined
+    }
   }
 
   build() {
@@ -192,6 +196,7 @@ export struct MarkdownImageBlock {
       const buf = buffer as Uint8Array | ArrayBuffer
       const imageSource: image.ImageSource = image.createImageSource(buf instanceof Uint8Array ? buf.buffer : buf)
       imageSource.createPixelMap().then((pm: PixelMap) => {
+        imageSource.release()
         if (!this.isAlive) {
           return
         }

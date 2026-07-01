@@ -110,6 +110,17 @@ export class NodeView {
     this.headingLevel = source.headingLevel
     this.headingID = source.headingID
     this.copyStyleFrom(source)
+    this.imageReplacePixelMap = source.imageReplacePixelMap
+    this.imageReplaceTried = source.imageReplaceTried
+    this.latexPixelMap = source.latexPixelMap
+    this.latexImageData = source.latexImageData
+    this.latexImageWidth = source.latexImageWidth
+    this.latexImageHeight = source.latexImageHeight
+    this.latexIsLoading = source.latexIsLoading
+    this.linkIconPixelMap = source.linkIconPixelMap
+    this.linkIconTried = source.linkIconTried
+    this.linkIconWidth = source.linkIconWidth
+    this.linkIconHeight = source.linkIconHeight
   }
 
   /**
@@ -174,10 +185,6 @@ export class NodeView {
     this.isLinkStyle = source.isLinkStyle
     this.linkIconType = source.linkIconType
     this.linkTypeStr = source.linkTypeStr
-    this.linkIconPixelMap = source.linkIconPixelMap
-    this.linkIconTried = source.linkIconTried
-    this.linkIconWidth = source.linkIconWidth
-    this.linkIconHeight = source.linkIconHeight
   }
 }
 

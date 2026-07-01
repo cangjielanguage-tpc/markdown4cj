@@ -38,11 +38,21 @@ export struct CJMarkdown {
   imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
   jsNodePoolImpl: JsNodePoolImpl = new JsNodePoolImpl()
   plugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件配置
+  private isAlive: boolean = true // 组件是否存活
+  private throttleTimerId: number = -1 // 节流定时器ID
 
   aboutToAppear(): void {
     this.isLatexMathEnabled = this.plugin.isLatexMathPlugin
     this.refreshData() // 首次加载
     this.loadPlaceholderImage() // 占位图处理
+  }
+
+  aboutToDisappear(): void {
+    this.isAlive = false
+    if (this.throttleTimerId !== -1) {
+      clearTimeout(this.throttleTimerId)
+      this.throttleTimerId = -1
+    }
   }
 
   build() {
@@ -549,8 +559,9 @@ export struct CJMarkdown {
     this.executeRefresh()
     const throttleMs = this.config.markdownTheme.globalTheme.parseThrottleMs
     if (throttleMs > 0) {
-      setTimeout(() => {
+      this.throttleTimerId = setTimeout(() => {
         this.isThrottled = false
+        this.throttleTimerId = -1
         if (this.hasPendingRefresh) {
           this.refreshData()
         }
@@ -612,28 +623,63 @@ export struct CJMarkdown {
     * @param currentVersion 当前版本
     */
     private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
-     // 渐进式版本跟踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
-     // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
-     if (currentVersion <= this.appliedVersion) {
-       return
-     }
-      let nodeView: NodeView = new NodeView()
-      nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
       try {
-        nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
-     } catch (e) {
-       // nodeToNodeView失败时静默处理
-     }
-     if (nodeView.children.length == 0) {
-       this.markdownDataSource.clear()
-       this.appliedVersion = currentVersion
-       return
-     }
-     this.markdownDataSource.smartUpdateDataArray(nodeView.children)
-     this.config.markdownNodeViewString.setRoot(nodeView)
-     this.appliedVersion = currentVersion
-     this.jsNodePoolImpl.put(node)
-   }
+        // 渐进式版本跟踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
+        // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
+        if (currentVersion <= this.appliedVersion) {
+          return
+        }
+        let nodeView: NodeView = new NodeView()
+        nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
+        try {
+          nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
+        } catch (e) {
+          // nodeToNodeView失败时静默处理
+        }
+        this.collectImageAndVideoUrls(node)
+        if (nodeView.children.length == 0) {
+          this.markdownDataSource.clear()
+          this.appliedVersion = currentVersion
+          return
+        }
+        this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+        this.config.markdownNodeViewString.setRoot(nodeView)
+        this.appliedVersion = currentVersion
+      } finally {
+        this.jsNodePoolImpl.put(node)
+      }
+    }
+
+  /**
+   * 从解析器props中收集所有图片和视频URL到imageAndVideoList
+   *
+   * @param node 解析后的根节点
+   */
+  private collectImageAndVideoUrls(node: JsNodeImpl): void {
+    this.imageAndVideoList = []
+    const prop = node.getProps()
+    if (prop !== undefined) {
+      const links = prop.get("links")
+      if (links !== undefined && links.length > 0) {
+        let str = links
+        if (str.startsWith('[') && str.endsWith(']')) {
+          str = str.substring(1, str.length - 1)
+        }
+        this.imageAndVideoList = str.split(',')
+          .map((s: string) => s.trim())
+          .filter((s: string) => s.length > 0)
+          .map((s: string) => {
+            if (s.startsWith('"') && s.endsWith('"')) {
+              return s.substring(1, s.length - 1)
+            }
+            if (s.startsWith("'") && s.endsWith("'")) {
+              return s.substring(1, s.length - 1)
+            }
+            return s
+          })
+      }
+    }
+  }
 
   /**
    * 异步处理图片占位图（可等待）
@@ -644,8 +690,12 @@ export struct CJMarkdown {
       if (hostContext !== undefined) {
         const resourceMgr = hostContext.resourceManager
         const fileData = await resourceMgr.getMediaContent(this.config.markdownTheme.imageTheme.imagePlaceholder)
+        if (!this.isAlive) {
+          return
+        }
         const imageSource = image.createImageSource(fileData.buffer)
         this.placeholderPixelMap = await imageSource.createPixelMap()
+        imageSource.release()
       }
     }
   }

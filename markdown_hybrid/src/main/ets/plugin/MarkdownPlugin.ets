@@ -307,7 +307,7 @@ export class MarkdownPlugin {
    * 设置是否加载emoji解析插件
    *
    * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件；false：不设置加载Emoji解析插件。默认false
-   * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
+   * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认false
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
     this.isEmojiPlugin = isEmojiPlugin
@@ -336,7 +336,7 @@ export class MarkdownPlugin {
     this.isWhitelistPlugin = true
     if (Array.isArray(mode)) {
       this.whitelist = mode
-      this.mode = 2
+      this.mode = DelimiterFilterMode.Whitelist
     } else {
       this.mode = mode
     }
@@ -346,7 +346,7 @@ export class MarkdownPlugin {
    * 根据插件配置构建解析器Options
    *
    * @param jsNodeFactory JsNode工厂函数
-   * @returns 解析器Options对象
+   * @return 解析器Options对象
    */
   buildOptions(jsNodeFactory: () => JsNodeImpl): Options {
     return {

@@ -70,6 +70,13 @@ export struct MarkdownTable {
     this.refreshData() // 首次加载（refreshData内会调度applyColumnWidths）
   }
 
+  aboutToDisappear(): void {
+    if (this.widthTimer !== -1) {
+      clearTimeout(this.widthTimer)
+      this.widthTimer = -1
+    }
+  }
+
   build() {
     Scroll() {
       List({ scroller: this.scroller }) {

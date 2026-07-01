@@ -107,8 +107,6 @@ function getLinkText(node: JsNodeImpl | undefined): string {
       text += " "
     } else if (childType === 'HardLineBreak') {
       text += "\n"
-    } else if (childType === 'Link' || childType === 'HeadLink') {
-      text += getLinkText(child)
     } else {
       text += getLinkText(child)
     }
@@ -316,7 +314,9 @@ export function nodeToNodeView(
       case 'IdHeading': // 标题ID
           currentView.isHeading = true
           currentView.headingLevel = currentJsNode.level ?? 1
-          // currentView.headingID
+          if (prop !== undefined) {
+            currentView.headingID = prop.get("headingId") ?? ""
+          }
           nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
           targetParentView.children.push(currentView)
         break
@@ -491,11 +491,11 @@ export function nodeToNodeView(
         break
       }
       case 'BlockVideo': // 视频
-        currentView.imageUrl = findImageUrlFromDescendants(sourceJsNode)
+        currentView.imageUrl = findImageUrlFromDescendants(currentJsNode)
         targetParentView.children.push(currentView)
         break
       case 'BlockAudio': // 音频
-        currentView.imageUrl = findImageUrlFromDescendants(sourceJsNode)
+        currentView.imageUrl = findImageUrlFromDescendants(currentJsNode)
         targetParentView.children.push(currentView)
         break
       case 'BlockAD': // 广告

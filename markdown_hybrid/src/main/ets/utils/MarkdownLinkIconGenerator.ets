@@ -216,6 +216,7 @@ export function generateLinkIconPixelMap(
   const imageSource: image.ImageSource = image.createImageSource(buffer)
   return imageSource.createPixelMap()
     .then((pm: PixelMap) => {
+      imageSource.release()
       return pm.getImageInfo()
         .then((info: image.ImageInfo) => {
           const result: LinkIconResult = {

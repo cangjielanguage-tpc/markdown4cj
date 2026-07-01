@@ -25,6 +25,19 @@ import { FootnoteDefTheme } from "../theme/FootnoteDefTheme"
  * 获取文本字体族
  *
  * @param nodeView NodeView
+ * @param subTheme 下标样式
+ * @param supTheme 上标样式
+ * @param inlineCodeTheme 内联代码样式
+ * @param boldTheme 加粗样式
+ * @param italicTheme 斜体样式
+ * @param strikethroughTheme 删除线样式
+ * @param highlightTheme 高亮样式
+ * @param htmlUnderlineTheme 下划线样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
+ * @param headingTheme 标题样式
+ * @param tableTheme 表格样式
+ * @param paragraphTheme 段落样式
  * @return 文本字体族
  */
 export function spanFontFamily(
@@ -121,6 +134,19 @@ export function headingFontFamily(
  * 获取文本字体大小
  *
  * @param nodeView NodeView
+ * @param subTheme 下标样式
+ * @param supTheme 上标样式
+ * @param inlineCodeTheme 内联代码样式
+ * @param boldTheme 加粗样式
+ * @param italicTheme 斜体样式
+ * @param strikethroughTheme 删除线样式
+ * @param highlightTheme 高亮样式
+ * @param htmlUnderlineTheme 下划线样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
+ * @param headingTheme 标题样式
+ * @param tableTheme 表格样式
+ * @param paragraphTheme 段落样式
  * @return 文本字体大小
  */
 export function spanFontSize(
@@ -221,6 +247,20 @@ export function headingTextSize(
  *
  * @param nodeView NodeView
  * @param isTableFirst 表格第一列是否加粗
+ * @param subTheme 下标样式
+ * @param supTheme 上标样式
+ * @param inlineCodeTheme 内联代码样式
+ * @param boldTheme 加粗样式
+ * @param italicTheme 斜体样式
+ * @param strikethroughTheme 删除线样式
+ * @param highlightTheme 高亮样式
+ * @param htmlUnderlineTheme 下划线样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
+ * @param headingTheme 标题样式
+ * @param tableTheme 表格样式
+ * @param paragraphTheme 段落样式
+ * @param definitionListTheme 定义列表样式
  * @return 文本的字体粗细
  */
 export function spanFontWeight(
@@ -326,6 +366,19 @@ export function headingFontWeight(
  * 获取文本字体样式
  *
  * @param nodeView NodeView
+ * @param subTheme 下标样式
+ * @param supTheme 上标样式
+ * @param inlineCodeTheme 内联代码样式
+ * @param boldTheme 加粗样式
+ * @param strikethroughTheme 删除线样式
+ * @param highlightTheme 高亮样式
+ * @param htmlUnderlineTheme 下划线样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
+ * @param headingTheme 标题样式
+ * @param tableTheme 表格样式
+ * @param paragraphTheme 段落样式
+ * @param definitionListTheme 定义列表样式
  * @return 文本字体样式
  */
 export function spanFontStyle(
@@ -422,6 +475,19 @@ export function headingFontStyle(
  * 获取文本字体颜色
  *
  * @param nodeView NodeView
+ * @param subTheme 下标样式
+ * @param supTheme 上标样式
+ * @param inlineCodeTheme 内联代码样式
+ * @param boldTheme 加粗样式
+ * @param italicTheme 斜体样式
+ * @param strikethroughTheme 删除线样式
+ * @param highlightTheme 高亮样式
+ * @param htmlUnderlineTheme 下划线样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
+ * @param headingTheme 标题样式
+ * @param tableTheme 表格样式
+ * @param paragraphTheme 段落样式
  * @return 文本字体颜色
  */
 export function spanFontColor(
@@ -521,6 +587,19 @@ export function headColor(
  * 获取文本字符间距
  *
  * @param nodeView NodeView
+ * @param subTheme 下标样式
+ * @param supTheme 上标样式
+ * @param inlineCodeTheme 内联代码样式
+ * @param boldTheme 加粗样式
+ * @param italicTheme 斜体样式
+ * @param strikethroughTheme 删除线样式
+ * @param highlightTheme 高亮样式
+ * @param htmlUnderlineTheme 下划线样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
+ * @param headingTheme 标题样式
+ * @param tableTheme 表格样式
+ * @param paragraphTheme 段落样式
  * @return 文本字符间距
  */
 export function spanLetterSpacing(
@@ -616,6 +695,10 @@ export function headLetterSpacing(
  * 获取文本装饰线样式及其颜色
  *
  * @param nodeView NodeView
+ * @param strikethroughTheme 删除线样式
+ * @param htmlUnderlineTheme 下划线样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
  * @return 文本装饰线样式及其颜色
  */
 export function spanDecoration(
@@ -664,6 +747,10 @@ export function spanDecoration(
  * 获取文本背景颜色及圆角
  *
  * @param nodeView NodeView
+ * @param inlineCodeTheme 内联代码样式
+ * @param highlightTheme 高亮样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
  * @return 文本背景颜色及圆角
  */
 export function spanBackgroundColor(
@@ -737,6 +824,8 @@ export function spanBackgroundColor(
  * 获取文本基线的偏移量
  *
  * @param nodeView NodeView
+ * @param subTheme 下标样式
+ * @param supTheme 上标样式
  * @return 文本基线的偏移量
  */
 export function spanBaselineOffset(
@@ -769,6 +858,17 @@ export function spanBaselineOffset(
  * 获取文本行高
  *
  * @param nodeView NodeView
+ * @param inlineCodeTheme 内联代码样式
+ * @param boldTheme 加粗样式
+ * @param italicTheme 斜体样式
+ * @param strikethroughTheme 删除线样式
+ * @param highlightTheme 高亮样式
+ * @param htmlUnderlineTheme 下划线样式
+ * @param linkTheme 链接样式
+ * @param footnoteRefTheme 脚注引用样式
+ * @param headingTheme 标题样式
+ * @param tableTheme 表格样式
+ * @param paragraphTheme 段落样式
  * @return 文本行高
  */
 export function spanLineHeight(
@@ -856,6 +956,9 @@ export function headLineHeight(
  * 获取不同等级标题背景颜色
  *
  * @param level 标题等级
+ * @param globalTheme 全局样式
+ * @param blockQuoteTheme 块引用样式
+ * @param headingTheme 标题样式
  * @param isQuote 是否在块引用中
  * @return 标题背景颜色
  */
@@ -1122,6 +1225,10 @@ export function headingPaddingLeft(
 /**
  * 设置段落背景颜色
  *
+ * @param globalTheme 全局样式
+ * @param blockQuoteTheme 块引用样式
+ * @param paragraphTheme 段落样式
+ * @param isQuote 是否在块引用中
  * @return 段落背景颜色
  */
 export function paragraphBackgroundColor(
@@ -1140,6 +1247,10 @@ export function paragraphBackgroundColor(
  * 设置有序/无序/任务列表背景颜色
  *
  * @param isOrdered 是否是有序列表
+ * @param blockQuoteTheme 块引用样式
+ * @param orderedListTheme 有序列表样式
+ * @param bulletListTheme 无序列表样式
+ * @param globalTheme 全局样式
  * @param nodeView NodeView
  * @return 有序/无序/任务列表背景颜色
  */
@@ -1164,6 +1275,10 @@ export function listBackgroundColor(
 /**
  * 设置脚注背景颜色
  *
+ * @param blockQuoteTheme 块引用样式
+ * @param footnoteDefTheme 脚注定义样式
+ * @param globalTheme 全局样式
+ * @param isQuote 是否在块引用中
  * @return 脚注背景颜色
  */
 export function footnoteBackgroundColor(
@@ -1181,7 +1296,12 @@ export function footnoteBackgroundColor(
 /**
  * 表格格子背景颜色
  *
+ * @param node 节点视图
+ * @param blockQuoteTheme 块引用样式
+ * @param tableTheme 表格样式
+ * @param isQuote 是否在块引用中
  * @param rowCount 第几行
+ * @return 背景颜色
  */
 export function tableCellBackgroundColor(
   node: NodeView,

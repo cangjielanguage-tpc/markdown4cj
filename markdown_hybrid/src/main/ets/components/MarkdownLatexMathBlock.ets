@@ -164,6 +164,7 @@ export struct MarkdownLatexMathBlock {
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
         imageSource.createPixelMap().then((pm: PixelMap) => {
+          imageSource.release()
           if (!this.isAlive) {
             pm.release()
             LatexParseQueue.notifyDone()
