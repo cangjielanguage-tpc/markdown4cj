@@ -3,6 +3,11 @@ import { NodeView } from "../model/NodeView"
 export class MarkdownDataSource implements IDataSource {
   dataArray: NodeView[] = []
   listener: DataChangeListener | undefined
+  // 上一次smartUpdateDataArray结束时的hash快照（"nodeHash|contentHash"）
+  // nodeToNodeView复用分支会就地修改dataArray对象的hash，导致下次对比时新旧hash恒等。
+  // 保存上一次的hash快照，下次调用时对比当前hash和快照，即可检测就地修改的变更。
+  // 顶层和嵌套DataSource都自动生效，无需调用方传参。
+  private savedHashes: string[] = []
 
   constructor(dataArray: NodeView[]) {
     this.dataArray = dataArray
@@ -113,6 +118,7 @@ export class MarkdownDataSource implements IDataSource {
     for (let i = 0; i < dataArray.length; i++) {
       this.pushData(dataArray[i])
     }
+    this.saveCurrentHashes()
   }
 
   /**
@@ -170,6 +176,7 @@ export class MarkdownDataSource implements IDataSource {
       this.dataArray[i].releaseChildrenPixelMaps()
     }
     this.dataArray = []
+    this.savedHashes = []
   }
 
   /**
@@ -184,10 +191,13 @@ export class MarkdownDataSource implements IDataSource {
     }
     this.dataArray = newData
     this.notifyChange()
+    this.saveCurrentHashes()
   }
 
   /**
-   * 流式增量更新：对比新旧数据，仅更新变化的尾部块，避免全量重建
+   * 流式增量更新：逐个对比新旧数据，更新变化的块
+   * 不同对象一律copyDataFrom（不信任isBlockStable，避免parser未更新hash时漏更新）
+   * 同一对象用savedHashes快照检测就地hash修改
    *
    * @param newData 解析后的新数据列表
    */
@@ -201,21 +211,25 @@ export class MarkdownDataSource implements IDataSource {
     const newLen = newData.length
     const minLen = Math.min(existingLen, newLen)
 
-    let stableCount = 0
     for (let i = 0; i < minLen; i++) {
-      if (this.isBlockStable(this.dataArray[i], newData[i])) {
-        stableCount++
+      if (this.dataArray[i] === newData[i]) {
+        // 同一对象（复用分支就地修改了属性）：对比savedHashes和当前hash
+        let isStable: boolean
+        if (i < this.savedHashes.length) {
+          const currentHash = this.dataArray[i].nodeHash + '|' + this.dataArray[i].contentHash
+          isStable = currentHash === this.savedHashes[i]
+        } else {
+          isStable = true
+        }
+        if (!isStable) {
+          this.notifyDataChange(i)
+        }
       } else {
-        break
+        // 不同对象：一律copyDataFrom，不依赖hash判断
+        // copyDataFrom就地修改children等属性，@Observed检测到变化触发@Watch
+        this.dataArray[i].copyDataFrom(newData[i])
+        this.notifyDataChange(i)
       }
-    }
-
-    for (let i = stableCount; i < minLen; i++) {
-      // 就地更新旧NodeView的属性，保持对象引用不变
-      // 这样@Observed检测到属性变化，@ObjectLink的@Watch触发refreshData
-      // 避免替换整个对象导致LazyForEach重建组件（图片闪烁）
-      this.dataArray[i].copyDataFrom(newData[i])
-      this.notifyDataChange(i)
     }
 
     if (newLen > existingLen) {
@@ -230,22 +244,15 @@ export class MarkdownDataSource implements IDataSource {
         this.notifyDataDeleteChange(i)
       }
     }
+
+    this.saveCurrentHashes()
   }
 
-  /**
-   * 判断两个块是否稳定（内容未变化）
-   *
-   * @param existing 已有数据
-   * @param newBlock 新数据
-   * @return 是否稳定
-   */
-  private isBlockStable(
-    existing: NodeView,
-    newBlock: NodeView
-  ): boolean {
-    return existing.nodeHash !== "0"
-      && newBlock.nodeHash !== "0"
-      && existing.nodeHash === newBlock.nodeHash
-      && existing.contentHash === newBlock.contentHash
+  private saveCurrentHashes(): void {
+    this.savedHashes = []
+    for (let i = 0; i < this.dataArray.length; i++) {
+      const item = this.dataArray[i]
+      this.savedHashes.push(item.nodeHash + '|' + item.contentHash)
+    }
   }
 }

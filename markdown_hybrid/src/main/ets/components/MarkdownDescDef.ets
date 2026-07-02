@@ -107,7 +107,7 @@ export struct MarkdownDescDef {
           }
         },
         (item: NodeView, index: number) => {
-          return `${index}-${item.nodeType}`
+          return `${index}-${item.nodeHash}`
         }
       )
     }

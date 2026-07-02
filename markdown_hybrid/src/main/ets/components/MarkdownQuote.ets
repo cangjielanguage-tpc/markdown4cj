@@ -347,13 +347,34 @@ export struct MarkdownQuote {
                 listDepth: this.listDepth + 1
               })
             } else if (item.nodeType === "LatexMathBlock") {
-              // 数学公式块
-              MarkdownLatexMathBlock({
-                latexMathBlockStr: item.nodeText,
-                latexMathTheme: this.latexMathTheme,
-                latexImageCallback: this.latexImageCallback,
-                latexStrCallback: this.latexStrCallback
-              })
+              // 数学公式块：闭合时渲染图片，未闭合时渲染文本
+              if (item.isLatexMathBlockClose) {
+                MarkdownLatexMathBlock({
+                  latexMathBlockStr: item.nodeText,
+                  latexMathTheme: this.latexMathTheme,
+                  latexImageCallback: this.latexImageCallback,
+                  latexStrCallback: this.latexStrCallback
+                })
+              } else if (this.latexMathTheme.latexMathDefaultText) {
+                Text(item.nodeText)
+                  .fontFamily(this.latexMathTheme.latexMathDefaultTextFontFamily)
+                  .fontSize(this.latexMathTheme.latexMathDefaultTextFontSize)
+                  .fontWeight(this.latexMathTheme.latexMathDefaultTextFontWeight)
+                  .fontStyle(this.latexMathTheme.latexMathDefaultTextFontStyle)
+                  .fontColor(this.latexMathTheme.latexMathDefaultTextFontColor)
+                  .padding({
+                    top: this.latexMathTheme.latexMathPaddingTop,
+                    right: this.latexMathTheme.latexMathPaddingRight,
+                    bottom: this.latexMathTheme.latexMathPaddingBottom,
+                    left: this.latexMathTheme.latexMathPaddingLeft
+                  })
+                  .margin({
+                    top: this.latexMathTheme.latexMathMarginTop,
+                    right: this.latexMathTheme.latexMathMarginRight,
+                    bottom: this.latexMathTheme.latexMathMarginBottom,
+                    left: this.latexMathTheme.latexMathMarginLeft
+                  })
+              }
             } else if (item.nodeType === "TableBlock") {
               // 表格
               MarkdownTable({
@@ -468,10 +489,10 @@ export struct MarkdownQuote {
           }
         },
         (item: NodeView, index: number) => {
-          // 稳定key：仅用index+nodeType，不包含内容指纹
-          // 内容更新通过就地修改NodeView属性+@ObjectLink的@Watch实现，避免组件重建
-          // 仅当nodeType变化时key才变化，触发组件重建
-          return `${index}-${item.nodeType}`
+          if (item.nodeType === "LatexMathBlock") {
+            return `${index}-${item.nodeHash}-${item.contentHash}`
+          }
+          return `${index}-${item.nodeHash}`
         }
       )
     }

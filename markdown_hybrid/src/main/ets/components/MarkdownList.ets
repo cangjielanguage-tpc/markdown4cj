@@ -98,10 +98,12 @@ export struct MarkdownList {
         this.markdownDataSource,
         (item: NodeView, index: number) => {
           ListItem() {
-            if (item.nodeType === "ListItem") {
-              // 普通列表项
               Row() {
-                this.listPrefixTextINCComponent(item, index)
+                if (item.nodeType === "ListItem") {
+                  this.listPrefixTextINCComponent(item, index) // 普通列表项
+                } else if (item.nodeType === "TaskListItem") {
+                  this.listPrefixCheckboxINCComponent(item) // 任务列表项
+                }
                 MarkdownListItem({
                   node: item,
                   blockQuoteTheme: this.blockQuoteTheme,
@@ -154,74 +156,11 @@ export struct MarkdownList {
               }
               .alignItems(VerticalAlign.Top)
               .justifyContent(FlexAlign.Start)
-            } else if (item.nodeType === "TaskListItem") {
-              // 任务列表项
-              Row() {
-                this.listPrefixCheckboxINCComponent(item)
-                MarkdownListItem({
-                  node: item,
-                  blockQuoteTheme: this.blockQuoteTheme,
-                  orderedListTheme: this.orderedListTheme,
-                  bulletListTheme: this.bulletListTheme,
-                  headingTheme: this.headingTheme,
-                  globalTheme: this.globalTheme,
-                  subTheme: this.subTheme,
-                  supTheme: this.supTheme,
-                  inlineCodeTheme: this.inlineCodeTheme,
-                  boldTheme: this.boldTheme,
-                  italicTheme: this.italicTheme,
-                  strikethroughTheme: this.strikethroughTheme,
-                  highlightTheme: this.highlightTheme,
-                  htmlUnderlineTheme: this.htmlUnderlineTheme,
-                  linkTheme: this.linkTheme,
-                  footnoteRefTheme: this.footnoteRefTheme,
-                  tableTheme: this.tableTheme,
-                  paragraphTheme: this.paragraphTheme,
-                  definitionListTheme: this.definitionListTheme,
-                  imageTheme: this.imageTheme,
-                  footnoteDefTheme: this.footnoteDefTheme,
-                  codeBlockTheme: this.codeBlockTheme,
-                  dividerTheme: this.dividerTheme,
-                  bannerTheme: this.bannerTheme,
-                  videoTheme: this.videoTheme,
-                  audioTheme: this.audioTheme,
-                  latexMathTheme: this.latexMathTheme,
-                  latexImageCallback: this.latexImageCallback,
-                  latexStrCallback: this.latexStrCallback,
-                  isOrdered: this.isOrdered,
-                  listDepth: this.listDepth,
-                  componentWidth: this.componentWidth,
-                  tableBlockComponentWidth: this.tableBlockComponentWidth,
-                  textCopyCallback: this.textCopyCallback,
-                  footnoteCallback: this.footnoteCallback,
-                  tocCallback: this.tocCallback,
-                  linkCallback: this.linkCallback,
-                  imageCallback: this.imageCallback,
-                  imageDownloadCallback: this.imageDownloadCallback,
-                  imageReplaceCallback: this.imageReplaceCallback,
-                  videoCallback: this.videoCallback,
-                  videoImageCallback: this.videoImageCallback,
-                  videoReleaseCallback: this.videoReleaseCallback,
-                  videoDownloadCallback: this.videoDownloadCallback,
-                  audioCallback: this.audioCallback,
-                  codeCopyCallback: this.codeCopyCallback,
-                  codeFullScreenCallback: this.codeFullScreenCallback
-                })
-              }
-              .alignItems(VerticalAlign.Top)
-              .justifyContent(FlexAlign.Start)
-            } else {
-              // 其他节点
-              Text("")
-            }
           }
           .layoutWeight(1)
         },
         (item: NodeView, index: number) => {
-          // 稳定key：仅用index+nodeType，不包含内容指纹
-          // 内容更新通过就地修改NodeView属性+@ObjectLink的@Watch实现，避免组件重建
-          // 仅当nodeType变化时key才变化，触发组件重建
-          return `${index}-${item.nodeType}`
+          return `${index}-${item.nodeHash}`
         }
       )
     }

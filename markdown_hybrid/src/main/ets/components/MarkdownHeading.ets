@@ -98,41 +98,6 @@ export struct MarkdownHeading {
 
   aboutToDisappear(): void {
     this.isAlive = false
-    for (const item of this.list) {
-      try {
-        if (item.latexPixelMap !== undefined) {
-          item.latexPixelMap.release()
-          item.latexPixelMap = undefined
-          item.latexImageData = undefined
-          item.latexImageWidth = 0
-          item.latexImageHeight = 0
-          item.latexIsLoading = false
-        }
-      } catch (e) {
-        console.error('Heading latexPixelMap release failed: ' + JSON.stringify(e))
-      }
-      try {
-        if (item.imageReplacePixelMap !== undefined) {
-          item.imageReplacePixelMap.release()
-          item.imageReplacePixelMap = undefined
-          item.imageReplaceTried = false
-        }
-      } catch (e) {
-        console.error('Heading imageReplacePixelMap release failed: ' + JSON.stringify(e))
-      }
-      try {
-        if (item.linkIconPixelMap !== undefined) {
-          item.linkIconPixelMap.release()
-          item.linkIconPixelMap = undefined
-          item.linkIconTried = false
-          item.linkIconText = ''
-          item.linkIconWidth = 0
-          item.linkIconHeight = 0
-        }
-      } catch (e) {
-        console.error('Heading linkIconPixelMap release failed: ' + JSON.stringify(e))
-      }
-    }
   }
 
   build() {
@@ -718,10 +683,12 @@ export struct MarkdownHeading {
               LatexParseQueue.notifyDone()
               return
             }
-            // 流式输出中文本可能已变化，丢弃过期结果，由新一轮loadLatexImage处理
+            // 流式输出中文本可能已变化，丢弃过期结果
+            // 重新触发onListChanged检查是否需要为新文本重新入队加载
             if (item.nodeText !== capturedNodeText) {
               pm.release()
               LatexParseQueue.notifyDone()
+              this.list = [...this.list]
               return
             }
             // 释放旧PixelMap（防御性：理论上此处应为undefined）

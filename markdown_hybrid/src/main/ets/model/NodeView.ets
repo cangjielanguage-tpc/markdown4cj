@@ -93,7 +93,17 @@ export class NodeView {
     this.nodeHash = source.nodeHash
     this.contentHash = source.contentHash
     if (this.children !== source.children) {
-      this.releaseChildrenPixelMaps()
+      // 只释放未被复用的旧子节点的PixelMap
+      // 被复用的子节点（同一对象引用）仍在新children中，其PixelMap不能释放，
+      // 否则releaseChildrenPixelMaps只release不置undefined，onListChanged无法检测到需要重新加载
+      const newChildSet: Set<NodeView> = new Set<NodeView>(source.children)
+      for (let i = 0; i < this.children.length; i++) {
+        const oldChild = this.children[i]
+        if (!newChildSet.has(oldChild)) {
+          oldChild.releaseOwnPixelMaps()
+          oldChild.releaseChildrenPixelMaps()
+        }
+      }
     }
     this.children = source.children
     this.sourceSpan = source.sourceSpan

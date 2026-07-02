@@ -107,7 +107,7 @@ export struct CJMarkdown {
             }
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}`
+            return `${index}-${item.nodeHash}`
           }
         )
       }
@@ -385,19 +385,33 @@ export struct CJMarkdown {
                 tocCallback: this.tocCallback
               })
             } else if (item.nodeType === "LatexMathBlock") {
-              // 数学公式块
-              if (this.isLatexMathEnabled) {
+              // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本
+              if (this.isLatexMathEnabled && item.isLatexMathBlockClose) {
                 MarkdownLatexMathBlock({
                   latexMathBlockStr: item.nodeText,
                   latexMathTheme: this.config.markdownTheme.latexMathTheme,
                   latexImageCallback: this.config.latexImageCallback,
                   latexStrCallback: this.config.latexStrCallback
                 })
-              } else {
+              } else if (this.config.markdownTheme.latexMathTheme.latexMathDefaultText) {
                 Text(item.nodeText)
-                  .width('100%')
-                  .textAlign(TextAlign.Center)
-                  .padding(10)
+                  .fontFamily(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
+                  .fontSize(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
+                  .fontWeight(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
+                  .fontStyle(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
+                  .fontColor(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
+                  .padding({
+                    top: this.config.markdownTheme.latexMathTheme.latexMathPaddingTop,
+                    right: this.config.markdownTheme.latexMathTheme.latexMathPaddingRight,
+                    bottom: this.config.markdownTheme.latexMathTheme.latexMathPaddingBottom,
+                    left: this.config.markdownTheme.latexMathTheme.latexMathPaddingLeft
+                  })
+                  .margin({
+                    top: this.config.markdownTheme.latexMathTheme.latexMathMarginTop,
+                    right: this.config.markdownTheme.latexMathTheme.latexMathMarginRight,
+                    bottom: this.config.markdownTheme.latexMathTheme.latexMathMarginBottom,
+                    left: this.config.markdownTheme.latexMathTheme.latexMathMarginLeft
+                  })
               }
             } else if (item.nodeType === "TableBlock") {
               // 表格
@@ -553,10 +567,10 @@ export struct CJMarkdown {
           }
         },
         (item: NodeView, index: number) => {
-          // 稳定key：仅用index+nodeType，不包含内容指纹
-          // 内容更新通过就地修改NodeView属性+@ObjectLink的@Watch实现，避免组件重建
-          // 仅当nodeType变化（如Paragraph→Heading）时key才变化，触发组件重建
-          return `${index}-${item.nodeType}`
+          if (item.nodeType === "LatexMathBlock") {
+            return `${index}-${item.nodeHash}-${item.contentHash}`
+          }
+          return `${index}-${item.nodeHash}`
         }
       )
     }
@@ -691,15 +705,15 @@ export struct CJMarkdown {
     */
      private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
        try {
-         if (!this.isAlive || currentVersion <= this.appliedVersion) {
-           return
-         }
-         let nodeView: NodeView = new NodeView()
-         nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
-         let parseOk: boolean = false
-         try {
-           nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
-           parseOk = true
+      if (!this.isAlive || currentVersion <= this.appliedVersion) {
+        return
+      }
+      let nodeView: NodeView = new NodeView()
+      nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
+      let parseOk: boolean = false
+      try {
+        nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
+        parseOk = true
           } catch (e) {
             console.error('nodeToNodeView failed: ' + JSON.stringify(e))
           }
@@ -715,7 +729,7 @@ export struct CJMarkdown {
            this.appliedVersion = currentVersion
            return
          }
-         this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+          this.markdownDataSource.smartUpdateDataArray(nodeView.children)
          this.config.markdownNodeViewString.setRoot(nodeView)
          this.appliedVersion = currentVersion
        } finally {

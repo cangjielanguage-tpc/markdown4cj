@@ -81,7 +81,7 @@ export struct MarkdownTableCell {
   @Prop tableBlockCellRow: number // 表格的第几行
   @Prop tableBlockCellCell: number // 表格的第几条
   @Prop tableBlockCellCellSize: number // 表格总共有几列
-  @Prop columnWidth: number = 0 // 本列宽度（来自父组件@State快照）
+  @Consume('tableColumnWidths') columnWidths: number[] // 各列宽度快照（@Consume从MarkdownTable同步）
   @Consume cellWidthTracker: CellWidthTracker // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
   @Consume isLatexMathEnabled: boolean // 数学公式插件是否启用
   @State @Watch('onListChanged') list: NodeView[] = [] // 表格格子子节点数据源
@@ -93,41 +93,6 @@ export struct MarkdownTableCell {
 
   aboutToDisappear(): void {
     this.isAlive = false
-    for (const item of this.list) {
-      try {
-        if (item.latexPixelMap !== undefined) {
-          item.latexPixelMap.release()
-          item.latexPixelMap = undefined
-          item.latexImageData = undefined
-          item.latexImageWidth = 0
-          item.latexImageHeight = 0
-          item.latexIsLoading = false
-        }
-      } catch (e) {
-        console.error('TableCell latexPixelMap release failed: ' + JSON.stringify(e))
-      }
-      try {
-        if (item.imageReplacePixelMap !== undefined) {
-          item.imageReplacePixelMap.release()
-          item.imageReplacePixelMap = undefined
-          item.imageReplaceTried = false
-        }
-      } catch (e) {
-        console.error('TableCell imageReplacePixelMap release failed: ' + JSON.stringify(e))
-      }
-      try {
-        if (item.linkIconPixelMap !== undefined) {
-          item.linkIconPixelMap.release()
-          item.linkIconPixelMap = undefined
-          item.linkIconTried = false
-          item.linkIconText = ''
-          item.linkIconWidth = 0
-          item.linkIconHeight = 0
-        }
-      } catch (e) {
-        console.error('TableCell linkIconPixelMap release failed: ' + JSON.stringify(e))
-      }
-    }
   }
 
   build() {
@@ -152,7 +117,7 @@ export struct MarkdownTableCell {
     })
     .borderStyle(this.tableTheme.tableBorderStyle)
     .borderColor(this.tableTheme.tableBorderColor)
-    .constraintSize({ minWidth: this.columnWidth, maxWidth: this.tableTheme.tableMaxCellWidth })
+    .constraintSize({ minWidth: this.columnWidths[this.tableBlockCellCell] ?? 0, maxWidth: this.tableTheme.tableMaxCellWidth })
     .onSizeChange((oldValue, newValue) => {
       let newWidth: number = 0
       if (typeof newValue.width === 'number') {
@@ -379,7 +344,7 @@ export struct MarkdownTableCell {
         .objectFit(this.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
         .constraintSize({
-          maxWidth: this.columnWidth > 0 ? this.columnWidth : (this.imageTheme.imageMaxWidth ?? '100%'),
+          maxWidth: (this.columnWidths[this.tableBlockCellCell] ?? 0) > 0 ? (this.columnWidths[this.tableBlockCellCell] ?? 0) : (this.imageTheme.imageMaxWidth ?? '100%'),
           maxHeight: this.imageTheme.imageMaxHeight
         })
         .onClick(() => {
@@ -391,7 +356,7 @@ export struct MarkdownTableCell {
         })
         .onComplete((imageLoadResult) => {
           const l = imageWidthAndHeight(
-            this.columnWidth > 0 ? this.columnWidth : this.componentWidth,
+            (this.columnWidths[this.tableBlockCellCell] ?? 0) > 0 ? (this.columnWidths[this.tableBlockCellCell] ?? 0) : this.componentWidth,
             imageLoadResult.width,
             imageLoadResult.height,
             item.imageStyleWidth ?? this.imageTheme.imageWidth,
@@ -463,7 +428,7 @@ export struct MarkdownTableCell {
           .height(this.latexMathTheme.latexMathTextSize)
           .width((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize)
           .verticalAlign(ImageSpanAlignment.CENTER)
-          .constraintSize({ maxWidth: this.columnWidth > 0 ? this.columnWidth : undefined })
+          .constraintSize({ maxWidth: (this.columnWidths[this.tableBlockCellCell] ?? 0) > 0 ? (this.columnWidths[this.tableBlockCellCell] ?? 0) : undefined })
           .onClick(() => {
             if (this.latexImageCallback !== undefined && item.latexImageData !== undefined) {
               this.latexImageCallback(item.latexImageData, item.latexImageHeight, item.latexImageWidth)
@@ -686,10 +651,12 @@ export struct MarkdownTableCell {
               LatexParseQueue.notifyDone()
               return
             }
-            // 流式输出中文本可能已变化，丢弃过期结果，由新一轮loadLatexImage处理
+            // 流式输出中文本可能已变化，丢弃过期结果
+            // 重新触发onListChanged检查是否需要为新文本重新入队加载
             if (item.nodeText !== capturedNodeText) {
               pm.release()
               LatexParseQueue.notifyDone()
+              this.list = [...this.list]
               return
             }
             // 释放旧PixelMap（防御性：理论上此处应为undefined）

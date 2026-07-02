@@ -162,6 +162,11 @@ export function nodeToNodeView(
     if (canReuse && nodeType === 'FencedCodeBlockListBlock') {
       canReuse = false
     }
+    if (canReuse && nodeType !== 'Text' && nodeType !== 'Code' &&
+        nodeType !== 'FencedCodeBlock' && nodeType !== 'IndentedCodeBlock' &&
+        nodeType !== 'LatexMathNode' && nodeType !== 'LatexMathBlock') {
+      canReuse = false
+    }
     // 提前读取props，用于复用判断和新NodeView创建
     const prop = currentJsNode.getProps()
     const newNodeHash = prop !== undefined ? (prop.get("nodeHash") ?? "0") : "0"
@@ -178,6 +183,9 @@ export function nodeToNodeView(
           prevChild.nodeText = currentJsNode.literal ?? ""
         } else if (nodeType === 'FencedCodeBlock' || nodeType === 'IndentedCodeBlock') {
           prevChild.nodeText = currentJsNode.literal?.replace(/\n$/, '') ?? ""
+          if (nodeType === 'FencedCodeBlock') {
+            prevChild.codeInfo = currentJsNode.info
+          }
         } else if (nodeType === 'LatexMathNode') {
           // 行内数学公式：流式输出时latex内容可能增长（如"$x^"→"$x^2$"），
           // 但sourceSpan可能不变（解析器仅记录起始定界符位置）。

@@ -59,7 +59,7 @@ export struct MarkdownTable {
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
   @State tableBlockCellSize: number = 0 // 表格总共有几列
   @Provide cellWidthTracker: CellWidthTracker = new CellWidthTracker(0) // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
-  @State columnWidths: number[] = [] // 列宽快照（refreshData时从tracker批量读取，触发一次重渲染）
+  @Provide('tableColumnWidths') columnWidths: number[] = [] // 列宽快照（@Provide让TableCell通过@Consume直接读取，避免LazyForEach不刷新@Prop的问题）
   private widthTimer: number = -1 // 列宽应用防抖定时器
   private static readonly WIDTH_DEBOUNCE_MS: number = 200 // 列宽应用防抖间隔（ms）
   private isAlive: boolean = true // 组件是否存活
@@ -114,7 +114,6 @@ export struct MarkdownTable {
                   componentWidth: this.componentWidth,
                   tableBlockRowRow: index,
                   tableBlockRowCellSize: this.tableBlockCellSize,
-                  columnWidths: this.columnWidths,
                   textCopyCallback: this.textCopyCallback,
                   footnoteCallback: this.footnoteCallback,
                   tocCallback: this.tocCallback,
@@ -130,7 +129,7 @@ export struct MarkdownTable {
             }
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}`
+            return `${index}-${item.nodeHash}`
           }
         )
       }
