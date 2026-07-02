@@ -99,25 +99,34 @@ export struct MarkdownHeading {
   aboutToDisappear(): void {
     this.isAlive = false
     for (const item of this.list) {
-      if (item.latexPixelMap !== undefined) {
-        item.latexPixelMap.release()
-        item.latexPixelMap = undefined
-        item.latexImageData = undefined
-        item.latexImageWidth = 0
-        item.latexImageHeight = 0
-        item.latexIsLoading = false
+      try {
+        if (item.latexPixelMap !== undefined) {
+          item.latexPixelMap.release()
+          item.latexPixelMap = undefined
+          item.latexImageData = undefined
+          item.latexImageWidth = 0
+          item.latexImageHeight = 0
+          item.latexIsLoading = false
+        }
+      } catch (e) {
       }
-      if (item.imageReplacePixelMap !== undefined) {
-        item.imageReplacePixelMap.release()
-        item.imageReplacePixelMap = undefined
-        item.imageReplaceTried = false
+      try {
+        if (item.imageReplacePixelMap !== undefined) {
+          item.imageReplacePixelMap.release()
+          item.imageReplacePixelMap = undefined
+          item.imageReplaceTried = false
+        }
+      } catch (e) {
       }
-      if (item.linkIconPixelMap !== undefined) {
-        item.linkIconPixelMap.release()
-        item.linkIconPixelMap = undefined
-        item.linkIconTried = false
-        item.linkIconWidth = 0
-        item.linkIconHeight = 0
+      try {
+        if (item.linkIconPixelMap !== undefined) {
+          item.linkIconPixelMap.release()
+          item.linkIconPixelMap = undefined
+          item.linkIconTried = false
+          item.linkIconWidth = 0
+          item.linkIconHeight = 0
+        }
+      } catch (e) {
       }
     }
   }
@@ -421,6 +430,13 @@ export struct MarkdownHeading {
               this.tableTheme,
               this.paragraphTheme
             ))
+            .decoration(spanDecoration(
+              item,
+              this.strikethroughTheme,
+              this.htmlUnderlineTheme,
+              this.linkTheme,
+              this.footnoteRefTheme
+            ))
             .onClick(() => {
               if (item.linkUrl !== undefined) {
                 this.linkCallback?.(item.linkUrl)
@@ -430,6 +446,7 @@ export struct MarkdownHeading {
       }
     } else if (item.nodeType == "Image" || item.nodeType == "StyleImage" || item.nodeType == "ImageHtmlNode") {
       // 图片/图片Style/HTML图片
+      if (item.imageReplacePixelMap !== undefined || item.imageUrl !== undefined) {
       ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
         .alt(this.placeholderPixelMap)
         .margin({
@@ -479,6 +496,7 @@ export struct MarkdownHeading {
             this.list = [...this.list]
           }
         })
+      }
     } else if (item.nodeType == "LatexMathNode") {
       // 数学公式行内 - 和图片一样直接用ImageSpan
       if (this.isLatexMathEnabled && item.latexPixelMap !== undefined && item.latexImageWidth > 0 && item.latexImageHeight > 0) {
@@ -597,10 +615,15 @@ export struct MarkdownHeading {
               result.pixelMap.release()
               return
             }
+            if (child.linkIconPixelMap !== undefined) {
+              try { child.linkIconPixelMap.release() } catch (e) {}
+            }
             child.linkIconPixelMap = result.pixelMap
             child.linkIconWidth = result.width
             child.linkIconHeight = result.height
             this.list = [...this.list]
+          })
+          .catch(() => {
           })
       }
     }

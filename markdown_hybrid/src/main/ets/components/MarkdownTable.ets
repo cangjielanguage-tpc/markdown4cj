@@ -71,6 +71,7 @@ export struct MarkdownTable {
   }
 
   aboutToDisappear(): void {
+    this.cellWidthTracker.onWidthUpdated = undefined
     if (this.widthTimer !== -1) {
       clearTimeout(this.widthTimer)
       this.widthTimer = -1

@@ -88,7 +88,7 @@ export struct MarkdownTableCell {
   private isAlive: boolean = true // 组件是否存活
 
   aboutToAppear(): void {
-    this.refreshData() // 首次加载（refreshData内会调用tryReplaceImages/tryGenerateLinkIcons）
+    this.refreshData() // 首次加载（refreshData设置list，onListChanged内调用tryReplaceImages/tryGenerateLinkIcons）
   }
 
   aboutToDisappear(): void {
@@ -352,6 +352,7 @@ export struct MarkdownTableCell {
       Span("\n")
     } else if (item.nodeType == "Image" || item.nodeType == "StyleImage" || item.nodeType == "ImageHtmlNode") {
       // 图片/图片Style/HTML图片
+      if (item.imageReplacePixelMap !== undefined || item.imageUrl !== undefined) {
       ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
         .alt(this.placeholderPixelMap)
         .margin({
@@ -404,11 +405,19 @@ export struct MarkdownTableCell {
             this.list = [...this.list]
           }
         })
+      }
     } else if (item.nodeType == "Link" || item.nodeType == "HeadLink") {
       if ((item.isBulletList || item.isOrderedList || item.isQuote || item.isDescList) && this.isSingleLinkNode() && !this.linkTheme.linkListIsIcon) {
         Span(item.nodeText)
           .fontColor(this.linkTheme.linkTextFontColor)
           .fontSize(this.paragraphTheme.paragraphTextFontSize)
+          .decoration(spanDecoration(
+            item,
+            this.strikethroughTheme,
+            this.htmlUnderlineTheme,
+            this.linkTheme,
+            this.footnoteRefTheme
+          ))
           .onClick(() => {
             if (item.linkUrl !== undefined) {
               this.linkCallback?.(item.linkUrl)
@@ -429,6 +438,13 @@ export struct MarkdownTableCell {
           Span(item.nodeText)
             .fontColor(this.linkTheme.linkTextFontColor)
             .fontSize(this.paragraphTheme.paragraphTextFontSize)
+            .decoration(spanDecoration(
+              item,
+              this.strikethroughTheme,
+              this.htmlUnderlineTheme,
+              this.linkTheme,
+              this.footnoteRefTheme
+            ))
             .onClick(() => {
               if (item.linkUrl !== undefined) {
                 this.linkCallback?.(item.linkUrl)
@@ -510,14 +526,15 @@ export struct MarkdownTableCell {
       }
     }
     this.list = [...children]
-    this.tryReplaceImages()
-    this.tryGenerateLinkIcons()
   }
 
   /**
-   * list变化时触发数学公式异步加载（从refreshData移出tryReplaceImages/tryGenerateLinkIcons，避免每次this.list=[...this.list]都重跑）
+   * list变化时触发异步加载（从refreshData移出tryReplaceImages/tryGenerateLinkIcons，避免每次this.list=[...this.list]都重跑；
+   * 各方法内置tried守卫，重复触发仅遍历检查不会重跑）
    */
   onListChanged() {
+    this.tryReplaceImages()
+    this.tryGenerateLinkIcons()
     if (!this.isLatexMathEnabled) {
       return
     }

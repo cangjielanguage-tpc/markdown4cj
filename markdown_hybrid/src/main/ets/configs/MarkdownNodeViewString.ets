@@ -6,7 +6,7 @@ import { NodeView } from "../model/NodeView"
  */
 export class MarkdownNodeViewString {
   private root: NodeView | undefined = undefined
-  private builder: string = ""
+  private fragments: string[] = []
   private isBuilt: boolean = false
 
   /**
@@ -31,15 +31,15 @@ export class MarkdownNodeViewString {
    * - 处理行内节点（Text/Code/换行等）
    * - block节点尾插换行
    *
-    * @return 全局文本
+   * @return 全局文本
    */
   toString(): string {
     if (!this.isBuilt && this.root !== undefined) {
-      this.builder = ""
+      this.fragments = []
       this.traverse(this.root, 0, 0, 0)
       this.isBuilt = true
     }
-    return this.builder
+    return this.fragments.join("")
   }
 
   /**
@@ -143,12 +143,12 @@ export class MarkdownNodeViewString {
   }
 
   /**
-   * 追加字符串到builder
+   * 追加字符串到fragments（O(1) push，避免string += 的O(n)拷贝）
    *
    * @param s 待追加的字符串
    */
   private add(s: string): void {
-    this.builder += s
+    this.fragments.push(s)
   }
 
   /**
@@ -159,10 +159,10 @@ export class MarkdownNodeViewString {
    * @return 重复后的字符串
    */
   private repeatString(s: string, n: number): string {
-    let result = ""
+    const parts: string[] = []
     for (let i = 0; i < n; i++) {
-      result += s
+      parts.push(s)
     }
-    return result
+    return parts.join("")
   }
 }

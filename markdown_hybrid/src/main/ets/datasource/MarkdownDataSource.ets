@@ -162,6 +162,10 @@ export class MarkdownDataSource implements IDataSource {
     for (let i = this.dataArray.length - 1; i >= 0; i--) {
       this.notifyDataDeleteChange(i)
     }
+    for (let i = 0; i < this.dataArray.length; i++) {
+      this.dataArray[i].releaseOwnPixelMaps()
+      this.dataArray[i].releaseChildrenPixelMaps()
+    }
     this.dataArray = []
   }
 
@@ -213,6 +217,8 @@ export class MarkdownDataSource implements IDataSource {
       }
     } else if (existingLen > newLen) {
       for (let i = existingLen - 1; i >= newLen; i--) {
+        this.dataArray[i].releaseOwnPixelMaps()
+        this.dataArray[i].releaseChildrenPixelMaps()
         this.dataArray.splice(i, 1)
         this.notifyDataDeleteChange(i)
       }

@@ -18,7 +18,7 @@ import {
 @Component
 export struct MarkdownImageBlock {
   @Consume placeholderPixelMap: PixelMap | undefined // 图片占位图
-  @ObjectLink item: NodeView // 图片节点数据
+  @ObjectLink @Watch('refreshData') item: NodeView // 图片节点数据
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   imageCallback?: (url: string) => void // 图片点击事件
@@ -29,6 +29,17 @@ export struct MarkdownImageBlock {
 
   aboutToAppear(): void {
     this.isAlive = true
+    this.tryReplaceImage()
+  }
+
+  /**
+   * 刷新数据
+   */
+  refreshData(): void {
+    if (this.replacePixelMap !== undefined) {
+      try { this.replacePixelMap.release() } catch (e) {}
+      this.replacePixelMap = undefined
+    }
     this.tryReplaceImage()
   }
 
@@ -197,6 +208,7 @@ export struct MarkdownImageBlock {
       imageSource.createPixelMap().then((pm: PixelMap) => {
         imageSource.release()
         if (!this.isAlive) {
+          try { pm.release() } catch (e) {}
           return
         }
         if (this.replacePixelMap !== undefined) {

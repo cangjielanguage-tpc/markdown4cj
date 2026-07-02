@@ -164,6 +164,33 @@ export class NodeView {
   }
 
   /**
+   * 释放自身持有的PixelMap资源（不递归子节点）
+   */
+  releaseOwnPixelMaps(): void {
+    try {
+      if (this.imageReplacePixelMap !== undefined) {
+        this.imageReplacePixelMap.release()
+        this.imageReplacePixelMap = undefined
+      }
+    } catch (e) {
+    }
+    try {
+      if (this.latexPixelMap !== undefined) {
+        this.latexPixelMap.release()
+        this.latexPixelMap = undefined
+      }
+    } catch (e) {
+    }
+    try {
+      if (this.linkIconPixelMap !== undefined) {
+        this.linkIconPixelMap.release()
+        this.linkIconPixelMap = undefined
+      }
+    } catch (e) {
+    }
+  }
+
+  /**
    * 属性拷贝
    *
    * @param source 拷贝的NodeView

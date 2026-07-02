@@ -40,6 +40,7 @@ export struct CJMarkdown {
   plugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件配置
   private isAlive: boolean = true // 组件是否存活
   private throttleTimerId: number = -1 // 节流定时器ID
+  private parseTimerId: number = -1 // 异步解析setTimeout定时器ID
 
   aboutToAppear(): void {
     this.isLatexMathEnabled = this.plugin.isLatexMathPlugin
@@ -53,6 +54,28 @@ export struct CJMarkdown {
       clearTimeout(this.throttleTimerId)
       this.throttleTimerId = -1
     }
+    if (this.parseTimerId !== -1) {
+      clearTimeout(this.parseTimerId)
+      this.parseTimerId = -1
+    }
+    if (this.placeholderPixelMap !== undefined) {
+      try { this.placeholderPixelMap.release() } catch (e) {}
+      this.placeholderPixelMap = undefined
+    }
+    this.releaseDataSourcePixelMaps()
+    this.imageAndVideoList = []
+  }
+
+  /**
+   * 释放数据源中所有NodeView的PixelMap资源
+   */
+  private releaseDataSourcePixelMaps(): void {
+    const arr = this.markdownDataSource.getAllData()
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].releaseOwnPixelMaps()
+      arr[i].releaseChildrenPixelMaps()
+    }
+    this.markdownDataSource.clear()
   }
 
   build() {
@@ -607,12 +630,22 @@ export struct CJMarkdown {
      const currentVersion = this.parseVersion
      let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
      let markdownParser:MarkdownParser = new MarkdownParser(op)
-     setTimeout(() => {
-       markdownParser.parse(this.content).then((node) => {
-         this.applyParseResult(node as JsNodeImpl, currentVersion)
-       }).catch(() => {
-         // 解析失败时静默处理，保留上一次成功的结果
-       })
+     this.parseTimerId = setTimeout(() => {
+       if (!this.isAlive) {
+         return
+       }
+       try {
+         markdownParser.parse(this.content).then((node) => {
+           if (!this.isAlive) {
+             return
+           }
+           this.applyParseResult(node as JsNodeImpl, currentVersion)
+         }).catch(() => {
+           // 解析失败时静默处理，保留上一次成功的结果
+         })
+       } catch (e) {
+         // parse同步抛异常时静默处理
+       }
      }, 0)
    }
 
@@ -626,6 +659,10 @@ export struct CJMarkdown {
      let markdownParser:MarkdownParser = new MarkdownParser(op)
      try {
        let node: JsNodeImpl = await markdownParser.parse(this.content) as JsNodeImpl
+       if (!this.isAlive) {
+         this.jsNodePoolImpl.put(node)
+         return
+       }
        this.applyParseResult(node, currentVersion)
      } catch (e) {
        // 解析失败时静默处理，保留上一次成功的结果
@@ -638,33 +675,39 @@ export struct CJMarkdown {
     * @param node 节点
     * @param currentVersion 当前版本
     */
-    private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
-      try {
-        // 渐进式版本跟踪：仅丢弃比已应用版本更旧的结果，保留比已应用版本更新的结果
-        // 避免strictVersionTracking导致所有中间结果被丢弃、UI卡在旧状态
-        if (currentVersion <= this.appliedVersion) {
-          return
-        }
-        let nodeView: NodeView = new NodeView()
-        nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
-        try {
-          nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
-        } catch (e) {
-          // nodeToNodeView失败时静默处理
-        }
-        this.collectImageAndVideoUrls(node)
-        if (nodeView.children.length === 0) {
-          this.markdownDataSource.clear()
-          this.appliedVersion = currentVersion
-          return
-        }
-        this.markdownDataSource.smartUpdateDataArray(nodeView.children)
-        this.config.markdownNodeViewString.setRoot(nodeView)
-        this.appliedVersion = currentVersion
-      } finally {
-        this.jsNodePoolImpl.put(node)
-      }
-    }
+     private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
+       try {
+         if (!this.isAlive || currentVersion <= this.appliedVersion) {
+           return
+         }
+         let nodeView: NodeView = new NodeView()
+         nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
+         let parseOk: boolean = false
+         try {
+           nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
+           parseOk = true
+         } catch (e) {
+           // nodeToNodeView失败时静默处理
+         }
+         this.collectImageAndVideoUrls(node)
+         if (!parseOk) {
+           // 解析失败时不更新数据源，保留上一次成功的结果
+           this.appliedVersion = currentVersion
+           return
+         }
+         if (nodeView.children.length === 0) {
+           this.markdownDataSource.clear()
+           this.config.markdownNodeViewString.setRoot(nodeView)
+           this.appliedVersion = currentVersion
+           return
+         }
+         this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+         this.config.markdownNodeViewString.setRoot(nodeView)
+         this.appliedVersion = currentVersion
+       } finally {
+         this.jsNodePoolImpl.put(node)
+       }
+     }
 
   /**
    * 从解析器props中收集所有图片和视频URL到imageAndVideoList
@@ -702,16 +745,29 @@ export struct CJMarkdown {
    */
   async loadPlaceholderImage(): Promise<void> {
     if (this.config.markdownTheme.imageTheme.imagePlaceholder !== undefined) {
-      const hostContext = this.getUIContext().getHostContext()
-      if (hostContext !== undefined) {
-        const resourceMgr = hostContext.resourceManager
-        const fileData = await resourceMgr.getMediaContent(this.config.markdownTheme.imageTheme.imagePlaceholder)
-        if (!this.isAlive) {
-          return
+      let imageSource: image.ImageSource | undefined = undefined
+      try {
+        const hostContext = this.getUIContext().getHostContext()
+        if (hostContext !== undefined) {
+          const resourceMgr = hostContext.resourceManager
+          const fileData = await resourceMgr.getMediaContent(this.config.markdownTheme.imageTheme.imagePlaceholder)
+          if (!this.isAlive) {
+            return
+          }
+          imageSource = image.createImageSource(fileData.buffer)
+          const pm = await imageSource.createPixelMap()
+          if (!this.isAlive) {
+            try { pm.release() } catch (e) {}
+            return
+          }
+          this.placeholderPixelMap = pm
         }
-        const imageSource = image.createImageSource(fileData.buffer)
-        this.placeholderPixelMap = await imageSource.createPixelMap()
-        imageSource.release()
+      } catch (e) {
+        // 占位图加载失败时静默处理
+      } finally {
+        if (imageSource !== undefined) {
+          try { imageSource.release() } catch (e) {}
+        }
       }
     }
   }
