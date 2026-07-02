@@ -61,7 +61,10 @@ function findImageUrlFromDescendants(node: JsNodeImpl | undefined): string | und
  * @return 解析出的标签数组，无法解析时返回undefined
  */
 function parseTabsFromToStr(toStr: string): Array<string> | undefined {
-  if (!toStr || toStr.length === 0) {
+  if (!toStr) {
+    return undefined
+  }
+  if (toStr.length === 0) {
     return undefined
   }
   let tabsKey = 'tabs=['
@@ -93,26 +96,26 @@ function getLinkText(node: JsNodeImpl | undefined): string {
   if (node === undefined) {
     return ""
   }
-  let text = ""
+  const parts: string[] = []
   let child = node.firstChild
   while (child !== undefined) {
     const childType = child.nodeType
     if (childType === 'Text' || childType === 'Code') {
-      text += child.literal ?? ""
+      parts.push(child.literal ?? "")
     } else if (childType === 'LatexMathNode') {
-      text += child.latex ?? ""
+      parts.push(child.latex ?? "")
     } else if (childType === 'Footnote') {
-      text += child.noteid ?? ""
+      parts.push(child.noteid ?? "")
     } else if (childType === 'SoftLineBreak') {
-      text += " "
+      parts.push(" ")
     } else if (childType === 'HardLineBreak') {
-      text += "\n"
+      parts.push("\n")
     } else {
-      text += getLinkText(child)
+      parts.push(getLinkText(child))
     }
     child = child.next
   }
-  return text
+  return parts.join("")
 }
 
 /**
@@ -137,19 +140,28 @@ export function nodeToNodeView(
     // 对于Pattern2节点(不push，children平铺到targetParentView)：索引随子节点push递增
     //   递归调用传入相同previousChildren，子节点用targetParentView.children.length定位
     const prevChildPos = targetParentView.children.length
-    const prevChild: NodeView | undefined =
-      (previousChildren !== undefined && prevChildPos < previousChildren.length
-        && previousChildren[prevChildPos].nodeType === nodeType)
-        ? previousChildren[prevChildPos]
-        : undefined
-    if (prevChild !== undefined
-      && nodeType !== 'FencedCodeBlockListBlock'
-      && sourceSpansEqual(prevChild.sourceSpan, currentJsNode.getSourceSpans())) {
-      // sourceSpan完全匹配 — 复用整个子树，跳过转换
-      // FencedCodeBlockListBlock例外：其sourceSpan仅从首个代码块设置，新增代码块时不变化
-      targetParentView.children.push(prevChild)
-      currentJsNode = currentJsNode.next
-      continue
+    // 分步判空，避免&&短路求值在ArkTS运行时不可靠
+    let prevChild: NodeView | undefined = undefined
+    if (previousChildren !== undefined) {
+      if (prevChildPos < previousChildren.length) {
+        const candidate = previousChildren[prevChildPos]
+        if (candidate.nodeType === nodeType) {
+          prevChild = candidate
+        }
+      }
+    }
+    let canReuse = prevChild !== undefined
+    if (canReuse && nodeType === 'FencedCodeBlockListBlock') {
+      canReuse = false
+    }
+    if (canReuse && prevChild !== undefined) {
+      if (sourceSpansEqual(prevChild.sourceSpan, currentJsNode.getSourceSpans())) {
+        // sourceSpan完全匹配 — 复用整个子树，跳过转换
+        // FencedCodeBlockListBlock例外：其sourceSpan仅从首个代码块设置，新增代码块时不变化
+        targetParentView.children.push(prevChild)
+        currentJsNode = currentJsNode.next
+        continue
+      }
     }
     const currentView: NodeView = new NodeView()
     currentView.nodeType = nodeType
@@ -230,18 +242,22 @@ export function nodeToNodeView(
         const fontNode = currentJsNode as JsNode
         // size属性
         const fontSizeStr: string | undefined = fontNode.size
-        if (fontSizeStr !== undefined && fontSizeStr.length > 0) {
-          const size = sizeStringToSize(fontSizeStr)
-          if (size !== undefined) {
-            currentView.fontNodeSize = size
+        if (fontSizeStr !== undefined) {
+          if (fontSizeStr.length > 0) {
+            const size = sizeStringToSize(fontSizeStr)
+            if (size !== undefined) {
+              currentView.fontNodeSize = size
+            }
           }
         }
         // color属性
         const fontColorStr: string | undefined = fontNode.color
-        if (fontColorStr !== undefined && fontColorStr.length > 0) {
-          const color = colorStringToColor(fontColorStr)
-          if (color !== undefined) {
-            currentView.fontNodeColor = color
+        if (fontColorStr !== undefined) {
+          if (fontColorStr.length > 0) {
+            const color = colorStringToColor(fontColorStr)
+            if (color !== undefined) {
+              currentView.fontNodeColor = color
+            }
           }
         }
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
@@ -472,8 +488,9 @@ export function nodeToNodeView(
         // ImageStyles直接在JsNodeImpl类上声明，可直接访问
         // 先判空再传入parsePicStyle，避免undefined/null导致.length异常
         const imageStyles: Array<string> | undefined = currentJsNode.ImageStyles
-        if (imageStyles !== undefined && imageStyles !== null && imageStyles.length > 0) {
-          const picStyle = parsePicStyle(imageStyles)
+        if (imageStyles !== undefined && imageStyles !== null) {
+          if (imageStyles.length > 0) {
+            const picStyle = parsePicStyle(imageStyles)
           if (picStyle.width !== undefined) {
             currentView.imageStyleWidth = picStyle.width
           }
@@ -485,6 +502,7 @@ export function nodeToNodeView(
           }
           if (picStyle.align !== undefined) {
             currentView.imageAlign = picStyle.align
+          }
           }
         }
         targetParentView.children.push(currentView)

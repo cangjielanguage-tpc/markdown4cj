@@ -241,8 +241,10 @@ export struct MarkdownCodeBlockList {
       infoTexts.push(child.codeInfo ?? '')
       infos.push(child.codeInfo ?? '')
     }
-    if (this.node.codeListTab && this.node.codeListTab.length > 0) {
-      infos = this.node.codeListTab
+    if (this.node.codeListTab !== undefined) {
+      if (this.node.codeListTab.length > 0) {
+        infos = this.node.codeListTab
+      }
     }
 
     // 检测哪些代码块内容发生了变化（文本或语言）
@@ -329,8 +331,13 @@ export struct MarkdownCodeBlockList {
       if (codeText.length === 0) {
         continue
       }
-      let info: string | undefined = (this.strInfoText[idx] !== undefined && this.strInfoText[idx].length > 0)
-        ? this.strInfoText[idx] : undefined
+      let info: string | undefined = undefined
+      const infoText: string | undefined = this.strInfoText[idx]
+      if (infoText !== undefined) {
+        if (infoText.length > 0) {
+          info = infoText
+        }
+      }
       let timerId = setTimeout(() => {
         if (!this.isAlive || currentVersion < this.parseVersion) {
           return
@@ -366,8 +373,13 @@ export struct MarkdownCodeBlockList {
       if (codeText.length === 0) {
         continue
       }
-      let info: string | undefined = (this.strInfoText[idx] !== undefined && this.strInfoText[idx].length > 0)
-        ? this.strInfoText[idx] : undefined
+      let info: string | undefined = undefined
+      const infoText: string | undefined = this.strInfoText[idx]
+      if (infoText !== undefined) {
+        if (infoText.length > 0) {
+          info = infoText
+        }
+      }
       try {
         if (!this.isAlive || currentVersion < this.parseVersion) {
           break

@@ -80,7 +80,7 @@ export struct MarkdownImageBlock {
             this.imageCallback?.(this.item.imageUrl ?? "")
           })
           .onComplete((imageLoadResult) => {
-            if (imageLoadResult) {
+            if (imageLoadResult !== undefined && imageLoadResult !== null) {
               const l = imageWidthAndHeight(
                 this.componentWidth,
                 imageLoadResult.width,
@@ -123,7 +123,7 @@ export struct MarkdownImageBlock {
             this.imageCallback?.(this.item.imageUrl ?? "")
           })
           .onComplete((imageLoadResult) => {
-            if (imageLoadResult) {
+            if (imageLoadResult !== undefined && imageLoadResult !== null) {
               const l = imageWidthAndHeight(
                 this.componentWidth,
                 imageLoadResult.width,

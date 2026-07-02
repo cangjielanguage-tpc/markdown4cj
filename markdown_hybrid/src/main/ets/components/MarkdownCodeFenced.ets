@@ -163,7 +163,12 @@ export struct MarkdownCodeFenced {
     }
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let info: string | undefined = (this.info !== undefined && this.info.length > 0) ? this.info : undefined
+    let info: string | undefined = undefined
+    if (this.info !== undefined) {
+      if (this.info.length > 0) {
+        info = this.info
+      }
+    }
     this.timerId = setTimeout(() => {
       if (!this.isAlive || currentVersion <= this.appliedVersion) {
         return
@@ -196,7 +201,12 @@ export struct MarkdownCodeFenced {
     }
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let info: string | undefined = (this.info !== undefined && this.info.length > 0) ? this.info : undefined
+    let info: string | undefined = undefined
+    if (this.info !== undefined) {
+      if (this.info.length > 0) {
+        info = this.info
+      }
+    }
     try {
       let prismRes: PrismRes = await codeStringToColorString(this.codeText, info, this.codeBlockTheme.codeBlockIsDark)
       if (!this.isAlive || currentVersion <= this.appliedVersion) {

@@ -34,10 +34,12 @@ export class MarkdownNodeViewString {
    * @return 全局文本
    */
   toString(): string {
-    if (!this.isBuilt && this.root !== undefined) {
-      this.fragments = []
-      this.traverse(this.root, 0, 0, 0)
-      this.isBuilt = true
+    if (!this.isBuilt) {
+      if (this.root !== undefined) {
+        this.fragments = []
+        this.traverse(this.root, 0, 0, 0)
+        this.isBuilt = true
+      }
     }
     return this.fragments.join("")
   }

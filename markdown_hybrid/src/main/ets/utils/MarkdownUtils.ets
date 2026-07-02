@@ -149,9 +149,7 @@ export function solidSquareToUnicode(): string {
  */
 export function imageUrlHandle(url?: string): ResourceStr | undefined {
   if (url?.startsWith("./")) {
-    const resStr = url.replace("./", "")
-    const res = $rawfile(resStr)
-    return res
+    return $rawfile(url.substring(2))
   } else {
     return url
   }
@@ -187,7 +185,7 @@ export function imageWidthAndHeight(
   const componentImageWidthNew = (imageMaxWidth !== undefined)
     ? Math.min(vp2px(imageMaxWidth), componentImageWidth)
     : componentImageWidth
-  if (imageResWidth <= 0 || imageResHeight <= 0) {
+  if (!(imageResWidth > 0) || !(imageResHeight > 0)) {
     return [0, 0]
   }
   const aspectRatio: number = imageResHeight / imageResWidth
@@ -295,7 +293,10 @@ export function imageWidthAndHeight(
  * @return 数值，解析失败返回undefined
  */
 export function strToLengthNumber(str: string | undefined): number | undefined {
-  if (str === undefined || str.length === 0) {
+  if (str === undefined) {
+    return undefined
+  }
+  if (str.length === 0) {
     return undefined
   }
   const trimmed = str.trim()
@@ -683,7 +684,10 @@ export function parsePicStyle(picStyle: Array<string> | undefined): PicStyleObj 
   }
   for (let i = 0; i < picStyle.length; i++) {
     const str: string | undefined = picStyle[i]
-    if (str === undefined || str === null || str.length === 0) {
+    if (str === undefined || str === null) {
+      continue
+    }
+    if (str.length === 0) {
       continue
     }
     try {
@@ -828,10 +832,15 @@ export function urlSafeBase64Decode(v: string): string {
     const decoded = base64Decode(vNew)
     // 查找file-name=xxx.yyy模式
     const match = decoded.match(/file-name=([^&]+)/)
-    if (match !== null && match.length > 1 && match[1] !== undefined) {
-      const parts = match[1].split('.')
-      if (parts.length > 1) {
-        return parts[parts.length - 1].toUpperCase()
+    if (match === null) {
+      return ''
+    }
+    if (match.length > 1) {
+      if (match[1] !== undefined) {
+        const parts = match[1].split('.')
+        if (parts.length > 1) {
+          return parts[parts.length - 1].toUpperCase()
+        }
       }
     }
     return ''
@@ -875,12 +884,12 @@ function base64Decode(input: string): string {
   }
 
   // 将字节数组转为字符串（兼容UTF-8多字节字符）
-  let result = ''
+  const parts: string[] = []
   let i = 0
   while (i < bytes.length) {
     const b = bytes[i]
     if (b < 0x80) {
-      result += String.fromCharCode(b)
+      parts.push(String.fromCharCode(b))
       i++
     } else if (b < 0xC0) {
       // 无效的UTF-8起始字节，跳过
@@ -888,7 +897,7 @@ function base64Decode(input: string): string {
     } else if (b < 0xE0) {
       if (i + 1 < bytes.length) {
         const c2 = bytes[i + 1]
-        result += String.fromCharCode(((b & 0x1F) << 6) | (c2 & 0x3F))
+        parts.push(String.fromCharCode(((b & 0x1F) << 6) | (c2 & 0x3F)))
         i += 2
       } else {
         i++
@@ -897,7 +906,7 @@ function base64Decode(input: string): string {
       if (i + 2 < bytes.length) {
         const c2 = bytes[i + 1]
         const c3 = bytes[i + 2]
-        result += String.fromCharCode(((b & 0x0F) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F))
+        parts.push(String.fromCharCode(((b & 0x0F) << 12) | ((c2 & 0x3F) << 6) | (c3 & 0x3F)))
         i += 3
       } else {
         i++
@@ -910,8 +919,8 @@ function base64Decode(input: string): string {
         const cp = ((b & 0x07) << 18) | ((c2 & 0x3F) << 12) | ((c3 & 0x3F) << 6) | (c4 & 0x3F)
         // 转为UTF-16代理对
         const offset = cp - 0x10000
-        result += String.fromCharCode(0xD800 + (offset >> 10))
-        result += String.fromCharCode(0xDC00 + (offset & 0x3FF))
+        parts.push(String.fromCharCode(0xD800 + (offset >> 10)))
+        parts.push(String.fromCharCode(0xDC00 + (offset & 0x3FF)))
         i += 4
       } else {
         i++
@@ -919,6 +928,6 @@ function base64Decode(input: string): string {
     }
   }
 
-  return result
+  return parts.join("")
 }
 

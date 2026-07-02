@@ -37,7 +37,8 @@ export struct MarkdownBanner {
             } else {
               // 其他节点
             }
-          }
+          },
+          (item: NodeView, index: number) => `${index}-${item.nodeType}-${item.imageUrl ?? ''}`
         )
       }
       .autoPlay(false)

@@ -209,23 +209,30 @@ export function generateLinkIconPixelMap(
       padding, lineLeftPadding, lineRightPadding)
   }
 
-  if (buffer === undefined || buffer.byteLength === 0) {
+  if (buffer === undefined) {
+    return Promise.resolve(undefined)
+  }
+  if (buffer.byteLength === 0) {
     return Promise.resolve(undefined)
   }
 
-  let imageSource: image.ImageSource
+  let imageSource: image.ImageSource | undefined = undefined
   try {
     imageSource = image.createImageSource(buffer)
   } catch (e) {
     return Promise.resolve(undefined)
   }
+  if (imageSource === undefined || imageSource === null) {
+    return Promise.resolve(undefined)
+  }
+  const source = imageSource
   let imageSourceReleased = false
-  return imageSource.createPixelMap()
+  return source.createPixelMap()
     .then((pm: PixelMap) => {
       return pm.getImageInfo()
         .then((info: image.ImageInfo) => {
           imageSourceReleased = true
-          try { imageSource.release() } catch (e) {}
+          try { source.release() } catch (e) {}
           const result: LinkIconResult = {
             pixelMap: pm,
             width: info.size.width,
@@ -237,7 +244,7 @@ export function generateLinkIconPixelMap(
           try { pm.release() } catch (e) {}
           if (!imageSourceReleased) {
             imageSourceReleased = true
-            try { imageSource.release() } catch (e) {}
+            try { source.release() } catch (e) {}
           }
           return undefined
         })
@@ -245,7 +252,7 @@ export function generateLinkIconPixelMap(
     .catch(() => {
       if (!imageSourceReleased) {
         imageSourceReleased = true
-        try { imageSource.release() } catch (e) {}
+        try { source.release() } catch (e) {}
       }
       return undefined
     })

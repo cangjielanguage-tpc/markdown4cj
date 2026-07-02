@@ -31,7 +31,7 @@ export struct MarkdownLatexMathInline {
   aboutToDisappear(): void {
     this.isAlive = false
     if (this.pixelMap !== undefined) {
-      try { this.pixelMap.release() } catch (e) {}
+      try { this.pixelMap.release() } catch (e) { console.error('PixelMap release failed: ' + JSON.stringify(e)) }
       this.pixelMap = undefined
     }
     this.imageData = undefined
@@ -91,7 +91,7 @@ export struct MarkdownLatexMathInline {
    */
   private latexMathInlineParser(): void {
     if (this.pixelMap !== undefined) {
-      try { this.pixelMap.release() } catch (e) {}
+      try { this.pixelMap.release() } catch (e) { console.error('PixelMap release failed: ' + JSON.stringify(e)) }
       this.pixelMap = undefined
     }
     this.imageData = undefined
@@ -113,9 +113,9 @@ export struct MarkdownLatexMathInline {
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
         imageSource.createPixelMap().then((pm: PixelMap) => {
-          try { imageSource.release() } catch (e) {}
+          try { imageSource.release() } catch (e) { console.error('ImageSource release failed: ' + JSON.stringify(e)) }
           if (!this.isAlive) {
-            try { pm.release() } catch (e) {}
+            try { pm.release() } catch (e) { console.error('PixelMap release failed: ' + JSON.stringify(e)) }
             LatexParseQueue.notifyDone()
             return
           }
@@ -132,7 +132,7 @@ export struct MarkdownLatexMathInline {
             this.onLatexImageLoaded?.()
             LatexParseQueue.notifyDone()
           }).catch(() => {
-            try { pm.release() } catch (e) {}
+            try { pm.release() } catch (e) { console.error('PixelMap release failed: ' + JSON.stringify(e)) }
             this.pixelMap = undefined
             if (this.isAlive) {
               this.isParserEnd = true
@@ -140,7 +140,7 @@ export struct MarkdownLatexMathInline {
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
-          try { imageSource.release() } catch (e) {}
+          try { imageSource.release() } catch (e) { console.error('ImageSource release failed: ' + JSON.stringify(e)) }
           if (this.isAlive) {
             this.isParserEnd = true
           }

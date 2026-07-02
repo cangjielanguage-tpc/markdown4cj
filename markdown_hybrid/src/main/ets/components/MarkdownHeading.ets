@@ -123,6 +123,7 @@ export struct MarkdownHeading {
           item.linkIconPixelMap.release()
           item.linkIconPixelMap = undefined
           item.linkIconTried = false
+          item.linkIconText = ''
           item.linkIconWidth = 0
           item.linkIconHeight = 0
         }
@@ -207,7 +208,7 @@ export struct MarkdownHeading {
             this.headingInlineItem(item, index)
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
+            return `${index}-${item.nodeType}-${item.contentHash}-${item.nodeText}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
           }
         )
       }
@@ -603,6 +604,7 @@ export struct MarkdownHeading {
     for (const child of this.list) {
       if ((child.nodeType === "Link" || child.nodeType === "HeadLink") && child.isLinkStyle && !child.linkIconTried) {
         child.linkIconTried = true
+        child.linkIconText = child.nodeText
         generateLinkIconPixelMap(child.nodeText, child.linkUrl ?? "", this.linkTheme)
           .then((result: LinkIconResult | undefined) => {
             if (!this.isAlive || result === undefined) {
@@ -612,6 +614,11 @@ export struct MarkdownHeading {
               return
             }
             if (this.list.indexOf(child) < 0) {
+              result.pixelMap.release()
+              return
+            }
+            // 流式输出中文本可能已变化，检查是否仍是生成时的文本
+            if (child.linkIconText !== child.nodeText) {
               result.pixelMap.release()
               return
             }

@@ -243,15 +243,9 @@ export class MarkdownDataSource implements IDataSource {
     existing: NodeView,
     newBlock: NodeView
   ): boolean {
-    if (existing.nodeHash !== "0"
+    return existing.nodeHash !== "0"
       && newBlock.nodeHash !== "0"
       && existing.nodeHash === newBlock.nodeHash
       && existing.contentHash === newBlock.contentHash
-    ) {
-      return true
-    }
-    return existing.nodeType === newBlock.nodeType &&
-      existing.nodeText === newBlock.nodeText &&
-      existing.contentFingerprint() === newBlock.contentFingerprint()
   }
 }

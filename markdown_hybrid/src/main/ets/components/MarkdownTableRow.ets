@@ -45,8 +45,8 @@ export struct MarkdownTableRow {
   @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
-  @Prop tableBlockRowRow: number // 表格的第几行
-  @Prop tableBlockRowCellSize: number // 表格总共有几列
+  @Prop tableBlockRowRow: number = 0 // 表格的第几行
+  @Prop tableBlockRowCellSize: number = 0 // 表格总共有几列
   @Prop columnWidths: number[] = [] // 各列宽度快照（来自MarkdownTable的@State）
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
   footnoteCallback?: (index: string) => void // 脚注点击事件
@@ -111,7 +111,7 @@ export struct MarkdownTableRow {
           }
         },
         (item: NodeView, index: number) => {
-          return `${index}-${item.nodeType}-${item.contentHash}`
+          return `${index}-${item.nodeType}`
         }
       )
     }

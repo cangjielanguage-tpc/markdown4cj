@@ -212,6 +212,9 @@ export const SECONDS_PER_MINUTE: number = 60
  * @return 是否是Margin对象
  */
 export function isMargin(obj: Object): boolean {
+  if (obj === undefined || obj === null) {
+    return false
+  }
   const keys = Object.keys(obj)
   return keys.includes('top')
     || keys.includes('right')
@@ -225,6 +228,9 @@ export function isMargin(obj: Object): boolean {
  * @return 是否是Padding对象
  */
 export function isPadding(obj: Object): boolean {
+  if (obj === undefined || obj === null) {
+    return false
+  }
   const keys = Object.keys(obj)
   return keys.includes('top')
     || keys.includes('right')
@@ -238,6 +244,9 @@ export function isPadding(obj: Object): boolean {
  * @return 是否是BorderRadiuses对象
  */
 export function isBorderRadiuses(obj: Object): boolean {
+  if (obj === undefined || obj === null) {
+    return false
+  }
   const keys = Object.keys(obj)
   return keys.includes('topLeft')
     || keys.includes('topRight')

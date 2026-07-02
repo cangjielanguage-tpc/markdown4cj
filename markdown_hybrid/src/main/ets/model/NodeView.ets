@@ -76,23 +76,9 @@ export class NodeView {
   linkTypeStr: string = '' // 链接类型字符串（iconType=2时使用）
   linkIconPixelMap: PixelMap | undefined = undefined // 链接图标PixelMap（C++原生绘图异步加载后设置）
   linkIconTried: boolean = false // 链接图标是否已尝试生成（防止重复请求）
+  linkIconText: string = '' // 链接图标生成时使用的文本（用于检测流式输出中文本变化，避免显示过期图标）
   linkIconWidth: number = 0 // 链接图标宽度 - 单位px
   linkIconHeight: number = 0 // 链接图标高度 - 单位px
-
-  /**
-   * 递归计算内容指纹（所有后代节点的nodeText拼接）
-   * 用于LazyForEach/ForEach的key生成，确保内容变化时key也变化，触发组件重建
-   *
-   * @return 内容指纹字符串
-   */
-  contentFingerprint(): string {
-    const parts: string[] = [this.nodeType, ":", this.nodeText]
-    for (let i = 0; i < this.children.length; i++) {
-      parts.push("|")
-      parts.push(this.children[i].contentFingerprint())
-    }
-    return parts.join("")
-  }
 
   /**
    * 全量数据拷贝（包括children、nodeType等所有属性）
@@ -132,6 +118,7 @@ export class NodeView {
     }
     this.linkIconPixelMap = source.linkIconPixelMap
     this.linkIconTried = source.linkIconTried
+    this.linkIconText = source.linkIconText
     this.linkIconWidth = source.linkIconWidth
     this.linkIconHeight = source.linkIconHeight
   }
@@ -292,7 +279,7 @@ export class JsNodePoolImpl implements JsNodePool {
  * @param arr 存放回收节点的数组
  */
 export function traverseTree(node: JsNodeImpl | undefined, arr: Array<JsNodeImpl>) {
-  if (node) {
+  if (node !== undefined) {
     let child:JsNodeImpl|undefined = node.firstChild
     let next:JsNodeImpl|undefined = node.next
     node.reset()

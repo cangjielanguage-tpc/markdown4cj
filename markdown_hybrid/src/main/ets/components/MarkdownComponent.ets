@@ -723,23 +723,25 @@ export struct CJMarkdown {
     const prop = node.getProps()
     if (prop !== undefined) {
       const links = prop.get("links")
-      if (links !== undefined && links.length > 0) {
-        let str = links
-        if (str.startsWith('[') && str.endsWith(']')) {
-          str = str.substring(1, str.length - 1)
+      if (links !== undefined) {
+        if (links.length > 0) {
+          let str = links
+          if (str.startsWith('[') && str.endsWith(']')) {
+            str = str.substring(1, str.length - 1)
+          }
+          this.imageAndVideoList = str.split(',')
+            .map((s: string) => s.trim())
+            .filter((s: string) => s.length > 0)
+            .map((s: string) => {
+              if (s.startsWith('"') && s.endsWith('"')) {
+                return s.substring(1, s.length - 1)
+              }
+              if (s.startsWith("'") && s.endsWith("'")) {
+                return s.substring(1, s.length - 1)
+              }
+              return s
+            })
         }
-        this.imageAndVideoList = str.split(',')
-          .map((s: string) => s.trim())
-          .filter((s: string) => s.length > 0)
-          .map((s: string) => {
-            if (s.startsWith('"') && s.endsWith('"')) {
-              return s.substring(1, s.length - 1)
-            }
-            if (s.startsWith("'") && s.endsWith("'")) {
-              return s.substring(1, s.length - 1)
-            }
-            return s
-          })
       }
     }
   }

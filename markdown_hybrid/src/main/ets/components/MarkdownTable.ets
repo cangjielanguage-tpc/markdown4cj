@@ -130,7 +130,7 @@ export struct MarkdownTable {
             }
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}-${item.contentHash}`
+            return `${index}-${item.nodeType}`
           }
         )
       }

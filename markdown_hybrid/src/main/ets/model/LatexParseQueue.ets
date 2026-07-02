@@ -7,6 +7,7 @@ export class LatexParseQueue {
   private static queue: Array<() => void> = []
   private static isRunning: boolean = false
   private static isNotifyScheduled: boolean = false
+  private static notifyTimerId: number = -1
 
   /**
    * 将LaTeX解析任务加入队列，若当前无任务在执行则立即开始
@@ -28,10 +29,25 @@ export class LatexParseQueue {
       return
     }
     LatexParseQueue.isNotifyScheduled = true
-    setTimeout(() => {
+    LatexParseQueue.notifyTimerId = setTimeout(() => {
+      LatexParseQueue.notifyTimerId = -1
       LatexParseQueue.isNotifyScheduled = false
       LatexParseQueue.processNext()
     }, 0)
+  }
+
+  /**
+   * 取消待执行的notify定时器并清空队列
+   * 用于应用退出或页面销毁时清理残留任务
+   */
+  static dispose(): void {
+    if (LatexParseQueue.notifyTimerId !== -1) {
+      clearTimeout(LatexParseQueue.notifyTimerId)
+      LatexParseQueue.notifyTimerId = -1
+    }
+    LatexParseQueue.isNotifyScheduled = false
+    LatexParseQueue.isRunning = false
+    LatexParseQueue.queue = []
   }
 
   /**
@@ -51,6 +67,7 @@ export class LatexParseQueue {
     try {
       task()
     } catch (e) {
+      console.error('LatexParseQueue task error: ' + JSON.stringify(e))
       LatexParseQueue.notifyDone()
     }
   }

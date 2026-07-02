@@ -18,6 +18,7 @@ export struct MarkdownVideo {
   @State videoRatio: number = 16.0 / 9.0 // 图片宽高比
   @State time: string = "" // 视频时长
   private isAlive: boolean = false // 组件是否存活
+  private refreshVersion: number = 0 // 刷新版本号，防止过期回调
 
   aboutToAppear(): void {
     this.isAlive = true
@@ -32,13 +33,15 @@ export struct MarkdownVideo {
    * 刷新数据
    */
   refreshData(): void {
+    this.refreshVersion++
+    const currentVersion = this.refreshVersion
     this.imageVideoUrl = this.node.imageUrl ?? ""
     this.imageUrl = ""
     this.videoRatio = 16.0 / 9.0
     this.time = ""
     try {
       this.videoImageCallback?.(this.imageVideoUrl, (url: string, ratio: number, time: number) => {
-        if (!this.isAlive) {
+        if (!this.isAlive || currentVersion !== this.refreshVersion) {
           return
         }
         this.imageUrl = url
@@ -48,6 +51,7 @@ export struct MarkdownVideo {
         this.time = formatDurationToTime(time)
       })
     } catch (e) {
+      console.error('MarkdownVideo refreshData error: ' + JSON.stringify(e))
     }
   }
 
