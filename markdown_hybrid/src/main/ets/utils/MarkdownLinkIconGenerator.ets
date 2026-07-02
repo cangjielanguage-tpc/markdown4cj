@@ -213,14 +213,19 @@ export function generateLinkIconPixelMap(
     return Promise.resolve(undefined)
   }
 
-  const imageSource: image.ImageSource = image.createImageSource(buffer)
+  let imageSource: image.ImageSource
+  try {
+    imageSource = image.createImageSource(buffer)
+  } catch (e) {
+    return Promise.resolve(undefined)
+  }
   let imageSourceReleased = false
   return imageSource.createPixelMap()
     .then((pm: PixelMap) => {
       return pm.getImageInfo()
         .then((info: image.ImageInfo) => {
           imageSourceReleased = true
-          imageSource.release()
+          try { imageSource.release() } catch (e) {}
           const result: LinkIconResult = {
             pixelMap: pm,
             width: info.size.width,
@@ -229,10 +234,10 @@ export function generateLinkIconPixelMap(
           return result
         })
         .catch(() => {
-          pm.release()
+          try { pm.release() } catch (e) {}
           if (!imageSourceReleased) {
             imageSourceReleased = true
-            imageSource.release()
+            try { imageSource.release() } catch (e) {}
           }
           return undefined
         })
@@ -240,7 +245,7 @@ export function generateLinkIconPixelMap(
     .catch(() => {
       if (!imageSourceReleased) {
         imageSourceReleased = true
-        imageSource.release()
+        try { imageSource.release() } catch (e) {}
       }
       return undefined
     })

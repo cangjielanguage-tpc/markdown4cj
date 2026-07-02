@@ -26,6 +26,7 @@ export struct MarkdownImageBlock {
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   @State replacePixelMap: PixelMap | undefined = undefined // 替换后的PixelMap
   private isAlive: boolean = false // 组件是否存活
+  private replaceToken: number = 0 // 替换请求令牌（防stale回调覆盖新数据）
 
   aboutToAppear(): void {
     this.isAlive = true
@@ -46,7 +47,7 @@ export struct MarkdownImageBlock {
   aboutToDisappear(): void {
     this.isAlive = false
     if (this.replacePixelMap !== undefined) {
-      this.replacePixelMap.release()
+      try { this.replacePixelMap.release() } catch (e) {}
       this.replacePixelMap = undefined
     }
   }
@@ -200,23 +201,24 @@ export struct MarkdownImageBlock {
     if (this.imageReplaceCallback === undefined || this.item.imageUrl === undefined) {
       return
     }
+    const myToken = ++this.replaceToken
     this.imageReplaceCallback(this.item.imageUrl).then((buffer: ArrayBuffer | undefined) => {
-      if (!this.isAlive || buffer === undefined) {
+      if (!this.isAlive || buffer === undefined || myToken !== this.replaceToken) {
         return
       }
       const imageSource: image.ImageSource = image.createImageSource(buffer)
       imageSource.createPixelMap().then((pm: PixelMap) => {
-        imageSource.release()
-        if (!this.isAlive) {
+        try { imageSource.release() } catch (e) {}
+        if (!this.isAlive || myToken !== this.replaceToken) {
           try { pm.release() } catch (e) {}
           return
         }
         if (this.replacePixelMap !== undefined) {
-          this.replacePixelMap.release()
+          try { this.replacePixelMap.release() } catch (e) {}
         }
         this.replacePixelMap = pm
       }).catch(() => {
-        imageSource.release()
+        try { imageSource.release() } catch (e) {}
       })
     }).catch(() => {
     })

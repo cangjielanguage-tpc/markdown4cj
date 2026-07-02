@@ -68,7 +68,7 @@ export struct MarkdownTableRow {
       LazyForEach(
         this.markdownDataSource,
         (item: NodeView, index: number) => {
-          if (item.nodeType == "TableCell") {
+          if (item.nodeType === "TableCell") {
             // 表格单元格
             MarkdownTableCell({
               node: item,

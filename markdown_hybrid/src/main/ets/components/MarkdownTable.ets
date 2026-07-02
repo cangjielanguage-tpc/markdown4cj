@@ -62,6 +62,7 @@ export struct MarkdownTable {
   @State columnWidths: number[] = [] // 列宽快照（refreshData时从tracker批量读取，触发一次重渲染）
   private widthTimer: number = -1 // 列宽应用防抖定时器
   private static readonly WIDTH_DEBOUNCE_MS: number = 200 // 列宽应用防抖间隔（ms）
+  private isAlive: boolean = true // 组件是否存活
 
   aboutToAppear(): void {
     this.cellWidthTracker.onWidthUpdated = () => {
@@ -71,6 +72,7 @@ export struct MarkdownTable {
   }
 
   aboutToDisappear(): void {
+    this.isAlive = false
     this.cellWidthTracker.onWidthUpdated = undefined
     if (this.widthTimer !== -1) {
       clearTimeout(this.widthTimer)
@@ -85,7 +87,7 @@ export struct MarkdownTable {
           this.markdownDataSource,
           (item: NodeView, index: number) => {
             ListItem() {
-              if (item.nodeType == "TableRow") {
+              if (item.nodeType === "TableRow") {
                 // 表格行
                 MarkdownTableRow({
                   node: item,
@@ -198,6 +200,9 @@ export struct MarkdownTable {
     }
     this.widthTimer = setTimeout(() => {
       this.widthTimer = -1
+      if (!this.isAlive) {
+        return
+      }
       this.applyColumnWidths()
     }, MarkdownTable.WIDTH_DEBOUNCE_MS)
   }

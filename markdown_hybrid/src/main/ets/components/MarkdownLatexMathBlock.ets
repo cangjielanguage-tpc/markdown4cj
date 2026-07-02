@@ -30,7 +30,7 @@ export struct MarkdownLatexMathBlock {
   aboutToDisappear(): void {
     this.isAlive = false
     if (this.pixelMap !== undefined) {
-      this.pixelMap.release()
+      try { this.pixelMap.release() } catch (e) {}
       this.pixelMap = undefined
     }
     this.imageData = undefined
@@ -142,7 +142,7 @@ export struct MarkdownLatexMathBlock {
    */
   private latexMathBlockParser(): void {
     if (this.pixelMap !== undefined) {
-      this.pixelMap.release()
+      try { this.pixelMap.release() } catch (e) {}
       this.pixelMap = undefined
     }
     this.imageData = undefined
@@ -164,9 +164,9 @@ export struct MarkdownLatexMathBlock {
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
         imageSource.createPixelMap().then((pm: PixelMap) => {
-          imageSource.release()
+          try { imageSource.release() } catch (e) {}
           if (!this.isAlive) {
-            pm.release()
+            try { pm.release() } catch (e) {}
             LatexParseQueue.notifyDone()
             return
           }
@@ -182,7 +182,7 @@ export struct MarkdownLatexMathBlock {
             this.isParserEnd = true
             LatexParseQueue.notifyDone()
           }).catch(() => {
-            pm.release()
+            try { pm.release() } catch (e) {}
             this.pixelMap = undefined
             if (this.isAlive) {
               this.isParserEnd = true
@@ -190,7 +190,7 @@ export struct MarkdownLatexMathBlock {
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
-          imageSource.release()
+          try { imageSource.release() } catch (e) {}
           if (this.isAlive) {
             this.isParserEnd = true
           }

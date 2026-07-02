@@ -157,7 +157,7 @@ export struct MarkdownParagraph {
     Column() {
       if (!this.imageTheme.isImageMixedLayout
         && this.list.length === 1
-        && (this.list[0].nodeType == "Image" || this.list[0].nodeType == "StyleImage" || this.list[0].nodeType == "ImageHtmlNode")) {
+        && (this.list[0].nodeType === "Image" || this.list[0].nodeType === "StyleImage" || this.list[0].nodeType === "ImageHtmlNode")) {
         MarkdownImageBlock({
           item: this.list[0],
           imageTheme: this.imageTheme,
@@ -207,7 +207,7 @@ export struct MarkdownParagraph {
    */
   @Builder
   paragraphInlineItem(item: NodeView, index: number) {
-    if (item.nodeType == "Text" || item.nodeType == "Code" || item.nodeType == "Footnote") {
+    if (item.nodeType === "Text" || item.nodeType === "Code" || item.nodeType === "Footnote") {
       // 普通文本/内联代码/内联脚注
       Span(item.nodeText)
         .fontColor(spanFontColor(
@@ -355,13 +355,13 @@ export struct MarkdownParagraph {
             return
           }
         })
-    } else if (item.nodeType == "SoftLineBreak") {
+    } else if (item.nodeType === "SoftLineBreak") {
       // 软换行
       Span(spanSoftLineBreak(this.globalTheme.isLineBreak))
-    } else if (item.nodeType == "HardLineBreak") {
+    } else if (item.nodeType === "HardLineBreak") {
       // 硬换行
       Span("\n")
-    } else if (item.nodeType == "Link" || item.nodeType == "HeadLink") {
+    } else if (item.nodeType === "Link" || item.nodeType === "HeadLink") {
       if ((item.isBulletList || item.isOrderedList || item.isQuote || item.isDescList) && this.isSingleLinkNode() && !this.linkTheme.linkListIsIcon) {
         Span(item.nodeText)
           .fontColor(this.linkTheme.linkTextFontColor)
@@ -400,7 +400,7 @@ export struct MarkdownParagraph {
             })
         }
       }
-    } else if (item.nodeType == "Image" || item.nodeType == "StyleImage" || item.nodeType == "ImageHtmlNode") {
+    } else if (item.nodeType === "Image" || item.nodeType === "StyleImage" || item.nodeType === "ImageHtmlNode") {
       // 图片/图片Style/HTML图片
       if (item.imageReplacePixelMap !== undefined || item.imageUrl !== undefined) {
       ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
@@ -453,7 +453,7 @@ export struct MarkdownParagraph {
           }
         })
       }
-    } else if (item.nodeType == "LatexMathNode") {
+    } else if (item.nodeType === "LatexMathNode") {
       // 数学公式行内 - 和图片一样直接用ImageSpan
       if (this.isLatexMathEnabled && item.latexPixelMap !== undefined && item.latexImageWidth > 0 && item.latexImageHeight > 0) {
         ImageSpan(item.latexPixelMap)

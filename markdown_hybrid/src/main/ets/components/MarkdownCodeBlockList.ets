@@ -225,6 +225,13 @@ export struct MarkdownCodeBlockList {
    * 仅对内容变化的代码块重新解析高亮，避免闪烁
    */
   refreshData(): void {
+    // Clear stale pending timers (parseVersion guards correctness, safe to cancel)
+    if (this.timerIds.length > 0) {
+      for (let i = 0; i < this.timerIds.length; i++) {
+        clearTimeout(this.timerIds[i])
+      }
+      this.timerIds = []
+    }
     let infos: string[] = []
     let texts: string[] = []
     let infoTexts: string[] = []

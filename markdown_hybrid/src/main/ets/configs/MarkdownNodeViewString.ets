@@ -57,21 +57,21 @@ export class MarkdownNodeViewString {
 
     let childListDepth = listDepth
     let childQuoteDepth = quoteDepth
-    if (node.nodeType == 'BulletList' || node.nodeType == 'OrderedList') {
+    if (node.nodeType === 'BulletList' || node.nodeType === 'OrderedList') {
       childListDepth = listDepth + 1
     }
-    if (node.nodeType == 'BlockQuote') {
+    if (node.nodeType === 'BlockQuote') {
       childQuoteDepth = quoteDepth + 1
     }
 
     // 前处理节点: 前插缩进
-    if (node.nodeType == 'ListItem' || node.nodeType == 'TaskListItem') {
+    if (node.nodeType === 'ListItem' || node.nodeType === 'TaskListItem') {
       let depth = listDepth > 0 ? listDepth - 1 : 0
       this.add(this.repeatString("  ", depth))
       if (node.isOrderedList) {
         this.add(String(itemIndex > 0 ? itemIndex : 1) + ". ")
       }
-    } else if (node.nodeType == 'BlockQuote') {
+    } else if (node.nodeType === 'BlockQuote') {
       this.add(this.repeatString("  ", quoteDepth))
     }
 
@@ -79,18 +79,18 @@ export class MarkdownNodeViewString {
     let itemIdx = 0
     for (let i = 0; i < node.children.length; i++) {
       let child = node.children[i]
-      if (child.nodeType == 'ListItem' || child.nodeType == 'TaskListItem') {
+      if (child.nodeType === 'ListItem' || child.nodeType === 'TaskListItem') {
         itemIdx++
       }
       this.traverse(child, childListDepth, childQuoteDepth, itemIdx)
     }
 
     // 后处理节点: 尾插换行/空格
-    if (node.nodeType == 'Paragraph' || node.nodeType == 'Heading' || node.nodeType == 'IdHeading') {
+    if (node.nodeType === 'Paragraph' || node.nodeType === 'Heading' || node.nodeType === 'IdHeading') {
       this.add("\n")
-    } else if (node.nodeType == 'TableRow') {
+    } else if (node.nodeType === 'TableRow') {
       this.add("\n")
-    } else if (node.nodeType == 'TableCell') {
+    } else if (node.nodeType === 'TableCell') {
       this.add(" ")
     }
   }

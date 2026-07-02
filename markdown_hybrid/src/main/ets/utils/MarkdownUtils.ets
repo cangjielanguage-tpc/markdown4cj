@@ -627,14 +627,14 @@ export function colorStringToColor(colorString: string): ResourceColor | undefin
     if (isHexString(hex)) {
       if (hex.length === 6) {
         // #RRGGBB → 补 FF alpha
-        return NUM_FF000000 | Number.parseInt(hex, 16)
+        return (NUM_FF000000 | Number.parseInt(hex, 16)) >>> 0
       } else if (hex.length === 8) {
         // #AARRGGBB
-        return Number.parseInt(hex, 16)
+        return Number.parseInt(hex, 16) >>> 0
       } else if (hex.length === 3) {
         // #RGB → #RRGGBB
         const expanded = expandHex3(hex)
-        return NUM_FF000000 | Number.parseInt(expanded, 16)
+        return (NUM_FF000000 | Number.parseInt(expanded, 16)) >>> 0
       }
     }
     return undefined
@@ -642,7 +642,7 @@ export function colorStringToColor(colorString: string): ResourceColor | undefin
   // 4. 纯数字（如 "123"）按十进制处理
   const num = Number.parseInt(colorStr, 10)
   if (!Number.isNaN(num)) {
-    return num
+    return num >>> 0
   }
   return undefined
 }

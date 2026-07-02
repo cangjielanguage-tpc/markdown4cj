@@ -68,7 +68,7 @@ export struct MarkdownDesc {
         this.markdownDataSource,
         (item: NodeView, index: number) => {
           ListItem() {
-            if (item.nodeType == "DescDef") {
+            if (item.nodeType === "DescDef") {
               // 定义列表释义
               MarkdownDescDef({
                 node: item,
@@ -101,7 +101,7 @@ export struct MarkdownDesc {
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback
               })
-            } else if (item.nodeType == "DescTerm") {
+            } else if (item.nodeType === "DescTerm") {
               // 定义列表术语
               MarkdownDescTerm({
                 node: item,

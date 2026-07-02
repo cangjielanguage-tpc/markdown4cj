@@ -98,7 +98,7 @@ export struct MarkdownList {
         this.markdownDataSource,
         (item: NodeView, index: number) => {
           ListItem() {
-            if (item.nodeType == "ListItem") {
+            if (item.nodeType === "ListItem") {
               // 普通列表项
               Row() {
                 this.listPrefixTextINCComponent(item, index)
@@ -154,7 +154,7 @@ export struct MarkdownList {
               }
               .alignItems(VerticalAlign.Top)
               .justifyContent(FlexAlign.Start)
-            } else if (item.nodeType == "TaskListItem") {
+            } else if (item.nodeType === "TaskListItem") {
               // 任务列表项
               Row() {
                 this.listPrefixCheckboxINCComponent(item)

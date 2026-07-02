@@ -87,7 +87,10 @@ export class MarkdownDataSource implements IDataSource {
    */
   public getData(index: number): NodeView {
     if (index < 0 || index >= this.dataArray.length) {
-      return this.dataArray[0]
+      if (this.dataArray.length > 0) {
+        return this.dataArray[0]
+      }
+      return new NodeView()
     }
     return this.dataArray[index]
   }
@@ -175,6 +178,10 @@ export class MarkdownDataSource implements IDataSource {
    * @param newData 新数据列表
    */
   public replaceAll(newData: Array<NodeView>): void {
+    for (let i = 0; i < this.dataArray.length; i++) {
+      this.dataArray[i].releaseOwnPixelMaps()
+      this.dataArray[i].releaseChildrenPixelMaps()
+    }
     this.dataArray = newData
     this.notifyChange()
   }

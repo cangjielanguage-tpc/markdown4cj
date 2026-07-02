@@ -40,7 +40,7 @@ function findImageUrlFromDescendants(node: JsNodeImpl | undefined): string | und
   }
   let child = node.firstChild
   while (child !== undefined) {
-    if (child.nodeType == 'Image') {
+    if (child.nodeType === 'Image') {
       return child.destination
     }
     let result = findImageUrlFromDescendants(child)

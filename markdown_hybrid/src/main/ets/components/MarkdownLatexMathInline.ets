@@ -31,7 +31,7 @@ export struct MarkdownLatexMathInline {
   aboutToDisappear(): void {
     this.isAlive = false
     if (this.pixelMap !== undefined) {
-      this.pixelMap.release()
+      try { this.pixelMap.release() } catch (e) {}
       this.pixelMap = undefined
     }
     this.imageData = undefined
@@ -91,7 +91,7 @@ export struct MarkdownLatexMathInline {
    */
   private latexMathInlineParser(): void {
     if (this.pixelMap !== undefined) {
-      this.pixelMap.release()
+      try { this.pixelMap.release() } catch (e) {}
       this.pixelMap = undefined
     }
     this.imageData = undefined
@@ -113,9 +113,9 @@ export struct MarkdownLatexMathInline {
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
         imageSource.createPixelMap().then((pm: PixelMap) => {
-          imageSource.release()
+          try { imageSource.release() } catch (e) {}
           if (!this.isAlive) {
-            pm.release()
+            try { pm.release() } catch (e) {}
             LatexParseQueue.notifyDone()
             return
           }
@@ -132,7 +132,7 @@ export struct MarkdownLatexMathInline {
             this.onLatexImageLoaded?.()
             LatexParseQueue.notifyDone()
           }).catch(() => {
-            pm.release()
+            try { pm.release() } catch (e) {}
             this.pixelMap = undefined
             if (this.isAlive) {
               this.isParserEnd = true
@@ -140,7 +140,7 @@ export struct MarkdownLatexMathInline {
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
-          imageSource.release()
+          try { imageSource.release() } catch (e) {}
           if (this.isAlive) {
             this.isParserEnd = true
           }

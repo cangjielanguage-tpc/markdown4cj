@@ -86,11 +86,12 @@ export class NodeView {
    * @return 内容指纹字符串
    */
   contentFingerprint(): string {
-    let result = this.nodeType + ":" + this.nodeText
+    const parts: string[] = [this.nodeType, ":", this.nodeText]
     for (let i = 0; i < this.children.length; i++) {
-      result += "|" + this.children[i].contentFingerprint()
+      parts.push("|")
+      parts.push(this.children[i].contentFingerprint())
     }
-    return result
+    return parts.join("")
   }
 
   /**
@@ -114,12 +115,12 @@ export class NodeView {
     this.headingID = source.headingID
     this.copyStyleFrom(source)
     if (this.imageReplacePixelMap !== undefined && this.imageReplacePixelMap !== source.imageReplacePixelMap) {
-      this.imageReplacePixelMap.release()
+      try { this.imageReplacePixelMap.release() } catch (e) {}
     }
     this.imageReplacePixelMap = source.imageReplacePixelMap
     this.imageReplaceTried = source.imageReplaceTried
     if (this.latexPixelMap !== undefined && this.latexPixelMap !== source.latexPixelMap) {
-      this.latexPixelMap.release()
+      try { this.latexPixelMap.release() } catch (e) {}
     }
     this.latexPixelMap = source.latexPixelMap
     this.latexImageData = source.latexImageData
@@ -127,7 +128,7 @@ export class NodeView {
     this.latexImageHeight = source.latexImageHeight
     this.latexIsLoading = source.latexIsLoading
     if (this.linkIconPixelMap !== undefined && this.linkIconPixelMap !== source.linkIconPixelMap) {
-      this.linkIconPixelMap.release()
+      try { this.linkIconPixelMap.release() } catch (e) {}
     }
     this.linkIconPixelMap = source.linkIconPixelMap
     this.linkIconTried = source.linkIconTried

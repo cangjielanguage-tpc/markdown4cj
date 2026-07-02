@@ -101,7 +101,7 @@ export struct MarkdownVideo {
    */
   @Builder
   imgVideoComponent() {
-    Image(this.imageUrl == "" ? this.videoTheme.videoPlaceholder : this.imageUrl)
+    Image(this.imageUrl === "" ? this.videoTheme.videoPlaceholder : this.imageUrl)
       .width('100%')
       .aspectRatio(this.videoRatio > 0 ? this.videoRatio : 16.0 / 9.0)
       .objectFit(this.videoTheme.videoImageFitType)

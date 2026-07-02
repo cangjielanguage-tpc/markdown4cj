@@ -67,7 +67,7 @@ export struct MarkdownDescTerm {
         this.markdownDataSource,
         (item: NodeView, index: number) => {
           ListItem() {
-            if (item.nodeType == "Paragraph") {
+            if (item.nodeType === "Paragraph") {
               // 段落
               MarkdownParagraph({
                 node: item,

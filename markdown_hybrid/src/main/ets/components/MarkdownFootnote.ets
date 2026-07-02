@@ -105,7 +105,7 @@ export struct MarkdownFootnote {
         this.markdownDataSource,
         (item: NodeView, index: number) => {
           ListItem() {
-            if (item.nodeType == "Paragraph") {
+            if (item.nodeType === "Paragraph") {
               // 段落
               MarkdownParagraph({
                 node: item,
@@ -138,7 +138,7 @@ export struct MarkdownFootnote {
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback
               })
-            } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
+            } else if (item.nodeType === "Heading" || item.nodeType === "IdHeading") {
               // 标题/标题ID
               MarkdownHeading({
                 node: item,
@@ -171,7 +171,7 @@ export struct MarkdownFootnote {
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback
               })
-            } else if (item.nodeType == "FencedCodeBlockListBlock") {
+            } else if (item.nodeType === "FencedCodeBlockListBlock") {
               // 围栏代码块列表
               MarkdownCodeBlockList({
                 node: item,
@@ -179,7 +179,7 @@ export struct MarkdownFootnote {
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback
               })
-            } else if (item.nodeType == "FencedCodeBlock") {
+            } else if (item.nodeType === "FencedCodeBlock") {
               // 围栏代码块
               MarkdownCodeFenced({
                 node: item,
@@ -187,7 +187,7 @@ export struct MarkdownFootnote {
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback
               })
-            } else if (item.nodeType == "IndentedCodeBlock") {
+            } else if (item.nodeType === "IndentedCodeBlock") {
               // 缩进代码块
               MarkdownCodeIndented({
                 node: item,
@@ -195,7 +195,7 @@ export struct MarkdownFootnote {
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback
               })
-            } else if (item.nodeType == "BulletList") {
+            } else if (item.nodeType === "BulletList") {
               // 无序列表
               MarkdownList({
                 node: item,
@@ -246,7 +246,7 @@ export struct MarkdownFootnote {
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback
               })
-            } else if (item.nodeType == "OrderedList") {
+            } else if (item.nodeType === "OrderedList") {
               // 有序列表
               MarkdownList({
                 node: item,
@@ -297,7 +297,7 @@ export struct MarkdownFootnote {
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback
               })
-            } else if (item.nodeType == "BlockQuote") {
+            } else if (item.nodeType === "BlockQuote") {
               // 块引用
               MarkdownQuote({
                 node: item,
@@ -347,7 +347,7 @@ export struct MarkdownFootnote {
                 codeFullScreenCallback: this.codeFullScreenCallback,
                 listDepth: this.listDepth + 1
               })
-            } else if (item.nodeType == "LatexMathBlock") {
+            } else if (item.nodeType === "LatexMathBlock") {
               // 数学公式块
               MarkdownLatexMathBlock({
                 latexMathBlockStr: item.nodeText,
@@ -355,7 +355,7 @@ export struct MarkdownFootnote {
                 latexImageCallback: this.latexImageCallback,
                 latexStrCallback: this.latexStrCallback
               })
-            } else if (item.nodeType == "TableBlock") {
+            } else if (item.nodeType === "TableBlock") {
               // 表格
               MarkdownTable({
                 node: item,
@@ -381,12 +381,12 @@ export struct MarkdownFootnote {
                 latexStrCallback: this.latexStrCallback,
                 componentWidth: this.tableBlockComponentWidth
               })
-            } else if (item.nodeType == "ThematicBreak") {
+            } else if (item.nodeType === "ThematicBreak") {
               // 分割线
               MarkdownThematicBreak({
                 dividerTheme: this.dividerTheme
               })
-            } else if (item.nodeType == "FootnoteBlock") {
+            } else if (item.nodeType === "FootnoteBlock") {
               // 嵌套脚注
               MarkdownFootnote({
                 node: item,
@@ -436,7 +436,7 @@ export struct MarkdownFootnote {
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback
               })
-            } else if (item.nodeType == "SlideBlock") {
+            } else if (item.nodeType === "SlideBlock") {
               // 图片幻灯片
               MarkdownBanner({
                 node: item,
@@ -444,7 +444,7 @@ export struct MarkdownFootnote {
                 imageTheme: this.imageTheme,
                 imageCallback: this.imageCallback
               })
-            } else if (item.nodeType == "BlockVideo") {
+            } else if (item.nodeType === "BlockVideo") {
               // 视频
               MarkdownVideo({
                 node: item,
@@ -454,14 +454,14 @@ export struct MarkdownFootnote {
                 videoReleaseCallback: this.videoReleaseCallback,
                 videoDownloadCallback: this.videoDownloadCallback
               })
-            } else if (item.nodeType == "BlockAudio") {
+            } else if (item.nodeType === "BlockAudio") {
               // 音频
               MarkdownAudio({
                 node: item,
                 audioTheme: this.audioTheme,
                 audioCallback: this.audioCallback
               })
-            } else if (item.nodeType == "BlockAD") {
+            } else if (item.nodeType === "BlockAD") {
               // 广告
             } else {
               // 其他

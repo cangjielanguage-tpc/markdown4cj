@@ -31,7 +31,7 @@ export struct MarkdownBanner {
         ForEach(
           this.bannerNodeViewList,
           (item: NodeView, index: number) => {
-            if (item.nodeType == "Image") {
+            if (item.nodeType === "Image") {
               // 图片节点
               this.imageBannerCommonmarkComponent(item)
             } else {
@@ -65,7 +65,7 @@ export struct MarkdownBanner {
   @Builder
   imageBannerCommonmarkComponent(item: NodeView) {
     if (this.bannerTheme.bannerPlaceholder !== undefined) {
-      Image(item.imageUrl)
+      Image(item.imageUrl ?? "")
         .alt(this.bannerTheme.bannerPlaceholder)
         .objectFit(ImageFit.Contain)
         .autoResize(this.imageTheme.imageAutoResize)
@@ -75,7 +75,7 @@ export struct MarkdownBanner {
           }
         })
     } else {
-      Image(item.imageUrl)
+      Image(item.imageUrl ?? "")
         .objectFit(ImageFit.Contain)
         .autoResize(this.imageTheme.imageAutoResize)
         .onClick(() => {
