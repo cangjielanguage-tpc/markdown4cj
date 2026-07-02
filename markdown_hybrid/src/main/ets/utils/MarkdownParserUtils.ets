@@ -178,6 +178,34 @@ export function nodeToNodeView(
           prevChild.nodeText = currentJsNode.literal ?? ""
         } else if (nodeType === 'FencedCodeBlock' || nodeType === 'IndentedCodeBlock') {
           prevChild.nodeText = currentJsNode.literal?.replace(/\n$/, '') ?? ""
+        } else if (nodeType === 'LatexMathNode') {
+          // 行内数学公式：流式输出时latex内容可能增长（如"$x^"→"$x^2$"），
+          // 但sourceSpan可能不变（解析器仅记录起始定界符位置）。
+          // 需同步更新nodeText，并在文本变化时重置图片缓存，
+          // 否则MarkdownParagraph.onListChanged不会重新入队加载（latexPixelMap非undefined即跳过），
+          // 导致显示旧图片或原始latex纯文本。
+          const newLatex: string = currentJsNode.latex ?? ""
+          if (prevChild.nodeText !== newLatex) {
+            prevChild.nodeText = newLatex
+            if (prevChild.latexPixelMap !== undefined) {
+              try {
+                prevChild.latexPixelMap.release()
+              } catch (e) {
+                console.error('LatexMathNode latexPixelMap release failed: ' + JSON.stringify(e))
+              }
+              prevChild.latexPixelMap = undefined
+            }
+            prevChild.latexImageData = undefined
+            prevChild.latexImageWidth = 0
+            prevChild.latexImageHeight = 0
+            prevChild.latexIsLoading = false
+          }
+        } else if (nodeType === 'LatexMathBlock') {
+          // 块级数学公式：同理更新latex文本和闭合状态，
+          // MarkdownLatexMathBlock的@Prop latexMathBlockStr变化会触发@Watch重新解析图片。
+          // isLatexMathBlockClose也需同步，否则未闭合状态可能错误保留。
+          prevChild.nodeText = currentJsNode.latex ?? ""
+          prevChild.isLatexMathBlockClose = currentJsNode.isClosed ?? false
         }
         targetParentView.children.push(prevChild)
         currentJsNode = currentJsNode.next

@@ -620,11 +620,14 @@ export struct MarkdownParagraph {
 
   /**
    * 异步加载数学公式图片
+   * 流式输出时latex文本可能增长，需捕获调用时的文本，回调中校验是否已过期，
+   * 避免旧文本的图片覆盖新状态（旧图片闪烁/内存泄漏）。
    *
    * @param item 节点视图
    */
   private loadLatexImage(item: NodeView): void {
-    const strLatexMath: string = this.latexStrCallback(item.nodeText)
+    const capturedNodeText: string = item.nodeText
+    const strLatexMath: string = this.latexStrCallback(capturedNodeText)
     const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
     const textColor: number = resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
     const bgColor: number = resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
@@ -653,6 +656,20 @@ export struct MarkdownParagraph {
               LatexParseQueue.notifyDone()
               return
             }
+            // 流式输出中文本可能已变化，丢弃过期结果，由新一轮loadLatexImage处理
+            if (item.nodeText !== capturedNodeText) {
+              pm.release()
+              LatexParseQueue.notifyDone()
+              return
+            }
+            // 释放旧PixelMap（防御性：理论上此处应为undefined）
+            if (item.latexPixelMap !== undefined) {
+              try {
+                item.latexPixelMap.release()
+              } catch (e) {
+                console.error('Paragraph latexPixelMap release failed: ' + JSON.stringify(e))
+              }
+            }
             item.latexPixelMap = pm
             item.latexImageData = buffer
             item.latexImageWidth = info.size.width
@@ -662,17 +679,24 @@ export struct MarkdownParagraph {
             LatexParseQueue.notifyDone()
           }).catch(() => {
             pm.release()
-            item.latexIsLoading = false
+            // 仅当文本未变化时才重置loading，避免覆盖新一轮加载的loading状态
+            if (item.nodeText === capturedNodeText) {
+              item.latexIsLoading = false
+            }
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
           imageSource.release()
-          item.latexIsLoading = false
+          if (item.nodeText === capturedNodeText) {
+            item.latexIsLoading = false
+          }
           LatexParseQueue.notifyDone()
         })
       })
       .catch(() => {
-        item.latexIsLoading = false
+        if (item.nodeText === capturedNodeText) {
+          item.latexIsLoading = false
+        }
         LatexParseQueue.notifyDone()
       })
   }

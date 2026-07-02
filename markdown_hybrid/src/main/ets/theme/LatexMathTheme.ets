@@ -1,3 +1,4 @@
+import { LatexMathColorFormat } from '@cangjie-tpc/formula_hybrid'
 import { COLOR_FF191919, COLOR_BLACK, COLOR_TRANSPARENT_SCB, isMargin, isPadding } from '../base/Constants'
 import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
@@ -210,7 +211,7 @@ export class LatexMathTheme implements MarkdownBaseTheme {
    * @param colorFormat 图片格式 - 0:RGB_565, 1:BGRA_8888。默认1
    * @return LatexMathTheme
    */
-  setLatexMathColorFormat(colorFormat: number): LatexMathTheme {
+  setLatexMathColorFormat(colorFormat: LatexMathColorFormat): LatexMathTheme {
     this.latexMathColorFormat = colorFormat
     return this
   }

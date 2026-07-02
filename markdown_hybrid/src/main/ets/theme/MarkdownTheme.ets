@@ -50,6 +50,7 @@ import { SubTheme } from "./SubTheme"
 import { SupTheme } from "./SupTheme"
 import { TableTheme } from "./TableTheme"
 import { VideoTheme } from "./VideoTheme"
+import { LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 
 /**
  * Markdown样式配置
@@ -449,6 +450,97 @@ export class MarkdownTheme {
    */
   setLatexMathTheme(latexMathTheme: LatexMathTheme): MarkdownTheme {
     this.latexMathTheme = latexMathTheme
+    return this
+  }
+
+  /**
+   * 设置数学公式未加载状态是否显示文字
+   *
+   * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
+   * @deprecated since 1.4.0
+   * @useinstead LatexMathTheme#setLatexMathDefaultText
+   * @return MarkdownTheme
+   */
+  setLatexDefaultText(latexDefaultText: boolean): MarkdownTheme {
+    this.latexMathTheme.setLatexMathDefaultText(latexDefaultText)
+    return this
+  }
+
+  /**
+   * 设置数学公式文本大小
+   *
+   * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
+   * @deprecated since 1.4.0
+   * @useinstead LatexMathTheme#setLatexMathDefaultTextFontSize
+   * @return MarkdownTheme
+   */
+  setLatexMathTextSize(latexMathTextSize: number): MarkdownTheme {
+    this.latexMathTheme.setLatexMathDefaultTextFontSize(latexMathTextSize)
+    return this
+  }
+
+  /**
+   * 设置数学公式背景色
+   *
+   * @param latexMathBackgroundColor 数学公式背景色 - 默认0x00FFFFFF
+   * @deprecated since 1.4.0
+   * @useinstead LatexMathTheme#setLatexMathBackgroundColor
+   * @return MarkdownTheme
+   */
+  setLatexMathBackgroundColor(latexMathBackgroundColor: ResourceColor): MarkdownTheme {
+    this.latexMathTheme.setLatexMathBackgroundColor(latexMathBackgroundColor)
+    return this
+  }
+
+  /**
+   * 设置数学公式文本颜色
+   *
+   * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
+   * @deprecated since 1.4.0
+   * @useinstead LatexMathTheme#setLatexMathTextColor
+   * @return MarkdownTheme
+   */
+  setLatexMathTextColor(latexMathTextColor: ResourceColor): MarkdownTheme {
+    this.latexMathTheme.setLatexMathTextColor(latexMathTextColor)
+    return this
+  }
+
+  /**
+   * 设置数学公式生成图片格式
+   *
+   * @param latexMathColorFormat 数学公式生成图片格式 - 0:RGB_565, 1:BGRA_8888。默认1
+   * @deprecated since 1.4.0
+   * @useinstead LatexMathTheme#setLatexMathColorFormat
+   * @return MarkdownTheme
+   */
+  setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): MarkdownTheme {
+    this.latexMathTheme.setLatexMathColorFormat(latexMathColorFormat)
+    return this
+  }
+
+  /**
+   * 设置块结构的数学公式是否居中
+   *
+   * @param latexMathBlockCenter 块结构的数学公式是否居中 - true：居中；false：不居中。默认true
+   * @deprecated since 1.4.0
+   * @useinstead LatexMathTheme#setLatexMathBlockCenter
+   * @return MarkdownTheme
+   */
+  setLatexMathBlockCenter(latexMathBlockCenter: boolean): MarkdownTheme {
+    this.latexMathTheme.setLatexMathBlockCenter(latexMathBlockCenter)
+    return this
+  }
+
+  /**
+   * 设置数学公式字体路径
+   *
+   * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
+   * @deprecated since 1.4.0
+   * @useinstead LatexMathTheme#setLatexMathResPath
+   * @return MarkdownTheme
+   */
+  setLatexMathResStr(latexMathResStr: string): MarkdownTheme {
+    this.latexMathTheme.setLatexMathResPath(latexMathResStr)
     return this
   }
 
