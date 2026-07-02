@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_BLACK, COLOR_FFF5F5F5, COLOR_E6000000, isMargin, isBorderRadiuses } from "../base/Constants"
 
 /**
@@ -54,7 +54,7 @@ export class ImageTheme implements MarkdownBaseTheme {
    * @param options 边距选项
    * @return ImageTheme
    */
-  setMargin(options: Margin | Length): ImageTheme {
+  setImageMargin(options: Margin | Length): ImageTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
       this.imageMarginTop = options

@@ -346,7 +346,7 @@ struct AudioDetailsPage {
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
@@ -365,7 +365,7 @@ struct AudioDetailsPage {
     if (this.audioBorderColor !== undefined) {
       audioTheme.setAudioBorderColor(this.audioBorderColor)
     }
-    audioTheme.setAudioRadius({topLeft: this.audioRadiusTopLeft, topRight: this.audioRadiusTopRight, bottomLeft: this.audioRadiusBottomLeft, bottomRight: this.audioRadiusBottomRight})
+    audioTheme.setAudioBorderRadius({topLeft: this.audioRadiusTopLeft, topRight: this.audioRadiusTopRight, bottomLeft: this.audioRadiusBottomLeft, bottomRight: this.audioRadiusBottomRight})
     audioTheme.setAudioShadowRadius(this.audioShadowRadius)
     audioTheme.setAudioShadowOffsetX(this.audioShadowOffsetX)
     audioTheme.setAudioShadowOffsetY(this.audioShadowOffsetY)

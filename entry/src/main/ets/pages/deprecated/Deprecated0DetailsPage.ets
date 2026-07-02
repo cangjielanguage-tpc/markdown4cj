@@ -216,8 +216,8 @@ struct Deprecated0DetailsPage {
     }
     // ---------- 通用 - Global
     let globalTheme: GlobalTheme = new GlobalTheme()
-    globalTheme.setMargin({top: this.blockTopAndBottomMargins, bottom: this.blockTopAndBottomMargins})
-    globalTheme.setMarkdownBlockSpacing(this.blockTopAndBottomMargins)
+    globalTheme.setGlobalMargin({top: this.blockTopAndBottomMargins, bottom: this.blockTopAndBottomMargins})
+    globalTheme.setBlockSpacing(this.blockTopAndBottomMargins)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)

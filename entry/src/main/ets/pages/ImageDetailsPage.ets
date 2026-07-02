@@ -309,8 +309,8 @@ struct ImageDetailsPage {
     if (hostContext != undefined) {
       globalTheme.setStageContext(hostContext)
     }
-    globalTheme.setMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setMarkdownBlockSpacing(this.markdownBlockSpacing)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
@@ -324,7 +324,7 @@ struct ImageDetailsPage {
     }
     imageTheme.setImageAutoResize(this.imageAutoResize)
     imageTheme.setIsImageMixedLayout(this.isImageMixedLayout)
-    imageTheme.setMargin({top: this.imageMarginTop, right: this.imageMarginRight, bottom: this.imageMarginBottom, left: this.imageMarginLeft})
+    imageTheme.setImageMargin({top: this.imageMarginTop, right: this.imageMarginRight, bottom: this.imageMarginBottom, left: this.imageMarginLeft})
     imageTheme.setImageBorderRadius({topLeft: this.imageRadiusTopLeft, topRight: this.imageRadiusTopRight, bottomLeft: this.imageRadiusBottomLeft, bottomRight: this.imageRadiusBottomRight})
     imageTheme.setImageBorderStyle(this.imageBorderStyle)
     imageTheme.setImageBorderWidth(this.imageBorderWidth)

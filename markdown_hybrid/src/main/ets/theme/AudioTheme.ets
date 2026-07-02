@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import {
   COLOR_TRANSPARENT,
   COLOR_BLACK,
@@ -208,7 +208,7 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @param options 圆角选项或统一数值
    * @return AudioTheme
    */
-  setAudioRadius(options: BorderRadiuses | Length): AudioTheme {
+  setAudioBorderRadius(options: BorderRadiuses | Length): AudioTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
       this.audioRadiusTopLeft = options

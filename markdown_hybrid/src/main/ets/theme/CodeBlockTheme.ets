@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import {
   COLOR_TRANSPARENT,
   COLOR_RED,
@@ -184,7 +184,7 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @param options 边距选项
    * @return CodeBlockTheme
    */
-  setMargin(options: Margin | Length): CodeBlockTheme {
+  setCodeBlockMargin(options: Margin | Length): CodeBlockTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
       this.codeBlockMarginTop = options
@@ -227,7 +227,7 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @param options 内边距选项
    * @return CodeBlockTheme
    */
-  setPadding(options: Padding | Length): CodeBlockTheme {
+  setCodeBlockPadding(options: Padding | Length): CodeBlockTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
       this.codeBlockPaddingTop = options
@@ -303,7 +303,7 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @param options 圆角选项
    * @return CodeBlockTheme
    */
-  setRadius(options: BorderRadiuses | Length): CodeBlockTheme {
+  setCodeBlockRadius(options: BorderRadiuses | Length): CodeBlockTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
       this.codeBlockRadiusTopLeft = options

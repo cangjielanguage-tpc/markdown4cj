@@ -1,5 +1,6 @@
 ﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
+import { MarkdownMarginArrayOptions, MarkdownPaddingArrayOptions } from './MarkdownTheme'
 
 /**
  * 标题样式配置
@@ -213,6 +214,36 @@ export class HeadingTheme implements MarkdownBaseTheme {
   }
 
   /**
+   * 分别设置H1-H6每级标题的每个外边距
+   *
+   * @param options 包含四个外边距的H1-H6的数值集合
+   * @return HeadingTheme
+   */
+  setMarginForEachHeadingDetail(options: MarkdownMarginArrayOptions): HeadingTheme {
+    if (options.top !== undefined) {
+      for (let index = 0; index < options.top.length; index++) {
+        this.setMarginForDesignateHeading(index + 1, { top: options.top[index] })
+      }
+    }
+    if (options.right !== undefined) {
+      for (let index = 0; index < options.right.length; index++) {
+        this.setMarginForDesignateHeading(index + 1, { right: options.right[index] })
+      }
+    }
+    if (options.bottom !== undefined) {
+      for (let index = 0; index < options.bottom.length; index++) {
+        this.setMarginForDesignateHeading(index + 1, { bottom: options.bottom[index] })
+      }
+    }
+    if (options.left !== undefined) {
+      for (let index = 0; index < options.left.length; index++) {
+        this.setMarginForDesignateHeading(index + 1, { left: options.left[index] })
+      }
+    }
+    return this
+  }
+
+  /**
    * 设置指定标题等级外边距
    *
    * @param level 标题等级
@@ -324,6 +355,36 @@ export class HeadingTheme implements MarkdownBaseTheme {
     paddingList.forEach((padding, index) => {
       this.setPaddingForDesignateHeading(index + 1, padding)
     })
+    return this
+  }
+
+  /**
+   * 分别设置H1-H6每级标题的每个内边距
+   *
+   * @param options 包含四个内边距的H1-H6的数值集合
+   * @return HeadingTheme
+   */
+  setPaddingForEachHeadingDetail(options: MarkdownPaddingArrayOptions): HeadingTheme {
+    if (options.top !== undefined) {
+      for (let index = 0; index < options.top.length; index++) {
+        this.setPaddingForDesignateHeading(index + 1, { top: options.top[index] })
+      }
+    }
+    if (options.right !== undefined) {
+      for (let index = 0; index < options.right.length; index++) {
+        this.setPaddingForDesignateHeading(index + 1, { right: options.right[index] })
+      }
+    }
+    if (options.bottom !== undefined) {
+      for (let index = 0; index < options.bottom.length; index++) {
+        this.setPaddingForDesignateHeading(index + 1, { bottom: options.bottom[index] })
+      }
+    }
+    if (options.left !== undefined) {
+      for (let index = 0; index < options.left.length; index++) {
+        this.setPaddingForDesignateHeading(index + 1, { left: options.left[index] })
+      }
+    }
     return this
   }
 

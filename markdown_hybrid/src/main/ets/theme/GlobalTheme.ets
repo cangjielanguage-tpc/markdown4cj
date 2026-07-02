@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_TRANSPARENT, isMargin } from "../base/Constants"
 
 /**
@@ -93,7 +93,7 @@ export class GlobalTheme implements MarkdownBaseTheme {
    * @param options 外边距选项或统一数值
    * @return GlobalTheme
    */
-  setMargin(options: Margin | Length): GlobalTheme {
+  setGlobalMargin(options: Margin | Length): GlobalTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
       this.blockMarginTop = options
@@ -136,7 +136,7 @@ export class GlobalTheme implements MarkdownBaseTheme {
    * @param space 间距
    * @return GlobalTheme
    */
-  setMarkdownBlockSpacing(space: number): GlobalTheme {
+  setBlockSpacing(space: number): GlobalTheme {
     this.markdownBlockSpacing = space
     return this
   }

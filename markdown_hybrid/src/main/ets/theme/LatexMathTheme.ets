@@ -1,4 +1,4 @@
-import { COLOR_FF191919, COLOR_BLACK, COLOR_TRANSPARENT_SCB } from '../base/Constants'
+import { COLOR_FF191919, COLOR_BLACK, COLOR_TRANSPARENT_SCB, isMargin, isPadding } from '../base/Constants'
 import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
@@ -6,14 +6,14 @@ import { MarkdownBaseTheme } from './MarkdownBaseTheme'
  */
 @Observed
 export class LatexMathTheme implements MarkdownBaseTheme {
-  latexMathMarginTop: number = 0.0 // 上外边距
-  latexMathMarginRight: number = 0.0 // 右外边距
-  latexMathMarginBottom: number = 0.0 // 下外边距
-  latexMathMarginLeft: number = 0.0 // 左外边距
-  latexMathPaddingTop: number = 0.0 // 上内边距
-  latexMathPaddingRight: number = 0.0 // 右内边距
-  latexMathPaddingBottom: number = 0.0 // 下内边距
-  latexMathPaddingLeft: number = 0.0 // 左内边距
+  latexMathMarginTop: Length = 0.0 // 上外边距
+  latexMathMarginRight: Length = 0.0 // 右外边距
+  latexMathMarginBottom: Length = 0.0 // 下外边距
+  latexMathMarginLeft: Length = 0.0 // 左外边距
+  latexMathPaddingTop: Length = 0.0 // 上内边距
+  latexMathPaddingRight: Length = 0.0 // 右内边距
+  latexMathPaddingBottom: Length = 0.0 // 下内边距
+  latexMathPaddingLeft: Length = 0.0 // 左内边距
   latexMathDefaultText: boolean = true // 未加载状态是否显示文字
   latexMathDefaultTextFontColor: ResourceColor = COLOR_FF191919 // 未加载状态文本颜色
   latexMathDefaultTextFontSize: number | string | Resource = 14.0 // 未加载状态文本尺寸
@@ -28,64 +28,80 @@ export class LatexMathTheme implements MarkdownBaseTheme {
   latexMathResPath: string | undefined = undefined // 数学公式资源路径
 
   /**
-   * 设置4个外边距为统一值
+   * 设置LaTeX数学公式外边距
    *
-   * @param margin 外边距
+   * @param options Margin | Length 类型
+   *                  入参 Length 类型时四个设为相同值
+   *                  入参 Margin 类型时分别设置
    * @return LatexMathTheme
    */
-  setLatexMathAllMargin(margin: number): LatexMathTheme {
-    this.latexMathMarginTop = margin
-    this.latexMathMarginRight = margin
-    this.latexMathMarginBottom = margin
-    this.latexMathMarginLeft = margin
+  setLatexMathMargin(options: Margin | Length): LatexMathTheme {
+    if (typeof options === "number" || typeof options === "string") {
+      this.latexMathMarginTop = options
+      this.latexMathMarginRight = options
+      this.latexMathMarginBottom = options
+      this.latexMathMarginLeft = options
+    } else if (typeof options === "object" && options !== null) {
+      if (isMargin(options)) {
+        const margin = options as Margin
+        if (margin.top !== undefined) {
+          this.latexMathMarginTop = margin.top
+        }
+        if (margin.right !== undefined) {
+          this.latexMathMarginRight = margin.right
+        }
+        if (margin.bottom !== undefined) {
+          this.latexMathMarginBottom = margin.bottom
+        }
+        if (margin.left !== undefined) {
+          this.latexMathMarginLeft = margin.left
+        }
+      } else {
+        this.latexMathMarginTop = options as Length
+        this.latexMathMarginRight = options as Length
+        this.latexMathMarginBottom = options as Length
+        this.latexMathMarginLeft = options as Length
+      }
+    }
     return this
   }
 
   /**
-   * 分别设置4个外边距
+   * 设置LaTeX数学公式内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options Padding | Length 类型
+   *                  入参 Length 类型时四个设为相同值
+   *                  入参 Padding 类型时分别设置
    * @return LatexMathTheme
    */
-  setLatexMathMargin(top: number, right: number, bottom: number, left: number): LatexMathTheme {
-    this.latexMathMarginTop = top
-    this.latexMathMarginRight = right
-    this.latexMathMarginBottom = bottom
-    this.latexMathMarginLeft = left
-    return this
-  }
-
-  /**
-   * 设置4个内边距为统一值
-   *
-   * @param padding 内边距
-   * @return LatexMathTheme
-   */
-  setLatexMathAllPadding(padding: number): LatexMathTheme {
-    this.latexMathPaddingTop = padding
-    this.latexMathPaddingRight = padding
-    this.latexMathPaddingBottom = padding
-    this.latexMathPaddingLeft = padding
-    return this
-  }
-
-  /**
-   * 分别设置4个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   * @return LatexMathTheme
-   */
-  setLatexMathPadding(top: number, right: number, bottom: number, left: number): LatexMathTheme {
-    this.latexMathPaddingTop = top
-    this.latexMathPaddingRight = right
-    this.latexMathPaddingBottom = bottom
-    this.latexMathPaddingLeft = left
+  setLatexMathPadding(options: Padding | Length): LatexMathTheme {
+    if (typeof options === "number" || typeof options === "string") {
+      this.latexMathPaddingTop = options
+      this.latexMathPaddingRight = options
+      this.latexMathPaddingBottom = options
+      this.latexMathPaddingLeft = options
+    } else if (typeof options === "object" && options !== null) {
+      if (isPadding(options)) {
+        const padding = options as Padding
+        if (padding.top !== undefined) {
+          this.latexMathPaddingTop = padding.top
+        }
+        if (padding.right !== undefined) {
+          this.latexMathPaddingRight = padding.right
+        }
+        if (padding.bottom !== undefined) {
+          this.latexMathPaddingBottom = padding.bottom
+        }
+        if (padding.left !== undefined) {
+          this.latexMathPaddingLeft = padding.left
+        }
+      } else {
+        this.latexMathPaddingTop = options as Length
+        this.latexMathPaddingRight = options as Length
+        this.latexMathPaddingBottom = options as Length
+        this.latexMathPaddingLeft = options as Length
+      }
+    }
     return this
   }
 

@@ -384,8 +384,8 @@ struct VideoDetailsPage {
     }
     // globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     // globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setMarkdownBlockSpacing(this.markdownBlockSpacing)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
@@ -399,7 +399,7 @@ struct VideoDetailsPage {
     }
     videoTheme.setVideoMargin({top: this.videoMarginTop, right: this.videoMarginRight, bottom: this.videoMarginBottom, left: this.videoMarginLeft})
     videoTheme.setVideoPadding({top: this.videoPaddingTop, right: this.videoPaddingRight, bottom: this.videoPaddingBottom, left: this.videoPaddingLeft})
-    videoTheme.setVideoRadius({topLeft: this.videoRadiusTopLeft, topRight: this.videoRadiusTopRight, bottomLeft: this.videoRadiusBottomLeft, bottomRight: this.videoRadiusBottomRight})
+    videoTheme.setVideoBorderRadius({topLeft: this.videoRadiusTopLeft, topRight: this.videoRadiusTopRight, bottomLeft: this.videoRadiusBottomLeft, bottomRight: this.videoRadiusBottomRight})
     videoTheme.setVideoBorderStyle(this.videoBorderStyle)
     videoTheme.setVideoBorderWidth(this.videoBorderWidth)
     if (this.videoBorderColor !== undefined) {

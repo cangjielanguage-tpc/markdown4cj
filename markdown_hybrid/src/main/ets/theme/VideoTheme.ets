@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import {
   COLOR_TRANSPARENT,
   COLOR_WHITE,
@@ -190,7 +190,7 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @param options 圆角选项
    * @return VideoTheme
    */
-  setVideoRadius(options: BorderRadiuses | Length): VideoTheme {
+  setVideoBorderRadius(options: BorderRadiuses | Length): VideoTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
       this.videoRadiusTopLeft = options

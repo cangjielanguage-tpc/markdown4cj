@@ -1,4 +1,4 @@
-﻿import { AudioTheme } from "./AudioTheme"
+import { AudioTheme } from "./AudioTheme"
 import {
   COLOR_BLACK,
   COLOR_WHITE,
@@ -749,7 +749,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setBlockFirstTopMargin(blockFirstTopMargin: number): MarkdownTheme {
-    this.globalTheme.setMargin({ top: blockFirstTopMargin })
+    this.globalTheme.setGlobalMargin({ top: blockFirstTopMargin })
     return this
   }
 
@@ -762,7 +762,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setBlockLastBottomMargin(blockLastBottomMargin: number): MarkdownTheme {
-    this.globalTheme.setMargin({ bottom: blockLastBottomMargin })
+    this.globalTheme.setGlobalMargin({ bottom: blockLastBottomMargin })
     return this
   }
 
@@ -775,7 +775,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): MarkdownTheme {
-    this.globalTheme.setMarkdownBlockSpacing(blockTopAndBottomMargins)
+    this.globalTheme.setBlockSpacing(blockTopAndBottomMargins)
     return this
   }
 
@@ -1631,7 +1631,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setCodeMultilineMargin(codeMultilineMargin: number): MarkdownTheme {
-    this.codeBlockTheme.setMargin({ left: codeMultilineMargin })
+    this.codeBlockTheme.setCodeBlockMargin({ left: codeMultilineMargin })
     return this
   }
 
@@ -1683,7 +1683,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setCodeBlockRadius(codeBlockRadius: number): MarkdownTheme {
-    this.codeBlockTheme.setRadius(codeBlockRadius)
+    this.codeBlockTheme.setCodeBlockRadius(codeBlockRadius)
     return this
   }
 
@@ -2407,7 +2407,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setAudioBorderRadius(audioBorderRadius: number): MarkdownTheme {
-    this.audioTheme.setAudioRadius(audioBorderRadius)
+    this.audioTheme.setAudioBorderRadius(audioBorderRadius)
     return this
   }
 
@@ -2589,7 +2589,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setVideoBorderRadius(videoBorderRadius: number): MarkdownTheme {
-    this.videoTheme.setVideoRadius(videoBorderRadius)
+    this.videoTheme.setVideoBorderRadius(videoBorderRadius)
     return this
   }
 
@@ -3022,7 +3022,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setImageMarginTop(imageMarginTop: number): MarkdownTheme {
-    this.imageTheme.setMargin({ top: imageMarginTop })
+    this.imageTheme.setImageMargin({ top: imageMarginTop })
     return this
   }
 
@@ -3035,7 +3035,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setImageMarginBottom(imageMarginBottom: number): MarkdownTheme {
-    this.imageTheme.setMargin({ bottom: imageMarginBottom })
+    this.imageTheme.setImageMargin({ bottom: imageMarginBottom })
     return this
   }
 
@@ -3644,4 +3644,24 @@ export class MarkdownTheme {
     this.codeBlockTheme.setCodeBlockIndentWidth(indentWidth)
     return this
   }
+}
+
+/**
+ * 通用外边距数组配置
+ */
+export interface MarkdownMarginArrayOptions {
+  top?: Length[]
+  right?: Length[]
+  bottom?: Length[]
+  left?: Length[]
+}
+
+/**
+ * 通用内边距数组配置
+ */
+export interface MarkdownPaddingArrayOptions {
+  top?: Length[]
+  right?: Length[]
+  bottom?: Length[]
+  left?: Length[]
 }
