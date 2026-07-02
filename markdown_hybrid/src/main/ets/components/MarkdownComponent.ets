@@ -21,6 +21,7 @@ import { MarkdownTable } from "./MarkdownTable"
 import { MarkdownList } from "./MarkdownList"
 import { MarkdownQuote } from "./MarkdownQuote"
 import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
+import { LatexParseQueue } from "../model/LatexParseQueue"
 
 @Component
 export struct CJMarkdown {
@@ -59,10 +60,15 @@ export struct CJMarkdown {
       this.parseTimerId = -1
     }
     if (this.placeholderPixelMap !== undefined) {
-      try { this.placeholderPixelMap.release() } catch (e) {}
+      try {
+        this.placeholderPixelMap.release()
+      } catch (e) {
+        console.error('placeholderPixelMap release failed: ' + JSON.stringify(e))
+      }
       this.placeholderPixelMap = undefined
     }
     this.releaseDataSourcePixelMaps()
+    LatexParseQueue.dispose()
     this.imageAndVideoList = []
   }
 
@@ -599,8 +605,11 @@ export struct CJMarkdown {
     const throttleMs = this.config.markdownTheme.globalTheme.parseThrottleMs
     if (throttleMs > 0) {
       this.throttleTimerId = setTimeout(() => {
-        this.isThrottled = false
         this.throttleTimerId = -1
+        if (!this.isAlive) {
+          return
+        }
+        this.isThrottled = false
         if (this.hasPendingRefresh) {
           this.refreshData()
         }
@@ -633,10 +642,11 @@ export struct CJMarkdown {
      if (this.parseTimerId !== -1) {
        clearTimeout(this.parseTimerId)
      }
-     this.parseTimerId = setTimeout(() => {
-       if (!this.isAlive) {
-         return
-       }
+      this.parseTimerId = setTimeout(() => {
+        this.parseTimerId = -1
+        if (!this.isAlive) {
+          return
+        }
        try {
          markdownParser.parse(this.content).then((node) => {
            if (!this.isAlive) {
@@ -644,12 +654,12 @@ export struct CJMarkdown {
              return
            }
            this.applyParseResult(node as JsNodeImpl, currentVersion)
-         }).catch(() => {
-           // 解析失败时静默处理，保留上一次成功的结果
-         })
-       } catch (e) {
-         // parse同步抛异常时静默处理
-       }
+          }).catch(() => {
+            console.error('refreshAsyncData parse failed, keeping last result')
+          })
+        } catch (e) {
+          console.error('refreshAsyncData sync parse exception: ' + JSON.stringify(e))
+        }
      }, 0)
    }
 
@@ -668,9 +678,9 @@ export struct CJMarkdown {
          return
        }
        this.applyParseResult(node, currentVersion)
-     } catch (e) {
-       // 解析失败时静默处理，保留上一次成功的结果
-     }
+      } catch (e) {
+        console.error('refreshSyncData parse failed, keeping last result: ' + JSON.stringify(e))
+      }
    }
 
    /**
@@ -690,9 +700,9 @@ export struct CJMarkdown {
          try {
            nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
            parseOk = true
-         } catch (e) {
-           // nodeToNodeView失败时静默处理
-         }
+          } catch (e) {
+            console.error('nodeToNodeView failed: ' + JSON.stringify(e))
+          }
          this.collectImageAndVideoUrls(node)
          if (!parseOk) {
            // 解析失败时不更新数据源，保留上一次成功的结果
@@ -763,16 +773,24 @@ export struct CJMarkdown {
           imageSource = image.createImageSource(fileData.buffer)
           const pm = await imageSource.createPixelMap()
           if (!this.isAlive) {
-            try { pm.release() } catch (e) {}
+            try {
+              pm.release()
+            } catch (e) {
+              console.error('pm release failed: ' + JSON.stringify(e))
+            }
             return
           }
           this.placeholderPixelMap = pm
         }
       } catch (e) {
-        // 占位图加载失败时静默处理
+        console.error('loadPlaceholderImage failed: ' + JSON.stringify(e))
       } finally {
         if (imageSource !== undefined) {
-          try { imageSource.release() } catch (e) {}
+          try {
+            imageSource.release()
+          } catch (e) {
+            console.error('imageSource release failed: ' + JSON.stringify(e))
+          }
         }
       }
     }

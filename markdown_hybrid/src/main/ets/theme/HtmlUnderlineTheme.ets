@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FF191919 } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FF191919 } from "../base/Constants"
 
 /**
  * HTML下划线样式配置
@@ -23,8 +23,8 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextFontColor(color: ResourceColor): HtmlUnderlineTheme {
-    this.htmlUnderlineTextFontColor = color;
-    return this;
+    this.htmlUnderlineTextFontColor = color
+    return this
   }
 
   /**
@@ -34,8 +34,8 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextFontSize(size: number | string | Resource): HtmlUnderlineTheme {
-    this.htmlUnderlineTextFontSize = size;
-    return this;
+    this.htmlUnderlineTextFontSize = size
+    return this
   }
 
   /**
@@ -45,8 +45,8 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextFontStyle(style: FontStyle): HtmlUnderlineTheme {
-    this.htmlUnderlineTextFontStyle = style;
-    return this;
+    this.htmlUnderlineTextFontStyle = style
+    return this
   }
 
   /**
@@ -56,8 +56,8 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextFontWeight(weight: number | FontWeight): HtmlUnderlineTheme {
-    this.htmlUnderlineTextFontWeight = weight;
-    return this;
+    this.htmlUnderlineTextFontWeight = weight
+    return this
   }
 
   /**
@@ -67,8 +67,8 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextFontFamily(family: string | Resource): HtmlUnderlineTheme {
-    this.htmlUnderlineTextFontFamily = family;
-    return this;
+    this.htmlUnderlineTextFontFamily = family
+    return this
   }
 
   /**
@@ -78,8 +78,8 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextLineHeight(lineHeight: number | string | Resource): HtmlUnderlineTheme {
-    this.htmlUnderlineTextLineHeight = lineHeight;
-    return this;
+    this.htmlUnderlineTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -89,8 +89,8 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextLetterSpacing(spacing: number): HtmlUnderlineTheme {
-    this.htmlUnderlineTextLetterSpacing = spacing;
-    return this;
+    this.htmlUnderlineTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -100,8 +100,8 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextDecorationColor(color: ResourceColor): HtmlUnderlineTheme {
-    this.htmlUnderlineTextDecorationColor = color;
-    return this;
+    this.htmlUnderlineTextDecorationColor = color
+    return this
   }
 
   /**
@@ -111,7 +111,7 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    * @return HtmlUnderlineTheme
    */
   setHtmlUnderlineTextDecorationStyle(style: TextDecorationStyle): HtmlUnderlineTheme {
-    this.htmlUnderlineTextDecorationStyle = style;
-    return this;
+    this.htmlUnderlineTextDecorationStyle = style
+    return this
   }
 }

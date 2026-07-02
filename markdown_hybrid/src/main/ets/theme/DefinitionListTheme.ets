@@ -1,5 +1,5 @@
-﻿import { isMargin, isPadding } from "../base/Constants";
-import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { isMargin, isPadding } from "../base/Constants"
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
  * 定义列表样式配置
@@ -28,8 +28,8 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
    * @return DefinitionListTheme
    */
   setDefinitionListBackgroundColor(color: ResourceColor): DefinitionListTheme {
-    this.definitionListBackgroundColor = color;
-    return this;
+    this.definitionListBackgroundColor = color
+    return this
   }
 
   /**
@@ -41,38 +41,38 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
   setDefinitionListMargin(options: Margin | Length): DefinitionListTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.definitionListMarginTop = options;
-      this.definitionListMarginRight = options;
-      this.definitionListMarginBottom = options;
-      this.definitionListMarginLeft = options;
+      this.definitionListMarginTop = options
+      this.definitionListMarginRight = options
+      this.definitionListMarginBottom = options
+      this.definitionListMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.definitionListMarginTop = margin.top;
+          this.definitionListMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.definitionListMarginRight = margin.right;
+          this.definitionListMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.definitionListMarginBottom = margin.bottom;
+          this.definitionListMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.definitionListMarginLeft = margin.left;
+          this.definitionListMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.definitionListMarginTop = options as Length;
-        this.definitionListMarginRight = options as Length;
-        this.definitionListMarginBottom = options as Length;
-        this.definitionListMarginLeft = options as Length;
+        this.definitionListMarginTop = options as Length
+        this.definitionListMarginRight = options as Length
+        this.definitionListMarginBottom = options as Length
+        this.definitionListMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -84,38 +84,38 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
   setDefinitionListPadding(options: Padding | Length): DefinitionListTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.definitionListPaddingTop = options;
-      this.definitionListPaddingRight = options;
-      this.definitionListPaddingBottom = options;
-      this.definitionListPaddingLeft = options;
+      this.definitionListPaddingTop = options
+      this.definitionListPaddingRight = options
+      this.definitionListPaddingBottom = options
+      this.definitionListPaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.definitionListPaddingTop = padding.top;
+          this.definitionListPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.definitionListPaddingRight = padding.right;
+          this.definitionListPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.definitionListPaddingBottom = padding.bottom;
+          this.definitionListPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.definitionListPaddingLeft = padding.left;
+          this.definitionListPaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.definitionListPaddingTop = options as Length;
-        this.definitionListPaddingRight = options as Length;
-        this.definitionListPaddingBottom = options as Length;
-        this.definitionListPaddingLeft = options as Length;
+        this.definitionListPaddingTop = options as Length
+        this.definitionListPaddingRight = options as Length
+        this.definitionListPaddingBottom = options as Length
+        this.definitionListPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -125,8 +125,8 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
    * @return DefinitionListTheme
    */
   setDefinitionListTermToDescriptionSpacing(spacing: number): DefinitionListTheme {
-    this.definitionListTermToDescriptionSpacing = spacing;
-    return this;
+    this.definitionListTermToDescriptionSpacing = spacing
+    return this
   }
 
   /**
@@ -136,8 +136,8 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
    * @return DefinitionListTheme
    */
   setDefinitionListTermTextFontWeight(weight: number | FontWeight): DefinitionListTheme {
-    this.definitionListTermTextFontWeight = weight;
-    return this;
+    this.definitionListTermTextFontWeight = weight
+    return this
   }
 
   /**
@@ -147,8 +147,8 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
    * @return DefinitionListTheme
    */
   setDefinitionListTermTextFontStyle(style: FontStyle): DefinitionListTheme {
-    this.definitionListTermTextFontStyle = style;
-    return this;
+    this.definitionListTermTextFontStyle = style
+    return this
   }
 
   /**
@@ -158,8 +158,8 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
    * @return DefinitionListTheme
    */
   setDefinitionListDescriptionItemSpacing(spacing: number): DefinitionListTheme {
-    this.definitionListDescriptionItemSpacing = spacing;
-    return this;
+    this.definitionListDescriptionItemSpacing = spacing
+    return this
   }
 
   /**
@@ -169,7 +169,7 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
    * @return DefinitionListTheme
    */
   setDefinitionListDescriptionIndent(indent: number): DefinitionListTheme {
-    this.definitionListDescriptionIndent = indent;
-    return this;
+    this.definitionListDescriptionIndent = indent
+    return this
   }
 }

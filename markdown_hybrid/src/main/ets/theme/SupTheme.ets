@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
  * 上标样式配置
@@ -20,8 +20,8 @@ export class SupTheme implements MarkdownBaseTheme {
    * @return SupTheme
    */
   setSupTextFontColor(color: ResourceColor): SupTheme {
-    this.supTextFontColor = color;
-    return this;
+    this.supTextFontColor = color
+    return this
   }
 
   /**
@@ -31,8 +31,8 @@ export class SupTheme implements MarkdownBaseTheme {
    * @return SupTheme
    */
   setSupTextFontSize(size: number | string | Resource): SupTheme {
-    this.supTextFontSize = size;
-    return this;
+    this.supTextFontSize = size
+    return this
   }
 
   /**
@@ -42,8 +42,8 @@ export class SupTheme implements MarkdownBaseTheme {
    * @return SupTheme
    */
   setSupTextFontStyle(style: FontStyle): SupTheme {
-    this.supTextFontStyle = style;
-    return this;
+    this.supTextFontStyle = style
+    return this
   }
 
   /**
@@ -53,8 +53,8 @@ export class SupTheme implements MarkdownBaseTheme {
    * @return SupTheme
    */
   setSupTextFontWeight(weight: number | FontWeight): SupTheme {
-    this.supTextFontWeight = weight;
-    return this;
+    this.supTextFontWeight = weight
+    return this
   }
 
   /**
@@ -64,8 +64,8 @@ export class SupTheme implements MarkdownBaseTheme {
    * @return SupTheme
    */
   setSupTextFontFamily(family: string | Resource): SupTheme {
-    this.supTextFontFamily = family;
-    return this;
+    this.supTextFontFamily = family
+    return this
   }
 
   /**
@@ -75,8 +75,8 @@ export class SupTheme implements MarkdownBaseTheme {
    * @return SupTheme
    */
   setSupTextLetterSpacing(spacing: number): SupTheme {
-    this.supTextLetterSpacing = spacing;
-    return this;
+    this.supTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -86,7 +86,7 @@ export class SupTheme implements MarkdownBaseTheme {
    * @return SupTheme
    */
   setSupTextBaselineOffset(offset: number): SupTheme {
-    this.supTextBaselineOffset = offset;
-    return this;
+    this.supTextBaselineOffset = offset
+    return this
   }
 }

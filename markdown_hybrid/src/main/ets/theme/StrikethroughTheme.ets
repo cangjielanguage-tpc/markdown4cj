@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FF191919 } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FF191919 } from "../base/Constants"
 
 /**
  * 删除线样式配置
@@ -23,8 +23,8 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextFontColor(color: ResourceColor): StrikethroughTheme {
-    this.strikethroughTextFontColor = color;
-    return this;
+    this.strikethroughTextFontColor = color
+    return this
   }
 
   /**
@@ -34,8 +34,8 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextFontSize(size: number | string | Resource): StrikethroughTheme {
-    this.strikethroughTextFontSize = size;
-    return this;
+    this.strikethroughTextFontSize = size
+    return this
   }
 
   /**
@@ -45,8 +45,8 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextFontStyle(style: FontStyle): StrikethroughTheme {
-    this.strikethroughTextFontStyle = style;
-    return this;
+    this.strikethroughTextFontStyle = style
+    return this
   }
 
   /**
@@ -56,8 +56,8 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextFontWeight(weight: number | FontWeight): StrikethroughTheme {
-    this.strikethroughTextFontWeight = weight;
-    return this;
+    this.strikethroughTextFontWeight = weight
+    return this
   }
 
   /**
@@ -67,8 +67,8 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextFontFamily(family: string | Resource): StrikethroughTheme {
-    this.strikethroughTextFontFamily = family;
-    return this;
+    this.strikethroughTextFontFamily = family
+    return this
   }
 
   /**
@@ -78,8 +78,8 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextLineHeight(lineHeight: number | string | Resource): StrikethroughTheme {
-    this.strikethroughTextLineHeight = lineHeight;
-    return this;
+    this.strikethroughTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -89,8 +89,8 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextLetterSpacing(spacing: number): StrikethroughTheme {
-    this.strikethroughTextLetterSpacing = spacing;
-    return this;
+    this.strikethroughTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -100,8 +100,8 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextDecorationColor(color: ResourceColor): StrikethroughTheme {
-    this.strikethroughTextDecorationColor = color;
-    return this;
+    this.strikethroughTextDecorationColor = color
+    return this
   }
 
   /**
@@ -111,7 +111,7 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    * @return StrikethroughTheme
    */
   setStrikethroughTextDecorationStyle(style: TextDecorationStyle): StrikethroughTheme {
-    this.strikethroughTextDecorationStyle = style;
-    return this;
+    this.strikethroughTextDecorationStyle = style
+    return this
   }
 }

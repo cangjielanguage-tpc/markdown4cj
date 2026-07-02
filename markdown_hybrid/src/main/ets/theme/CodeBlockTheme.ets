@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import {
   COLOR_TRANSPARENT,
   COLOR_RED,
@@ -11,7 +11,7 @@ import {
   COLOR_DD000000,
   COLOR_FF2D2D2D,
   COLOR_FFA9B7C6
-} from "../base/Constants";
+} from "../base/Constants"
 
 /**
  * 代码块样式配置
@@ -120,7 +120,7 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
       this.codeBlockTextFontColor = COLOR_DD000000
     }
     this.codeBlockIsDark = isDark
-    return this;
+    return this
   }
 
   /**
@@ -130,8 +130,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockIsCodeFormat(isCodeFormat: boolean): CodeBlockTheme {
-    this.codeBlockIsCodeFormat = isCodeFormat;
-    return this;
+    this.codeBlockIsCodeFormat = isCodeFormat
+    return this
   }
 
   /**
@@ -141,8 +141,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockUseTab(useTab: boolean): CodeBlockTheme {
-    this.codeBlockUseTab = useTab;
-    return this;
+    this.codeBlockUseTab = useTab
+    return this
   }
 
   /**
@@ -152,8 +152,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockIndentWidth(indentWidth: Length): CodeBlockTheme {
-    this.codeBlockIndentWidth = indentWidth;
-    return this;
+    this.codeBlockIndentWidth = indentWidth
+    return this
   }
 
   /**
@@ -163,8 +163,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockParserSync(parserSync: boolean): CodeBlockTheme {
-    this.codeBlockParserSync = parserSync;
-    return this;
+    this.codeBlockParserSync = parserSync
+    return this
   }
 
   /**
@@ -174,8 +174,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockBackgroundColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockBackgroundColor = color;
-    return this;
+    this.codeBlockBackgroundColor = color
+    return this
   }
 
   /**
@@ -187,38 +187,38 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
   setMargin(options: Margin | Length): CodeBlockTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.codeBlockMarginTop = options;
-      this.codeBlockMarginRight = options;
-      this.codeBlockMarginBottom = options;
-      this.codeBlockMarginLeft = options;
+      this.codeBlockMarginTop = options
+      this.codeBlockMarginRight = options
+      this.codeBlockMarginBottom = options
+      this.codeBlockMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.codeBlockMarginTop = margin.top;
+          this.codeBlockMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.codeBlockMarginRight = margin.right;
+          this.codeBlockMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.codeBlockMarginBottom = margin.bottom;
+          this.codeBlockMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.codeBlockMarginLeft = margin.left;
+          this.codeBlockMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.codeBlockMarginTop = options as Length;
-        this.codeBlockMarginRight = options as Length;
-        this.codeBlockMarginBottom = options as Length;
-        this.codeBlockMarginLeft = options as Length;
+        this.codeBlockMarginTop = options as Length
+        this.codeBlockMarginRight = options as Length
+        this.codeBlockMarginBottom = options as Length
+        this.codeBlockMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -230,38 +230,38 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
   setPadding(options: Padding | Length): CodeBlockTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.codeBlockPaddingTop = options;
-      this.codeBlockPaddingRight = options;
-      this.codeBlockPaddingBottom = options;
-      this.codeBlockPaddingLeft = options;
+      this.codeBlockPaddingTop = options
+      this.codeBlockPaddingRight = options
+      this.codeBlockPaddingBottom = options
+      this.codeBlockPaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.codeBlockPaddingTop = padding.top;
+          this.codeBlockPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.codeBlockPaddingRight = padding.right;
+          this.codeBlockPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.codeBlockPaddingBottom = padding.bottom;
+          this.codeBlockPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.codeBlockPaddingLeft = padding.left;
+          this.codeBlockPaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.codeBlockPaddingTop = options as Length;
-        this.codeBlockPaddingRight = options as Length;
-        this.codeBlockPaddingBottom = options as Length;
-        this.codeBlockPaddingLeft = options as Length;
+        this.codeBlockPaddingTop = options as Length
+        this.codeBlockPaddingRight = options as Length
+        this.codeBlockPaddingBottom = options as Length
+        this.codeBlockPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -271,8 +271,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockBorderStyle(borderStyle: BorderStyle): CodeBlockTheme {
-    this.codeBlockBorderStyle = borderStyle;
-    return this;
+    this.codeBlockBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -282,8 +282,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockBorderWidth(borderWidth: Length): CodeBlockTheme {
-    this.codeBlockBorderWidth = borderWidth;
-    return this;
+    this.codeBlockBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -293,8 +293,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockBorderColor(borderColor: ResourceColor): CodeBlockTheme {
-    this.codeBlockBorderColor = borderColor;
-    return this;
+    this.codeBlockBorderColor = borderColor
+    return this
   }
 
   /**
@@ -306,38 +306,38 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
   setRadius(options: BorderRadiuses | Length): CodeBlockTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.codeBlockRadiusTopLeft = options;
-      this.codeBlockRadiusTopRight = options;
-      this.codeBlockRadiusBottomLeft = options;
-      this.codeBlockRadiusBottomRight = options;
+      this.codeBlockRadiusTopLeft = options
+      this.codeBlockRadiusTopRight = options
+      this.codeBlockRadiusBottomLeft = options
+      this.codeBlockRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 BorderRadiuses 的专属属性来区分
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.codeBlockRadiusTopLeft = radius.topLeft;
+          this.codeBlockRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.codeBlockRadiusTopRight = radius.topRight;
+          this.codeBlockRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.codeBlockRadiusBottomLeft = radius.bottomLeft;
+          this.codeBlockRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.codeBlockRadiusBottomRight = radius.bottomRight;
+          this.codeBlockRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.codeBlockRadiusTopLeft = options as Length;
-        this.codeBlockRadiusTopRight = options as Length;
-        this.codeBlockRadiusBottomLeft = options as Length;
-        this.codeBlockRadiusBottomRight = options as Length;
+        this.codeBlockRadiusTopLeft = options as Length
+        this.codeBlockRadiusTopRight = options as Length
+        this.codeBlockRadiusBottomLeft = options as Length
+        this.codeBlockRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -347,8 +347,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTitleLayoutMarginBottom(marginBottom: Length): CodeBlockTheme {
-    this.codeBlockTitleLayoutMarginBottom = marginBottom;
-    return this;
+    this.codeBlockTitleLayoutMarginBottom = marginBottom
+    return this
   }
 
   /**
@@ -358,8 +358,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTypeTextMarginLeft(marginLeft: Length): CodeBlockTheme {
-    this.codeBlockTypeTextMarginLeft = marginLeft;
-    return this;
+    this.codeBlockTypeTextMarginLeft = marginLeft
+    return this
   }
 
   /**
@@ -369,8 +369,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTypeText(text: string): CodeBlockTheme {
-    this.codeBlockTypeText = text;
-    return this;
+    this.codeBlockTypeText = text
+    return this
   }
 
   /**
@@ -380,8 +380,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTypeTextFontColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockTypeTextFontColor = color;
-    return this;
+    this.codeBlockTypeTextFontColor = color
+    return this
   }
 
   /**
@@ -391,8 +391,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTypeTextFontSize(size: number | string | Resource): CodeBlockTheme {
-    this.codeBlockTypeTextFontSize = size;
-    return this;
+    this.codeBlockTypeTextFontSize = size
+    return this
   }
 
   /**
@@ -402,8 +402,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTypeTextFontStyle(style: FontStyle): CodeBlockTheme {
-    this.codeBlockTypeTextFontStyle = style;
-    return this;
+    this.codeBlockTypeTextFontStyle = style
+    return this
   }
 
   /**
@@ -413,8 +413,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTypeTextFontWeight(weight: number | FontWeight): CodeBlockTheme {
-    this.codeBlockTypeTextFontWeight = weight;
-    return this;
+    this.codeBlockTypeTextFontWeight = weight
+    return this
   }
 
   /**
@@ -424,8 +424,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTypeTextFontFamily(family: string | Resource): CodeBlockTheme {
-    this.codeBlockTypeTextFontFamily = family;
-    return this;
+    this.codeBlockTypeTextFontFamily = family
+    return this
   }
 
   /**
@@ -435,8 +435,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTypeTextLineHeight(height: number | string | Resource): CodeBlockTheme {
-    this.codeBlockTypeTextLineHeight = height;
-    return this;
+    this.codeBlockTypeTextLineHeight = height
+    return this
   }
 
   /**
@@ -446,8 +446,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyFullScreenSpacing(spacing: number): CodeBlockTheme {
-    this.codeBlockCopyFullScreenSpacing = spacing;
-    return this;
+    this.codeBlockCopyFullScreenSpacing = spacing
+    return this
   }
 
   /**
@@ -457,8 +457,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyButtonIsShow(isShow: boolean): CodeBlockTheme {
-    this.codeBlockCopyButtonIsShow = isShow;
-    return this;
+    this.codeBlockCopyButtonIsShow = isShow
+    return this
   }
 
   /**
@@ -468,8 +468,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyTextIsShow(isShow: boolean): CodeBlockTheme {
-    this.codeBlockCopyTextIsShow = isShow;
-    return this;
+    this.codeBlockCopyTextIsShow = isShow
+    return this
   }
 
   /**
@@ -479,8 +479,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyIcon(icon: Resource): CodeBlockTheme {
-    this.codeBlockCopyIcon = icon;
-    return this;
+    this.codeBlockCopyIcon = icon
+    return this
   }
 
   /**
@@ -490,8 +490,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyIconWidth(width: Length): CodeBlockTheme {
-    this.codeBlockCopyIconWidth = width;
-    return this;
+    this.codeBlockCopyIconWidth = width
+    return this
   }
 
   /**
@@ -501,8 +501,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyIconHeight(height: Length): CodeBlockTheme {
-    this.codeBlockCopyIconHeight = height;
-    return this;
+    this.codeBlockCopyIconHeight = height
+    return this
   }
 
   /**
@@ -512,8 +512,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyIconTextSpacing(spacing: number): CodeBlockTheme {
-    this.codeBlockCopyIconTextSpacing = spacing;
-    return this;
+    this.codeBlockCopyIconTextSpacing = spacing
+    return this
   }
 
   /**
@@ -523,8 +523,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyText(text: string): CodeBlockTheme {
-    this.codeBlockCopyText = text;
-    return this;
+    this.codeBlockCopyText = text
+    return this
   }
 
   /**
@@ -534,8 +534,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyTextFontColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockCopyTextFontColor = color;
-    return this;
+    this.codeBlockCopyTextFontColor = color
+    return this
   }
 
   /**
@@ -545,8 +545,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyTextFontSize(size: number | string | Resource): CodeBlockTheme {
-    this.codeBlockCopyTextFontSize = size;
-    return this;
+    this.codeBlockCopyTextFontSize = size
+    return this
   }
 
   /**
@@ -556,8 +556,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyTextFontStyle(style: FontStyle): CodeBlockTheme {
-    this.codeBlockCopyTextFontStyle = style;
-    return this;
+    this.codeBlockCopyTextFontStyle = style
+    return this
   }
 
   /**
@@ -567,8 +567,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyTextFontWeight(weight: number | FontWeight): CodeBlockTheme {
-    this.codeBlockCopyTextFontWeight = weight;
-    return this;
+    this.codeBlockCopyTextFontWeight = weight
+    return this
   }
 
   /**
@@ -578,8 +578,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyTextFontFamily(family: string | Resource): CodeBlockTheme {
-    this.codeBlockCopyTextFontFamily = family;
-    return this;
+    this.codeBlockCopyTextFontFamily = family
+    return this
   }
 
   /**
@@ -589,8 +589,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockCopyTextLineHeight(height: number | string | Resource): CodeBlockTheme {
-    this.codeBlockCopyTextLineHeight = height;
-    return this;
+    this.codeBlockCopyTextLineHeight = height
+    return this
   }
 
   /**
@@ -600,8 +600,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenButtonIsShow(isShow: boolean): CodeBlockTheme {
-    this.codeBlockFullScreenButtonIsShow = isShow;
-    return this;
+    this.codeBlockFullScreenButtonIsShow = isShow
+    return this
   }
 
   /**
@@ -611,8 +611,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenTextIsShow(isShow: boolean): CodeBlockTheme {
-    this.codeBlockFullScreenTextIsShow = isShow;
-    return this;
+    this.codeBlockFullScreenTextIsShow = isShow
+    return this
   }
 
   /**
@@ -622,8 +622,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenIcon(icon: Resource): CodeBlockTheme {
-    this.codeBlockFullScreenIcon = icon;
-    return this;
+    this.codeBlockFullScreenIcon = icon
+    return this
   }
 
   /**
@@ -633,8 +633,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenIconWidth(width: Length): CodeBlockTheme {
-    this.codeBlockFullScreenIconWidth = width;
-    return this;
+    this.codeBlockFullScreenIconWidth = width
+    return this
   }
 
   /**
@@ -644,8 +644,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenIconHeight(height: Length): CodeBlockTheme {
-    this.codeBlockFullScreenIconHeight = height;
-    return this;
+    this.codeBlockFullScreenIconHeight = height
+    return this
   }
 
   /**
@@ -655,8 +655,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenIconTextSpacing(spacing: number): CodeBlockTheme {
-    this.codeBlockFullScreenIconTextSpacing = spacing;
-    return this;
+    this.codeBlockFullScreenIconTextSpacing = spacing
+    return this
   }
 
   /**
@@ -666,8 +666,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenText(text: string): CodeBlockTheme {
-    this.codeBlockFullScreenText = text;
-    return this;
+    this.codeBlockFullScreenText = text
+    return this
   }
 
   /**
@@ -677,8 +677,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenTextFontColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockFullScreenTextFontColor = color;
-    return this;
+    this.codeBlockFullScreenTextFontColor = color
+    return this
   }
 
   /**
@@ -688,8 +688,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenTextFontSize(size: number | string | Resource): CodeBlockTheme {
-    this.codeBlockFullScreenTextFontSize = size;
-    return this;
+    this.codeBlockFullScreenTextFontSize = size
+    return this
   }
 
   /**
@@ -699,8 +699,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenTextFontStyle(style: FontStyle): CodeBlockTheme {
-    this.codeBlockFullScreenTextFontStyle = style;
-    return this;
+    this.codeBlockFullScreenTextFontStyle = style
+    return this
   }
 
   /**
@@ -710,8 +710,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenTextFontWeight(weight: number | FontWeight): CodeBlockTheme {
-    this.codeBlockFullScreenTextFontWeight = weight;
-    return this;
+    this.codeBlockFullScreenTextFontWeight = weight
+    return this
   }
 
   /**
@@ -721,8 +721,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenTextFontFamily(family: string | Resource): CodeBlockTheme {
-    this.codeBlockFullScreenTextFontFamily = family;
-    return this;
+    this.codeBlockFullScreenTextFontFamily = family
+    return this
   }
 
   /**
@@ -732,8 +732,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockFullScreenTextLineHeight(height: number | string | Resource): CodeBlockTheme {
-    this.codeBlockFullScreenTextLineHeight = height;
-    return this;
+    this.codeBlockFullScreenTextLineHeight = height
+    return this
   }
 
   /**
@@ -743,8 +743,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberIsShow(isShow: boolean): CodeBlockTheme {
-    this.codeBlockLineNumberIsShow = isShow;
-    return this;
+    this.codeBlockLineNumberIsShow = isShow
+    return this
   }
 
   /**
@@ -754,8 +754,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberTextPaddingLeft(left: Length): CodeBlockTheme {
-    this.codeBlockLineNumberTextPaddingLeft = left;
-    return this;
+    this.codeBlockLineNumberTextPaddingLeft = left
+    return this
   }
 
   /**
@@ -765,8 +765,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberTextFontColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockLineNumberTextFontColor = color;
-    return this;
+    this.codeBlockLineNumberTextFontColor = color
+    return this
   }
 
   /**
@@ -776,8 +776,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberTextFontSize(size: number | string | Resource): CodeBlockTheme {
-    this.codeBlockLineNumberTextFontSize = size;
-    return this;
+    this.codeBlockLineNumberTextFontSize = size
+    return this
   }
 
   /**
@@ -787,8 +787,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberTextFontStyle(style: FontStyle): CodeBlockTheme {
-    this.codeBlockLineNumberTextFontStyle = style;
-    return this;
+    this.codeBlockLineNumberTextFontStyle = style
+    return this
   }
 
   /**
@@ -798,8 +798,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberTextFontWeight(weight: number | FontWeight): CodeBlockTheme {
-    this.codeBlockLineNumberTextFontWeight = weight;
-    return this;
+    this.codeBlockLineNumberTextFontWeight = weight
+    return this
   }
 
   /**
@@ -809,8 +809,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberTextFontFamily(family: string | Resource): CodeBlockTheme {
-    this.codeBlockLineNumberTextFontFamily = family;
-    return this;
+    this.codeBlockLineNumberTextFontFamily = family
+    return this
   }
 
   /**
@@ -820,8 +820,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberTextLineHeight(height: number | string | Resource): CodeBlockTheme {
-    this.codeBlockLineNumberTextLineHeight = height;
-    return this;
+    this.codeBlockLineNumberTextLineHeight = height
+    return this
   }
 
   /**
@@ -831,8 +831,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockDividerColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockDividerColor = color;
-    return this;
+    this.codeBlockDividerColor = color
+    return this
   }
 
   /**
@@ -842,8 +842,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockDividerStrokeWidth(strokeWidth: Length): CodeBlockTheme {
-    this.codeBlockDividerStrokeWidth = strokeWidth;
-    return this;
+    this.codeBlockDividerStrokeWidth = strokeWidth
+    return this
   }
 
   /**
@@ -853,8 +853,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockLineNumberDividerSpacing(spacing: number): CodeBlockTheme {
-    this.codeBlockLineNumberDividerSpacing = spacing;
-    return this;
+    this.codeBlockLineNumberDividerSpacing = spacing
+    return this
   }
 
   /**
@@ -864,8 +864,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextMarginRight(marginRight: Length): CodeBlockTheme {
-    this.codeBlockTextMarginRight = marginRight;
-    return this;
+    this.codeBlockTextMarginRight = marginRight
+    return this
   }
 
   /**
@@ -875,8 +875,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextMarginLeft(marginLeft: Length): CodeBlockTheme {
-    this.codeBlockTextMarginLeft = marginLeft;
-    return this;
+    this.codeBlockTextMarginLeft = marginLeft
+    return this
   }
 
   /**
@@ -886,8 +886,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextFontColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockTextFontColor = color;
-    return this;
+    this.codeBlockTextFontColor = color
+    return this
   }
 
   /**
@@ -897,8 +897,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextFontSize(size: number | string | Resource): CodeBlockTheme {
-    this.codeBlockTextFontSize = size;
-    return this;
+    this.codeBlockTextFontSize = size
+    return this
   }
 
   /**
@@ -908,8 +908,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextFontStyle(style: FontStyle): CodeBlockTheme {
-    this.codeBlockTextFontStyle = style;
-    return this;
+    this.codeBlockTextFontStyle = style
+    return this
   }
 
   /**
@@ -919,8 +919,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextFontWeight(weight: number | FontWeight): CodeBlockTheme {
-    this.codeBlockTextFontWeight = weight;
-    return this;
+    this.codeBlockTextFontWeight = weight
+    return this
   }
 
   /**
@@ -930,8 +930,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextFontFamily(family: string | Resource): CodeBlockTheme {
-    this.codeBlockTextFontFamily = family;
-    return this;
+    this.codeBlockTextFontFamily = family
+    return this
   }
 
   /**
@@ -941,8 +941,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextLineHeight(height: number | string | Resource): CodeBlockTheme {
-    this.codeBlockTextLineHeight = height;
-    return this;
+    this.codeBlockTextLineHeight = height
+    return this
   }
 
   /**
@@ -952,8 +952,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockTextLetterSpacing(spacing: number): CodeBlockTheme {
-    this.codeBlockTextLetterSpacing = spacing;
-    return this;
+    this.codeBlockTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -963,8 +963,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockListTitleTextSize(size: number): CodeBlockTheme {
-    this.codeBlockListTitleTextSize = size;
-    return this;
+    this.codeBlockListTitleTextSize = size
+    return this
   }
 
   /**
@@ -974,8 +974,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockListTitleSelectTextSize(size: number): CodeBlockTheme {
-    this.codeBlockListTitleSelectTextSize = size;
-    return this;
+    this.codeBlockListTitleSelectTextSize = size
+    return this
   }
 
   /**
@@ -985,8 +985,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockListTitleSelectTextColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockListTitleSelectTextColor = color;
-    return this;
+    this.codeBlockListTitleSelectTextColor = color
+    return this
   }
 
   /**
@@ -996,8 +996,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockListTitleUnselectTextColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockListTitleUnselectTextColor = color;
-    return this;
+    this.codeBlockListTitleUnselectTextColor = color
+    return this
   }
 
   /**
@@ -1007,8 +1007,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockListTitleSelectBackgroundColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockListTitleSelectBackgroundColor = color;
-    return this;
+    this.codeBlockListTitleSelectBackgroundColor = color
+    return this
   }
 
   /**
@@ -1018,8 +1018,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockListTitleUnselectBackgroundColor(color: ResourceColor): CodeBlockTheme {
-    this.codeBlockListTitleUnselectBackgroundColor = color;
-    return this;
+    this.codeBlockListTitleUnselectBackgroundColor = color
+    return this
   }
 
   /**
@@ -1029,8 +1029,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockIsSeparate(isSeparate: boolean): CodeBlockTheme {
-    this.codeBlockIsSeparate = isSeparate;
-    return this;
+    this.codeBlockIsSeparate = isSeparate
+    return this
   }
 
   /**
@@ -1040,8 +1040,8 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockSeparateWidth(width: Length): CodeBlockTheme {
-    this.codeBlockSeparateWidth = width;
-    return this;
+    this.codeBlockSeparateWidth = width
+    return this
   }
 
   /**
@@ -1051,7 +1051,7 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
    * @return CodeBlockTheme
    */
   setCodeBlockSeparateIsBottom(isBottom: boolean): CodeBlockTheme {
-    this.codeBlockSeparateIsBottom = isBottom;
-    return this;
+    this.codeBlockSeparateIsBottom = isBottom
+    return this
   }
 }

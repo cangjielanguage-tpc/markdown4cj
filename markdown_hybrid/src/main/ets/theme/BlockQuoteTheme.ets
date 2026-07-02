@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FFEAEAEA, COLOR_FF191919, isMargin, isPadding, isBorderRadiuses } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FFEAEAEA, COLOR_FF191919, isMargin, isPadding, isBorderRadiuses } from "../base/Constants"
 
 /**
  * 块引用样式配置
@@ -29,8 +29,8 @@ export class BlockQuoteTheme implements MarkdownBaseTheme {
    * @return BlockQuoteTheme
    */
   setBlockQuoteBackgroundColor(color: ResourceColor): BlockQuoteTheme {
-    this.blockQuoteBackgroundColor = color;
-    return this;
+    this.blockQuoteBackgroundColor = color
+    return this
   }
 
   /**
@@ -42,38 +42,38 @@ export class BlockQuoteTheme implements MarkdownBaseTheme {
   setBlockQuoteMargin(options: Margin | Length): BlockQuoteTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.blockQuoteMarginTop = options;
-      this.blockQuoteMarginRight = options;
-      this.blockQuoteMarginBottom = options;
-      this.blockQuoteMarginLeft = options;
+      this.blockQuoteMarginTop = options
+      this.blockQuoteMarginRight = options
+      this.blockQuoteMarginBottom = options
+      this.blockQuoteMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.blockQuoteMarginTop = margin.top;
+          this.blockQuoteMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.blockQuoteMarginRight = margin.right;
+          this.blockQuoteMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.blockQuoteMarginBottom = margin.bottom;
+          this.blockQuoteMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.blockQuoteMarginLeft = margin.left;
+          this.blockQuoteMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.blockQuoteMarginTop = options as Length;
-        this.blockQuoteMarginRight = options as Length;
-        this.blockQuoteMarginBottom = options as Length;
-        this.blockQuoteMarginLeft = options as Length;
+        this.blockQuoteMarginTop = options as Length
+        this.blockQuoteMarginRight = options as Length
+        this.blockQuoteMarginBottom = options as Length
+        this.blockQuoteMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -85,38 +85,38 @@ export class BlockQuoteTheme implements MarkdownBaseTheme {
   setBlockQuotePadding(options: Padding | Length): BlockQuoteTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.blockQuotePaddingTop = options;
-      this.blockQuotePaddingRight = options;
-      this.blockQuotePaddingBottom = options;
-      this.blockQuotePaddingLeft = options;
+      this.blockQuotePaddingTop = options
+      this.blockQuotePaddingRight = options
+      this.blockQuotePaddingBottom = options
+      this.blockQuotePaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.blockQuotePaddingTop = padding.top;
+          this.blockQuotePaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.blockQuotePaddingRight = padding.right;
+          this.blockQuotePaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.blockQuotePaddingBottom = padding.bottom;
+          this.blockQuotePaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.blockQuotePaddingLeft = padding.left;
+          this.blockQuotePaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.blockQuotePaddingTop = options as Length;
-        this.blockQuotePaddingRight = options as Length;
-        this.blockQuotePaddingBottom = options as Length;
-        this.blockQuotePaddingLeft = options as Length;
+        this.blockQuotePaddingTop = options as Length
+        this.blockQuotePaddingRight = options as Length
+        this.blockQuotePaddingBottom = options as Length
+        this.blockQuotePaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -128,38 +128,38 @@ export class BlockQuoteTheme implements MarkdownBaseTheme {
   setBlockQuoteRadius(options: BorderRadiuses | Length): BlockQuoteTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.blockQuoteRadiusTopLeft = options;
-      this.blockQuoteRadiusTopRight = options;
-      this.blockQuoteRadiusBottomLeft = options;
-      this.blockQuoteRadiusBottomRight = options;
+      this.blockQuoteRadiusTopLeft = options
+      this.blockQuoteRadiusTopRight = options
+      this.blockQuoteRadiusBottomLeft = options
+      this.blockQuoteRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 BorderRadiuses 的专属属性来区分
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.blockQuoteRadiusTopLeft = radius.topLeft;
+          this.blockQuoteRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.blockQuoteRadiusTopRight = radius.topRight;
+          this.blockQuoteRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.blockQuoteRadiusBottomLeft = radius.bottomLeft;
+          this.blockQuoteRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.blockQuoteRadiusBottomRight = radius.bottomRight;
+          this.blockQuoteRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.blockQuoteRadiusTopLeft = options as Length;
-        this.blockQuoteRadiusTopRight = options as Length;
-        this.blockQuoteRadiusBottomLeft = options as Length;
-        this.blockQuoteRadiusBottomRight = options as Length;
+        this.blockQuoteRadiusTopLeft = options as Length
+        this.blockQuoteRadiusTopRight = options as Length
+        this.blockQuoteRadiusBottomLeft = options as Length
+        this.blockQuoteRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -169,8 +169,8 @@ export class BlockQuoteTheme implements MarkdownBaseTheme {
    * @return BlockQuoteTheme
    */
   setBlockQuoteLeftBorderWidth(width: Length): BlockQuoteTheme {
-    this.blockQuoteLeftBorderWidth = width;
-    return this;
+    this.blockQuoteLeftBorderWidth = width
+    return this
   }
 
   /**
@@ -180,8 +180,8 @@ export class BlockQuoteTheme implements MarkdownBaseTheme {
    * @return BlockQuoteTheme
    */
   setBlockQuoteLeftBorderColor(color: ResourceColor): BlockQuoteTheme {
-    this.blockQuoteLeftBorderColor = color;
-    return this;
+    this.blockQuoteLeftBorderColor = color
+    return this
   }
 
   /**
@@ -191,7 +191,7 @@ export class BlockQuoteTheme implements MarkdownBaseTheme {
    * @return BlockQuoteTheme
    */
   setBlockQuoteChildSpacing(space: number): BlockQuoteTheme {
-    this.blockQuoteChildSpacing = space;
-    return this;
+    this.blockQuoteChildSpacing = space
+    return this
   }
 }

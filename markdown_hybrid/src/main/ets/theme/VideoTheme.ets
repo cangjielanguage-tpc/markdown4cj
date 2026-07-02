@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import {
   COLOR_TRANSPARENT,
   COLOR_WHITE,
@@ -7,7 +7,7 @@ import {
   isMargin,
   isBorderRadiuses,
   isPadding
-} from "../base/Constants";
+} from "../base/Constants"
 
 /**
  * 视频样式配置
@@ -92,8 +92,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoBackgroundColor(color: ResourceColor): VideoTheme {
-    this.videoBackgroundColor = color;
-    return this;
+    this.videoBackgroundColor = color
+    return this
   }
 
   /**
@@ -105,10 +105,10 @@ export class VideoTheme implements MarkdownBaseTheme {
   setVideoMargin(options: Margin | Length): VideoTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.videoMarginTop = options;
-      this.videoMarginRight = options;
-      this.videoMarginBottom = options;
-      this.videoMarginLeft = options;
+      this.videoMarginTop = options
+      this.videoMarginRight = options
+      this.videoMarginBottom = options
+      this.videoMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -116,28 +116,28 @@ export class VideoTheme implements MarkdownBaseTheme {
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
         // 这里通过类型守卫，编译器已经知道它是 Margin 了
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.videoMarginTop = margin.top;
+          this.videoMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.videoMarginRight = margin.right;
+          this.videoMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.videoMarginBottom = margin.bottom;
+          this.videoMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.videoMarginLeft = margin.left;
+          this.videoMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.videoMarginTop = options as Length;
-        this.videoMarginRight = options as Length;
-        this.videoMarginBottom = options as Length;
-        this.videoMarginLeft = options as Length;
+        this.videoMarginTop = options as Length
+        this.videoMarginRight = options as Length
+        this.videoMarginBottom = options as Length
+        this.videoMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -149,10 +149,10 @@ export class VideoTheme implements MarkdownBaseTheme {
   setVideoPadding(options: Padding | Length): VideoTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.videoPaddingTop = options;
-      this.videoPaddingRight = options;
-      this.videoPaddingBottom = options;
-      this.videoPaddingLeft = options;
+      this.videoPaddingTop = options
+      this.videoPaddingRight = options
+      this.videoPaddingBottom = options
+      this.videoPaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -160,28 +160,28 @@ export class VideoTheme implements MarkdownBaseTheme {
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
         // 这里通过类型守卫，编译器已经知道它是 Padding 了
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.videoPaddingTop = padding.top;
+          this.videoPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.videoPaddingRight = padding.right;
+          this.videoPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.videoPaddingBottom = padding.bottom;
+          this.videoPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.videoPaddingLeft = padding.left;
+          this.videoPaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.videoPaddingTop = options as Length;
-        this.videoPaddingRight = options as Length;
-        this.videoPaddingBottom = options as Length;
-        this.videoPaddingLeft = options as Length;
+        this.videoPaddingTop = options as Length
+        this.videoPaddingRight = options as Length
+        this.videoPaddingBottom = options as Length
+        this.videoPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -193,10 +193,10 @@ export class VideoTheme implements MarkdownBaseTheme {
   setVideoRadius(options: BorderRadiuses | Length): VideoTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.videoRadiusTopLeft = options;
-      this.videoRadiusTopRight = options;
-      this.videoRadiusBottomLeft = options;
-      this.videoRadiusBottomRight = options;
+      this.videoRadiusTopLeft = options
+      this.videoRadiusTopRight = options
+      this.videoRadiusBottomLeft = options
+      this.videoRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -204,28 +204,28 @@ export class VideoTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.videoRadiusTopLeft = radius.topLeft;
+          this.videoRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.videoRadiusTopRight = radius.topRight;
+          this.videoRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.videoRadiusBottomLeft = radius.bottomLeft;
+          this.videoRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.videoRadiusBottomRight = radius.bottomRight;
+          this.videoRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.videoRadiusTopLeft = options as Length;
-        this.videoRadiusTopRight = options as Length;
-        this.videoRadiusBottomLeft = options as Length;
-        this.videoRadiusBottomRight = options as Length;
+        this.videoRadiusTopLeft = options as Length
+        this.videoRadiusTopRight = options as Length
+        this.videoRadiusBottomLeft = options as Length
+        this.videoRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -235,8 +235,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoBorderStyle(borderStyle: BorderStyle): VideoTheme {
-    this.videoBorderStyle = borderStyle;
-    return this;
+    this.videoBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -246,8 +246,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoBorderWidth(borderWidth: Length): VideoTheme {
-    this.videoBorderWidth = borderWidth;
-    return this;
+    this.videoBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -257,8 +257,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoBorderColor(borderColor: ResourceColor): VideoTheme {
-    this.videoBorderColor = borderColor;
-    return this;
+    this.videoBorderColor = borderColor
+    return this
   }
 
   /**
@@ -268,8 +268,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoPlaceholder(resource: Resource): VideoTheme {
-    this.videoPlaceholder = resource;
-    return this;
+    this.videoPlaceholder = resource
+    return this
   }
 
   /**
@@ -279,8 +279,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoImageFitType(fitType: ImageFit): VideoTheme {
-    this.videoImageFitType = fitType;
-    return this;
+    this.videoImageFitType = fitType
+    return this
   }
 
   /**
@@ -290,8 +290,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoPlayIcon(icon: Resource): VideoTheme {
-    this.videoPlayIcon = icon;
-    return this;
+    this.videoPlayIcon = icon
+    return this
   }
 
   /**
@@ -301,8 +301,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoPlayIconWidth(width: Length): VideoTheme {
-    this.videoPlayIconWidth = width;
-    return this;
+    this.videoPlayIconWidth = width
+    return this
   }
 
   /**
@@ -312,8 +312,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoPlayIconHeight(height: Length): VideoTheme {
-    this.videoPlayIconHeight = height;
-    return this;
+    this.videoPlayIconHeight = height
+    return this
   }
 
   /**
@@ -323,8 +323,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoPlayIconFitType(fitType: ImageFit): VideoTheme {
-    this.videoPlayIconFitType = fitType;
-    return this;
+    this.videoPlayIconFitType = fitType
+    return this
   }
 
   /**
@@ -334,8 +334,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoTimeTextFontColor(color: ResourceColor): VideoTheme {
-    this.videoTimeTextFontColor = color;
-    return this;
+    this.videoTimeTextFontColor = color
+    return this
   }
 
   /**
@@ -345,8 +345,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoTimeTextFontSize(size: number | string | Resource): VideoTheme {
-    this.videoTimeTextFontSize = size;
-    return this;
+    this.videoTimeTextFontSize = size
+    return this
   }
 
   /**
@@ -356,8 +356,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoTimeTextFontStyle(style: FontStyle): VideoTheme {
-    this.videoTimeTextFontStyle = style;
-    return this;
+    this.videoTimeTextFontStyle = style
+    return this
   }
 
   /**
@@ -367,8 +367,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoTimeTextFontWeight(weight: number | FontWeight): VideoTheme {
-    this.videoTimeTextFontWeight = weight;
-    return this;
+    this.videoTimeTextFontWeight = weight
+    return this
   }
 
   /**
@@ -378,8 +378,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoTimeTextFontFamily(family: string | Resource): VideoTheme {
-    this.videoTimeTextFontFamily = family;
-    return this;
+    this.videoTimeTextFontFamily = family
+    return this
   }
 
   /**
@@ -389,8 +389,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoTimeTextLineHeight(height: number | string | Resource): VideoTheme {
-    this.videoTimeTextLineHeight = height;
-    return this;
+    this.videoTimeTextLineHeight = height
+    return this
   }
 
   /**
@@ -400,8 +400,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoTimeTextMarginRight(margin: Length): VideoTheme {
-    this.videoTimeTextMarginRight = margin;
-    return this;
+    this.videoTimeTextMarginRight = margin
+    return this
   }
 
   /**
@@ -411,8 +411,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoTimeTextMarginBottom(margin: Length): VideoTheme {
-    this.videoTimeTextMarginBottom = margin;
-    return this;
+    this.videoTimeTextMarginBottom = margin
+    return this
   }
 
   /**
@@ -422,8 +422,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoBottomLayoutVisible(visible: boolean): VideoTheme {
-    this.videoBottomLayoutVisible = visible;
-    return this;
+    this.videoBottomLayoutVisible = visible
+    return this
   }
 
   /**
@@ -433,8 +433,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoBottomLayoutMarginTop(marginTop: Length): VideoTheme {
-    this.videoBottomLayoutMarginTop = marginTop;
-    return this;
+    this.videoBottomLayoutMarginTop = marginTop
+    return this
   }
 
   /**
@@ -444,8 +444,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonVisible(visible: boolean): VideoTheme {
-    this.videoReleaseButtonVisible = visible;
-    return this;
+    this.videoReleaseButtonVisible = visible
+    return this
   }
 
   /**
@@ -455,8 +455,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonBackgroundColor(color: ResourceColor): VideoTheme {
-    this.videoReleaseButtonBackgroundColor = color;
-    return this;
+    this.videoReleaseButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -466,8 +466,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonWidth(width: Length): VideoTheme {
-    this.videoReleaseButtonWidth = width;
-    return this;
+    this.videoReleaseButtonWidth = width
+    return this
   }
 
   /**
@@ -477,8 +477,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonHeight(height: Length): VideoTheme {
-    this.videoReleaseButtonHeight = height;
-    return this;
+    this.videoReleaseButtonHeight = height
+    return this
   }
 
   /**
@@ -490,10 +490,10 @@ export class VideoTheme implements MarkdownBaseTheme {
   setVideoReleaseButtonRadius(options: BorderRadiuses | Length): VideoTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.videoReleaseButtonRadiusTopLeft = options;
-      this.videoReleaseButtonRadiusTopRight = options;
-      this.videoReleaseButtonRadiusBottomLeft = options;
-      this.videoReleaseButtonRadiusBottomRight = options;
+      this.videoReleaseButtonRadiusTopLeft = options
+      this.videoReleaseButtonRadiusTopRight = options
+      this.videoReleaseButtonRadiusBottomLeft = options
+      this.videoReleaseButtonRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -501,28 +501,28 @@ export class VideoTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.videoReleaseButtonRadiusTopLeft = radius.topLeft;
+          this.videoReleaseButtonRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.videoReleaseButtonRadiusTopRight = radius.topRight;
+          this.videoReleaseButtonRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.videoReleaseButtonRadiusBottomLeft = radius.bottomLeft;
+          this.videoReleaseButtonRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.videoReleaseButtonRadiusBottomRight = radius.bottomRight;
+          this.videoReleaseButtonRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.videoReleaseButtonRadiusTopLeft = options as Length;
-        this.videoReleaseButtonRadiusTopRight = options as Length;
-        this.videoReleaseButtonRadiusBottomLeft = options as Length;
-        this.videoReleaseButtonRadiusBottomRight = options as Length;
+        this.videoReleaseButtonRadiusTopLeft = options as Length
+        this.videoReleaseButtonRadiusTopRight = options as Length
+        this.videoReleaseButtonRadiusBottomLeft = options as Length
+        this.videoReleaseButtonRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -532,8 +532,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonIconTextGap(gap: number): VideoTheme {
-    this.videoReleaseButtonIconTextGap = gap;
-    return this;
+    this.videoReleaseButtonIconTextGap = gap
+    return this
   }
 
   /**
@@ -543,8 +543,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonIcon(icon: Resource): VideoTheme {
-    this.videoReleaseButtonIcon = icon;
-    return this;
+    this.videoReleaseButtonIcon = icon
+    return this
   }
 
   /**
@@ -554,8 +554,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonIconWidth(width: Length): VideoTheme {
-    this.videoReleaseButtonIconWidth = width;
-    return this;
+    this.videoReleaseButtonIconWidth = width
+    return this
   }
 
   /**
@@ -565,8 +565,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonIconHeight(height: Length): VideoTheme {
-    this.videoReleaseButtonIconHeight = height;
-    return this;
+    this.videoReleaseButtonIconHeight = height
+    return this
   }
 
   /**
@@ -576,8 +576,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonText(text: string): VideoTheme {
-    this.videoReleaseButtonText = text;
-    return this;
+    this.videoReleaseButtonText = text
+    return this
   }
 
   /**
@@ -587,8 +587,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonTextFontColor(color: ResourceColor): VideoTheme {
-    this.videoReleaseButtonTextFontColor = color;
-    return this;
+    this.videoReleaseButtonTextFontColor = color
+    return this
   }
 
   /**
@@ -598,8 +598,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonTextFontSize(size: number | string | Resource): VideoTheme {
-    this.videoReleaseButtonTextFontSize = size;
-    return this;
+    this.videoReleaseButtonTextFontSize = size
+    return this
   }
 
   /**
@@ -609,8 +609,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonTextFontStyle(style: FontStyle): VideoTheme {
-    this.videoReleaseButtonTextFontStyle = style;
-    return this;
+    this.videoReleaseButtonTextFontStyle = style
+    return this
   }
 
   /**
@@ -620,8 +620,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonTextFontWeight(weight: number | FontWeight): VideoTheme {
-    this.videoReleaseButtonTextFontWeight = weight;
-    return this;
+    this.videoReleaseButtonTextFontWeight = weight
+    return this
   }
 
   /**
@@ -631,8 +631,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonTextFontFamily(family: string | Resource): VideoTheme {
-    this.videoReleaseButtonTextFontFamily = family;
-    return this;
+    this.videoReleaseButtonTextFontFamily = family
+    return this
   }
 
   /**
@@ -642,8 +642,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoReleaseButtonTextLineHeight(height: number | string | Resource): VideoTheme {
-    this.videoReleaseButtonTextLineHeight = height;
-    return this;
+    this.videoReleaseButtonTextLineHeight = height
+    return this
   }
 
   /**
@@ -653,8 +653,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonVisible(visible: boolean): VideoTheme {
-    this.videoDownloadButtonVisible = visible;
-    return this;
+    this.videoDownloadButtonVisible = visible
+    return this
   }
 
   /**
@@ -664,8 +664,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonBackgroundColor(color: ResourceColor): VideoTheme {
-    this.videoDownloadButtonBackgroundColor = color;
-    return this;
+    this.videoDownloadButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -675,8 +675,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonWidth(width: Length): VideoTheme {
-    this.videoDownloadButtonWidth = width;
-    return this;
+    this.videoDownloadButtonWidth = width
+    return this
   }
 
   /**
@@ -686,8 +686,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonHeight(height: Length): VideoTheme {
-    this.videoDownloadButtonHeight = height;
-    return this;
+    this.videoDownloadButtonHeight = height
+    return this
   }
 
   /**
@@ -699,10 +699,10 @@ export class VideoTheme implements MarkdownBaseTheme {
   setVideoDownloadButtonRadius(options: BorderRadiuses | Length): VideoTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.videoDownloadButtonRadiusTopLeft = options;
-      this.videoDownloadButtonRadiusTopRight = options;
-      this.videoDownloadButtonRadiusBottomLeft = options;
-      this.videoDownloadButtonRadiusBottomRight = options;
+      this.videoDownloadButtonRadiusTopLeft = options
+      this.videoDownloadButtonRadiusTopRight = options
+      this.videoDownloadButtonRadiusBottomLeft = options
+      this.videoDownloadButtonRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -710,28 +710,28 @@ export class VideoTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.videoDownloadButtonRadiusTopLeft = radius.topLeft;
+          this.videoDownloadButtonRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.videoDownloadButtonRadiusTopRight = radius.topRight;
+          this.videoDownloadButtonRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.videoDownloadButtonRadiusBottomLeft = radius.bottomLeft;
+          this.videoDownloadButtonRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.videoDownloadButtonRadiusBottomRight = radius.bottomRight;
+          this.videoDownloadButtonRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.videoDownloadButtonRadiusTopLeft = options as Length;
-        this.videoDownloadButtonRadiusTopRight = options as Length;
-        this.videoDownloadButtonRadiusBottomLeft = options as Length;
-        this.videoDownloadButtonRadiusBottomRight = options as Length;
+        this.videoDownloadButtonRadiusTopLeft = options as Length
+        this.videoDownloadButtonRadiusTopRight = options as Length
+        this.videoDownloadButtonRadiusBottomLeft = options as Length
+        this.videoDownloadButtonRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -741,8 +741,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonIconTextGap(gap: number): VideoTheme {
-    this.videoDownloadButtonIconTextGap = gap;
-    return this;
+    this.videoDownloadButtonIconTextGap = gap
+    return this
   }
 
   /**
@@ -752,8 +752,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonIcon(icon: Resource): VideoTheme {
-    this.videoDownloadButtonIcon = icon;
-    return this;
+    this.videoDownloadButtonIcon = icon
+    return this
   }
 
   /**
@@ -763,8 +763,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonIconWidth(width: Length): VideoTheme {
-    this.videoDownloadButtonIconWidth = width;
-    return this;
+    this.videoDownloadButtonIconWidth = width
+    return this
   }
 
   /**
@@ -774,8 +774,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonIconHeight(height: Length): VideoTheme {
-    this.videoDownloadButtonIconHeight = height;
-    return this;
+    this.videoDownloadButtonIconHeight = height
+    return this
   }
 
   /**
@@ -785,8 +785,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonText(text: string): VideoTheme {
-    this.videoDownloadButtonText = text;
-    return this;
+    this.videoDownloadButtonText = text
+    return this
   }
 
   /**
@@ -796,8 +796,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonTextFontColor(color: ResourceColor): VideoTheme {
-    this.videoDownloadButtonTextFontColor = color;
-    return this;
+    this.videoDownloadButtonTextFontColor = color
+    return this
   }
 
   /**
@@ -807,8 +807,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonTextFontSize(size: number | string | Resource): VideoTheme {
-    this.videoDownloadButtonTextFontSize = size;
-    return this;
+    this.videoDownloadButtonTextFontSize = size
+    return this
   }
 
   /**
@@ -818,8 +818,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonTextFontStyle(style: FontStyle): VideoTheme {
-    this.videoDownloadButtonTextFontStyle = style;
-    return this;
+    this.videoDownloadButtonTextFontStyle = style
+    return this
   }
 
   /**
@@ -829,8 +829,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonTextFontWeight(weight: number | FontWeight): VideoTheme {
-    this.videoDownloadButtonTextFontWeight = weight;
-    return this;
+    this.videoDownloadButtonTextFontWeight = weight
+    return this
   }
 
   /**
@@ -840,8 +840,8 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonTextFontFamily(family: string | Resource): VideoTheme {
-    this.videoDownloadButtonTextFontFamily = family;
-    return this;
+    this.videoDownloadButtonTextFontFamily = family
+    return this
   }
 
   /**
@@ -851,7 +851,7 @@ export class VideoTheme implements MarkdownBaseTheme {
    * @return VideoTheme
    */
   setVideoDownloadButtonTextLineHeight(height: number | string | Resource): VideoTheme {
-    this.videoDownloadButtonTextLineHeight = height;
-    return this;
+    this.videoDownloadButtonTextLineHeight = height
+    return this
   }
 }

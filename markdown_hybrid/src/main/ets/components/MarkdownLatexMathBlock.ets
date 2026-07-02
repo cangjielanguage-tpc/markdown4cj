@@ -30,7 +30,11 @@ export struct MarkdownLatexMathBlock {
   aboutToDisappear(): void {
     this.isAlive = false
     if (this.pixelMap !== undefined) {
-      try { this.pixelMap.release() } catch (e) { console.error('PixelMap release failed: ' + JSON.stringify(e)) }
+      try {
+        this.pixelMap.release()
+      } catch (e) {
+        console.error('PixelMap release failed: ' + JSON.stringify(e))
+      }
       this.pixelMap = undefined
     }
     this.imageData = undefined
@@ -142,7 +146,11 @@ export struct MarkdownLatexMathBlock {
    */
   private latexMathBlockParser(): void {
     if (this.pixelMap !== undefined) {
-      try { this.pixelMap.release() } catch (e) { console.error('PixelMap release failed: ' + JSON.stringify(e)) }
+      try {
+        this.pixelMap.release()
+      } catch (e) {
+        console.error('PixelMap release failed: ' + JSON.stringify(e))
+      }
       this.pixelMap = undefined
     }
     this.imageData = undefined
@@ -164,9 +172,17 @@ export struct MarkdownLatexMathBlock {
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
         imageSource.createPixelMap().then((pm: PixelMap) => {
-          try { imageSource.release() } catch (e) { console.error('ImageSource release failed: ' + JSON.stringify(e)) }
+          try {
+            imageSource.release()
+          } catch (e) {
+            console.error('ImageSource release failed: ' + JSON.stringify(e))
+          }
           if (!this.isAlive) {
-            try { pm.release() } catch (e) { console.error('PixelMap release failed: ' + JSON.stringify(e)) }
+            try {
+              pm.release()
+            } catch (e) {
+              console.error('PixelMap release failed: ' + JSON.stringify(e))
+            }
             LatexParseQueue.notifyDone()
             return
           }
@@ -182,7 +198,11 @@ export struct MarkdownLatexMathBlock {
             this.isParserEnd = true
             LatexParseQueue.notifyDone()
           }).catch(() => {
-            try { pm.release() } catch (e) { console.error('PixelMap release failed: ' + JSON.stringify(e)) }
+            try {
+              pm.release()
+            } catch (e) {
+              console.error('PixelMap release failed: ' + JSON.stringify(e))
+            }
             this.pixelMap = undefined
             if (this.isAlive) {
               this.isParserEnd = true
@@ -190,7 +210,11 @@ export struct MarkdownLatexMathBlock {
             LatexParseQueue.notifyDone()
           })
         }).catch(() => {
-          try { imageSource.release() } catch (e) { console.error('ImageSource release failed: ' + JSON.stringify(e)) }
+          try {
+            imageSource.release()
+          } catch (e) {
+            console.error('ImageSource release failed: ' + JSON.stringify(e))
+          }
           if (this.isAlive) {
             this.isParserEnd = true
           }

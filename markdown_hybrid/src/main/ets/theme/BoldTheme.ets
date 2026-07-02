@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
  * 加粗文本样式配置
@@ -20,8 +20,8 @@ export class BoldTheme implements MarkdownBaseTheme {
    * @return BoldTheme
    */
   setBoldTextFontColor(color: ResourceColor): BoldTheme {
-    this.boldTextFontColor = color;
-    return this;
+    this.boldTextFontColor = color
+    return this
   }
 
   /**
@@ -31,8 +31,8 @@ export class BoldTheme implements MarkdownBaseTheme {
    * @return BoldTheme
    */
   setBoldTextFontSize(size: number | string | Resource): BoldTheme {
-    this.boldTextFontSize = size;
-    return this;
+    this.boldTextFontSize = size
+    return this
   }
 
   /**
@@ -42,8 +42,8 @@ export class BoldTheme implements MarkdownBaseTheme {
    * @return BoldTheme
    */
   setBoldTextFontStyle(style: FontStyle): BoldTheme {
-    this.boldTextFontStyle = style;
-    return this;
+    this.boldTextFontStyle = style
+    return this
   }
 
   /**
@@ -53,8 +53,8 @@ export class BoldTheme implements MarkdownBaseTheme {
    * @return BoldTheme
    */
   setBoldTextFontWeight(weight: number | FontWeight): BoldTheme {
-    this.boldTextFontWeight = weight;
-    return this;
+    this.boldTextFontWeight = weight
+    return this
   }
 
   /**
@@ -64,8 +64,8 @@ export class BoldTheme implements MarkdownBaseTheme {
    * @return BoldTheme
    */
   setBoldTextFontFamily(family: string | Resource): BoldTheme {
-    this.boldTextFontFamily = family;
-    return this;
+    this.boldTextFontFamily = family
+    return this
   }
 
   /**
@@ -75,8 +75,8 @@ export class BoldTheme implements MarkdownBaseTheme {
    * @return BoldTheme
    */
   setBoldTextLineHeight(lineHeight: number | string | Resource): BoldTheme {
-    this.boldTextLineHeight = lineHeight;
-    return this;
+    this.boldTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -86,7 +86,7 @@ export class BoldTheme implements MarkdownBaseTheme {
    * @return BoldTheme
    */
   setBoldTextLetterSpacing(spacing: number): BoldTheme {
-    this.boldTextLetterSpacing = spacing;
-    return this;
+    this.boldTextLetterSpacing = spacing
+    return this
   }
 }

@@ -101,12 +101,20 @@ export class NodeView {
     this.headingID = source.headingID
     this.copyStyleFrom(source)
     if (this.imageReplacePixelMap !== undefined && this.imageReplacePixelMap !== source.imageReplacePixelMap) {
-      try { this.imageReplacePixelMap.release() } catch (e) {}
+      try {
+        this.imageReplacePixelMap.release()
+      } catch (e) {
+        console.error('imageReplacePixelMap release failed: ' + JSON.stringify(e))
+      }
     }
     this.imageReplacePixelMap = source.imageReplacePixelMap
     this.imageReplaceTried = source.imageReplaceTried
     if (this.latexPixelMap !== undefined && this.latexPixelMap !== source.latexPixelMap) {
-      try { this.latexPixelMap.release() } catch (e) {}
+      try {
+        this.latexPixelMap.release()
+      } catch (e) {
+        console.error('latexPixelMap release failed: ' + JSON.stringify(e))
+      }
     }
     this.latexPixelMap = source.latexPixelMap
     this.latexImageData = source.latexImageData
@@ -114,7 +122,11 @@ export class NodeView {
     this.latexImageHeight = source.latexImageHeight
     this.latexIsLoading = source.latexIsLoading
     if (this.linkIconPixelMap !== undefined && this.linkIconPixelMap !== source.linkIconPixelMap) {
-      try { this.linkIconPixelMap.release() } catch (e) {}
+      try {
+        this.linkIconPixelMap.release()
+      } catch (e) {
+        console.error('linkIconPixelMap release failed: ' + JSON.stringify(e))
+      }
     }
     this.linkIconPixelMap = source.linkIconPixelMap
     this.linkIconTried = source.linkIconTried
@@ -134,18 +146,21 @@ export class NodeView {
           child.imageReplacePixelMap.release()
         }
       } catch (e) {
+        console.error('releaseChildrenPixelMaps imageReplacePixelMap release failed: ' + JSON.stringify(e))
       }
       try {
         if (child.latexPixelMap !== undefined) {
           child.latexPixelMap.release()
         }
       } catch (e) {
+        console.error('releaseChildrenPixelMaps latexPixelMap release failed: ' + JSON.stringify(e))
       }
       try {
         if (child.linkIconPixelMap !== undefined) {
           child.linkIconPixelMap.release()
         }
       } catch (e) {
+        console.error('releaseChildrenPixelMaps linkIconPixelMap release failed: ' + JSON.stringify(e))
       }
       child.releaseChildrenPixelMaps()
     }
@@ -161,6 +176,7 @@ export class NodeView {
         this.imageReplacePixelMap = undefined
       }
     } catch (e) {
+      console.error('releaseOwnPixelMaps imageReplacePixelMap release failed: ' + JSON.stringify(e))
     }
     try {
       if (this.latexPixelMap !== undefined) {
@@ -168,6 +184,7 @@ export class NodeView {
         this.latexPixelMap = undefined
       }
     } catch (e) {
+      console.error('releaseOwnPixelMaps latexPixelMap release failed: ' + JSON.stringify(e))
     }
     try {
       if (this.linkIconPixelMap !== undefined) {
@@ -175,6 +192,7 @@ export class NodeView {
         this.linkIconPixelMap = undefined
       }
     } catch (e) {
+      console.error('releaseOwnPixelMaps linkIconPixelMap release failed: ' + JSON.stringify(e))
     }
   }
 

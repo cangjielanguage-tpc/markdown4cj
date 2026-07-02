@@ -713,7 +713,7 @@ export function parsePicStyle(picStyle: Array<string> | undefined): PicStyleObj 
         applyStyleProp(style, picStyleObj)
       }
     } catch (e) {
-      // 忽略解析错误
+      console.error('parsePicStyle parse error: ' + JSON.stringify(e))
     }
   }
   return picStyleObj
@@ -845,6 +845,7 @@ export function urlSafeBase64Decode(v: string): string {
     }
     return ''
   } catch (e) {
+    console.error('getFileExtensionFromUrl failed: ' + JSON.stringify(e))
     return ''
   }
 }

@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
 
 /**
  * 分割线样式配置
@@ -27,38 +27,38 @@ export class DividerTheme implements MarkdownBaseTheme {
   setDividerMargin(options: Margin | Length): DividerTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.dividerMarginTop = options;
-      this.dividerMarginRight = options;
-      this.dividerMarginBottom = options;
-      this.dividerMarginLeft = options;
+      this.dividerMarginTop = options
+      this.dividerMarginRight = options
+      this.dividerMarginBottom = options
+      this.dividerMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.dividerMarginTop = margin.top;
+          this.dividerMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.dividerMarginRight = margin.right;
+          this.dividerMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.dividerMarginBottom = margin.bottom;
+          this.dividerMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.dividerMarginLeft = margin.left;
+          this.dividerMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.dividerMarginTop = options as Length;
-        this.dividerMarginRight = options as Length;
-        this.dividerMarginBottom = options as Length;
-        this.dividerMarginLeft = options as Length;
+        this.dividerMarginTop = options as Length
+        this.dividerMarginRight = options as Length
+        this.dividerMarginBottom = options as Length
+        this.dividerMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -70,38 +70,38 @@ export class DividerTheme implements MarkdownBaseTheme {
   setDividerPadding(options: Padding | Length): DividerTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.dividerPaddingTop = options;
-      this.dividerPaddingRight = options;
-      this.dividerPaddingBottom = options;
-      this.dividerPaddingLeft = options;
+      this.dividerPaddingTop = options
+      this.dividerPaddingRight = options
+      this.dividerPaddingBottom = options
+      this.dividerPaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.dividerPaddingTop = padding.top;
+          this.dividerPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.dividerPaddingRight = padding.right;
+          this.dividerPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.dividerPaddingBottom = padding.bottom;
+          this.dividerPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.dividerPaddingLeft = padding.left;
+          this.dividerPaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.dividerPaddingTop = options as Length;
-        this.dividerPaddingRight = options as Length;
-        this.dividerPaddingBottom = options as Length;
-        this.dividerPaddingLeft = options as Length;
+        this.dividerPaddingTop = options as Length
+        this.dividerPaddingRight = options as Length
+        this.dividerPaddingBottom = options as Length
+        this.dividerPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -111,8 +111,8 @@ export class DividerTheme implements MarkdownBaseTheme {
    * @return DividerTheme
    */
   setDividerColor(color: ResourceColor): DividerTheme {
-    this.dividerColor = color;
-    return this;
+    this.dividerColor = color
+    return this
   }
 
   /**
@@ -122,8 +122,8 @@ export class DividerTheme implements MarkdownBaseTheme {
    * @return DividerTheme
    */
   setDividerStrokeWidth(strokeWidth: number): DividerTheme {
-    this.dividerStrokeWidth = strokeWidth;
-    return this;
+    this.dividerStrokeWidth = strokeWidth
+    return this
   }
 
   /**
@@ -133,7 +133,7 @@ export class DividerTheme implements MarkdownBaseTheme {
    * @return DividerTheme
    */
   setDividerStyle(style: LineCapStyle): DividerTheme {
-    this.dividerStyle = style;
-    return this;
+    this.dividerStyle = style
+    return this
   }
 }

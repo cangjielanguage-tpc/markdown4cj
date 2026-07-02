@@ -19,11 +19,19 @@ import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
  * @return 是否相等
  */
 function sourceSpansEqual(a: Array<SourceSpan>, b: Array<SourceSpan>): boolean {
-  if (a.length !== b.length) return false
+  if (a.length !== b.length) {
+    return false
+  }
   for (let i = 0; i < a.length; i++) {
-    if (a[i].getLineIndex() !== b[i].getLineIndex()) return false
-    if (a[i].getColumnIndex() !== b[i].getColumnIndex()) return false
-    if (a[i].getLength() !== b[i].getLength()) return false
+    if (a[i].getLineIndex() !== b[i].getLineIndex()) {
+      return false
+    }
+    if (a[i].getColumnIndex() !== b[i].getColumnIndex()) {
+      return false
+    }
+    if (a[i].getLength() !== b[i].getLength()) {
+      return false
+    }
   }
   return true
 }
@@ -154,10 +162,23 @@ export function nodeToNodeView(
     if (canReuse && nodeType === 'FencedCodeBlockListBlock') {
       canReuse = false
     }
+    // 提前读取props，用于复用判断和新NodeView创建
+    const prop = currentJsNode.getProps()
+    const newNodeHash = prop !== undefined ? (prop.get("nodeHash") ?? "0") : "0"
+    const newContentHash = prop !== undefined ? (prop.get("contentHash") ?? "0") : "0"
     if (canReuse && prevChild !== undefined) {
       if (sourceSpansEqual(prevChild.sourceSpan, currentJsNode.getSourceSpans())) {
         // sourceSpan完全匹配 — 复用整个子树，跳过转换
         // FencedCodeBlockListBlock例外：其sourceSpan仅从首个代码块设置，新增代码块时不变化
+        // 流式输出时sourceSpan可能不变但文本已增长，需同步更新nodeText和hash
+        // 否则ForEach key不变，Span不重建，显示旧文本（如URL截断）
+        prevChild.nodeHash = newNodeHash
+        prevChild.contentHash = newContentHash
+        if (nodeType === 'Text' || nodeType === 'Code') {
+          prevChild.nodeText = currentJsNode.literal ?? ""
+        } else if (nodeType === 'FencedCodeBlock' || nodeType === 'IndentedCodeBlock') {
+          prevChild.nodeText = currentJsNode.literal?.replace(/\n$/, '') ?? ""
+        }
         targetParentView.children.push(prevChild)
         currentJsNode = currentJsNode.next
         continue
@@ -169,11 +190,9 @@ export function nodeToNodeView(
 
     currentView.copyStyleFrom(inheritedStyleView)
 
-    // 从解析器props中获取nodeHash和contentHash
-    const prop = currentJsNode.getProps()
     if (prop !== undefined) {
-      currentView.nodeHash = prop.get("nodeHash") ?? "0"
-      currentView.contentHash = prop.get("contentHash") ?? "0"
+      currentView.nodeHash = newNodeHash
+      currentView.contentHash = newContentHash
     }
 
     switch (nodeType) {

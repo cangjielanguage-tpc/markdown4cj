@@ -40,7 +40,8 @@ export struct CodeBlockTextItem {
                 Span(node.text)
                   .fontColor(node.color ?? this.data.defaultFontColor)
                   .letterSpacing(this.codeBlockTheme.codeBlockTextLetterSpacing)
-              }
+              },
+              (node: PrismNode, nodeIdx: number) => `${nodeIdx}-${node.text}-${node.color}`
             )
           }
           .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
@@ -353,6 +354,7 @@ export struct MarkdownCodeBlockList {
           this.blocksDataList[idx].blocks = Array.from(prismRes.getListColor())
           this.blocksDataList[idx].defaultFontColor = prismRes.getDefaultFontColor()
         }).catch(() => {
+          console.error('CodeBlockList codeStringToColorString failed')
         })
       }, 0)
       this.timerIds.push(timerId)
@@ -395,6 +397,7 @@ export struct MarkdownCodeBlockList {
         this.blocksDataList[idx].blocks = Array.from(prismRes.getListColor())
         this.blocksDataList[idx].defaultFontColor = prismRes.getDefaultFontColor()
       } catch (e) {
+        console.error('CodeBlockList parseNextBlockAsync failed: ' + JSON.stringify(e))
       }
     }
   }

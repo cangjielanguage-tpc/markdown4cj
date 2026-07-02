@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FFEAEAEA, isBorderRadiuses } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FFEAEAEA, isBorderRadiuses } from "../base/Constants"
 
 /**
  * 内联代码样式配置
@@ -26,8 +26,8 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
    * @return InlineCodeTheme
    */
   setInlineCodeTextFontColor(color: ResourceColor): InlineCodeTheme {
-    this.inlineCodeTextFontColor = color;
-    return this;
+    this.inlineCodeTextFontColor = color
+    return this
   }
 
   /**
@@ -37,8 +37,8 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
    * @return InlineCodeTheme
    */
   setInlineCodeTextFontSize(size: number | string | Resource): InlineCodeTheme {
-    this.inlineCodeTextFontSize = size;
-    return this;
+    this.inlineCodeTextFontSize = size
+    return this
   }
 
   /**
@@ -48,8 +48,8 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
    * @return InlineCodeTheme
    */
   setInlineCodeTextFontStyle(style: FontStyle): InlineCodeTheme {
-    this.inlineCodeTextFontStyle = style;
-    return this;
+    this.inlineCodeTextFontStyle = style
+    return this
   }
 
   /**
@@ -59,8 +59,8 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
    * @return InlineCodeTheme
    */
   setInlineCodeTextFontWeight(weight: number | FontWeight): InlineCodeTheme {
-    this.inlineCodeTextFontWeight = weight;
-    return this;
+    this.inlineCodeTextFontWeight = weight
+    return this
   }
 
   /**
@@ -70,8 +70,8 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
    * @return InlineCodeTheme
    */
   setInlineCodeTextFontFamily(family: string | Resource): InlineCodeTheme {
-    this.inlineCodeTextFontFamily = family;
-    return this;
+    this.inlineCodeTextFontFamily = family
+    return this
   }
 
   /**
@@ -81,8 +81,8 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
    * @return InlineCodeTheme
    */
   setInlineCodeTextLineHeight(lineHeight: number | string | Resource): InlineCodeTheme {
-    this.inlineCodeTextLineHeight = lineHeight;
-    return this;
+    this.inlineCodeTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -92,8 +92,8 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
    * @return InlineCodeTheme
    */
   setInlineCodeTextLetterSpacing(spacing: number): InlineCodeTheme {
-    this.inlineCodeTextLetterSpacing = spacing;
-    return this;
+    this.inlineCodeTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -103,8 +103,8 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
    * @return InlineCodeTheme
    */
   setInlineCodeTextBackgroundColor(color: ResourceColor): InlineCodeTheme {
-    this.inlineCodeTextBackgroundColor = color;
-    return this;
+    this.inlineCodeTextBackgroundColor = color
+    return this
   }
 
   /**
@@ -116,10 +116,10 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
   setInlineCodeTextBackgroundRadius(options: BorderRadiuses | Length): InlineCodeTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.inlineCodeTextBackgroundRadiusTopLeft = options;
-      this.inlineCodeTextBackgroundRadiusTopRight = options;
-      this.inlineCodeTextBackgroundRadiusBottomLeft = options;
-      this.inlineCodeTextBackgroundRadiusBottomRight = options;
+      this.inlineCodeTextBackgroundRadiusTopLeft = options
+      this.inlineCodeTextBackgroundRadiusTopRight = options
+      this.inlineCodeTextBackgroundRadiusBottomLeft = options
+      this.inlineCodeTextBackgroundRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -127,27 +127,27 @@ export class InlineCodeTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.inlineCodeTextBackgroundRadiusTopLeft = radius.topLeft;
+          this.inlineCodeTextBackgroundRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.inlineCodeTextBackgroundRadiusTopRight = radius.topRight;
+          this.inlineCodeTextBackgroundRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.inlineCodeTextBackgroundRadiusBottomLeft = radius.bottomLeft;
+          this.inlineCodeTextBackgroundRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.inlineCodeTextBackgroundRadiusBottomRight = radius.bottomRight;
+          this.inlineCodeTextBackgroundRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.inlineCodeTextBackgroundRadiusTopLeft = options as Length;
-        this.inlineCodeTextBackgroundRadiusTopRight = options as Length;
-        this.inlineCodeTextBackgroundRadiusBottomLeft = options as Length;
-        this.inlineCodeTextBackgroundRadiusBottomRight = options as Length;
+        this.inlineCodeTextBackgroundRadiusTopLeft = options as Length
+        this.inlineCodeTextBackgroundRadiusTopRight = options as Length
+        this.inlineCodeTextBackgroundRadiusBottomLeft = options as Length
+        this.inlineCodeTextBackgroundRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 }

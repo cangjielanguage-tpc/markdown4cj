@@ -109,6 +109,7 @@ export struct MarkdownHeading {
           item.latexIsLoading = false
         }
       } catch (e) {
+        console.error('Heading latexPixelMap release failed: ' + JSON.stringify(e))
       }
       try {
         if (item.imageReplacePixelMap !== undefined) {
@@ -117,6 +118,7 @@ export struct MarkdownHeading {
           item.imageReplaceTried = false
         }
       } catch (e) {
+        console.error('Heading imageReplacePixelMap release failed: ' + JSON.stringify(e))
       }
       try {
         if (item.linkIconPixelMap !== undefined) {
@@ -128,6 +130,7 @@ export struct MarkdownHeading {
           item.linkIconHeight = 0
         }
       } catch (e) {
+        console.error('Heading linkIconPixelMap release failed: ' + JSON.stringify(e))
       }
     }
   }
@@ -547,12 +550,12 @@ export struct MarkdownHeading {
     }
     const oldImageSizes: Map<string, number[]> = new Map()
     for (const oldChild of this.list) {
-      if (oldChild.imageUrl && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
+      if (oldChild.imageUrl !== undefined && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
         oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
       }
     }
     for (const newChild of children) {
-      if (newChild.imageUrl) {
+      if (newChild.imageUrl !== undefined) {
         const oldSize = oldImageSizes.get(newChild.imageUrl)
         if (oldSize) {
           newChild.imageWidth = oldSize[0]
@@ -623,7 +626,11 @@ export struct MarkdownHeading {
               return
             }
             if (child.linkIconPixelMap !== undefined) {
-              try { child.linkIconPixelMap.release() } catch (e) {}
+              try {
+                child.linkIconPixelMap.release()
+              } catch (e) {
+                console.error('linkIconPixelMap release failed: ' + JSON.stringify(e))
+              }
             }
             child.linkIconPixelMap = result.pixelMap
             child.linkIconWidth = result.width
@@ -631,6 +638,7 @@ export struct MarkdownHeading {
             this.list = [...this.list]
           })
           .catch(() => {
+            console.error('Heading linkIcon generation failed')
           })
       }
     }
@@ -666,6 +674,7 @@ export struct MarkdownHeading {
             imageSource.release()
           })
         }).catch(() => {
+          console.error('Heading imageReplace failed')
         })
       }
     }

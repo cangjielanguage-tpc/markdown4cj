@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_RED, COLOR_TRANSPARENT, COLOR_BLACK, COLOR_WHITE, isBorderRadiuses } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_RED, COLOR_TRANSPARENT, COLOR_BLACK, COLOR_WHITE, isBorderRadiuses } from "../base/Constants"
 
 /**
  * 链接样式配置
@@ -55,8 +55,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkIsIcon(isIcon: boolean): LinkTheme {
-    this.linkIsIcon = isIcon;
-    return this;
+    this.linkIsIcon = isIcon
+    return this
   }
 
   /**
@@ -66,8 +66,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkListIsIcon(isIcon: boolean): LinkTheme {
-    this.linkListIsIcon = isIcon;
-    return this;
+    this.linkListIsIcon = isIcon
+    return this
   }
 
   /**
@@ -77,8 +77,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextFontColor(color: ResourceColor): LinkTheme {
-    this.linkTextFontColor = color;
-    return this;
+    this.linkTextFontColor = color
+    return this
   }
 
   /**
@@ -88,8 +88,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextFontSize(size: number | string | Resource | undefined): LinkTheme {
-    this.linkTextFontSize = size;
-    return this;
+    this.linkTextFontSize = size
+    return this
   }
 
   /**
@@ -99,8 +99,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextFontStyle(style: FontStyle): LinkTheme {
-    this.linkTextFontStyle = style;
-    return this;
+    this.linkTextFontStyle = style
+    return this
   }
 
   /**
@@ -110,8 +110,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextFontWeight(weight: number | FontWeight): LinkTheme {
-    this.linkTextFontWeight = weight;
-    return this;
+    this.linkTextFontWeight = weight
+    return this
   }
 
   /**
@@ -121,8 +121,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextFontFamily(family: string | Resource): LinkTheme {
-    this.linkTextFontFamily = family;
-    return this;
+    this.linkTextFontFamily = family
+    return this
   }
 
   /**
@@ -132,8 +132,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextLineHeight(lineHeight: number | string | Resource): LinkTheme {
-    this.linkTextLineHeight = lineHeight;
-    return this;
+    this.linkTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -143,8 +143,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextLetterSpacing(spacing: number): LinkTheme {
-    this.linkTextLetterSpacing = spacing;
-    return this;
+    this.linkTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -154,8 +154,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextDecorationType(decorationType: TextDecorationType): LinkTheme {
-    this.linkTextDecorationType = decorationType;
-    return this;
+    this.linkTextDecorationType = decorationType
+    return this
   }
 
   /**
@@ -165,8 +165,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextDecorationColor(color: ResourceColor): LinkTheme {
-    this.linkTextDecorationColor = color;
-    return this;
+    this.linkTextDecorationColor = color
+    return this
   }
 
   /**
@@ -176,8 +176,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextDecorationStyle(style: TextDecorationStyle): LinkTheme {
-    this.linkTextDecorationStyle = style;
-    return this;
+    this.linkTextDecorationStyle = style
+    return this
   }
 
   /**
@@ -187,8 +187,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkTextBackgroundColor(color: ResourceColor): LinkTheme {
-    this.linkTextBackgroundColor = color;
-    return this;
+    this.linkTextBackgroundColor = color
+    return this
   }
 
   /**
@@ -200,10 +200,10 @@ export class LinkTheme implements MarkdownBaseTheme {
   setLinkTextBackgroundRadius(options: BorderRadiuses | Length): LinkTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.linkTextBackgroundRadiusTopLeft = options;
-      this.linkTextBackgroundRadiusTopRight = options;
-      this.linkTextBackgroundRadiusBottomLeft = options;
-      this.linkTextBackgroundRadiusBottomRight = options;
+      this.linkTextBackgroundRadiusTopLeft = options
+      this.linkTextBackgroundRadiusTopRight = options
+      this.linkTextBackgroundRadiusBottomLeft = options
+      this.linkTextBackgroundRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -211,28 +211,28 @@ export class LinkTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.linkTextBackgroundRadiusTopLeft = radius.topLeft;
+          this.linkTextBackgroundRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.linkTextBackgroundRadiusTopRight = radius.topRight;
+          this.linkTextBackgroundRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.linkTextBackgroundRadiusBottomLeft = radius.bottomLeft;
+          this.linkTextBackgroundRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.linkTextBackgroundRadiusBottomRight = radius.bottomRight;
+          this.linkTextBackgroundRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.linkTextBackgroundRadiusTopLeft = options as Length;
-        this.linkTextBackgroundRadiusTopRight = options as Length;
-        this.linkTextBackgroundRadiusBottomLeft = options as Length;
-        this.linkTextBackgroundRadiusBottomRight = options as Length;
+        this.linkTextBackgroundRadiusTopLeft = options as Length
+        this.linkTextBackgroundRadiusTopRight = options as Length
+        this.linkTextBackgroundRadiusBottomLeft = options as Length
+        this.linkTextBackgroundRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -242,8 +242,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkCircleIconBackgroundColor(color: ResourceColor): LinkTheme {
-    this.linkCircleIconBackgroundColor = color;
-    return this;
+    this.linkCircleIconBackgroundColor = color
+    return this
   }
 
   /**
@@ -253,8 +253,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkCircleIconButtonBackgroundColor(color: ResourceColor): LinkTheme {
-    this.linkCircleIconButtonBackgroundColor = color;
-    return this;
+    this.linkCircleIconButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -264,8 +264,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkCircleIconTextSize(size: number): LinkTheme {
-    this.linkCircleIconTextSize = size;
-    return this;
+    this.linkCircleIconTextSize = size
+    return this
   }
 
   /**
@@ -275,8 +275,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkCircleIconTextColor(color: ResourceColor): LinkTheme {
-    this.linkCircleIconTextColor = color;
-    return this;
+    this.linkCircleIconTextColor = color
+    return this
   }
 
   /**
@@ -286,8 +286,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkCircleIconRadius(radius: number): LinkTheme {
-    this.linkCircleIconRadius = radius;
-    return this;
+    this.linkCircleIconRadius = radius
+    return this
   }
 
   /**
@@ -297,8 +297,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkCircleIconMargin(margin: number): LinkTheme {
-    this.linkCircleIconMargin = margin;
-    return this;
+    this.linkCircleIconMargin = margin
+    return this
   }
 
   /**
@@ -308,8 +308,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectIconBackgroundColor(color: ResourceColor): LinkTheme {
-    this.linkRectIconBackgroundColor = color;
-    return this;
+    this.linkRectIconBackgroundColor = color
+    return this
   }
 
   /**
@@ -319,8 +319,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectIconButtonBackgroundColor(color: ResourceColor): LinkTheme {
-    this.linkRectIconButtonBackgroundColor = color;
-    return this;
+    this.linkRectIconButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -330,8 +330,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectIconTextSize(size: number): LinkTheme {
-    this.linkRectIconTextSize = size;
-    return this;
+    this.linkRectIconTextSize = size
+    return this
   }
 
   /**
@@ -341,8 +341,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectIconTextColor(color: ResourceColor): LinkTheme {
-    this.linkRectIconTextColor = color;
-    return this;
+    this.linkRectIconTextColor = color
+    return this
   }
 
   /**
@@ -352,8 +352,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectIconHeight(height: Length): LinkTheme {
-    this.linkRectIconHeight = height;
-    return this;
+    this.linkRectIconHeight = height
+    return this
   }
 
   /**
@@ -363,8 +363,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectIconPadding(padding: number): LinkTheme {
-    this.linkRectIconPadding = padding;
-    return this;
+    this.linkRectIconPadding = padding
+    return this
   }
 
   /**
@@ -374,8 +374,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectIconRadius(radius: number): LinkTheme {
-    this.linkRectIconRadius = radius;
-    return this;
+    this.linkRectIconRadius = radius
+    return this
   }
 
   /**
@@ -385,8 +385,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectIconMargin(margin: number): LinkTheme {
-    this.linkRectIconMargin = margin;
-    return this;
+    this.linkRectIconMargin = margin
+    return this
   }
 
   /**
@@ -396,8 +396,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconBackgroundColor(color: ResourceColor): LinkTheme {
-    this.linkRectToolIconBackgroundColor = color;
-    return this;
+    this.linkRectToolIconBackgroundColor = color
+    return this
   }
 
   /**
@@ -407,8 +407,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconButtonBackgroundColor(color: ResourceColor): LinkTheme {
-    this.linkRectToolIconButtonBackgroundColor = color;
-    return this;
+    this.linkRectToolIconButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -418,8 +418,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconTextSize(size: number): LinkTheme {
-    this.linkRectToolIconTextSize = size;
-    return this;
+    this.linkRectToolIconTextSize = size
+    return this
   }
 
   /**
@@ -429,8 +429,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconHeight(height: Length): LinkTheme {
-    this.linkRectToolIconHeight = height;
-    return this;
+    this.linkRectToolIconHeight = height
+    return this
   }
 
   /**
@@ -440,8 +440,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconPadding(padding: number): LinkTheme {
-    this.linkRectToolIconPadding = padding;
-    return this;
+    this.linkRectToolIconPadding = padding
+    return this
   }
 
   /**
@@ -451,8 +451,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconBorderWidth(width: Length): LinkTheme {
-    this.linkRectToolIconBorderWidth = width;
-    return this;
+    this.linkRectToolIconBorderWidth = width
+    return this
   }
 
   /**
@@ -462,8 +462,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconDividingLineWidth(width: Length): LinkTheme {
-    this.linkRectToolIconDividingLineWidth = width;
-    return this;
+    this.linkRectToolIconDividingLineWidth = width
+    return this
   }
 
   /**
@@ -473,8 +473,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconMargin(margin: number): LinkTheme {
-    this.linkRectToolIconMargin = margin;
-    return this;
+    this.linkRectToolIconMargin = margin
+    return this
   }
 
   /**
@@ -484,8 +484,8 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconLineLeftPadding(padding: number): LinkTheme {
-    this.linkRectToolIconLineLeftPadding = padding;
-    return this;
+    this.linkRectToolIconLineLeftPadding = padding
+    return this
   }
 
   /**
@@ -495,7 +495,7 @@ export class LinkTheme implements MarkdownBaseTheme {
    * @return LinkTheme
    */
   setLinkRectToolIconLineRightPadding(padding: number): LinkTheme {
-    this.linkRectToolIconLineRightPadding = padding;
-    return this;
+    this.linkRectToolIconLineRightPadding = padding
+    return this
   }
 }

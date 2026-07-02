@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
 
 /**
  * 有序列表样式配置
@@ -32,8 +32,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListBackgroundColor(color: ResourceColor): OrderedListTheme {
-    this.orderedListBackgroundColor = color;
-    return this;
+    this.orderedListBackgroundColor = color
+    return this
   }
 
   /**
@@ -45,38 +45,38 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   setOrderedListMargin(options: Margin | Length): OrderedListTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.orderedListMarginTop = options;
-      this.orderedListMarginRight = options;
-      this.orderedListMarginBottom = options;
-      this.orderedListMarginLeft = options;
+      this.orderedListMarginTop = options
+      this.orderedListMarginRight = options
+      this.orderedListMarginBottom = options
+      this.orderedListMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.orderedListMarginTop = margin.top;
+          this.orderedListMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.orderedListMarginRight = margin.right;
+          this.orderedListMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.orderedListMarginBottom = margin.bottom;
+          this.orderedListMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.orderedListMarginLeft = margin.left;
+          this.orderedListMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.orderedListMarginTop = options as Length;
-        this.orderedListMarginRight = options as Length;
-        this.orderedListMarginBottom = options as Length;
-        this.orderedListMarginLeft = options as Length;
+        this.orderedListMarginTop = options as Length
+        this.orderedListMarginRight = options as Length
+        this.orderedListMarginBottom = options as Length
+        this.orderedListMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -88,38 +88,38 @@ export class OrderedListTheme implements MarkdownBaseTheme {
   setOrderedListPadding(options: Padding | Length): OrderedListTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.orderedListPaddingTop = options;
-      this.orderedListPaddingRight = options;
-      this.orderedListPaddingBottom = options;
-      this.orderedListPaddingLeft = options;
+      this.orderedListPaddingTop = options
+      this.orderedListPaddingRight = options
+      this.orderedListPaddingBottom = options
+      this.orderedListPaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.orderedListPaddingTop = padding.top;
+          this.orderedListPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.orderedListPaddingRight = padding.right;
+          this.orderedListPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.orderedListPaddingBottom = padding.bottom;
+          this.orderedListPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.orderedListPaddingLeft = padding.left;
+          this.orderedListPaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.orderedListPaddingTop = options as Length;
-        this.orderedListPaddingRight = options as Length;
-        this.orderedListPaddingBottom = options as Length;
-        this.orderedListPaddingLeft = options as Length;
+        this.orderedListPaddingTop = options as Length
+        this.orderedListPaddingRight = options as Length
+        this.orderedListPaddingBottom = options as Length
+        this.orderedListPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -129,8 +129,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListChildSpacing(spacing: number): OrderedListTheme {
-    this.orderedListChildSpacing = spacing;
-    return this;
+    this.orderedListChildSpacing = spacing
+    return this
   }
 
   /**
@@ -140,8 +140,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListChildChildSpacing(spacing: number): OrderedListTheme {
-    this.orderedListChildChildSpacing = spacing;
-    return this;
+    this.orderedListChildChildSpacing = spacing
+    return this
   }
 
   /**
@@ -151,8 +151,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListMarkerSpacing(spacing: number): OrderedListTheme {
-    this.orderedListMarkerSpacing = spacing;
-    return this;
+    this.orderedListMarkerSpacing = spacing
+    return this
   }
 
   /**
@@ -162,8 +162,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontColor(color: ResourceColor): OrderedListTheme {
-    this.orderedListMarkerTextFontColor = color;
-    return this;
+    this.orderedListMarkerTextFontColor = color
+    return this
   }
 
   /**
@@ -173,8 +173,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontSize(size: number | string | Resource): OrderedListTheme {
-    this.orderedListMarkerTextFontSize = size;
-    return this;
+    this.orderedListMarkerTextFontSize = size
+    return this
   }
 
   /**
@@ -184,8 +184,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontStyle(style: FontStyle): OrderedListTheme {
-    this.orderedListMarkerTextFontStyle = style;
-    return this;
+    this.orderedListMarkerTextFontStyle = style
+    return this
   }
 
   /**
@@ -195,8 +195,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontWeight(weight: number | FontWeight): OrderedListTheme {
-    this.orderedListMarkerTextFontWeight = weight;
-    return this;
+    this.orderedListMarkerTextFontWeight = weight
+    return this
   }
 
   /**
@@ -206,8 +206,8 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextFontFamily(family: string | Resource): OrderedListTheme {
-    this.orderedListMarkerTextFontFamily = family;
-    return this;
+    this.orderedListMarkerTextFontFamily = family
+    return this
   }
 
   /**
@@ -217,7 +217,7 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    * @return OrderedListTheme
    */
   setOrderedListMarkerTextLineHeight(lineHeight: number | string | Resource): OrderedListTheme {
-    this.orderedListMarkerTextLineHeight = lineHeight;
-    return this;
+    this.orderedListMarkerTextLineHeight = lineHeight
+    return this
   }
 }

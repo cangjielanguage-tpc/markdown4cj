@@ -38,7 +38,11 @@ export struct MarkdownImageBlock {
    */
   refreshData(): void {
     if (this.replacePixelMap !== undefined) {
-      try { this.replacePixelMap.release() } catch (e) {}
+      try {
+        this.replacePixelMap.release()
+      } catch (e) {
+        console.error('ImageBlock replacePixelMap release failed: ' + JSON.stringify(e))
+      }
       this.replacePixelMap = undefined
     }
     this.tryReplaceImage()
@@ -47,7 +51,11 @@ export struct MarkdownImageBlock {
   aboutToDisappear(): void {
     this.isAlive = false
     if (this.replacePixelMap !== undefined) {
-      try { this.replacePixelMap.release() } catch (e) {}
+      try {
+        this.replacePixelMap.release()
+      } catch (e) {
+        console.error('ImageBlock replacePixelMap release failed: ' + JSON.stringify(e))
+      }
       this.replacePixelMap = undefined
     }
   }
@@ -208,19 +216,36 @@ export struct MarkdownImageBlock {
       }
       const imageSource: image.ImageSource = image.createImageSource(buffer)
       imageSource.createPixelMap().then((pm: PixelMap) => {
-        try { imageSource.release() } catch (e) {}
+        try {
+          imageSource.release()
+        } catch (e) {
+          console.error('ImageBlock imageSource release failed: ' + JSON.stringify(e))
+        }
         if (!this.isAlive || myToken !== this.replaceToken) {
-          try { pm.release() } catch (e) {}
+          try {
+            pm.release()
+          } catch (e) {
+            console.error('ImageBlock pm release failed: ' + JSON.stringify(e))
+          }
           return
         }
         if (this.replacePixelMap !== undefined) {
-          try { this.replacePixelMap.release() } catch (e) {}
+          try {
+            this.replacePixelMap.release()
+          } catch (e) {
+            console.error('ImageBlock replacePixelMap release failed: ' + JSON.stringify(e))
+          }
         }
         this.replacePixelMap = pm
       }).catch(() => {
-        try { imageSource.release() } catch (e) {}
+        try {
+          imageSource.release()
+        } catch (e) {
+          console.error('ImageBlock imageSource release failed: ' + JSON.stringify(e))
+        }
       })
     }).catch(() => {
+      console.error('ImageBlock imageReplaceCallback failed')
     })
   }
 }

@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
 
 /**
  * 标题样式配置
@@ -116,13 +116,13 @@ export class HeadingTheme implements MarkdownBaseTheme {
    * @return HeadingTheme
    */
   setBackgroundColorForAllHeading(color: ResourceColor): HeadingTheme {
-    this.heading1BackgroundColor = color;
-    this.heading2BackgroundColor = color;
-    this.heading3BackgroundColor = color;
-    this.heading4BackgroundColor = color;
-    this.heading5BackgroundColor = color;
-    this.heading6BackgroundColor = color;
-    return this;
+    this.heading1BackgroundColor = color
+    this.heading2BackgroundColor = color
+    this.heading3BackgroundColor = color
+    this.heading4BackgroundColor = color
+    this.heading5BackgroundColor = color
+    this.heading6BackgroundColor = color
+    return this
   }
 
   /**
@@ -133,9 +133,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setBackgroundColorForEachHeading(colorList: ResourceColor[]): HeadingTheme {
     colorList.forEach((color, index) => {
-      this.setBackgroundColorForDesignateHeading(index + 1, color);
-    });
-    return this;
+      this.setBackgroundColorForDesignateHeading(index + 1, color)
+    })
+    return this
   }
 
   /**
@@ -148,25 +148,25 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setBackgroundColorForDesignateHeading(level: number, color: ResourceColor): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1BackgroundColor = color;
-        break;
+        this.heading1BackgroundColor = color
+        break
       case 2:
-        this.heading2BackgroundColor = color;
-        break;
+        this.heading2BackgroundColor = color
+        break
       case 3:
-        this.heading3BackgroundColor = color;
-        break;
+        this.heading3BackgroundColor = color
+        break
       case 4:
-        this.heading4BackgroundColor = color;
-        break;
+        this.heading4BackgroundColor = color
+        break
       case 5:
-        this.heading5BackgroundColor = color;
-        break;
+        this.heading5BackgroundColor = color
+        break
       case 6:
-        this.heading6BackgroundColor = color;
-        break;
+        this.heading6BackgroundColor = color
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -177,9 +177,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setMarginForAllHeading(margin: Length): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setMarginForDesignateHeading(i, margin);
+      this.setMarginForDesignateHeading(i, margin)
     }
-    return this;
+    return this
   }
 
   /**
@@ -207,9 +207,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setMarginForEachHeading(marginList: Length[]): HeadingTheme {
     marginList.forEach((margin, index) => {
-      this.setMarginForDesignateHeading(index + 1, margin);
-    });
-    return this;
+      this.setMarginForDesignateHeading(index + 1, margin)
+    })
+    return this
   }
 
   /**
@@ -220,68 +220,68 @@ export class HeadingTheme implements MarkdownBaseTheme {
    * @return HeadingTheme
    */
   setMarginForDesignateHeading(level: number, options: Margin | Length): HeadingTheme {
-    let t: Length | undefined = undefined;
-    let r: Length | undefined = undefined;
-    let b: Length | undefined = undefined;
-    let l: Length | undefined = undefined;
+    let t: Length | undefined = undefined
+    let r: Length | undefined = undefined
+    let b: Length | undefined = undefined
+    let l: Length | undefined = undefined
     if (typeof options === "number" || typeof options === "string") {
-      t = options;
-      r = options;
-      b = options;
-      l = options;
+      t = options
+      r = options
+      b = options
+      l = options
     } else if (typeof options === "object" && options !== null) {
       if (isMargin(options)) {
-        const margin = options as Margin;
-        t = margin.top;
-        r = margin.right;
-        b = margin.bottom;
-        l = margin.left;
+        const margin = options as Margin
+        t = margin.top
+        r = margin.right
+        b = margin.bottom
+        l = margin.left
       } else {
-        t = options as Length;
-        r = options as Length;
-        b = options as Length;
-        l = options as Length;
+        t = options as Length
+        r = options as Length
+        b = options as Length
+        l = options as Length
       }
     }
     switch (level) {
       case 1:
-        if (t !== undefined) this.heading1MarginTop = t;
-        if (r !== undefined) this.heading1MarginRight = r;
-        if (b !== undefined) this.heading1MarginBottom = b;
-        if (l !== undefined) this.heading1MarginLeft = l;
-        break;
+        if (t !== undefined) this.heading1MarginTop = t
+        if (r !== undefined) this.heading1MarginRight = r
+        if (b !== undefined) this.heading1MarginBottom = b
+        if (l !== undefined) this.heading1MarginLeft = l
+        break
       case 2:
-        if (t !== undefined) this.heading2MarginTop = t;
-        if (r !== undefined) this.heading2MarginRight = r;
-        if (b !== undefined) this.heading2MarginBottom = b;
-        if (l !== undefined) this.heading2MarginLeft = l;
-        break;
+        if (t !== undefined) this.heading2MarginTop = t
+        if (r !== undefined) this.heading2MarginRight = r
+        if (b !== undefined) this.heading2MarginBottom = b
+        if (l !== undefined) this.heading2MarginLeft = l
+        break
       case 3:
-        if (t !== undefined) this.heading3MarginTop = t;
-        if (r !== undefined) this.heading3MarginRight = r;
-        if (b !== undefined) this.heading3MarginBottom = b;
-        if (l !== undefined) this.heading3MarginLeft = l;
-        break;
+        if (t !== undefined) this.heading3MarginTop = t
+        if (r !== undefined) this.heading3MarginRight = r
+        if (b !== undefined) this.heading3MarginBottom = b
+        if (l !== undefined) this.heading3MarginLeft = l
+        break
       case 4:
-        if (t !== undefined) this.heading4MarginTop = t;
-        if (r !== undefined) this.heading4MarginRight = r;
-        if (b !== undefined) this.heading4MarginBottom = b;
-        if (l !== undefined) this.heading4MarginLeft = l;
-        break;
+        if (t !== undefined) this.heading4MarginTop = t
+        if (r !== undefined) this.heading4MarginRight = r
+        if (b !== undefined) this.heading4MarginBottom = b
+        if (l !== undefined) this.heading4MarginLeft = l
+        break
       case 5:
-        if (t !== undefined) this.heading5MarginTop = t;
-        if (r !== undefined) this.heading5MarginRight = r;
-        if (b !== undefined) this.heading5MarginBottom = b;
-        if (l !== undefined) this.heading5MarginLeft = l;
-        break;
+        if (t !== undefined) this.heading5MarginTop = t
+        if (r !== undefined) this.heading5MarginRight = r
+        if (b !== undefined) this.heading5MarginBottom = b
+        if (l !== undefined) this.heading5MarginLeft = l
+        break
       case 6:
-        if (t !== undefined) this.heading6MarginTop = t;
-        if (r !== undefined) this.heading6MarginRight = r;
-        if (b !== undefined) this.heading6MarginBottom = b;
-        if (l !== undefined) this.heading6MarginLeft = l;
-        break;
+        if (t !== undefined) this.heading6MarginTop = t
+        if (r !== undefined) this.heading6MarginRight = r
+        if (b !== undefined) this.heading6MarginBottom = b
+        if (l !== undefined) this.heading6MarginLeft = l
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -292,9 +292,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setPaddingForAllHeading(padding: Length): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setPaddingForDesignateHeading(i, padding);
+      this.setPaddingForDesignateHeading(i, padding)
     }
-    return this;
+    return this
   }
 
   /**
@@ -322,9 +322,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setPaddingForEachHeading(paddingList: Length[]): HeadingTheme {
     paddingList.forEach((padding, index) => {
-      this.setPaddingForDesignateHeading(index + 1, padding);
-    });
-    return this;
+      this.setPaddingForDesignateHeading(index + 1, padding)
+    })
+    return this
   }
 
   /**
@@ -335,68 +335,68 @@ export class HeadingTheme implements MarkdownBaseTheme {
    * @return HeadingTheme
    */
   setPaddingForDesignateHeading(level: number, options: Padding | Length): HeadingTheme {
-    let t: Length | undefined = undefined;
-    let r: Length | undefined = undefined;
-    let b: Length | undefined = undefined;
-    let l: Length | undefined = undefined;
+    let t: Length | undefined = undefined
+    let r: Length | undefined = undefined
+    let b: Length | undefined = undefined
+    let l: Length | undefined = undefined
     if (typeof options === "number" || typeof options === "string") {
-      t = options;
-      r = options;
-      b = options;
-      l = options;
+      t = options
+      r = options
+      b = options
+      l = options
     } else if (typeof options === "object" && options !== null) {
       if (isPadding(options)) {
-        const padding = options as Padding;
-        t = padding.top;
-        r = padding.right;
-        b = padding.bottom;
-        l = padding.left;
+        const padding = options as Padding
+        t = padding.top
+        r = padding.right
+        b = padding.bottom
+        l = padding.left
       } else {
-        t = options as Length;
-        r = options as Length;
-        b = options as Length;
-        l = options as Length;
+        t = options as Length
+        r = options as Length
+        b = options as Length
+        l = options as Length
       }
     }
     switch (level) {
       case 1:
-        if (t !== undefined) this.heading1PaddingTop = t;
-        if (r !== undefined) this.heading1PaddingRight = r;
-        if (b !== undefined) this.heading1PaddingBottom = b;
-        if (l !== undefined) this.heading1PaddingLeft = l;
-        break;
+        if (t !== undefined) this.heading1PaddingTop = t
+        if (r !== undefined) this.heading1PaddingRight = r
+        if (b !== undefined) this.heading1PaddingBottom = b
+        if (l !== undefined) this.heading1PaddingLeft = l
+        break
       case 2:
-        if (t !== undefined) this.heading2PaddingTop = t;
-        if (r !== undefined) this.heading2PaddingRight = r;
-        if (b !== undefined) this.heading2PaddingBottom = b;
-        if (l !== undefined) this.heading2PaddingLeft = l;
-        break;
+        if (t !== undefined) this.heading2PaddingTop = t
+        if (r !== undefined) this.heading2PaddingRight = r
+        if (b !== undefined) this.heading2PaddingBottom = b
+        if (l !== undefined) this.heading2PaddingLeft = l
+        break
       case 3:
-        if (t !== undefined) this.heading3PaddingTop = t;
-        if (r !== undefined) this.heading3PaddingRight = r;
-        if (b !== undefined) this.heading3PaddingBottom = b;
-        if (l !== undefined) this.heading3PaddingLeft = l;
-        break;
+        if (t !== undefined) this.heading3PaddingTop = t
+        if (r !== undefined) this.heading3PaddingRight = r
+        if (b !== undefined) this.heading3PaddingBottom = b
+        if (l !== undefined) this.heading3PaddingLeft = l
+        break
       case 4:
-        if (t !== undefined) this.heading4PaddingTop = t;
-        if (r !== undefined) this.heading4PaddingRight = r;
-        if (b !== undefined) this.heading4PaddingBottom = b;
-        if (l !== undefined) this.heading4PaddingLeft = l;
-        break;
+        if (t !== undefined) this.heading4PaddingTop = t
+        if (r !== undefined) this.heading4PaddingRight = r
+        if (b !== undefined) this.heading4PaddingBottom = b
+        if (l !== undefined) this.heading4PaddingLeft = l
+        break
       case 5:
-        if (t !== undefined) this.heading5PaddingTop = t;
-        if (r !== undefined) this.heading5PaddingRight = r;
-        if (b !== undefined) this.heading5PaddingBottom = b;
-        if (l !== undefined) this.heading5PaddingLeft = l;
-        break;
+        if (t !== undefined) this.heading5PaddingTop = t
+        if (r !== undefined) this.heading5PaddingRight = r
+        if (b !== undefined) this.heading5PaddingBottom = b
+        if (l !== undefined) this.heading5PaddingLeft = l
+        break
       case 6:
-        if (t !== undefined) this.heading6PaddingTop = t;
-        if (r !== undefined) this.heading6PaddingRight = r;
-        if (b !== undefined) this.heading6PaddingBottom = b;
-        if (l !== undefined) this.heading6PaddingLeft = l;
-        break;
+        if (t !== undefined) this.heading6PaddingTop = t
+        if (r !== undefined) this.heading6PaddingRight = r
+        if (b !== undefined) this.heading6PaddingBottom = b
+        if (l !== undefined) this.heading6PaddingLeft = l
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -407,9 +407,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontColorForAllHeading(color: ResourceColor): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setTextFontColorForDesignateHeading(i, color);
+      this.setTextFontColorForDesignateHeading(i, color)
     }
-    return this;
+    return this
   }
 
   /**
@@ -420,9 +420,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontColorForEachHeading(colorList: ResourceColor[]): HeadingTheme {
     colorList.forEach((color, index) => {
-      this.setTextFontColorForDesignateHeading(index + 1, color);
-    });
-    return this;
+      this.setTextFontColorForDesignateHeading(index + 1, color)
+    })
+    return this
   }
 
   /**
@@ -435,25 +435,25 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setTextFontColorForDesignateHeading(level: number, color: ResourceColor): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1TextFontColor = color;
-        break;
+        this.heading1TextFontColor = color
+        break
       case 2:
-        this.heading2TextFontColor = color;
-        break;
+        this.heading2TextFontColor = color
+        break
       case 3:
-        this.heading3TextFontColor = color;
-        break;
+        this.heading3TextFontColor = color
+        break
       case 4:
-        this.heading4TextFontColor = color;
-        break;
+        this.heading4TextFontColor = color
+        break
       case 5:
-        this.heading5TextFontColor = color;
-        break;
+        this.heading5TextFontColor = color
+        break
       case 6:
-        this.heading6TextFontColor = color;
-        break;
+        this.heading6TextFontColor = color
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -464,9 +464,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontSizeForAllHeading(size: number | string | Resource): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setTextFontSizeForDesignateHeading(i, size);
+      this.setTextFontSizeForDesignateHeading(i, size)
     }
-    return this;
+    return this
   }
 
   /**
@@ -477,9 +477,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontSizeForEachHeading(sizeList: (number | string | Resource)[]): HeadingTheme {
     sizeList.forEach((size, index) => {
-      this.setTextFontSizeForDesignateHeading(index + 1, size);
-    });
-    return this;
+      this.setTextFontSizeForDesignateHeading(index + 1, size)
+    })
+    return this
   }
 
   /**
@@ -492,25 +492,25 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setTextFontSizeForDesignateHeading(level: number, size: number | string | Resource): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1TextFontSize = size;
-        break;
+        this.heading1TextFontSize = size
+        break
       case 2:
-        this.heading2TextFontSize = size;
-        break;
+        this.heading2TextFontSize = size
+        break
       case 3:
-        this.heading3TextFontSize = size;
-        break;
+        this.heading3TextFontSize = size
+        break
       case 4:
-        this.heading4TextFontSize = size;
-        break;
+        this.heading4TextFontSize = size
+        break
       case 5:
-        this.heading5TextFontSize = size;
-        break;
+        this.heading5TextFontSize = size
+        break
       case 6:
-        this.heading6TextFontSize = size;
-        break;
+        this.heading6TextFontSize = size
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -521,9 +521,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontStyleForAllHeading(style: FontStyle): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setTextFontStyleForDesignateHeading(i, style);
+      this.setTextFontStyleForDesignateHeading(i, style)
     }
-    return this;
+    return this
   }
 
   /**
@@ -534,9 +534,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontStyleForEachHeading(styleList: FontStyle[]): HeadingTheme {
     styleList.forEach((style, index) => {
-      this.setTextFontStyleForDesignateHeading(index + 1, style);
-    });
-    return this;
+      this.setTextFontStyleForDesignateHeading(index + 1, style)
+    })
+    return this
   }
 
   /**
@@ -549,25 +549,25 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setTextFontStyleForDesignateHeading(level: number, style: FontStyle): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1TextFontStyle = style;
-        break;
+        this.heading1TextFontStyle = style
+        break
       case 2:
-        this.heading2TextFontStyle = style;
-        break;
+        this.heading2TextFontStyle = style
+        break
       case 3:
-        this.heading3TextFontStyle = style;
-        break;
+        this.heading3TextFontStyle = style
+        break
       case 4:
-        this.heading4TextFontStyle = style;
-        break;
+        this.heading4TextFontStyle = style
+        break
       case 5:
-        this.heading5TextFontStyle = style;
-        break;
+        this.heading5TextFontStyle = style
+        break
       case 6:
-        this.heading6TextFontStyle = style;
-        break;
+        this.heading6TextFontStyle = style
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -578,9 +578,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontWeightForAllHeading(weight: number | FontWeight): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setTextFontWeightForDesignateHeading(i, weight);
+      this.setTextFontWeightForDesignateHeading(i, weight)
     }
-    return this;
+    return this
   }
 
   /**
@@ -591,9 +591,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontWeightForEachHeading(weightList: (number | FontWeight)[]): HeadingTheme {
     weightList.forEach((weight, index) => {
-      this.setTextFontWeightForDesignateHeading(index + 1, weight);
-    });
-    return this;
+      this.setTextFontWeightForDesignateHeading(index + 1, weight)
+    })
+    return this
   }
 
   /**
@@ -606,25 +606,25 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setTextFontWeightForDesignateHeading(level: number, weight: number | FontWeight): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1TextFontWeight = weight;
-        break;
+        this.heading1TextFontWeight = weight
+        break
       case 2:
-        this.heading2TextFontWeight = weight;
-        break;
+        this.heading2TextFontWeight = weight
+        break
       case 3:
-        this.heading3TextFontWeight = weight;
-        break;
+        this.heading3TextFontWeight = weight
+        break
       case 4:
-        this.heading4TextFontWeight = weight;
-        break;
+        this.heading4TextFontWeight = weight
+        break
       case 5:
-        this.heading5TextFontWeight = weight;
-        break;
+        this.heading5TextFontWeight = weight
+        break
       case 6:
-        this.heading6TextFontWeight = weight;
-        break;
+        this.heading6TextFontWeight = weight
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -635,9 +635,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontFamilyForAllHeading(family: string | Resource): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setTextFontFamilyForDesignateHeading(i, family);
+      this.setTextFontFamilyForDesignateHeading(i, family)
     }
-    return this;
+    return this
   }
 
   /**
@@ -648,9 +648,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextFontFamilyForEachHeading(familyList: (string | Resource)[]): HeadingTheme {
     familyList.forEach((family, index) => {
-      this.setTextFontFamilyForDesignateHeading(index + 1, family);
-    });
-    return this;
+      this.setTextFontFamilyForDesignateHeading(index + 1, family)
+    })
+    return this
   }
 
   /**
@@ -663,25 +663,25 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setTextFontFamilyForDesignateHeading(level: number, family: string | Resource): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1TextFontFamily = family;
-        break;
+        this.heading1TextFontFamily = family
+        break
       case 2:
-        this.heading2TextFontFamily = family;
-        break;
+        this.heading2TextFontFamily = family
+        break
       case 3:
-        this.heading3TextFontFamily = family;
-        break;
+        this.heading3TextFontFamily = family
+        break
       case 4:
-        this.heading4TextFontFamily = family;
-        break;
+        this.heading4TextFontFamily = family
+        break
       case 5:
-        this.heading5TextFontFamily = family;
-        break;
+        this.heading5TextFontFamily = family
+        break
       case 6:
-        this.heading6TextFontFamily = family;
-        break;
+        this.heading6TextFontFamily = family
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -692,9 +692,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextLineHeightForAllHeading(lineHeight: number | string | Resource): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setTextLineHeightForDesignateHeading(i, lineHeight);
+      this.setTextLineHeightForDesignateHeading(i, lineHeight)
     }
-    return this;
+    return this
   }
 
   /**
@@ -705,9 +705,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextLineHeightForEachHeading(lineHeightList: (number | string | Resource)[]): HeadingTheme {
     lineHeightList.forEach((lineHeight, index) => {
-      this.setTextLineHeightForDesignateHeading(index + 1, lineHeight);
-    });
-    return this;
+      this.setTextLineHeightForDesignateHeading(index + 1, lineHeight)
+    })
+    return this
   }
 
   /**
@@ -720,25 +720,25 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setTextLineHeightForDesignateHeading(level: number, lineHeight: number | string | Resource): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1TextLineHeight = lineHeight;
-        break;
+        this.heading1TextLineHeight = lineHeight
+        break
       case 2:
-        this.heading2TextLineHeight = lineHeight;
-        break;
+        this.heading2TextLineHeight = lineHeight
+        break
       case 3:
-        this.heading3TextLineHeight = lineHeight;
-        break;
+        this.heading3TextLineHeight = lineHeight
+        break
       case 4:
-        this.heading4TextLineHeight = lineHeight;
-        break;
+        this.heading4TextLineHeight = lineHeight
+        break
       case 5:
-        this.heading5TextLineHeight = lineHeight;
-        break;
+        this.heading5TextLineHeight = lineHeight
+        break
       case 6:
-        this.heading6TextLineHeight = lineHeight;
-        break;
+        this.heading6TextLineHeight = lineHeight
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -749,9 +749,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextLetterSpacingForAllHeading(spacing: number): HeadingTheme {
     for (let i = 1; i <= 6; i++) {
-      this.setTextLetterSpacingForDesignateHeading(i, spacing);
+      this.setTextLetterSpacingForDesignateHeading(i, spacing)
     }
-    return this;
+    return this
   }
 
   /**
@@ -762,9 +762,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    */
   setTextLetterSpacingForEachHeading(spacingList: number[]): HeadingTheme {
     spacingList.forEach((spacing, index) => {
-      this.setTextLetterSpacingForDesignateHeading(index + 1, spacing);
-    });
-    return this;
+      this.setTextLetterSpacingForDesignateHeading(index + 1, spacing)
+    })
+    return this
   }
 
   /**
@@ -777,25 +777,25 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setTextLetterSpacingForDesignateHeading(level: number, spacing: number): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1TextLetterSpacing = spacing;
-        break;
+        this.heading1TextLetterSpacing = spacing
+        break
       case 2:
-        this.heading2TextLetterSpacing = spacing;
-        break;
+        this.heading2TextLetterSpacing = spacing
+        break
       case 3:
-        this.heading3TextLetterSpacing = spacing;
-        break;
+        this.heading3TextLetterSpacing = spacing
+        break
       case 4:
-        this.heading4TextLetterSpacing = spacing;
-        break;
+        this.heading4TextLetterSpacing = spacing
+        break
       case 5:
-        this.heading5TextLetterSpacing = spacing;
-        break;
+        this.heading5TextLetterSpacing = spacing
+        break
       case 6:
-        this.heading6TextLetterSpacing = spacing;
-        break;
+        this.heading6TextLetterSpacing = spacing
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -805,9 +805,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    * @return HeadingTheme
    */
   setUnderlineHeightForAllHeading(height: number): HeadingTheme {
-    this.heading1UnderlineHeight = height;
-    this.heading2UnderlineHeight = height;
-    return this;
+    this.heading1UnderlineHeight = height
+    this.heading2UnderlineHeight = height
+    return this
   }
 
   /**
@@ -820,13 +820,13 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setUnderlineHeightForDesignateHeading(level: number, height: number): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1UnderlineHeight = height;
-        break;
+        this.heading1UnderlineHeight = height
+        break
       case 2:
-        this.heading2UnderlineHeight = height;
-        break;
+        this.heading2UnderlineHeight = height
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -836,9 +836,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    * @return HeadingTheme
    */
   setUnderlineColorForAllHeading(color: ResourceColor): HeadingTheme {
-    this.heading1UnderlineColor = color;
-    this.heading2UnderlineColor = color;
-    return this;
+    this.heading1UnderlineColor = color
+    this.heading2UnderlineColor = color
+    return this
   }
 
   /**
@@ -851,13 +851,13 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setUnderlineColorForDesignateHeading(level: number, color: ResourceColor): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1UnderlineColor = color;
-        break;
+        this.heading1UnderlineColor = color
+        break
       case 2:
-        this.heading2UnderlineColor = color;
-        break;
+        this.heading2UnderlineColor = color
+        break
     }
-    return this;
+    return this
   }
 
   /**
@@ -867,9 +867,9 @@ export class HeadingTheme implements MarkdownBaseTheme {
    * @return HeadingTheme
    */
   setUnderlineSpacingForAllHeading(spacing: number): HeadingTheme {
-    this.heading1UnderlineSpacing = spacing;
-    this.heading2UnderlineSpacing = spacing;
-    return this;
+    this.heading1UnderlineSpacing = spacing
+    this.heading2UnderlineSpacing = spacing
+    return this
   }
 
   /**
@@ -882,12 +882,12 @@ export class HeadingTheme implements MarkdownBaseTheme {
   setUnderlineSpacingForDesignateHeading(level: number, spacing: number): HeadingTheme {
     switch (level) {
       case 1:
-        this.heading1UnderlineSpacing = spacing;
-        break;
+        this.heading1UnderlineSpacing = spacing
+        break
       case 2:
-        this.heading2UnderlineSpacing = spacing;
-        break;
+        this.heading2UnderlineSpacing = spacing
+        break
     }
-    return this;
+    return this
   }
 }

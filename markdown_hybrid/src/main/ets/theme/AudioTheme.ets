@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import {
   COLOR_TRANSPARENT,
   COLOR_BLACK,
@@ -9,7 +9,7 @@ import {
   isMargin,
   isPadding,
   isBorderRadiuses
-} from "../base/Constants";
+} from "../base/Constants"
 
 /**
  * 音频样式配置
@@ -81,8 +81,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioBackgroundColor(color: ResourceColor): AudioTheme {
-    this.audioBackgroundColor = color;
-    return this;
+    this.audioBackgroundColor = color
+    return this
   }
 
   /**
@@ -94,10 +94,10 @@ export class AudioTheme implements MarkdownBaseTheme {
   setAudioMargin(options: Margin | Length): AudioTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.audioMarginTop = options;
-      this.audioMarginRight = options;
-      this.audioMarginBottom = options;
-      this.audioMarginLeft = options;
+      this.audioMarginTop = options
+      this.audioMarginRight = options
+      this.audioMarginBottom = options
+      this.audioMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -105,28 +105,28 @@ export class AudioTheme implements MarkdownBaseTheme {
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
         // 这里通过类型守卫，编译器已经知道它是 Margin 了
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.audioMarginTop = margin.top;
+          this.audioMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.audioMarginRight = margin.right;
+          this.audioMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.audioMarginBottom = margin.bottom;
+          this.audioMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.audioMarginLeft = margin.left;
+          this.audioMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.audioMarginTop = options as Length;
-        this.audioMarginRight = options as Length;
-        this.audioMarginBottom = options as Length;
-        this.audioMarginLeft = options as Length;
+        this.audioMarginTop = options as Length
+        this.audioMarginRight = options as Length
+        this.audioMarginBottom = options as Length
+        this.audioMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -138,35 +138,35 @@ export class AudioTheme implements MarkdownBaseTheme {
   setAudioPadding(options: Padding | Length): AudioTheme {
     if (typeof options === 'number' || typeof options === 'string') {
       // 基础类型，统一赋值
-      this.audioPaddingTop = options;
-      this.audioPaddingRight = options;
-      this.audioPaddingBottom = options;
-      this.audioPaddingLeft = options;
+      this.audioPaddingTop = options
+      this.audioPaddingRight = options
+      this.audioPaddingBottom = options
+      this.audioPaddingLeft = options
     } else if (typeof options === 'object' && options !== null) {
       if (isPadding(options)) {
         // 此时 options 的类型仍是 Padding | Length，需要手动断言
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.audioPaddingTop = padding.top;
+          this.audioPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.audioPaddingRight = padding.right;
+          this.audioPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.audioPaddingBottom = padding.bottom;
+          this.audioPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.audioPaddingLeft = padding.left;
+          this.audioPaddingLeft = padding.left
         }
       } else {
         // 非 Padding 对象（如 Resource），统一赋值
-        this.audioPaddingTop = options as Length;
-        this.audioPaddingRight = options as Length;
-        this.audioPaddingBottom = options as Length;
-        this.audioPaddingLeft = options as Length;
+        this.audioPaddingTop = options as Length
+        this.audioPaddingRight = options as Length
+        this.audioPaddingBottom = options as Length
+        this.audioPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -176,8 +176,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioBorderStyle(borderStyle: BorderStyle): AudioTheme {
-    this.audioBorderStyle = borderStyle;
-    return this;
+    this.audioBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -187,8 +187,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioBorderWidth(borderWidth: Length): AudioTheme {
-    this.audioBorderWidth = borderWidth;
-    return this;
+    this.audioBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -198,8 +198,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioBorderColor(borderColor: ResourceColor): AudioTheme {
-    this.audioBorderColor = borderColor;
-    return this;
+    this.audioBorderColor = borderColor
+    return this
   }
 
   /**
@@ -211,10 +211,10 @@ export class AudioTheme implements MarkdownBaseTheme {
   setAudioRadius(options: BorderRadiuses | Length): AudioTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.audioRadiusTopLeft = options;
-      this.audioRadiusTopRight = options;
-      this.audioRadiusBottomLeft = options;
-      this.audioRadiusBottomRight = options;
+      this.audioRadiusTopLeft = options
+      this.audioRadiusTopRight = options
+      this.audioRadiusBottomLeft = options
+      this.audioRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -222,28 +222,28 @@ export class AudioTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.audioRadiusTopLeft = radius.topLeft;
+          this.audioRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.audioRadiusTopRight = radius.topRight;
+          this.audioRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.audioRadiusBottomLeft = radius.bottomLeft;
+          this.audioRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.audioRadiusBottomRight = radius.bottomRight;
+          this.audioRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.audioRadiusTopLeft = options as Length;
-        this.audioRadiusTopRight = options as Length;
-        this.audioRadiusBottomLeft = options as Length;
-        this.audioRadiusBottomRight = options as Length;
+        this.audioRadiusTopLeft = options as Length
+        this.audioRadiusTopRight = options as Length
+        this.audioRadiusBottomLeft = options as Length
+        this.audioRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -253,8 +253,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioShadowRadius(radius: number): AudioTheme {
-    this.audioShadowRadius = radius;
-    return this;
+    this.audioShadowRadius = radius
+    return this
   }
 
   /**
@@ -264,8 +264,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioShadowColor(color: ResourceColor): AudioTheme {
-    this.audioShadowColor = color;
-    return this;
+    this.audioShadowColor = color
+    return this
   }
 
   /**
@@ -275,8 +275,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioShadowOffsetX(offsetX: number): AudioTheme {
-    this.audioShadowOffsetX = offsetX;
-    return this;
+    this.audioShadowOffsetX = offsetX
+    return this
   }
 
   /**
@@ -286,8 +286,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioShadowOffsetY(offsetY: number): AudioTheme {
-    this.audioShadowOffsetY = offsetY;
-    return this;
+    this.audioShadowOffsetY = offsetY
+    return this
   }
 
   /**
@@ -297,8 +297,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioIcon(icon: Resource): AudioTheme {
-    this.audioIcon = icon;
-    return this;
+    this.audioIcon = icon
+    return this
   }
 
   /**
@@ -308,8 +308,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioIconWidth(width: Length): AudioTheme {
-    this.audioIconWidth = width;
-    return this;
+    this.audioIconWidth = width
+    return this
   }
 
   /**
@@ -319,8 +319,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioIconHeight(height: Length): AudioTheme {
-    this.audioIconHeight = height;
-    return this;
+    this.audioIconHeight = height
+    return this
   }
 
   /**
@@ -332,10 +332,10 @@ export class AudioTheme implements MarkdownBaseTheme {
   setAudioIconRadius(options: BorderRadiuses | Length): AudioTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.audioIconRadiusTopLeft = options;
-      this.audioIconRadiusTopRight = options;
-      this.audioIconRadiusBottomLeft = options;
-      this.audioIconRadiusBottomRight = options;
+      this.audioIconRadiusTopLeft = options
+      this.audioIconRadiusTopRight = options
+      this.audioIconRadiusBottomLeft = options
+      this.audioIconRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -343,28 +343,28 @@ export class AudioTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.audioIconRadiusTopLeft = radius.topLeft;
+          this.audioIconRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.audioIconRadiusTopRight = radius.topRight;
+          this.audioIconRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.audioIconRadiusBottomLeft = radius.bottomLeft;
+          this.audioIconRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.audioIconRadiusBottomRight = radius.bottomRight;
+          this.audioIconRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.audioIconRadiusTopLeft = options as Length;
-        this.audioIconRadiusTopRight = options as Length;
-        this.audioIconRadiusBottomLeft = options as Length;
-        this.audioIconRadiusBottomRight = options as Length;
+        this.audioIconRadiusTopLeft = options as Length
+        this.audioIconRadiusTopRight = options as Length
+        this.audioIconRadiusBottomLeft = options as Length
+        this.audioIconRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -374,8 +374,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioIconFitType(fitType: ImageFit): AudioTheme {
-    this.audioIconFitType = fitType;
-    return this;
+    this.audioIconFitType = fitType
+    return this
   }
 
   /**
@@ -385,8 +385,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTitleToTypeSpacing(spacing: number): AudioTheme {
-    this.audioTitleToTypeSpacing = spacing;
-    return this;
+    this.audioTitleToTypeSpacing = spacing
+    return this
   }
 
   /**
@@ -396,8 +396,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTitleTextFontColor(color: ResourceColor): AudioTheme {
-    this.audioTitleTextFontColor = color;
-    return this;
+    this.audioTitleTextFontColor = color
+    return this
   }
 
   /**
@@ -407,8 +407,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTitleTextFontSize(size: number | string | Resource): AudioTheme {
-    this.audioTitleTextFontSize = size;
-    return this;
+    this.audioTitleTextFontSize = size
+    return this
   }
 
   /**
@@ -418,8 +418,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTitleTextFontStyle(style: FontStyle): AudioTheme {
-    this.audioTitleTextFontStyle = style;
-    return this;
+    this.audioTitleTextFontStyle = style
+    return this
   }
 
   /**
@@ -429,8 +429,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTitleTextFontWeight(weight: number | FontWeight): AudioTheme {
-    this.audioTitleTextFontWeight = weight;
-    return this;
+    this.audioTitleTextFontWeight = weight
+    return this
   }
 
   /**
@@ -440,8 +440,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTitleTextFontFamily(family: string | Resource): AudioTheme {
-    this.audioTitleTextFontFamily = family;
-    return this;
+    this.audioTitleTextFontFamily = family
+    return this
   }
 
   /**
@@ -451,8 +451,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTitleTextLineHeight(height: number | string | Resource): AudioTheme {
-    this.audioTitleTextLineHeight = height;
-    return this;
+    this.audioTitleTextLineHeight = height
+    return this
   }
 
   /**
@@ -462,8 +462,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTypeTextFontColor(color: ResourceColor): AudioTheme {
-    this.audioTypeTextFontColor = color;
-    return this;
+    this.audioTypeTextFontColor = color
+    return this
   }
 
   /**
@@ -473,8 +473,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTypeTextFontSize(size: number | string | Resource): AudioTheme {
-    this.audioTypeTextFontSize = size;
-    return this;
+    this.audioTypeTextFontSize = size
+    return this
   }
 
   /**
@@ -484,8 +484,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTypeTextFontStyle(style: FontStyle): AudioTheme {
-    this.audioTypeTextFontStyle = style;
-    return this;
+    this.audioTypeTextFontStyle = style
+    return this
   }
 
   /**
@@ -495,8 +495,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTypeTextFontWeight(weight: number | FontWeight): AudioTheme {
-    this.audioTypeTextFontWeight = weight;
-    return this;
+    this.audioTypeTextFontWeight = weight
+    return this
   }
 
   /**
@@ -506,8 +506,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTypeTextFontFamily(family: string | Resource): AudioTheme {
-    this.audioTypeTextFontFamily = family;
-    return this;
+    this.audioTypeTextFontFamily = family
+    return this
   }
 
   /**
@@ -517,8 +517,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioTypeTextLineHeight(height: number | string | Resource): AudioTheme {
-    this.audioTypeTextLineHeight = height;
-    return this;
+    this.audioTypeTextLineHeight = height
+    return this
   }
 
   /**
@@ -528,8 +528,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonBackgroundColor(color: ResourceColor): AudioTheme {
-    this.audioButtonBackgroundColor = color;
-    return this;
+    this.audioButtonBackgroundColor = color
+    return this
   }
 
   /**
@@ -539,8 +539,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonWidth(width: Length): AudioTheme {
-    this.audioButtonWidth = width;
-    return this;
+    this.audioButtonWidth = width
+    return this
   }
 
   /**
@@ -550,8 +550,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonHeight(height: Length): AudioTheme {
-    this.audioButtonHeight = height;
-    return this;
+    this.audioButtonHeight = height
+    return this
   }
 
   /**
@@ -561,8 +561,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonBorderStyle(borderStyle: BorderStyle): AudioTheme {
-    this.audioButtonBorderStyle = borderStyle;
-    return this;
+    this.audioButtonBorderStyle = borderStyle
+    return this
   }
 
   /**
@@ -572,8 +572,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonBorderWidth(borderWidth: Length): AudioTheme {
-    this.audioButtonBorderWidth = borderWidth;
-    return this;
+    this.audioButtonBorderWidth = borderWidth
+    return this
   }
 
   /**
@@ -583,8 +583,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonBorderColor(borderColor: ResourceColor): AudioTheme {
-    this.audioButtonBorderColor = borderColor;
-    return this;
+    this.audioButtonBorderColor = borderColor
+    return this
   }
 
   /**
@@ -596,10 +596,10 @@ export class AudioTheme implements MarkdownBaseTheme {
   setAudioButtonRadius(options: BorderRadiuses | Length): AudioTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.audioButtonRadiusTopLeft = options;
-      this.audioButtonRadiusTopRight = options;
-      this.audioButtonRadiusBottomLeft = options;
-      this.audioButtonRadiusBottomRight = options;
+      this.audioButtonRadiusTopLeft = options
+      this.audioButtonRadiusTopRight = options
+      this.audioButtonRadiusBottomLeft = options
+      this.audioButtonRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -607,28 +607,28 @@ export class AudioTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.audioButtonRadiusTopLeft = radius.topLeft;
+          this.audioButtonRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.audioButtonRadiusTopRight = radius.topRight;
+          this.audioButtonRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.audioButtonRadiusBottomLeft = radius.bottomLeft;
+          this.audioButtonRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.audioButtonRadiusBottomRight = radius.bottomRight;
+          this.audioButtonRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.audioButtonRadiusTopLeft = options as Length;
-        this.audioButtonRadiusTopRight = options as Length;
-        this.audioButtonRadiusBottomLeft = options as Length;
-        this.audioButtonRadiusBottomRight = options as Length;
+        this.audioButtonRadiusTopLeft = options as Length
+        this.audioButtonRadiusTopRight = options as Length
+        this.audioButtonRadiusBottomLeft = options as Length
+        this.audioButtonRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -638,8 +638,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonText(text: string): AudioTheme {
-    this.audioButtonText = text;
-    return this;
+    this.audioButtonText = text
+    return this
   }
 
   /**
@@ -649,8 +649,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonTextFontColor(color: ResourceColor): AudioTheme {
-    this.audioButtonTextFontColor = color;
-    return this;
+    this.audioButtonTextFontColor = color
+    return this
   }
 
   /**
@@ -660,8 +660,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonTextFontSize(size: number | string | Resource): AudioTheme {
-    this.audioButtonTextFontSize = size;
-    return this;
+    this.audioButtonTextFontSize = size
+    return this
   }
 
   /**
@@ -671,8 +671,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonTextFontStyle(style: FontStyle): AudioTheme {
-    this.audioButtonTextFontStyle = style;
-    return this;
+    this.audioButtonTextFontStyle = style
+    return this
   }
 
   /**
@@ -682,8 +682,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonTextFontWeight(weight: number | FontWeight): AudioTheme {
-    this.audioButtonTextFontWeight = weight;
-    return this;
+    this.audioButtonTextFontWeight = weight
+    return this
   }
 
   /**
@@ -693,8 +693,8 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonTextFontFamily(family: string | Resource): AudioTheme {
-    this.audioButtonTextFontFamily = family;
-    return this;
+    this.audioButtonTextFontFamily = family
+    return this
   }
 
   /**
@@ -704,7 +704,7 @@ export class AudioTheme implements MarkdownBaseTheme {
    * @return AudioTheme
    */
   setAudioButtonTextLineHeight(height: number | string | Resource): AudioTheme {
-    this.audioButtonTextLineHeight = height;
-    return this;
+    this.audioButtonTextLineHeight = height
+    return this
   }
 }

@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
  * 斜体样式配置
@@ -19,8 +19,8 @@ export class ItalicTheme implements MarkdownBaseTheme {
    * @return ItalicTheme
    */
   setItalicTextFontColor(color: ResourceColor): ItalicTheme {
-    this.italicTextFontColor = color;
-    return this;
+    this.italicTextFontColor = color
+    return this
   }
 
   /**
@@ -30,8 +30,8 @@ export class ItalicTheme implements MarkdownBaseTheme {
    * @return ItalicTheme
    */
   setItalicTextFontSize(size: number | string | Resource): ItalicTheme {
-    this.italicTextFontSize = size;
-    return this;
+    this.italicTextFontSize = size
+    return this
   }
 
   /**
@@ -41,8 +41,8 @@ export class ItalicTheme implements MarkdownBaseTheme {
    * @return ItalicTheme
    */
   setItalicTextFontWeight(weight: number | FontWeight): ItalicTheme {
-    this.italicTextFontWeight = weight;
-    return this;
+    this.italicTextFontWeight = weight
+    return this
   }
 
   /**
@@ -52,8 +52,8 @@ export class ItalicTheme implements MarkdownBaseTheme {
    * @return ItalicTheme
    */
   setItalicTextFontFamily(family: string | Resource): ItalicTheme {
-    this.italicTextFontFamily = family;
-    return this;
+    this.italicTextFontFamily = family
+    return this
   }
 
   /**
@@ -63,8 +63,8 @@ export class ItalicTheme implements MarkdownBaseTheme {
    * @return ItalicTheme
    */
   setItalicTextLineHeight(lineHeight: number | string | Resource): ItalicTheme {
-    this.italicTextLineHeight = lineHeight;
-    return this;
+    this.italicTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -74,7 +74,7 @@ export class ItalicTheme implements MarkdownBaseTheme {
    * @return ItalicTheme
    */
   setItalicTextLetterSpacing(spacing: number): ItalicTheme {
-    this.italicTextLetterSpacing = spacing;
-    return this;
+    this.italicTextLetterSpacing = spacing
+    return this
   }
 }

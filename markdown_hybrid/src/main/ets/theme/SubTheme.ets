@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
  * 下标样式配置
@@ -20,8 +20,8 @@ export class SubTheme implements MarkdownBaseTheme {
    * @return SubTheme
    */
   setSubTextFontColor(color: ResourceColor): SubTheme {
-    this.subTextFontColor = color;
-    return this;
+    this.subTextFontColor = color
+    return this
   }
 
   /**
@@ -31,8 +31,8 @@ export class SubTheme implements MarkdownBaseTheme {
    * @return SubTheme
    */
   setSubTextFontSize(size: number | string | Resource): SubTheme {
-    this.subTextFontSize = size;
-    return this;
+    this.subTextFontSize = size
+    return this
   }
 
   /**
@@ -42,8 +42,8 @@ export class SubTheme implements MarkdownBaseTheme {
    * @return SubTheme
    */
   setSubTextFontStyle(style: FontStyle): SubTheme {
-    this.subTextFontStyle = style;
-    return this;
+    this.subTextFontStyle = style
+    return this
   }
 
   /**
@@ -53,8 +53,8 @@ export class SubTheme implements MarkdownBaseTheme {
    * @return SubTheme
    */
   setSubTextFontWeight(weight: number | FontWeight): SubTheme {
-    this.subTextFontWeight = weight;
-    return this;
+    this.subTextFontWeight = weight
+    return this
   }
 
   /**
@@ -64,8 +64,8 @@ export class SubTheme implements MarkdownBaseTheme {
    * @return SubTheme
    */
   setSubTextFontFamily(family: string | Resource): SubTheme {
-    this.subTextFontFamily = family;
-    return this;
+    this.subTextFontFamily = family
+    return this
   }
 
   /**
@@ -75,8 +75,8 @@ export class SubTheme implements MarkdownBaseTheme {
    * @return SubTheme
    */
   setSubTextLetterSpacing(spacing: number): SubTheme {
-    this.subTextLetterSpacing = spacing;
-    return this;
+    this.subTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -86,7 +86,7 @@ export class SubTheme implements MarkdownBaseTheme {
    * @return SubTheme
    */
   setSubTextBaselineOffset(offset: number): SubTheme {
-    this.subTextBaselineOffset = offset;
-    return this;
+    this.subTextBaselineOffset = offset
+    return this
   }
 }

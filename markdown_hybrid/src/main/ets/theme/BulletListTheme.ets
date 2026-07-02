@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FF191919, COLOR_GRAY, isMargin, isPadding } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FF191919, COLOR_GRAY, isMargin, isPadding } from "../base/Constants"
 
 /**
  * 无序/任务列表样式配置
@@ -38,8 +38,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBackgroundColor(color: ResourceColor): BulletListTheme {
-    this.bulletListBackgroundColor = color;
-    return this;
+    this.bulletListBackgroundColor = color
+    return this
   }
 
   /**
@@ -51,38 +51,38 @@ export class BulletListTheme implements MarkdownBaseTheme {
   setBulletListMargin(options: Margin | Length): BulletListTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.bulletListMarginTop = options;
-      this.bulletListMarginRight = options;
-      this.bulletListMarginBottom = options;
-      this.bulletListMarginLeft = options;
+      this.bulletListMarginTop = options
+      this.bulletListMarginRight = options
+      this.bulletListMarginBottom = options
+      this.bulletListMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.bulletListMarginTop = margin.top;
+          this.bulletListMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.bulletListMarginRight = margin.right;
+          this.bulletListMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.bulletListMarginBottom = margin.bottom;
+          this.bulletListMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.bulletListMarginLeft = margin.left;
+          this.bulletListMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.bulletListMarginTop = options as Length;
-        this.bulletListMarginRight = options as Length;
-        this.bulletListMarginBottom = options as Length;
-        this.bulletListMarginLeft = options as Length;
+        this.bulletListMarginTop = options as Length
+        this.bulletListMarginRight = options as Length
+        this.bulletListMarginBottom = options as Length
+        this.bulletListMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -94,38 +94,38 @@ export class BulletListTheme implements MarkdownBaseTheme {
   setBulletListPadding(options: Padding | Length): BulletListTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.bulletListPaddingTop = options;
-      this.bulletListPaddingRight = options;
-      this.bulletListPaddingBottom = options;
-      this.bulletListPaddingLeft = options;
+      this.bulletListPaddingTop = options
+      this.bulletListPaddingRight = options
+      this.bulletListPaddingBottom = options
+      this.bulletListPaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.bulletListPaddingTop = padding.top;
+          this.bulletListPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.bulletListPaddingRight = padding.right;
+          this.bulletListPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.bulletListPaddingBottom = padding.bottom;
+          this.bulletListPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.bulletListPaddingLeft = padding.left;
+          this.bulletListPaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.bulletListPaddingTop = options as Length;
-        this.bulletListPaddingRight = options as Length;
-        this.bulletListPaddingBottom = options as Length;
-        this.bulletListPaddingLeft = options as Length;
+        this.bulletListPaddingTop = options as Length
+        this.bulletListPaddingRight = options as Length
+        this.bulletListPaddingBottom = options as Length
+        this.bulletListPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -135,8 +135,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListChildSpacing(spacing: number): BulletListTheme {
-    this.bulletListChildSpacing = spacing;
-    return this;
+    this.bulletListChildSpacing = spacing
+    return this
   }
 
   /**
@@ -146,8 +146,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListChildChildSpacing(spacing: number): BulletListTheme {
-    this.bulletListChildChildSpacing = spacing;
-    return this;
+    this.bulletListChildChildSpacing = spacing
+    return this
   }
 
   /**
@@ -157,8 +157,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBulletSpacing(spacing: number): BulletListTheme {
-    this.bulletListBulletSpacing = spacing;
-    return this;
+    this.bulletListBulletSpacing = spacing
+    return this
   }
 
   /**
@@ -168,8 +168,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBulletIsCircle(isCircle: boolean): BulletListTheme {
-    this.bulletListBulletIsCircle = isCircle;
-    return this;
+    this.bulletListBulletIsCircle = isCircle
+    return this
   }
 
   /**
@@ -179,8 +179,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBulletTextFontColor(color: ResourceColor): BulletListTheme {
-    this.bulletListBulletTextFontColor = color;
-    return this;
+    this.bulletListBulletTextFontColor = color
+    return this
   }
 
   /**
@@ -190,8 +190,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBulletTextFontSize(size: number | string | Resource): BulletListTheme {
-    this.bulletListBulletTextFontSize = size;
-    return this;
+    this.bulletListBulletTextFontSize = size
+    return this
   }
 
   /**
@@ -201,8 +201,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBulletTextFontStyle(style: FontStyle): BulletListTheme {
-    this.bulletListBulletTextFontStyle = style;
-    return this;
+    this.bulletListBulletTextFontStyle = style
+    return this
   }
 
   /**
@@ -212,8 +212,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBulletTextFontWeight(weight: number | FontWeight): BulletListTheme {
-    this.bulletListBulletTextFontWeight = weight;
-    return this;
+    this.bulletListBulletTextFontWeight = weight
+    return this
   }
 
   /**
@@ -223,8 +223,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBulletTextFontFamily(family: string | Resource): BulletListTheme {
-    this.bulletListBulletTextFontFamily = family;
-    return this;
+    this.bulletListBulletTextFontFamily = family
+    return this
   }
 
   /**
@@ -234,8 +234,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListBulletTextLineHeight(lineHeight: number | string | Resource): BulletListTheme {
-    this.bulletListBulletTextLineHeight = lineHeight;
-    return this;
+    this.bulletListBulletTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -245,8 +245,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListCheckboxSpacing(spacing: number): BulletListTheme {
-    this.bulletListCheckboxSpacing = spacing;
-    return this;
+    this.bulletListCheckboxSpacing = spacing
+    return this
   }
 
   /**
@@ -256,8 +256,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListCheckboxWidth(width: Length): BulletListTheme {
-    this.bulletListCheckboxWidth = width;
-    return this;
+    this.bulletListCheckboxWidth = width
+    return this
   }
 
   /**
@@ -267,8 +267,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListCheckboxHeight(height: Length): BulletListTheme {
-    this.bulletListCheckboxHeight = height;
-    return this;
+    this.bulletListCheckboxHeight = height
+    return this
   }
 
   /**
@@ -278,8 +278,8 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListCheckboxSelectedColor(color: ResourceColor): BulletListTheme {
-    this.bulletListCheckboxSelectedColor = color;
-    return this;
+    this.bulletListCheckboxSelectedColor = color
+    return this
   }
 
   /**
@@ -289,7 +289,7 @@ export class BulletListTheme implements MarkdownBaseTheme {
    * @return BulletListTheme
    */
   setBulletListCheckboxShape(shape: CheckBoxShape): BulletListTheme {
-    this.bulletListCheckboxShape = shape;
-    return this;
+    this.bulletListCheckboxShape = shape
+    return this
   }
 }

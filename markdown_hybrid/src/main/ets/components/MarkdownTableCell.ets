@@ -104,6 +104,7 @@ export struct MarkdownTableCell {
           item.latexIsLoading = false
         }
       } catch (e) {
+        console.error('TableCell latexPixelMap release failed: ' + JSON.stringify(e))
       }
       try {
         if (item.imageReplacePixelMap !== undefined) {
@@ -112,6 +113,7 @@ export struct MarkdownTableCell {
           item.imageReplaceTried = false
         }
       } catch (e) {
+        console.error('TableCell imageReplacePixelMap release failed: ' + JSON.stringify(e))
       }
       try {
         if (item.linkIconPixelMap !== undefined) {
@@ -123,6 +125,7 @@ export struct MarkdownTableCell {
           item.linkIconHeight = 0
         }
       } catch (e) {
+        console.error('TableCell linkIconPixelMap release failed: ' + JSON.stringify(e))
       }
     }
   }
@@ -513,12 +516,12 @@ export struct MarkdownTableCell {
     }
     const oldImageSizes: Map<string, number[]> = new Map()
     for (const oldChild of this.list) {
-      if (oldChild.imageUrl && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
+      if (oldChild.imageUrl !== undefined && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
         oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
       }
     }
     for (const newChild of children) {
-      if (newChild.imageUrl) {
+      if (newChild.imageUrl !== undefined) {
         const oldSize = oldImageSizes.get(newChild.imageUrl)
         if (oldSize) {
           newChild.imageWidth = oldSize[0]
@@ -583,6 +586,7 @@ export struct MarkdownTableCell {
             imageSource.release()
           })
         }).catch(() => {
+          console.error('TableCell imageReplace failed')
         })
       }
     }
@@ -625,7 +629,11 @@ export struct MarkdownTableCell {
               return
             }
             if (child.linkIconPixelMap !== undefined) {
-              try { child.linkIconPixelMap.release() } catch (e) {}
+              try {
+                child.linkIconPixelMap.release()
+              } catch (e) {
+                console.error('linkIconPixelMap release failed: ' + JSON.stringify(e))
+              }
             }
             child.linkIconPixelMap = result.pixelMap
             child.linkIconWidth = result.width
@@ -633,6 +641,7 @@ export struct MarkdownTableCell {
             this.list = [...this.list]
           })
           .catch(() => {
+            console.error('TableCell linkIcon generation failed')
           })
       }
     }

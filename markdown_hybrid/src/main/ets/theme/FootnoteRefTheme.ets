@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_RED, COLOR_TRANSPARENT, isBorderRadiuses } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_RED, COLOR_TRANSPARENT, isBorderRadiuses } from "../base/Constants"
 
 /**
  * 脚注引用样式配置
@@ -29,8 +29,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontColor(color: ResourceColor): FootnoteRefTheme {
-    this.footnoteRefTextFontColor = color;
-    return this;
+    this.footnoteRefTextFontColor = color
+    return this
   }
 
   /**
@@ -40,8 +40,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontSize(size: number | string | Resource): FootnoteRefTheme {
-    this.footnoteRefTextFontSize = size;
-    return this;
+    this.footnoteRefTextFontSize = size
+    return this
   }
 
   /**
@@ -51,8 +51,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontStyle(style: FontStyle): FootnoteRefTheme {
-    this.footnoteRefTextFontStyle = style;
-    return this;
+    this.footnoteRefTextFontStyle = style
+    return this
   }
 
   /**
@@ -62,8 +62,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontWeight(weight: number | FontWeight): FootnoteRefTheme {
-    this.footnoteRefTextFontWeight = weight;
-    return this;
+    this.footnoteRefTextFontWeight = weight
+    return this
   }
 
   /**
@@ -73,8 +73,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextFontFamily(family: string | Resource): FootnoteRefTheme {
-    this.footnoteRefTextFontFamily = family;
-    return this;
+    this.footnoteRefTextFontFamily = family
+    return this
   }
 
   /**
@@ -84,8 +84,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextLineHeight(lineHeight: number | string | Resource): FootnoteRefTheme {
-    this.footnoteRefTextLineHeight = lineHeight;
-    return this;
+    this.footnoteRefTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -95,8 +95,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextLetterSpacing(spacing: number): FootnoteRefTheme {
-    this.footnoteRefTextLetterSpacing = spacing;
-    return this;
+    this.footnoteRefTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -106,8 +106,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextDecorationType(decorationType: TextDecorationType): FootnoteRefTheme {
-    this.footnoteRefTextDecorationType = decorationType;
-    return this;
+    this.footnoteRefTextDecorationType = decorationType
+    return this
   }
 
   /**
@@ -117,8 +117,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextDecorationColor(color: ResourceColor): FootnoteRefTheme {
-    this.footnoteRefTextDecorationColor = color;
-    return this;
+    this.footnoteRefTextDecorationColor = color
+    return this
   }
 
   /**
@@ -128,8 +128,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextDecorationStyle(style: TextDecorationStyle): FootnoteRefTheme {
-    this.footnoteRefTextDecorationStyle = style;
-    return this;
+    this.footnoteRefTextDecorationStyle = style
+    return this
   }
 
   /**
@@ -139,8 +139,8 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
    * @return FootnoteRefTheme
    */
   setFootnoteRefTextBackgroundColor(color: ResourceColor): FootnoteRefTheme {
-    this.footnoteRefTextBackgroundColor = color;
-    return this;
+    this.footnoteRefTextBackgroundColor = color
+    return this
   }
 
   /**
@@ -152,37 +152,37 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
   setFootnoteRefTextBackgroundRadius(options: BorderRadiuses | Length): FootnoteRefTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.footnoteRefTextBackgroundRadiusTopLeft = options;
-      this.footnoteRefTextBackgroundRadiusTopRight = options;
-      this.footnoteRefTextBackgroundRadiusBottomLeft = options;
-      this.footnoteRefTextBackgroundRadiusBottomRight = options;
+      this.footnoteRefTextBackgroundRadiusTopLeft = options
+      this.footnoteRefTextBackgroundRadiusTopRight = options
+      this.footnoteRefTextBackgroundRadiusBottomLeft = options
+      this.footnoteRefTextBackgroundRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 BorderRadiuses 的专属属性来区分
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.footnoteRefTextBackgroundRadiusTopLeft = radius.topLeft;
+          this.footnoteRefTextBackgroundRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.footnoteRefTextBackgroundRadiusTopRight = radius.topRight;
+          this.footnoteRefTextBackgroundRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.footnoteRefTextBackgroundRadiusBottomLeft = radius.bottomLeft;
+          this.footnoteRefTextBackgroundRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.footnoteRefTextBackgroundRadiusBottomRight = radius.bottomRight;
+          this.footnoteRefTextBackgroundRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.footnoteRefTextBackgroundRadiusTopLeft = options as Length;
-        this.footnoteRefTextBackgroundRadiusTopRight = options as Length;
-        this.footnoteRefTextBackgroundRadiusBottomLeft = options as Length;
-        this.footnoteRefTextBackgroundRadiusBottomRight = options as Length;
+        this.footnoteRefTextBackgroundRadiusTopLeft = options as Length
+        this.footnoteRefTextBackgroundRadiusTopRight = options as Length
+        this.footnoteRefTextBackgroundRadiusBottomLeft = options as Length
+        this.footnoteRefTextBackgroundRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 }

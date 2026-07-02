@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import {
   COLOR_WHITE,
   COLOR_BLACK,
@@ -8,7 +8,7 @@ import {
   isMargin,
   isPadding,
   isBorderRadiuses
-} from "../base/Constants";
+} from "../base/Constants"
 
 /**
  * 表格样式配置
@@ -64,8 +64,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableTitleBackgroundColor(color: ResourceColor): TableTheme {
-    this.tableTitleBackgroundColor = color;
-    return this;
+    this.tableTitleBackgroundColor = color
+    return this
   }
 
   /**
@@ -75,8 +75,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentOddRowBackgroundColor(color: ResourceColor): TableTheme {
-    this.tableContentOddRowBackgroundColor = color;
-    return this;
+    this.tableContentOddRowBackgroundColor = color
+    return this
   }
 
   /**
@@ -86,8 +86,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentEvenRowBackgroundColor(color: ResourceColor): TableTheme {
-    this.tableContentEvenRowBackgroundColor = color;
-    return this;
+    this.tableContentEvenRowBackgroundColor = color
+    return this
   }
 
   /**
@@ -99,38 +99,38 @@ export class TableTheme implements MarkdownBaseTheme {
   setTableMargin(options: Margin | Length): TableTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.tableMarginTop = options;
-      this.tableMarginRight = options;
-      this.tableMarginBottom = options;
-      this.tableMarginLeft = options;
+      this.tableMarginTop = options
+      this.tableMarginRight = options
+      this.tableMarginBottom = options
+      this.tableMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.tableMarginTop = margin.top;
+          this.tableMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.tableMarginRight = margin.right;
+          this.tableMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.tableMarginBottom = margin.bottom;
+          this.tableMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.tableMarginLeft = margin.left;
+          this.tableMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.tableMarginTop = options as Length;
-        this.tableMarginRight = options as Length;
-        this.tableMarginBottom = options as Length;
-        this.tableMarginLeft = options as Length;
+        this.tableMarginTop = options as Length
+        this.tableMarginRight = options as Length
+        this.tableMarginBottom = options as Length
+        this.tableMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -142,38 +142,38 @@ export class TableTheme implements MarkdownBaseTheme {
   setTablePadding(options: Padding | Length): TableTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.tablePaddingTop = options;
-      this.tablePaddingRight = options;
-      this.tablePaddingBottom = options;
-      this.tablePaddingLeft = options;
+      this.tablePaddingTop = options
+      this.tablePaddingRight = options
+      this.tablePaddingBottom = options
+      this.tablePaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.tablePaddingTop = padding.top;
+          this.tablePaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.tablePaddingRight = padding.right;
+          this.tablePaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.tablePaddingBottom = padding.bottom;
+          this.tablePaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.tablePaddingLeft = padding.left;
+          this.tablePaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.tablePaddingTop = options as Length;
-        this.tablePaddingRight = options as Length;
-        this.tablePaddingBottom = options as Length;
-        this.tablePaddingLeft = options as Length;
+        this.tablePaddingTop = options as Length
+        this.tablePaddingRight = options as Length
+        this.tablePaddingBottom = options as Length
+        this.tablePaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -185,38 +185,38 @@ export class TableTheme implements MarkdownBaseTheme {
   setTableCellPadding(options: Padding | Length): TableTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.tableCellPaddingTop = options;
-      this.tableCellPaddingRight = options;
-      this.tableCellPaddingBottom = options;
-      this.tableCellPaddingLeft = options;
+      this.tableCellPaddingTop = options
+      this.tableCellPaddingRight = options
+      this.tableCellPaddingBottom = options
+      this.tableCellPaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.tableCellPaddingTop = padding.top;
+          this.tableCellPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.tableCellPaddingRight = padding.right;
+          this.tableCellPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.tableCellPaddingBottom = padding.bottom;
+          this.tableCellPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.tableCellPaddingLeft = padding.left;
+          this.tableCellPaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.tableCellPaddingTop = options as Length;
-        this.tableCellPaddingRight = options as Length;
-        this.tableCellPaddingBottom = options as Length;
-        this.tableCellPaddingLeft = options as Length;
+        this.tableCellPaddingTop = options as Length
+        this.tableCellPaddingRight = options as Length
+        this.tableCellPaddingBottom = options as Length
+        this.tableCellPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -226,8 +226,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableBorderStyle(style: BorderStyle): TableTheme {
-    this.tableBorderStyle = style;
-    return this;
+    this.tableBorderStyle = style
+    return this
   }
 
   /**
@@ -237,8 +237,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableBorderWidth(width: Length): TableTheme {
-    this.tableBorderWidth = width;
-    return this;
+    this.tableBorderWidth = width
+    return this
   }
 
   /**
@@ -248,8 +248,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableBorderColor(color: ResourceColor): TableTheme {
-    this.tableBorderColor = color;
-    return this;
+    this.tableBorderColor = color
+    return this
   }
 
   /**
@@ -261,38 +261,38 @@ export class TableTheme implements MarkdownBaseTheme {
   setTableRadius(options: BorderRadiuses | Length): TableTheme {
     // 1. 如果是 number 或 string，直接四角统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.tableRadiusTopLeft = options;
-      this.tableRadiusTopRight = options;
-      this.tableRadiusBottomLeft = options;
-      this.tableRadiusBottomRight = options;
+      this.tableRadiusTopLeft = options
+      this.tableRadiusTopRight = options
+      this.tableRadiusBottomLeft = options
+      this.tableRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 BorderRadiuses 的专属属性来区分
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.tableRadiusTopLeft = radius.topLeft;
+          this.tableRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.tableRadiusTopRight = radius.topRight;
+          this.tableRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.tableRadiusBottomLeft = radius.bottomLeft;
+          this.tableRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.tableRadiusBottomRight = radius.bottomRight;
+          this.tableRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.tableRadiusTopLeft = options as Length;
-        this.tableRadiusTopRight = options as Length;
-        this.tableRadiusBottomLeft = options as Length;
-        this.tableRadiusBottomRight = options as Length;
+        this.tableRadiusTopLeft = options as Length
+        this.tableRadiusTopRight = options as Length
+        this.tableRadiusBottomLeft = options as Length
+        this.tableRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -302,8 +302,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableScrollBarState(state: BarState): TableTheme {
-    this.tableScrollBarState = state;
-    return this;
+    this.tableScrollBarState = state
+    return this
   }
 
   /**
@@ -313,8 +313,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableScrollBarColor(color: Color | number | string): TableTheme {
-    this.tableScrollBarColor = color;
-    return this;
+    this.tableScrollBarColor = color
+    return this
   }
 
   /**
@@ -324,8 +324,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableMinCellWidth(width: Length): TableTheme {
-    this.tableMinCellWidth = width;
-    return this;
+    this.tableMinCellWidth = width
+    return this
   }
 
   /**
@@ -335,8 +335,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableMaxCellWidth(width: Length): TableTheme {
-    this.tableMaxCellWidth = width;
-    return this;
+    this.tableMaxCellWidth = width
+    return this
   }
 
   /**
@@ -346,8 +346,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableFirstColumnIsBold(isBold: boolean): TableTheme {
-    this.tableFirstColumnIsBold = isBold;
-    return this;
+    this.tableFirstColumnIsBold = isBold
+    return this
   }
 
   /**
@@ -357,8 +357,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableTitleTextFontColor(color: ResourceColor): TableTheme {
-    this.tableTitleTextFontColor = color;
-    return this;
+    this.tableTitleTextFontColor = color
+    return this
   }
 
   /**
@@ -368,8 +368,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableTitleTextFontSize(size: number | string | Resource): TableTheme {
-    this.tableTitleTextFontSize = size;
-    return this;
+    this.tableTitleTextFontSize = size
+    return this
   }
 
   /**
@@ -379,8 +379,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableTitleTextFontStyle(style: FontStyle): TableTheme {
-    this.tableTitleTextFontStyle = style;
-    return this;
+    this.tableTitleTextFontStyle = style
+    return this
   }
 
   /**
@@ -390,8 +390,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableTitleTextFontWeight(weight: number | FontWeight): TableTheme {
-    this.tableTitleTextFontWeight = weight;
-    return this;
+    this.tableTitleTextFontWeight = weight
+    return this
   }
 
   /**
@@ -401,8 +401,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableTitleTextFontFamily(family: string | Resource): TableTheme {
-    this.tableTitleTextFontFamily = family;
-    return this;
+    this.tableTitleTextFontFamily = family
+    return this
   }
 
   /**
@@ -412,8 +412,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableTitleTextLineHeight(lineHeight: number | string | Resource): TableTheme {
-    this.tableTitleTextLineHeight = lineHeight;
-    return this;
+    this.tableTitleTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -423,8 +423,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableTitleTextLetterSpacing(spacing: number): TableTheme {
-    this.tableTitleTextLetterSpacing = spacing;
-    return this;
+    this.tableTitleTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -434,8 +434,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentTextFontColor(color: ResourceColor): TableTheme {
-    this.tableContentTextFontColor = color;
-    return this;
+    this.tableContentTextFontColor = color
+    return this
   }
 
   /**
@@ -445,8 +445,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentTextFontSize(size: number | string | Resource): TableTheme {
-    this.tableContentTextFontSize = size;
-    return this;
+    this.tableContentTextFontSize = size
+    return this
   }
 
   /**
@@ -456,8 +456,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentTextFontStyle(style: FontStyle): TableTheme {
-    this.tableContentTextFontStyle = style;
-    return this;
+    this.tableContentTextFontStyle = style
+    return this
   }
 
   /**
@@ -467,8 +467,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentTextFontWeight(weight: number | FontWeight): TableTheme {
-    this.tableContentTextFontWeight = weight;
-    return this;
+    this.tableContentTextFontWeight = weight
+    return this
   }
 
   /**
@@ -478,8 +478,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentTextFontFamily(family: string | Resource): TableTheme {
-    this.tableContentTextFontFamily = family;
-    return this;
+    this.tableContentTextFontFamily = family
+    return this
   }
 
   /**
@@ -489,8 +489,8 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentTextLineHeight(lineHeight: number | string | Resource): TableTheme {
-    this.tableContentTextLineHeight = lineHeight;
-    return this;
+    this.tableContentTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -500,7 +500,7 @@ export class TableTheme implements MarkdownBaseTheme {
    * @return TableTheme
    */
   setTableContentTextLetterSpacing(spacing: number): TableTheme {
-    this.tableContentTextLetterSpacing = spacing;
-    return this;
+    this.tableContentTextLetterSpacing = spacing
+    return this
   }
 }

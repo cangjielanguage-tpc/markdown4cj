@@ -101,6 +101,7 @@ export struct MarkdownParagraph {
           item.latexIsLoading = false
         }
       } catch (e) {
+        console.error('Paragraph latexPixelMap release failed: ' + JSON.stringify(e))
       }
       try {
         if (item.imageReplacePixelMap !== undefined) {
@@ -109,6 +110,7 @@ export struct MarkdownParagraph {
           item.imageReplaceTried = false
         }
       } catch (e) {
+        console.error('Paragraph imageReplacePixelMap release failed: ' + JSON.stringify(e))
       }
       try {
         if (item.linkIconPixelMap !== undefined) {
@@ -120,6 +122,7 @@ export struct MarkdownParagraph {
           item.linkIconHeight = 0
         }
       } catch (e) {
+        console.error('Paragraph linkIconPixelMap release failed: ' + JSON.stringify(e))
       }
     }
   }
@@ -485,12 +488,12 @@ export struct MarkdownParagraph {
     }
     const oldImageSizes: Map<string, number[]> = new Map()
     for (const oldChild of this.list) {
-      if (oldChild.imageUrl && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
+      if (oldChild.imageUrl !== undefined && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
         oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
       }
     }
     for (const newChild of children) {
-      if (newChild.imageUrl) {
+      if (newChild.imageUrl !== undefined) {
         const oldSize = oldImageSizes.get(newChild.imageUrl)
         if (oldSize) {
           newChild.imageWidth = oldSize[0]
@@ -561,7 +564,11 @@ export struct MarkdownParagraph {
               return
             }
             if (child.linkIconPixelMap !== undefined) {
-              try { child.linkIconPixelMap.release() } catch (e) {}
+              try {
+                child.linkIconPixelMap.release()
+              } catch (e) {
+                console.error('linkIconPixelMap release failed: ' + JSON.stringify(e))
+              }
             }
             child.linkIconPixelMap = result.pixelMap
             child.linkIconWidth = result.width
@@ -569,6 +576,7 @@ export struct MarkdownParagraph {
             this.list = [...this.list]
           })
           .catch(() => {
+            console.error('Paragraph linkIcon generation failed')
           })
       }
     }
@@ -604,6 +612,7 @@ export struct MarkdownParagraph {
             imageSource.release()
           })
         }).catch(() => {
+          console.error('Paragraph imageReplace failed')
         })
       }
     }

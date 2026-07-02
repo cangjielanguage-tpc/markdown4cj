@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FFFFF59D, isBorderRadiuses } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FFFFF59D, isBorderRadiuses } from "../base/Constants"
 
 /**
  * 高亮样式配置
@@ -26,8 +26,8 @@ export class HighlightTheme implements MarkdownBaseTheme {
    * @return HighlightTheme
    */
   setHighlightTextFontColor(color: ResourceColor): HighlightTheme {
-    this.highlightTextFontColor = color;
-    return this;
+    this.highlightTextFontColor = color
+    return this
   }
 
   /**
@@ -37,8 +37,8 @@ export class HighlightTheme implements MarkdownBaseTheme {
    * @return HighlightTheme
    */
   setHighlightTextFontSize(size: number | string | Resource): HighlightTheme {
-    this.highlightTextFontSize = size;
-    return this;
+    this.highlightTextFontSize = size
+    return this
   }
 
   /**
@@ -48,8 +48,8 @@ export class HighlightTheme implements MarkdownBaseTheme {
    * @return HighlightTheme
    */
   setHighlightTextFontStyle(style: FontStyle): HighlightTheme {
-    this.highlightTextFontStyle = style;
-    return this;
+    this.highlightTextFontStyle = style
+    return this
   }
 
   /**
@@ -59,8 +59,8 @@ export class HighlightTheme implements MarkdownBaseTheme {
    * @return HighlightTheme
    */
   setHighlightTextFontWeight(weight: number | FontWeight): HighlightTheme {
-    this.highlightTextFontWeight = weight;
-    return this;
+    this.highlightTextFontWeight = weight
+    return this
   }
 
   /**
@@ -70,8 +70,8 @@ export class HighlightTheme implements MarkdownBaseTheme {
    * @return HighlightTheme
    */
   setHighlightTextFontFamily(family: string | Resource): HighlightTheme {
-    this.highlightTextFontFamily = family;
-    return this;
+    this.highlightTextFontFamily = family
+    return this
   }
 
   /**
@@ -81,8 +81,8 @@ export class HighlightTheme implements MarkdownBaseTheme {
    * @return HighlightTheme
    */
   setHighlightTextLineHeight(lineHeight: number | string | Resource): HighlightTheme {
-    this.highlightTextLineHeight = lineHeight;
-    return this;
+    this.highlightTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -92,8 +92,8 @@ export class HighlightTheme implements MarkdownBaseTheme {
    * @return HighlightTheme
    */
   setHighlightTextLetterSpacing(spacing: number): HighlightTheme {
-    this.highlightTextLetterSpacing = spacing;
-    return this;
+    this.highlightTextLetterSpacing = spacing
+    return this
   }
 
   /**
@@ -103,8 +103,8 @@ export class HighlightTheme implements MarkdownBaseTheme {
    * @return HighlightTheme
    */
   setHighlightTextBackgroundColor(color: ResourceColor): HighlightTheme {
-    this.highlightTextBackgroundColor = color;
-    return this;
+    this.highlightTextBackgroundColor = color
+    return this
   }
 
   /**
@@ -116,10 +116,10 @@ export class HighlightTheme implements MarkdownBaseTheme {
   setHighlightTextBackgroundRadius(options: BorderRadiuses | Length): HighlightTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.highlightTextBackgroundRadiusTopLeft = options;
-      this.highlightTextBackgroundRadiusTopRight = options;
-      this.highlightTextBackgroundRadiusBottomLeft = options;
-      this.highlightTextBackgroundRadiusBottomRight = options;
+      this.highlightTextBackgroundRadiusTopLeft = options
+      this.highlightTextBackgroundRadiusTopRight = options
+      this.highlightTextBackgroundRadiusBottomLeft = options
+      this.highlightTextBackgroundRadiusBottomRight = options
     }
     // 2. 如果是 object，它要么是 BorderRadiuses，要么是 Resource
     else if (typeof options === "object" && options !== null) {
@@ -127,27 +127,27 @@ export class HighlightTheme implements MarkdownBaseTheme {
       // 如果包含 topLeft/topRight/bottomLeft/bottomRight 任意一个，就当作 BorderRadiuses 处理
       if (isBorderRadiuses(options)) {
         // 这里通过类型守卫，编译器已经知道它是 BorderRadiuses 了
-        const radius = options as BorderRadiuses;
+        const radius = options as BorderRadiuses
         if (radius.topLeft !== undefined) {
-          this.highlightTextBackgroundRadiusTopLeft = radius.topLeft;
+          this.highlightTextBackgroundRadiusTopLeft = radius.topLeft
         }
         if (radius.topRight !== undefined) {
-          this.highlightTextBackgroundRadiusTopRight = radius.topRight;
+          this.highlightTextBackgroundRadiusTopRight = radius.topRight
         }
         if (radius.bottomLeft !== undefined) {
-          this.highlightTextBackgroundRadiusBottomLeft = radius.bottomLeft;
+          this.highlightTextBackgroundRadiusBottomLeft = radius.bottomLeft
         }
         if (radius.bottomRight !== undefined) {
-          this.highlightTextBackgroundRadiusBottomRight = radius.bottomRight;
+          this.highlightTextBackgroundRadiusBottomRight = radius.bottomRight
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.highlightTextBackgroundRadiusTopLeft = options as Length;
-        this.highlightTextBackgroundRadiusTopRight = options as Length;
-        this.highlightTextBackgroundRadiusBottomLeft = options as Length;
-        this.highlightTextBackgroundRadiusBottomRight = options as Length;
+        this.highlightTextBackgroundRadiusTopLeft = options as Length
+        this.highlightTextBackgroundRadiusTopRight = options as Length
+        this.highlightTextBackgroundRadiusBottomLeft = options as Length
+        this.highlightTextBackgroundRadiusBottomRight = options as Length
       }
     }
-    return this;
+    return this
   }
 }

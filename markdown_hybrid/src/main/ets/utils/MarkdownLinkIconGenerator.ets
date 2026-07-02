@@ -220,6 +220,7 @@ export function generateLinkIconPixelMap(
   try {
     imageSource = image.createImageSource(buffer)
   } catch (e) {
+    console.error('bufferToPixelMap createImageSource failed: ' + JSON.stringify(e))
     return Promise.resolve(undefined)
   }
   if (imageSource === undefined || imageSource === null) {
@@ -232,7 +233,11 @@ export function generateLinkIconPixelMap(
       return pm.getImageInfo()
         .then((info: image.ImageInfo) => {
           imageSourceReleased = true
-          try { source.release() } catch (e) {}
+          try {
+            source.release()
+          } catch (e) {
+            console.error('LinkIcon source release failed: ' + JSON.stringify(e))
+          }
           const result: LinkIconResult = {
             pixelMap: pm,
             width: info.size.width,
@@ -241,10 +246,18 @@ export function generateLinkIconPixelMap(
           return result
         })
         .catch(() => {
-          try { pm.release() } catch (e) {}
+          try {
+            pm.release()
+          } catch (e) {
+            console.error('LinkIcon pm release failed: ' + JSON.stringify(e))
+          }
           if (!imageSourceReleased) {
             imageSourceReleased = true
-            try { source.release() } catch (e) {}
+            try {
+              source.release()
+            } catch (e) {
+              console.error('LinkIcon source release failed: ' + JSON.stringify(e))
+            }
           }
           return undefined
         })
@@ -252,7 +265,11 @@ export function generateLinkIconPixelMap(
     .catch(() => {
       if (!imageSourceReleased) {
         imageSourceReleased = true
-        try { source.release() } catch (e) {}
+        try {
+          source.release()
+        } catch (e) {
+          console.error('LinkIcon source release failed: ' + JSON.stringify(e))
+        }
       }
       return undefined
     })

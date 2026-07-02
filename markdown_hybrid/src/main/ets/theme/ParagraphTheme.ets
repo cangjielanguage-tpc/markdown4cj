@@ -1,5 +1,5 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme';
-import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants";
+﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
 
 /**
  * 段落样式配置
@@ -30,8 +30,8 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    * @return ParagraphTheme
    */
   setParagraphBackgroundColor(color: ResourceColor): ParagraphTheme {
-    this.paragraphBackgroundColor = color;
-    return this;
+    this.paragraphBackgroundColor = color
+    return this
   }
 
   /**
@@ -43,38 +43,38 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   setParagraphMargin(options: Margin | Length): ParagraphTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.paragraphMarginTop = options;
-      this.paragraphMarginRight = options;
-      this.paragraphMarginBottom = options;
-      this.paragraphMarginLeft = options;
+      this.paragraphMarginTop = options
+      this.paragraphMarginRight = options
+      this.paragraphMarginBottom = options
+      this.paragraphMarginLeft = options
     }
     // 2. 如果是 object，它要么是 Margin，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Margin 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Margin 处理
       if (isMargin(options)) {
-        const margin = options as Margin;
+        const margin = options as Margin
         if (margin.top !== undefined) {
-          this.paragraphMarginTop = margin.top;
+          this.paragraphMarginTop = margin.top
         }
         if (margin.right !== undefined) {
-          this.paragraphMarginRight = margin.right;
+          this.paragraphMarginRight = margin.right
         }
         if (margin.bottom !== undefined) {
-          this.paragraphMarginBottom = margin.bottom;
+          this.paragraphMarginBottom = margin.bottom
         }
         if (margin.left !== undefined) {
-          this.paragraphMarginLeft = margin.left;
+          this.paragraphMarginLeft = margin.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.paragraphMarginTop = options as Length;
-        this.paragraphMarginRight = options as Length;
-        this.paragraphMarginBottom = options as Length;
-        this.paragraphMarginLeft = options as Length;
+        this.paragraphMarginTop = options as Length
+        this.paragraphMarginRight = options as Length
+        this.paragraphMarginBottom = options as Length
+        this.paragraphMarginLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -86,38 +86,38 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   setParagraphPadding(options: Padding | Length): ParagraphTheme {
     // 1. 如果是 number 或 string，直接四边统一赋值
     if (typeof options === "number" || typeof options === "string") {
-      this.paragraphPaddingTop = options;
-      this.paragraphPaddingRight = options;
-      this.paragraphPaddingBottom = options;
-      this.paragraphPaddingLeft = options;
+      this.paragraphPaddingTop = options
+      this.paragraphPaddingRight = options
+      this.paragraphPaddingBottom = options
+      this.paragraphPaddingLeft = options
     }
     // 2. 如果是 object，它要么是 Padding，要么是 Resource
     else if (typeof options === "object" && options !== null) {
       // 在 ArkTS 中，直接通过判断对象是否拥有 Padding 的专属属性来区分
       // 如果包含 top/right/bottom/left 任意一个，就当作 Padding 处理
       if (isPadding(options)) {
-        const padding = options as Padding;
+        const padding = options as Padding
         if (padding.top !== undefined) {
-          this.paragraphPaddingTop = padding.top;
+          this.paragraphPaddingTop = padding.top
         }
         if (padding.right !== undefined) {
-          this.paragraphPaddingRight = padding.right;
+          this.paragraphPaddingRight = padding.right
         }
         if (padding.bottom !== undefined) {
-          this.paragraphPaddingBottom = padding.bottom;
+          this.paragraphPaddingBottom = padding.bottom
         }
         if (padding.left !== undefined) {
-          this.paragraphPaddingLeft = padding.left;
+          this.paragraphPaddingLeft = padding.left
         }
       } else {
         // 否则，它就是 Resource，作为单值统一赋值
-        this.paragraphPaddingTop = options as Length;
-        this.paragraphPaddingRight = options as Length;
-        this.paragraphPaddingBottom = options as Length;
-        this.paragraphPaddingLeft = options as Length;
+        this.paragraphPaddingTop = options as Length
+        this.paragraphPaddingRight = options as Length
+        this.paragraphPaddingBottom = options as Length
+        this.paragraphPaddingLeft = options as Length
       }
     }
-    return this;
+    return this
   }
 
   /**
@@ -127,8 +127,8 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    * @return ParagraphTheme
    */
   setParagraphTextFontColor(color: ResourceColor): ParagraphTheme {
-    this.paragraphTextFontColor = color;
-    return this;
+    this.paragraphTextFontColor = color
+    return this
   }
 
   /**
@@ -138,8 +138,8 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    * @return ParagraphTheme
    */
   setParagraphTextFontSize(size: number | string | Resource): ParagraphTheme {
-    this.paragraphTextFontSize = size;
-    return this;
+    this.paragraphTextFontSize = size
+    return this
   }
 
   /**
@@ -149,8 +149,8 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    * @return ParagraphTheme
    */
   setParagraphTextFontStyle(style: FontStyle): ParagraphTheme {
-    this.paragraphTextFontStyle = style;
-    return this;
+    this.paragraphTextFontStyle = style
+    return this
   }
 
   /**
@@ -160,8 +160,8 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    * @return ParagraphTheme
    */
   setParagraphTextFontWeight(weight: number | FontWeight): ParagraphTheme {
-    this.paragraphTextFontWeight = weight;
-    return this;
+    this.paragraphTextFontWeight = weight
+    return this
   }
 
   /**
@@ -171,8 +171,8 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    * @return ParagraphTheme
    */
   setParagraphTextFontFamily(family: string | Resource): ParagraphTheme {
-    this.paragraphTextFontFamily = family;
-    return this;
+    this.paragraphTextFontFamily = family
+    return this
   }
 
   /**
@@ -182,8 +182,8 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    * @return ParagraphTheme
    */
   setParagraphTextLineHeight(lineHeight: number | string | Resource): ParagraphTheme {
-    this.paragraphTextLineHeight = lineHeight;
-    return this;
+    this.paragraphTextLineHeight = lineHeight
+    return this
   }
 
   /**
@@ -193,7 +193,7 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    * @return ParagraphTheme
    */
   setParagraphTextLetterSpacing(spacing: number): ParagraphTheme {
-    this.paragraphTextLetterSpacing = spacing;
-    return this;
+    this.paragraphTextLetterSpacing = spacing
+    return this
   }
 }

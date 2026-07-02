@@ -93,7 +93,8 @@ export struct MarkdownCodeFenced {
                   Span(node.text)
                     .fontColor(node.color ?? this.defaultFontColor)
                     .letterSpacing(this.codeBlockTheme.codeBlockTextLetterSpacing)
-                }
+                },
+                (node: PrismNode, nodeIdx: number) => `${nodeIdx}-${node.text}-${node.color}`
               )
             }
             .fontFamily(this.codeBlockTheme.codeBlockTextFontFamily)
@@ -169,7 +170,12 @@ export struct MarkdownCodeFenced {
         info = this.info
       }
     }
+    if (this.timerId !== -1) {
+      clearTimeout(this.timerId)
+      this.timerId = -1
+    }
     this.timerId = setTimeout(() => {
+      this.timerId = -1
       if (!this.isAlive || currentVersion <= this.appliedVersion) {
         return
       }
