@@ -23,7 +23,7 @@ import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import {
-  imageUrlHandle, imageWidthAndHeight, spanSoftLineBreak
+  imageUrlHandle, imageWidthAndHeight, lengthToVpNumber, spanSoftLineBreak
 } from "../utils/MarkdownUtils"
 import {
   generateLinkIconPixelMap,
@@ -88,6 +88,11 @@ export struct MarkdownTableCell {
   private isAlive: boolean = true // 组件是否存活
 
   aboutToAppear(): void {
+    for (const child of this.node.children) {
+      if (child.nodeType === "LatexMathNode" && child.latexPixelMap === undefined && child.latexIsLoading) {
+        child.latexIsLoading = false
+      }
+    }
     this.refreshData() // 首次加载（refreshData设置list，onListChanged内调用tryReplaceImages/tryGenerateLinkIcons）
   }
 
@@ -143,7 +148,7 @@ export struct MarkdownTableCell {
           this.tableCellInlineItem(item, index)
         },
         (item: NodeView, index: number) => {
-          return `${index}-${item.nodeType}-${item.contentHash}-${item.nodeText}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
+          return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
         }
       )
     }
@@ -344,7 +349,7 @@ export struct MarkdownTableCell {
         .objectFit(this.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
         .constraintSize({
-          maxWidth: (this.columnWidths[this.tableBlockCellCell] ?? 0) > 0 ? (this.columnWidths[this.tableBlockCellCell] ?? 0) : (this.imageTheme.imageMaxWidth ?? '100%'),
+          maxWidth: this.tableTheme.tableMaxCellWidth,
           maxHeight: this.imageTheme.imageMaxHeight
         })
         .onClick(() => {
@@ -355,8 +360,9 @@ export struct MarkdownTableCell {
           }
         })
         .onComplete((imageLoadResult) => {
+          const cellMaxWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? this.componentWidth
           const l = imageWidthAndHeight(
-            (this.columnWidths[this.tableBlockCellCell] ?? 0) > 0 ? (this.columnWidths[this.tableBlockCellCell] ?? 0) : this.componentWidth,
+            cellMaxWidth,
             imageLoadResult.width,
             imageLoadResult.height,
             item.imageStyleWidth ?? this.imageTheme.imageWidth,
@@ -428,7 +434,7 @@ export struct MarkdownTableCell {
           .height(this.latexMathTheme.latexMathTextSize)
           .width((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize)
           .verticalAlign(ImageSpanAlignment.CENTER)
-          .constraintSize({ maxWidth: (this.columnWidths[this.tableBlockCellCell] ?? 0) > 0 ? (this.columnWidths[this.tableBlockCellCell] ?? 0) : undefined })
+          .constraintSize({ maxWidth: this.tableTheme.tableMaxCellWidth })
           .onClick(() => {
             if (this.latexImageCallback !== undefined && item.latexImageData !== undefined) {
               this.latexImageCallback(item.latexImageData, item.latexImageHeight, item.latexImageWidth)
@@ -476,6 +482,9 @@ export struct MarkdownTableCell {
   refreshData() {
     const children = this.node.children
     if (children.length === 0) {
+      for (const old of this.list) {
+        old.releaseOwnPixelMaps()
+      }
       this.list = []
       return
     }
@@ -494,16 +503,21 @@ export struct MarkdownTableCell {
         }
       }
     }
+    const oldList = this.list
     this.list = [...children]
+    const newSet: Set<NodeView> = new Set<NodeView>(children)
+    for (const old of oldList) {
+      if (!newSet.has(old)) {
+        old.releaseOwnPixelMaps()
+      }
+    }
+    this.tryEnqueueLatexLoading()
   }
 
   /**
-   * list变化时触发异步加载（从refreshData移出tryReplaceImages/tryGenerateLinkIcons，避免每次this.list=[...this.list]都重跑；
-   * 各方法内置tried守卫，重复触发仅遍历检查不会重跑）
+   * 数学公式异步加载入队（从onListChanged提取，refreshData直接调用，不依赖@Watch链）
    */
-  onListChanged() {
-    this.tryReplaceImages()
-    this.tryGenerateLinkIcons()
+  private tryEnqueueLatexLoading(): void {
     if (!this.isLatexMathEnabled) {
       return
     }
@@ -514,11 +528,22 @@ export struct MarkdownTableCell {
           if (this.isAlive) {
             this.loadLatexImage(child)
           } else {
+            child.latexIsLoading = false
             LatexParseQueue.notifyDone()
           }
         })
       }
     }
+  }
+
+  /**
+   * list变化时触发异步加载（从refreshData移出tryReplaceImages/tryGenerateLinkIcons，避免每次this.list=[...this.list]都重跑；
+   * 各方法内置tried守卫，重复触发仅遍历检查不会重跑）
+   */
+  onListChanged() {
+    this.tryReplaceImages()
+    this.tryGenerateLinkIcons()
+    this.tryEnqueueLatexLoading()
   }
 
   /**
@@ -634,6 +659,7 @@ export struct MarkdownTableCell {
       latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
       .then((buffer: ArrayBuffer) => {
         if (!this.isAlive) {
+          item.latexIsLoading = false
           LatexParseQueue.notifyDone()
           return
         }
@@ -642,12 +668,14 @@ export struct MarkdownTableCell {
           imageSource.release()
           if (!this.isAlive) {
             pm.release()
+            item.latexIsLoading = false
             LatexParseQueue.notifyDone()
             return
           }
           pm.getImageInfo().then((info: image.ImageInfo) => {
             if (!this.isAlive) {
               pm.release()
+              item.latexIsLoading = false
               LatexParseQueue.notifyDone()
               return
             }

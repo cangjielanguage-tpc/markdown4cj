@@ -92,16 +92,16 @@ export class NodeView {
     this.nodeText = source.nodeText
     this.nodeHash = source.nodeHash
     this.contentHash = source.contentHash
+    // 先收集未被复用的旧子节点，延迟到this.children更新后再释放PixelMap
+    // 这样@Watch('refreshData')同步触发时this.list已更新为新子节点，
+    // 旧子节点不再被渲染，释放其PixelMap不会导致闪烁
+    const staleChildren: NodeView[] = []
     if (this.children !== source.children) {
-      // 只释放未被复用的旧子节点的PixelMap
-      // 被复用的子节点（同一对象引用）仍在新children中，其PixelMap不能释放，
-      // 否则releaseChildrenPixelMaps只release不置undefined，onListChanged无法检测到需要重新加载
       const newChildSet: Set<NodeView> = new Set<NodeView>(source.children)
       for (let i = 0; i < this.children.length; i++) {
         const oldChild = this.children[i]
         if (!newChildSet.has(oldChild)) {
-          oldChild.releaseOwnPixelMaps()
-          oldChild.releaseChildrenPixelMaps()
+          staleChildren.push(oldChild)
         }
       }
     }
@@ -143,6 +143,13 @@ export class NodeView {
     this.linkIconText = source.linkIconText
     this.linkIconWidth = source.linkIconWidth
     this.linkIconHeight = source.linkIconHeight
+    // 释放未被复用的旧子节点的自身PixelMap（延迟到this.children更新后）
+    // 注意：只释放子节点自身的pixmap，不递归释放孙节点pixmap
+    // 因为孙节点可能被复用到新容器中（同一对象引用），递归释放会导致复用节点pixmap丢失→闪烁
+    // 孙节点的pixmap由组件的refreshData负责释放（对比oldList和newList，仅释放不在newList中的）
+    for (let i = 0; i < staleChildren.length; i++) {
+      staleChildren[i].releaseOwnPixelMaps()
+    }
   }
 
   /**
@@ -154,6 +161,7 @@ export class NodeView {
       try {
         if (child.imageReplacePixelMap !== undefined) {
           child.imageReplacePixelMap.release()
+          child.imageReplacePixelMap = undefined
         }
       } catch (e) {
         console.error('releaseChildrenPixelMaps imageReplacePixelMap release failed: ' + JSON.stringify(e))
@@ -161,6 +169,7 @@ export class NodeView {
       try {
         if (child.latexPixelMap !== undefined) {
           child.latexPixelMap.release()
+          child.latexPixelMap = undefined
         }
       } catch (e) {
         console.error('releaseChildrenPixelMaps latexPixelMap release failed: ' + JSON.stringify(e))
@@ -168,6 +177,7 @@ export class NodeView {
       try {
         if (child.linkIconPixelMap !== undefined) {
           child.linkIconPixelMap.release()
+          child.linkIconPixelMap = undefined
         }
       } catch (e) {
         console.error('releaseChildrenPixelMaps linkIconPixelMap release failed: ' + JSON.stringify(e))

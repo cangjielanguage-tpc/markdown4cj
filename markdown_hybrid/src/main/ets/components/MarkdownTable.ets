@@ -45,7 +45,7 @@ export struct MarkdownTable {
   @ObjectLink tableTheme: TableTheme // 表格样式
   @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
-  @Prop componentWidth: number = 0.0 // 父布局控件宽度
+  @Prop @Watch('onComponentWidthChanged') componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
   footnoteCallback?: (index: string) => void // 脚注点击事件
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
@@ -60,13 +60,21 @@ export struct MarkdownTable {
   @State tableBlockCellSize: number = 0 // 表格总共有几列
   @Provide cellWidthTracker: CellWidthTracker = new CellWidthTracker(0) // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
   @Provide('tableColumnWidths') columnWidths: number[] = [] // 列宽快照（@Provide让TableCell通过@Consume直接读取，避免LazyForEach不刷新@Prop的问题）
-  private widthTimer: number = -1 // 列宽应用防抖定时器
-  private static readonly WIDTH_DEBOUNCE_MS: number = 200 // 列宽应用防抖间隔（ms）
   private isAlive: boolean = true // 组件是否存活
+
+  /**
+   * componentWidth变化时立即应用列宽
+   * 初始渲染时componentWidth可能为0（父布局onSizeChange尚未触发），
+   * 后续变为实际宽度时需重新应用均分回退，否则列宽全0无对齐
+   */
+  onComponentWidthChanged(): void {
+    this.applyColumnWidths()
+  }
 
   aboutToAppear(): void {
     this.cellWidthTracker.onWidthUpdated = () => {
-      this.scheduleApplyColumnWidths()
+      // onSizeChange回调时立即应用列宽（不防抖），确保测量结果及时生效
+      this.applyColumnWidths()
     }
     this.refreshData() // 首次加载（refreshData内会调度applyColumnWidths）
   }
@@ -74,10 +82,6 @@ export struct MarkdownTable {
   aboutToDisappear(): void {
     this.isAlive = false
     this.cellWidthTracker.onWidthUpdated = undefined
-    if (this.widthTimer !== -1) {
-      clearTimeout(this.widthTimer)
-      this.widthTimer = -1
-    }
   }
 
   build() {
@@ -179,31 +183,21 @@ export struct MarkdownTable {
     if (this.node.children.length > 0) {
       cellSize = this.node.children[0].children.length
     }
+    const oldRowCount = this.markdownDataSource.totalCount()
     if (cellSize !== this.tableBlockCellSize) {
       this.tableBlockCellSize = cellSize
       this.cellWidthTracker.resize(cellSize)
     }
     this.markdownDataSource.smartUpdateDataArray(this.node.children)
-    // 防抖应用列宽：流式输出时高频refreshData，延迟合并为一次@State更新
-    this.scheduleApplyColumnWidths()
-  }
-
-  /**
-   * 防抖调度列宽应用
-   * 流式输出期间频繁refreshData，每次都调用applyColumnWidths会导致高频@State重渲染
-   * 通过防抖延迟200ms合并，流式期间不触发宽度重渲染，停止后一次性应用
-   */
-  private scheduleApplyColumnWidths(): void {
-    if (this.widthTimer !== -1) {
-      clearTimeout(this.widthTimer)
-    }
-    this.widthTimer = setTimeout(() => {
-      this.widthTimer = -1
-      if (!this.isAlive) {
-        return
+    // 行数减少时清理已删除行的历史测量数据，防止整体替换内容时残留宽度影响新表格
+    const newRowCount = this.markdownDataSource.totalCount()
+    if (newRowCount < oldRowCount) {
+      for (let i = newRowCount; i < oldRowCount; i++) {
+        this.cellWidthTracker.clearRow(i)
       }
-      this.applyColumnWidths()
-    }, MarkdownTable.WIDTH_DEBOUNCE_MS)
+    }
+    // 立即应用列宽：applyColumnWidths内部有变化检测，宽度未变时不会触发@State重渲染
+    this.applyColumnWidths()
   }
 
   /**

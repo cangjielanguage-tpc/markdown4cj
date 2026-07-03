@@ -85,6 +85,14 @@ export struct MarkdownParagraph {
   private isAlive: boolean = true // 组件是否存活
 
   aboutToAppear(): void {
+    // 组件重建时（LazyForEach key变化导致销毁+重建），复用的LatexMathNode可能
+    // 带有旧组件遗留的latexIsLoading=true（旧组件的异步loadLatexImage尚未走到!isAlive分支重置）
+    // 此处重置，确保tryEnqueueLatexLoading能重新入队
+    for (const child of this.node.children) {
+      if (child.nodeType === "LatexMathNode" && child.latexPixelMap === undefined && child.latexIsLoading) {
+        child.latexIsLoading = false
+      }
+    }
     this.refreshData() // 首次加载
   }
 
@@ -149,8 +157,8 @@ export struct MarkdownParagraph {
             this.paragraphInlineItem(item, index)
           },
           (item: NodeView, index: number) => {
-            return `${index}-${item.nodeType}-${item.contentHash}-${item.nodeText}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
-          }
+          return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
+        }
         )
       }
       .textAlign(TextAlign.Start)
@@ -448,6 +456,9 @@ export struct MarkdownParagraph {
   refreshData() {
     const children = this.node.children
     if (children.length === 0) {
+      for (const old of this.list) {
+        old.releaseOwnPixelMaps()
+      }
       this.list = []
       return
     }
@@ -466,15 +477,24 @@ export struct MarkdownParagraph {
         }
       }
     }
+    const oldList = this.list
     this.list = [...children]
+    // 释放不在新列表中的旧子节点的自身pixmap
+    // copyDataFrom不再递归释放孙节点pixmap（避免释放被复用到新容器的节点）
+    // 由组件在此处对比oldList和newList，仅释放确实未被复用的节点
+    const newSet: Set<NodeView> = new Set<NodeView>(children)
+    for (const old of oldList) {
+      if (!newSet.has(old)) {
+        old.releaseOwnPixelMaps()
+      }
+    }
+    this.tryEnqueueLatexLoading()
   }
 
   /**
-   * list变化时触发数学公式异步加载（从refreshData移出，避免每次流式输出都跑for循环）
+   * 数学公式异步加载入队（从onListChanged提取，refreshData直接调用，不依赖@Watch链）
    */
-  onListChanged() {
-    this.tryReplaceImages()
-    this.tryGenerateLinkIcons()
+  private tryEnqueueLatexLoading(): void {
     if (!this.isLatexMathEnabled) {
       return
     }
@@ -485,11 +505,21 @@ export struct MarkdownParagraph {
           if (this.isAlive) {
             this.loadLatexImage(child)
           } else {
+            child.latexIsLoading = false
             LatexParseQueue.notifyDone()
           }
         })
       }
     }
+  }
+
+  /**
+   * list变化时触发数学公式异步加载（从refreshData移出，避免每次流式输出都跑for循环）
+   */
+  onListChanged() {
+    this.tryReplaceImages()
+    this.tryGenerateLinkIcons()
+    this.tryEnqueueLatexLoading()
   }
 
   /**
@@ -604,6 +634,7 @@ export struct MarkdownParagraph {
     latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
       .then((buffer: ArrayBuffer) => {
         if (!this.isAlive) {
+          item.latexIsLoading = false
           LatexParseQueue.notifyDone()
           return
         }
@@ -612,12 +643,14 @@ export struct MarkdownParagraph {
           imageSource.release()
           if (!this.isAlive) {
             pm.release()
+            item.latexIsLoading = false
             LatexParseQueue.notifyDone()
             return
           }
           pm.getImageInfo().then((info: image.ImageInfo) => {
             if (!this.isAlive) {
               pm.release()
+              item.latexIsLoading = false
               LatexParseQueue.notifyDone()
               return
             }

@@ -319,6 +319,23 @@ export function strToLengthNumber(str: string | undefined): number | undefined {
 }
 
 /**
+ * 将Length类型转换为数值（vp）
+ * number直接返回，string通过strToLengthNumber解析，Resource无法同步转换返回undefined
+ *
+ * @param length Length值
+ * @return 数值（vp），无法转换返回undefined
+ */
+export function lengthToVpNumber(length: Length): number | undefined {
+  if (typeof length === 'number') {
+    return length
+  }
+  if (typeof length === 'string') {
+    return strToLengthNumber(length)
+  }
+  return undefined
+}
+
+/**
  * HTML标签font-size属性字符串转换数值
  *
  * @param sizeString font-size属性值（如 "26px"、"x-small"、"10"）

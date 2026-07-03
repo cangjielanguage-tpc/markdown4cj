@@ -97,14 +97,44 @@ export class CellWidthTracker {
   }
 
   /**
-   * 调整列数，重置所有列宽为0
+   * 清除所有列宽测量值（保留行/列结构）
+   * 用于refreshData时重置宽度，允许单元格重新测量（内容缩短时可以收缩）
+   * 不触发onWidthUpdated，由调用方负责后续applyColumnWidths
+   */
+  clearWidths(): void {
+    for (let i = 0; i < this.widths.length; i++) {
+      this.widths[i] = 0
+    }
+    this.cellWidths.forEach((rws: number[]) => {
+      for (let i = 0; i < rws.length; i++) {
+        rws[i] = 0
+      }
+    })
+  }
+
+  /**
+   * 调整列数，保留已有列的宽度数据（流式输出时列数可能增长，清零会导致已测量的宽度丢失）
    *
    * @param size 新的列数
    */
   resize(size: number): void {
     if (size !== this.widths.length) {
+      const oldWidths = this.widths
       this.widths = new Array(size).fill(0)
-      this.cellWidths.clear()
+      for (let i = 0; i < Math.min(oldWidths.length, size); i++) {
+        this.widths[i] = oldWidths[i]
+      }
+      this.cellWidths.forEach((rws: number[], row: number) => {
+        if (rws.length > size) {
+          this.cellWidths.set(row, rws.slice(0, size))
+        } else if (rws.length < size) {
+          const newRws: number[] = new Array(size).fill(0)
+          for (let i = 0; i < rws.length; i++) {
+            newRws[i] = rws[i]
+          }
+          this.cellWidths.set(row, newRws)
+        }
+      })
     }
   }
 }
