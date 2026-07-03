@@ -448,53 +448,53 @@ struct Deprecated6Page {
                   .fontSize(16)
                   .onClick(() => {
                     // ---------- 通用配置
-                    this.deprecatedData.isFull = this.isFull
-                    this.deprecatedData.incrementalAnalysis = this.incrementalAnalysis
-                    this.deprecatedData.time = this.time
-                    this.deprecatedData.textNumber = this.textNumber
-                    this.deprecatedData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.deprecatedData.isOnCopy = this.isOnCopy
-                    this.deprecatedData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.deprecatedData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.deprecatedData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                    this.deprecatedData.openGestureSwipe = this.openGestureSwipe
-                    this.deprecatedData.openGestureSwipeTest = this.openGestureSwipeTest
+                    this.deprecatedData._isFull = this.isFull
+                    this.deprecatedData._incrementalAnalysis = this.incrementalAnalysis
+                    this.deprecatedData._time = this.time
+                    this.deprecatedData._textNumber = this.textNumber
+                    this.deprecatedData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.deprecatedData._isOnCopy = this.isOnCopy
+                    this.deprecatedData._blockFirstTopMargin = this.blockFirstTopMargin
+                    this.deprecatedData._blockLastBottomMargin = this.blockLastBottomMargin
+                    this.deprecatedData._blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.deprecatedData._openGestureSwipe = this.openGestureSwipe
+                    this.deprecatedData._openGestureSwipeTest = this.openGestureSwipeTest
 
                     // ---------- 表格配置
-                    this.deprecatedData.tableCellPadding = this.tableCellPadding
-                    this.deprecatedData.tableBorderColor = this.tableBorderColor
-                    this.deprecatedData.tableBorderWidth = this.tableBorderWidth
-                    this.deprecatedData.tableOddRowBackgroundColor = this.tableOddRowBackgroundColor
-                    this.deprecatedData.tableEvenRowBackgroundColor = this.tableEvenRowBackgroundColor
-                    this.deprecatedData.tableHeaderRowBackgroundColor = this.tableHeaderRowBackgroundColor
-                    this.deprecatedData.tableTitleTextColor = this.tableTitleTextColor
-                    this.deprecatedData.tableTitleTextSize = this.tableTitleTextSize
-                    this.deprecatedData.tableTitleLineHeight = this.tableTitleLineHeight
-                    this.deprecatedData.tableContentTextColor = this.tableContentTextColor
-                    this.deprecatedData.tableContentTextSize = this.tableContentTextSize
-                    this.deprecatedData.tableTextLineHeight = this.tableTextLineHeight
-                    this.deprecatedData.tableRadius = this.tableRadius
-                    this.deprecatedData.tableMinTextWidth = this.tableMinTextWidth
-                    this.deprecatedData.tableMaxTextWidth = this.tableMaxTextWidth
-                    this.deprecatedData.tableFirstColumnBold = this.tableFirstColumnBold
-                    this.deprecatedData.tableScrollBarShow = this.tableScrollBarShow
-                    this.deprecatedData.tableScrollBarColor = this.tableScrollBarColor
+                    this.deprecatedData._tableCellPadding = this.tableCellPadding
+                    this.deprecatedData._tableBorderColor = this.tableBorderColor
+                    this.deprecatedData._tableBorderWidth = this.tableBorderWidth
+                    this.deprecatedData._tableOddRowBackgroundColor = this.tableOddRowBackgroundColor
+                    this.deprecatedData._tableEvenRowBackgroundColor = this.tableEvenRowBackgroundColor
+                    this.deprecatedData._tableHeaderRowBackgroundColor = this.tableHeaderRowBackgroundColor
+                    this.deprecatedData._tableTitleTextColor = this.tableTitleTextColor
+                    this.deprecatedData._tableTitleTextSize = this.tableTitleTextSize
+                    this.deprecatedData._tableTitleLineHeight = this.tableTitleLineHeight
+                    this.deprecatedData._tableContentTextColor = this.tableContentTextColor
+                    this.deprecatedData._tableContentTextSize = this.tableContentTextSize
+                    this.deprecatedData._tableTextLineHeight = this.tableTextLineHeight
+                    this.deprecatedData._tableRadius = this.tableRadius
+                    this.deprecatedData._tableMinTextWidth = this.tableMinTextWidth
+                    this.deprecatedData._tableMaxTextWidth = this.tableMaxTextWidth
+                    this.deprecatedData._tableFirstColumnBold = this.tableFirstColumnBold
+                    this.deprecatedData._tableScrollBarShow = this.tableScrollBarShow
+                    this.deprecatedData._tableScrollBarColor = this.tableScrollBarColor
 
                     // ---------- 列表配置
-                    this.deprecatedData.blockOrderedAndBulletTopAndBottomMargins = this.blockOrderedAndBulletTopAndBottomMargins
-                    this.deprecatedData.blockLeftMargin = this.blockLeftMargin
-                    this.deprecatedData.blockRightMargin = this.blockRightMargin
-                    this.deprecatedData.orderedListItemPrefixBold = this.orderedListItemPrefixBold
-                    this.deprecatedData.orderedListItemColor = this.orderedListItemColor
-                    this.deprecatedData.orderedListItemSize = this.orderedListItemSize
-                    this.deprecatedData.orderedListItemLineHeight = this.orderedListItemLineHeight
-                    this.deprecatedData.bulletListItemCircle = this.bulletListItemCircle
-                    this.deprecatedData.bulletListItemColor = this.bulletListItemColor
-                    this.deprecatedData.bulletListItemSize = this.bulletListItemSize
-                    this.deprecatedData.bulletListItemLineHeight = this.bulletListItemLineHeight
-                    this.deprecatedData.taskListItemLength = this.taskListItemLength
+                    this.deprecatedData._blockOrderedAndBulletTopAndBottomMargins = this.blockOrderedAndBulletTopAndBottomMargins
+                    this.deprecatedData._blockLeftMargin = this.blockLeftMargin
+                    this.deprecatedData._blockRightMargin = this.blockRightMargin
+                    this.deprecatedData._orderedListItemPrefixBold = this.orderedListItemPrefixBold
+                    this.deprecatedData._orderedListItemColor = this.orderedListItemColor
+                    this.deprecatedData._orderedListItemSize = this.orderedListItemSize
+                    this.deprecatedData._orderedListItemLineHeight = this.orderedListItemLineHeight
+                    this.deprecatedData._bulletListItemCircle = this.bulletListItemCircle
+                    this.deprecatedData._bulletListItemColor = this.bulletListItemColor
+                    this.deprecatedData._bulletListItemSize = this.bulletListItemSize
+                    this.deprecatedData._bulletListItemLineHeight = this.bulletListItemLineHeight
+                    this.deprecatedData._taskListItemLength = this.taskListItemLength
 
-                    this.deprecatedData.pagePath = `${this.rawFilePath}/${item}`
+                    this.deprecatedData._pagePath = `${this.rawFilePath}/${item}`
 
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/deprecated/Deprecated6DetailsPage", params: this.deprecatedData })

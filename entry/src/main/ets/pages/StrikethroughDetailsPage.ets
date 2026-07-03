@@ -18,7 +18,7 @@ struct StrikethroughDetailsPage {
   // 滑动控制器
   scroller: Scroller = new Scroller()
   // Markdown的控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -31,6 +31,10 @@ struct StrikethroughDetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -94,6 +98,8 @@ struct StrikethroughDetailsPage {
       // ---------- 通用
       this.isFull = strikethroughData._isFull
       this.incrementalAnalysis = strikethroughData._incrementalAnalysis
+      this.enableParseThrottle = strikethroughData._enableParseThrottle
+      this.parseThrottleMs = strikethroughData._parseThrottleMs
       this.time = strikethroughData._time
       this.textNumber = strikethroughData._textNumber
       this.isMarkdownParserSync = strikethroughData._isMarkdownParserSync
@@ -161,7 +167,7 @@ struct StrikethroughDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -171,7 +177,7 @@ struct StrikethroughDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -207,6 +213,8 @@ struct StrikethroughDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Strikethrough

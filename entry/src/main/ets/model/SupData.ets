@@ -9,34 +9,6 @@ export class SupData extends BaseMDData {
   _supTextLetterSpacing: number | undefined = undefined // 上标文本字符间距
   _supTextBaselineOffset: number = 6.0 // 上标文本基线的偏移量
 
-  public set supTextFontColor(value: ResourceColor | undefined) {
-    this._supTextFontColor = value
-  }
-
-  public set supTextFontSize(value: number | string | Resource) {
-    this._supTextFontSize = value
-  }
-
-  public set supTextFontStyle(value: FontStyle | undefined) {
-    this._supTextFontStyle = value
-  }
-
-  public set supTextFontWeight(value: number | FontWeight | undefined) {
-    this._supTextFontWeight = value
-  }
-
-  public set supTextFontFamily(value: string | Resource | undefined) {
-    this._supTextFontFamily = value
-  }
-
-  public set supTextLetterSpacing(value: number | undefined) {
-    this._supTextLetterSpacing = value
-  }
-
-  public set supTextBaselineOffset(value: number) {
-    this._supTextBaselineOffset = value
-  }
-
   constructor() {
     super()
   }

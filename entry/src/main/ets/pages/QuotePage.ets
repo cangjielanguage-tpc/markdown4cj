@@ -34,6 +34,14 @@ struct QuotePage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -196,6 +204,8 @@ struct QuotePage {
                   // ---------- 通用
                   this.quoteData._isFull = this.isFull
                   this.quoteData._incrementalAnalysis = this.incrementalAnalysis
+                  this.quoteData._enableParseThrottle = this.enableParseThrottle
+                  this.quoteData._parseThrottleMs = this.parseThrottleMs
                   this.quoteData._time = this.time
                   this.quoteData._textNumber = this.textNumber
                   this.quoteData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -212,22 +222,22 @@ struct QuotePage {
                   this.quoteData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.quoteData.blockQuoteBackgroundColor = this.blockQuoteBackgroundColor
-                  this.quoteData.blockQuoteMarginTop = this.blockQuoteMarginTop
-                  this.quoteData.blockQuoteMarginRight = this.blockQuoteMarginRight
-                  this.quoteData.blockQuoteMarginBottom = this.blockQuoteMarginBottom
-                  this.quoteData.blockQuoteMarginLeft = this.blockQuoteMarginLeft
-                  this.quoteData.blockQuotePaddingTop = this.blockQuotePaddingTop
-                  this.quoteData.blockQuotePaddingRight = this.blockQuotePaddingRight
-                  this.quoteData.blockQuotePaddingBottom = this.blockQuotePaddingBottom
-                  this.quoteData.blockQuotePaddingLeft = this.blockQuotePaddingLeft
-                  this.quoteData.blockQuoteRadiusTopLeft = this.blockQuoteRadiusTopLeft
-                  this.quoteData.blockQuoteRadiusTopRight = this.blockQuoteRadiusTopRight
-                  this.quoteData.blockQuoteRadiusBottomLeft = this.blockQuoteRadiusBottomLeft
-                  this.quoteData.blockQuoteRadiusBottomRight = this.blockQuoteRadiusBottomRight
-                  this.quoteData.blockQuoteLeftBorderWidth = this.blockQuoteLeftBorderWidth
-                  this.quoteData.blockQuoteLeftBorderColor = this.blockQuoteLeftBorderColor
-                  this.quoteData.blockQuoteChildSpacing = this.blockQuoteChildSpacing
+                  this.quoteData._blockQuoteBackgroundColor = this.blockQuoteBackgroundColor
+                  this.quoteData._blockQuoteMarginTop = this.blockQuoteMarginTop
+                  this.quoteData._blockQuoteMarginRight = this.blockQuoteMarginRight
+                  this.quoteData._blockQuoteMarginBottom = this.blockQuoteMarginBottom
+                  this.quoteData._blockQuoteMarginLeft = this.blockQuoteMarginLeft
+                  this.quoteData._blockQuotePaddingTop = this.blockQuotePaddingTop
+                  this.quoteData._blockQuotePaddingRight = this.blockQuotePaddingRight
+                  this.quoteData._blockQuotePaddingBottom = this.blockQuotePaddingBottom
+                  this.quoteData._blockQuotePaddingLeft = this.blockQuotePaddingLeft
+                  this.quoteData._blockQuoteRadiusTopLeft = this.blockQuoteRadiusTopLeft
+                  this.quoteData._blockQuoteRadiusTopRight = this.blockQuoteRadiusTopRight
+                  this.quoteData._blockQuoteRadiusBottomLeft = this.blockQuoteRadiusBottomLeft
+                  this.quoteData._blockQuoteRadiusBottomRight = this.blockQuoteRadiusBottomRight
+                  this.quoteData._blockQuoteLeftBorderWidth = this.blockQuoteLeftBorderWidth
+                  this.quoteData._blockQuoteLeftBorderColor = this.blockQuoteLeftBorderColor
+                  this.quoteData._blockQuoteChildSpacing = this.blockQuoteChildSpacing
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/QuoteDetailsPage", params: this.quoteData })
                 })
@@ -273,6 +283,18 @@ struct QuotePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔（ms） - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

@@ -17,8 +17,8 @@ import {
   textSizeListGeneralData,
   textTypefaceListGeneralData,
   textWordSpaceListGeneralData,
-  timeListGeneralData,
-  widthOrHeightListGeneralData
+  widthOrHeightListGeneralData,
+  timeListGeneralData
 } from '../model/GeneralData'
 import { TableData } from '../model/TableData'
 
@@ -42,6 +42,14 @@ struct TablePage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -308,6 +316,8 @@ struct TablePage {
                   // ---------- 通用
                   this.tableData._isFull = this.isFull
                   this.tableData._incrementalAnalysis = this.incrementalAnalysis
+                  this.tableData._enableParseThrottle = this.enableParseThrottle
+                  this.tableData._parseThrottleMs = this.parseThrottleMs
                   this.tableData._time = this.time
                   this.tableData._textNumber = this.textNumber
                   this.tableData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -324,47 +334,47 @@ struct TablePage {
                   this.tableData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.tableData.tableTitleBackgroundColor = this.tableTitleBackgroundColor
-                  this.tableData.tableContentOddRowBackgroundColor = this.tableContentOddRowBackgroundColor
-                  this.tableData.tableContentEvenRowBackgroundColor = this.tableContentEvenRowBackgroundColor
-                  this.tableData.tableMarginTop = this.tableMarginTop
-                  this.tableData.tableMarginRight = this.tableMarginRight
-                  this.tableData.tableMarginBottom = this.tableMarginBottom
-                  this.tableData.tableMarginLeft = this.tableMarginLeft
-                  this.tableData.tablePaddingTop = this.tablePaddingTop
-                  this.tableData.tablePaddingRight = this.tablePaddingRight
-                  this.tableData.tablePaddingBottom = this.tablePaddingBottom
-                  this.tableData.tablePaddingLeft = this.tablePaddingLeft
-                  this.tableData.tableCellPaddingTop = this.tableCellPaddingTop
-                  this.tableData.tableCellPaddingRight = this.tableCellPaddingRight
-                  this.tableData.tableCellPaddingBottom = this.tableCellPaddingBottom
-                  this.tableData.tableCellPaddingLeft = this.tableCellPaddingLeft
-                  this.tableData.tableBorderStyle = this.tableBorderStyle
-                  this.tableData.tableBorderWidth = this.tableBorderWidth
-                  this.tableData.tableBorderColor = this.tableBorderColor
-                  this.tableData.tableRadiusTopLeft = this.tableRadiusTopLeft
-                  this.tableData.tableRadiusTopRight = this.tableRadiusTopRight
-                  this.tableData.tableRadiusBottomLeft = this.tableRadiusBottomLeft
-                  this.tableData.tableRadiusBottomRight = this.tableRadiusBottomRight
-                  this.tableData.tableScrollBarState = this.tableScrollBarState
-                  this.tableData.tableScrollBarColor = this.tableScrollBarColor
-                  this.tableData.tableMinCellWidth = this.tableMinCellWidth
-                  this.tableData.tableMaxCellWidth = this.tableMaxCellWidth
-                  this.tableData.tableFirstColumnIsBold = this.tableFirstColumnIsBold
-                  this.tableData.tableTitleTextFontColor = this.tableTitleTextFontColor
-                  this.tableData.tableTitleTextFontSize = this.tableTitleTextFontSize
-                  this.tableData.tableTitleTextFontStyle = this.tableTitleTextFontStyle
-                  this.tableData.tableTitleTextFontWeight = this.tableTitleTextFontWeight
-                  this.tableData.tableTitleTextFontFamily = this.tableTitleTextFontFamily
-                  this.tableData.tableTitleTextLineHeight = this.tableTitleTextLineHeight
-                  this.tableData.tableTitleTextLetterSpacing = this.tableTitleTextLetterSpacing
-                  this.tableData.tableContentTextFontColor = this.tableContentTextFontColor
-                  this.tableData.tableContentTextFontSize = this.tableContentTextFontSize
-                  this.tableData.tableContentTextFontStyle = this.tableContentTextFontStyle
-                  this.tableData.tableContentTextFontWeight = this.tableContentTextFontWeight
-                  this.tableData.tableContentTextFontFamily = this.tableContentTextFontFamily
-                  this.tableData.tableContentTextLineHeight = this.tableContentTextLineHeight
-                  this.tableData.tableContentTextLetterSpacing = this.tableContentTextLetterSpacing
+                  this.tableData._tableTitleBackgroundColor = this.tableTitleBackgroundColor
+                  this.tableData._tableContentOddRowBackgroundColor = this.tableContentOddRowBackgroundColor
+                  this.tableData._tableContentEvenRowBackgroundColor = this.tableContentEvenRowBackgroundColor
+                  this.tableData._tableMarginTop = this.tableMarginTop
+                  this.tableData._tableMarginRight = this.tableMarginRight
+                  this.tableData._tableMarginBottom = this.tableMarginBottom
+                  this.tableData._tableMarginLeft = this.tableMarginLeft
+                  this.tableData._tablePaddingTop = this.tablePaddingTop
+                  this.tableData._tablePaddingRight = this.tablePaddingRight
+                  this.tableData._tablePaddingBottom = this.tablePaddingBottom
+                  this.tableData._tablePaddingLeft = this.tablePaddingLeft
+                  this.tableData._tableCellPaddingTop = this.tableCellPaddingTop
+                  this.tableData._tableCellPaddingRight = this.tableCellPaddingRight
+                  this.tableData._tableCellPaddingBottom = this.tableCellPaddingBottom
+                  this.tableData._tableCellPaddingLeft = this.tableCellPaddingLeft
+                  this.tableData._tableBorderStyle = this.tableBorderStyle
+                  this.tableData._tableBorderWidth = this.tableBorderWidth
+                  this.tableData._tableBorderColor = this.tableBorderColor
+                  this.tableData._tableRadiusTopLeft = this.tableRadiusTopLeft
+                  this.tableData._tableRadiusTopRight = this.tableRadiusTopRight
+                  this.tableData._tableRadiusBottomLeft = this.tableRadiusBottomLeft
+                  this.tableData._tableRadiusBottomRight = this.tableRadiusBottomRight
+                  this.tableData._tableScrollBarState = this.tableScrollBarState
+                  this.tableData._tableScrollBarColor = this.tableScrollBarColor
+                  this.tableData._tableMinCellWidth = this.tableMinCellWidth
+                  this.tableData._tableMaxCellWidth = this.tableMaxCellWidth
+                  this.tableData._tableFirstColumnIsBold = this.tableFirstColumnIsBold
+                  this.tableData._tableTitleTextFontColor = this.tableTitleTextFontColor
+                  this.tableData._tableTitleTextFontSize = this.tableTitleTextFontSize
+                  this.tableData._tableTitleTextFontStyle = this.tableTitleTextFontStyle
+                  this.tableData._tableTitleTextFontWeight = this.tableTitleTextFontWeight
+                  this.tableData._tableTitleTextFontFamily = this.tableTitleTextFontFamily
+                  this.tableData._tableTitleTextLineHeight = this.tableTitleTextLineHeight
+                  this.tableData._tableTitleTextLetterSpacing = this.tableTitleTextLetterSpacing
+                  this.tableData._tableContentTextFontColor = this.tableContentTextFontColor
+                  this.tableData._tableContentTextFontSize = this.tableContentTextFontSize
+                  this.tableData._tableContentTextFontStyle = this.tableContentTextFontStyle
+                  this.tableData._tableContentTextFontWeight = this.tableContentTextFontWeight
+                  this.tableData._tableContentTextFontFamily = this.tableContentTextFontFamily
+                  this.tableData._tableContentTextLineHeight = this.tableContentTextLineHeight
+                  this.tableData._tableContentTextLetterSpacing = this.tableContentTextLetterSpacing
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/TableDetailsPage", params: this.tableData })
                 })
@@ -410,6 +420,18 @@ struct TablePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

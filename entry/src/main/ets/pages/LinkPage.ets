@@ -18,8 +18,8 @@ import {
   textSizeListGeneralData,
   textTypefaceListGeneralData,
   textWordSpaceListGeneralData,
-  timeListGeneralData,
-  widthOrHeightListGeneralData
+  widthOrHeightListGeneralData,
+  timeListGeneralData
 } from '../model/GeneralData'
 import { LinkData } from '../model/LinkData'
 
@@ -43,6 +43,14 @@ struct LinkPage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -96,6 +104,10 @@ struct LinkPage {
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
   // ---------------- 专有
+  // 是否加载链接自动解析插件列表
+  isLinkifyPluginList: Array<boolean> = booleanListGeneralData
+  @State // 是否加载链接自动解析插件
+  isLinkifyPlugin: boolean = false
   // 链接是否是图片显示列表
   linkIsIconList: Array<boolean> = booleanListGeneralData
   @State // 链接是否是图片显示
@@ -235,7 +247,7 @@ struct LinkPage {
   // 链接文本装饰线类型列表
   linkTextDecorationTypeList: Array<TextDecorationType> = textDecorationTypeListGeneralData
   @State // 链接文本装饰线类型
-  linkTextDecorationType: TextDecorationType = TextDecorationType.None
+  linkTextDecorationType: TextDecorationType = TextDecorationType.Underline
   // 链接文本装饰线颜色列表
   linkTextDecorationColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 链接文本装饰线颜色
@@ -307,6 +319,8 @@ struct LinkPage {
                   // ---------- 通用
                   this.linkData._isFull = this.isFull
                   this.linkData._incrementalAnalysis = this.incrementalAnalysis
+                  this.linkData._enableParseThrottle = this.enableParseThrottle
+                  this.linkData._parseThrottleMs = this.parseThrottleMs
                   this.linkData._time = this.time
                   this.linkData._textNumber = this.textNumber
                   this.linkData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -323,47 +337,48 @@ struct LinkPage {
                   this.linkData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.linkData.linkIsIcon = this.linkIsIcon
-                  this.linkData.linkListIsIcon = this.linkListIsIcon
-                  this.linkData.linkTextFontColor = this.linkTextFontColor
-                  this.linkData.linkTextFontSize = this.linkTextFontSize
-                  this.linkData.linkTextBackgroundColor = this.linkTextBackgroundColor
-                  this.linkData.linkCircleIconBackgroundColor = this.linkCircleIconBackgroundColor
-                  this.linkData.linkCircleIconButtonBackgroundColor = this.linkCircleIconButtonBackgroundColor
-                  this.linkData.linkCircleIconTextSize = this.linkCircleIconTextSize
-                  this.linkData.linkCircleIconTextColor = this.linkCircleIconTextColor
-                  this.linkData.linkCircleIconRadius = this.linkCircleIconRadius
-                  this.linkData.linkCircleIconMargin = this.linkCircleIconMargin
-                  this.linkData.linkRectIconBackgroundColor = this.linkRectIconBackgroundColor
-                  this.linkData.linkRectIconButtonBackgroundColor = this.linkRectIconButtonBackgroundColor
-                  this.linkData.linkRectIconTextSize = this.linkRectIconTextSize
-                  this.linkData.linkRectIconTextColor = this.linkRectIconTextColor
-                  this.linkData.linkRectIconHeight = this.linkRectIconHeight
-                  this.linkData.linkRectIconPadding = this.linkRectIconPadding
-                  this.linkData.linkRectIconRadius = this.linkRectIconRadius
-                  this.linkData.linkRectIconMargin = this.linkRectIconMargin
-                  this.linkData.linkRectToolIconBackgroundColor = this.linkRectToolIconBackgroundColor
-                  this.linkData.linkRectToolIconButtonBackgroundColor = this.linkRectToolIconButtonBackgroundColor
-                  this.linkData.linkRectToolIconTextSize = this.linkRectToolIconTextSize
-                  this.linkData.linkRectToolIconHeight = this.linkRectToolIconHeight
-                  this.linkData.linkRectToolIconPadding = this.linkRectToolIconPadding
-                  this.linkData.linkRectToolIconBorderWidth = this.linkRectToolIconBorderWidth
-                  this.linkData.linkRectToolIconDividingLineWidth = this.linkRectToolIconDividingLineWidth
-                  this.linkData.linkRectToolIconMargin = this.linkRectToolIconMargin
-                  this.linkData.linkRectToolIconLineLeftPadding = this.linkRectToolIconLineLeftPadding
-                  this.linkData.linkRectToolIconLineRightPadding = this.linkRectToolIconLineRightPadding
-                  this.linkData.linkTextLineHeight = this.linkTextLineHeight
-                  this.linkData.linkTextFontStyle = this.linkTextFontStyle
-                  this.linkData.linkTextFontWeight = this.linkTextFontWeight
-                  this.linkData.linkTextFontFamily = this.linkTextFontFamily
-                  this.linkData.linkTextLetterSpacing = this.linkTextLetterSpacing
-                  this.linkData.linkTextDecorationType = this.linkTextDecorationType
-                  this.linkData.linkTextDecorationColor = this.linkTextDecorationColor
-                  this.linkData.linkTextDecorationStyle = this.linkTextDecorationStyle
-                  this.linkData.linkTextBackgroundRadiusTopLeft = this.linkTextBackgroundRadiusTopLeft
-                  this.linkData.linkTextBackgroundRadiusTopRight = this.linkTextBackgroundRadiusTopRight
-                  this.linkData.linkTextBackgroundRadiusBottomLeft = this.linkTextBackgroundRadiusBottomLeft
-                  this.linkData.linkTextBackgroundRadiusBottomRight = this.linkTextBackgroundRadiusBottomRight
+                  this.linkData._isLinkifyPlugin = this.isLinkifyPlugin
+                  this.linkData._linkIsIcon = this.linkIsIcon
+                  this.linkData._linkListIsIcon = this.linkListIsIcon
+                  this.linkData._linkTextFontColor = this.linkTextFontColor
+                  this.linkData._linkTextFontSize = this.linkTextFontSize
+                  this.linkData._linkTextBackgroundColor = this.linkTextBackgroundColor
+                  this.linkData._linkCircleIconBackgroundColor = this.linkCircleIconBackgroundColor
+                  this.linkData._linkCircleIconButtonBackgroundColor = this.linkCircleIconButtonBackgroundColor
+                  this.linkData._linkCircleIconTextSize = this.linkCircleIconTextSize
+                  this.linkData._linkCircleIconTextColor = this.linkCircleIconTextColor
+                  this.linkData._linkCircleIconRadius = this.linkCircleIconRadius
+                  this.linkData._linkCircleIconMargin = this.linkCircleIconMargin
+                  this.linkData._linkRectIconBackgroundColor = this.linkRectIconBackgroundColor
+                  this.linkData._linkRectIconButtonBackgroundColor = this.linkRectIconButtonBackgroundColor
+                  this.linkData._linkRectIconTextSize = this.linkRectIconTextSize
+                  this.linkData._linkRectIconTextColor = this.linkRectIconTextColor
+                  this.linkData._linkRectIconHeight = this.linkRectIconHeight
+                  this.linkData._linkRectIconPadding = this.linkRectIconPadding
+                  this.linkData._linkRectIconRadius = this.linkRectIconRadius
+                  this.linkData._linkRectIconMargin = this.linkRectIconMargin
+                  this.linkData._linkRectToolIconBackgroundColor = this.linkRectToolIconBackgroundColor
+                  this.linkData._linkRectToolIconButtonBackgroundColor = this.linkRectToolIconButtonBackgroundColor
+                  this.linkData._linkRectToolIconTextSize = this.linkRectToolIconTextSize
+                  this.linkData._linkRectToolIconHeight = this.linkRectToolIconHeight
+                  this.linkData._linkRectToolIconPadding = this.linkRectToolIconPadding
+                  this.linkData._linkRectToolIconBorderWidth = this.linkRectToolIconBorderWidth
+                  this.linkData._linkRectToolIconDividingLineWidth = this.linkRectToolIconDividingLineWidth
+                  this.linkData._linkRectToolIconMargin = this.linkRectToolIconMargin
+                  this.linkData._linkRectToolIconLineLeftPadding = this.linkRectToolIconLineLeftPadding
+                  this.linkData._linkRectToolIconLineRightPadding = this.linkRectToolIconLineRightPadding
+                  this.linkData._linkTextLineHeight = this.linkTextLineHeight
+                  this.linkData._linkTextFontStyle = this.linkTextFontStyle
+                  this.linkData._linkTextFontWeight = this.linkTextFontWeight
+                  this.linkData._linkTextFontFamily = this.linkTextFontFamily
+                  this.linkData._linkTextLetterSpacing = this.linkTextLetterSpacing
+                  this.linkData._linkTextDecorationType = this.linkTextDecorationType
+                  this.linkData._linkTextDecorationColor = this.linkTextDecorationColor
+                  this.linkData._linkTextDecorationStyle = this.linkTextDecorationStyle
+                  this.linkData._linkTextBackgroundRadiusTopLeft = this.linkTextBackgroundRadiusTopLeft
+                  this.linkData._linkTextBackgroundRadiusTopRight = this.linkTextBackgroundRadiusTopRight
+                  this.linkData._linkTextBackgroundRadiusBottomLeft = this.linkTextBackgroundRadiusBottomLeft
+                  this.linkData._linkTextBackgroundRadiusBottomRight = this.linkTextBackgroundRadiusBottomRight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/LinkDetailsPage", params: this.linkData })
                 })
@@ -409,6 +424,18 @@ struct LinkPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",
@@ -524,6 +551,12 @@ struct LinkPage {
 
             if (this.isExpanded2) {
               Column() {
+                BaseTabComponent({
+                  titleStr: "是否加载链接自动解析插件 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.isLinkifyPluginList,
+                  allData: this.isLinkifyPlugin
+                })
                 BaseTabComponent({
                   titleStr: "链接是否是图片显示 - ",
                   typeEnum: TypeEnum.IS_BOOLEAN,

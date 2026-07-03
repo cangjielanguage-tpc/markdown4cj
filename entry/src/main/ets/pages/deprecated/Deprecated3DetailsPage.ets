@@ -15,7 +15,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 struct Deprecated3DetailsPage {
   // ---------- 通用
   scroller: Scroller = new Scroller()
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') safeTop: number = 0
   @StorageProp('currentColorMode')
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
@@ -180,7 +180,7 @@ struct Deprecated3DetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -190,7 +190,7 @@ struct Deprecated3DetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })

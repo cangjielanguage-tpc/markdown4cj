@@ -18,7 +18,7 @@ struct LinkDetailsPage {
   // 滑动控制器
   scroller: Scroller = new Scroller()
   // Markdown的控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -31,6 +31,10 @@ struct LinkDetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -61,6 +65,8 @@ struct LinkDetailsPage {
   isInputEnded: boolean = false
 
   // ---------- 专有
+  @State // 是否加载链接自动解析插件
+  isLinkifyPlugin: boolean = false
   @State // 链接是否是图片显示
   linkIsIcon: boolean = false
   @State // 列表中的单行链接是否是图片显示
@@ -158,6 +164,8 @@ struct LinkDetailsPage {
       // ---------- 通用
       this.isFull = linkData._isFull
       this.incrementalAnalysis = linkData._incrementalAnalysis
+      this.enableParseThrottle = linkData._enableParseThrottle
+      this.parseThrottleMs = linkData._parseThrottleMs
       this.time = linkData._time
       this.textNumber = linkData._textNumber
       this.isMarkdownParserSync = linkData._isMarkdownParserSync
@@ -172,6 +180,7 @@ struct LinkDetailsPage {
       this.openGestureSwipe = linkData._openGestureSwipe
       this.openGestureSwipeTest = linkData._openGestureSwipeTest
       // ---------- 专有
+      this.isLinkifyPlugin = linkData._isLinkifyPlugin
       this.linkIsIcon = linkData._linkIsIcon
       this.linkListIsIcon = linkData._linkListIsIcon
       this.linkTextFontColor = linkData._linkTextFontColor
@@ -257,7 +266,7 @@ struct LinkDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -267,7 +276,7 @@ struct LinkDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -304,6 +313,8 @@ struct LinkDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Link
@@ -350,6 +361,8 @@ struct LinkDetailsPage {
     if (this.linkCircleIconTextColor !== undefined) {
       linkTheme.setLinkCircleIconTextColor(this.linkCircleIconTextColor)
     }
+    linkTheme.setLinkCircleIconRadius(this.linkCircleIconRadius)
+    linkTheme.setLinkCircleIconMargin(this.linkCircleIconMargin)
     if (this.linkRectIconBackgroundColor !== undefined) {
       linkTheme.setLinkRectIconBackgroundColor(this.linkRectIconBackgroundColor)
     }
@@ -364,8 +377,22 @@ struct LinkDetailsPage {
     linkTheme.setLinkRectIconPadding(this.linkRectIconPadding)
     linkTheme.setLinkRectIconRadius(this.linkRectIconRadius)
     linkTheme.setLinkRectIconMargin(this.linkRectIconMargin)
+    if (this.linkRectToolIconBackgroundColor !== undefined) {
+      linkTheme.setLinkRectToolIconBackgroundColor(this.linkRectToolIconBackgroundColor)
+    }
+    if (this.linkRectToolIconButtonBackgroundColor !== undefined) {
+      linkTheme.setLinkRectToolIconButtonBackgroundColor(this.linkRectToolIconButtonBackgroundColor)
+    }
+    linkTheme.setLinkRectToolIconTextSize(this.linkRectToolIconTextSize)
+    linkTheme.setLinkRectToolIconHeight(this.linkRectToolIconHeight)
+    linkTheme.setLinkRectToolIconPadding(this.linkRectToolIconPadding)
+    linkTheme.setLinkRectToolIconBorderWidth(this.linkRectToolIconBorderWidth)
+    linkTheme.setLinkRectToolIconDividingLineWidth(this.linkRectToolIconDividingLineWidth)
+    linkTheme.setLinkRectToolIconMargin(this.linkRectToolIconMargin)
+    linkTheme.setLinkRectToolIconLineLeftPadding(this.linkRectToolIconLineLeftPadding)
+    linkTheme.setLinkRectToolIconLineRightPadding(this.linkRectToolIconLineRightPadding)
     theme.setLinkTheme(linkTheme)
-    
+
     return theme
   }
 
@@ -373,7 +400,7 @@ struct LinkDetailsPage {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     if (this.linkIsIcon) {
       plugin.setIsLinkViewPlugin(true) // 链接块状化插件
-    } else {
+    } else if (this.isLinkifyPlugin) {
       plugin.setIsLinkifyPlugin(true) // 链接自动加载插件
     }
     plugin.setIsTablePlugin(true) // 表格插件

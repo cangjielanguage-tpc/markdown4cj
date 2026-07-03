@@ -18,7 +18,7 @@ struct CodeLineDetailsPage {
   // 滑动控制器
   scroller: Scroller = new Scroller()
   // Markdown的控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   // 顶部导航栏高度
   @StorageProp('safeTop')
   safeTop: number = 0
@@ -37,6 +37,12 @@ struct CodeLineDetailsPage {
   // 是否增量解析Markdown文本
   @State
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流
+  @State
+  enableParseThrottle: boolean = false
+  // 解析节流间隔（ms）
+  @State
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间
   @State
   time: number = 50
@@ -134,6 +140,8 @@ struct CodeLineDetailsPage {
       // ---------- 通用
       this.isFull = codeLineData._isFull
       this.incrementalAnalysis = codeLineData._incrementalAnalysis
+      this.enableParseThrottle = codeLineData._enableParseThrottle
+      this.parseThrottleMs = codeLineData._parseThrottleMs
       this.time = codeLineData._time
       this.textNumber = codeLineData._textNumber
       this.isMarkdownParserSync = codeLineData._isMarkdownParserSync
@@ -204,7 +212,7 @@ struct CodeLineDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -214,7 +222,7 @@ struct CodeLineDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -250,6 +258,8 @@ struct CodeLineDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - InlineCode

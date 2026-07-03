@@ -1,4 +1,4 @@
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin} from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -62,9 +62,19 @@ struct DemoPage {
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // markdown主题
+  markdownTheme: MarkdownTheme = new MarkdownTheme()
+
+  aboutToAppear(): void {
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
 
   build() {
     Column() {
+      Button('测试')
+        .onClick(() => {
+          this.setMarkdownTheme()
+        })
       Column() {
         CJMarkdown({
           content: this.message,
@@ -76,5 +86,9 @@ struct DemoPage {
     .padding({ left: 10, right: 10, top: this.safeTop })
     .width('100%')
     .alignItems(HorizontalAlign.Start)
+  }
+
+  setMarkdownTheme(): void {
+    this.markdownTheme.setHeadingTextColor1(Color.Red)
   }
 }

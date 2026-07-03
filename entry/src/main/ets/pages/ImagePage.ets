@@ -20,8 +20,8 @@ import {
   textNumberListGeneralData,
   textSizeListGeneralData,
   textTypefaceListGeneralData,
-  timeListGeneralData,
-  widthOrHeightListGeneralData
+  widthOrHeightListGeneralData,
+  timeListGeneralData
 } from '../model/GeneralData'
 import { ImageDataMD } from '../model/ImageDataMD'
 // import { ImageFitType } from '@cangjie-tpc/markdown_hybrid'
@@ -46,6 +46,14 @@ struct ImagePage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -101,8 +109,8 @@ struct ImagePage {
   // ---------------- 专有
   // 是否触发图片替换事件列表
   imageReplaceList: Array<boolean> = booleanListGeneralData
-  // @State // 是否触发图片替换事件
-  // imageReplace: boolean = false
+  @State // 是否触发图片替换事件
+  imageReplace: boolean = false
   // 网络图片是否压缩列表
   imageAutoResizeList: Array<boolean> = booleanListGeneralData
   @State // 网络图片是否压缩
@@ -314,6 +322,8 @@ struct ImagePage {
                   // ---------- 通用
                   this.imageDataMD._isFull = this.isFull
                   this.imageDataMD._incrementalAnalysis = this.incrementalAnalysis
+                  this.imageDataMD._enableParseThrottle = this.enableParseThrottle
+                  this.imageDataMD._parseThrottleMs = this.parseThrottleMs
                   this.imageDataMD._time = this.time
                   this.imageDataMD._textNumber = this.textNumber
                   this.imageDataMD._isMarkdownParserSync = this.isMarkdownParserSync
@@ -330,7 +340,7 @@ struct ImagePage {
 
                   // ---------- 专有
                   this.imageDataMD._pagePath = `${this.rawFilePath}/${item}`
-                  // this.imageDataMD.imageReplace = this.imageReplace
+                  this.imageDataMD.imageReplace = this.imageReplace
                   this.imageDataMD.imageAutoResize = this.imageAutoResize
                   this.imageDataMD.imagePlaceholder = this.imagePlaceholder
                   this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout
@@ -418,6 +428,18 @@ struct ImagePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",
@@ -635,12 +657,12 @@ struct ImagePage {
 
             if (this.isExpanded3) {
               Column() {
-                // BaseTabComponent({
-                //   titleStr: "是否触发图片替换事件 - ",
-                //   typeEnum: TypeEnum.IS_BOOLEAN,
-                //   allListData: this.imageReplaceList,
-                //   allData: this.imageReplace
-                // })
+                BaseTabComponent({
+                  titleStr: "是否触发图片替换事件 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.imageReplaceList,
+                  allData: this.imageReplace
+                })
                 BaseTabComponent({
                   titleStr: "网络图片是否压缩 - ",
                   typeEnum: TypeEnum.IS_BOOLEAN,

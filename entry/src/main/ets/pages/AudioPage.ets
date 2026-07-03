@@ -21,8 +21,8 @@ import {
   textNumberListGeneralData,
   textSizeListGeneralData,
   textTypefaceListGeneralData,
-  timeListGeneralData,
-  widthOrHeightListGeneralData
+  widthOrHeightListGeneralData,
+  timeListGeneralData
 } from '../model/GeneralData'
 import { AudioMDData } from '../model/AudioMDData'
 import hilog from '@ohos.hilog'
@@ -43,6 +43,12 @@ struct AudioPage {
   // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State incrementalAnalysis: boolean = false // 是否增量解析Markdown文本
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State enableParseThrottle: boolean = false // 是否启用解析节流
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State parseThrottleMs: number = 200 // 解析节流间隔（ms）
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State time: number = 50 // 增量加载每次间隔时间
@@ -119,7 +125,7 @@ struct AudioPage {
   @State audioBorderWidth: number = 0.5 // 音频边框宽度
   // 音频边框颜色列表
   audioBorderColorList: Array<ResourceColor | undefined> = colorListGeneralData
-  @State audioBorderColor: ResourceColor | undefined = '#33000000' // 音频边框颜色
+  @State audioBorderColor: ResourceColor | undefined = undefined // 音频边框颜色
   // 音频边框左上圆角列表
   audioRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State audioRadiusTopLeft: number = 12 // 音频边框左上圆角
@@ -179,7 +185,7 @@ struct AudioPage {
   @State audioButtonHeight: number = 32 // 音频按钮高度
   // 音频按钮背景颜色列表
   audioButtonBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
-  @State audioButtonBackgroundColor: ResourceColor | undefined = '#FF000000' // 音频按钮背景颜色
+  @State audioButtonBackgroundColor: ResourceColor | undefined = undefined // 音频按钮背景颜色
   // 音频按钮边框样式列表
   audioButtonBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State audioButtonBorderStyle: BorderStyle = BorderStyle.Solid // 音频按钮边框样式
@@ -242,7 +248,7 @@ struct AudioPage {
   @State audioTitleTextLineHeight: number = 20 // 音频标题文本行高
   // 音频类型文本颜色列表
   audioTypeTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
-  @State audioTypeTextFontColor: ResourceColor | undefined = '#80000000' // 音频类型文本颜色
+  @State audioTypeTextFontColor: ResourceColor | undefined = undefined // 音频类型文本颜色
   // 音频类型文本尺寸列表
   audioTypeTextFontSizeList: Array<number> = textSizeListGeneralData
   @State audioTypeTextFontSize: number = 11 // 音频类型文本尺寸
@@ -304,6 +310,8 @@ struct AudioPage {
                   // ---------- 通用
                   this.audioData._isFull = this.isFull
                   this.audioData._incrementalAnalysis = this.incrementalAnalysis
+                  this.audioData._enableParseThrottle = this.enableParseThrottle
+                  this.audioData._parseThrottleMs = this.parseThrottleMs
                   this.audioData._time = this.time
                   this.audioData._textNumber = this.textNumber
                   this.audioData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -320,64 +328,64 @@ struct AudioPage {
                   this.audioData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.audioData.audioBackgroundColor = this.audioBackgroundColor
-                  this.audioData.audioMarginTop = this.audioMarginTop
-                  this.audioData.audioMarginRight = this.audioMarginRight
-                  this.audioData.audioMarginBottom = this.audioMarginBottom
-                  this.audioData.audioMarginLeft = this.audioMarginLeft
-                  this.audioData.audioPaddingTop = this.audioPaddingTop
-                  this.audioData.audioPaddingRight = this.audioPaddingRight
-                  this.audioData.audioPaddingBottom = this.audioPaddingBottom
-                  this.audioData.audioPaddingLeft = this.audioPaddingLeft
-                  this.audioData.audioBorderStyle = this.audioBorderStyle
-                  this.audioData.audioBorderWidth = this.audioBorderWidth
-                  this.audioData.audioBorderColor = this.audioBorderColor
-                  this.audioData.audioRadiusTopLeft = this.audioRadiusTopLeft
-                  this.audioData.audioRadiusTopRight = this.audioRadiusTopRight
-                  this.audioData.audioRadiusBottomLeft = this.audioRadiusBottomLeft
-                  this.audioData.audioRadiusBottomRight = this.audioRadiusBottomRight
-                  this.audioData.audioShadowRadius = this.audioShadowRadius
-                  this.audioData.audioShadowOffsetX = this.audioShadowOffsetX
-                  this.audioData.audioShadowOffsetY = this.audioShadowOffsetY
-                  this.audioData.audioShadowColor = this.audioShadowColor
-                  this.audioData.audioIcon = this.audioIcon
-                  this.audioData.audioIconWidth = this.audioIconWidth
-                  this.audioData.audioIconHeight = this.audioIconHeight
-                  this.audioData.audioIconRadiusTopLeft = this.audioIconRadiusTopLeft
-                  this.audioData.audioIconRadiusTopRight = this.audioIconRadiusTopRight
-                  this.audioData.audioIconRadiusBottomLeft = this.audioIconRadiusBottomLeft
-                  this.audioData.audioIconRadiusBottomRight = this.audioIconRadiusBottomRight
-                  this.audioData.audioIconFitType = this.audioIconFitType
-                  this.audioData.audioTitleToTypeSpacing = this.audioTitleToTypeSpacing
-                  this.audioData.audioButtonWidth = this.audioButtonWidth
-                  this.audioData.audioButtonHeight = this.audioButtonHeight
-                  this.audioData.audioButtonBackgroundColor = this.audioButtonBackgroundColor
-                  this.audioData.audioButtonBorderStyle = this.audioButtonBorderStyle
-                  this.audioData.audioButtonBorderWidth = this.audioButtonBorderWidth
-                  this.audioData.audioButtonBorderColor = this.audioButtonBorderColor
-                  this.audioData.audioButtonRadiusTopLeft = this.audioButtonRadiusTopLeft
-                  this.audioData.audioButtonRadiusTopRight = this.audioButtonRadiusTopRight
-                  this.audioData.audioButtonRadiusBottomLeft = this.audioButtonRadiusBottomLeft
-                  this.audioData.audioButtonRadiusBottomRight = this.audioButtonRadiusBottomRight
-                  this.audioData.audioButtonText = this.audioButtonText
-                  this.audioData.audioButtonTextFontColor = this.audioButtonTextFontColor
-                  this.audioData.audioButtonTextFontSize = this.audioButtonTextFontSize
-                  this.audioData.audioButtonTextFontStyle = this.audioButtonTextFontStyle
-                  this.audioData.audioButtonTextFontWeight = this.audioButtonTextFontWeight
-                  this.audioData.audioButtonTextFontFamily = this.audioButtonTextFontFamily
-                  this.audioData.audioButtonTextLineHeight = this.audioButtonTextLineHeight
-                  this.audioData.audioTitleTextFontColor = this.audioTitleTextFontColor
-                  this.audioData.audioTitleTextFontSize = this.audioTitleTextFontSize
-                  this.audioData.audioTitleTextFontStyle = this.audioTitleTextFontStyle
-                  this.audioData.audioTitleTextFontWeight = this.audioTitleTextFontWeight
-                  this.audioData.audioTitleTextFontFamily = this.audioTitleTextFontFamily
-                  this.audioData.audioTitleTextLineHeight = this.audioTitleTextLineHeight
-                  this.audioData.audioTypeTextFontColor = this.audioTypeTextFontColor
-                  this.audioData.audioTypeTextFontSize = this.audioTypeTextFontSize
-                  this.audioData.audioTypeTextFontStyle = this.audioTypeTextFontStyle
-                  this.audioData.audioTypeTextFontWeight = this.audioTypeTextFontWeight
-                  this.audioData.audioTypeTextFontFamily = this.audioTypeTextFontFamily
-                  this.audioData.audioTypeTextLineHeight = this.audioTypeTextLineHeight
+                  this.audioData._audioBackgroundColor = this.audioBackgroundColor
+                  this.audioData._audioMarginTop = this.audioMarginTop
+                  this.audioData._audioMarginRight = this.audioMarginRight
+                  this.audioData._audioMarginBottom = this.audioMarginBottom
+                  this.audioData._audioMarginLeft = this.audioMarginLeft
+                  this.audioData._audioPaddingTop = this.audioPaddingTop
+                  this.audioData._audioPaddingRight = this.audioPaddingRight
+                  this.audioData._audioPaddingBottom = this.audioPaddingBottom
+                  this.audioData._audioPaddingLeft = this.audioPaddingLeft
+                  this.audioData._audioBorderStyle = this.audioBorderStyle
+                  this.audioData._audioBorderWidth = this.audioBorderWidth
+                  this.audioData._audioBorderColor = this.audioBorderColor
+                  this.audioData._audioRadiusTopLeft = this.audioRadiusTopLeft
+                  this.audioData._audioRadiusTopRight = this.audioRadiusTopRight
+                  this.audioData._audioRadiusBottomLeft = this.audioRadiusBottomLeft
+                  this.audioData._audioRadiusBottomRight = this.audioRadiusBottomRight
+                  this.audioData._audioShadowRadius = this.audioShadowRadius
+                  this.audioData._audioShadowOffsetX = this.audioShadowOffsetX
+                  this.audioData._audioShadowOffsetY = this.audioShadowOffsetY
+                  this.audioData._audioShadowColor = this.audioShadowColor
+                  this.audioData._audioIcon = this.audioIcon
+                  this.audioData._audioIconWidth = this.audioIconWidth
+                  this.audioData._audioIconHeight = this.audioIconHeight
+                  this.audioData._audioIconRadiusTopLeft = this.audioIconRadiusTopLeft
+                  this.audioData._audioIconRadiusTopRight = this.audioIconRadiusTopRight
+                  this.audioData._audioIconRadiusBottomLeft = this.audioIconRadiusBottomLeft
+                  this.audioData._audioIconRadiusBottomRight = this.audioIconRadiusBottomRight
+                  this.audioData._audioIconFitType = this.audioIconFitType
+                  this.audioData._audioTitleToTypeSpacing = this.audioTitleToTypeSpacing
+                  this.audioData._audioButtonWidth = this.audioButtonWidth
+                  this.audioData._audioButtonHeight = this.audioButtonHeight
+                  this.audioData._audioButtonBackgroundColor = this.audioButtonBackgroundColor
+                  this.audioData._audioButtonBorderStyle = this.audioButtonBorderStyle
+                  this.audioData._audioButtonBorderWidth = this.audioButtonBorderWidth
+                  this.audioData._audioButtonBorderColor = this.audioButtonBorderColor
+                  this.audioData._audioButtonRadiusTopLeft = this.audioButtonRadiusTopLeft
+                  this.audioData._audioButtonRadiusTopRight = this.audioButtonRadiusTopRight
+                  this.audioData._audioButtonRadiusBottomLeft = this.audioButtonRadiusBottomLeft
+                  this.audioData._audioButtonRadiusBottomRight = this.audioButtonRadiusBottomRight
+                  this.audioData._audioButtonText = this.audioButtonText
+                  this.audioData._audioButtonTextFontColor = this.audioButtonTextFontColor
+                  this.audioData._audioButtonTextFontSize = this.audioButtonTextFontSize
+                  this.audioData._audioButtonTextFontStyle = this.audioButtonTextFontStyle
+                  this.audioData._audioButtonTextFontWeight = this.audioButtonTextFontWeight
+                  this.audioData._audioButtonTextFontFamily = this.audioButtonTextFontFamily
+                  this.audioData._audioButtonTextLineHeight = this.audioButtonTextLineHeight
+                  this.audioData._audioTitleTextFontColor = this.audioTitleTextFontColor
+                  this.audioData._audioTitleTextFontSize = this.audioTitleTextFontSize
+                  this.audioData._audioTitleTextFontStyle = this.audioTitleTextFontStyle
+                  this.audioData._audioTitleTextFontWeight = this.audioTitleTextFontWeight
+                  this.audioData._audioTitleTextFontFamily = this.audioTitleTextFontFamily
+                  this.audioData._audioTitleTextLineHeight = this.audioTitleTextLineHeight
+                  this.audioData._audioTypeTextFontColor = this.audioTypeTextFontColor
+                  this.audioData._audioTypeTextFontSize = this.audioTypeTextFontSize
+                  this.audioData._audioTypeTextFontStyle = this.audioTypeTextFontStyle
+                  this.audioData._audioTypeTextFontWeight = this.audioTypeTextFontWeight
+                  this.audioData._audioTypeTextFontFamily = this.audioTypeTextFontFamily
+                  this.audioData._audioTypeTextLineHeight = this.audioTypeTextLineHeight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/AudioDetailsPage", params: this.audioData })
                 })
@@ -424,6 +432,18 @@ struct AudioPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

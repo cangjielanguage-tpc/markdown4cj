@@ -39,6 +39,14 @@ struct ListPage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -308,6 +316,8 @@ struct ListPage {
                   // ---------- 通用
                   this.listData._isFull = this.isFull
                   this.listData._incrementalAnalysis = this.incrementalAnalysis
+                  this.listData._enableParseThrottle = this.enableParseThrottle
+                  this.listData._parseThrottleMs = this.parseThrottleMs
                   this.listData._time = this.time
                   this.listData._textNumber = this.textNumber
                   this.listData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -324,48 +334,48 @@ struct ListPage {
                   this.listData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.listData.orderedListBackgroundColor = this.orderedListBackgroundColor
-                  this.listData.orderedListMarginTop = this.orderedListMarginTop
-                  this.listData.orderedListMarginRight = this.orderedListMarginRight
-                  this.listData.orderedListMarginBottom = this.orderedListMarginBottom
-                  this.listData.orderedListMarginLeft = this.orderedListMarginLeft
-                  this.listData.orderedListPaddingTop = this.orderedListPaddingTop
-                  this.listData.orderedListPaddingRight = this.orderedListPaddingRight
-                  this.listData.orderedListPaddingBottom = this.orderedListPaddingBottom
-                  this.listData.orderedListPaddingLeft = this.orderedListPaddingLeft
-                  this.listData.orderedListChildSpacing = this.orderedListChildSpacing
-                  this.listData.orderedListChildChildSpacing = this.orderedListChildChildSpacing
-                  this.listData.orderedListMarkerSpacing = this.orderedListMarkerSpacing
-                  this.listData.orderedListMarkerTextFontColor = this.orderedListMarkerTextFontColor
-                  this.listData.orderedListMarkerTextFontSize = this.orderedListMarkerTextFontSize
-                  this.listData.orderedListMarkerTextFontStyle = this.orderedListMarkerTextFontStyle
-                  this.listData.orderedListMarkerTextFontWeight = this.orderedListMarkerTextFontWeight
-                  this.listData.orderedListMarkerTextFontFamily = this.orderedListMarkerTextFontFamily
-                  this.listData.orderedListMarkerTextLineHeight = this.orderedListMarkerTextLineHeight
-                  this.listData.bulletListBackgroundColor = this.bulletListBackgroundColor
-                  this.listData.bulletListMarginTop = this.bulletListMarginTop
-                  this.listData.bulletListMarginRight = this.bulletListMarginRight
-                  this.listData.bulletListMarginBottom = this.bulletListMarginBottom
-                  this.listData.bulletListMarginLeft = this.bulletListMarginLeft
-                  this.listData.bulletListPaddingTop = this.bulletListPaddingTop
-                  this.listData.bulletListPaddingRight = this.bulletListPaddingRight
-                  this.listData.bulletListPaddingBottom = this.bulletListPaddingBottom
-                  this.listData.bulletListPaddingLeft = this.bulletListPaddingLeft
-                  this.listData.bulletListChildSpacing = this.bulletListChildSpacing
-                  this.listData.bulletListChildChildSpacing = this.bulletListChildChildSpacing
-                  this.listData.bulletListBulletSpacing = this.bulletListBulletSpacing
-                  this.listData.bulletListBulletIsCircle = this.bulletListBulletIsCircle
-                  this.listData.bulletListBulletTextFontColor = this.bulletListBulletTextFontColor
-                  this.listData.bulletListBulletTextFontSize = this.bulletListBulletTextFontSize
-                  this.listData.bulletListBulletTextFontStyle = this.bulletListBulletTextFontStyle
-                  this.listData.bulletListBulletTextFontWeight = this.bulletListBulletTextFontWeight
-                  this.listData.bulletListBulletTextFontFamily = this.bulletListBulletTextFontFamily
-                  this.listData.bulletListBulletTextLineHeight = this.bulletListBulletTextLineHeight
-                  this.listData.bulletListCheckboxSpacing = this.bulletListCheckboxSpacing
-                  this.listData.bulletListCheckboxWidth = this.bulletListCheckboxWidth
-                  this.listData.bulletListCheckboxHeight = this.bulletListCheckboxHeight
-                  this.listData.bulletListCheckboxSelectedColor = this.bulletListCheckboxSelectedColor
-                  this.listData.bulletListCheckboxShape = this.bulletListCheckboxShape
+                  this.listData._orderedListBackgroundColor = this.orderedListBackgroundColor
+                  this.listData._orderedListMarginTop = this.orderedListMarginTop
+                  this.listData._orderedListMarginRight = this.orderedListMarginRight
+                  this.listData._orderedListMarginBottom = this.orderedListMarginBottom
+                  this.listData._orderedListMarginLeft = this.orderedListMarginLeft
+                  this.listData._orderedListPaddingTop = this.orderedListPaddingTop
+                  this.listData._orderedListPaddingRight = this.orderedListPaddingRight
+                  this.listData._orderedListPaddingBottom = this.orderedListPaddingBottom
+                  this.listData._orderedListPaddingLeft = this.orderedListPaddingLeft
+                  this.listData._orderedListChildSpacing = this.orderedListChildSpacing
+                  this.listData._orderedListChildChildSpacing = this.orderedListChildChildSpacing
+                  this.listData._orderedListMarkerSpacing = this.orderedListMarkerSpacing
+                  this.listData._orderedListMarkerTextFontColor = this.orderedListMarkerTextFontColor
+                  this.listData._orderedListMarkerTextFontSize = this.orderedListMarkerTextFontSize
+                  this.listData._orderedListMarkerTextFontStyle = this.orderedListMarkerTextFontStyle
+                  this.listData._orderedListMarkerTextFontWeight = this.orderedListMarkerTextFontWeight
+                  this.listData._orderedListMarkerTextFontFamily = this.orderedListMarkerTextFontFamily
+                  this.listData._orderedListMarkerTextLineHeight = this.orderedListMarkerTextLineHeight
+                  this.listData._bulletListBackgroundColor = this.bulletListBackgroundColor
+                  this.listData._bulletListMarginTop = this.bulletListMarginTop
+                  this.listData._bulletListMarginRight = this.bulletListMarginRight
+                  this.listData._bulletListMarginBottom = this.bulletListMarginBottom
+                  this.listData._bulletListMarginLeft = this.bulletListMarginLeft
+                  this.listData._bulletListPaddingTop = this.bulletListPaddingTop
+                  this.listData._bulletListPaddingRight = this.bulletListPaddingRight
+                  this.listData._bulletListPaddingBottom = this.bulletListPaddingBottom
+                  this.listData._bulletListPaddingLeft = this.bulletListPaddingLeft
+                  this.listData._bulletListChildSpacing = this.bulletListChildSpacing
+                  this.listData._bulletListChildChildSpacing = this.bulletListChildChildSpacing
+                  this.listData._bulletListBulletSpacing = this.bulletListBulletSpacing
+                  this.listData._bulletListBulletIsCircle = this.bulletListBulletIsCircle
+                  this.listData._bulletListBulletTextFontColor = this.bulletListBulletTextFontColor
+                  this.listData._bulletListBulletTextFontSize = this.bulletListBulletTextFontSize
+                  this.listData._bulletListBulletTextFontStyle = this.bulletListBulletTextFontStyle
+                  this.listData._bulletListBulletTextFontWeight = this.bulletListBulletTextFontWeight
+                  this.listData._bulletListBulletTextFontFamily = this.bulletListBulletTextFontFamily
+                  this.listData._bulletListBulletTextLineHeight = this.bulletListBulletTextLineHeight
+                  this.listData._bulletListCheckboxSpacing = this.bulletListCheckboxSpacing
+                  this.listData._bulletListCheckboxWidth = this.bulletListCheckboxWidth
+                  this.listData._bulletListCheckboxHeight = this.bulletListCheckboxHeight
+                  this.listData._bulletListCheckboxSelectedColor = this.bulletListCheckboxSelectedColor
+                  this.listData._bulletListCheckboxShape = this.bulletListCheckboxShape
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/ListDetailsPage", params: this.listData })
                 })
@@ -412,6 +422,18 @@ struct ListPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔（ms） - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

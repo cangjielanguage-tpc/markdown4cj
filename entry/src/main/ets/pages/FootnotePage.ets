@@ -93,6 +93,14 @@ struct FootnotePage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State footnoteData: FootnoteData = new FootnoteData() // 配置数据内容
   // ---------------- 专有
   // 脚注定义背景颜色列表
@@ -235,6 +243,8 @@ struct FootnotePage {
                   // ---------- 通用
                   this.footnoteData._isFull = this.isFull
                   this.footnoteData._incrementalAnalysis = this.incrementalAnalysis
+                  this.footnoteData._enableParseThrottle = this.enableParseThrottle
+                  this.footnoteData._parseThrottleMs = this.parseThrottleMs
                   this.footnoteData._time = this.time
                   this.footnoteData._textNumber = this.textNumber
                   this.footnoteData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -251,30 +261,30 @@ struct FootnotePage {
                   this.footnoteData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.footnoteData.footnoteDefBackgroundColor = this.footnoteDefBackgroundColor
-                  this.footnoteData.footnoteDefMarginTop = this.footnoteDefMarginTop
-                  this.footnoteData.footnoteDefMarginRight = this.footnoteDefMarginRight
-                  this.footnoteData.footnoteDefMarginBottom = this.footnoteDefMarginBottom
-                  this.footnoteData.footnoteDefMarginLeft = this.footnoteDefMarginLeft
-                  this.footnoteData.footnoteDefPaddingTop = this.footnoteDefPaddingTop
-                  this.footnoteData.footnoteDefPaddingRight = this.footnoteDefPaddingRight
-                  this.footnoteData.footnoteDefPaddingBottom = this.footnoteDefPaddingBottom
-                  this.footnoteData.footnoteDefPaddingLeft = this.footnoteDefPaddingLeft
-                  this.footnoteData.footnoteRefTextFontColor = this.footnoteRefTextFontColor
-                  this.footnoteData.footnoteRefTextFontSize = this.footnoteRefTextFontSize
-                  this.footnoteData.footnoteRefTextFontStyle = this.footnoteRefTextFontStyle
-                  this.footnoteData.footnoteRefTextFontWeight = this.footnoteRefTextFontWeight
-                  this.footnoteData.footnoteRefTextFontFamily = this.footnoteRefTextFontFamily
-                  this.footnoteData.footnoteRefTextLineHeight = this.footnoteRefTextLineHeight
-                  this.footnoteData.footnoteRefTextLetterSpacing = this.footnoteRefTextLetterSpacing
-                  this.footnoteData.footnoteRefTextDecorationType = this.footnoteRefTextDecorationType
-                  this.footnoteData.footnoteRefTextDecorationColor = this.footnoteRefTextDecorationColor
-                  this.footnoteData.footnoteRefTextDecorationStyle = this.footnoteRefTextDecorationStyle
-                  this.footnoteData.footnoteRefTextBackgroundColor = this.footnoteRefTextBackgroundColor
-                  this.footnoteData.footnoteRefTextBackgroundRadiusTopLeft = this.footnoteRefTextBackgroundRadiusTopLeft
-                  this.footnoteData.footnoteRefTextBackgroundRadiusTopRight = this.footnoteRefTextBackgroundRadiusTopRight
-                  this.footnoteData.footnoteRefTextBackgroundRadiusBottomLeft = this.footnoteRefTextBackgroundRadiusBottomLeft
-                  this.footnoteData.footnoteRefTextBackgroundRadiusBottomRight = this.footnoteRefTextBackgroundRadiusBottomRight
+                  this.footnoteData._footnoteDefBackgroundColor = this.footnoteDefBackgroundColor
+                  this.footnoteData._footnoteDefMarginTop = this.footnoteDefMarginTop
+                  this.footnoteData._footnoteDefMarginRight = this.footnoteDefMarginRight
+                  this.footnoteData._footnoteDefMarginBottom = this.footnoteDefMarginBottom
+                  this.footnoteData._footnoteDefMarginLeft = this.footnoteDefMarginLeft
+                  this.footnoteData._footnoteDefPaddingTop = this.footnoteDefPaddingTop
+                  this.footnoteData._footnoteDefPaddingRight = this.footnoteDefPaddingRight
+                  this.footnoteData._footnoteDefPaddingBottom = this.footnoteDefPaddingBottom
+                  this.footnoteData._footnoteDefPaddingLeft = this.footnoteDefPaddingLeft
+                  this.footnoteData._footnoteRefTextFontColor = this.footnoteRefTextFontColor
+                  this.footnoteData._footnoteRefTextFontSize = this.footnoteRefTextFontSize
+                  this.footnoteData._footnoteRefTextFontStyle = this.footnoteRefTextFontStyle
+                  this.footnoteData._footnoteRefTextFontWeight = this.footnoteRefTextFontWeight
+                  this.footnoteData._footnoteRefTextFontFamily = this.footnoteRefTextFontFamily
+                  this.footnoteData._footnoteRefTextLineHeight = this.footnoteRefTextLineHeight
+                  this.footnoteData._footnoteRefTextLetterSpacing = this.footnoteRefTextLetterSpacing
+                  this.footnoteData._footnoteRefTextDecorationType = this.footnoteRefTextDecorationType
+                  this.footnoteData._footnoteRefTextDecorationColor = this.footnoteRefTextDecorationColor
+                  this.footnoteData._footnoteRefTextDecorationStyle = this.footnoteRefTextDecorationStyle
+                  this.footnoteData._footnoteRefTextBackgroundColor = this.footnoteRefTextBackgroundColor
+                  this.footnoteData._footnoteRefTextBackgroundRadiusTopLeft = this.footnoteRefTextBackgroundRadiusTopLeft
+                  this.footnoteData._footnoteRefTextBackgroundRadiusTopRight = this.footnoteRefTextBackgroundRadiusTopRight
+                  this.footnoteData._footnoteRefTextBackgroundRadiusBottomLeft = this.footnoteRefTextBackgroundRadiusBottomLeft
+                  this.footnoteData._footnoteRefTextBackgroundRadiusBottomRight = this.footnoteRefTextBackgroundRadiusBottomRight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/FootnoteDetailsPage", params: this.footnoteData })
                 })
@@ -321,6 +331,18 @@ struct FootnotePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

@@ -18,8 +18,8 @@ import {
   textNumberListGeneralData,
   textSizeListGeneralData,
   textTypefaceListGeneralData,
-  timeListGeneralData,
-  widthOrHeightListGeneralData
+  widthOrHeightListGeneralData,
+  timeListGeneralData
 } from '../model/GeneralData'
 import { CodeSeparateData } from '../model/CodeSeparateData'
 
@@ -43,6 +43,14 @@ struct CodeSeparatePage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -192,7 +200,7 @@ struct CodeSeparatePage {
   // 代码块没有代码类型时默认显示文本列表
   codeBlockTypeTextList: Array<string> = ['Code', '代码', '']
   @State // 代码块没有代码类型时默认显示文本
-  codeBlockTypeText: string = 'Code'
+  codeBlockTypeText: string = ''
   // 代码块类型文本颜色列表
   codeBlockTypeTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块类型文本颜色
@@ -220,7 +228,7 @@ struct CodeSeparatePage {
   // 代码块代码复制和代码全屏间距列表
   codeBlockCopyFullScreenSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码复制和代码全屏间距
-  codeBlockCopyFullScreenSpacing: number = 5
+  codeBlockCopyFullScreenSpacing: number = 5.0
   // 代码块代码复制按钮是否显示列表
   codeBlockCopyButtonIsShowList: Array<boolean> = booleanListGeneralData
   @State // 代码块代码复制按钮是否显示
@@ -244,11 +252,11 @@ struct CodeSeparatePage {
   // 代码块代码复制图标和文本间距列表
   codeBlockCopyIconTextSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码复制图标和文本间距
-  codeBlockCopyIconTextSpacing: number = 5
+  codeBlockCopyIconTextSpacing: number = 5.0
   // 代码块代码复制默认文本内容列表
   codeBlockCopyTextList: Array<string> = ['Copy', '复制', '']
   @State // 代码块代码复制默认文本内容
-  codeBlockCopyText: string = 'Copy'
+  codeBlockCopyText: string = '复制代码'
   // 代码块代码复制文本颜色列表
   codeBlockCopyTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块代码复制文本颜色
@@ -296,11 +304,11 @@ struct CodeSeparatePage {
   // 代码块代码全屏图标和文本间距列表
   codeBlockFullScreenIconTextSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码全屏图标和文本间距
-  codeBlockFullScreenIconTextSpacing: number = 5
+  codeBlockFullScreenIconTextSpacing: number = 5.0
   // 代码块代码全屏默认文本内容列表
   codeBlockFullScreenTextList: Array<string> = ['Full Screen', '全屏', '']
   @State // 代码块代码全屏默认文本内容
-  codeBlockFullScreenText: string = 'Full Screen'
+  codeBlockFullScreenText: string = '全屏代码'
   // 代码块代码全屏文本颜色列表
   codeBlockFullScreenTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块代码全屏文本颜色
@@ -328,7 +336,7 @@ struct CodeSeparatePage {
   // 代码块代码行号是否显示列表
   codeBlockLineNumberIsShowList: Array<boolean> = booleanListGeneralData
   @State // 代码块代码行号是否显示
-  codeBlockLineNumberIsShow: boolean = true
+  codeBlockLineNumberIsShow: boolean = false
   // 代码块代码行号左内边距列表
   codeBlockLineNumberTextPaddingLeftList: Array<Length> = spaceListGeneralData
   @State // 代码块代码行号左内边距
@@ -368,7 +376,7 @@ struct CodeSeparatePage {
   // 代码块代码行号和分割线间距列表
   codeBlockLineNumberDividerSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码行号和分割线间距
-  codeBlockLineNumberDividerSpacing: number = 8
+  codeBlockLineNumberDividerSpacing: number = 8.0
   // 代码块文本颜色列表
   codeBlockTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 代码块文本颜色
@@ -404,7 +412,7 @@ struct CodeSeparatePage {
   // 代码块文本字符间距列表
   codeBlockTextLetterSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块文本字符间距
-  codeBlockTextLetterSpacing: number = 0
+  codeBlockTextLetterSpacing: number = 0.0
 
   // ---------------- 单独代码块专有
   // 单独代码块行号宽度列表
@@ -468,6 +476,8 @@ struct CodeSeparatePage {
                   // ---------- 通用
                   this.codeSeparateData._isFull = this.isFull
                   this.codeSeparateData._incrementalAnalysis = this.incrementalAnalysis
+                  this.codeSeparateData._enableParseThrottle = this.enableParseThrottle
+                  this.codeSeparateData._parseThrottleMs = this.parseThrottleMs
                   this.codeSeparateData._time = this.time
                   this.codeSeparateData._textNumber = this.textNumber
                   this.codeSeparateData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -484,88 +494,88 @@ struct CodeSeparatePage {
                   this.codeSeparateData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.codeSeparateData.codeBlockIsDark = this.codeBlockIsDark
-                  this.codeSeparateData.codeBlockIsCodeFormat = this.codeBlockIsCodeFormat
-                  this.codeSeparateData.codeBlockUseTab = this.codeBlockUseTab
-                  this.codeSeparateData.codeBlockIndentWidth = this.codeBlockIndentWidth
-                  this.codeSeparateData.codeBlockParserSync = this.codeBlockParserSync
+                  this.codeSeparateData._codeBlockIsDark = this.codeBlockIsDark
+                  this.codeSeparateData._codeBlockIsCodeFormat = this.codeBlockIsCodeFormat
+                  this.codeSeparateData._codeBlockUseTab = this.codeBlockUseTab
+                  this.codeSeparateData._codeBlockIndentWidth = this.codeBlockIndentWidth
+                  this.codeSeparateData._codeBlockParserSync = this.codeBlockParserSync
                   this.codeSeparateData._codeBlockBackgroundColor = this.codeBlockBackgroundColor
-                  this.codeSeparateData.codeBlockMarginTop = this.codeBlockMarginTop
-                  this.codeSeparateData.codeBlockMarginRight = this.codeBlockMarginRight
-                  this.codeSeparateData.codeBlockMarginBottom = this.codeBlockMarginBottom
-                  this.codeSeparateData.codeBlockMarginLeft = this.codeBlockMarginLeft
-                  this.codeSeparateData.codeBlockPaddingTop = this.codeBlockPaddingTop
-                  this.codeSeparateData.codeBlockPaddingRight = this.codeBlockPaddingRight
-                  this.codeSeparateData.codeBlockPaddingBottom = this.codeBlockPaddingBottom
-                  this.codeSeparateData.codeBlockPaddingLeft = this.codeBlockPaddingLeft
-                  this.codeSeparateData.codeBlockBorderStyle = this.codeBlockBorderStyle
-                  this.codeSeparateData.codeBlockBorderWidth = this.codeBlockBorderWidth
-                  this.codeSeparateData.codeBlockBorderColor = this.codeBlockBorderColor
-                  this.codeSeparateData.codeBlockRadiusTopLeft = this.codeBlockRadiusTopLeft
-                  this.codeSeparateData.codeBlockRadiusTopRight = this.codeBlockRadiusTopRight
-                  this.codeSeparateData.codeBlockRadiusBottomLeft = this.codeBlockRadiusBottomLeft
-                  this.codeSeparateData.codeBlockRadiusBottomRight = this.codeBlockRadiusBottomRight
-                  this.codeSeparateData.codeBlockTitleLayoutMarginBottom = this.codeBlockTitleLayoutMarginBottom
-                  this.codeSeparateData.codeBlockTypeTextMarginLeft = this.codeBlockTypeTextMarginLeft
-                  this.codeSeparateData.codeBlockTypeText = this.codeBlockTypeText
-                  this.codeSeparateData.codeBlockTypeTextFontColor = this.codeBlockTypeTextFontColor
-                  this.codeSeparateData.codeBlockTypeTextFontSize = this.codeBlockTypeTextFontSize
-                  this.codeSeparateData.codeBlockTypeTextFontStyle = this.codeBlockTypeTextFontStyle
-                  this.codeSeparateData.codeBlockTypeTextFontWeight = this.codeBlockTypeTextFontWeight
-                  this.codeSeparateData.codeBlockTypeTextFontFamily = this.codeBlockTypeTextFontFamily
-                  this.codeSeparateData.codeBlockTypeTextLineHeight = this.codeBlockTypeTextLineHeight
-                  this.codeSeparateData.codeBlockCopyFullScreenSpacing = this.codeBlockCopyFullScreenSpacing
-                  this.codeSeparateData.codeBlockCopyButtonIsShow = this.codeBlockCopyButtonIsShow
-                  this.codeSeparateData.codeBlockCopyTextIsShow = this.codeBlockCopyTextIsShow
-                  this.codeSeparateData.codeBlockCopyIcon = this.codeBlockCopyIcon
-                  this.codeSeparateData.codeBlockCopyIconWidth = this.codeBlockCopyIconWidth
-                  this.codeSeparateData.codeBlockCopyIconHeight = this.codeBlockCopyIconHeight
-                  this.codeSeparateData.codeBlockCopyIconTextSpacing = this.codeBlockCopyIconTextSpacing
-                  this.codeSeparateData.codeBlockCopyText = this.codeBlockCopyText
-                  this.codeSeparateData.codeBlockCopyTextFontColor = this.codeBlockCopyTextFontColor
-                  this.codeSeparateData.codeBlockCopyTextFontSize = this.codeBlockCopyTextFontSize
-                  this.codeSeparateData.codeBlockCopyTextFontStyle = this.codeBlockCopyTextFontStyle
-                  this.codeSeparateData.codeBlockCopyTextFontWeight = this.codeBlockCopyTextFontWeight
-                  this.codeSeparateData.codeBlockCopyTextFontFamily = this.codeBlockCopyTextFontFamily
-                  this.codeSeparateData.codeBlockCopyTextLineHeight = this.codeBlockCopyTextLineHeight
-                  this.codeSeparateData.codeBlockFullScreenButtonIsShow = this.codeBlockFullScreenButtonIsShow
-                  this.codeSeparateData.codeBlockFullScreenTextIsShow = this.codeBlockFullScreenTextIsShow
-                  this.codeSeparateData.codeBlockFullScreenIcon = this.codeBlockFullScreenIcon
-                  this.codeSeparateData.codeBlockFullScreenIconWidth = this.codeBlockFullScreenIconWidth
-                  this.codeSeparateData.codeBlockFullScreenIconHeight = this.codeBlockFullScreenIconHeight
-                  this.codeSeparateData.codeBlockFullScreenIconTextSpacing = this.codeBlockFullScreenIconTextSpacing
-                  this.codeSeparateData.codeBlockFullScreenText = this.codeBlockFullScreenText
-                  this.codeSeparateData.codeBlockFullScreenTextFontColor = this.codeBlockFullScreenTextFontColor
-                  this.codeSeparateData.codeBlockFullScreenTextFontSize = this.codeBlockFullScreenTextFontSize
-                  this.codeSeparateData.codeBlockFullScreenTextFontStyle = this.codeBlockFullScreenTextFontStyle
-                  this.codeSeparateData.codeBlockFullScreenTextFontWeight = this.codeBlockFullScreenTextFontWeight
-                  this.codeSeparateData.codeBlockFullScreenTextFontFamily = this.codeBlockFullScreenTextFontFamily
-                  this.codeSeparateData.codeBlockFullScreenTextLineHeight = this.codeBlockFullScreenTextLineHeight
-                  this.codeSeparateData.codeBlockLineNumberIsShow = this.codeBlockLineNumberIsShow
-                  this.codeSeparateData.codeBlockLineNumberTextPaddingLeft = this.codeBlockLineNumberTextPaddingLeft
-                  this.codeSeparateData.codeBlockLineNumberTextFontColor = this.codeBlockLineNumberTextFontColor
-                  this.codeSeparateData.codeBlockLineNumberTextFontSize = this.codeBlockLineNumberTextFontSize
-                  this.codeSeparateData.codeBlockLineNumberTextFontStyle = this.codeBlockLineNumberTextFontStyle
-                  this.codeSeparateData.codeBlockLineNumberTextFontWeight = this.codeBlockLineNumberTextFontWeight
-                  this.codeSeparateData.codeBlockLineNumberTextFontFamily = this.codeBlockLineNumberTextFontFamily
-                  this.codeSeparateData.codeBlockLineNumberTextLineHeight = this.codeBlockLineNumberTextLineHeight
-                  this.codeSeparateData.codeBlockDividerColor = this.codeBlockDividerColor
-                  this.codeSeparateData.codeBlockDividerStrokeWidth = this.codeBlockDividerStrokeWidth
-                  this.codeSeparateData.codeBlockLineNumberDividerSpacing = this.codeBlockLineNumberDividerSpacing
-                  this.codeSeparateData.codeBlockTextFontColor = this.codeBlockTextFontColor
-                  this.codeSeparateData.codeBlockTextMarginRight = this.codeBlockTextMarginRight
-                  this.codeSeparateData.codeBlockTextMarginLeft = this.codeBlockTextMarginLeft
-                  this.codeSeparateData.codeBlockTextFontSize = this.codeBlockTextFontSize
-                  this.codeSeparateData.codeBlockTextFontStyle = this.codeBlockTextFontStyle
-                  this.codeSeparateData.codeBlockTextFontWeight = this.codeBlockTextFontWeight
-                  this.codeSeparateData.codeBlockTextFontFamily = this.codeBlockTextFontFamily
-                  this.codeSeparateData.codeBlockTextLineHeight = this.codeBlockTextLineHeight
-                  this.codeSeparateData.codeBlockTextLetterSpacing = this.codeBlockTextLetterSpacing
+                  this.codeSeparateData._codeBlockMarginTop = this.codeBlockMarginTop
+                  this.codeSeparateData._codeBlockMarginRight = this.codeBlockMarginRight
+                  this.codeSeparateData._codeBlockMarginBottom = this.codeBlockMarginBottom
+                  this.codeSeparateData._codeBlockMarginLeft = this.codeBlockMarginLeft
+                  this.codeSeparateData._codeBlockPaddingTop = this.codeBlockPaddingTop
+                  this.codeSeparateData._codeBlockPaddingRight = this.codeBlockPaddingRight
+                  this.codeSeparateData._codeBlockPaddingBottom = this.codeBlockPaddingBottom
+                  this.codeSeparateData._codeBlockPaddingLeft = this.codeBlockPaddingLeft
+                  this.codeSeparateData._codeBlockBorderStyle = this.codeBlockBorderStyle
+                  this.codeSeparateData._codeBlockBorderWidth = this.codeBlockBorderWidth
+                  this.codeSeparateData._codeBlockBorderColor = this.codeBlockBorderColor
+                  this.codeSeparateData._codeBlockRadiusTopLeft = this.codeBlockRadiusTopLeft
+                  this.codeSeparateData._codeBlockRadiusTopRight = this.codeBlockRadiusTopRight
+                  this.codeSeparateData._codeBlockRadiusBottomLeft = this.codeBlockRadiusBottomLeft
+                  this.codeSeparateData._codeBlockRadiusBottomRight = this.codeBlockRadiusBottomRight
+                  this.codeSeparateData._codeBlockTitleLayoutMarginBottom = this.codeBlockTitleLayoutMarginBottom
+                  this.codeSeparateData._codeBlockTypeTextMarginLeft = this.codeBlockTypeTextMarginLeft
+                  this.codeSeparateData._codeBlockTypeText = this.codeBlockTypeText
+                  this.codeSeparateData._codeBlockTypeTextFontColor = this.codeBlockTypeTextFontColor
+                  this.codeSeparateData._codeBlockTypeTextFontSize = this.codeBlockTypeTextFontSize
+                  this.codeSeparateData._codeBlockTypeTextFontStyle = this.codeBlockTypeTextFontStyle
+                  this.codeSeparateData._codeBlockTypeTextFontWeight = this.codeBlockTypeTextFontWeight
+                  this.codeSeparateData._codeBlockTypeTextFontFamily = this.codeBlockTypeTextFontFamily
+                  this.codeSeparateData._codeBlockTypeTextLineHeight = this.codeBlockTypeTextLineHeight
+                  this.codeSeparateData._codeBlockCopyFullScreenSpacing = this.codeBlockCopyFullScreenSpacing
+                  this.codeSeparateData._codeBlockCopyButtonIsShow = this.codeBlockCopyButtonIsShow
+                  this.codeSeparateData._codeBlockCopyTextIsShow = this.codeBlockCopyTextIsShow
+                  this.codeSeparateData._codeBlockCopyIcon = this.codeBlockCopyIcon
+                  this.codeSeparateData._codeBlockCopyIconWidth = this.codeBlockCopyIconWidth
+                  this.codeSeparateData._codeBlockCopyIconHeight = this.codeBlockCopyIconHeight
+                  this.codeSeparateData._codeBlockCopyIconTextSpacing = this.codeBlockCopyIconTextSpacing
+                  this.codeSeparateData._codeBlockCopyText = this.codeBlockCopyText
+                  this.codeSeparateData._codeBlockCopyTextFontColor = this.codeBlockCopyTextFontColor
+                  this.codeSeparateData._codeBlockCopyTextFontSize = this.codeBlockCopyTextFontSize
+                  this.codeSeparateData._codeBlockCopyTextFontStyle = this.codeBlockCopyTextFontStyle
+                  this.codeSeparateData._codeBlockCopyTextFontWeight = this.codeBlockCopyTextFontWeight
+                  this.codeSeparateData._codeBlockCopyTextFontFamily = this.codeBlockCopyTextFontFamily
+                  this.codeSeparateData._codeBlockCopyTextLineHeight = this.codeBlockCopyTextLineHeight
+                  this.codeSeparateData._codeBlockFullScreenButtonIsShow = this.codeBlockFullScreenButtonIsShow
+                  this.codeSeparateData._codeBlockFullScreenTextIsShow = this.codeBlockFullScreenTextIsShow
+                  this.codeSeparateData._codeBlockFullScreenIcon = this.codeBlockFullScreenIcon
+                  this.codeSeparateData._codeBlockFullScreenIconWidth = this.codeBlockFullScreenIconWidth
+                  this.codeSeparateData._codeBlockFullScreenIconHeight = this.codeBlockFullScreenIconHeight
+                  this.codeSeparateData._codeBlockFullScreenIconTextSpacing = this.codeBlockFullScreenIconTextSpacing
+                  this.codeSeparateData._codeBlockFullScreenText = this.codeBlockFullScreenText
+                  this.codeSeparateData._codeBlockFullScreenTextFontColor = this.codeBlockFullScreenTextFontColor
+                  this.codeSeparateData._codeBlockFullScreenTextFontSize = this.codeBlockFullScreenTextFontSize
+                  this.codeSeparateData._codeBlockFullScreenTextFontStyle = this.codeBlockFullScreenTextFontStyle
+                  this.codeSeparateData._codeBlockFullScreenTextFontWeight = this.codeBlockFullScreenTextFontWeight
+                  this.codeSeparateData._codeBlockFullScreenTextFontFamily = this.codeBlockFullScreenTextFontFamily
+                  this.codeSeparateData._codeBlockFullScreenTextLineHeight = this.codeBlockFullScreenTextLineHeight
+                  this.codeSeparateData._codeBlockLineNumberIsShow = this.codeBlockLineNumberIsShow
+                  this.codeSeparateData._codeBlockLineNumberTextPaddingLeft = this.codeBlockLineNumberTextPaddingLeft
+                  this.codeSeparateData._codeBlockLineNumberTextFontColor = this.codeBlockLineNumberTextFontColor
+                  this.codeSeparateData._codeBlockLineNumberTextFontSize = this.codeBlockLineNumberTextFontSize
+                  this.codeSeparateData._codeBlockLineNumberTextFontStyle = this.codeBlockLineNumberTextFontStyle
+                  this.codeSeparateData._codeBlockLineNumberTextFontWeight = this.codeBlockLineNumberTextFontWeight
+                  this.codeSeparateData._codeBlockLineNumberTextFontFamily = this.codeBlockLineNumberTextFontFamily
+                  this.codeSeparateData._codeBlockLineNumberTextLineHeight = this.codeBlockLineNumberTextLineHeight
+                  this.codeSeparateData._codeBlockDividerColor = this.codeBlockDividerColor
+                  this.codeSeparateData._codeBlockDividerStrokeWidth = this.codeBlockDividerStrokeWidth
+                  this.codeSeparateData._codeBlockLineNumberDividerSpacing = this.codeBlockLineNumberDividerSpacing
+                  this.codeSeparateData._codeBlockTextFontColor = this.codeBlockTextFontColor
+                  this.codeSeparateData._codeBlockTextMarginRight = this.codeBlockTextMarginRight
+                  this.codeSeparateData._codeBlockTextMarginLeft = this.codeBlockTextMarginLeft
+                  this.codeSeparateData._codeBlockTextFontSize = this.codeBlockTextFontSize
+                  this.codeSeparateData._codeBlockTextFontStyle = this.codeBlockTextFontStyle
+                  this.codeSeparateData._codeBlockTextFontWeight = this.codeBlockTextFontWeight
+                  this.codeSeparateData._codeBlockTextFontFamily = this.codeBlockTextFontFamily
+                  this.codeSeparateData._codeBlockTextLineHeight = this.codeBlockTextLineHeight
+                  this.codeSeparateData._codeBlockTextLetterSpacing = this.codeBlockTextLetterSpacing
 
                   // ---------- 单独代码块专有
-                  this.codeSeparateData.codeBlockIsSeparate = true // 固定设置开启单独代码块
-                  this.codeSeparateData.codeBlockSeparateWidth = this.codeBlockSeparateWidth
-                  this.codeSeparateData.codeBlockSeparateIsBottom = this.separateCodeIsBottom
+                  this.codeSeparateData._codeBlockIsSeparate = true // 固定设置开启单独代码块
+                  this.codeSeparateData._codeBlockSeparateWidth = this.codeBlockSeparateWidth
+                  this.codeSeparateData._codeBlockSeparateIsBottom = this.separateCodeIsBottom
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/CodeSeparateDetailsPage", params: this.codeSeparateData })
                 })
@@ -611,6 +621,18 @@ struct CodeSeparatePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

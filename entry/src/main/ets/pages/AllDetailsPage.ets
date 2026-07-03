@@ -15,7 +15,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 struct AllDetailsPage {
   // ---------- 通用
   scroller: Scroller = new Scroller() // 滑动控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  markdownScroller: Scroller = new Scroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -28,6 +28,10 @@ struct AllDetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -75,6 +79,8 @@ struct AllDetailsPage {
       // ---------- 通用
       this.isFull = allData._isFull
       this.incrementalAnalysis = allData._incrementalAnalysis
+      this.enableParseThrottle = allData._enableParseThrottle
+      this.parseThrottleMs = allData._parseThrottleMs
       this.time = allData._time
       this.textNumber = allData._textNumber
       this.isMarkdownParserSync = allData._isMarkdownParserSync
@@ -130,7 +136,7 @@ struct AllDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -140,7 +146,7 @@ struct AllDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -186,6 +192,8 @@ struct AllDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有

@@ -33,6 +33,14 @@ struct ThematicPage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -175,6 +183,8 @@ struct ThematicPage {
                   // ---------- 通用
                   this.thematicData._isFull = this.isFull
                   this.thematicData._incrementalAnalysis = this.incrementalAnalysis
+                  this.thematicData._enableParseThrottle = this.enableParseThrottle
+                  this.thematicData._parseThrottleMs = this.parseThrottleMs
                   this.thematicData._time = this.time
                   this.thematicData._textNumber = this.textNumber
                   this.thematicData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -191,17 +201,17 @@ struct ThematicPage {
                   this.thematicData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.thematicData.dividerMarginTop = this.dividerMarginTop
-                  this.thematicData.dividerMarginRight = this.dividerMarginRight
-                  this.thematicData.dividerMarginBottom = this.dividerMarginBottom
-                  this.thematicData.dividerMarginLeft = this.dividerMarginLeft
-                  this.thematicData.dividerPaddingTop = this.dividerPaddingTop
-                  this.thematicData.dividerPaddingRight = this.dividerPaddingRight
-                  this.thematicData.dividerPaddingBottom = this.dividerPaddingBottom
-                  this.thematicData.dividerPaddingLeft = this.dividerPaddingLeft
-                  this.thematicData.dividerColor = this.dividerColor
-                  this.thematicData.dividerStrokeWidth = this.dividerStrokeWidth
-                  this.thematicData.dividerStyle = this.dividerStyle
+                  this.thematicData._dividerMarginTop = this.dividerMarginTop
+                  this.thematicData._dividerMarginRight = this.dividerMarginRight
+                  this.thematicData._dividerMarginBottom = this.dividerMarginBottom
+                  this.thematicData._dividerMarginLeft = this.dividerMarginLeft
+                  this.thematicData._dividerPaddingTop = this.dividerPaddingTop
+                  this.thematicData._dividerPaddingRight = this.dividerPaddingRight
+                  this.thematicData._dividerPaddingBottom = this.dividerPaddingBottom
+                  this.thematicData._dividerPaddingLeft = this.dividerPaddingLeft
+                  this.thematicData._dividerColor = this.dividerColor
+                  this.thematicData._dividerStrokeWidth = this.dividerStrokeWidth
+                  this.thematicData._dividerStyle = this.dividerStyle
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/ThematicDetailsPage", params: this.thematicData })
                 })
@@ -247,6 +257,18 @@ struct ThematicPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔（ms） - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

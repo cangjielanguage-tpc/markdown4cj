@@ -18,7 +18,7 @@ struct ImageDetailsPage {
   // 滑动控制器
   scroller: Scroller = new Scroller()
   // Markdown的控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -31,6 +31,10 @@ struct ImageDetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -61,8 +65,8 @@ struct ImageDetailsPage {
   isInputEnded: boolean = false
 
   // ---------- 专有
-  // @State // 图片是否替换
-  // imageReplace: boolean = true
+  @State // 图片是否替换
+  imageReplace: boolean = true
   @State // 网络图片是否压缩
   imageAutoResize: boolean = true
   @State // 图片默认占位图
@@ -160,6 +164,8 @@ struct ImageDetailsPage {
       // ---------- 通用
       this.isFull = imageDataMD._isFull
       this.incrementalAnalysis = imageDataMD._incrementalAnalysis
+      this.enableParseThrottle = imageDataMD._enableParseThrottle
+      this.parseThrottleMs = imageDataMD._parseThrottleMs
       this.time = imageDataMD._time
       this.textNumber = imageDataMD._textNumber
       this.isMarkdownParserSync = imageDataMD._isMarkdownParserSync
@@ -174,7 +180,7 @@ struct ImageDetailsPage {
       this.openGestureSwipe = imageDataMD._openGestureSwipe
       this.openGestureSwipeTest = imageDataMD._openGestureSwipeTest
       // ---------- 专有
-      // this.imageReplace = imageDataMD._imageReplace
+      this.imageReplace = imageDataMD._imageReplace
       this.imageAutoResize = imageDataMD._imageAutoResize
       this.imagePlaceholder = imageDataMD._imagePlaceholder
       this.isImageMixedLayout = imageDataMD._isImageMixedLayout
@@ -260,7 +266,7 @@ struct ImageDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -270,7 +276,7 @@ struct ImageDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -286,9 +292,9 @@ struct ImageDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setImageCallback(this.setImageCallback) // 图片点击回调
-    // if (this.imageReplace) {
-    //   config.setImageCallbackCallback(this.setImageReplaceCallback) // 图片替换事件
-    // }
+    if (this.imageReplace) {
+      config.setImageCallbackCallback(this.setImageReplaceCallback) // 图片替换事件
+    }
     config.setImageDownloadCallback(this.setImageDownloadCallback) // 图片下载的点击事件
     return config
   }
@@ -315,6 +321,8 @@ struct ImageDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Image

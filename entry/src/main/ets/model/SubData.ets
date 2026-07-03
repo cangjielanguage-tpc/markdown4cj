@@ -9,34 +9,6 @@ export class SubData extends BaseMDData {
   _subTextLetterSpacing: number | undefined = undefined // 下标文本字符间距
   _subTextBaselineOffset: number = 0.0 // 下标文本基线的偏移量
 
-  public set subTextFontColor(value: ResourceColor | undefined) {
-    this._subTextFontColor = value
-  }
-
-  public set subTextFontSize(value: number | string | Resource) {
-    this._subTextFontSize = value
-  }
-
-  public set subTextFontStyle(value: FontStyle | undefined) {
-    this._subTextFontStyle = value
-  }
-
-  public set subTextFontWeight(value: number | FontWeight | undefined) {
-    this._subTextFontWeight = value
-  }
-
-  public set subTextFontFamily(value: string | Resource | undefined) {
-    this._subTextFontFamily = value
-  }
-
-  public set subTextLetterSpacing(value: number | undefined) {
-    this._subTextLetterSpacing = value
-  }
-
-  public set subTextBaselineOffset(value: number) {
-    this._subTextBaselineOffset = value
-  }
-
   constructor() {
     super()
   }

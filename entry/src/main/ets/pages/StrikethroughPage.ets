@@ -39,6 +39,14 @@ struct StrikethroughPage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -173,6 +181,8 @@ struct StrikethroughPage {
                   // ---------- 通用
                   this.strikethroughData._isFull = this.isFull
                   this.strikethroughData._incrementalAnalysis = this.incrementalAnalysis
+                  this.strikethroughData._enableParseThrottle = this.enableParseThrottle
+                  this.strikethroughData._parseThrottleMs = this.parseThrottleMs
                   this.strikethroughData._time = this.time
                   this.strikethroughData._textNumber = this.textNumber
                   this.strikethroughData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -189,15 +199,15 @@ struct StrikethroughPage {
                   this.strikethroughData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.strikethroughData.strikethroughTextFontColor = this.strikethroughTextFontColor
-                  this.strikethroughData.strikethroughTextFontSize = this.strikethroughTextFontSize
-                  this.strikethroughData.strikethroughTextFontStyle = this.strikethroughTextFontStyle
-                  this.strikethroughData.strikethroughTextFontWeight = this.strikethroughTextFontWeight
-                  this.strikethroughData.strikethroughTextFontFamily = this.strikethroughTextFontFamily
-                  this.strikethroughData.strikethroughTextLineHeight = this.strikethroughTextLineHeight
-                  this.strikethroughData.strikethroughTextLetterSpacing = this.strikethroughTextLetterSpacing
-                  this.strikethroughData.strikethroughTextDecorationColor = this.strikethroughTextDecorationColor
-                  this.strikethroughData.strikethroughTextDecorationStyle = this.strikethroughTextDecorationStyle
+                  this.strikethroughData._strikethroughTextFontColor = this.strikethroughTextFontColor
+                  this.strikethroughData._strikethroughTextFontSize = this.strikethroughTextFontSize
+                  this.strikethroughData._strikethroughTextFontStyle = this.strikethroughTextFontStyle
+                  this.strikethroughData._strikethroughTextFontWeight = this.strikethroughTextFontWeight
+                  this.strikethroughData._strikethroughTextFontFamily = this.strikethroughTextFontFamily
+                  this.strikethroughData._strikethroughTextLineHeight = this.strikethroughTextLineHeight
+                  this.strikethroughData._strikethroughTextLetterSpacing = this.strikethroughTextLetterSpacing
+                  this.strikethroughData._strikethroughTextDecorationColor = this.strikethroughTextDecorationColor
+                  this.strikethroughData._strikethroughTextDecorationStyle = this.strikethroughTextDecorationStyle
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/StrikethroughDetailsPage", params: this.strikethroughData })
                 })
@@ -243,6 +253,18 @@ struct StrikethroughPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔（ms） - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

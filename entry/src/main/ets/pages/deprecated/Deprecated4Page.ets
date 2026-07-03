@@ -435,53 +435,53 @@ struct Deprecated4Page {
                   .fontSize(16)
                   .onClick(() => {
                     // ---------- 通用配置
-                    this.deprecatedData.isFull = this.isFull
-                    this.deprecatedData.incrementalAnalysis = this.incrementalAnalysis
-                    this.deprecatedData.time = this.time
-                    this.deprecatedData.textNumber = this.textNumber
-                    this.deprecatedData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.deprecatedData.isOnCopy = this.isOnCopy
-                    this.deprecatedData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.deprecatedData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.deprecatedData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                    this.deprecatedData.openGestureSwipe = this.openGestureSwipe
-                    this.deprecatedData.openGestureSwipeTest = this.openGestureSwipeTest
+                    this.deprecatedData._isFull = this.isFull
+                    this.deprecatedData._incrementalAnalysis = this.incrementalAnalysis
+                    this.deprecatedData._time = this.time
+                    this.deprecatedData._textNumber = this.textNumber
+                    this.deprecatedData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.deprecatedData._isOnCopy = this.isOnCopy
+                    this.deprecatedData._blockFirstTopMargin = this.blockFirstTopMargin
+                    this.deprecatedData._blockLastBottomMargin = this.blockLastBottomMargin
+                    this.deprecatedData._blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.deprecatedData._openGestureSwipe = this.openGestureSwipe
+                    this.deprecatedData._openGestureSwipeTest = this.openGestureSwipeTest
 
                     // ---------- 数学公式配置
-                    this.deprecatedData.latexDefaultText = this.latexDefaultText
-                    this.deprecatedData.latexMathTextSize = this.latexMathTextSize
-                    this.deprecatedData.latexMathBackGroupColor = this.latexMathBackGroupColor
-                    this.deprecatedData.latexMathTextColor = this.latexMathTextColor
-                    this.deprecatedData.latexMathBlockCenter = this.latexMathBlockCenter
-                    this.deprecatedData.latexMathResStr = this.latexMathResStr
-                    // this.deprecatedData.latexMathColorFormat = this.latexMathColorFormat
+                    this.deprecatedData._latexDefaultText = this.latexDefaultText
+                    this.deprecatedData._latexMathTextSize = this.latexMathTextSize
+                    this.deprecatedData._latexMathBackGroupColor = this.latexMathBackGroupColor
+                    this.deprecatedData._latexMathTextColor = this.latexMathTextColor
+                    this.deprecatedData._latexMathBlockCenter = this.latexMathBlockCenter
+                    this.deprecatedData._latexMathResStr = this.latexMathResStr
+                    // this.deprecatedData._latexMathColorFormat = this.latexMathColorFormat
 
                     // ---------- 图片配置
-                    this.deprecatedData.imageResource = this.imageResource
-                    this.deprecatedData.imageDownloadImage = this.imageDownloadImage
-                    this.deprecatedData.imageFitType = this.imageFitType
-                    this.deprecatedData.imageMaximumWidth = this.imageMaximumWidth
-                    this.deprecatedData.imageFixedRatioWidth = this.imageFixedRatioWidth
-                    this.deprecatedData.imageMaxHeight = this.imageMaxHeight
-                    this.deprecatedData.imageMaxWidth = this.imageMaxWidth
-                    this.deprecatedData.imageBorderRadius = this.imageBorderRadius
-                    this.deprecatedData.imageBorderWidth = this.imageBorderWidth
-                    this.deprecatedData.imageBorderColor = this.imageBorderColor
-                    this.deprecatedData.isAutoResize = this.isAutoResize
-                    this.deprecatedData.imageMarginTop = this.imageMarginTop
-                    this.deprecatedData.imageMarginBottom = this.imageMarginBottom
-                    this.deprecatedData.isImageDownload = this.isImageDownload
-                    this.deprecatedData.isImageMixedLayout = this.isImageMixedLayout
-                    this.deprecatedData.imageDownloadImageWidthHeight = this.imageDownloadImageWidthHeight
-                    this.deprecatedData.imageDownloadWidth = this.imageDownloadWidth
-                    this.deprecatedData.imageDownloadHeight = this.imageDownloadHeight
-                    this.deprecatedData.imageDownloadRadius = this.imageDownloadRadius
-                    this.deprecatedData.imageDownloadText = this.imageDownloadText
-                    this.deprecatedData.imageDownloadTexSize = this.imageDownloadTexSize
-                    this.deprecatedData.imageDownloadTexColor = this.imageDownloadTexColor
-                    this.deprecatedData.imageDownloadBackgroundColor = this.imageDownloadBackgroundColor
+                    this.deprecatedData._imageResource = this.imageResource
+                    this.deprecatedData._imageDownloadImage = this.imageDownloadImage
+                    this.deprecatedData._imageFitType = this.imageFitType
+                    this.deprecatedData._imageMaximumWidth = this.imageMaximumWidth
+                    this.deprecatedData._imageFixedRatioWidth = this.imageFixedRatioWidth
+                    this.deprecatedData._imageMaxHeight = this.imageMaxHeight
+                    this.deprecatedData._imageMaxWidth = this.imageMaxWidth
+                    this.deprecatedData._imageBorderRadius = this.imageBorderRadius
+                    this.deprecatedData._imageBorderWidth = this.imageBorderWidth
+                    this.deprecatedData._imageBorderColor = this.imageBorderColor
+                    this.deprecatedData._isAutoResize = this.isAutoResize
+                    this.deprecatedData._imageMarginTop = this.imageMarginTop
+                    this.deprecatedData._imageMarginBottom = this.imageMarginBottom
+                    this.deprecatedData._isImageDownload = this.isImageDownload
+                    this.deprecatedData._isImageMixedLayout = this.isImageMixedLayout
+                    this.deprecatedData._imageDownloadImageWidthHeight = this.imageDownloadImageWidthHeight
+                    this.deprecatedData._imageDownloadWidth = this.imageDownloadWidth
+                    this.deprecatedData._imageDownloadHeight = this.imageDownloadHeight
+                    this.deprecatedData._imageDownloadRadius = this.imageDownloadRadius
+                    this.deprecatedData._imageDownloadText = this.imageDownloadText
+                    this.deprecatedData._imageDownloadTexSize = this.imageDownloadTexSize
+                    this.deprecatedData._imageDownloadTexColor = this.imageDownloadTexColor
+                    this.deprecatedData._imageDownloadBackgroundColor = this.imageDownloadBackgroundColor
 
-                    this.deprecatedData.pagePath = `${this.rawFilePath}/${item}`
+                    this.deprecatedData._pagePath = `${this.rawFilePath}/${item}`
 
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/deprecated/Deprecated4DetailsPage", params: this.deprecatedData })

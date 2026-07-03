@@ -46,6 +46,24 @@ struct BigDataPage {
   @State
   isFull: boolean = true
   /**
+   * 是否启用解析节流列表
+   */
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否启用解析节流
+   */
+  @State
+  enableParseThrottle: boolean = false
+  /**
+   * 解析节流间隔列表
+   */
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  /**
+   * 解析节流间隔（ms）
+   */
+  @State
+  parseThrottleMs: number = 200
+  /**
    * 增量加载每次间隔时间列表
    */
   timeList: Array<number> = timeListGeneralData
@@ -111,6 +129,8 @@ struct BigDataPage {
                 .onClick(() => {
                   // ---------- 通用
                   this.bigData._isFull = this.isFull
+                  this.bigData._enableParseThrottle = this.enableParseThrottle
+                  this.bigData._parseThrottleMs = this.parseThrottleMs
                   this.bigData._time = this.time
                   this.bigData._textNumber = this.textNumber
                   this.bigData._pagePath = `${this.rawFilePath}/${item}`
@@ -153,6 +173,18 @@ struct BigDataPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.isFullList,
                   allData: this.isFull
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

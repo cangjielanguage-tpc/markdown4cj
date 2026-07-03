@@ -590,71 +590,71 @@ struct Deprecated2Page {
                   .fontSize(16)
                   .onClick(() => {
                     // ---------- 通用配置
-                    this.deprecatedData.isFull = this.isFull
-                    this.deprecatedData.incrementalAnalysis = this.incrementalAnalysis
-                    this.deprecatedData.time = this.time
-                    this.deprecatedData.textNumber = this.textNumber
-                    this.deprecatedData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.deprecatedData.isOnCopy = this.isOnCopy
-                    this.deprecatedData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.deprecatedData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.deprecatedData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                    this.deprecatedData.openGestureSwipe = this.openGestureSwipe
-                    this.deprecatedData.openGestureSwipeTest = this.openGestureSwipeTest
+                    this.deprecatedData._isFull = this.isFull
+                    this.deprecatedData._incrementalAnalysis = this.incrementalAnalysis
+                    this.deprecatedData._time = this.time
+                    this.deprecatedData._textNumber = this.textNumber
+                    this.deprecatedData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.deprecatedData._isOnCopy = this.isOnCopy
+                    this.deprecatedData._blockFirstTopMargin = this.blockFirstTopMargin
+                    this.deprecatedData._blockLastBottomMargin = this.blockLastBottomMargin
+                    this.deprecatedData._blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.deprecatedData._openGestureSwipe = this.openGestureSwipe
+                    this.deprecatedData._openGestureSwipeTest = this.openGestureSwipeTest
 
                     // ---------- 资源图标配置
-                    this.deprecatedData.audioIcon = this.audioIcon
-                    this.deprecatedData.videoImage = this.videoImage
-                    this.deprecatedData.playCircleFillIcon = this.playCircleFillIcon
-                    this.deprecatedData.videoReleaseImage = this.videoReleaseImage
-                    this.deprecatedData.videoDownloadImage = this.videoDownloadImage
+                    this.deprecatedData._audioIcon = this.audioIcon
+                    this.deprecatedData._videoImage = this.videoImage
+                    this.deprecatedData._playCircleFillIcon = this.playCircleFillIcon
+                    this.deprecatedData._videoReleaseImage = this.videoReleaseImage
+                    this.deprecatedData._videoDownloadImage = this.videoDownloadImage
 
                     // ---------- 音频配置
-                    this.deprecatedData.audioShadowColor = this.audioShadowColor
-                    this.deprecatedData.audioBorderColor = this.audioBorderColor
-                    this.deprecatedData.audioBorderWidth = this.audioBorderWidth
-                    this.deprecatedData.audioBorderRadius = this.audioBorderRadius
-                    this.deprecatedData.audioButtonBackgroundColor = this.audioButtonBackgroundColor
-                    this.deprecatedData.audioButtonTextColor = this.audioButtonTextColor
-                    this.deprecatedData.audioButtonTextSize = this.audioButtonTextSize
-                    this.deprecatedData.audioButtonText = this.audioButtonText
-                    this.deprecatedData.audioButtonBorderRadius = this.audioButtonBorderRadius
-                    this.deprecatedData.audioTitleTextSize = this.audioTitleTextSize
-                    this.deprecatedData.audioTitleTextColor = this.audioTitleTextColor
-                    this.deprecatedData.audioTitleTextLineHeight = this.audioTitleTextLineHeight
-                    this.deprecatedData.audioTypeTextSize = this.audioTypeTextSize
-                    this.deprecatedData.audioTypeTextColor = this.audioTypeTextColor
-                    this.deprecatedData.audioTypeTextLineHeight = this.audioTypeTextLineHeight
-                    this.deprecatedData.audioMarginTop = this.audioMarginTop
-                    this.deprecatedData.audioMarginBottom = this.audioMarginBottom
+                    this.deprecatedData._audioShadowColor = this.audioShadowColor
+                    this.deprecatedData._audioBorderColor = this.audioBorderColor
+                    this.deprecatedData._audioBorderWidth = this.audioBorderWidth
+                    this.deprecatedData._audioBorderRadius = this.audioBorderRadius
+                    this.deprecatedData._audioButtonBackgroundColor = this.audioButtonBackgroundColor
+                    this.deprecatedData._audioButtonTextColor = this.audioButtonTextColor
+                    this.deprecatedData._audioButtonTextSize = this.audioButtonTextSize
+                    this.deprecatedData._audioButtonText = this.audioButtonText
+                    this.deprecatedData._audioButtonBorderRadius = this.audioButtonBorderRadius
+                    this.deprecatedData._audioTitleTextSize = this.audioTitleTextSize
+                    this.deprecatedData._audioTitleTextColor = this.audioTitleTextColor
+                    this.deprecatedData._audioTitleTextLineHeight = this.audioTitleTextLineHeight
+                    this.deprecatedData._audioTypeTextSize = this.audioTypeTextSize
+                    this.deprecatedData._audioTypeTextColor = this.audioTypeTextColor
+                    this.deprecatedData._audioTypeTextLineHeight = this.audioTypeTextLineHeight
+                    this.deprecatedData._audioMarginTop = this.audioMarginTop
+                    this.deprecatedData._audioMarginBottom = this.audioMarginBottom
 
                     // ---------- 视频配置
-                    this.deprecatedData.videoBorderRadius = this.videoBorderRadius
-                    this.deprecatedData.videoTimeTextColor = this.videoTimeTextColor
-                    this.deprecatedData.videoTimeTextSize = this.videoTimeTextSize
-                    this.deprecatedData.videoTimeTextMarginRight = this.videoTimeTextMarginRight
-                    this.deprecatedData.videoTimeTextMarginBottom = this.videoTimeTextMarginBottom
-                    this.deprecatedData.videoMarginTop = this.videoMarginTop
-                    this.deprecatedData.videoMarginBottom = this.videoMarginBottom
-                    this.deprecatedData.isVideoBottomLayout = this.isVideoBottomLayout
-                    this.deprecatedData.videoReleaseImageWidthHeight = this.videoReleaseImageWidthHeight
-                    this.deprecatedData.videoReleaseWidth = this.videoReleaseWidth
-                    this.deprecatedData.videoReleaseHeight = this.videoReleaseHeight
-                    this.deprecatedData.videoReleaseRadius = this.videoReleaseRadius
-                    this.deprecatedData.videoReleaseText = this.videoReleaseText
-                    this.deprecatedData.videoReleaseTexSize = this.videoReleaseTexSize
-                    this.deprecatedData.videoReleaseTexColor = this.videoReleaseTexColor
-                    this.deprecatedData.videoReleaseBackgroundColor = this.videoReleaseBackgroundColor
-                    this.deprecatedData.videoDownloadImageWidthHeight = this.videoDownloadImageWidthHeight
-                    this.deprecatedData.videoDownloadWidth = this.videoDownloadWidth
-                    this.deprecatedData.videoDownloadHeight = this.videoDownloadHeight
-                    this.deprecatedData.videoDownloadRadius = this.videoDownloadRadius
-                    this.deprecatedData.videoDownloadText = this.videoDownloadText
-                    this.deprecatedData.videoDownloadTexSize = this.videoDownloadTexSize
-                    this.deprecatedData.videoDownloadTexColor = this.videoDownloadTexColor
-                    this.deprecatedData.videoDownloadBackgroundColor = this.videoDownloadBackgroundColor
+                    this.deprecatedData._videoBorderRadius = this.videoBorderRadius
+                    this.deprecatedData._videoTimeTextColor = this.videoTimeTextColor
+                    this.deprecatedData._videoTimeTextSize = this.videoTimeTextSize
+                    this.deprecatedData._videoTimeTextMarginRight = this.videoTimeTextMarginRight
+                    this.deprecatedData._videoTimeTextMarginBottom = this.videoTimeTextMarginBottom
+                    this.deprecatedData._videoMarginTop = this.videoMarginTop
+                    this.deprecatedData._videoMarginBottom = this.videoMarginBottom
+                    this.deprecatedData._isVideoBottomLayout = this.isVideoBottomLayout
+                    this.deprecatedData._videoReleaseImageWidthHeight = this.videoReleaseImageWidthHeight
+                    this.deprecatedData._videoReleaseWidth = this.videoReleaseWidth
+                    this.deprecatedData._videoReleaseHeight = this.videoReleaseHeight
+                    this.deprecatedData._videoReleaseRadius = this.videoReleaseRadius
+                    this.deprecatedData._videoReleaseText = this.videoReleaseText
+                    this.deprecatedData._videoReleaseTexSize = this.videoReleaseTexSize
+                    this.deprecatedData._videoReleaseTexColor = this.videoReleaseTexColor
+                    this.deprecatedData._videoReleaseBackgroundColor = this.videoReleaseBackgroundColor
+                    this.deprecatedData._videoDownloadImageWidthHeight = this.videoDownloadImageWidthHeight
+                    this.deprecatedData._videoDownloadWidth = this.videoDownloadWidth
+                    this.deprecatedData._videoDownloadHeight = this.videoDownloadHeight
+                    this.deprecatedData._videoDownloadRadius = this.videoDownloadRadius
+                    this.deprecatedData._videoDownloadText = this.videoDownloadText
+                    this.deprecatedData._videoDownloadTexSize = this.videoDownloadTexSize
+                    this.deprecatedData._videoDownloadTexColor = this.videoDownloadTexColor
+                    this.deprecatedData._videoDownloadBackgroundColor = this.videoDownloadBackgroundColor
 
-                    this.deprecatedData.pagePath = `${this.rawFilePath}/${item}`
+                    this.deprecatedData._pagePath = `${this.rawFilePath}/${item}`
 
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/deprecated/Deprecated2DetailsPage", params: this.deprecatedData })

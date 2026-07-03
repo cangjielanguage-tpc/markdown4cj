@@ -271,30 +271,30 @@ struct Deprecated0Page {
                   .fontSize(16)
                   .onClick(() => {
                     // ---------- 基础配置
-                    this.deprecatedData.isFull = this.isFull
-                    this.deprecatedData.incrementalAnalysis = this.incrementalAnalysis
-                    this.deprecatedData.time = this.time
-                    this.deprecatedData.textNumber = this.textNumber
-                    this.deprecatedData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.deprecatedData.isOnCopy = this.isOnCopy
-                    this.deprecatedData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.deprecatedData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.deprecatedData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                    this.deprecatedData.openGestureSwipe = this.openGestureSwipe
-                    this.deprecatedData.openGestureSwipeTest = this.openGestureSwipeTest
+                    this.deprecatedData._isFull = this.isFull
+                    this.deprecatedData._incrementalAnalysis = this.incrementalAnalysis
+                    this.deprecatedData._time = this.time
+                    this.deprecatedData._textNumber = this.textNumber
+                    this.deprecatedData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.deprecatedData._isOnCopy = this.isOnCopy
+                    this.deprecatedData._blockFirstTopMargin = this.blockFirstTopMargin
+                    this.deprecatedData._blockLastBottomMargin = this.blockLastBottomMargin
+                    this.deprecatedData._blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.deprecatedData._openGestureSwipe = this.openGestureSwipe
+                    this.deprecatedData._openGestureSwipeTest = this.openGestureSwipeTest
 
                     // ---------- 其他配置
-                    this.deprecatedData.strikethroughColor = this.strikethroughColor
-                    this.deprecatedData.strikethroughStyle = this.strikethroughStyle
+                    this.deprecatedData._strikethroughColor = this.strikethroughColor
+                    this.deprecatedData._strikethroughStyle = this.strikethroughStyle
                     
-                    this.deprecatedData.blockQuoteLeftMargin = this.blockQuoteLeftMargin
-                    this.deprecatedData.blockQuoteRightMargin = this.blockQuoteRightMargin
-                    this.deprecatedData.blockQuoteWidth = this.blockQuoteWidth
-                    this.deprecatedData.blockQuoteColor = this.blockQuoteColor
-                    this.deprecatedData.blockQuoteBackGroupColor = this.blockQuoteBackGroupColor
-                    this.deprecatedData.blockQuoteTopAndBottomMargins = this.blockQuoteTopAndBottomMargins
+                    this.deprecatedData._blockQuoteLeftMargin = this.blockQuoteLeftMargin
+                    this.deprecatedData._blockQuoteRightMargin = this.blockQuoteRightMargin
+                    this.deprecatedData._blockQuoteWidth = this.blockQuoteWidth
+                    this.deprecatedData._blockQuoteColor = this.blockQuoteColor
+                    this.deprecatedData._blockQuoteBackGroupColor = this.blockQuoteBackGroupColor
+                    this.deprecatedData._blockQuoteTopAndBottomMargins = this.blockQuoteTopAndBottomMargins
 
-                    this.deprecatedData.pagePath = `${this.rawFilePath}/${item}`
+                    this.deprecatedData._pagePath = `${this.rawFilePath}/${item}`
 
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/deprecated/Deprecated0DetailsPage", params: this.deprecatedData })

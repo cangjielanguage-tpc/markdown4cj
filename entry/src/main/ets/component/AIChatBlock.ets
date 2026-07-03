@@ -87,7 +87,7 @@ export struct AIChatBlock {
       } else {
         CJMarkdownWrap({
           input: this.message.content.content,
-          // scroller: this.scroller,
+          // scroller: this.markdownScroller,
           incrementalAnalysis: this.incrementalAnalysis
         })
       }

@@ -5,6 +5,8 @@ export class BaseMDData {
   _isFull: boolean = true // 是否全量加载Markdown文本
   _incrementalAnalysis: boolean = false // 是否增量解析Markdown文本
   _time: number = 50 // 增量加载每次间隔时间
+  _enableParseThrottle: boolean = false // 是否启用解析节流，true为markdown控制节流，false为用户自行控制 - 默认false
+  _parseThrottleMs: number = 200 // 解析节流间隔（ms），enableParseThrottle为true时生效，0表示不节流
   _textNumber: number = 10 // 增量每次增量文本数量
   _isMarkdownParserSync: boolean = false // 是否同步解析Markdown文本
   _isOnCopy: boolean = false // 是否打开长按复制粘贴效果
@@ -19,74 +21,6 @@ export class BaseMDData {
   _openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
   _openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
   _pagePath: string = "" // Markdown文本rawfile路径
-
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set incrementalAnalysis(value: boolean) {
-    this._incrementalAnalysis = value
-  }
-
-  public set time(value: number) {
-    this._time = value
-  }
-
-  public set textNumber(value: number) {
-    this._textNumber = value
-  }
-
-  public set isMarkdownParserSync(value: boolean) {
-    this._isMarkdownParserSync = value
-  }
-
-  public set isOnCopy(value: boolean) {
-    this._isOnCopy = value
-  }
-
-  public set openGestureSwipeTest(value: boolean) {
-    this._openGestureSwipeTest = value
-  }
-
-  public set openGestureSwipe(value: boolean) {
-    this._openGestureSwipe = value
-  }
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  public set stageContext(value: Context | undefined) {
-    this._stageContext = value
-  }
-
-  public set blockMarginTop(value: number) {
-    this._blockMarginTop = value
-  }
-
-  public set blockMarginRight(value: number) {
-    this._blockMarginRight = value
-  }
-
-  public set blockMarginBottom(value: number) {
-    this._blockMarginBottom = value
-  }
-
-  public set blockMarginLeft(value: number) {
-    this._blockMarginLeft = value
-  }
-
-  public set markdownBlockSpacing(value: number) {
-    this._markdownBlockSpacing = value
-  }
-
-  public set isLineBreak(value: boolean) {
-    this._isLineBreak = value
-  }
-
-  public set backgroundColor(value: ResourceColor | undefined) {
-    this._backgroundColor = value
-  }
 
   constructor() {
   }

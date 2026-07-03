@@ -149,7 +149,7 @@ export function resourceColorString(color: ResourceColor | undefined): string {
     case '#00000000':
       return "透明"
     case undefined:
-      return "null"
+      return "undefined"
   }
   return ""
 }

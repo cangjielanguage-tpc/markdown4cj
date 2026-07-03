@@ -16,7 +16,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 struct CodeListDetailsPage {
   // ---------- 通用
   scroller: Scroller = new Scroller() // 滑动控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  markdownScroller: Scroller = new Scroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -29,6 +29,10 @@ struct CodeListDetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -120,7 +124,7 @@ struct CodeListDetailsPage {
   @State // 代码块类型文本行高
   codeBlockTypeTextLineHeight: number | string | Resource | undefined = undefined
   @State // 代码块代码复制和代码全屏间距
-  codeBlockCopyFullScreenSpacing: number = 8
+  codeBlockCopyFullScreenSpacing: number = 8.0
   @State // 代码块代码复制按钮是否显示
   codeBlockCopyButtonIsShow: boolean = true
   @State // 代码块代码复制文本是否显示
@@ -131,7 +135,7 @@ struct CodeListDetailsPage {
   @State // 代码块代码复制图标高度
   codeBlockCopyIconHeight: Length = 24.0
   @State // 代码块代码复制图标和文本间距
-  codeBlockCopyIconTextSpacing: number = 4
+  codeBlockCopyIconTextSpacing: number = 4.0
   @State // 代码块代码复制默认文本内容
   codeBlockCopyText: string = "Copy"
   @State // 代码块代码复制文本颜色
@@ -156,7 +160,7 @@ struct CodeListDetailsPage {
   @State // 代码块代码全屏图标高度
   codeBlockFullScreenIconHeight: Length = 24.0
   @State // 代码块代码全屏图标和文本间距
-  codeBlockFullScreenIconTextSpacing: number = 4
+  codeBlockFullScreenIconTextSpacing: number = 4.0
   @State // 代码块代码全屏默认文本内容
   codeBlockFullScreenText: string = "Full Screen"
   @State // 代码块代码全屏文本颜色
@@ -192,7 +196,7 @@ struct CodeListDetailsPage {
   @State // 代码块代码行号和代码块中间分割线宽度
   codeBlockDividerStrokeWidth: Length = 0.5
   @State // 代码块代码行号和分割线间距
-  codeBlockLineNumberDividerSpacing: number = 8
+  codeBlockLineNumberDividerSpacing: number = 8.0
   @State // 代码块文本颜色
   codeBlockTextFontColor: ResourceColor | undefined = undefined
   @State // 代码块代码文本右外边距
@@ -210,7 +214,7 @@ struct CodeListDetailsPage {
   @State // 代码块文本行高
   codeBlockTextLineHeight: number | string | Resource = 22.0
   @State // 代码块文本字符间距
-  codeBlockTextLetterSpacing: number = 0
+  codeBlockTextLetterSpacing: number = 0.0
 
   // ---------- 组合代码块专有
   @State // 组合代码块未选中标题字体大小
@@ -240,6 +244,8 @@ struct CodeListDetailsPage {
       // ---------- 通用
       this.isFull = codeListData._isFull
       this.incrementalAnalysis = codeListData._incrementalAnalysis
+      this.enableParseThrottle = codeListData._enableParseThrottle
+      this.parseThrottleMs = codeListData._parseThrottleMs
       this.time = codeListData._time
       this.textNumber = codeListData._textNumber
       this.isMarkdownParserSync = codeListData._isMarkdownParserSync
@@ -383,7 +389,7 @@ struct CodeListDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -393,7 +399,7 @@ struct CodeListDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -429,6 +435,8 @@ struct CodeListDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
 
     // ---------- 专有 - CodeBlock

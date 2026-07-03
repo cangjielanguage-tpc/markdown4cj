@@ -89,23 +89,31 @@ struct LatexMathPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // ---------------- 专有
   // LaTeX数学公式上外边距列表
   latexMathMarginTopList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式上外边距
-  latexMathMarginTop: number = 0
+  latexMathMarginTop: number = 8
   // LaTeX数学公式右外边距列表
   latexMathMarginRightList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式右外边距
-  latexMathMarginRight: number = 0
+  latexMathMarginRight: number = 8
   // LaTeX数学公式下外边距列表
   latexMathMarginBottomList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式下外边距
-  latexMathMarginBottom: number = 0
+  latexMathMarginBottom: number = 8
   // LaTeX数学公式左外边距列表
   latexMathMarginLeftList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式左外边距
-  latexMathMarginLeft: number = 0
+  latexMathMarginLeft: number = 8
   // LaTeX数学公式上内边距列表
   latexMathPaddingTopList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式上内边距
@@ -133,7 +141,7 @@ struct LatexMathPage {
   // 数学公式未加载状态文本尺寸列表
   latexMathDefaultTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 数学公式未加载状态文本尺寸
-  latexMathDefaultTextFontSize: number = 16
+  latexMathDefaultTextFontSize: number = 14
   // 数学公式未加载状态文本字体样式列表
   latexMathDefaultTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 数学公式未加载状态文本字体样式
@@ -216,6 +224,8 @@ struct LatexMathPage {
                   // ---------- 通用
                   this.latexMathData._isFull = this.isFull
                   this.latexMathData._incrementalAnalysis = this.incrementalAnalysis
+                  this.latexMathData._enableParseThrottle = this.enableParseThrottle
+                  this.latexMathData._parseThrottleMs = this.parseThrottleMs
                   this.latexMathData._time = this.time
                   this.latexMathData._textNumber = this.textNumber
                   this.latexMathData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -232,26 +242,26 @@ struct LatexMathPage {
                   this.latexMathData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.latexMathData.latexMathMarginTop = this.latexMathMarginTop
-                  this.latexMathData.latexMathMarginRight = this.latexMathMarginRight
-                  this.latexMathData.latexMathMarginBottom = this.latexMathMarginBottom
-                  this.latexMathData.latexMathMarginLeft = this.latexMathMarginLeft
-                  this.latexMathData.latexMathPaddingTop = this.latexMathPaddingTop
-                  this.latexMathData.latexMathPaddingRight = this.latexMathPaddingRight
-                  this.latexMathData.latexMathPaddingBottom = this.latexMathPaddingBottom
-                  this.latexMathData.latexMathPaddingLeft = this.latexMathPaddingLeft
-                  this.latexMathData.latexMathDefaultText = this.latexMathDefaultText
-                  this.latexMathData.latexMathDefaultTextFontColor = this.latexMathDefaultTextFontColor
-                  this.latexMathData.latexMathDefaultTextFontSize = this.latexMathDefaultTextFontSize
-                  this.latexMathData.latexMathDefaultTextFontStyle = this.latexMathDefaultTextFontStyle
-                  this.latexMathData.latexMathDefaultTextFontWeight = this.latexMathDefaultTextFontWeight
-                  this.latexMathData.latexMathDefaultTextFontFamily = this.latexMathDefaultTextFontFamily
-                  this.latexMathData.latexMathTextSize = this.latexMathTextSize
-                  this.latexMathData.latexMathBackgroundColor = this.latexMathBackgroundColor
-                  this.latexMathData.latexMathTextColor = this.latexMathTextColor
-                  // this.latexMathData.latexMathColorFormat = this.latexMathColorFormat
-                  this.latexMathData.latexMathBlockCenter = this.latexMathBlockCenter
-                  this.latexMathData.latexMathResPath = this.latexMathResPath
+                  this.latexMathData._latexMathMarginTop = this.latexMathMarginTop
+                  this.latexMathData._latexMathMarginRight = this.latexMathMarginRight
+                  this.latexMathData._latexMathMarginBottom = this.latexMathMarginBottom
+                  this.latexMathData._latexMathMarginLeft = this.latexMathMarginLeft
+                  this.latexMathData._latexMathPaddingTop = this.latexMathPaddingTop
+                  this.latexMathData._latexMathPaddingRight = this.latexMathPaddingRight
+                  this.latexMathData._latexMathPaddingBottom = this.latexMathPaddingBottom
+                  this.latexMathData._latexMathPaddingLeft = this.latexMathPaddingLeft
+                  this.latexMathData._latexMathDefaultText = this.latexMathDefaultText
+                  this.latexMathData._latexMathDefaultTextFontColor = this.latexMathDefaultTextFontColor
+                  this.latexMathData._latexMathDefaultTextFontSize = this.latexMathDefaultTextFontSize
+                  this.latexMathData._latexMathDefaultTextFontStyle = this.latexMathDefaultTextFontStyle
+                  this.latexMathData._latexMathDefaultTextFontWeight = this.latexMathDefaultTextFontWeight
+                  this.latexMathData._latexMathDefaultTextFontFamily = this.latexMathDefaultTextFontFamily
+                  this.latexMathData._latexMathTextSize = this.latexMathTextSize
+                  this.latexMathData._latexMathBackgroundColor = this.latexMathBackgroundColor
+                  this.latexMathData._latexMathTextColor = this.latexMathTextColor
+                  // this.latexMathData._latexMathColorFormat = this.latexMathColorFormat
+                  this.latexMathData._latexMathBlockCenter = this.latexMathBlockCenter
+                  this.latexMathData._latexMathResPath = this.latexMathResPath
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/LatexMathDetailsPage", params: this.latexMathData })
                 })
@@ -297,6 +307,18 @@ struct LatexMathPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

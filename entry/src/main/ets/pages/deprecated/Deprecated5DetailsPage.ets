@@ -17,7 +17,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 @Component
 struct Deprecated5DetailsPage {
   scroller: Scroller = new Scroller()
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') safeTop: number = 0
   @StorageProp('currentColorMode')
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
@@ -151,7 +151,7 @@ struct Deprecated5DetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -161,7 +161,7 @@ struct Deprecated5DetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })

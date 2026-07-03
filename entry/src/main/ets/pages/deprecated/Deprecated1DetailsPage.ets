@@ -16,7 +16,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 @Component
 struct Deprecated1DetailsPage {
   scroller: Scroller = new Scroller()
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') safeTop: number = 0
   @StorageProp('currentColorMode')
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT

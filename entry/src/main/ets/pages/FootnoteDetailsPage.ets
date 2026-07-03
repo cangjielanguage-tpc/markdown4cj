@@ -19,7 +19,7 @@ struct FootnoteDetailsPage {
   // 滑动控制器
   scroller: Scroller = new Scroller()
   // Markdown的控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -36,6 +36,12 @@ struct FootnoteDetailsPage {
   // 是否增量解析Markdown文本
   @State
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流
+  @State
+  enableParseThrottle: boolean = false
+  // 解析节流间隔（ms）
+  @State
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间
   @State
   time: number = 50
@@ -167,6 +173,8 @@ struct FootnoteDetailsPage {
       // ---------- 通用
       this.isFull = footnoteData._isFull
       this.incrementalAnalysis = footnoteData._incrementalAnalysis
+      this.enableParseThrottle = footnoteData._enableParseThrottle
+      this.parseThrottleMs = footnoteData._parseThrottleMs
       this.time = footnoteData._time
       this.textNumber = footnoteData._textNumber
       this.isMarkdownParserSync = footnoteData._isMarkdownParserSync
@@ -245,7 +253,7 @@ struct FootnoteDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -255,7 +263,7 @@ struct FootnoteDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -291,6 +299,8 @@ struct FootnoteDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - FootnoteDef

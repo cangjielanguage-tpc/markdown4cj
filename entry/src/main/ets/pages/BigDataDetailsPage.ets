@@ -19,7 +19,7 @@ struct BigDataDetailsPage {
   /**
    * Markdown的控制器
    */
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   /**
    * 顶部导航栏高度
    */
@@ -40,6 +40,21 @@ struct BigDataDetailsPage {
    */
   @State
   isFull: boolean = true
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 是否启用解析节流
+   */
+  @State
+  enableParseThrottle: boolean = false
+  /**
+   * 解析节流间隔（ms）
+   */
+  @State
+  parseThrottleMs: number = 200
   /**
    * 增量加载每次间隔时间
    */
@@ -64,6 +79,9 @@ struct BigDataDetailsPage {
       this.fileStr = getFileContextStr(bigData._pagePath)
       // ---------- 通用
       this.isFull = bigData._isFull
+      this.incrementalAnalysis = bigData._incrementalAnalysis
+      this.enableParseThrottle = bigData._enableParseThrottle
+      this.parseThrottleMs = bigData._parseThrottleMs
       this.time = bigData._time
       this.textNumber = bigData._textNumber
       // ---------- 专有
@@ -103,7 +121,7 @@ struct BigDataDetailsPage {
         CJMarkdown({
           content: this.content,
           // isInputEnded: this.isInputEnded,
-          scroller: this.scroller,
+          scroller: this.markdownScroller,
           config: this.setMarkdownConfig(),
           plugin: this.setPlugin()
         })

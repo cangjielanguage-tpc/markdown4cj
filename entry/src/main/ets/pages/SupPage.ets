@@ -10,6 +10,7 @@ import {
   fontWeightListGeneraData,
   marginListGeneralData,
   offsetListGeneralData,
+  smallTextSizeListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
   textTypefaceListGeneralData,
@@ -90,13 +91,21 @@ struct SupPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // ---------------- 专有
   // 上标文本颜色列表
   supTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 上标文本颜色
   supTextFontColor: ResourceColor | undefined = undefined
   // 上标文本尺寸列表
-  supTextFontSizeList: Array<number> = textSizeListGeneralData
+  supTextFontSizeList: Array<number> = smallTextSizeListGeneralData
   @State // 上标文本尺寸
   supTextFontSize: number = 8
   // 上标文本字体样式列表
@@ -164,6 +173,8 @@ struct SupPage {
                   // ---------- 通用
                   this.supData._isFull = this.isFull
                   this.supData._incrementalAnalysis = this.incrementalAnalysis
+                  this.supData._enableParseThrottle = this.enableParseThrottle
+                  this.supData._parseThrottleMs = this.parseThrottleMs
                   this.supData._time = this.time
                   this.supData._textNumber = this.textNumber
                   this.supData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -180,13 +191,13 @@ struct SupPage {
                   this.supData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.supData.supTextFontColor = this.supTextFontColor
-                  this.supData.supTextFontSize = this.supTextFontSize
-                  this.supData.supTextFontStyle = this.supTextFontStyle
-                  this.supData.supTextFontWeight = this.supTextFontWeight
-                  this.supData.supTextFontFamily = this.supTextFontFamily
-                  this.supData.supTextLetterSpacing = this.supTextLetterSpacing
-                  this.supData.supTextBaselineOffset = this.supTextBaselineOffset
+                  this.supData._supTextFontColor = this.supTextFontColor
+                  this.supData._supTextFontSize = this.supTextFontSize
+                  this.supData._supTextFontStyle = this.supTextFontStyle
+                  this.supData._supTextFontWeight = this.supTextFontWeight
+                  this.supData._supTextFontFamily = this.supTextFontFamily
+                  this.supData._supTextLetterSpacing = this.supTextLetterSpacing
+                  this.supData._supTextBaselineOffset = this.supTextBaselineOffset
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/SupDetailsPage", params: this.supData })
                 })
@@ -232,6 +243,18 @@ struct SupPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

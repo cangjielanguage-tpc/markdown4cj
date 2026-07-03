@@ -86,6 +86,14 @@ struct DescListPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State descListData: DescListData = new DescListData() // 配置数据内容
   // ---------------- 专有
   // 定义列表背景颜色列表
@@ -187,6 +195,8 @@ struct DescListPage {
                   // ---------- 通用
                   this.descListData._isFull = this.isFull
                   this.descListData._incrementalAnalysis = this.incrementalAnalysis
+                  this.descListData._enableParseThrottle = this.enableParseThrottle
+                  this.descListData._parseThrottleMs = this.parseThrottleMs
                   this.descListData._time = this.time
                   this.descListData._textNumber = this.textNumber
                   this.descListData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -203,20 +213,20 @@ struct DescListPage {
                   this.descListData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.descListData.definitionListBackgroundColor = this.definitionListBackgroundColor
-                  this.descListData.definitionListMarginTop = this.definitionListMarginTop
-                  this.descListData.definitionListMarginRight = this.definitionListMarginRight
-                  this.descListData.definitionListMarginBottom = this.definitionListMarginBottom
-                  this.descListData.definitionListMarginLeft = this.definitionListMarginLeft
-                  this.descListData.definitionListPaddingTop = this.definitionListPaddingTop
-                  this.descListData.definitionListPaddingRight = this.definitionListPaddingRight
-                  this.descListData.definitionListPaddingBottom = this.definitionListPaddingBottom
-                  this.descListData.definitionListPaddingLeft = this.definitionListPaddingLeft
-                  this.descListData.definitionListTermToDescriptionSpacing = this.definitionListTermToDescriptionSpacing
-                  this.descListData.definitionListTermTextFontWeight = this.definitionListTermTextFontWeight
-                  this.descListData.definitionListTermTextFontStyle = this.definitionListTermTextFontStyle
-                  this.descListData.definitionListDescriptionItemSpacing = this.definitionListDescriptionItemSpacing
-                  this.descListData.definitionListDescriptionIndent = this.definitionListDescriptionIndent
+                  this.descListData._definitionListBackgroundColor = this.definitionListBackgroundColor
+                  this.descListData._definitionListMarginTop = this.definitionListMarginTop
+                  this.descListData._definitionListMarginRight = this.definitionListMarginRight
+                  this.descListData._definitionListMarginBottom = this.definitionListMarginBottom
+                  this.descListData._definitionListMarginLeft = this.definitionListMarginLeft
+                  this.descListData._definitionListPaddingTop = this.definitionListPaddingTop
+                  this.descListData._definitionListPaddingRight = this.definitionListPaddingRight
+                  this.descListData._definitionListPaddingBottom = this.definitionListPaddingBottom
+                  this.descListData._definitionListPaddingLeft = this.definitionListPaddingLeft
+                  this.descListData._definitionListTermToDescriptionSpacing = this.definitionListTermToDescriptionSpacing
+                  this.descListData._definitionListTermTextFontWeight = this.definitionListTermTextFontWeight
+                  this.descListData._definitionListTermTextFontStyle = this.definitionListTermTextFontStyle
+                  this.descListData._definitionListDescriptionItemSpacing = this.definitionListDescriptionItemSpacing
+                  this.descListData._definitionListDescriptionIndent = this.definitionListDescriptionIndent
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/DescListDetailsPage", params: this.descListData })
                 })
@@ -262,6 +272,18 @@ struct DescListPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

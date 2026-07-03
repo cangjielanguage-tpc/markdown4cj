@@ -15,7 +15,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 struct Deprecated0DetailsPage {
   // ---------- 通用
   scroller: Scroller = new Scroller() // 滑动控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  markdownScroller: Scroller = new Scroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -169,7 +169,7 @@ struct Deprecated0DetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -179,7 +179,7 @@ struct Deprecated0DetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })

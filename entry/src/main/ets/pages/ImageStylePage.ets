@@ -67,6 +67,12 @@ struct ImageStylePage {
   // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State enableParseThrottle: boolean = false // 是否启用解析节流
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State parseThrottleMs: number = 200 // 解析节流间隔（ms）
   @State imageStyle: ImageStyle = new ImageStyle() // 配置数据内容
   heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
@@ -110,6 +116,8 @@ struct ImageStylePage {
                   // ---------- 通用
                   this.imageStyle._isFull = this.isFull
                   this.imageStyle._incrementalAnalysis = this.incrementalAnalysis
+                  this.imageStyle._enableParseThrottle = this.enableParseThrottle
+                  this.imageStyle._parseThrottleMs = this.parseThrottleMs
                   this.imageStyle._time = this.time
                   this.imageStyle._textNumber = this.textNumber
                   this.imageStyle._isMarkdownParserSync = this.isMarkdownParserSync
@@ -169,6 +177,18 @@ struct ImageStylePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

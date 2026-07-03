@@ -15,7 +15,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 struct DemoDetailsPage {
   // ---------- 通用
   scroller: Scroller = new Scroller() // 滑动控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  markdownScroller: Scroller = new Scroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -28,6 +28,10 @@ struct DemoDetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -73,6 +77,8 @@ struct DemoDetailsPage {
       // ---------- 通用
       this.isFull = baseMDData._isFull
       this.incrementalAnalysis = baseMDData._incrementalAnalysis
+      this.enableParseThrottle = baseMDData._enableParseThrottle
+      this.parseThrottleMs = baseMDData._parseThrottleMs
       this.time = baseMDData._time
       this.textNumber = baseMDData._textNumber
       this.isMarkdownParserSync = baseMDData._isMarkdownParserSync
@@ -131,7 +137,7 @@ struct DemoDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -141,7 +147,7 @@ struct DemoDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -187,6 +193,8 @@ struct DemoDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     // ---------- 专有
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))

@@ -13,50 +13,6 @@ export class ThematicData extends BaseMDData {
   _dividerStrokeWidth: number = 0.5 // 分割线宽度
   _dividerStyle: LineCapStyle = LineCapStyle.Butt // 分割线端点样式
 
-  public set dividerMarginTop(value: Length) {
-    this._dividerMarginTop = value
-  }
-
-  public set dividerMarginRight(value: Length) {
-    this._dividerMarginRight = value
-  }
-
-  public set dividerMarginBottom(value: Length) {
-    this._dividerMarginBottom = value
-  }
-
-  public set dividerMarginLeft(value: Length) {
-    this._dividerMarginLeft = value
-  }
-
-  public set dividerPaddingTop(value: Length) {
-    this._dividerPaddingTop = value
-  }
-
-  public set dividerPaddingRight(value: Length) {
-    this._dividerPaddingRight = value
-  }
-
-  public set dividerPaddingBottom(value: Length) {
-    this._dividerPaddingBottom = value
-  }
-
-  public set dividerPaddingLeft(value: Length) {
-    this._dividerPaddingLeft = value
-  }
-
-  public set dividerColor(value: ResourceColor | undefined) {
-    this._dividerColor = value
-  }
-
-  public set dividerStrokeWidth(value: number) {
-    this._dividerStrokeWidth = value
-  }
-
-  public set dividerStyle(value: LineCapStyle) {
-    this._dividerStyle = value
-  }
-
   constructor() {
     super()
   }

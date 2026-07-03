@@ -91,6 +91,14 @@ struct HTMLPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // ---------------- 专有
   // HTML下划线文本颜色列表
   htmlUnderlineTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
@@ -172,6 +180,8 @@ struct HTMLPage {
                   // ---------- 通用
                   this.htmlData._isFull = this.isFull
                   this.htmlData._incrementalAnalysis = this.incrementalAnalysis
+                  this.htmlData._enableParseThrottle = this.enableParseThrottle
+                  this.htmlData._parseThrottleMs = this.parseThrottleMs
                   this.htmlData._time = this.time
                   this.htmlData._textNumber = this.textNumber
                   this.htmlData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -188,15 +198,15 @@ struct HTMLPage {
                   this.htmlData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.htmlData.htmlUnderlineTextFontColor = this.htmlUnderlineTextFontColor
-                  this.htmlData.htmlUnderlineTextFontSize = this.htmlUnderlineTextFontSize
-                  this.htmlData.htmlUnderlineTextFontStyle = this.htmlUnderlineTextFontStyle
-                  this.htmlData.htmlUnderlineTextFontWeight = this.htmlUnderlineTextFontWeight
-                  this.htmlData.htmlUnderlineTextFontFamily = this.htmlUnderlineTextFontFamily
-                  this.htmlData.htmlUnderlineTextLineHeight = this.htmlUnderlineTextLineHeight
-                  this.htmlData.htmlUnderlineTextLetterSpacing = this.htmlUnderlineTextLetterSpacing
-                  this.htmlData.htmlUnderlineTextDecorationColor = this.htmlUnderlineTextDecorationColor
-                  this.htmlData.htmlUnderlineTextDecorationStyle = this.htmlUnderlineTextDecorationStyle
+                  this.htmlData._htmlUnderlineTextFontColor = this.htmlUnderlineTextFontColor
+                  this.htmlData._htmlUnderlineTextFontSize = this.htmlUnderlineTextFontSize
+                  this.htmlData._htmlUnderlineTextFontStyle = this.htmlUnderlineTextFontStyle
+                  this.htmlData._htmlUnderlineTextFontWeight = this.htmlUnderlineTextFontWeight
+                  this.htmlData._htmlUnderlineTextFontFamily = this.htmlUnderlineTextFontFamily
+                  this.htmlData._htmlUnderlineTextLineHeight = this.htmlUnderlineTextLineHeight
+                  this.htmlData._htmlUnderlineTextLetterSpacing = this.htmlUnderlineTextLetterSpacing
+                  this.htmlData._htmlUnderlineTextDecorationColor = this.htmlUnderlineTextDecorationColor
+                  this.htmlData._htmlUnderlineTextDecorationStyle = this.htmlUnderlineTextDecorationStyle
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/HTMLDetailsPage", params: this.htmlData })
                 })
@@ -242,6 +252,18 @@ struct HTMLPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",
@@ -356,42 +378,6 @@ struct HTMLPage {
 
             if (this.isExpanded2) {
               Column() {
-                BaseTabComponent({
-                  titleStr: "Markdown块上边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.blockMarginTopList,
-                  allData: this.blockMarginTop
-                })
-                BaseTabComponent({
-                  titleStr: "Markdown块右边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.blockMarginRightList,
-                  allData: this.blockMarginRight
-                })
-                BaseTabComponent({
-                  titleStr: "Markdown块下边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.blockMarginBottomList,
-                  allData: this.blockMarginBottom
-                })
-                BaseTabComponent({
-                  titleStr: "Markdown块左边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.blockMarginLeftList,
-                  allData: this.blockMarginLeft
-                })
-                BaseTabComponent({
-                  titleStr: "是否换行 - ",
-                  typeEnum: TypeEnum.IS_BOOLEAN,
-                  allListData: this.isLineBreakList,
-                  allData: this.isLineBreak
-                })
-                BaseTabComponent({
-                  titleStr: "全局背景色 - ",
-                  typeEnum: TypeEnum.IS_COLOR,
-                  allListData: this.globalBackgroundColorList,
-                  allData: this.globalBackgroundColor
-                })
                 BaseTabComponent({
                   titleStr: "HTML下划线文本颜色 - ",
                   typeEnum: TypeEnum.IS_COLOR,

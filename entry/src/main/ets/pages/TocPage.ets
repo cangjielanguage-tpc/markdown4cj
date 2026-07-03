@@ -28,6 +28,12 @@ struct TocPage {
   // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State incrementalAnalysis: boolean = false // 是否增量解析Markdown文本
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State enableParseThrottle: boolean = false // 是否启用解析节流
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State parseThrottleMs: number = 200 // 解析节流间隔（ms）
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State time: number = 50 // 增量加载每次间隔时间
@@ -112,6 +118,8 @@ struct TocPage {
                   // ---------- 通用
                   this.tocData._isFull = this.isFull
                   this.tocData._incrementalAnalysis = this.incrementalAnalysis
+                  this.tocData._enableParseThrottle = this.enableParseThrottle
+                  this.tocData._parseThrottleMs = this.parseThrottleMs
                   this.tocData._time = this.time
                   this.tocData._textNumber = this.textNumber
                   this.tocData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -171,6 +179,18 @@ struct TocPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔（ms） - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

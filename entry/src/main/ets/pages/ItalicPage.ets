@@ -89,6 +89,14 @@ struct ItalicPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 配置数据内容
   italicData: ItalicData = new ItalicData()
   // ---------------- 专有
@@ -159,6 +167,8 @@ struct ItalicPage {
                   // ---------- 通用
                   this.italicData._isFull = this.isFull
                   this.italicData._incrementalAnalysis = this.incrementalAnalysis
+                  this.italicData._enableParseThrottle = this.enableParseThrottle
+                  this.italicData._parseThrottleMs = this.parseThrottleMs
                   this.italicData._time = this.time
                   this.italicData._textNumber = this.textNumber
                   this.italicData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -218,6 +228,18 @@ struct ItalicPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

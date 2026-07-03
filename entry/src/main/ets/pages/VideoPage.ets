@@ -19,8 +19,8 @@ import {
   textNumberListGeneralData,
   textSizeListGeneralData,
   textTypefaceListGeneralData,
-  timeListGeneralData,
-  widthOrHeightListGeneralData
+  widthOrHeightListGeneralData,
+  timeListGeneralData
 } from '../model/GeneralData'
 import { VideoData } from '../model/VideoData'
 // import { ImageFitType } from '@cangjie-tpc/markdown_hybrid'
@@ -80,6 +80,12 @@ struct VideoPage {
   // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State enableParseThrottle: boolean = false // 是否启用解析节流
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State parseThrottleMs: number = 200 // 解析节流间隔（ms）
   // ---------------- 专有
   // 视频背景颜色列表
   videoBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
@@ -134,7 +140,7 @@ struct VideoPage {
   @State videoPlaceholder: Resource | undefined = undefined // 视频占位图
   // 视频图片缩放类型列表
   videoImageFitTypeList: Array<ImageFit> = imageFitListData
-  @State videoImageFitType: ImageFit = ImageFit.Contain // 视频图片缩放类型
+  @State videoImageFitType: ImageFit = ImageFit.Cover // 视频图片缩放类型
   // 播放按钮图标列表
   videoPlayIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon'), $r('app.media.app_icon')]
   @State videoPlayIcon: Resource | undefined = undefined // 播放按钮图标
@@ -341,6 +347,8 @@ struct VideoPage {
                   // ---------- 通用
                   this.videoData._isFull = this.isFull
                   this.videoData._incrementalAnalysis = this.incrementalAnalysis
+                  this.videoData._enableParseThrottle = this.enableParseThrottle
+                  this.videoData._parseThrottleMs = this.parseThrottleMs
                   this.videoData._time = this.time
                   this.videoData._textNumber = this.textNumber
                   this.videoData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -475,6 +483,18 @@ struct VideoPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

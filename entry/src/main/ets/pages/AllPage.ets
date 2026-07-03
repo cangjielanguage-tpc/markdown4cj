@@ -29,6 +29,12 @@ struct AllPage {
   // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State incrementalAnalysis: boolean = false // 是否增量解析Markdown文本
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State enableParseThrottle: boolean = false // 是否启用解析节流
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State parseThrottleMs: number = 200 // 解析节流间隔（ms）
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State time: number = 50 // 增量加载每次间隔时间
@@ -113,6 +119,8 @@ struct AllPage {
                   // ---------- 通用
                   this.allData._isFull = this.isFull
                   this.allData._incrementalAnalysis = this.incrementalAnalysis
+                  this.allData._enableParseThrottle = this.enableParseThrottle
+                  this.allData._parseThrottleMs = this.parseThrottleMs
                   this.allData._time = this.time
                   this.allData._textNumber = this.textNumber
                   this.allData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -174,6 +182,18 @@ struct AllPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

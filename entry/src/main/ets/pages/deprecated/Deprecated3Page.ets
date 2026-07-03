@@ -543,67 +543,67 @@ struct Deprecated3Page {
                   .fontSize(16)
                   .onClick(() => {
                     // ---------- 通用配置
-                    this.deprecatedData.isFull = this.isFull
-                    this.deprecatedData.incrementalAnalysis = this.incrementalAnalysis
-                    this.deprecatedData.time = this.time
-                    this.deprecatedData.textNumber = this.textNumber
-                    this.deprecatedData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.deprecatedData.isOnCopy = this.isOnCopy
-                    this.deprecatedData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.deprecatedData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.deprecatedData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                    this.deprecatedData.openGestureSwipe = this.openGestureSwipe
-                    this.deprecatedData.openGestureSwipeTest = this.openGestureSwipeTest
+                    this.deprecatedData._isFull = this.isFull
+                    this.deprecatedData._incrementalAnalysis = this.incrementalAnalysis
+                    this.deprecatedData._time = this.time
+                    this.deprecatedData._textNumber = this.textNumber
+                    this.deprecatedData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.deprecatedData._isOnCopy = this.isOnCopy
+                    this.deprecatedData._blockFirstTopMargin = this.blockFirstTopMargin
+                    this.deprecatedData._blockLastBottomMargin = this.blockLastBottomMargin
+                    this.deprecatedData._blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.deprecatedData._openGestureSwipe = this.openGestureSwipe
+                    this.deprecatedData._openGestureSwipeTest = this.openGestureSwipeTest
 
                     // ---------- 标题配置
-                    this.deprecatedData.headingBreakHeight = this.headingBreakHeight
-                    this.deprecatedData.headingTextSize1 = this.headingTextSize1
-                    this.deprecatedData.headingTextSize2 = this.headingTextSize2
-                    this.deprecatedData.headingTextSize3 = this.headingTextSize3
-                    this.deprecatedData.headingTextSize4 = this.headingTextSize4
-                    this.deprecatedData.headingTextSize5 = this.headingTextSize5
-                    this.deprecatedData.headingTextSize6 = this.headingTextSize6
-                    this.deprecatedData.headingTypeface = this.headingTypeface
-                    this.deprecatedData.headingTopMargins = this.headingTopMargins
-                    this.deprecatedData.headingBottomMargins = this.headingBottomMargins
-                    this.deprecatedData.headingTextWordSpace = this.headingTextWordSpace
-                    this.deprecatedData.headingTextLineHeight1 = this.headingTextLineHeight1
-                    this.deprecatedData.headingTextLineHeight2 = this.headingTextLineHeight2
-                    this.deprecatedData.headingTextLineHeight3 = this.headingTextLineHeight3
-                    this.deprecatedData.headingTextLineHeight4 = this.headingTextLineHeight4
-                    this.deprecatedData.headingTextLineHeight5 = this.headingTextLineHeight5
-                    this.deprecatedData.headingTextLineHeight6 = this.headingTextLineHeight6
-                    this.deprecatedData.headingTextColor1 = this.headingTextColor1
-                    this.deprecatedData.headingBreakColor1 = this.headingBreakColor1
-                    this.deprecatedData.headingTextColor2 = this.headingTextColor2
-                    this.deprecatedData.headingBreakColor2 = this.headingBreakColor2
-                    this.deprecatedData.headingTextColor3 = this.headingTextColor3
-                    this.deprecatedData.headingTextColor4 = this.headingTextColor4
-                    this.deprecatedData.headingTextColor5 = this.headingTextColor5
-                    this.deprecatedData.headingTextColor6 = this.headingTextColor6
+                    this.deprecatedData._headingBreakHeight = this.headingBreakHeight
+                    this.deprecatedData._headingTextSize1 = this.headingTextSize1
+                    this.deprecatedData._headingTextSize2 = this.headingTextSize2
+                    this.deprecatedData._headingTextSize3 = this.headingTextSize3
+                    this.deprecatedData._headingTextSize4 = this.headingTextSize4
+                    this.deprecatedData._headingTextSize5 = this.headingTextSize5
+                    this.deprecatedData._headingTextSize6 = this.headingTextSize6
+                    this.deprecatedData._headingTypeface = this.headingTypeface
+                    this.deprecatedData._headingTopMargins = this.headingTopMargins
+                    this.deprecatedData._headingBottomMargins = this.headingBottomMargins
+                    this.deprecatedData._headingTextWordSpace = this.headingTextWordSpace
+                    this.deprecatedData._headingTextLineHeight1 = this.headingTextLineHeight1
+                    this.deprecatedData._headingTextLineHeight2 = this.headingTextLineHeight2
+                    this.deprecatedData._headingTextLineHeight3 = this.headingTextLineHeight3
+                    this.deprecatedData._headingTextLineHeight4 = this.headingTextLineHeight4
+                    this.deprecatedData._headingTextLineHeight5 = this.headingTextLineHeight5
+                    this.deprecatedData._headingTextLineHeight6 = this.headingTextLineHeight6
+                    this.deprecatedData._headingTextColor1 = this.headingTextColor1
+                    this.deprecatedData._headingBreakColor1 = this.headingBreakColor1
+                    this.deprecatedData._headingTextColor2 = this.headingTextColor2
+                    this.deprecatedData._headingBreakColor2 = this.headingBreakColor2
+                    this.deprecatedData._headingTextColor3 = this.headingTextColor3
+                    this.deprecatedData._headingTextColor4 = this.headingTextColor4
+                    this.deprecatedData._headingTextColor5 = this.headingTextColor5
+                    this.deprecatedData._headingTextColor6 = this.headingTextColor6
 
                     // ---------- 段落配置
-                    this.deprecatedData.paragraphTextSize = this.paragraphTextSize
-                    this.deprecatedData.paragraphTextColor = this.paragraphTextColor
-                    this.deprecatedData.paragraphTypeface = this.paragraphTypeface
-                    this.deprecatedData.paragraphTopMargins = this.paragraphTopMargins
-                    this.deprecatedData.paragraphBottomMargins = this.paragraphBottomMargins
-                    this.deprecatedData.paragraphTextWordSpace = this.paragraphTextWordSpace
-                    this.deprecatedData.paragraphTextLineHeight = this.paragraphTextLineHeight
+                    this.deprecatedData._paragraphTextSize = this.paragraphTextSize
+                    this.deprecatedData._paragraphTextColor = this.paragraphTextColor
+                    this.deprecatedData._paragraphTypeface = this.paragraphTypeface
+                    this.deprecatedData._paragraphTopMargins = this.paragraphTopMargins
+                    this.deprecatedData._paragraphBottomMargins = this.paragraphBottomMargins
+                    this.deprecatedData._paragraphTextWordSpace = this.paragraphTextWordSpace
+                    this.deprecatedData._paragraphTextLineHeight = this.paragraphTextLineHeight
 
                     // ---------- 分割线配置
-                    this.deprecatedData.thematicBreakColor = this.thematicBreakColor
-                    this.deprecatedData.thematicBreakHeight = this.thematicBreakHeight
-                    this.deprecatedData.thematicBreakTopMargin = this.thematicBreakTopMargin
-                    this.deprecatedData.thematicBreakBottomMargin = this.thematicBreakBottomMargin
+                    this.deprecatedData._thematicBreakColor = this.thematicBreakColor
+                    this.deprecatedData._thematicBreakHeight = this.thematicBreakHeight
+                    this.deprecatedData._thematicBreakTopMargin = this.thematicBreakTopMargin
+                    this.deprecatedData._thematicBreakBottomMargin = this.thematicBreakBottomMargin
 
                     // ---------- 内联代码配置
-                    this.deprecatedData.codeTextColor = this.codeTextColor
-                    this.deprecatedData.codeBackgroundColor = this.codeBackgroundColor
-                    this.deprecatedData.codeTextSize = this.codeTextSize
-                    this.deprecatedData.codeTypeface = this.codeTypeface
+                    this.deprecatedData._codeTextColor = this.codeTextColor
+                    this.deprecatedData._codeBackgroundColor = this.codeBackgroundColor
+                    this.deprecatedData._codeTextSize = this.codeTextSize
+                    this.deprecatedData._codeTypeface = this.codeTypeface
 
-                    this.deprecatedData.pagePath = `${this.rawFilePath}/${item}`
+                    this.deprecatedData._pagePath = `${this.rawFilePath}/${item}`
 
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/deprecated/Deprecated3DetailsPage", params: this.deprecatedData })

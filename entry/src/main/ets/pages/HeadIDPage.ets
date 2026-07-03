@@ -84,6 +84,14 @@ struct HeadIDPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // ---------------- 专有
 
   @State // 配置数据内容
@@ -131,6 +139,8 @@ struct HeadIDPage {
                   // ---------- 通用
                   this.headIDData._isFull = this.isFull
                   this.headIDData._incrementalAnalysis = this.incrementalAnalysis
+                  this.headIDData._enableParseThrottle = this.enableParseThrottle
+                  this.headIDData._parseThrottleMs = this.parseThrottleMs
                   this.headIDData._time = this.time
                   this.headIDData._textNumber = this.textNumber
                   this.headIDData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -190,6 +200,18 @@ struct HeadIDPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",
@@ -268,77 +290,6 @@ struct HeadIDPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.openGestureSwipeList,
                   allData: this.openGestureSwipe
-                })
-              }
-              .width('100%')
-              .padding({ bottom: 5, left: 5, right: 5 })
-              .margin({ bottom: 5, left: 5, right: 5 })
-            }
-          }
-          .width('100%')
-          .margin(5)
-          .borderRadius(5)
-          .backgroundColor(0xFF317AFF)
-
-          Column() {
-            Row() {
-              Text("专有样式配置")
-                .fontSize(16)
-                .fontColor('#FFF5F5F5')
-                .fontWeight(FontWeight.Bold)
-                .layoutWeight(1)
-              Text(this.isExpanded2 ? "▲" : "▼")
-                .fontSize(16)
-                .fontColor('#FFF5F5F5')
-                .padding({ right: 20 })
-                .onClick(() => {
-                  this.isExpanded2 = !this.isExpanded2
-                })
-            }
-            .width('100%')
-            .padding(5)
-            .margin(5)
-            .onClick(() => {
-              this.isExpanded2 = !this.isExpanded2
-            })
-
-            if (this.isExpanded2) {
-              Column() {
-                BaseTabComponent({
-                  titleStr: "Markdown块上边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.blockMarginTopList,
-                  allData: this.blockMarginTop
-                })
-                BaseTabComponent({
-                  titleStr: "Markdown块右边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.blockMarginRightList,
-                  allData: this.blockMarginRight
-                })
-                BaseTabComponent({
-                  titleStr: "Markdown块下边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.blockMarginBottomList,
-                  allData: this.blockMarginBottom
-                })
-                BaseTabComponent({
-                  titleStr: "Markdown块左边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.blockMarginLeftList,
-                  allData: this.blockMarginLeft
-                })
-                BaseTabComponent({
-                  titleStr: "是否换行 - ",
-                  typeEnum: TypeEnum.IS_BOOLEAN,
-                  allListData: this.isLineBreakList,
-                  allData: this.isLineBreak
-                })
-                BaseTabComponent({
-                  titleStr: "全局背景色 - ",
-                  typeEnum: TypeEnum.IS_COLOR,
-                  allListData: this.globalBackgroundColorList,
-                  allData: this.globalBackgroundColor
                 })
               }
               .width('100%')

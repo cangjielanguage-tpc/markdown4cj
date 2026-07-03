@@ -39,6 +39,14 @@ struct CodeLinePage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -184,6 +192,8 @@ struct CodeLinePage {
                   // ---------- 通用
                   this.codeLineData._isFull = this.isFull
                   this.codeLineData._incrementalAnalysis = this.incrementalAnalysis
+                  this.codeLineData._enableParseThrottle = this.enableParseThrottle
+                  this.codeLineData._parseThrottleMs = this.parseThrottleMs
                   this.codeLineData._time = this.time
                   this.codeLineData._textNumber = this.textNumber
                   this.codeLineData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -200,18 +210,18 @@ struct CodeLinePage {
                   this.codeLineData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.codeLineData.inlineCodeTextFontColor = this.inlineCodeTextFontColor
-                  this.codeLineData.inlineCodeTextFontSize = this.inlineCodeTextFontSize
-                  this.codeLineData.inlineCodeTextFontStyle = this.inlineCodeTextFontStyle
-                  this.codeLineData.inlineCodeTextFontWeight = this.inlineCodeTextFontWeight
-                  this.codeLineData.inlineCodeTextFontFamily = this.inlineCodeTextFontFamily
-                  this.codeLineData.inlineCodeTextLineHeight = this.inlineCodeTextLineHeight
-                  this.codeLineData.inlineCodeTextLetterSpacing = this.inlineCodeTextLetterSpacing
-                  this.codeLineData.inlineCodeTextBackgroundColor = this.inlineCodeTextBackgroundColor
-                  this.codeLineData.inlineCodeTextBackgroundRadiusTopLeft = this.inlineCodeTextBackgroundRadiusTopLeft
-                  this.codeLineData.inlineCodeTextBackgroundRadiusTopRight = this.inlineCodeTextBackgroundRadiusTopRight
-                  this.codeLineData.inlineCodeTextBackgroundRadiusBottomLeft = this.inlineCodeTextBackgroundRadiusBottomLeft
-                  this.codeLineData.inlineCodeTextBackgroundRadiusBottomRight = this.inlineCodeTextBackgroundRadiusBottomRight
+                  this.codeLineData._inlineCodeTextFontColor = this.inlineCodeTextFontColor
+                  this.codeLineData._inlineCodeTextFontSize = this.inlineCodeTextFontSize
+                  this.codeLineData._inlineCodeTextFontStyle = this.inlineCodeTextFontStyle
+                  this.codeLineData._inlineCodeTextFontWeight = this.inlineCodeTextFontWeight
+                  this.codeLineData._inlineCodeTextFontFamily = this.inlineCodeTextFontFamily
+                  this.codeLineData._inlineCodeTextLineHeight = this.inlineCodeTextLineHeight
+                  this.codeLineData._inlineCodeTextLetterSpacing = this.inlineCodeTextLetterSpacing
+                  this.codeLineData._inlineCodeTextBackgroundColor = this.inlineCodeTextBackgroundColor
+                  this.codeLineData._inlineCodeTextBackgroundRadiusTopLeft = this.inlineCodeTextBackgroundRadiusTopLeft
+                  this.codeLineData._inlineCodeTextBackgroundRadiusTopRight = this.inlineCodeTextBackgroundRadiusTopRight
+                  this.codeLineData._inlineCodeTextBackgroundRadiusBottomLeft = this.inlineCodeTextBackgroundRadiusBottomLeft
+                  this.codeLineData._inlineCodeTextBackgroundRadiusBottomRight = this.inlineCodeTextBackgroundRadiusBottomRight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/CodeLineDetailsPage", params: this.codeLineData })
                 })
@@ -257,6 +267,18 @@ struct CodeLinePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

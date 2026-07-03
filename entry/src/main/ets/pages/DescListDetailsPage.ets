@@ -18,7 +18,7 @@ struct DescListDetailsPage {
   // 滑动控制器
   scroller: Scroller = new Scroller()
   // Markdown的控制器
-  // markdownScroller: MarkdownScroller = new MarkdownScroller()
+  markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
@@ -35,6 +35,12 @@ struct DescListDetailsPage {
   // 是否增量解析Markdown文本
   @State
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流
+  @State
+  enableParseThrottle: boolean = false
+  // 解析节流间隔（ms）
+  @State
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间
   @State
   time: number = 50
@@ -136,6 +142,8 @@ struct DescListDetailsPage {
       // ---------- 通用
       this.isFull = descListData._isFull
       this.incrementalAnalysis = descListData._incrementalAnalysis
+      this.enableParseThrottle = descListData._enableParseThrottle
+      this.parseThrottleMs = descListData._parseThrottleMs
       this.time = descListData._time
       this.textNumber = descListData._textNumber
       this.isMarkdownParserSync = descListData._isMarkdownParserSync
@@ -204,7 +212,7 @@ struct DescListDetailsPage {
               content: this.content,
               // isInputEnded: this.isInputEnded,
               // incrementalAnalysis: this.incrementalAnalysis,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -214,7 +222,7 @@ struct DescListDetailsPage {
             CJMarkdown({
               content: this.content,
               // isInputEnded: this.isInputEnded,
-              scroller: this.scroller,
+              scroller: this.markdownScroller,
               config: this.markdownConfiguration,
               plugin: this.markdownPlugin
             })
@@ -250,6 +258,8 @@ struct DescListDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - DefinitionList

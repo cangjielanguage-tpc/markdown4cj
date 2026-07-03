@@ -39,6 +39,14 @@ struct BoldPage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -165,6 +173,8 @@ struct BoldPage {
                   // ---------- 通用
                   this.boldData._isFull = this.isFull
                   this.boldData._incrementalAnalysis = this.incrementalAnalysis
+                  this.boldData._enableParseThrottle = this.enableParseThrottle
+                  this.boldData._parseThrottleMs = this.parseThrottleMs
                   this.boldData._time = this.time
                   this.boldData._textNumber = this.textNumber
                   this.boldData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -181,13 +191,13 @@ struct BoldPage {
                   this.boldData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.boldData.boldTextFontColor = this.boldTextFontColor
-                  this.boldData.boldTextFontSize = this.boldTextFontSize
-                  this.boldData.boldTextFontStyle = this.boldTextFontStyle
-                  this.boldData.boldTextFontWeight = this.boldTextFontWeight
-                  this.boldData.boldTextFontFamily = this.boldTextFontFamily
-                  this.boldData.boldTextLineHeight = this.boldTextLineHeight
-                  this.boldData.boldTextLetterSpacing = this.boldTextLetterSpacing
+                  this.boldData._boldTextFontColor = this.boldTextFontColor
+                  this.boldData._boldTextFontSize = this.boldTextFontSize
+                  this.boldData._boldTextFontStyle = this.boldTextFontStyle
+                  this.boldData._boldTextFontWeight = this.boldTextFontWeight
+                  this.boldData._boldTextFontFamily = this.boldTextFontFamily
+                  this.boldData._boldTextLineHeight = this.boldTextLineHeight
+                  this.boldData._boldTextLetterSpacing = this.boldTextLetterSpacing
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/BoldDetailsPage", params: this.boldData })
                 })
@@ -233,6 +243,18 @@ struct BoldPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

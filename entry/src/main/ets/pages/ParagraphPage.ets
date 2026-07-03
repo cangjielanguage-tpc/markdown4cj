@@ -38,6 +38,14 @@ struct ParagraphPage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -200,6 +208,8 @@ struct ParagraphPage {
                   // ---------- 通用
                   this.paragraphData._isFull = this.isFull
                   this.paragraphData._incrementalAnalysis = this.incrementalAnalysis
+                  this.paragraphData._enableParseThrottle = this.enableParseThrottle
+                  this.paragraphData._parseThrottleMs = this.parseThrottleMs
                   this.paragraphData._time = this.time
                   this.paragraphData._textNumber = this.textNumber
                   this.paragraphData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -216,22 +226,22 @@ struct ParagraphPage {
                   this.paragraphData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.paragraphData.paragraphBackgroundColor = this.paragraphBackgroundColor
-                  this.paragraphData.paragraphMarginTop = this.paragraphMarginTop
-                  this.paragraphData.paragraphMarginRight = this.paragraphMarginRight
-                  this.paragraphData.paragraphMarginBottom = this.paragraphMarginBottom
-                  this.paragraphData.paragraphMarginLeft = this.paragraphMarginLeft
-                  this.paragraphData.paragraphPaddingTop = this.paragraphPaddingTop
-                  this.paragraphData.paragraphPaddingRight = this.paragraphPaddingRight
-                  this.paragraphData.paragraphPaddingBottom = this.paragraphPaddingBottom
-                  this.paragraphData.paragraphPaddingLeft = this.paragraphPaddingLeft
-                  this.paragraphData.paragraphTextFontColor = this.paragraphTextFontColor
-                  this.paragraphData.paragraphTextFontSize = this.paragraphTextFontSize
-                  this.paragraphData.paragraphTextFontStyle = this.paragraphTextFontStyle
-                  this.paragraphData.paragraphTextFontWeight = this.paragraphTextFontWeight
-                  this.paragraphData.paragraphTextFontFamily = this.paragraphTextFontFamily
-                  this.paragraphData.paragraphTextLineHeight = this.paragraphTextLineHeight
-                  this.paragraphData.paragraphTextLetterSpacing = this.paragraphTextLetterSpacing
+                  this.paragraphData._paragraphBackgroundColor = this.paragraphBackgroundColor
+                  this.paragraphData._paragraphMarginTop = this.paragraphMarginTop
+                  this.paragraphData._paragraphMarginRight = this.paragraphMarginRight
+                  this.paragraphData._paragraphMarginBottom = this.paragraphMarginBottom
+                  this.paragraphData._paragraphMarginLeft = this.paragraphMarginLeft
+                  this.paragraphData._paragraphPaddingTop = this.paragraphPaddingTop
+                  this.paragraphData._paragraphPaddingRight = this.paragraphPaddingRight
+                  this.paragraphData._paragraphPaddingBottom = this.paragraphPaddingBottom
+                  this.paragraphData._paragraphPaddingLeft = this.paragraphPaddingLeft
+                  this.paragraphData._paragraphTextFontColor = this.paragraphTextFontColor
+                  this.paragraphData._paragraphTextFontSize = this.paragraphTextFontSize
+                  this.paragraphData._paragraphTextFontStyle = this.paragraphTextFontStyle
+                  this.paragraphData._paragraphTextFontWeight = this.paragraphTextFontWeight
+                  this.paragraphData._paragraphTextFontFamily = this.paragraphTextFontFamily
+                  this.paragraphData._paragraphTextLineHeight = this.paragraphTextLineHeight
+                  this.paragraphData._paragraphTextLetterSpacing = this.paragraphTextLetterSpacing
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/ParagraphDetailsPage", params: this.paragraphData })
                 })
@@ -277,6 +287,18 @@ struct ParagraphPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔（ms） - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

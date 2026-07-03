@@ -14,54 +14,6 @@ export class HighlightData extends BaseMDData {
   _highlightTextBackgroundRadiusBottomLeft: Length = 0.0 // 高亮文本背景左下圆角
   _highlightTextBackgroundRadiusBottomRight: Length = 0.0 // 高亮文本背景右下圆角
 
-  public set highlightTextFontColor(value: ResourceColor | undefined) {
-    this._highlightTextFontColor = value
-  }
-
-  public set highlightTextFontSize(value: number | string | Resource | undefined) {
-    this._highlightTextFontSize = value
-  }
-
-  public set highlightTextFontStyle(value: FontStyle | undefined) {
-    this._highlightTextFontStyle = value
-  }
-
-  public set highlightTextFontWeight(value: number | FontWeight | undefined) {
-    this._highlightTextFontWeight = value
-  }
-
-  public set highlightTextFontFamily(value: string | Resource | undefined) {
-    this._highlightTextFontFamily = value
-  }
-
-  public set highlightTextLineHeight(value: number | string | Resource | undefined) {
-    this._highlightTextLineHeight = value
-  }
-
-  public set highlightTextLetterSpacing(value: number | undefined) {
-    this._highlightTextLetterSpacing = value
-  }
-
-  public set highlightTextBackgroundColor(value: ResourceColor | undefined) {
-    this._highlightTextBackgroundColor = value
-  }
-
-  public set highlightTextBackgroundRadiusTopLeft(value: Length) {
-    this._highlightTextBackgroundRadiusTopLeft = value
-  }
-
-  public set highlightTextBackgroundRadiusTopRight(value: Length) {
-    this._highlightTextBackgroundRadiusTopRight = value
-  }
-
-  public set highlightTextBackgroundRadiusBottomLeft(value: Length) {
-    this._highlightTextBackgroundRadiusBottomLeft = value
-  }
-
-  public set highlightTextBackgroundRadiusBottomRight(value: Length) {
-    this._highlightTextBackgroundRadiusBottomRight = value
-  }
-
   constructor() {
     super()
   }

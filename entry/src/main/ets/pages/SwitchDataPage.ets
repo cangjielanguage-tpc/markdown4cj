@@ -15,7 +15,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 struct SwitchDataPage {
   scroller: Scroller = new Scroller() // 滑动控制器
   @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
-  // markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  markdownScroller: Scroller = new Scroller() // Markdown的控制器
   @StorageProp('currentColorMode') currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT // 深浅色模式
   @State markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration() // markdown配置
   @State markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown主题
@@ -82,7 +82,7 @@ struct SwitchDataPage {
       content: this.content,
       // isInputEnded: true,
       // incrementalAnalysis: false,
-      scroller: this.scroller,
+      scroller: this.markdownScroller,
       config: this.setMarkdownConfig(),
       plugin: this.setPlugin()
     })

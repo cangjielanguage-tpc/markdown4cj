@@ -91,6 +91,14 @@ struct HighlightPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 配置数据内容
   highlightData: HighlightData = new HighlightData()
   // ---------------- 专有
@@ -109,7 +117,7 @@ struct HighlightPage {
   // 高亮文本字体粗细列表
   highlightTextFontWeightList: Array<FontWeight | undefined> = fontWeightListGeneraData
   @State // 高亮文本字体粗细
-  highlightTextFontWeight: FontWeight = FontWeight.Bold
+  highlightTextFontWeight: FontWeight | undefined = undefined
   // 高亮文本字体列表
   highlightTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 高亮文本字体
@@ -185,6 +193,8 @@ struct HighlightPage {
                   // ---------- 通用
                   this.highlightData._isFull = this.isFull
                   this.highlightData._incrementalAnalysis = this.incrementalAnalysis
+                  this.highlightData._enableParseThrottle = this.enableParseThrottle
+                  this.highlightData._parseThrottleMs = this.parseThrottleMs
                   this.highlightData._time = this.time
                   this.highlightData._textNumber = this.textNumber
                   this.highlightData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -201,19 +211,19 @@ struct HighlightPage {
                   this.highlightData._pagePath = `${this.rawFilePath}/${item}`
 
                   // ---------- 专有
-                  this.highlightData.highlightTextFontColor = this.highlightTextFontColor
-                  this.highlightData.highlightTextFontSize = this.highlightTextFontSize
-                  this.highlightData.highlightTextFontStyle = this.highlightTextFontStyle
-                  this.highlightData.highlightTextFontWeight = this.highlightTextFontWeight
-                  this.highlightData.highlightTextFontFamily = this.highlightTextFontFamily
-                  this.highlightData.highlightTextLineHeight = this.highlightTextLineHeight
-                  this.highlightData.highlightTextLetterSpacing = this.highlightTextLetterSpacing
-                  this.highlightData.highlightTextBackgroundColor = this.highlightTextBackgroundColor
-                  this.highlightData.highlightTextBackgroundRadiusTopLeft = this.highlightTextBackgroundRadiusTopLeft
-                  this.highlightData.highlightTextBackgroundRadiusTopRight = this.highlightTextBackgroundRadiusTopRight
-                  this.highlightData.highlightTextBackgroundRadiusBottomLeft =
+                  this.highlightData._highlightTextFontColor = this.highlightTextFontColor
+                  this.highlightData._highlightTextFontSize = this.highlightTextFontSize
+                  this.highlightData._highlightTextFontStyle = this.highlightTextFontStyle
+                  this.highlightData._highlightTextFontWeight = this.highlightTextFontWeight
+                  this.highlightData._highlightTextFontFamily = this.highlightTextFontFamily
+                  this.highlightData._highlightTextLineHeight = this.highlightTextLineHeight
+                  this.highlightData._highlightTextLetterSpacing = this.highlightTextLetterSpacing
+                  this.highlightData._highlightTextBackgroundColor = this.highlightTextBackgroundColor
+                  this.highlightData._highlightTextBackgroundRadiusTopLeft = this.highlightTextBackgroundRadiusTopLeft
+                  this.highlightData._highlightTextBackgroundRadiusTopRight = this.highlightTextBackgroundRadiusTopRight
+                  this.highlightData._highlightTextBackgroundRadiusBottomLeft =
                     this.highlightTextBackgroundRadiusBottomLeft
-                  this.highlightData.highlightTextBackgroundRadiusBottomRight =
+                  this.highlightData._highlightTextBackgroundRadiusBottomRight =
                     this.highlightTextBackgroundRadiusBottomRight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/HighlightDetailsPage", params: this.highlightData })
@@ -260,6 +270,18 @@ struct HighlightPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

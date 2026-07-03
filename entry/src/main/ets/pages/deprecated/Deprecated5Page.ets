@@ -431,53 +431,53 @@ struct Deprecated5Page {
                   .fontSize(16)
                   .onClick(() => {
                     // ---------- 通用配置
-                    this.deprecatedData.isFull = this.isFull
-                    this.deprecatedData.incrementalAnalysis = this.incrementalAnalysis
-                    this.deprecatedData.time = this.time
-                    this.deprecatedData.textNumber = this.textNumber
-                    this.deprecatedData.isMarkdownParserSync = this.isMarkdownParserSync
-                    this.deprecatedData.isOnCopy = this.isOnCopy
-                    this.deprecatedData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.deprecatedData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.deprecatedData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                    this.deprecatedData.openGestureSwipe = this.openGestureSwipe
-                    this.deprecatedData.openGestureSwipeTest = this.openGestureSwipeTest
+                    this.deprecatedData._isFull = this.isFull
+                    this.deprecatedData._incrementalAnalysis = this.incrementalAnalysis
+                    this.deprecatedData._time = this.time
+                    this.deprecatedData._textNumber = this.textNumber
+                    this.deprecatedData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.deprecatedData._isOnCopy = this.isOnCopy
+                    this.deprecatedData._blockFirstTopMargin = this.blockFirstTopMargin
+                    this.deprecatedData._blockLastBottomMargin = this.blockLastBottomMargin
+                    this.deprecatedData._blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.deprecatedData._openGestureSwipe = this.openGestureSwipe
+                    this.deprecatedData._openGestureSwipeTest = this.openGestureSwipeTest
 
                     // ---------- 代码配置
-                    this.deprecatedData.codeFullScreenIcon = this.codeFullScreenIcon
-                    this.deprecatedData.codeCopyIcon = this.codeCopyIcon
-                    this.deprecatedData.isCodeFormat = this.isCodeFormat
-                    this.deprecatedData.useTab = this.useTab
-                    this.deprecatedData.indentWidth = this.indentWidth
-                    this.deprecatedData.isDark = this.isDark
-                    this.deprecatedData.isCodeBlockParserSync = this.isCodeBlockParserSync
-                    this.deprecatedData.codeBlockTextColor = this.codeBlockTextColor
-                    this.deprecatedData.codeBlockTypeTextColor = this.codeBlockTypeTextColor
-                    this.deprecatedData.codeBlockTypeTextStr = this.codeBlockTypeTextStr
-                    this.deprecatedData.codeBlockTypeTextPadding = this.codeBlockTypeTextPadding
-                    this.deprecatedData.codeBlockIconTextHide = this.codeBlockIconTextHide
-                    this.deprecatedData.codeBlockBackgroundColor = this.codeBlockBackgroundColor
-                    this.deprecatedData.codeMultilineMargin = this.codeMultilineMargin
-                    this.deprecatedData.codeBlockTypeface = this.codeBlockTypeface
-                    this.deprecatedData.codeBlockTextSize = this.codeBlockTextSize
-                    this.deprecatedData.codeBlockLineHeight = this.codeBlockLineHeight
-                    this.deprecatedData.codeBlockRadius = this.codeBlockRadius
-                    this.deprecatedData.iconWidthAndHeight = this.iconWidthAndHeight
-                    this.deprecatedData.codeBlockLineNumberHide = this.codeBlockLineNumberHide
-                    this.deprecatedData.isCodeFullScreen = this.isCodeFullScreen
+                    this.deprecatedData._codeFullScreenIcon = this.codeFullScreenIcon
+                    this.deprecatedData._codeCopyIcon = this.codeCopyIcon
+                    this.deprecatedData._isCodeFormat = this.isCodeFormat
+                    this.deprecatedData._useTab = this.useTab
+                    this.deprecatedData._indentWidth = this.indentWidth
+                    this.deprecatedData._isDark = this.isDark
+                    this.deprecatedData._isCodeBlockParserSync = this.isCodeBlockParserSync
+                    this.deprecatedData._codeBlockTextColor = this.codeBlockTextColor
+                    this.deprecatedData._codeBlockTypeTextColor = this.codeBlockTypeTextColor
+                    this.deprecatedData._codeBlockTypeTextStr = this.codeBlockTypeTextStr
+                    this.deprecatedData._codeBlockTypeTextPadding = this.codeBlockTypeTextPadding
+                    this.deprecatedData._codeBlockIconTextHide = this.codeBlockIconTextHide
+                    this.deprecatedData._codeBlockBackgroundColor = this.codeBlockBackgroundColor
+                    this.deprecatedData._codeMultilineMargin = this.codeMultilineMargin
+                    this.deprecatedData._codeBlockTypeface = this.codeBlockTypeface
+                    this.deprecatedData._codeBlockTextSize = this.codeBlockTextSize
+                    this.deprecatedData._codeBlockLineHeight = this.codeBlockLineHeight
+                    this.deprecatedData._codeBlockRadius = this.codeBlockRadius
+                    this.deprecatedData._iconWidthAndHeight = this.iconWidthAndHeight
+                    this.deprecatedData._codeBlockLineNumberHide = this.codeBlockLineNumberHide
+                    this.deprecatedData._isCodeFullScreen = this.isCodeFullScreen
                     // 组合代码配置
-                    this.deprecatedData.codeListTitleTextSize = this.codeListTitleTextSize
-                    this.deprecatedData.codeListTitleSelectTextSize = this.codeListTitleSelectTextSize
-                    this.deprecatedData.codeListTitleSelectTextColor = this.codeListTitleSelectTextColor
-                    this.deprecatedData.codeListTitleUnSelectTextColor = this.codeListTitleUnSelectTextColor
-                    this.deprecatedData.codeListTitleSelectBackGroupColor = this.codeListTitleSelectBackGroupColor
-                    this.deprecatedData.codeListTitleUnSelectBackGroupColor = this.codeListTitleUnSelectBackGroupColor
+                    this.deprecatedData._codeListTitleTextSize = this.codeListTitleTextSize
+                    this.deprecatedData._codeListTitleSelectTextSize = this.codeListTitleSelectTextSize
+                    this.deprecatedData._codeListTitleSelectTextColor = this.codeListTitleSelectTextColor
+                    this.deprecatedData._codeListTitleUnSelectTextColor = this.codeListTitleUnSelectTextColor
+                    this.deprecatedData._codeListTitleSelectBackGroupColor = this.codeListTitleSelectBackGroupColor
+                    this.deprecatedData._codeListTitleUnSelectBackGroupColor = this.codeListTitleUnSelectBackGroupColor
                     // 单独代码块配置
-                    this.deprecatedData.isSeparateCodeBlock = this.isSeparateCodeBlock
-                    this.deprecatedData.separateCodeBlockWidth = this.separateCodeBlockWidth
-                    this.deprecatedData.separateCodeIsBottom = this.separateCodeIsBottom
+                    this.deprecatedData._isSeparateCodeBlock = this.isSeparateCodeBlock
+                    this.deprecatedData._separateCodeBlockWidth = this.separateCodeBlockWidth
+                    this.deprecatedData._separateCodeIsBottom = this.separateCodeIsBottom
 
-                    this.deprecatedData.pagePath = `${this.rawFilePath}/${item}`
+                    this.deprecatedData._pagePath = `${this.rawFilePath}/${item}`
 
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/deprecated/Deprecated5DetailsPage", params: this.deprecatedData })

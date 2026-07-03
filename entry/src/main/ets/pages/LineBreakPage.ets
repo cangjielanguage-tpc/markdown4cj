@@ -84,6 +84,14 @@ struct LineBreakPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 配置数据内容
   lineBreakData: LineBreakData = new LineBreakData()
   // ---------------- 专有
@@ -130,6 +138,8 @@ struct LineBreakPage {
                   // ---------- 通用
                   this.lineBreakData._isFull = this.isFull
                   this.lineBreakData._incrementalAnalysis = this.incrementalAnalysis
+                  this.lineBreakData._enableParseThrottle = this.enableParseThrottle
+                  this.lineBreakData._parseThrottleMs = this.parseThrottleMs
                   this.lineBreakData._time = this.time
                   this.lineBreakData._textNumber = this.textNumber
                   this.lineBreakData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -189,6 +199,18 @@ struct LineBreakPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

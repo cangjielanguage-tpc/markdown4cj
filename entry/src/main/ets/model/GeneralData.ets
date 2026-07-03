@@ -120,8 +120,12 @@ export const textDecorationStyleListGeneralData: Array<TextDecorationStyle> = [T
 /**
  * 通用偏移量列表
  */
-export const offsetListGeneralData: Array<number> = [-5, -2, -1, 0, 1, 2, 5]
+export const offsetListGeneralData: Array<number> = [-6, -4, -2, 0, 2, 4, 6]
 
+/**
+ * 上下标文本大小列表
+ */
+export const smallTextSizeListGeneralData: Array<number> = [2, 4, 6, 8, 10, 12, 14]
 
 
 /**

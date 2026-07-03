@@ -28,6 +28,12 @@ struct BannerPage {
   // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State incrementalAnalysis: boolean = false // 是否增量解析Markdown文本
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State enableParseThrottle: boolean = false // 是否启用解析节流
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State parseThrottleMs: number = 200 // 解析节流间隔（ms）
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State time: number = 50 // 增量加载每次间隔时间
@@ -136,6 +142,8 @@ struct BannerPage {
                   // ---------- 通用
                   this.bannerData._isFull = this.isFull
                   this.bannerData._incrementalAnalysis = this.incrementalAnalysis
+                  this.bannerData._enableParseThrottle = this.enableParseThrottle
+                  this.bannerData._parseThrottleMs = this.parseThrottleMs
                   this.bannerData._time = this.time
                   this.bannerData._textNumber = this.textNumber
                   this.bannerData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -151,14 +159,14 @@ struct BannerPage {
                   this.bannerData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.bannerData._pagePath = `${this.rawFilePath}/${item}`
                   // ---------- 专有
-                  this.bannerData.bannerMarginTop = this.bannerMarginTop
-                  this.bannerData.bannerMarginRight = this.bannerMarginRight
-                  this.bannerData.bannerMarginBottom = this.bannerMarginBottom
-                  this.bannerData.bannerMarginLeft = this.bannerMarginLeft
-                  this.bannerData.bannerPaddingTop = this.bannerPaddingTop
-                  this.bannerData.bannerPaddingRight = this.bannerPaddingRight
-                  this.bannerData.bannerPaddingBottom = this.bannerPaddingBottom
-                  this.bannerData.bannerPaddingLeft = this.bannerPaddingLeft
+                  this.bannerData._bannerMarginTop = this.bannerMarginTop
+                  this.bannerData._bannerMarginRight = this.bannerMarginRight
+                  this.bannerData._bannerMarginBottom = this.bannerMarginBottom
+                  this.bannerData._bannerMarginLeft = this.bannerMarginLeft
+                  this.bannerData._bannerPaddingTop = this.bannerPaddingTop
+                  this.bannerData._bannerPaddingRight = this.bannerPaddingRight
+                  this.bannerData._bannerPaddingBottom = this.bannerPaddingBottom
+                  this.bannerData._bannerPaddingLeft = this.bannerPaddingLeft
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/BannerDetailsPage", params: this.bannerData })
                 })
@@ -204,6 +212,18 @@ struct BannerPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

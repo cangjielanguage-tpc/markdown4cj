@@ -11,42 +11,6 @@ export class StrikethroughData extends BaseMDData {
   _strikethroughTextDecorationColor: ResourceColor | undefined = undefined // 删除线文本装饰线颜色
   _strikethroughTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID // 删除线文本装饰线样式
 
-  public set strikethroughTextFontColor(value: ResourceColor | undefined) {
-    this._strikethroughTextFontColor = value
-  }
-
-  public set strikethroughTextFontSize(value: number | string | Resource | undefined) {
-    this._strikethroughTextFontSize = value
-  }
-
-  public set strikethroughTextFontStyle(value: FontStyle | undefined) {
-    this._strikethroughTextFontStyle = value
-  }
-
-  public set strikethroughTextFontWeight(value: number | FontWeight | undefined) {
-    this._strikethroughTextFontWeight = value
-  }
-
-  public set strikethroughTextFontFamily(value: string | Resource | undefined) {
-    this._strikethroughTextFontFamily = value
-  }
-
-  public set strikethroughTextLineHeight(value: number | string | Resource | undefined) {
-    this._strikethroughTextLineHeight = value
-  }
-
-  public set strikethroughTextLetterSpacing(value: number | undefined) {
-    this._strikethroughTextLetterSpacing = value
-  }
-
-  public set strikethroughTextDecorationColor(value: ResourceColor | undefined) {
-    this._strikethroughTextDecorationColor = value
-  }
-
-  public set strikethroughTextDecorationStyle(value: TextDecorationStyle) {
-    this._strikethroughTextDecorationStyle = value
-  }
-
   constructor() {
     super()
   }

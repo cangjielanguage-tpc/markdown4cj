@@ -438,51 +438,51 @@ struct Deprecated1Page {
                   .fontSize(16)
                   .onClick(() => {
                     // ---------- 资源图标配置
-                    this.deprecatedData.bannerImage = this.bannerImage
+                    this.deprecatedData._bannerImage = this.bannerImage
 
                     // ---------- 其他配置
-                    this.deprecatedData.isLineBreak = this.isLineBreak
-                    this.deprecatedData.underlineColor = this.underlineColor
-                    this.deprecatedData.underlineStyle = this.underlineStyle
+                    this.deprecatedData._isLineBreak = this.isLineBreak
+                    this.deprecatedData._underlineColor = this.underlineColor
+                    this.deprecatedData._underlineStyle = this.underlineStyle
 
                     // ---------- 链接配置
-                    this.deprecatedData.isLinkStyle = this.isLinkStyle
-                    this.deprecatedData.isListLinkStyle = this.isListLinkStyle
-                    this.deprecatedData.linkColor = this.linkColor
-                    this.deprecatedData.isLinkSize = this.isLinkSize
-                    this.deprecatedData.linkSize = this.linkSize
-                    this.deprecatedData.linkLineHeight = this.linkLineHeight
-                    this.deprecatedData.linkBackGroupColor = this.linkBackGroupColor
-                    this.deprecatedData.isLinkUnderlined = this.isLinkUnderlined
+                    this.deprecatedData._isLinkStyle = this.isLinkStyle
+                    this.deprecatedData._isListLinkStyle = this.isListLinkStyle
+                    this.deprecatedData._linkColor = this.linkColor
+                    this.deprecatedData._isLinkSize = this.isLinkSize
+                    this.deprecatedData._linkSize = this.linkSize
+                    this.deprecatedData._linkLineHeight = this.linkLineHeight
+                    this.deprecatedData._linkBackGroupColor = this.linkBackGroupColor
+                    this.deprecatedData._isLinkUnderlined = this.isLinkUnderlined
                     // 圆形图片格式链接配置
-                    this.deprecatedData.linkCircleImageBackGroupColor = this.linkCircleImageBackGroupColor
-                    this.deprecatedData.linkCircleImageButtonBackGroupColor = this.linkCircleImageButtonBackGroupColor
-                    this.deprecatedData.linkCircleImageTextSize = this.linkCircleImageTextSize
-                    this.deprecatedData.linkCircleImageTextColor = this.linkCircleImageTextColor
-                    this.deprecatedData.linkCircleImageRadius = this.linkCircleImageRadius
-                    this.deprecatedData.linkCircleImageMargin = this.linkCircleImageMargin
+                    this.deprecatedData._linkCircleImageBackGroupColor = this.linkCircleImageBackGroupColor
+                    this.deprecatedData._linkCircleImageButtonBackGroupColor = this.linkCircleImageButtonBackGroupColor
+                    this.deprecatedData._linkCircleImageTextSize = this.linkCircleImageTextSize
+                    this.deprecatedData._linkCircleImageTextColor = this.linkCircleImageTextColor
+                    this.deprecatedData._linkCircleImageRadius = this.linkCircleImageRadius
+                    this.deprecatedData._linkCircleImageMargin = this.linkCircleImageMargin
                     // 圆角矩形图片格式链接配置
-                    this.deprecatedData.linkRectImageBackGroupColor = this.linkRectImageBackGroupColor
-                    this.deprecatedData.linkRectImageButtonBackGroupColor = this.linkRectImageButtonBackGroupColor
-                    this.deprecatedData.linkRectImageTextSize = this.linkRectImageTextSize
-                    this.deprecatedData.linkRectImageTextColor = this.linkRectImageTextColor
-                    this.deprecatedData.linkRectImageHeight = this.linkRectImageHeight
-                    this.deprecatedData.linkRectImagePadding = this.linkRectImagePadding
-                    this.deprecatedData.linkRectImageRadius = this.linkRectImageRadius
-                    this.deprecatedData.linkRectImageMargin = this.linkRectImageMargin
+                    this.deprecatedData._linkRectImageBackGroupColor = this.linkRectImageBackGroupColor
+                    this.deprecatedData._linkRectImageButtonBackGroupColor = this.linkRectImageButtonBackGroupColor
+                    this.deprecatedData._linkRectImageTextSize = this.linkRectImageTextSize
+                    this.deprecatedData._linkRectImageTextColor = this.linkRectImageTextColor
+                    this.deprecatedData._linkRectImageHeight = this.linkRectImageHeight
+                    this.deprecatedData._linkRectImagePadding = this.linkRectImagePadding
+                    this.deprecatedData._linkRectImageRadius = this.linkRectImageRadius
+                    this.deprecatedData._linkRectImageMargin = this.linkRectImageMargin
                     // 空心圆角矩形图片格式链接配置
-                    this.deprecatedData.linkRectToolImageBackGroupColor = this.linkRectToolImageBackGroupColor
-                    this.deprecatedData.linkRectToolImageButtonBackGroupColor = this.linkRectToolImageButtonBackGroupColor
-                    this.deprecatedData.linkRectToolImageTextSize = this.linkRectToolImageTextSize
-                    this.deprecatedData.linkRectToolImageHeight = this.linkRectToolImageHeight
-                    this.deprecatedData.linkRectToolImagePadding = this.linkRectToolImagePadding
-                    this.deprecatedData.linkRectToolImageBorderWidth = this.linkRectToolImageBorderWidth
-                    this.deprecatedData.linkRectToolImageDividingLineWidth = this.linkRectToolImageDividingLineWidth
-                    this.deprecatedData.linkRectToolImageMargin = this.linkRectToolImageMargin
-                    this.deprecatedData.linkRectToolImageLineLeftPadding = this.linkRectToolImageLineLeftPadding
-                    this.deprecatedData.linkRectToolImageLineRightPadding = this.linkRectToolImageLineRightPadding
+                    this.deprecatedData._linkRectToolImageBackGroupColor = this.linkRectToolImageBackGroupColor
+                    this.deprecatedData._linkRectToolImageButtonBackGroupColor = this.linkRectToolImageButtonBackGroupColor
+                    this.deprecatedData._linkRectToolImageTextSize = this.linkRectToolImageTextSize
+                    this.deprecatedData._linkRectToolImageHeight = this.linkRectToolImageHeight
+                    this.deprecatedData._linkRectToolImagePadding = this.linkRectToolImagePadding
+                    this.deprecatedData._linkRectToolImageBorderWidth = this.linkRectToolImageBorderWidth
+                    this.deprecatedData._linkRectToolImageDividingLineWidth = this.linkRectToolImageDividingLineWidth
+                    this.deprecatedData._linkRectToolImageMargin = this.linkRectToolImageMargin
+                    this.deprecatedData._linkRectToolImageLineLeftPadding = this.linkRectToolImageLineLeftPadding
+                    this.deprecatedData._linkRectToolImageLineRightPadding = this.linkRectToolImageLineRightPadding
 
-                    this.deprecatedData.pagePath = `${this.rawFilePath}/${item}`
+                    this.deprecatedData._pagePath = `${this.rawFilePath}/${item}`
 
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/deprecated/Deprecated1DetailsPage", params: this.deprecatedData })
