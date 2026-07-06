@@ -93,6 +93,7 @@ export struct MarkdownListItem {
   codeFullScreenCallback?: (code: string, language: string | undefined) => void // 代码全屏点击事件
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  tableCopyCallback?: (str: string) => void // 复制点击事件
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
@@ -275,7 +276,8 @@ export struct MarkdownListItem {
                 videoDownloadCallback: this.videoDownloadCallback,
                 audioCallback: this.audioCallback,
                 codeCopyCallback: this.codeCopyCallback,
-                codeFullScreenCallback: this.codeFullScreenCallback
+                codeFullScreenCallback: this.codeFullScreenCallback,
+                tableCopyCallback:this.tableCopyCallback
               })
             } else if (item.nodeType === "OrderedList") {
               // 有序列表
@@ -326,7 +328,8 @@ export struct MarkdownListItem {
                 videoDownloadCallback: this.videoDownloadCallback,
                 audioCallback: this.audioCallback,
                 codeCopyCallback: this.codeCopyCallback,
-                codeFullScreenCallback: this.codeFullScreenCallback
+                codeFullScreenCallback: this.codeFullScreenCallback,
+                tableCopyCallback:this.tableCopyCallback
               })
             } else if (item.nodeType === "BlockQuote") {
               // 块引用
@@ -376,7 +379,8 @@ export struct MarkdownListItem {
                 audioCallback: this.audioCallback,
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback,
-                listDepth: this.listDepth + 1
+                listDepth: this.listDepth + 1,
+                tableCopyCallback:this.tableCopyCallback
               })
             } else if (item.nodeType === "LatexMathBlock") {
               // 数学公式块：闭合时渲染图片，未闭合时渲染文本
@@ -431,7 +435,8 @@ export struct MarkdownListItem {
                 latexMathTheme: this.latexMathTheme,
                 latexImageCallback: this.latexImageCallback,
                 latexStrCallback: this.latexStrCallback,
-                componentWidth: this.tableBlockComponentWidth
+                componentWidth: this.tableBlockComponentWidth,
+                tableCopyCallback:this.tableCopyCallback
               })
             } else if (item.nodeType === "ThematicBreak") {
               // 分割线

@@ -24,6 +24,7 @@ export class MarkdownConfiguration {
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
   markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown默认样式
+  tableCopyCallback?: (text: string) => void  = undefined  // 表格复制点击事件
 
   /**
    * 设置链接点击回调
@@ -44,6 +45,19 @@ export class MarkdownConfiguration {
     this.textCopyCallback = cb
     return this
   }
+
+
+  /**
+   * 设置表格复制的点击事件
+   *
+   * @param cb 文本复制的点击事件(text：复制的文本)
+   */
+  setTableCopyCallback(cb: (text: string) => void): MarkdownConfiguration {
+    this.tableCopyCallback = cb
+    return this
+  }
+
+
 
   /**
    * 设置图片点击回调

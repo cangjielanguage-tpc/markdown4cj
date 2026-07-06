@@ -328,7 +328,8 @@ export struct CJMarkdown {
                 linkCallback: this.config.linkCallback,
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
-                tocCallback: this.tocCallback
+                tocCallback: this.tocCallback,
+                tableCopyCallback:this.config.tableCopyCallback
               })
             } else if (item.nodeType === "OrderedList") {
               // 有序列表
@@ -379,7 +380,8 @@ export struct CJMarkdown {
                 linkCallback: this.config.linkCallback,
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
-                tocCallback: this.tocCallback
+                tocCallback: this.tocCallback,
+                tableCopyCallback:this.config.tableCopyCallback
               })
             } else if (item.nodeType === "BlockQuote") {
               // 块引用
@@ -429,7 +431,8 @@ export struct CJMarkdown {
                 linkCallback: this.config.linkCallback,
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
-                tocCallback: this.tocCallback
+                tocCallback: this.tocCallback,
+                tableCopyCallback:this.config.tableCopyCallback
               })
             } else if (item.nodeType === "LatexMathBlock") {
               // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本
@@ -491,7 +494,8 @@ export struct CJMarkdown {
                 linkCallback: this.config.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.config.imageDownloadCallback,
-                imageReplaceCallback: this.config.imageReplaceCallback
+                imageReplaceCallback: this.config.imageReplaceCallback,
+                tableCopyCallback:this.config.tableCopyCallback
               })
             } else if (item.nodeType === "ThematicBreak") {
               // 分割线

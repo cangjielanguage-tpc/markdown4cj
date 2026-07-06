@@ -22,6 +22,7 @@ import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import { MarkdownTableRow } from "./MarkdownTableRow"
+import { MarkDownTableTitle } from "./MarkdownTableTitle"
 
 /**
  * 表格控件
@@ -53,6 +54,7 @@ export struct MarkdownTable {
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
   imageCallback?: (url: string) => void // 图片点击事件
+  tableCopyCallback?: (str: string) => void // 复制点击事件
   imageDownloadCallback?: (url: string) => void // 图片下载事件
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
@@ -85,12 +87,11 @@ export struct MarkdownTable {
 
   /**
    * componentWidth变化时立即应用列宽
-   * 初始渲染时componentWidth可能为0（父布局onSizeChange尚未触发），
-   * 后续变为实际宽度时需清除tracker旧数据（cell在componentWidth=0时以内容宽度渲染的测量值），
-   * 强制fallback用componentWidth均分，确保表格充满屏幕宽度
+   * 不清除tracker数据：tracker保留已测量的内容宽度，避免clearWidths后
+   * 内容宽于evenWidth的cell因size不变不触发onSizeChange导致tracker为空
+   * applyColumnWidths内部用max(tracker, evenWidth)确保每列至少evenWidth
    */
   onComponentWidthChanged(): void {
-    this.cellWidthTracker.clearWidths()
     this.applyColumnWidths()
   }
 
@@ -274,130 +275,94 @@ export struct MarkdownTable {
       })
     } else {
       // 非 sticky 模式：保留 Scroll > List > LazyForEach 结构
-      Scroll() {
-        List({ scroller: this.scroller }) {
-          LazyForEach(
-            this.markdownDataSource,
-            (item: NodeView, index: number) => {
-              ListItem() {
-                if (item.nodeType === "TableRow") {
-                  MarkdownTableRow({
-                    node: item,
-                    headingTheme: this.headingTheme,
-                    globalTheme: this.globalTheme,
-                    subTheme: this.subTheme,
-                    supTheme: this.supTheme,
-                    inlineCodeTheme: this.inlineCodeTheme,
-                    boldTheme: this.boldTheme,
-                    italicTheme: this.italicTheme,
-                    strikethroughTheme: this.strikethroughTheme,
-                    highlightTheme: this.highlightTheme,
-                    htmlUnderlineTheme: this.htmlUnderlineTheme,
-                    linkTheme: this.linkTheme,
-                    footnoteRefTheme: this.footnoteRefTheme,
-                    tableTheme: this.tableTheme,
-                    paragraphTheme: this.paragraphTheme,
-                    blockQuoteTheme: this.blockQuoteTheme,
-                    definitionListTheme: this.definitionListTheme,
-                    imageTheme: this.imageTheme,
-                    latexMathTheme: this.latexMathTheme,
-                    latexImageCallback: this.latexImageCallback,
-                    latexStrCallback: this.latexStrCallback,
-                    componentWidth: this.componentWidth,
-                    tableBlockRowRow: index,
-                    tableBlockRowCellSize: this.tableBlockCellSize,
-                    textCopyCallback: this.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    linkCallback: this.linkCallback,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.imageDownloadCallback,
-                    imageReplaceCallback: this.imageReplaceCallback
-                  })
-                } else {
-                  Text("")
-                }
-              }
-            },
-            (item: NodeView, index: number) => {
-              return `${index}-${item.nodeHash}`
-            }
-          )
+      Column() {
+        if (this.tableTheme.tableHeadIsShow) {
+          MarkDownTableTitle({
+            node: this.node,
+            tableTheme: this.tableTheme,
+            tableCopyCallback: this.tableCopyCallback
+          })
         }
-        .backgroundColor(this.globalTheme.backgroundColor)
-        .borderStyle(this.tableTheme.tableBorderStyle)
-        .borderWidth(this.tableTheme.tableBorderWidth)
-        .borderColor(this.tableTheme.tableBorderColor)
-        .borderRadius({
-          topLeft: this.tableTheme.tableRadiusTopLeft,
-          topRight: this.tableTheme.tableRadiusTopRight,
-          bottomLeft: this.tableTheme.tableRadiusBottomLeft,
-          bottomRight: this.tableTheme.tableRadiusBottomRight
-        })
-        .listDirection(Axis.Vertical)
-        .alignListItem(ListItemAlign.Start)
-      }
-      .scrollable(ScrollDirection.Horizontal)
-      .scrollBar(this.tableTheme.tableScrollBarState)
-      .scrollBarColor(this.tableTheme.tableScrollBarColor)
-      .padding({
-        top: this.tableTheme.tablePaddingTop,
-        right: this.tableTheme.tablePaddingRight,
-        bottom: this.tableTheme.tablePaddingBottom,
-        left: this.tableTheme.tablePaddingLeft
-      })
-      .margin({
-        top: this.tableTheme.tableMarginTop,
-        right: this.tableTheme.tableMarginRight,
-        bottom: this.tableTheme.tableMarginBottom,
-        left: this.tableTheme.tableMarginLeft
-      })
-    }
-  }
-
-  /**
-   * 复制按钮栏：左文本"对比" + 右"复制"按钮，充满屏幕宽度
-   * 不随横向滑动（在 Scroll 外），跟随吸顶 offset
-   */
-  @Builder
-  tableCopyRowBuilder() {
-    Row() {
-      Text('对比')
-        .fontSize(this.tableTheme.tableTitleTextFontSize)
-        .fontColor(this.tableTheme.tableTitleTextFontColor)
-        .fontWeight(this.tableTheme.tableTitleTextFontWeight)
-
-      Button('复制')
-        .type(ButtonType.Normal)
-        .fontSize(this.tableTheme.tableTitleTextFontSize)
-        .fontColor(this.tableTheme.tableTitleTextFontColor)
-        .backgroundColor(this.tableTheme.tableTitleBackgroundColor)
-        .borderWidth(1)
-        .borderColor(this.tableTheme.tableBorderColor)
-        .borderRadius(this.tableTheme.tableRadiusTopLeft)
-        .padding({ top: 2, right: 8, bottom: 2, left: 8 })
-        .onClick(() => {
-          if (this.textCopyCallback !== undefined) {
-            this.textCopyCallback(this.getFullTableText())
+        Scroll() {
+          List({ scroller: this.scroller }) {
+            LazyForEach(
+              this.markdownDataSource,
+              (item: NodeView, index: number) => {
+                ListItem() {
+                  if (item.nodeType === "TableRow") {
+                    MarkdownTableRow({
+                      node: item,
+                      headingTheme: this.headingTheme,
+                      globalTheme: this.globalTheme,
+                      subTheme: this.subTheme,
+                      supTheme: this.supTheme,
+                      inlineCodeTheme: this.inlineCodeTheme,
+                      boldTheme: this.boldTheme,
+                      italicTheme: this.italicTheme,
+                      strikethroughTheme: this.strikethroughTheme,
+                      highlightTheme: this.highlightTheme,
+                      htmlUnderlineTheme: this.htmlUnderlineTheme,
+                      linkTheme: this.linkTheme,
+                      footnoteRefTheme: this.footnoteRefTheme,
+                      tableTheme: this.tableTheme,
+                      paragraphTheme: this.paragraphTheme,
+                      blockQuoteTheme: this.blockQuoteTheme,
+                      definitionListTheme: this.definitionListTheme,
+                      imageTheme: this.imageTheme,
+                      latexMathTheme: this.latexMathTheme,
+                      latexImageCallback: this.latexImageCallback,
+                      latexStrCallback: this.latexStrCallback,
+                      componentWidth: this.componentWidth,
+                      tableBlockRowRow: index,
+                      tableBlockRowCellSize: this.tableBlockCellSize,
+                      textCopyCallback: this.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      linkCallback: this.linkCallback,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.imageDownloadCallback,
+                      imageReplaceCallback: this.imageReplaceCallback
+                    })
+                  } else {
+                    Text("")
+                  }
+                }
+              },
+              (item: NodeView, index: number) => {
+                return `${index}-${item.nodeHash}`
+              }
+            )
           }
+          .backgroundColor(this.globalTheme.backgroundColor)
+          .borderStyle(this.tableTheme.tableBorderStyle)
+          .borderWidth(this.tableTheme.tableBorderWidth)
+          .borderColor(this.tableTheme.tableBorderColor)
+          .borderRadius({
+            topLeft: this.tableTheme.tableHeadIsShow ? 0 : this.tableTheme.tableRadiusTopLeft,
+            topRight: this.tableTheme.tableHeadIsShow ? 0 : this.tableTheme.tableRadiusTopRight,
+            bottomLeft: this.tableTheme.tableRadiusBottomLeft,
+            bottomRight: this.tableTheme.tableRadiusBottomRight
+          })
+          .listDirection(Axis.Vertical)
+          .alignListItem(ListItemAlign.Start)
+        }
+        .scrollable(ScrollDirection.Horizontal)
+        .scrollBar(this.tableTheme.tableScrollBarState)
+        .scrollBarColor(this.tableTheme.tableScrollBarColor)
+        .padding({
+          top: this.tableTheme.tablePaddingTop,
+          right: this.tableTheme.tablePaddingRight,
+          bottom: this.tableTheme.tablePaddingBottom,
+          left: this.tableTheme.tablePaddingLeft
         })
+        .margin({
+          top: this.tableTheme.tableMarginTop,
+          right: this.tableTheme.tableMarginRight,
+          bottom: this.tableTheme.tableMarginBottom,
+          left: this.tableTheme.tableMarginLeft
+        })
+      }
     }
-    .width('100%')
-    .justifyContent(FlexAlign.SpaceBetween)
-    .alignItems(VerticalAlign.Center)
-    .padding({
-      top: this.tableTheme.tableCellPaddingTop,
-      right: this.tableTheme.tableCellPaddingRight,
-      bottom: this.tableTheme.tableCellPaddingBottom,
-      left: this.tableTheme.tableCellPaddingLeft
-    })
-    .backgroundColor(this.tableTheme.tableTitleBackgroundColor)
-    .borderWidth({ bottom: this.tableTheme.tableBorderWidth })
-    .borderColor(this.tableTheme.tableBorderColor)
-    .borderStyle(this.tableTheme.tableBorderStyle)
-    .onAreaChange((oldValue: Area, newValue: Area) => {
-      this.copyRowHeight = newValue.height as number
-    })
   }
 
   /**
@@ -409,7 +374,13 @@ export struct MarkdownTable {
     if (this.node.children.length > 0) {
       Column() {
         // 复制按钮栏（不随横向滑动，充满屏幕宽度）
-        this.tableCopyRowBuilder()
+        if (this.tableTheme.tableHeadIsShow) {
+          MarkDownTableTitle({
+            node: this.node,
+            tableTheme: this.tableTheme,
+            tableCopyCallback: this.tableCopyCallback
+          })
+        }
 
         // 标题行横向 Scroll，与 body 通过 syncManager 同步
         Scroll(this.headerScroller) {
@@ -544,7 +515,13 @@ export struct MarkdownTable {
         }) {
           Column() {
             // 复制按钮栏（Scroll 外，充满宽度，不随横向滑动）
-            this.tableCopyRowBuilder()
+            if (this.tableTheme.tableHeadIsShow) {
+              MarkDownTableTitle({
+                node: this.node,
+                tableTheme: this.tableTheme,
+                tableCopyCallback: this.tableCopyCallback
+              })
+            }
 
             // 标题行横向 Scroll，与 body 通过 syncManager 同步
             Scroll(this.headerScroller) {
@@ -711,22 +688,20 @@ export struct MarkdownTable {
 
   /**
    * 对比tracker中的列宽与当前@State，仅在变化时更新以避免不必要重渲染
-   * 若tracker尚无有效数据（全0），用componentWidth均分作为初始值，确保列对齐
+   * 每列宽度 = max(tracker测量值, componentWidth均分值)
+   * - tracker有数据时：列宽≥内容最大宽度（列对齐）且≥evenWidth（充满屏幕）
+   * - tracker无数据时：列宽=evenWidth（充满屏幕，待cell渲染后tracker更新）
+   * - tracker宽度>evenWidth时：列宽=tracker宽度（内容超宽，横向滚动）
    */
   private applyColumnWidths(): void {
     const trackerWidths = this.cellWidthTracker.getWidths()
     const newWidths: number[] = [...trackerWidths]
-    let hasData = false
-    for (let i = 0; i < newWidths.length; i++) {
-      if (newWidths[i] > 0) {
-        hasData = true
-        break
-      }
-    }
-    if (!hasData && newWidths.length > 0 && this.componentWidth > 0) {
+    if (this.componentWidth > 0 && newWidths.length > 0) {
       const evenWidth = this.componentWidth / newWidths.length
       for (let i = 0; i < newWidths.length; i++) {
-        newWidths[i] = evenWidth
+        if (newWidths[i] < evenWidth) {
+          newWidths[i] = evenWidth
+        }
       }
     }
     let changed = newWidths.length !== this.columnWidths.length

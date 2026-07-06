@@ -89,6 +89,8 @@
     "pages/deprecated/Deprecated5DetailsPage",
     "pages/deprecated/Deprecated6Page",
     "pages/deprecated/Deprecated6DetailsPage",
-    "pages/deprecated/DeprecatedIndexPage"
+    "pages/deprecated/DeprecatedIndexPage",
+    "pages/AllPageCopyPage",
+    "pages/AllPageCopyDetailsPage"
   ]
 }

@@ -329,6 +329,14 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "37、全文复制能力",
+              0xFFFF0000,
+              "pages/AllPageCopyPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "【已废弃接口】",
               0xFFFF0000,
               "pages/deprecated/DeprecatedIndexPage"
