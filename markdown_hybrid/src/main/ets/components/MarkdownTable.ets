@@ -2,6 +2,7 @@ import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { CellWidthTracker } from "../model/CellWidthTracker"
 import { NodeView } from "../model/NodeView"
 import { TableHorizontalScrollSync } from "../model/TableHorizontalScrollSync"
+import { StickyScrollYHolder, StickyOffsetHolder } from "../model/StickyScrollYHolder"
 import { GlobalTheme } from "../theme/GlobalTheme"
 import { HeadingTheme } from "../theme/HeadingTheme"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
@@ -67,31 +68,46 @@ export struct MarkdownTable {
   private bodyScroller: Scroller = new Scroller() // sticky 模式 body 横向 Scroll 控制器
   private syncManager: TableHorizontalScrollSync = new TableHorizontalScrollSync() // header/body 横向滚动同步器
   private oldStickyRowCount: number = 0 // sticky 模式上一次的总行数（含标题行），用于行减少时清理列宽记录
+  // ===== offset sticky 模式（不固定高度，外层滚动） =====
+  // @Consume 获取 holder 引用（引用不变，不触发build()），通过监听器更新 StickyOffsetHolder
+  // StickyOffsetHolder 是 @Observed，@ObjectLink 在 StickyOffsetApplier 中检测变化
+  // 只有 StickyOffsetApplier 重渲染（极轻量），MarkdownTable 和 CJMarkdown 都不重渲染
+  @Consume('mdStickyHolder') stickyHolder: StickyScrollYHolder
+  @State private useOffsetSticky: boolean = false // 是否使用 offset sticky 模式（aboutToAppear 时确定）
+  @State private tableY: number = Number.MAX_SAFE_INTEGER // 表格在父容器中的Y位置（onAreaChange获取）
+  @State private tableHeight: number = 0 // 表格总高度（onAreaChange获取）
+  private tablePaddingTopNum: number = 0 // tablePaddingTop 的数值
+  private tableBorderTopNum: number = 0 // tableBorderWidth 的数值（border 顶部宽度）
+  @State private offsetHolder: StickyOffsetHolder = new StickyOffsetHolder() // @State，引用不变不触发build()；@ObjectLink检测offset属性变化
 
   /**
    * componentWidth变化时立即应用列宽
    * 初始渲染时componentWidth可能为0（父布局onSizeChange尚未触发），
-   * 后续变为实际宽度时需重新应用均分回退，否则列宽全0无对齐
+   * 后续变为实际宽度时需清除tracker旧数据（cell在componentWidth=0时以内容宽度渲染的测量值），
+   * 强制fallback用componentWidth均分，确保表格充满屏幕宽度
    */
   onComponentWidthChanged(): void {
+    this.cellWidthTracker.clearWidths()
     this.applyColumnWidths()
   }
 
   aboutToAppear(): void {
     this.cellWidthTracker.onWidthUpdated = () => {
-      // onSizeChange回调时立即应用列宽（不防抖），确保测量结果及时生效
       this.applyColumnWidths()
     }
     if (this.tableTheme.tableStickyHeader) {
       this.syncManager.registerHeader(this.headerScroller)
       this.syncManager.registerBody(this.bodyScroller)
     }
-    this.refreshData() // 首次加载（refreshData内会调度applyColumnWidths）
+    this.useOffsetSticky = this.stickyHolder.enabled
+    this.stickyHolder.addListener(this.onStickyYChanged)
+    this.refreshData()
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
     this.cellWidthTracker.onWidthUpdated = undefined
+    this.stickyHolder.removeListener(this.onStickyYChanged)
     if (this.tableTheme.tableStickyHeader) {
       this.syncManager.unregisterHeader()
       this.syncManager.unregisterBody()
@@ -99,9 +115,92 @@ export struct MarkdownTable {
     }
   }
 
+  /**
+   * 外层滚动Y变化时直接更新 offsetHolder.offset
+   * @Observed + @ObjectLink 只触发 StickyOffsetApplier 重渲染，不触发 MarkdownTable build()
+   */
+  private onStickyYChanged = (y: number): void => {
+    this.recalculateOffset(y)
+  }
+
+  /**
+   * 表格位置/高度变化时重新计算偏移
+   */
+  onTableAreaChanged(): void {
+    this.recalculateOffset(this.stickyHolder.y)
+  }
+
+  /**
+   * 计算 header 吸顶偏移量并更新 offsetHolder
+   */
+  private recalculateOffset(scrollY: number): void {
+    if (scrollY < 0 || this.tableY === Number.MAX_SAFE_INTEGER) {
+      this.offsetHolder.offset = 0
+      return
+    }
+    const offset = scrollY - this.tableY
+    // 上界：tableHeight - paddingTop - borderTop（表格内容区底部到达视口顶时停止吸顶）
+    if (offset <= 0 || offset >= this.tableHeight - this.tablePaddingTopNum - this.tableBorderTopNum) {
+      this.offsetHolder.offset = 0
+    } else {
+      this.offsetHolder.offset = offset
+    }
+  }
+
   build() {
-    if (this.tableTheme.tableStickyHeader) {
-      // sticky 模式：ListItemGroup 直接作为外层 List 的子节点，header 天然吸顶
+    if (this.tableTheme.tableStickyHeader && this.useOffsetSticky) {
+      // offset sticky 模式（不固定高度）：header用.offset()钉在视口顶部，非浮层
+      ListItemGroup() {
+        ListItem() {
+          this.offsetStickyBodyBuilder()
+        }
+      }
+      .backgroundColor(this.globalTheme.backgroundColor)
+      .borderStyle(this.tableTheme.tableBorderStyle)
+      .borderWidth(this.tableTheme.tableBorderWidth)
+      .borderColor(this.tableTheme.tableBorderColor)
+      .borderRadius({
+        topLeft: this.tableTheme.tableRadiusTopLeft,
+        topRight: this.tableTheme.tableRadiusTopRight,
+        bottomLeft: this.tableTheme.tableRadiusBottomLeft,
+        bottomRight: this.tableTheme.tableRadiusBottomRight
+      })
+      .padding({
+        top: this.tableTheme.tablePaddingTop,
+        right: this.tableTheme.tablePaddingRight,
+        bottom: this.tableTheme.tablePaddingBottom,
+        left: this.tableTheme.tablePaddingLeft
+      })
+      .margin({
+        top: this.tableTheme.tableMarginTop,
+        right: this.tableTheme.tableMarginRight,
+        bottom: this.tableTheme.tableMarginBottom,
+        left: this.tableTheme.tableMarginLeft
+      })
+      .onAreaChange((oldValue: Area, newValue: Area) => {
+        // position.y 是 ListItemGroup border box 顶（相对 List，滚动时不变）
+        // header 实际位置 = border box 顶 + border.top + padding.top（header 在 border+padding 内侧）
+        // tableY = blockMarginTop + position.y + tableBorderTop + tablePaddingTop
+        let marginTop: number = 0
+        if (typeof this.globalTheme.blockMarginTop === 'number') {
+          marginTop = this.globalTheme.blockMarginTop
+        }
+        let paddingTop: number = 0
+        if (typeof this.tableTheme.tablePaddingTop === 'number') {
+          paddingTop = this.tableTheme.tablePaddingTop
+        }
+        let borderTop: number = 0
+        if (typeof this.tableTheme.tableBorderWidth === 'number') {
+          borderTop = this.tableTheme.tableBorderWidth
+        }
+        this.tablePaddingTopNum = paddingTop
+        this.tableBorderTopNum = borderTop
+        this.tableY = (newValue.position.y as number) + marginTop + borderTop + paddingTop
+        this.tableHeight = newValue.height as number
+        this.onTableAreaChanged()
+      })
+    } else if (this.tableTheme.tableStickyHeader) {
+      // 原生 sticky 模式（固定高度）：ListItemGroup + List.sticky(StickyStyle.Header)
       ListItemGroup({ header: this.tableHeaderBuilder }) {
         ListItem() {
           this.tableBodyBuilder()
@@ -256,11 +355,12 @@ export struct MarkdownTable {
       }
       .scrollable(ScrollDirection.Horizontal)
       .scrollBar(BarState.Off)
-      .onDidScroll((xOffset: number, yOffset: number, scrollState: ScrollState) => {
-        // 仅同步用户手势触发的滚动，过滤程序化 scrollTo 的 Idle 状态
-        if (scrollState !== ScrollState.Idle) {
-          this.syncManager.onHeaderScrolled(this.headerScroller.currentOffset().xOffset)
+      .onScrollFrameBegin((offset: number, state: ScrollState) => {
+        if (state !== ScrollState.Idle) {
+          const newX = this.headerScroller.currentOffset().xOffset + offset
+          this.syncManager.onHeaderScrolled(newX)
         }
+        return { offsetRemain: offset }
       })
     }
   }
@@ -322,11 +422,114 @@ export struct MarkdownTable {
     .scrollable(ScrollDirection.Horizontal)
     .scrollBar(this.tableTheme.tableScrollBarState)
     .scrollBarColor(this.tableTheme.tableScrollBarColor)
-    .onDidScroll((xOffset: number, yOffset: number, scrollState: ScrollState) => {
-      if (scrollState !== ScrollState.Idle) {
-        this.syncManager.onBodyScrolled(this.bodyScroller.currentOffset().xOffset)
+    .onScrollFrameBegin((offset: number, state: ScrollState) => {
+      if (state !== ScrollState.Idle) {
+        const newX = this.bodyScroller.currentOffset().xOffset + offset
+        this.syncManager.onBodyScrolled(newX)
       }
+      return { offsetRemain: offset }
     })
+  }
+
+  /**
+   * offset sticky 模式：单个横向 Scroll 包裹 header + body
+   * header 和 body 在同一个 Scroll 内，横向滑动天然同步（无事件同步延迟）
+   * header 通过 StickyOffsetApplier 包裹，@Observed+@ObjectLink 只触发 Applier 重渲染
+   */
+  @Builder
+  offsetStickyBodyBuilder() {
+    Scroll(this.bodyScroller) {
+      Column() {
+        // Header（StickyOffsetApplier 包裹，offset 变化只触发 Applier 重渲染）
+        if (this.node.children.length > 0) {
+          StickyOffsetApplier({
+            holder: this.offsetHolder,
+            bgColor: this.globalTheme.backgroundColor
+          }) {
+            MarkdownTableRow({
+              node: this.node.children[0],
+              headingTheme: this.headingTheme,
+              globalTheme: this.globalTheme,
+              subTheme: this.subTheme,
+              supTheme: this.supTheme,
+              inlineCodeTheme: this.inlineCodeTheme,
+              boldTheme: this.boldTheme,
+              italicTheme: this.italicTheme,
+              strikethroughTheme: this.strikethroughTheme,
+              highlightTheme: this.highlightTheme,
+              htmlUnderlineTheme: this.htmlUnderlineTheme,
+              linkTheme: this.linkTheme,
+              footnoteRefTheme: this.footnoteRefTheme,
+              tableTheme: this.tableTheme,
+              paragraphTheme: this.paragraphTheme,
+              blockQuoteTheme: this.blockQuoteTheme,
+              definitionListTheme: this.definitionListTheme,
+              imageTheme: this.imageTheme,
+              latexMathTheme: this.latexMathTheme,
+              latexImageCallback: this.latexImageCallback,
+              latexStrCallback: this.latexStrCallback,
+              componentWidth: this.componentWidth,
+              tableBlockRowRow: 0,
+              tableBlockRowCellSize: this.tableBlockCellSize,
+              textCopyCallback: this.textCopyCallback,
+              footnoteCallback: this.footnoteCallback,
+              tocCallback: this.tocCallback,
+              linkCallback: this.linkCallback,
+              imageCallback: this.imageCallback,
+              imageDownloadCallback: this.imageDownloadCallback,
+              imageReplaceCallback: this.imageReplaceCallback
+            })
+          }
+        }
+
+        // Body
+        LazyForEach(
+          this.markdownDataSource,
+          (item: NodeView, index: number) => {
+            MarkdownTableRow({
+              node: item,
+              headingTheme: this.headingTheme,
+              globalTheme: this.globalTheme,
+              subTheme: this.subTheme,
+              supTheme: this.supTheme,
+              inlineCodeTheme: this.inlineCodeTheme,
+              boldTheme: this.boldTheme,
+              italicTheme: this.italicTheme,
+              strikethroughTheme: this.strikethroughTheme,
+              highlightTheme: this.highlightTheme,
+              htmlUnderlineTheme: this.htmlUnderlineTheme,
+              linkTheme: this.linkTheme,
+              footnoteRefTheme: this.footnoteRefTheme,
+              tableTheme: this.tableTheme,
+              paragraphTheme: this.paragraphTheme,
+              blockQuoteTheme: this.blockQuoteTheme,
+              definitionListTheme: this.definitionListTheme,
+              imageTheme: this.imageTheme,
+              latexMathTheme: this.latexMathTheme,
+              latexImageCallback: this.latexImageCallback,
+              latexStrCallback: this.latexStrCallback,
+              componentWidth: this.componentWidth,
+              tableBlockRowRow: index + 1,
+              tableBlockRowCellSize: this.tableBlockCellSize,
+              textCopyCallback: this.textCopyCallback,
+              footnoteCallback: this.footnoteCallback,
+              tocCallback: this.tocCallback,
+              linkCallback: this.linkCallback,
+              imageCallback: this.imageCallback,
+              imageDownloadCallback: this.imageDownloadCallback,
+              imageReplaceCallback: this.imageReplaceCallback
+            })
+          },
+          (item: NodeView, index: number) => {
+            return `${index}-${item.nodeHash}`
+          }
+        )
+      }
+      .alignItems(HorizontalAlign.Start)
+    }
+    .scrollable(ScrollDirection.Horizontal)
+    .scrollBar(this.tableTheme.tableScrollBarState)
+    .scrollBarColor(this.tableTheme.tableScrollBarColor)
   }
 
   /**
@@ -408,5 +611,28 @@ export struct MarkdownTable {
     if (changed) {
       this.columnWidths = [...newWidths]
     }
+  }
+}
+
+/**
+ * 吸顶偏移量应用器
+ *
+ * 极轻量组件：build() 只有 Column { child }.offset().zIndex(1).backgroundColor()
+ * @ObjectLink 检测 holder.offset 变化，只触发本组件重渲染
+ * 不触发父组件 MarkdownTable 的 build()，避免重渲染开销导致吸顶延迟
+ */
+@Component
+struct StickyOffsetApplier {
+  @ObjectLink holder: StickyOffsetHolder
+  bgColor: ResourceColor = Color.White
+  @BuilderParam child: () => void
+
+  build() {
+    Column() {
+      this.child()
+    }
+    .backgroundColor(this.bgColor)
+    .zIndex(1)
+    .offset({ x: 0, y: this.holder.offset })
   }
 }

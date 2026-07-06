@@ -3,6 +3,7 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScrollController,
   // MarkdownScroller,
   MarkdownTheme,
   TableTheme} from '@cangjie-tpc/markdown_hybrid'
@@ -153,6 +154,11 @@ struct TableDetailsPage {
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
 
+  private mdScrollController: MarkdownScrollController = new MarkdownScrollController()
+  private outerScroller: Scroller = new Scroller()
+  private contentHeight: number = 0 // Scroll 内容高度（Column 高度）
+  private viewportHeight: number = 0 // Scroll 视口高度
+
   aboutToAppear(): void {
     try {
       let tableData: TableData = router.getParams() as TableData
@@ -273,12 +279,39 @@ struct TableDetailsPage {
               // isInputEnded: this.isInputEnded,
               scroller: this.markdownScroller,
               config: this.markdownConfiguration,
-              plugin: this.markdownPlugin
+              plugin: this.markdownPlugin,
+              // scroller: this.scroller,
+              scrollController: this.mdScrollController  // ← 传入控制器
             })
           }
+          .onAreaChange((oldValue: Area, newValue: Area) => {
+            this.contentHeight = newValue.height as number
+          })
         }
       }
       .align(Alignment.TopStart)
+      .edgeEffect(EdgeEffect.None) // 禁用弹跳，防止 overscroll 时 header 跟随内容弹跳
+      .onAreaChange((oldValue: Area, newValue: Area) => {
+        this.viewportHeight = newValue.height as number
+      })
+      .onScrollFrameBegin((offset: number, scrollState: ScrollState) => {
+        // 滚动前预测（消除一帧延迟，同帧渲染）
+        const currentY = this.scroller.currentOffset().yOffset
+        let newY = currentY + offset
+        // clamp 到有效范围 [0, maxScrollY]，防止边界过冲
+        if (newY < 0) newY = 0
+        const maxScrollY = this.contentHeight > this.viewportHeight
+          ? this.contentHeight - this.viewportHeight : 0
+        if (maxScrollY > 0 && newY > maxScrollY) {
+          newY = maxScrollY
+        }
+        this.mdScrollController.notifyScrollY(newY)
+        return { offsetRemain: offset }
+      })
+      .onDidScroll((xOffset: number, yOffset: number, scrollState: ScrollState) => {
+        // 滚动后用实际位置修正（解决预测偏差）
+        this.mdScrollController.notifyScrollY(this.scroller.currentOffset().yOffset)
+      })
       .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)

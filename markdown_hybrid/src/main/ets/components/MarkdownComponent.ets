@@ -22,6 +22,8 @@ import { MarkdownList } from "./MarkdownList"
 import { MarkdownQuote } from "./MarkdownQuote"
 import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
 import { LatexParseQueue } from "../model/LatexParseQueue"
+import { MarkdownScrollController } from "../model/MarkdownScrollController"
+import { StickyScrollYHolder } from "../model/StickyScrollYHolder"
 
 @Component
 export struct CJMarkdown {
@@ -29,8 +31,10 @@ export struct CJMarkdown {
   @ObjectLink config: MarkdownConfiguration // markdown配置项
   @Provide placeholderPixelMap: PixelMap | undefined = undefined // 图片占位图
   @Provide isLatexMathEnabled: boolean = false // 数学公式插件是否启用（控制是否调用latexStringToImage）
+  @Provide('mdStickyHolder') stickyHolder: StickyScrollYHolder = new StickyScrollYHolder() // 引用不变，不触发build()；通过setY+监听器通知MarkdownTable
   @State componentWidth: number = 0.0 // markdown控件宽度
   scroller: Scroller = new Scroller() // list控制器
+  scrollController?: MarkdownScrollController // 外层滚动控制器（不固定高度模式由页面传入）
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
   private parseVersion: number = 0 // 解析版本号，每次解析递增
   private appliedVersion: number = 0 // 已应用的版本号，用于渐进式更新（避免丢弃所有中间结果）
@@ -45,12 +49,21 @@ export struct CJMarkdown {
 
   aboutToAppear(): void {
     this.isLatexMathEnabled = this.plugin.isLatexMathPlugin
+    if (this.scrollController) {
+      this.stickyHolder.enabled = true
+      this.scrollController.setListener((yOffset: number) => {
+        this.stickyHolder.setY(yOffset)
+      })
+    }
     this.refreshData() // 首次加载
     this.loadPlaceholderImage() // 占位图处理
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
+    if (this.scrollController) {
+      this.scrollController.setListener(null)
+    }
     if (this.throttleTimerId !== -1) {
       clearTimeout(this.throttleTimerId)
       this.throttleTimerId = -1

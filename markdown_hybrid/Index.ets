@@ -36,5 +36,7 @@ export { MarkdownPlugin } from './src/main/ets/plugin/MarkdownPlugin'
 export { DelimiterFilterMode } from './src/main/ets/enum/DelimiterFilterMode'
 export { NodeView } from './src/main/ets/model/NodeView'
 export { TableHorizontalScrollSync } from './src/main/ets/model/TableHorizontalScrollSync'
+export { MarkdownScrollController } from './src/main/ets/model/MarkdownScrollController'
+export { StickyScrollYHolder } from './src/main/ets/model/StickyScrollYHolder'
 export { LatexMathColorFormat } from '@cangjie-tpc/formula_hybrid'
 
