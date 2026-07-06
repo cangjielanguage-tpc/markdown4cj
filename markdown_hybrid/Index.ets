@@ -35,5 +35,6 @@ export { MarkdownNodeViewString } from './src/main/ets/configs/MarkdownNodeViewS
 export { MarkdownPlugin } from './src/main/ets/plugin/MarkdownPlugin'
 export { DelimiterFilterMode } from './src/main/ets/enum/DelimiterFilterMode'
 export { NodeView } from './src/main/ets/model/NodeView'
+export { TableHorizontalScrollSync } from './src/main/ets/model/TableHorizontalScrollSync'
 export { LatexMathColorFormat } from '@cangjie-tpc/formula_hybrid'
 

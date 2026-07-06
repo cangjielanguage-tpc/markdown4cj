@@ -141,6 +141,40 @@ export struct CJMarkdown {
       LazyForEach(
         this.markdownDataSource,
         (item: NodeView, index: number) => {
+          if (item.nodeType === "TableBlock" && this.config.markdownTheme.tableTheme.tableStickyHeader) {
+            // sticky 模式：表格以 ListItemGroup 形式直接作为 List 子节点，标题行天然吸顶
+            MarkdownTable({
+              node: item,
+              headingTheme: this.config.markdownTheme.headingTheme,
+              globalTheme: this.config.markdownTheme.globalTheme,
+              subTheme: this.config.markdownTheme.subTheme,
+              supTheme: this.config.markdownTheme.supTheme,
+              inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
+              boldTheme: this.config.markdownTheme.boldTheme,
+              italicTheme: this.config.markdownTheme.italicTheme,
+              strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
+              highlightTheme: this.config.markdownTheme.highlightTheme,
+              htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
+              linkTheme: this.config.markdownTheme.linkTheme,
+              footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
+              tableTheme: this.config.markdownTheme.tableTheme,
+              paragraphTheme: this.config.markdownTheme.paragraphTheme,
+              blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
+              definitionListTheme: this.config.markdownTheme.definitionListTheme,
+              imageTheme: this.config.markdownTheme.imageTheme,
+              latexMathTheme: this.config.markdownTheme.latexMathTheme,
+              latexImageCallback: this.config.latexImageCallback,
+              latexStrCallback: this.config.latexStrCallback,
+              componentWidth: this.componentWidth,
+              textCopyCallback: this.config.textCopyCallback,
+              footnoteCallback: this.footnoteCallback,
+              tocCallback: this.tocCallback,
+              linkCallback: this.config.linkCallback,
+              imageCallback: this.imageCallback,
+              imageDownloadCallback: this.config.imageDownloadCallback,
+              imageReplaceCallback: this.config.imageReplaceCallback
+            })
+          } else {
           ListItem() {
             if (item.nodeType === "Heading" || item.nodeType === "IdHeading") {
               // 标题/标题ID
@@ -565,10 +599,14 @@ export struct CJMarkdown {
               // 其他
             }
           }
+          }
         },
         (item: NodeView, index: number) => {
           if (item.nodeType === "LatexMathBlock") {
             return `${index}-${item.nodeHash}-${item.contentHash}`
+          }
+          if (item.nodeType === "TableBlock") {
+            return `${index}-${item.nodeHash}-${this.config.markdownTheme.tableTheme.tableStickyHeader}`
           }
           return `${index}-${item.nodeHash}`
         }
@@ -587,6 +625,7 @@ export struct CJMarkdown {
     .alignListItem(ListItemAlign.Start)
     .scrollBar(BarState.Off)
     .enableScrollInteraction(this.config.markdownTheme.globalTheme.openGestureSwipe)
+    .sticky(StickyStyle.Header)
     .onSizeChange((oldValue, newValue) => {
       let newWidth: number = 0
       if (typeof newValue.width === 'number') {

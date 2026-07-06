@@ -108,6 +108,33 @@ export struct MarkdownListItem {
       LazyForEach(
         this.markdownDataSource,
         (item: NodeView, index: number) => {
+          if (item.nodeType === "TableBlock" && this.tableTheme.tableStickyHeader) {
+            // sticky 模式：表格以 ListItemGroup 形式直接作为 List 子节点，标题行天然吸顶
+            MarkdownTable({
+              node: item,
+              headingTheme: this.headingTheme,
+              globalTheme: this.globalTheme,
+              blockQuoteTheme: this.blockQuoteTheme,
+              subTheme: this.subTheme,
+              supTheme: this.supTheme,
+              inlineCodeTheme: this.inlineCodeTheme,
+              boldTheme: this.boldTheme,
+              italicTheme: this.italicTheme,
+              strikethroughTheme: this.strikethroughTheme,
+              highlightTheme: this.highlightTheme,
+              htmlUnderlineTheme: this.htmlUnderlineTheme,
+              linkTheme: this.linkTheme,
+              footnoteRefTheme: this.footnoteRefTheme,
+              tableTheme: this.tableTheme,
+              paragraphTheme: this.paragraphTheme,
+              definitionListTheme: this.definitionListTheme,
+              imageTheme: this.imageTheme,
+              latexMathTheme: this.latexMathTheme,
+              latexImageCallback: this.latexImageCallback,
+              latexStrCallback: this.latexStrCallback,
+              componentWidth: this.tableBlockComponentWidth
+            })
+          } else {
           ListItem() {
             if (item.nodeType === "Paragraph") {
               // 段落
@@ -492,10 +519,14 @@ export struct MarkdownListItem {
               // 其他
             }
           }
+          }
         },
         (item: NodeView, index: number) => {
           if (item.nodeType === "LatexMathBlock") {
             return `${index}-${item.nodeHash}-${item.contentHash}`
+          }
+          if (item.nodeType === "TableBlock") {
+            return `${index}-${item.nodeHash}-${this.tableTheme.tableStickyHeader}`
           }
           return `${index}-${item.nodeHash}`
         }
@@ -503,6 +534,7 @@ export struct MarkdownListItem {
     }
     .listDirection(Axis.Vertical)
     .alignListItem(ListItemAlign.Start)
+    .sticky(StickyStyle.Header)
     .layoutWeight(1)
   }
 

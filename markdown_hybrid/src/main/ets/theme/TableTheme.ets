@@ -56,6 +56,7 @@ export class TableTheme implements MarkdownBaseTheme {
   tableContentTextFontFamily: string | Resource = 'HarmonyOS Sans' // 内容文字字体族
   tableContentTextLineHeight: number | string | Resource = 22.0 // 内容文字行高
   tableContentTextLetterSpacing: number = 0.0 // 内容文字字间距
+  tableStickyHeader: boolean = true // 表格标题行是否吸顶（仅当外层 List 可滚动时生效）
 
   /**
    * 设置表格标题背景颜色
@@ -501,6 +502,21 @@ export class TableTheme implements MarkdownBaseTheme {
    */
   setTableContentTextLetterSpacing(spacing: number): TableTheme {
     this.tableContentTextLetterSpacing = spacing
+    return this
+  }
+
+  /**
+   * 设置表格标题行是否吸顶
+   * 开启后表格将以 ListItemGroup 形式直接渲染在外层 List 中，
+   * 标题行作为 group header 在外层 List 滚动时天然吸顶；
+   * 关闭后回退为 Scroll>List>rows 的传统结构（标题不吸顶）。
+   * 注意：仅当外层 List 有固定高度可滚动时吸顶才可见；不固定高度时无滚动，吸顶不触发。
+   *
+   * @param enable 是否吸顶
+   * @return TableTheme
+   */
+  setTableStickyHeader(enable: boolean): TableTheme {
+    this.tableStickyHeader = enable
     return this
   }
 }
