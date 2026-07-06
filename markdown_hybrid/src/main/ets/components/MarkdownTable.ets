@@ -77,8 +77,11 @@ export struct MarkdownTable {
   @State private tableY: number = Number.MAX_SAFE_INTEGER // 表格在父容器中的Y位置（onAreaChange获取）
   @State private tableHeight: number = 0 // 表格总高度（onAreaChange获取）
   private tablePaddingTopNum: number = 0 // tablePaddingTop 的数值
-  private tableBorderTopNum: number = 0 // tableBorderWidth 的数值（border 顶部宽度）
+  private tablePaddingBottomNum: number = 0 // tablePaddingBottom 的数值
+  private tableBorderTopNum: number = 0 // tableBorderWidth 的数值（border 顶部宽度，border均匀）
   @State private offsetHolder: StickyOffsetHolder = new StickyOffsetHolder() // @State，引用不变不触发build()；@ObjectLink检测offset属性变化
+  @State private copyRowHeight: number = 0 // 复制按钮栏高度（onAreaChange获取）
+  @State private stickyContentHeight: number = 0 // 吸顶内容总高度（copy row + header，onAreaChange获取）
 
   /**
    * componentWidth变化时立即应用列宽
@@ -132,6 +135,7 @@ export struct MarkdownTable {
 
   /**
    * 计算 header 吸顶偏移量并更新 offsetHolder
+   * 上界 = 内容区高度 - 吸顶内容高度，确保吸顶内容底部不超过表格内容区底部
    */
   private recalculateOffset(scrollY: number): void {
     if (scrollY < 0 || this.tableY === Number.MAX_SAFE_INTEGER) {
@@ -139,12 +143,47 @@ export struct MarkdownTable {
       return
     }
     const offset = scrollY - this.tableY
-    // 上界：tableHeight - paddingTop - borderTop（表格内容区底部到达视口顶时停止吸顶）
-    if (offset <= 0 || offset >= this.tableHeight - this.tablePaddingTopNum - this.tableBorderTopNum) {
+    // 内容区高度 = tableHeight - paddingTop - paddingBottom - 2*borderTop（border均匀）
+    // 上界 = 内容区高度 - stickyContentHeight（吸顶内容底部到达内容区底部时停止吸顶）
+    const contentHeight = this.tableHeight - this.tablePaddingTopNum - this.tablePaddingBottomNum
+      - 2 * this.tableBorderTopNum
+    const upperBound = contentHeight - this.stickyContentHeight
+    if (offset <= 0 || offset >= upperBound) {
       this.offsetHolder.offset = 0
     } else {
       this.offsetHolder.offset = offset
     }
+  }
+
+  /**
+   * 递归提取节点树中的所有文本，用于复制整表内容
+   * 表格行间用换行分隔，单元格间用制表符分隔
+   */
+  private getFullTableText(): string {
+    if (this.node.children.length === 0) {
+      return ''
+    }
+    const lines: string[] = []
+    for (let i = 0; i < this.node.children.length; i++) {
+      const row = this.node.children[i]
+      const cells: string[] = []
+      for (let j = 0; j < row.children.length; j++) {
+        cells.push(this.extractNodeText(row.children[j]))
+      }
+      lines.push(cells.join('\t'))
+    }
+    return lines.join('\n')
+  }
+
+  /**
+   * 递归提取单个节点的文本内容
+   */
+  private extractNodeText(node: NodeView): string {
+    let text = node.nodeText
+    for (let i = 0; i < node.children.length; i++) {
+      text += this.extractNodeText(node.children[i])
+    }
+    return text
   }
 
   build() {
@@ -189,11 +228,16 @@ export struct MarkdownTable {
         if (typeof this.tableTheme.tablePaddingTop === 'number') {
           paddingTop = this.tableTheme.tablePaddingTop
         }
+        let paddingBottom: number = 0
+        if (typeof this.tableTheme.tablePaddingBottom === 'number') {
+          paddingBottom = this.tableTheme.tablePaddingBottom
+        }
         let borderTop: number = 0
         if (typeof this.tableTheme.tableBorderWidth === 'number') {
           borderTop = this.tableTheme.tableBorderWidth
         }
         this.tablePaddingTopNum = paddingTop
+        this.tablePaddingBottomNum = paddingBottom
         this.tableBorderTopNum = borderTop
         this.tableY = (newValue.position.y as number) + marginTop + borderTop + paddingTop
         this.tableHeight = newValue.height as number
@@ -312,56 +356,107 @@ export struct MarkdownTable {
   }
 
   /**
+   * 复制按钮栏：左文本"对比" + 右"复制"按钮，充满屏幕宽度
+   * 不随横向滑动（在 Scroll 外），跟随吸顶 offset
+   */
+  @Builder
+  tableCopyRowBuilder() {
+    Row() {
+      Text('对比')
+        .fontSize(this.tableTheme.tableTitleTextFontSize)
+        .fontColor(this.tableTheme.tableTitleTextFontColor)
+        .fontWeight(this.tableTheme.tableTitleTextFontWeight)
+
+      Button('复制')
+        .type(ButtonType.Normal)
+        .fontSize(this.tableTheme.tableTitleTextFontSize)
+        .fontColor(this.tableTheme.tableTitleTextFontColor)
+        .backgroundColor(this.tableTheme.tableTitleBackgroundColor)
+        .borderWidth(1)
+        .borderColor(this.tableTheme.tableBorderColor)
+        .borderRadius(this.tableTheme.tableRadiusTopLeft)
+        .padding({ top: 2, right: 8, bottom: 2, left: 8 })
+        .onClick(() => {
+          if (this.textCopyCallback !== undefined) {
+            this.textCopyCallback(this.getFullTableText())
+          }
+        })
+    }
+    .width('100%')
+    .justifyContent(FlexAlign.SpaceBetween)
+    .alignItems(VerticalAlign.Center)
+    .padding({
+      top: this.tableTheme.tableCellPaddingTop,
+      right: this.tableTheme.tableCellPaddingRight,
+      bottom: this.tableTheme.tableCellPaddingBottom,
+      left: this.tableTheme.tableCellPaddingLeft
+    })
+    .backgroundColor(this.tableTheme.tableTitleBackgroundColor)
+    .borderWidth({ bottom: this.tableTheme.tableBorderWidth })
+    .borderColor(this.tableTheme.tableBorderColor)
+    .borderStyle(this.tableTheme.tableBorderStyle)
+    .onAreaChange((oldValue: Area, newValue: Area) => {
+      this.copyRowHeight = newValue.height as number
+    })
+  }
+
+  /**
    * sticky 模式：标题行 builder（ListItemGroup header）
    * 标题行包在独立横向 Scroll 中，与 body 通过 syncManager 同步横向偏移
    */
   @Builder
   tableHeaderBuilder() {
     if (this.node.children.length > 0) {
-      Scroll(this.headerScroller) {
-        MarkdownTableRow({
-          node: this.node.children[0],
-          headingTheme: this.headingTheme,
-          globalTheme: this.globalTheme,
-          subTheme: this.subTheme,
-          supTheme: this.supTheme,
-          inlineCodeTheme: this.inlineCodeTheme,
-          boldTheme: this.boldTheme,
-          italicTheme: this.italicTheme,
-          strikethroughTheme: this.strikethroughTheme,
-          highlightTheme: this.highlightTheme,
-          htmlUnderlineTheme: this.htmlUnderlineTheme,
-          linkTheme: this.linkTheme,
-          footnoteRefTheme: this.footnoteRefTheme,
-          tableTheme: this.tableTheme,
-          paragraphTheme: this.paragraphTheme,
-          blockQuoteTheme: this.blockQuoteTheme,
-          definitionListTheme: this.definitionListTheme,
-          imageTheme: this.imageTheme,
-          latexMathTheme: this.latexMathTheme,
-          latexImageCallback: this.latexImageCallback,
-          latexStrCallback: this.latexStrCallback,
-          componentWidth: this.componentWidth,
-          tableBlockRowRow: 0,
-          tableBlockRowCellSize: this.tableBlockCellSize,
-          textCopyCallback: this.textCopyCallback,
-          footnoteCallback: this.footnoteCallback,
-          tocCallback: this.tocCallback,
-          linkCallback: this.linkCallback,
-          imageCallback: this.imageCallback,
-          imageDownloadCallback: this.imageDownloadCallback,
-          imageReplaceCallback: this.imageReplaceCallback
+      Column() {
+        // 复制按钮栏（不随横向滑动，充满屏幕宽度）
+        this.tableCopyRowBuilder()
+
+        // 标题行横向 Scroll，与 body 通过 syncManager 同步
+        Scroll(this.headerScroller) {
+          MarkdownTableRow({
+            node: this.node.children[0],
+            headingTheme: this.headingTheme,
+            globalTheme: this.globalTheme,
+            subTheme: this.subTheme,
+            supTheme: this.supTheme,
+            inlineCodeTheme: this.inlineCodeTheme,
+            boldTheme: this.boldTheme,
+            italicTheme: this.italicTheme,
+            strikethroughTheme: this.strikethroughTheme,
+            highlightTheme: this.highlightTheme,
+            htmlUnderlineTheme: this.htmlUnderlineTheme,
+            linkTheme: this.linkTheme,
+            footnoteRefTheme: this.footnoteRefTheme,
+            tableTheme: this.tableTheme,
+            paragraphTheme: this.paragraphTheme,
+            blockQuoteTheme: this.blockQuoteTheme,
+            definitionListTheme: this.definitionListTheme,
+            imageTheme: this.imageTheme,
+            latexMathTheme: this.latexMathTheme,
+            latexImageCallback: this.latexImageCallback,
+            latexStrCallback: this.latexStrCallback,
+            componentWidth: this.componentWidth,
+            tableBlockRowRow: 0,
+            tableBlockRowCellSize: this.tableBlockCellSize,
+            textCopyCallback: this.textCopyCallback,
+            footnoteCallback: this.footnoteCallback,
+            tocCallback: this.tocCallback,
+            linkCallback: this.linkCallback,
+            imageCallback: this.imageCallback,
+            imageDownloadCallback: this.imageDownloadCallback,
+            imageReplaceCallback: this.imageReplaceCallback
+          })
+        }
+        .scrollable(ScrollDirection.Horizontal)
+        .scrollBar(BarState.Off)
+        .onScrollFrameBegin((offset: number, state: ScrollState) => {
+          if (state !== ScrollState.Idle) {
+            const newX = this.headerScroller.currentOffset().xOffset + offset
+            this.syncManager.onHeaderScrolled(newX)
+          }
+          return { offsetRemain: offset }
         })
       }
-      .scrollable(ScrollDirection.Horizontal)
-      .scrollBar(BarState.Off)
-      .onScrollFrameBegin((offset: number, state: ScrollState) => {
-        if (state !== ScrollState.Idle) {
-          const newX = this.headerScroller.currentOffset().xOffset + offset
-          this.syncManager.onHeaderScrolled(newX)
-        }
-        return { offsetRemain: offset }
-      })
     }
   }
 
@@ -432,104 +527,136 @@ export struct MarkdownTable {
   }
 
   /**
-   * offset sticky 模式：单个横向 Scroll 包裹 header + body
-   * header 和 body 在同一个 Scroll 内，横向滑动天然同步（无事件同步延迟）
-   * header 通过 StickyOffsetApplier 包裹，@Observed+@ObjectLink 只触发 Applier 重渲染
+   * offset sticky 模式：StickyOffsetApplier 包裹 copy row + header Scroll，body 在独立 Scroll 中
+   * - copy row 在 Scroll 外，充满屏幕宽度，不随横向滑动
+   * - header 在独立横向 Scroll 中，与 body 通过 syncManager 同步横向偏移
+   * - StickyOffsetApplier 包裹 copy row + header，整体随 offset 吸顶
+   * - body 在独立横向 Scroll 中，不吸顶，横向滑动与 header 同步
    */
   @Builder
   offsetStickyBodyBuilder() {
-    Scroll(this.bodyScroller) {
-      Column() {
-        // Header（StickyOffsetApplier 包裹，offset 变化只触发 Applier 重渲染）
-        if (this.node.children.length > 0) {
-          StickyOffsetApplier({
-            holder: this.offsetHolder,
-            bgColor: this.globalTheme.backgroundColor
-          }) {
-            MarkdownTableRow({
-              node: this.node.children[0],
-              headingTheme: this.headingTheme,
-              globalTheme: this.globalTheme,
-              subTheme: this.subTheme,
-              supTheme: this.supTheme,
-              inlineCodeTheme: this.inlineCodeTheme,
-              boldTheme: this.boldTheme,
-              italicTheme: this.italicTheme,
-              strikethroughTheme: this.strikethroughTheme,
-              highlightTheme: this.highlightTheme,
-              htmlUnderlineTheme: this.htmlUnderlineTheme,
-              linkTheme: this.linkTheme,
-              footnoteRefTheme: this.footnoteRefTheme,
-              tableTheme: this.tableTheme,
-              paragraphTheme: this.paragraphTheme,
-              blockQuoteTheme: this.blockQuoteTheme,
-              definitionListTheme: this.definitionListTheme,
-              imageTheme: this.imageTheme,
-              latexMathTheme: this.latexMathTheme,
-              latexImageCallback: this.latexImageCallback,
-              latexStrCallback: this.latexStrCallback,
-              componentWidth: this.componentWidth,
-              tableBlockRowRow: 0,
-              tableBlockRowCellSize: this.tableBlockCellSize,
-              textCopyCallback: this.textCopyCallback,
-              footnoteCallback: this.footnoteCallback,
-              tocCallback: this.tocCallback,
-              linkCallback: this.linkCallback,
-              imageCallback: this.imageCallback,
-              imageDownloadCallback: this.imageDownloadCallback,
-              imageReplaceCallback: this.imageReplaceCallback
-            })
-          }
-        }
+    Column() {
+      // Header（StickyOffsetApplier 包裹 copy row + header，offset 变化只触发 Applier 重渲染）
+      if (this.node.children.length > 0) {
+        StickyOffsetApplier({
+          holder: this.offsetHolder,
+          bgColor: this.globalTheme.backgroundColor
+        }) {
+          Column() {
+            // 复制按钮栏（Scroll 外，充满宽度，不随横向滑动）
+            this.tableCopyRowBuilder()
 
-        // Body
-        LazyForEach(
-          this.markdownDataSource,
-          (item: NodeView, index: number) => {
-            MarkdownTableRow({
-              node: item,
-              headingTheme: this.headingTheme,
-              globalTheme: this.globalTheme,
-              subTheme: this.subTheme,
-              supTheme: this.supTheme,
-              inlineCodeTheme: this.inlineCodeTheme,
-              boldTheme: this.boldTheme,
-              italicTheme: this.italicTheme,
-              strikethroughTheme: this.strikethroughTheme,
-              highlightTheme: this.highlightTheme,
-              htmlUnderlineTheme: this.htmlUnderlineTheme,
-              linkTheme: this.linkTheme,
-              footnoteRefTheme: this.footnoteRefTheme,
-              tableTheme: this.tableTheme,
-              paragraphTheme: this.paragraphTheme,
-              blockQuoteTheme: this.blockQuoteTheme,
-              definitionListTheme: this.definitionListTheme,
-              imageTheme: this.imageTheme,
-              latexMathTheme: this.latexMathTheme,
-              latexImageCallback: this.latexImageCallback,
-              latexStrCallback: this.latexStrCallback,
-              componentWidth: this.componentWidth,
-              tableBlockRowRow: index + 1,
-              tableBlockRowCellSize: this.tableBlockCellSize,
-              textCopyCallback: this.textCopyCallback,
-              footnoteCallback: this.footnoteCallback,
-              tocCallback: this.tocCallback,
-              linkCallback: this.linkCallback,
-              imageCallback: this.imageCallback,
-              imageDownloadCallback: this.imageDownloadCallback,
-              imageReplaceCallback: this.imageReplaceCallback
+            // 标题行横向 Scroll，与 body 通过 syncManager 同步
+            Scroll(this.headerScroller) {
+              MarkdownTableRow({
+                node: this.node.children[0],
+                headingTheme: this.headingTheme,
+                globalTheme: this.globalTheme,
+                subTheme: this.subTheme,
+                supTheme: this.supTheme,
+                inlineCodeTheme: this.inlineCodeTheme,
+                boldTheme: this.boldTheme,
+                italicTheme: this.italicTheme,
+                strikethroughTheme: this.strikethroughTheme,
+                highlightTheme: this.highlightTheme,
+                htmlUnderlineTheme: this.htmlUnderlineTheme,
+                linkTheme: this.linkTheme,
+                footnoteRefTheme: this.footnoteRefTheme,
+                tableTheme: this.tableTheme,
+                paragraphTheme: this.paragraphTheme,
+                blockQuoteTheme: this.blockQuoteTheme,
+                definitionListTheme: this.definitionListTheme,
+                imageTheme: this.imageTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
+                componentWidth: this.componentWidth,
+                tableBlockRowRow: 0,
+                tableBlockRowCellSize: this.tableBlockCellSize,
+                textCopyCallback: this.textCopyCallback,
+                footnoteCallback: this.footnoteCallback,
+                tocCallback: this.tocCallback,
+                linkCallback: this.linkCallback,
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback
+              })
+            }
+            .scrollable(ScrollDirection.Horizontal)
+            .scrollBar(BarState.Off)
+            .onScrollFrameBegin((offset: number, state: ScrollState) => {
+              if (state !== ScrollState.Idle) {
+                const newX = this.headerScroller.currentOffset().xOffset + offset
+                this.syncManager.onHeaderScrolled(newX)
+              }
+              return { offsetRemain: offset }
             })
-          },
-          (item: NodeView, index: number) => {
-            return `${index}-${item.nodeHash}`
           }
-        )
+          .onAreaChange((oldValue: Area, newValue: Area) => {
+            this.stickyContentHeight = newValue.height as number
+            this.onTableAreaChanged()
+          })
+        }
       }
-      .alignItems(HorizontalAlign.Start)
+
+      // Body（独立横向 Scroll，与 header 通过 syncManager 同步）
+      Scroll(this.bodyScroller) {
+        Column() {
+          LazyForEach(
+            this.markdownDataSource,
+            (item: NodeView, index: number) => {
+              MarkdownTableRow({
+                node: item,
+                headingTheme: this.headingTheme,
+                globalTheme: this.globalTheme,
+                subTheme: this.subTheme,
+                supTheme: this.supTheme,
+                inlineCodeTheme: this.inlineCodeTheme,
+                boldTheme: this.boldTheme,
+                italicTheme: this.italicTheme,
+                strikethroughTheme: this.strikethroughTheme,
+                highlightTheme: this.highlightTheme,
+                htmlUnderlineTheme: this.htmlUnderlineTheme,
+                linkTheme: this.linkTheme,
+                footnoteRefTheme: this.footnoteRefTheme,
+                tableTheme: this.tableTheme,
+                paragraphTheme: this.paragraphTheme,
+                blockQuoteTheme: this.blockQuoteTheme,
+                definitionListTheme: this.definitionListTheme,
+                imageTheme: this.imageTheme,
+                latexMathTheme: this.latexMathTheme,
+                latexImageCallback: this.latexImageCallback,
+                latexStrCallback: this.latexStrCallback,
+                componentWidth: this.componentWidth,
+                tableBlockRowRow: index + 1,
+                tableBlockRowCellSize: this.tableBlockCellSize,
+                textCopyCallback: this.textCopyCallback,
+                footnoteCallback: this.footnoteCallback,
+                tocCallback: this.tocCallback,
+                linkCallback: this.linkCallback,
+                imageCallback: this.imageCallback,
+                imageDownloadCallback: this.imageDownloadCallback,
+                imageReplaceCallback: this.imageReplaceCallback
+              })
+            },
+            (item: NodeView, index: number) => {
+              return `${index}-${item.nodeHash}`
+            }
+          )
+        }
+        .alignItems(HorizontalAlign.Start)
+      }
+      .scrollable(ScrollDirection.Horizontal)
+      .scrollBar(this.tableTheme.tableScrollBarState)
+      .scrollBarColor(this.tableTheme.tableScrollBarColor)
+      .onScrollFrameBegin((offset: number, state: ScrollState) => {
+        if (state !== ScrollState.Idle) {
+          const newX = this.bodyScroller.currentOffset().xOffset + offset
+          this.syncManager.onBodyScrolled(newX)
+        }
+        return { offsetRemain: offset }
+      })
     }
-    .scrollable(ScrollDirection.Horizontal)
-    .scrollBar(this.tableTheme.tableScrollBarState)
-    .scrollBarColor(this.tableTheme.tableScrollBarColor)
   }
 
   /**
