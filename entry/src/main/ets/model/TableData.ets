@@ -63,7 +63,6 @@ export class TableData extends BaseMDData {
   _tableHeadCopyIconWidth: number = 24 // 表格头复制图标宽度
   _tableHeadCopyIconHeight: number = 24 // 表格头复制图标高度
   _tableHeadCopyTextSpacing: number = 5 // 表格头复制图标文本间距
-  _tableHeadTitleLayoutMarginBottom: number = 1 // 表格头复制图标布局下边距
 
   constructor() {
     super()

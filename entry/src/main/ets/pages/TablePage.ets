@@ -297,9 +297,9 @@ struct TablePage {
   @State // 表头标题文本行高
   tableHeaderTitleTextLineHeight: number = 22
   // 表头标题文本左边距列表
-  tableHeaderTitleTextMarginLeftList: Array<number> = [6, 8, 10, 12, 14]
+  tableHeaderTitleTextMarginLeftList: Array<number> = [5, 8, 10, 15, 20, 40]
   @State // 表头标题文本左边距
-  tableHeaderTitleTextMarginLeft: number = 6
+  tableHeaderTitleTextMarginLeft: number = 5
   // 表头复制文本颜色列表
   tableHeaderCopyTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表头复制文本颜色
@@ -348,10 +348,6 @@ struct TablePage {
   tableHeadCopyTextSpacingList: Array<number> = [3, 5, 7, 9, 11]
   @State // 表格头复制图标文本间距
   tableHeadCopyTextSpacing: number = 5
-  // 表格头复制图标布局下边距列表
-  tableHeadTitleLayoutMarginBottomList: Array<number> = [1, 3, 5, 7]
-  @State // 表格头复制图标布局下边距
-  tableHeadTitleLayoutMarginBottom: number = 1
   @State // 配置数据内容
   tableData: TableData = new TableData()
   heightMD: number = 30 * 1 // 乘以行数
@@ -495,7 +491,6 @@ struct TablePage {
                   this.tableData._tableHeadCopyIconWidth = this.tableHeadCopyIconWidth
                   this.tableData._tableHeadCopyIconHeight = this.tableHeadCopyIconHeight
                   this.tableData._tableHeadCopyTextSpacing = this.tableHeadCopyTextSpacing
-                  this.tableData._tableHeadTitleLayoutMarginBottom = this.tableHeadTitleLayoutMarginBottom
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/TableDetailsPage", params: this.tableData })
                 })
@@ -1197,7 +1192,7 @@ struct TablePage {
                   allData: this.tableHeaderTitleTextLineHeight
                 })
                 BaseTabComponent({
-                  titleStr: "表头文本左边距 - ",
+                  titleStr: "表头标题左边距 - ",
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.tableHeaderTitleTextMarginLeftList,
                   allData: this.tableHeaderTitleTextMarginLeft
@@ -1309,12 +1304,6 @@ struct TablePage {
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.tableHeadCopyTextSpacingList,
                   allData: this.tableHeadCopyTextSpacing
-                })
-                BaseTabComponent({
-                  titleStr: "表格头复制图标布局下边距 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.tableHeadTitleLayoutMarginBottomList,
-                  allData: this.tableHeadTitleLayoutMarginBottom
                 })
               }
               .width('100%')
