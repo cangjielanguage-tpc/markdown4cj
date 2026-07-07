@@ -42,6 +42,7 @@ export class TableData extends BaseMDData {
   _tableContentTextFontFamily: string | Resource = 'HarmonyOS Sans' // 表格内容文本字体
   _tableContentTextLineHeight: number | string | Resource = 22.0 // 表格内容文本行高
   _tableContentTextLetterSpacing: number = 0.0 // 表格内容文本字符间距
+  _tableStickyHeader: boolean = false // 表格标题行是否吸顶
 
   constructor() {
     super()

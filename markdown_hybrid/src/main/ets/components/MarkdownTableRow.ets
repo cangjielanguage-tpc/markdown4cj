@@ -47,6 +47,7 @@ export struct MarkdownTableRow {
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   @Prop tableBlockRowRow: number = 0 // 表格的第几行
   @Prop tableBlockRowCellSize: number = 0 // 表格总共有几列
+  @Prop tableBlockRowRowSize: number = 0 // 表格总共有几行
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
   footnoteCallback?: (index: string) => void // 脚注点击事件
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
@@ -92,9 +93,10 @@ export struct MarkdownTableRow {
               latexImageCallback: this.latexImageCallback,
               latexStrCallback: this.latexStrCallback,
                componentWidth: this.componentWidth,
-               tableBlockCellRow: this.tableBlockRowRow,
-               tableBlockCellCell: index,
-                tableBlockCellCellSize: this.tableBlockRowCellSize,
+                tableBlockCellRow: this.tableBlockRowRow,
+                tableBlockCellCell: index,
+                 tableBlockCellCellSize: this.tableBlockRowCellSize,
+                 tableBlockCellRowSize: this.tableBlockRowRowSize,
                 textCopyCallback: this.textCopyCallback,
                footnoteCallback: this.footnoteCallback,
                tocCallback: this.tocCallback,

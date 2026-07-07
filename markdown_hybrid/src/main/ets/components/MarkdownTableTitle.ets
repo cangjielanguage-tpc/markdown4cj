@@ -72,7 +72,7 @@ export struct MarkDownTableTitle {
     }
     .width('100%')
     .borderWidth({
-      bottom:this.tableTheme.tableStickyHeader? this.tableTheme.tableBorderWidth:0
+      bottom:this.tableTheme.tableBorderWidth
     })
     .borderStyle(this.tableTheme.tableBorderStyle)
     .borderColor(this.tableTheme.tableBorderColor)

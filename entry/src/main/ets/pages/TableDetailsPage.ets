@@ -147,6 +147,8 @@ struct TableDetailsPage {
   @State // 表格内容文本字符间距
   tableContentTextLetterSpacing: number = 0.0
 
+  @State tableStickyHeader: boolean = false // 表格标题行是否吸顶
+
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
   @State // markdown主题
@@ -223,6 +225,7 @@ struct TableDetailsPage {
       this.tableContentTextFontFamily = tableData._tableContentTextFontFamily
       this.tableContentTextLineHeight = tableData._tableContentTextLineHeight
       this.tableContentTextLetterSpacing = tableData._tableContentTextLetterSpacing
+      this.tableStickyHeader = tableData._tableStickyHeader
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -346,6 +349,7 @@ struct TableDetailsPage {
     
     // ---------- 专有 - Table
     let tableTheme = new TableTheme()
+
     if (this.tableTitleBackgroundColor !== undefined) {
       tableTheme.setTableTitleBackgroundColor(this.tableTitleBackgroundColor)
     }
@@ -389,6 +393,9 @@ struct TableDetailsPage {
     tableTheme.setTableContentTextFontFamily(this.tableContentTextFontFamily)
     tableTheme.setTableContentTextLineHeight(this.tableContentTextLineHeight)
     tableTheme.setTableContentTextLetterSpacing(this.tableContentTextLetterSpacing)
+
+    tableTheme.setTableStickyHeader(this.tableStickyHeader)
+
     theme.setTableTheme(tableTheme)
     
     return theme

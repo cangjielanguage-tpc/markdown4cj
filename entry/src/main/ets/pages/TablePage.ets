@@ -103,6 +103,7 @@ struct TablePage {
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
   // ---------------- 专有
+
   // 表格标题背景颜色列表
   tableTitleBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State // 表格标题背景颜色
@@ -267,6 +268,8 @@ struct TablePage {
   tableContentTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 表格内容文本字符间距
   tableContentTextLetterSpacing: number = 0
+  tableStickyHeaderList: Array<boolean> = booleanListGeneralData // 表格标题行是否吸顶列表
+  @State tableStickyHeader: boolean = false // 表格标题行是否吸顶
   @State // 配置数据内容
   tableData: TableData = new TableData()
   heightMD: number = 30 * 1 // 乘以行数
@@ -276,6 +279,7 @@ struct TablePage {
   @State isExpanded4: boolean = false // 控制展开/折叠状态 - 滚动条和其他设置
   @State isExpanded5: boolean = false // 控制展开/折叠状态 - 标题文本设置
   @State isExpanded6: boolean = false // 控制展开/折叠状态 - 内容文本设置
+  @State isExpanded7: boolean = false // 控制展开/折叠状态 - 吸顶设置
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -302,12 +306,22 @@ struct TablePage {
           direction: GridRowDirection.Row
         }) {
           ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+            GridCol({
+              span: {
+                xs: 1,
+                sm: 2,
+                md: 3,
+                lg: 4
+              },
+              offset: 0,
+              order: 0
+            }) {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor('#FFFFFFFF')
                 .backgroundColor('#FF2196F3')
-                .height(25).width('100%')
+                .height(25)
+                .width('100%')
                 .padding(5)
                 .borderRadius(5)
                 .maxLines(1)
@@ -375,6 +389,7 @@ struct TablePage {
                   this.tableData._tableContentTextFontFamily = this.tableContentTextFontFamily
                   this.tableData._tableContentTextLineHeight = this.tableContentTextLineHeight
                   this.tableData._tableContentTextLetterSpacing = this.tableContentTextLetterSpacing
+                  this.tableData._tableStickyHeader = this.tableStickyHeader
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/TableDetailsPage", params: this.tableData })
                 })
@@ -918,6 +933,48 @@ struct TablePage {
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.tableContentTextLetterSpacingList,
                   allData: this.tableContentTextLetterSpacing
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 吸顶设置
+          Column() {
+            Row() {
+              Text("吸顶设置")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded7 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded7 = !this.isExpanded7
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded7 = !this.isExpanded7
+            })
+
+            if (this.isExpanded7) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "表格标题是否吸顶 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.tableStickyHeaderList,
+                  allData: this.tableStickyHeader
                 })
               }
               .width('100%')

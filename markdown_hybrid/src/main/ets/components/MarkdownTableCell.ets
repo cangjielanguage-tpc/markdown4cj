@@ -81,6 +81,7 @@ export struct MarkdownTableCell {
   @Prop tableBlockCellRow: number // 表格的第几行
   @Prop tableBlockCellCell: number // 表格的第几条
   @Prop tableBlockCellCellSize: number // 表格总共有几列
+  @Prop tableBlockCellRowSize: number // 表格总共有几行
   @Consume('tableColumnWidths') columnWidths: number[] // 各列宽度快照（@Consume从MarkdownTable同步）
   @Consume cellWidthTracker: CellWidthTracker // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
   @Consume isLatexMathEnabled: boolean // 数学公式插件是否启用
@@ -466,14 +467,14 @@ export struct MarkdownTableCell {
    * 表格顶部边框宽度
    */
   topWidths(): Length {
-    return this.tableBlockCellRow === 0 ? 0 : this.tableTheme.tableBorderWidth
+    return 0
   }
 
   /**
    * 表格底部边框宽度
    */
   bottomWidths(): Length {
-    return 0
+    return this.tableBlockCellRow === this.tableBlockCellRowSize - 1 ? 0 : this.tableTheme.tableBorderWidth
   }
 
   /**

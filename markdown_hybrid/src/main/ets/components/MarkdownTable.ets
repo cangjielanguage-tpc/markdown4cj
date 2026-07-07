@@ -136,7 +136,10 @@ export struct MarkdownTable {
 
   /**
    * 计算 header 吸顶偏移量并更新 offsetHolder
-   * 上界 = 内容区高度 - 吸顶内容高度，确保吸顶内容底部不超过表格内容区底部
+   * - offset <= 0：表格未滚出视口，不吸顶
+   * - upperBound <= 0：表格比吸顶内容短，不吸顶
+   * - offset >= upperBound：吸顶内容底部到达表格底部（含padding+border），锁定在upperBound，随表格自然滚走
+   * - 0 < offset < upperBound：正常吸顶，钉在视口顶部
    */
   private recalculateOffset(scrollY: number): void {
     if (scrollY < 0 || this.tableY === Number.MAX_SAFE_INTEGER) {
@@ -144,13 +147,14 @@ export struct MarkdownTable {
       return
     }
     const offset = scrollY - this.tableY
-    // 内容区高度 = tableHeight - paddingTop - paddingBottom - 2*borderTop（border均匀）
-    // 上界 = 内容区高度 - stickyContentHeight（吸顶内容底部到达内容区底部时停止吸顶）
-    const contentHeight = this.tableHeight - this.tablePaddingTopNum - this.tablePaddingBottomNum
-      - 2 * this.tableBorderTopNum
-    const upperBound = contentHeight - this.stickyContentHeight
-    if (offset <= 0 || offset >= upperBound) {
+    // 上界 = 表格总高度 - borderTop - paddingTop - 吸顶内容高度
+    // 吸顶内容底部到达表格border box底部时锁定，随表格自然滚走，与固定高度模式一致
+    const upperBound = this.tableHeight - this.tableBorderTopNum - this.tablePaddingTopNum
+      - this.stickyContentHeight
+    if (offset <= 0 || upperBound <= 0) {
       this.offsetHolder.offset = 0
+    } else if (offset >= upperBound) {
+      this.offsetHolder.offset = upperBound
     } else {
       this.offsetHolder.offset = offset
     }
@@ -315,6 +319,7 @@ export struct MarkdownTable {
                       componentWidth: this.componentWidth,
                       tableBlockRowRow: index,
                       tableBlockRowCellSize: this.tableBlockCellSize,
+                      tableBlockRowRowSize: this.node.children.length,
                       textCopyCallback: this.textCopyCallback,
                       footnoteCallback: this.footnoteCallback,
                       tocCallback: this.tocCallback,
@@ -333,35 +338,35 @@ export struct MarkdownTable {
               }
             )
           }
-          .backgroundColor(this.globalTheme.backgroundColor)
-          .borderStyle(this.tableTheme.tableBorderStyle)
-          .borderWidth(this.tableTheme.tableBorderWidth)
-          .borderColor(this.tableTheme.tableBorderColor)
-          .borderRadius({
-            topLeft: this.tableTheme.tableHeadIsShow ? 0 : this.tableTheme.tableRadiusTopLeft,
-            topRight: this.tableTheme.tableHeadIsShow ? 0 : this.tableTheme.tableRadiusTopRight,
-            bottomLeft: this.tableTheme.tableRadiusBottomLeft,
-            bottomRight: this.tableTheme.tableRadiusBottomRight
-          })
           .listDirection(Axis.Vertical)
           .alignListItem(ListItemAlign.Start)
         }
         .scrollable(ScrollDirection.Horizontal)
         .scrollBar(this.tableTheme.tableScrollBarState)
         .scrollBarColor(this.tableTheme.tableScrollBarColor)
-        .padding({
-          top: this.tableTheme.tablePaddingTop,
-          right: this.tableTheme.tablePaddingRight,
-          bottom: this.tableTheme.tablePaddingBottom,
-          left: this.tableTheme.tablePaddingLeft
-        })
-        .margin({
-          top: this.tableTheme.tableMarginTop,
-          right: this.tableTheme.tableMarginRight,
-          bottom: this.tableTheme.tableMarginBottom,
-          left: this.tableTheme.tableMarginLeft
-        })
       }
+      .backgroundColor(this.globalTheme.backgroundColor)
+      .borderStyle(this.tableTheme.tableBorderStyle)
+      .borderWidth(this.tableTheme.tableBorderWidth)
+      .borderColor(this.tableTheme.tableBorderColor)
+      .borderRadius({
+        topLeft: this.tableTheme.tableRadiusTopLeft,
+        topRight: this.tableTheme.tableRadiusTopRight,
+        bottomLeft: this.tableTheme.tableRadiusBottomLeft,
+        bottomRight: this.tableTheme.tableRadiusBottomRight
+      })
+      .padding({
+        top: this.tableTheme.tablePaddingTop,
+        right: this.tableTheme.tablePaddingRight,
+        bottom: this.tableTheme.tablePaddingBottom,
+        left: this.tableTheme.tablePaddingLeft
+      })
+      .margin({
+        top: this.tableTheme.tableMarginTop,
+        right: this.tableTheme.tableMarginRight,
+        bottom: this.tableTheme.tableMarginBottom,
+        left: this.tableTheme.tableMarginLeft
+      })
     }
   }
 
@@ -409,6 +414,7 @@ export struct MarkdownTable {
             componentWidth: this.componentWidth,
             tableBlockRowRow: 0,
             tableBlockRowCellSize: this.tableBlockCellSize,
+            tableBlockRowRowSize: this.node.children.length,
             textCopyCallback: this.textCopyCallback,
             footnoteCallback: this.footnoteCallback,
             tocCallback: this.tocCallback,
@@ -469,6 +475,7 @@ export struct MarkdownTable {
               componentWidth: this.componentWidth,
               tableBlockRowRow: index + 1,
               tableBlockRowCellSize: this.tableBlockCellSize,
+              tableBlockRowRowSize: this.node.children.length,
               textCopyCallback: this.textCopyCallback,
               footnoteCallback: this.footnoteCallback,
               tocCallback: this.tocCallback,
@@ -550,6 +557,7 @@ export struct MarkdownTable {
                 componentWidth: this.componentWidth,
                 tableBlockRowRow: 0,
                 tableBlockRowCellSize: this.tableBlockCellSize,
+                tableBlockRowRowSize: this.node.children.length,
                 textCopyCallback: this.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
@@ -607,6 +615,7 @@ export struct MarkdownTable {
                 componentWidth: this.componentWidth,
                 tableBlockRowRow: index + 1,
                 tableBlockRowCellSize: this.tableBlockCellSize,
+                tableBlockRowRowSize: this.node.children.length,
                 textCopyCallback: this.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
