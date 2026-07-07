@@ -387,7 +387,13 @@ struct TableDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    config.setTableCopyCallback(this.tableCopyCallBack)
     return config
+  }
+
+
+  tableCopyCallBack(tableStr: string): void {
+    hilog.error(1, "copyTable", `---tableStr = ${tableStr}`)
   }
 
   setMarkdownTheme(): MarkdownTheme {
