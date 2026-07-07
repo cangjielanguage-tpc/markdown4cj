@@ -58,7 +58,7 @@ export struct MarkDownTableTitle {
           .lineHeight(this.tableTheme.tableHeadCopyTextLineHeight ?? this.tableTheme.tableTitleTextLineHeight)
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .visibility(this.tableTheme.tableHeadCopyTextIsShow ? Visibility.Visible : Visibility.Hidden)
+          .visibility(this.tableTheme.tableHeadCopyTextIsShow ? Visibility.Visible : Visibility.None)
       }
       .onClick(() => {
         this.tableCopyCallback?.(this.nodeViewString.toString())

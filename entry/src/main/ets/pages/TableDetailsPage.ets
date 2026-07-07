@@ -148,6 +148,50 @@ struct TableDetailsPage {
   tableContentTextLetterSpacing: number = 0.0
 
   @State tableStickyHeader: boolean = false // 表格标题行是否吸顶
+  @State
+  tableHeaderIsShow: boolean = false // 表格头部是否显示
+
+  @State // 表头标题文本颜色
+  tableHeadTitleTextFontColor: ResourceColor | undefined = undefined
+  @State // 表头标题文本尺寸
+  tableHeadTitleTextFontSize: number | string | Resource = 14.0
+  @State // 表头标题文本字体样式
+  tableHeadTitleTextFontStyle: FontStyle = FontStyle.Normal
+  @State // 表头标题文本字体粗细
+  tableHeadTitleTextFontWeight: number | FontWeight = FontWeight.Bold
+  @State // 表头标题文本字体
+  tableHeadTitleTextFontFamily: string | Resource = 'HarmonyOS Sans'
+  @State // 表头标题文本行高
+  tableHeadTitleTextLineHeight: number | string | Resource = 22.0
+  @State // 表头标题文本左边距
+  tableHeadTitleTextMarginLeft: Length = 8.0 // 表格头标题类型文本左边距
+
+  @State // 表头复制文本颜色
+  tableHeadCopyTextFontColor: ResourceColor | undefined = undefined
+  @State // 表头复制文本尺寸
+  tableHeadCopyTextFontSize: number | string | Resource = 14.0
+  @State // 表头复制文本字体样式
+  tableHeadCopyTextFontStyle: FontStyle = FontStyle.Normal
+  @State // 表头复制文本字体粗细
+  tableHeadCopyTextFontWeight: number | FontWeight = FontWeight.Bold
+  @State // 表头复制文本字体
+  tableHeadCopyTextFontFamily: string | Resource = 'HarmonyOS Sans'
+  @State // 表头复制文本行高
+  tableHeadCopyTextLineHeight: number | string | Resource = 22.0
+  @State // 表头复制文本是否显示
+  tableHeadCopyTextIsShow: boolean = false
+  @State // 表头复制按钮是否显示
+  tableHeadCopyButtonIsShow: boolean = true
+  @State // 表格头复制图标
+  tableHeadCopyIcon: boolean = true
+  @State // 表格头复制图标宽度
+  tableHeadCopyIconWidth: number = 24
+  @State // 表格头复制图标高度
+  tableHeadCopyIconHeight: number = 24
+  @State // 表格头复制图标文本间距
+  tableHeadCopyTextSpacing: number = 5
+  @State // 表格头复制图标布局下边距
+  tableHeadTitleLayoutMarginBottom: number = 1
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -226,6 +270,27 @@ struct TableDetailsPage {
       this.tableContentTextLineHeight = tableData._tableContentTextLineHeight
       this.tableContentTextLetterSpacing = tableData._tableContentTextLetterSpacing
       this.tableStickyHeader = tableData._tableStickyHeader
+      this.tableHeaderIsShow = tableData._tableHeaderIsShow
+      this.tableHeadTitleTextFontColor = tableData._tableHeaderTitleTextFontColor
+      this.tableHeadTitleTextFontSize = tableData._tableHeaderTitleTextFontSize
+      this.tableHeadTitleTextFontStyle = tableData._tableHeaderTitleTextFontStyle
+      this.tableHeadTitleTextFontWeight = tableData._tableHeaderTitleTextFontWeight
+      this.tableHeadTitleTextFontFamily = tableData._tableHeaderTitleTextFontFamily
+      this.tableHeadTitleTextLineHeight = tableData._tableHeaderTitleTextLineHeight
+      this.tableHeadTitleTextMarginLeft = tableData._tableHeaderTitleTextMarginLeft
+      this.tableHeadCopyTextFontColor = tableData._tableHeaderCopyTextFontColor
+      this.tableHeadCopyTextFontSize = tableData._tableHeaderCopyTextFontSize
+      this.tableHeadCopyTextFontStyle = tableData._tableHeaderCopyTextFontStyle
+      this.tableHeadCopyTextFontWeight = tableData._tableHeaderCopyTextFontWeight
+      this.tableHeadCopyTextFontFamily = tableData._tableHeaderCopyTextFontFamily
+      this.tableHeadCopyTextLineHeight = tableData._tableHeaderCopyTextLineHeight
+      this.tableHeadCopyTextIsShow = tableData._tableHeaderCopyTextIsShow
+      this.tableHeadCopyButtonIsShow = tableData._tableHeaderCopyButtonIsShow
+      this.tableHeadCopyIcon = tableData._tableHeadCopyIcon
+      this.tableHeadCopyIconWidth = tableData._tableHeadCopyIconWidth
+      this.tableHeadCopyIconHeight = tableData._tableHeadCopyIconHeight
+      this.tableHeadCopyTextSpacing = tableData._tableHeadCopyTextSpacing
+      this.tableHeadTitleLayoutMarginBottom = tableData._tableHeadTitleLayoutMarginBottom
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -395,7 +460,27 @@ struct TableDetailsPage {
     tableTheme.setTableContentTextLetterSpacing(this.tableContentTextLetterSpacing)
 
     tableTheme.setTableStickyHeader(this.tableStickyHeader)
-
+    tableTheme.setTableHeadIsShow(this.tableHeaderIsShow)
+    tableTheme.setTableHeadTitleTextFontColor(this.tableHeadTitleTextFontColor)
+    tableTheme.setTableHeadTitleTextFontSize(this.tableHeadTitleTextFontSize)
+    tableTheme.setTableHeadTitleTextFontFamily(this.tableHeadTitleTextFontFamily)
+    tableTheme.setTableHeadTitleTextFontWeight(this.tableHeadTitleTextFontWeight)
+    tableTheme.setTableHeadTitleTextFontStyle(this.tableHeadTitleTextFontStyle)
+    tableTheme.setTableHeadTitleTextLineHeight(this.tableHeadTitleTextLineHeight)
+    tableTheme.setTableHeadTitleTextMarginLeft(this.tableHeadTitleTextMarginLeft)
+    tableTheme.setTableHeadCopyTextFontColor(this.tableHeadCopyTextFontColor)
+    tableTheme.setTableHeadCopyTextFontSize(this.tableHeadCopyTextFontSize)
+    tableTheme.setTableHeadCopyTextFontFamily(this.tableHeadCopyTextFontFamily)
+    tableTheme.setTableHeadCopyTextFontWeight(this.tableHeadCopyTextFontWeight)
+    tableTheme.setTableHeadCopyTextFontStyle(this.tableHeadCopyTextFontStyle)
+    tableTheme.setTableHeadCopyTextLineHeight(this.tableHeadCopyTextLineHeight)
+    tableTheme.setTableHeadCopyTextIsShow(this.tableHeadCopyTextIsShow)
+    tableTheme.setTableHeadCopyButtonIsShow(this.tableHeadCopyButtonIsShow)
+    tableTheme.setTableHeadCopyIcon(this.tableHeadCopyIcon ? $r('app.media.startIcon') : undefined)
+    tableTheme.setTableHeadCopyIconWidth(this.tableHeadCopyIconWidth)
+    tableTheme.setTableHeadCopyIconHeight(this.tableHeadCopyIconHeight)
+    tableTheme.setTableHeadCopyTextSpacing(this.tableHeadCopyTextSpacing)
+    tableTheme.setTableHeadTitleLayoutMarginBottom(this.tableHeadTitleLayoutMarginBottom)
     theme.setTableTheme(tableTheme)
     
     return theme

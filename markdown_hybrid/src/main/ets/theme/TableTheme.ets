@@ -550,6 +550,18 @@ export class TableTheme implements MarkdownBaseTheme {
 
 
   /**
+   * 设置表格头是否显示
+   *
+   * @param enable 是否显示表头 true显示 false不显示
+   * @return TableTheme
+   */
+  setTableHeadIsShow(enable: boolean): TableTheme {
+    this.tableHeadIsShow = enable;
+    return this;
+  }
+
+
+  /**
    * 设置表格头标题文本
    *
    * @param text 标题文本
