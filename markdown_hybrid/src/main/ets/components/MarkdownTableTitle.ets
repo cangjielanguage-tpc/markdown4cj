@@ -7,10 +7,8 @@ import { hilog } from "@kit.PerformanceAnalysisKit"
 export struct MarkDownTableTitle {
   @ObjectLink @Watch('refreshData') node: NodeView
   @ObjectLink tableTheme: TableTheme
-  //@Prop componentWidth: number = 0.0
   tableCopyCallback?: (str: string) => void
   nodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString()
-  //@Consume('tableColumnWidths') columnWidths: number[]
 
   refreshData() {
     this.nodeViewString.setRoot(this.node)
@@ -74,9 +72,6 @@ export struct MarkDownTableTitle {
     }
     .width('100%')
     .borderWidth({
-      top: this.tableTheme.tableBorderWidth,
-      right: this.tableTheme.tableBorderWidth,
-      left: this.tableTheme.tableBorderWidth,
       bottom:this.tableTheme.tableStickyHeader? this.tableTheme.tableBorderWidth:0
     })
     .borderStyle(this.tableTheme.tableBorderStyle)
