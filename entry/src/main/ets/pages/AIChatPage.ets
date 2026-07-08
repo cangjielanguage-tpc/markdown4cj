@@ -93,6 +93,32 @@ struct AIChatPage {
           // 点击动作触发该方法调用
           router.pushUrl({ url: "pages/AIChatLazyDetailsPage", params: this.aiChatDataMD })
         })
+
+      Button("AI聊天表格吸顶")
+        .height(40)
+        .width('80%')
+        .type(ButtonType.Capsule)
+        .fontColor('#FFFFFFFF')
+        .backgroundColor(0xFF317AFF)
+        .margin({ top: 5, bottom: 5 })
+        .align(Alignment.Center)
+        .fontSize(16)
+        .onClick(() => {
+          router.pushUrl({ url: "pages/AIChatTableStickyPage" })
+        })
+
+      Button("AI聊天表格吸顶懒加载")
+        .height(40)
+        .width('80%')
+        .type(ButtonType.Capsule)
+        .fontColor('#FFFFFFFF')
+        .backgroundColor(0xFF317AFF)
+        .margin({ top: 5, bottom: 5 })
+        .align(Alignment.Center)
+        .fontSize(16)
+        .onClick(() => {
+          router.pushUrl({ url: "pages/AIChatTableStickyLazyPage" })
+        })
     }
     .backgroundColor('#FFEAEAEA')
     .height("100%")

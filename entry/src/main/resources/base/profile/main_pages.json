@@ -58,6 +58,8 @@
     "pages/AIChatPage",
     "pages/AIChatDetailsPage",
     "pages/AIChatLazyDetailsPage",
+    "pages/AIChatTableStickyPage",
+    "pages/AIChatTableStickyLazyPage",
     "pages/BoldPage",
     "pages/BoldDetailsPage",
     "pages/ItalicPage",

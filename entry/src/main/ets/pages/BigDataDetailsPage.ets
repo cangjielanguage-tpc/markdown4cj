@@ -125,7 +125,8 @@ struct BigDataDetailsPage {
           config: this.setMarkdownConfig(),
           plugin: this.setPlugin()
         })
-        .layoutWeight(1)
+          .constraintSize({maxHeight: '120%'})
+        // .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
   }
