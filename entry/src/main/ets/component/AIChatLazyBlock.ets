@@ -3,46 +3,22 @@
  */
 import { getIcon, Message } from "../model/Message"
 import { CJMarkdownWrap } from "./CJMarkdownWrap"
-// import { MarkdownScroller } from '@cangjie-tpc/markdown_hybrid'
 
 const SIZE: number = 36
 const MARGIN: number = SIZE * 2 + 25
 
 @Component
 export struct AIChatLazyBlock {
-  /**
-   * 消息文本对象
-   */
   @Prop
   message: Message
-  /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
-   */
   @State
   incrementalAnalysis: boolean = false
-  /**
-   * Markdown的控制器
-   */
-  // scroller?: MarkdownScroller = undefined
 
   build() {
     if (this.message.who === 'Me') {
       Column({ space: 3 }) {
-        // 时间戳
-        // Row() {
-        //   Text(this.message.time)
-        //     .fontSize(12)
-        // }
-        // .width('100%')
-        // .justifyContent(FlexAlign.End)
-        // .margin({ right: MARGIN })
-
-        // 消息气泡
         Row() {
           this.MessageContent(0x4c96ff, 0xffffff)
-          // Row()
-          //   .width(10)
-          // this.Avatar()
         }
         .justifyContent(FlexAlign.End)
         .alignItems(VerticalAlign.Top)
@@ -52,20 +28,7 @@ export struct AIChatLazyBlock {
       .padding({ left: 10, right: 10 })
     } else {
       Column({ space: 3 }) {
-        // 时间戳
-        // Row() {
-        //   Text(this.message.time)
-        //     .fontSize(12)
-        // }
-        // .width('100%')
-        // .justifyContent(FlexAlign.Start)
-        // .margin({ left: MARGIN })
-
-        // 消息气泡
         Row() {
-          // this.Avatar()
-          // Row()
-          //   .width(10)
           this.MessageContent(0xffffff, 0x000000)
         }
         .justifyContent(FlexAlign.Start)
@@ -87,10 +50,8 @@ export struct AIChatLazyBlock {
       } else {
         CJMarkdownWrap({
           input: this.message.content.content,
-          // scroller: this.markdownScroller,
           incrementalAnalysis: this.incrementalAnalysis
         })
-        .constraintSize({ maxHeight: '120%' })
       }
     }
     .constraintSize({ maxWidth: '75%' })
@@ -104,9 +65,6 @@ export struct AIChatLazyBlock {
     .borderRadius(10)
   }
 
-  /**
-   * 头像
-   */
   @Builder
   Avatar() {
     Image(getIcon(this.message.who))
@@ -115,9 +73,6 @@ export struct AIChatLazyBlock {
       .borderRadius(SIZE / 2)
   }
 
-  /**
-   * 文本小于60个字符使用普通文本显示
-   */
   isText(): boolean {
     return this.message.content.content.length <= 60
   }
