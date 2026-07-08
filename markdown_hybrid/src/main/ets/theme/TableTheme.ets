@@ -75,7 +75,6 @@ export class TableTheme implements MarkdownBaseTheme {
   tableHeadCopyTextSpacing: number = 5.0 // 表格头复制图标文本间距
   tableHeadCopyTextIsShow: boolean = true // 表格头复制文本是否显示
   tableHeadCopyButtonIsShow: boolean = true // 表格头复制按钮是否显示
-  tableHeadTitleLayoutMarginBottom: Length = 0.0 // 表格头复制图标布局下边距
 
   tableHeadCopyText: string = '复制表格' // 表格头复制文本
   tableHeadCopyTextFontFamily: string | Resource | undefined = undefined // 表格头复制文本字体族
@@ -712,17 +711,6 @@ export class TableTheme implements MarkdownBaseTheme {
    */
   setTableHeadCopyButtonIsShow(isShow: boolean): TableTheme {
     this.tableHeadCopyButtonIsShow = isShow;
-    return this;
-  }
-
-  /**
-   * 设置表格头标题布局下边距
-   *
-   * @param marginBottom 下边距
-   * @return TableTheme
-   */
-  setTableHeadTitleLayoutMarginBottom(marginBottom: Length): TableTheme {
-    this.tableHeadTitleLayoutMarginBottom = marginBottom;
     return this;
   }
 

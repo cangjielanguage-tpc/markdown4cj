@@ -190,8 +190,6 @@ struct TableDetailsPage {
   tableHeadCopyIconHeight: number = 24
   @State // 表格头复制图标文本间距
   tableHeadCopyTextSpacing: number = 5
-  @State // 表格头复制图标布局下边距
-  tableHeadTitleLayoutMarginBottom: number = 1
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -290,7 +288,6 @@ struct TableDetailsPage {
       this.tableHeadCopyIconWidth = tableData._tableHeadCopyIconWidth
       this.tableHeadCopyIconHeight = tableData._tableHeadCopyIconHeight
       this.tableHeadCopyTextSpacing = tableData._tableHeadCopyTextSpacing
-      this.tableHeadTitleLayoutMarginBottom = tableData._tableHeadTitleLayoutMarginBottom
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -486,7 +483,6 @@ struct TableDetailsPage {
     tableTheme.setTableHeadCopyIconWidth(this.tableHeadCopyIconWidth)
     tableTheme.setTableHeadCopyIconHeight(this.tableHeadCopyIconHeight)
     tableTheme.setTableHeadCopyTextSpacing(this.tableHeadCopyTextSpacing)
-    tableTheme.setTableHeadTitleLayoutMarginBottom(this.tableHeadTitleLayoutMarginBottom)
     theme.setTableTheme(tableTheme)
     
     return theme

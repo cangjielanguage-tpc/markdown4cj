@@ -26,7 +26,7 @@ export struct MarkDownTableTitle {
           .fontStyle(this.tableTheme.tableHeadTitleTextFontStyle ?? this.tableTheme.tableTitleTextFontStyle)
           .fontFamily(this.tableTheme.tableHeadTitleTextFontFamily ?? this.tableTheme.tableTitleTextFontFamily)
           .lineHeight(this.tableTheme.tableHeadTitleTextLineHeight ?? this.tableTheme.tableTitleTextLineHeight)
-          .layoutWeight(1)
+          .width('30%')
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
           .padding({
@@ -34,8 +34,11 @@ export struct MarkDownTableTitle {
             bottom: this.tableTheme.tableCellPaddingBottom,
             left: this.tableTheme.tableCellPaddingLeft
           })
+          .margin({ left: this.tableTheme.tableHeadTitleTextMarginLeft })
           .visibility(this.tableTheme.tableHeadTitleText.length > 0?Visibility.Visible:Visibility.Hidden)
 
+      Blank()
+        .layoutWeight(1)
 
       Row() {
         Image(this.tableTheme.tableHeadCopyIcon)
