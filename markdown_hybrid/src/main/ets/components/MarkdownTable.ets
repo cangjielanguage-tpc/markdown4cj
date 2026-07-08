@@ -221,6 +221,7 @@ export struct MarkdownTable {
         bottom: this.tableTheme.tableMarginBottom,
         left: this.tableTheme.tableMarginLeft
       })
+      .clip(true)
       .onAreaChange((oldValue: Area, newValue: Area) => {
         // position.y 是 ListItemGroup border box 顶（相对 List，滚动时不变）
         // header 实际位置 = border box 顶 + border.top + padding.top（header 在 border+padding 内侧）
@@ -277,6 +278,7 @@ export struct MarkdownTable {
         bottom: this.tableTheme.tableMarginBottom,
         left: this.tableTheme.tableMarginLeft
       })
+      .clip(true)
     } else {
       // 非 sticky 模式：保留 Scroll > List > LazyForEach 结构
       Column() {
@@ -367,6 +369,7 @@ export struct MarkdownTable {
         bottom: this.tableTheme.tableMarginBottom,
         left: this.tableTheme.tableMarginLeft
       })
+      .clip(true)
     }
   }
 

@@ -1,7 +1,6 @@
 import { MarkdownNodeViewString } from "../configs/MarkdownNodeViewString"
 import { NodeView } from "../model/NodeView"
 import { TableTheme } from "../theme/TableTheme"
-import { hilog } from "@kit.PerformanceAnalysisKit"
 
 @Component
 export struct MarkDownTableTitle {

@@ -362,9 +362,10 @@ struct TablePage {
   @State isExpanded5: boolean = false // 控制展开/折叠状态 - 标题文本设置
   @State isExpanded6: boolean = false // 控制展开/折叠状态 - 内容文本设置
   @State isExpanded7: boolean = false // 控制展开/折叠状态 - 吸顶设置
-  @State isExpanded8: boolean = false // 控制展开/折叠状态 - 表头设置
+  @State isExpanded8: boolean = false // 控制展开/折叠状态 - 表格复制栏设置
   @State isExpanded9: boolean = false // 控制展开/折叠状态 - 表头标题文本设置
   @State isExpanded10: boolean = false // 控制展开/折叠状态 - 表头复制文本设置
+  @State isExpanded11: boolean = false // 控制展开/折叠状态 - 背景设置
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -828,6 +829,61 @@ struct TablePage {
           .margin(5)
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
+          .backgroundColor(0xFF317AFF)
+
+          // 背景设置
+          Column() {
+            Row() {
+              Text("表格背景设置")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded11 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded11 = !this.isExpanded11
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded11 = !this.isExpanded11
+            })
+
+            if (this.isExpanded11) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "表格标题背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.tableTitleBackgroundColorList,
+                  allData: this.tableTitleBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "表格内容奇数行背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.tableContentOddRowBackgroundColorList,
+                  allData: this.tableContentOddRowBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "表格内容偶数行背景颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.tableContentEvenRowBackgroundColorList,
+                  allData: this.tableContentEvenRowBackgroundColor
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
 
           // 滚动条和其他设置
           Column() {
@@ -1096,7 +1152,7 @@ struct TablePage {
           // 表头设置
           Column() {
             Row() {
-              Text("表头设置")
+              Text("表格复制栏设置")
                 .fontSize(16)
                 .fontColor('#FFF5F5F5')
                 .fontWeight(FontWeight.Bold)
