@@ -78,12 +78,6 @@ export struct MarkDownTableTitle {
     })
     .borderStyle(this.tableTheme.tableBorderStyle)
     .borderColor(this.tableTheme.tableBorderColor)
-    .borderRadius({
-      topLeft: this.tableTheme.tableRadiusTopLeft,
-      topRight: this.tableTheme.tableRadiusTopRight,
-      bottomLeft: 0,
-      bottomRight: 0
-    })
     .backgroundColor(this.tableTheme.tableTitleBackgroundColor)
     .alignItems(VerticalAlign.Center)
   }
