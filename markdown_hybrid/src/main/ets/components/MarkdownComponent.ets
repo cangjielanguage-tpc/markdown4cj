@@ -24,6 +24,7 @@ import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
 import { LatexParseQueue } from "../model/LatexParseQueue"
 import { MarkdownScrollController } from "../model/MarkdownScrollController"
 import { StickyScrollYHolder } from "../model/StickyScrollYHolder"
+import { ArrayList } from "@kit.ArkTS"
 
 @Component
 export struct CJMarkdown {
@@ -220,7 +221,8 @@ export struct CJMarkdown {
                 linkCallback: this.config.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.config.imageDownloadCallback,
-                imageReplaceCallback: this.config.imageReplaceCallback
+                imageReplaceCallback: this.config.imageReplaceCallback,
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "Paragraph") {
               // 段落
@@ -253,7 +255,8 @@ export struct CJMarkdown {
                 linkCallback: this.config.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.config.imageDownloadCallback,
-                imageReplaceCallback: this.config.imageReplaceCallback
+                imageReplaceCallback: this.config.imageReplaceCallback,
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "FencedCodeBlockListBlock") {
               // 围栏代码块列表
@@ -329,7 +332,8 @@ export struct CJMarkdown {
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
-                tableCopyCallback:this.config.tableCopyCallback
+                tableCopyCallback:this.config.tableCopyCallback,
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "OrderedList") {
               // 有序列表
@@ -381,7 +385,8 @@ export struct CJMarkdown {
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
-                tableCopyCallback:this.config.tableCopyCallback
+                tableCopyCallback:this.config.tableCopyCallback,
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "BlockQuote") {
               // 块引用
@@ -432,7 +437,8 @@ export struct CJMarkdown {
                 textCopyCallback: this.config.textCopyCallback,
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
-                tableCopyCallback:this.config.tableCopyCallback
+                tableCopyCallback:this.config.tableCopyCallback,
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "LatexMathBlock") {
               // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本
@@ -550,7 +556,8 @@ export struct CJMarkdown {
                 videoDownloadCallback: this.config.videoDownloadCallback,
                 audioCallback: this.config.audioCallback,
                 codeCopyCallback: this.config.codeCopyCallback,
-                codeFullScreenCallback: this.config.codeFullScreenCallback
+                codeFullScreenCallback: this.config.codeFullScreenCallback,
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "DescList") {
               // 定义列表
@@ -583,7 +590,8 @@ export struct CJMarkdown {
                 linkCallback: this.config.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.config.imageDownloadCallback,
-                imageReplaceCallback: this.config.imageReplaceCallback
+                imageReplaceCallback: this.config.imageReplaceCallback,
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "SlideBlock") {
               // 图片幻灯片
@@ -704,94 +712,96 @@ export struct CJMarkdown {
    * 异步触发解析数据
    * 流式输出时content高频变化，parseVersion/appliedVersion确保仅应用最新结果
    */
-   refreshAsyncData(): void {
-     this.parseVersion++ // 版本号递增
-     const currentVersion = this.parseVersion
-     let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
-     let markdownParser:MarkdownParser = new MarkdownParser(op)
-     if (this.parseTimerId !== -1) {
-       clearTimeout(this.parseTimerId)
-     }
-      this.parseTimerId = setTimeout(() => {
-        this.parseTimerId = -1
-        if (!this.isAlive) {
-          return
-        }
-       try {
-         markdownParser.parse(this.content).then((node) => {
-           if (!this.isAlive) {
-             this.jsNodePoolImpl.put(node as JsNodeImpl)
-             return
-           }
-           this.applyParseResult(node as JsNodeImpl, currentVersion)
-          }).catch(() => {
-            console.error('refreshAsyncData parse failed, keeping last result')
-          })
-        } catch (e) {
-          console.error('refreshAsyncData sync parse exception: ' + JSON.stringify(e))
-        }
-     }, 0)
-   }
+  refreshAsyncData(): void {
+    this.parseVersion++ // 版本号递增
+    const currentVersion = this.parseVersion
+    let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
+    let markdownParser:MarkdownParser = new MarkdownParser(op)
+    if (this.parseTimerId !== -1) {
+      clearTimeout(this.parseTimerId)
+    }
+    this.parseTimerId = setTimeout(() => {
+      this.parseTimerId = -1
+      if (!this.isAlive) {
+        return
+      }
+      try {
+        markdownParser.parse(this.content).then((node) => {
+          if (!this.isAlive) {
+            this.jsNodePoolImpl.put(node as JsNodeImpl)
+            return
+          }
+          this.applyParseResult(node as JsNodeImpl, currentVersion)
+        }).catch(() => {
+          console.error('refreshAsyncData parse failed, keeping last result')
+        })
+      } catch (e) {
+        console.error('refreshAsyncData sync parse exception: ' + JSON.stringify(e))
+      }
+    }, 0)
+  }
 
   /**
    * 同步解析数据（UI线程，isMarkdownParserSync=true时使用）
    */
-   async refreshSyncData(): Promise<void> {
-     this.parseVersion++ // 版本号递增
-     const currentVersion = this.parseVersion
-     let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
-     let markdownParser:MarkdownParser = new MarkdownParser(op)
-     try {
-       let node: JsNodeImpl = await markdownParser.parse(this.content) as JsNodeImpl
-       if (!this.isAlive) {
-         this.jsNodePoolImpl.put(node)
-         return
-       }
-       this.applyParseResult(node, currentVersion)
-      } catch (e) {
-        console.error('refreshSyncData parse failed, keeping last result: ' + JSON.stringify(e))
+  async refreshSyncData(): Promise<void> {
+    this.parseVersion++ // 版本号递增
+    const currentVersion = this.parseVersion
+    let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
+    let markdownParser:MarkdownParser = new MarkdownParser(op)
+    try {
+      let node: JsNodeImpl = await markdownParser.parse(this.content) as JsNodeImpl
+      if (!this.isAlive) {
+        this.jsNodePoolImpl.put(node)
+        return
       }
+      this.applyParseResult(node, currentVersion)
+    } catch (e) {
+      console.error('refreshSyncData parse failed, keeping last result: ' + JSON.stringify(e))
+    }
    }
 
-   /**
-    * 应用解析结果到数据源（渐进式版本跟踪+增量转换+哈希计算+智能更新）
-    *
-    * @param node 节点
-    * @param currentVersion 当前版本
-    */
-     private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
-       try {
+  /**
+   * 应用解析结果到数据源（渐进式版本跟踪+增量转换+哈希计算+智能更新）
+   *
+   * @param node 节点
+   * @param currentVersion 当前版本
+   */
+  private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
+    try {
       if (!this.isAlive || currentVersion <= this.appliedVersion) {
         return
       }
       let nodeView: NodeView = new NodeView()
+      let highlightSelectedList: ArrayList<string> = new ArrayList<string>()
       nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
       let parseOk: boolean = false
       try {
-        nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray)
+        nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, highlightSelectedList)
         parseOk = true
-          } catch (e) {
-            console.error('nodeToNodeView failed: ' + JSON.stringify(e))
-          }
-         this.collectImageAndVideoUrls(node)
-         if (!parseOk) {
-           // 解析失败时不更新数据源，保留上一次成功的结果
-           this.appliedVersion = currentVersion
-           return
-         }
-         if (nodeView.children.length === 0) {
-           this.markdownDataSource.clear()
-           this.config.markdownNodeViewString.setRoot(nodeView)
-           this.appliedVersion = currentVersion
-           return
-         }
-          this.markdownDataSource.smartUpdateDataArray(nodeView.children)
-         this.config.markdownNodeViewString.setRoot(nodeView)
-         this.appliedVersion = currentVersion
-       } finally {
-         this.jsNodePoolImpl.put(node)
-       }
-     }
+      } catch (e) {
+        console.error('nodeToNodeView failed: ' + JSON.stringify(e))
+      }
+      this.collectImageAndVideoUrls(node)
+      if (!parseOk) {
+        // 解析失败时不更新数据源，保留上一次成功的结果
+        this.appliedVersion = currentVersion
+        return
+      }
+      if (nodeView.children.length === 0) {
+        this.markdownDataSource.clear()
+        this.config.markdownNodeViewString.setRoot(nodeView)
+        this.appliedVersion = currentVersion
+        return
+      }
+      this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+      this.config.markdownHighlightParagraph.setAllParagraphItems(highlightSelectedList)
+      this.config.markdownNodeViewString.setRoot(nodeView)
+      this.appliedVersion = currentVersion
+    } finally {
+      this.jsNodePoolImpl.put(node)
+    }
+  }
 
   /**
    * 从解析器props中收集所有图片和视频URL到imageAndVideoList

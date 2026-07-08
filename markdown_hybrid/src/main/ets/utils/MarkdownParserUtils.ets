@@ -9,6 +9,7 @@ import {
   parsePicStyle
 } from "./MarkdownUtils"
 import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
+import { ArrayList } from "@kit.ArkTS"
 
 /**
  * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
@@ -138,7 +139,8 @@ export function nodeToNodeView(
   sourceJsNode: JsNodeImpl,
   targetParentView: NodeView,
   inheritedStyleView: NodeView,
-  previousChildren?: NodeView[]
+  previousChildren?: NodeView[],
+  highlightSelectedList?: ArrayList<string>
 ): void {
   let currentJsNode = sourceJsNode.firstChild
   while (currentJsNode !== undefined) {
@@ -337,7 +339,7 @@ export function nodeToNodeView(
           currentView.linkTypeStr = iconInfo.typeStr
           targetParentView.children.push(currentView)
         } else {
-          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         }
         break
       case 'HeadLink': // 标题链接
@@ -352,22 +354,22 @@ export function nodeToNodeView(
           currentView.linkTypeStr = iconInfo.typeStr
           targetParentView.children.push(currentView)
         } else {
-          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         }
         break
       case 'SubNode': // 下标
       case 'SubHtmlNode':
         currentView.isSubNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         break
       case 'SupNode': // 上标
       case 'SupHtmlNode':
         currentView.isSupNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         break
       case 'UnderlineNode': // 下划线
         currentView.isUnderlineNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         break
       case 'FontNode': { // FontNode标签
         currentView.isFontNode = true
@@ -430,48 +432,51 @@ export function nodeToNodeView(
       }
       case 'Emphasis': // 斜体
         currentView.isEmphasis = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         break
       case 'StrongEmphasis': // 粗体
         currentView.isStrongEmphasis = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         break
       case 'Strikethrough': // 删除线
         currentView.isStrikethrough = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         break
       case 'HighlightNode': // 高亮
         currentView.isHighlight = true
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
         break
       case 'Paragraph': // 段落
+        highlightSelectedList?.add(currentView.nodeHash.toString())
         if (currentView.isParagraph) {
-          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         } else {
           currentView.isParagraph = true
-          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, highlightSelectedList)
           targetParentView.children.push(currentView)
         }
         break
       case 'Heading': // 标题
+        highlightSelectedList?.add(currentView.nodeHash.toString())
         currentView.isHeading = true
         currentView.headingLevel = currentJsNode.level ?? 1
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, highlightSelectedList)
         targetParentView.children.push(currentView)
         break
       case 'IdHeading': // 标题ID
-          currentView.isHeading = true
-          currentView.headingLevel = currentJsNode.level ?? 1
-          if (prop !== undefined) {
-            currentView.headingID = prop.get("headingId") ?? ""
-          }
-          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
-          targetParentView.children.push(currentView)
+        highlightSelectedList?.add(currentView.nodeHash.toString())
+        currentView.isHeading = true
+        currentView.headingLevel = currentJsNode.level ?? 1
+        if (prop !== undefined) {
+          currentView.headingID = prop.get("headingId") ?? ""
+        }
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, highlightSelectedList)
+        targetParentView.children.push(currentView)
         break
       case 'FencedCodeBlockListBlock': // 代码块列表
-          currentView.codeListTab = parseTabsFromToStr(currentJsNode.toStr)
-          nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
-          targetParentView.children.push(currentView)
+        currentView.codeListTab = parseTabsFromToStr(currentJsNode.toStr)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        targetParentView.children.push(currentView)
         break
       case 'FencedCodeBlock': // 围栏代码块
         currentView.nodeText = currentJsNode.literal?.replace(/\n$/, '') ?? ""
@@ -493,7 +498,7 @@ export function nodeToNodeView(
         targetParentView.children.push(currentView)
         break
       case 'ListItem': // 列表项
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, highlightSelectedList)
         targetParentView.children.push(currentView)
         break
       case 'TaskListItem': // 任务列表项
@@ -546,14 +551,14 @@ export function nodeToNodeView(
         break
       case 'FootnoteBlock': // 脚注
         currentView.footnoteID = currentJsNode.noteid
-        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, highlightSelectedList)
         targetParentView.children.push(currentView)
         break
       case 'Footnote': // 脚注
-          currentView.isFootnote = true
-          currentView.footnoteID = currentJsNode.noteid
-          currentView.nodeText = currentJsNode.noteid ?? ""
-          targetParentView.children.push(currentView)
+        currentView.isFootnote = true
+        currentView.footnoteID = currentJsNode.noteid
+        currentView.nodeText = currentJsNode.noteid ?? ""
+        targetParentView.children.push(currentView)
         break
       case 'DescList': // 定义列表
         currentView.isDescList = true

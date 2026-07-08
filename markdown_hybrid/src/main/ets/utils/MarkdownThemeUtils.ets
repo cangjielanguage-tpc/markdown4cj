@@ -20,6 +20,7 @@ import { COLOR_TRANSPARENT } from "../base/Constants"
 import { OrderedListTheme } from "../theme/OrderedListTheme"
 import { BulletListTheme } from "../theme/BulletListTheme"
 import { FootnoteDefTheme } from "../theme/FootnoteDefTheme"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 
 /**
  * 获取文本字体族
@@ -967,8 +968,13 @@ export function headingBackgroundColor(
   globalTheme: GlobalTheme,
   blockQuoteTheme: BlockQuoteTheme,
   headingTheme: HeadingTheme,
-  isQuote: boolean
+  markdownHighlightParagraph: MarkdownHighlightParagraph,
+  isQuote: boolean,
+  nodeHash: string
 ): ResourceColor {
+  if (markdownHighlightParagraph.getSelectedParagraphItemList().has(nodeHash)) {
+    return markdownHighlightParagraph.selectedParagraphItemColor
+  }
   if (isQuote) {
     return blockQuoteTheme.blockQuoteBackgroundColor
   }
@@ -1235,8 +1241,13 @@ export function paragraphBackgroundColor(
   globalTheme: GlobalTheme,
   blockQuoteTheme: BlockQuoteTheme,
   paragraphTheme: ParagraphTheme,
-  isQuote: boolean
+  markdownHighlightParagraph: MarkdownHighlightParagraph,
+  isQuote: boolean,
+  nodeHash: string
 ): ResourceColor {
+  if (markdownHighlightParagraph.getSelectedParagraphItemList().has(nodeHash)) {
+    return markdownHighlightParagraph.selectedParagraphItemColor
+  }
   if (isQuote) {
     return blockQuoteTheme.blockQuoteBackgroundColor // 块引用中的段落
   }

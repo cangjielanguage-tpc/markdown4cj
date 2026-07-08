@@ -19,6 +19,7 @@ import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import { MarkdownParagraph } from "./MarkdownParagraph"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 
 /**
  * 定义列表释义控件
@@ -44,6 +45,7 @@ export struct MarkdownDescDef {
   @ObjectLink tableTheme: TableTheme // 表格样式
   @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
+  @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
   footnoteCallback?: (index: string) => void // 脚注点击事件
@@ -98,7 +100,8 @@ export struct MarkdownDescDef {
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
-                imageReplaceCallback: this.imageReplaceCallback
+                imageReplaceCallback: this.imageReplaceCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
             } else {
               // 其它

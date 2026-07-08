@@ -93,6 +93,9 @@ struct HeadIDPage {
   @State // 解析节流间隔（ms）
   parseThrottleMs: number = 200
   // ---------------- 专有
+  // 是否显示标题段落高亮效果
+  showHighlightList: Array<boolean> = booleanListGeneralData
+  @State showHighlight: boolean = true // 是否全量加载Markdown文本
 
   @State // 配置数据内容
   headIDData: HeadIDData = new HeadIDData()
@@ -155,6 +158,7 @@ struct HeadIDPage {
                   this.headIDData._openGestureSwipe = this.openGestureSwipe
                   this.headIDData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.headIDData._pagePath = `${this.rawFilePath}/${item}`
+                  this.headIDData._showHighlight = this.showHighlight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/HeadIDDetailsPage", params: this.headIDData })
                 })
@@ -290,6 +294,46 @@ struct HeadIDPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.openGestureSwipeList,
                   allData: this.openGestureSwipe
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          Column() {
+            Row() {
+              Text("专有样式配置")
+                .fontSize(16)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded2 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded2 = !this.isExpanded2
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded2 = !this.isExpanded2
+            })
+
+            if (this.isExpanded2) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否开启标题段落高亮显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.showHighlightList,
+                  allData: this.showHighlight
                 })
               }
               .width('100%')

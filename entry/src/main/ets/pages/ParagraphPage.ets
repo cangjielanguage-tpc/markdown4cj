@@ -163,11 +163,15 @@ struct ParagraphPage {
   paragraphTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 段落文本字符间距
   paragraphTextLetterSpacing: number = 0
+  // 是否显示标题段落高亮效果
+  showHighlightList: Array<boolean> = booleanListGeneralData
+  @State showHighlight: boolean = true // 是否全量加载Markdown文本
   @State // 配置数据内容
   paragraphData: ParagraphData = new ParagraphData()
   heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
   @State isExpanded2: boolean = false // 控制展开/折叠状态
+  @State isExpanded3: boolean = false // 控制展开/折叠状态
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -224,6 +228,7 @@ struct ParagraphPage {
                   this.paragraphData._openGestureSwipe = this.openGestureSwipe
                   this.paragraphData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.paragraphData._pagePath = `${this.rawFilePath}/${item}`
+                  this.paragraphData._showHighlight = this.showHighlight
 
                   // ---------- 专有
                   this.paragraphData._paragraphBackgroundColor = this.paragraphBackgroundColor
@@ -502,6 +507,47 @@ struct ParagraphPage {
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.paragraphTextLetterSpacingList,
                   allData: this.paragraphTextLetterSpacing
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          Column() {
+            Row() {
+              Text("特殊设置")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded3 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded3 = !this.isExpanded3
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded3 = !this.isExpanded3
+            })
+
+            if (this.isExpanded3) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否开启标题段落高亮显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.showHighlightList,
+                  allData: this.showHighlight
                 })
               }
               .width('100%')

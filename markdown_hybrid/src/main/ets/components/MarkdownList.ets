@@ -29,6 +29,7 @@ import { VideoTheme } from "../theme/VideoTheme"
 import { listPrefixStr } from "../utils/MarkdownUtils"
 import { listBackgroundColor } from "../utils/MarkdownThemeUtils"
 import { MarkdownListItem } from "./MarkdownListItem"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 
 /**
  * 无序/任务列表、有序列表控件
@@ -62,6 +63,7 @@ export struct MarkdownList {
   @ObjectLink bannerTheme: BannerTheme // 轮播图样式
   @ObjectLink videoTheme: VideoTheme // 视频样式
   @ObjectLink audioTheme: AudioTheme // 音频样式
+  @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop isOrdered: boolean // 是无序列表还是有序列表 - true：有序列表，false：无序列表
   @Prop listDepth: number = 0 // 列表深度
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
@@ -153,7 +155,8 @@ export struct MarkdownList {
                   audioCallback: this.audioCallback,
                   codeCopyCallback: this.codeCopyCallback,
                   codeFullScreenCallback: this.codeFullScreenCallback,
-                  tableCopyCallback:this.tableCopyCallback
+                  tableCopyCallback:this.tableCopyCallback,
+                  markdownHighlightParagraph: this.markdownHighlightParagraph,
                 })
               }
               .alignItems(VerticalAlign.Top)

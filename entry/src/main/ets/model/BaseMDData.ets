@@ -22,6 +22,8 @@ export class BaseMDData {
   _openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
   _pagePath: string = "" // Markdown文本rawfile路径
 
+  _showHighlight: boolean = false; // 是否显示段落高亮
+
   constructor() {
   }
 }

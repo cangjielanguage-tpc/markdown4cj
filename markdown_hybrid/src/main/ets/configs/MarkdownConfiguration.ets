@@ -1,4 +1,5 @@
 import { MarkdownTheme } from "../theme/MarkdownTheme"
+import { MarkdownHighlightParagraph } from "./MarkdownHighlightParagraph"
 import { MarkdownNodeViewString } from "./MarkdownNodeViewString"
 
 /**
@@ -22,9 +23,11 @@ export class MarkdownConfiguration {
   footnoteCallback?: (index: number | undefined) => void = undefined // 脚注跳转指定位置
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void = undefined // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  tableCopyCallback?: (text: string) => void  = undefined  // 表格复制点击事件
+
+  markdownHighlightParagraph: MarkdownHighlightParagraph = new MarkdownHighlightParagraph() // 高亮段落设置
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
   markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown默认样式
-  tableCopyCallback?: (text: string) => void  = undefined  // 表格复制点击事件
 
   /**
    * 设置链接点击回调

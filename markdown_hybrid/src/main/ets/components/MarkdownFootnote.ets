@@ -1,3 +1,4 @@
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
 import { AudioTheme } from "../theme/AudioTheme"
@@ -61,6 +62,7 @@ export struct MarkdownFootnote {
   @ObjectLink bannerTheme: BannerTheme // 轮播图样式
   @ObjectLink videoTheme: VideoTheme // 视频样式
   @ObjectLink audioTheme: AudioTheme // 音频样式
+  @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   @Prop tableBlockComponentWidth: number = 0.0 // 表格控件宽度
   @Prop listDepth: number = 0 // 嵌套深度
@@ -124,7 +126,8 @@ export struct MarkdownFootnote {
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
-                imageReplaceCallback: this.imageReplaceCallback
+                imageReplaceCallback: this.imageReplaceCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "BlockAD") {
               // 广告

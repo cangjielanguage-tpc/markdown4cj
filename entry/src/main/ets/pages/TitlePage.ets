@@ -388,6 +388,10 @@ struct TitlePage {
   // 六级标题文本字符间距列表
   heading6TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading6TextLetterSpacing: number = 0.0 // 六级标题文本字符间距
+  // 是否显示标题段落高亮效果
+  showHighlightList: Array<boolean> = booleanListGeneralData
+  @State showHighlight: boolean = true // 是否全量加载Markdown文本
+
   @State titleData: TitleData = new TitleData() // 配置数据内容
   heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
@@ -397,6 +401,7 @@ struct TitlePage {
   @State isExpanded5: boolean = false // 控制展开/折叠状态 - 四级标题
   @State isExpanded6: boolean = false // 控制展开/折叠状态 - 五级标题
   @State isExpanded7: boolean = false // 控制展开/折叠状态 - 六级标题
+  @State isExpanded8: boolean = false // 控制展开/折叠状态 - 特殊设置
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -453,6 +458,7 @@ struct TitlePage {
                   this.titleData._openGestureSwipe = this.openGestureSwipe
                   this.titleData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.titleData._pagePath = `${this.rawFilePath}/${item}`
+                  this.titleData._showHighlight = this.showHighlight
                   // ---------- 专有 - 一级标题
                   this.titleData._heading1BackgroundColor = this.heading1BackgroundColor
                   this.titleData._heading1MarginTop = this.heading1MarginTop
@@ -1488,6 +1494,47 @@ struct TitlePage {
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.heading6TextLetterSpacingList,
                   allData: this.heading6TextLetterSpacing
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          Column() {
+            Row() {
+              Text("特殊设置")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded8 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded8 = !this.isExpanded8
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded8 = !this.isExpanded8
+            })
+
+            if (this.isExpanded8) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否开启标题段落高亮显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.showHighlightList,
+                  allData: this.showHighlight
                 })
               }
               .width('100%')

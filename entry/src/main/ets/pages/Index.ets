@@ -1,4 +1,5 @@
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
+import { COLOR_RED } from '@cangjie-tpc/markdown_hybrid/src/main/ets/base/Constants';
 
 @Entry
 @Component
@@ -65,16 +66,39 @@ struct DemoPage {
   @State // markdown主题
   markdownTheme: MarkdownTheme = new MarkdownTheme()
 
+  indexList: Array<string> = []
+  @State indexCount: number = 0
+
   aboutToAppear(): void {
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   build() {
     Column() {
-      Button('测试')
-        .onClick(() => {
-          this.setMarkdownTheme()
-        })
+      Row() {
+        Button('获取' + this.indexCount)
+          .onClick(() => {
+            this.indexList = this.setMarkdownTheme3()
+            this.indexCount = this.indexList.length
+          })
+        Button('第一')
+          .onClick(() => {
+            this.setMarkdownTheme(this.indexList[0])
+          })
+        Button('第二')
+          .onClick(() => {
+            this.setMarkdownTheme(this.indexList[1])
+          })
+        Button('最后')
+          .onClick(() => {
+            this.setMarkdownTheme(this.indexList[this.indexList.length - 1])
+          })
+        Button('清除第二')
+          .onClick(() => {
+            this.setMarkdownTheme2(this.indexList[1])
+          })
+      }
+
       Column() {
         CJMarkdown({
           content: this.message,
@@ -88,7 +112,15 @@ struct DemoPage {
     .alignItems(HorizontalAlign.Start)
   }
 
-  setMarkdownTheme(): void {
-    this.markdownTheme.setHeadingTextColor1(Color.Red)
+  setMarkdownTheme(h: string): void {
+    this.markdownConfiguration.markdownHighlightParagraph.highlightParagraph(h, COLOR_RED)
+  }
+
+  setMarkdownTheme2(h: string): void {
+    this.markdownConfiguration.markdownHighlightParagraph.clearParagraphHighlight(h)
+  }
+
+  setMarkdownTheme3(): Array<string> {
+    return this.markdownConfiguration.markdownHighlightParagraph.getAllParagraphItems()
   }
 }

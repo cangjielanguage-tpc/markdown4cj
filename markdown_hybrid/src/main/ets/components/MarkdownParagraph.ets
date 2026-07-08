@@ -44,6 +44,7 @@ import {
   spanLetterSpacing,
   spanLineHeight
 } from "../utils/MarkdownThemeUtils"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 
 /**
  * 段落控件
@@ -71,6 +72,7 @@ export struct MarkdownParagraph {
   @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
+  @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
   footnoteCallback?: (index: string) => void // 脚注点击事件
@@ -108,7 +110,9 @@ export struct MarkdownParagraph {
       this.globalTheme,
       this.blockQuoteTheme,
       this.paragraphTheme,
-      this.node.isQuote
+      this.markdownHighlightParagraph,
+      this.node.isQuote,
+      this.node.nodeHash
     ))
     .padding({
       top: this.paragraphTheme.paragraphPaddingTop,

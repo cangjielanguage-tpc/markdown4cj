@@ -39,6 +39,7 @@ import { MarkdownVideo } from "./MarkdownVideo"
 import { MarkdownAudio } from "./MarkdownAudio"
 import { MarkdownList } from "./MarkdownList"
 import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 
 /**
  * 块引用控件
@@ -72,6 +73,7 @@ export struct MarkdownQuote {
   @ObjectLink bannerTheme: BannerTheme // 轮播图样式
   @ObjectLink videoTheme: VideoTheme // 视频样式
   @ObjectLink audioTheme: AudioTheme // 音频样式
+  @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   @Prop tableBlockComponentWidth: number = 0.0 // 表格控件宽度
   textCopyCallback?: (text: string) => void // 文本复制点击事件
@@ -163,7 +165,8 @@ export struct MarkdownQuote {
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
-                imageReplaceCallback: this.imageReplaceCallback
+                imageReplaceCallback: this.imageReplaceCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "Heading" || item.nodeType === "IdHeading") {
               // 标题/标题ID
@@ -196,7 +199,8 @@ export struct MarkdownQuote {
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
-                imageReplaceCallback: this.imageReplaceCallback
+                imageReplaceCallback: this.imageReplaceCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "FencedCodeBlockListBlock") {
               // 围栏代码块列表
@@ -272,7 +276,8 @@ export struct MarkdownQuote {
                 audioCallback: this.audioCallback,
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback,
-                tableCopyCallback:this.tableCopyCallback
+                tableCopyCallback:this.tableCopyCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "OrderedList") {
               // 有序列表
@@ -324,7 +329,8 @@ export struct MarkdownQuote {
                 audioCallback: this.audioCallback,
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback,
-                tableCopyCallback:this.tableCopyCallback
+                tableCopyCallback:this.tableCopyCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "BlockQuote") {
               // 块引用
@@ -375,7 +381,8 @@ export struct MarkdownQuote {
                 codeCopyCallback: this.codeCopyCallback,
                 codeFullScreenCallback: this.codeFullScreenCallback,
                 listDepth: this.listDepth + 1,
-                tableCopyCallback:this.tableCopyCallback
+                tableCopyCallback:this.tableCopyCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "LatexMathBlock") {
               // 数学公式块：闭合时渲染图片，未闭合时渲染文本
@@ -486,7 +493,8 @@ export struct MarkdownQuote {
                 videoDownloadCallback: this.videoDownloadCallback,
                 audioCallback: this.audioCallback,
                 codeCopyCallback: this.codeCopyCallback,
-                codeFullScreenCallback: this.codeFullScreenCallback
+                codeFullScreenCallback: this.codeFullScreenCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
             } else if (item.nodeType === "SlideBlock") {
               // 图片幻灯片

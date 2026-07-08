@@ -10,6 +10,8 @@ import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { TitleData } from '../model/TitleData'
 import { ConfigurationConstant } from '@kit.AbilityKit'
+import { COLOR_FF4A90E2, COLOR_FFA9B7C6, COLOR_RED,
+  NUM_FFE9967A } from '@cangjie-tpc/markdown_hybrid/src/main/ets/base/Constants'
 
 @Entry
 @Component
@@ -280,6 +282,12 @@ struct TitleDetailsPage {
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
 
+  @State
+  showHighlight: boolean = true
+  currentIndex: number = -1
+  currentItem: string = ''
+  highlightIndexList: string[] = []
+
   aboutToAppear(): void {
     try {
       let titleData: TitleData = router.getParams() as TitleData
@@ -302,6 +310,7 @@ struct TitleDetailsPage {
       this.globalBackgroundColor = titleData._backgroundColor
       this.openGestureSwipe = titleData._openGestureSwipe
       this.openGestureSwipeTest = titleData._openGestureSwipeTest
+      this.showHighlight = titleData._showHighlight
       // ---------- 专有 - 一级标题
       this.heading1BackgroundColor = titleData._heading1BackgroundColor
       this.heading1MarginTop = titleData._heading1MarginTop
@@ -447,6 +456,53 @@ struct TitleDetailsPage {
         true,
         this.safeTop
       )
+      if (this.showHighlight) {
+        Row() {
+          Button("获取所有高亮节点").fontSize(14)
+            .onClick(() => {
+                this.highlightIndexList = this.getAllItems()
+                hilog.error(1111, 'MarkdownCX', '所有ID：' + this.highlightIndexList)
+            })
+
+          Button("上一个").fontSize(14)
+            .onClick(() => {
+              hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
+              if (this.currentIndex < 0) {
+                // 当前已经是最后一个，不做修改
+                this.currentIndex = -1
+              } else {
+                // 删除当前高亮，添加上一个高亮
+                this.markdownConfiguration.markdownHighlightParagraph.clearParagraphHighlight(this.highlightIndexList[this.currentIndex])
+                this.currentIndex = this.currentIndex - 1
+                this.markdownConfiguration.markdownHighlightParagraph.highlightParagraph(this.highlightIndexList[this.currentIndex], COLOR_FF4A90E2)
+              }
+              hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
+            })
+
+          Button("下一个").fontSize(14)
+            .onClick(() => {
+              hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
+              if (this.currentIndex >= this.highlightIndexList.length) {
+                // 当前已经是最后一个，不做修改
+                this.currentIndex = this.highlightIndexList.length
+              } else {
+                // 删除当前高亮，添加上一个高亮
+                this.markdownConfiguration.markdownHighlightParagraph.clearParagraphHighlight(this.highlightIndexList[this.currentIndex])
+                this.currentIndex = this.currentIndex + 1
+                this.markdownConfiguration.markdownHighlightParagraph.highlightParagraph(this.highlightIndexList[this.currentIndex], NUM_FFE9967A)
+              }
+              hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
+            })
+
+          Button("清除所有").fontSize(14)
+            .onClick(() => {
+              this.markdownConfiguration.markdownHighlightParagraph.clearAllParagraphHighlights()
+              this.currentIndex = -1
+              this.currentItem = ''
+            })
+        }
+        .padding(3).margin(3).align(Alignment.Start)
+      }
       Scroll(this.scroller) {
         if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
           Column() {
@@ -615,5 +671,9 @@ struct TitleDetailsPage {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     return plugin
+  }
+
+  getAllItems(): Array<string> {
+    return this.markdownConfiguration.markdownHighlightParagraph.getAllParagraphItems()
   }
 }

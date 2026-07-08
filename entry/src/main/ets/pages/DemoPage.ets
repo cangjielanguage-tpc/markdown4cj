@@ -84,6 +84,9 @@ struct DemoPage {
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
   @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  // 是否显示标题段落高亮效果
+  showHighlightList: Array<boolean> = booleanListGeneralData
+  @State showHighlight: boolean = true // 是否全量加载Markdown文本
   @State baseMDData: BaseMDData = new BaseMDData() // 数据
   heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
@@ -142,6 +145,7 @@ struct DemoPage {
                   this.baseMDData._openGestureSwipe = this.openGestureSwipe
                   this.baseMDData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.baseMDData._pagePath = `${this.rawFilePath}/${item}`
+                  this.baseMDData._showHighlight = this.showHighlight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/DemoDetailsPage", params: this.baseMDData })
                 })
@@ -277,39 +281,45 @@ struct DemoPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
 
-          // Column() {
-          //   Row() {
-          //     Text("专有样式配置")
-          //       .fontSize(16)
-          //       .fontWeight(FontWeight.Bold)
-          //       .layoutWeight(1)
-          //     Text(this.isExpanded2 ? "▲" : "▼")
-          //       .fontSize(16)
-          //       .fontColor('#FFF5F5F5')
-          //       .padding({ right: 20 })
-          //       .onClick(() => {
-          //         this.isExpanded2 = !this.isExpanded2
-          //       })
-          //   }
-          //   .width('100%')
-          //   .padding(5)
-          //   .margin(5)
-          //   .onClick(() => {
-          //     this.isExpanded2 = !this.isExpanded2
-          //   })
-          //
-          //   if (this.isExpanded2) {
-          //     Column() {
-          //     }
-          //     .width('100%')
-          //     .padding({ bottom: 5, left: 5, right: 5 })
-          //     .margin({ bottom: 5, left: 5, right: 5 })
-          //   }
-          // }
-          // .width('100%')
-          // .margin(5)
-          // .borderRadius(5)
-          // .backgroundColor(0xFF317AFF)
+          Column() {
+            Row() {
+              Text("专有样式配置")
+                .fontSize(16)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded2 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor('#FFF5F5F5')
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded2 = !this.isExpanded2
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded2 = !this.isExpanded2
+            })
+
+            if (this.isExpanded2) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "是否开启标题段落高亮显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.showHighlightList,
+                  allData: this.showHighlight
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
         }
         .padding({ top: 10, bottom: 100 })
       }
