@@ -347,121 +347,110 @@ struct TablePage {
       )
 
       // md文档展示部分
-      Column() {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
-          ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({
-              span: {
-                xs: 1,
-                sm: 2,
-                md: 3,
-                lg: 4
-              },
-              offset: 0,
-              order: 0
-            }) {
-              Text(`${item}`)
-                .fontSize(12)
-                .fontColor('#FFFFFFFF')
-                .backgroundColor('#FF2196F3')
-                .height(25)
-                .width('100%')
-                .padding(5)
-                .borderRadius(5)
-                .maxLines(1)
-                .textOverflow({ overflow: TextOverflow.Clip })
-                .onClick(() => {
-                  // ---------- 通用
-                  this.tableData._isFull = this.isFull
-                  this.tableData._incrementalAnalysis = this.incrementalAnalysis
-                  this.tableData._enableParseThrottle = this.enableParseThrottle
-                  this.tableData._parseThrottleMs = this.parseThrottleMs
-                  this.tableData._time = this.time
-                  this.tableData._textNumber = this.textNumber
-                  this.tableData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.tableData._isOnCopy = this.isOnCopy
-                  this.tableData._blockMarginTop = this.blockMarginTop
-                  this.tableData._blockMarginRight = this.blockMarginRight
-                  this.tableData._blockMarginBottom = this.blockMarginBottom
-                  this.tableData._blockMarginLeft = this.blockMarginLeft
-                  this.tableData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.tableData._isLineBreak = this.isLineBreak
-                  this.tableData._backgroundColor = this.globalBackgroundColor
-                  this.tableData._openGestureSwipe = this.openGestureSwipe
-                  this.tableData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.tableData._pagePath = `${this.rawFilePath}/${item}`
+      Grid() {
+        ForEach(this.folderList, (item: string, index: number) => {
+          GridItem() {
+            Text(`${item}`)
+              .fontSize(12)
+              .fontColor('#FFFFFFFF')
+              .backgroundColor('#FF2196F3')
+              .height(25)
+              .padding(5)
+              .borderRadius(5)
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Clip })
+              .onClick(() => {
+                // ---------- 通用
+                this.tableData._isFull = this.isFull
+                this.tableData._incrementalAnalysis = this.incrementalAnalysis
+                this.tableData._enableParseThrottle = this.enableParseThrottle
+                this.tableData._parseThrottleMs = this.parseThrottleMs
+                this.tableData._time = this.time
+                this.tableData._textNumber = this.textNumber
+                this.tableData._isMarkdownParserSync = this.isMarkdownParserSync
+                this.tableData._isOnCopy = this.isOnCopy
+                this.tableData._blockMarginTop = this.blockMarginTop
+                this.tableData._blockMarginRight = this.blockMarginRight
+                this.tableData._blockMarginBottom = this.blockMarginBottom
+                this.tableData._blockMarginLeft = this.blockMarginLeft
+                this.tableData._markdownBlockSpacing = this.markdownBlockSpacing
+                this.tableData._isLineBreak = this.isLineBreak
+                this.tableData._backgroundColor = this.globalBackgroundColor
+                this.tableData._openGestureSwipe = this.openGestureSwipe
+                this.tableData._openGestureSwipeTest = this.openGestureSwipeTest
+                this.tableData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.tableData._tableTitleBackgroundColor = this.tableTitleBackgroundColor
-                  this.tableData._tableContentOddRowBackgroundColor = this.tableContentOddRowBackgroundColor
-                  this.tableData._tableContentEvenRowBackgroundColor = this.tableContentEvenRowBackgroundColor
-                  this.tableData._tableMarginTop = this.tableMarginTop
-                  this.tableData._tableMarginRight = this.tableMarginRight
-                  this.tableData._tableMarginBottom = this.tableMarginBottom
-                  this.tableData._tableMarginLeft = this.tableMarginLeft
-                  this.tableData._tablePaddingTop = this.tablePaddingTop
-                  this.tableData._tablePaddingRight = this.tablePaddingRight
-                  this.tableData._tablePaddingBottom = this.tablePaddingBottom
-                  this.tableData._tablePaddingLeft = this.tablePaddingLeft
-                  this.tableData._tableCellPaddingTop = this.tableCellPaddingTop
-                  this.tableData._tableCellPaddingRight = this.tableCellPaddingRight
-                  this.tableData._tableCellPaddingBottom = this.tableCellPaddingBottom
-                  this.tableData._tableCellPaddingLeft = this.tableCellPaddingLeft
-                  this.tableData._tableBorderStyle = this.tableBorderStyle
-                  this.tableData._tableBorderWidth = this.tableBorderWidth
-                  this.tableData._tableBorderColor = this.tableBorderColor
-                  this.tableData._tableRadiusTopLeft = this.tableRadiusTopLeft
-                  this.tableData._tableRadiusTopRight = this.tableRadiusTopRight
-                  this.tableData._tableRadiusBottomLeft = this.tableRadiusBottomLeft
-                  this.tableData._tableRadiusBottomRight = this.tableRadiusBottomRight
-                  this.tableData._tableScrollBarState = this.tableScrollBarState
-                  this.tableData._tableScrollBarColor = this.tableScrollBarColor
-                  this.tableData._tableMinCellWidth = this.tableMinCellWidth
-                  this.tableData._tableMaxCellWidth = this.tableMaxCellWidth
-                  this.tableData._tableFirstColumnIsBold = this.tableFirstColumnIsBold
-                  this.tableData._tableTitleTextFontColor = this.tableTitleTextFontColor
-                  this.tableData._tableTitleTextFontSize = this.tableTitleTextFontSize
-                  this.tableData._tableTitleTextFontStyle = this.tableTitleTextFontStyle
-                  this.tableData._tableTitleTextFontWeight = this.tableTitleTextFontWeight
-                  this.tableData._tableTitleTextFontFamily = this.tableTitleTextFontFamily
-                  this.tableData._tableTitleTextLineHeight = this.tableTitleTextLineHeight
-                  this.tableData._tableTitleTextLetterSpacing = this.tableTitleTextLetterSpacing
-                  this.tableData._tableContentTextFontColor = this.tableContentTextFontColor
-                  this.tableData._tableContentTextFontSize = this.tableContentTextFontSize
-                  this.tableData._tableContentTextFontStyle = this.tableContentTextFontStyle
-                  this.tableData._tableContentTextFontWeight = this.tableContentTextFontWeight
-                  this.tableData._tableContentTextFontFamily = this.tableContentTextFontFamily
-                  this.tableData._tableContentTextLineHeight = this.tableContentTextLineHeight
-                  this.tableData._tableContentTextLetterSpacing = this.tableContentTextLetterSpacing
-                  this.tableData._tableStickyHeader = this.tableStickyHeader
-                  this.tableData._tableHeaderIsShow = this.tableHeaderIsShow
-                  this.tableData._tableHeaderTitleTextFontColor = this.tableHeaderTitleTextFontColor
-                  this.tableData._tableHeaderTitleTextFontSize = this.tableHeaderTitleTextFontSize
-                  this.tableData._tableHeaderTitleTextFontStyle = this.tableHeaderTitleTextFontStyle
-                  this.tableData._tableHeaderTitleTextFontWeight = this.tableHeaderTitleTextFontWeight
-                  this.tableData._tableHeaderTitleTextFontFamily = this.tableHeaderTitleTextFontFamily
-                  this.tableData._tableHeaderTitleTextLineHeight = this.tableHeaderTitleTextLineHeight
-                  this.tableData._tableHeaderTitleTextMarginLeft = this.tableHeaderTitleTextMarginLeft
-                  this.tableData._tableHeadCopyIcon = this.tableHeadCopyIcon
-                  this.tableData._tableHeadCopyIconWidth = this.tableHeadCopyIconWidth
-                  this.tableData._tableHeadCopyIconHeight = this.tableHeadCopyIconHeight
-                  this.tableData._tableHeadCopyIconMarginRight = this.tableHeadCopyIconMarginRight
-
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/TableDetailsPage", params: this.tableData })
-                })
-            }
-          })
-        }.width('100%').height('100%')
-      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+                // ---------- 专有
+                this.tableData._tableTitleBackgroundColor = this.tableTitleBackgroundColor
+                this.tableData._tableContentOddRowBackgroundColor = this.tableContentOddRowBackgroundColor
+                this.tableData._tableContentEvenRowBackgroundColor = this.tableContentEvenRowBackgroundColor
+                this.tableData._tableMarginTop = this.tableMarginTop
+                this.tableData._tableMarginRight = this.tableMarginRight
+                this.tableData._tableMarginBottom = this.tableMarginBottom
+                this.tableData._tableMarginLeft = this.tableMarginLeft
+                this.tableData._tablePaddingTop = this.tablePaddingTop
+                this.tableData._tablePaddingRight = this.tablePaddingRight
+                this.tableData._tablePaddingBottom = this.tablePaddingBottom
+                this.tableData._tablePaddingLeft = this.tablePaddingLeft
+                this.tableData._tableCellPaddingTop = this.tableCellPaddingTop
+                this.tableData._tableCellPaddingRight = this.tableCellPaddingRight
+                this.tableData._tableCellPaddingBottom = this.tableCellPaddingBottom
+                this.tableData._tableCellPaddingLeft = this.tableCellPaddingLeft
+                this.tableData._tableBorderStyle = this.tableBorderStyle
+                this.tableData._tableBorderWidth = this.tableBorderWidth
+                this.tableData._tableBorderColor = this.tableBorderColor
+                this.tableData._tableRadiusTopLeft = this.tableRadiusTopLeft
+                this.tableData._tableRadiusTopRight = this.tableRadiusTopRight
+                this.tableData._tableRadiusBottomLeft = this.tableRadiusBottomLeft
+                this.tableData._tableRadiusBottomRight = this.tableRadiusBottomRight
+                this.tableData._tableScrollBarState = this.tableScrollBarState
+                this.tableData._tableScrollBarColor = this.tableScrollBarColor
+                this.tableData._tableMinCellWidth = this.tableMinCellWidth
+                this.tableData._tableMaxCellWidth = this.tableMaxCellWidth
+                this.tableData._tableFirstColumnIsBold = this.tableFirstColumnIsBold
+                this.tableData._tableTitleTextFontColor = this.tableTitleTextFontColor
+                this.tableData._tableTitleTextFontSize = this.tableTitleTextFontSize
+                this.tableData._tableTitleTextFontStyle = this.tableTitleTextFontStyle
+                this.tableData._tableTitleTextFontWeight = this.tableTitleTextFontWeight
+                this.tableData._tableTitleTextFontFamily = this.tableTitleTextFontFamily
+                this.tableData._tableTitleTextLineHeight = this.tableTitleTextLineHeight
+                this.tableData._tableTitleTextLetterSpacing = this.tableTitleTextLetterSpacing
+                this.tableData._tableContentTextFontColor = this.tableContentTextFontColor
+                this.tableData._tableContentTextFontSize = this.tableContentTextFontSize
+                this.tableData._tableContentTextFontStyle = this.tableContentTextFontStyle
+                this.tableData._tableContentTextFontWeight = this.tableContentTextFontWeight
+                this.tableData._tableContentTextFontFamily = this.tableContentTextFontFamily
+                this.tableData._tableContentTextLineHeight = this.tableContentTextLineHeight
+                this.tableData._tableContentTextLetterSpacing = this.tableContentTextLetterSpacing
+                this.tableData._tableStickyHeader = this.tableStickyHeader
+                this.tableData._tableHeaderIsShow = this.tableHeaderIsShow
+                this.tableData._tableHeaderTitleTextFontColor = this.tableHeaderTitleTextFontColor
+                this.tableData._tableHeaderTitleTextFontSize = this.tableHeaderTitleTextFontSize
+                this.tableData._tableHeaderTitleTextFontStyle = this.tableHeaderTitleTextFontStyle
+                this.tableData._tableHeaderTitleTextFontWeight = this.tableHeaderTitleTextFontWeight
+                this.tableData._tableHeaderTitleTextFontFamily = this.tableHeaderTitleTextFontFamily
+                this.tableData._tableHeaderTitleTextLineHeight = this.tableHeaderTitleTextLineHeight
+                this.tableData._tableHeaderTitleTextMarginLeft = this.tableHeaderTitleTextMarginLeft
+                this.tableData._tableHeadCopyIcon = this.tableHeadCopyIcon
+                this.tableData._tableHeadCopyIconWidth = this.tableHeadCopyIconWidth
+                this.tableData._tableHeadCopyIconHeight = this.tableHeadCopyIconHeight
+                this.tableData._tableHeadCopyIconMarginRight = this.tableHeadCopyIconMarginRight
+                // ---------- 跳转到详情
+                router.pushUrl({ url: "pages/TableDetailsPage", params: this.tableData })
+              })
+          }
+        })
+      }
+      .constraintSize({ maxHeight: 200 })
+      .columnsGap(5)
+      .rowsGap(5)
+      .maxCount(5)
+      .minCount(3)
+      .cellLength(30)
+      .layoutDirection(GridDirection.Row)
+      .padding(5)
+      .width('100%')
+      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {

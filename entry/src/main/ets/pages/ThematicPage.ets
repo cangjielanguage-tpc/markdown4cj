@@ -1,4 +1,4 @@
-import { titleComponent } from '../component/BaseComponent'
+﻿import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -17,8 +17,6 @@ import { ThematicData } from '../model/ThematicData'
 @Component
 struct ThematicPage {
   // ---------------- 通用
-  // 滑动控制器
-  scroller: Scroller = new Scroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
@@ -140,7 +138,6 @@ struct ThematicPage {
   dividerStyle: LineCapStyle = LineCapStyle.Butt
   @State // 配置数据内容
   thematicData: ThematicData = new ThematicData()
-  heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
   @State isExpanded2: boolean = false // 控制展开/折叠状态
 
@@ -157,30 +154,21 @@ struct ThematicPage {
         this.safeTop
       )
 
-      // md文档展示部分
-      Column() {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
-          ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
-              Text(`${item}`)
-                .fontSize(12)
-                .fontColor('#FFFFFFFF')
-                .backgroundColor('#FF2196F3')
-                .height(25).width('100%')
-                .padding(5)
-                .borderRadius(5)
-                .maxLines(1)
-                .textOverflow({ overflow: TextOverflow.Clip })
-                .onClick(() => {
-                  // ---------- 通用
+      // md鏂囨。灞曠ず閮ㄥ垎
+      Grid() {
+        ForEach(this.folderList, (item: string, index: number) => {
+          GridItem() {
+            Text(`${item}`)
+              .fontSize(12)
+              .fontColor('#FFFFFFFF')
+              .backgroundColor('#FF2196F3')
+              .height(25)
+              .padding(5)
+              .borderRadius(5)
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Clip })
+              .onClick(() => {
+                // ---------- 通用
                   this.thematicData._isFull = this.isFull
                   this.thematicData._incrementalAnalysis = this.incrementalAnalysis
                   this.thematicData._enableParseThrottle = this.enableParseThrottle
@@ -214,11 +202,20 @@ struct ThematicPage {
                   this.thematicData._dividerStyle = this.dividerStyle
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/ThematicDetailsPage", params: this.thematicData })
-                })
-            }
-          })
-        }.width('100%').height('100%')
-      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+              })
+          }
+        })
+      }
+      .constraintSize({ maxHeight: 200 })
+      .columnsGap(5)
+      .rowsGap(5)
+      .maxCount(5)
+      .minCount(3)
+      .cellLength(30)
+      .layoutDirection(GridDirection.Row)
+      .padding(5)
+      .width('100%')
+      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {

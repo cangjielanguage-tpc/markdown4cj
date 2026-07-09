@@ -1,4 +1,4 @@
-import { titleComponent } from '../component/BaseComponent'
+﻿import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseMDData } from '../model/BaseMDData'
@@ -16,8 +16,6 @@ import {
 @Component
 struct DemoPage {
   // ---------------- 通用
-  // 滑动控制器
-  scroller: Scroller = new Scroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
@@ -88,7 +86,6 @@ struct DemoPage {
   showHighlightList: Array<boolean> = booleanListGeneralData
   @State showHighlight: boolean = true // 是否全量加载Markdown文本
   @State baseMDData: BaseMDData = new BaseMDData() // 数据
-  heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
   @State isExpanded2: boolean = false // 控制展开/折叠状态
 
@@ -105,30 +102,21 @@ struct DemoPage {
         this.safeTop
       )
 
-      // md文档展示部分
-      Column() {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
-          ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
-              Text(`${item}`)
-                .fontSize(12)
-                .fontColor('#FFFFFFFF')
-                .backgroundColor('#FF2196F3')
-                .height(25).width('100%')
-                .padding(5)
-                .borderRadius(5)
-                .maxLines(1)
-                .textOverflow({ overflow: TextOverflow.Clip })
-                .onClick(() => {
-                  // ---------- 通用
+      // md鏂囨。灞曠ず閮ㄥ垎
+      Grid() {
+        ForEach(this.folderList, (item: string, index: number) => {
+          GridItem() {
+            Text(`${item}`)
+              .fontSize(12)
+              .fontColor('#FFFFFFFF')
+              .backgroundColor('#FF2196F3')
+              .height(25)
+              .padding(5)
+              .borderRadius(5)
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Clip })
+              .onClick(() => {
+                // ---------- 通用
                   this.baseMDData._isFull = this.isFull
                   this.baseMDData._incrementalAnalysis = this.incrementalAnalysis
                   this.baseMDData._time = this.time
@@ -148,11 +136,20 @@ struct DemoPage {
                   this.baseMDData._showHighlight = this.showHighlight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/DemoDetailsPage", params: this.baseMDData })
-                })
-            }
-          })
-        }.width('100%').height('100%')
-      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+              })
+          }
+        })
+      }
+      .constraintSize({ maxHeight: 200 })
+      .columnsGap(5)
+      .rowsGap(5)
+      .maxCount(5)
+      .minCount(3)
+      .cellLength(30)
+      .layoutDirection(GridDirection.Row)
+      .padding(5)
+      .width('100%')
+      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { titleComponent } from '../component/BaseComponent'
@@ -12,7 +12,6 @@ struct ABCustomPage {
   /**
    * 滑动控制器
    */
-  scroller: Scroller = new Scroller()
   /**
    * 顶部导航栏高度
    */

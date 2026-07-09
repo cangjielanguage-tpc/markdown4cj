@@ -7,8 +7,6 @@ import { BaseMDData } from '../model/BaseMDData'
 @Component
 struct AllPageCopyPage {
   // ---------------- 通用
-  // 滑动控制器
-  scroller: Scroller = new Scroller()
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @State // rawfile文件夹列表（存储完整相对路径如 "001_Heading/001_Heading.md"）
@@ -56,28 +54,19 @@ struct AllPageCopyPage {
       )
 
       // md文档展示部分
-      Scroll(this.scroller) {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
-          ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
-              Text(`${item}`)
-                .fontSize(10)
-                .fontColor('#FFFFFFFF')
-                .backgroundColor('#FF2196F3')
-                .height(25).width('100%')
-                .padding(5)
-                .borderRadius(5)
-                .maxLines(1)
-                .textOverflow({ overflow: TextOverflow.Clip })
-                .onClick(() => {
+      Grid() {
+        ForEach(this.folderList, (item: string, index: number) => {
+          GridItem() {
+            Text(`${item}`)
+              .fontSize(10)
+              .fontColor('#FFFFFFFF')
+              .backgroundColor('#FF2196F3')
+              .height(25)
+              .padding(5)
+              .borderRadius(5)
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Clip })
+              .onClick(() => {
                   // ---------- 通用
                   this.baseMDData._isFull = this.isFull
                   this.baseMDData._incrementalAnalysis = this.incrementalAnalysis
@@ -97,12 +86,18 @@ struct AllPageCopyPage {
                   this.baseMDData._pagePath = item
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/AllPageCopyDetailsPage", params: this.baseMDData })
-                })
-            }
-          })
-        }.width('100%')
+              })
+          }
+        })
       }
-      .padding({ top: 5, bottom: 5 })
+      .constraintSize({ maxHeight: 200 })
+      .columnsGap(5)
+      .rowsGap(5)
+      .maxCount(5)
+      .minCount(3)
+      .cellLength(30)
+      .layoutDirection(GridDirection.Row)
+      .padding(5)
       .width('100%')
       .layoutWeight(1)
     }
