@@ -405,6 +405,14 @@ export struct MarkdownTableCell {
             .width(px2vp(item.linkIconWidth))
             .height(px2vp(item.linkIconHeight))
             .verticalAlign(ImageSpanAlignment.CENTER)
+            .margin({
+              left: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin
+                : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin
+                : this.linkTheme.linkRectToolIconMargin,
+              right: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin
+                : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin
+                : this.linkTheme.linkRectToolIconMargin
+            })
             .onClick(() => {
               if (item.linkUrl !== undefined) {
                 this.linkCallback?.(item.linkUrl)
