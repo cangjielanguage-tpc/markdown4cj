@@ -67,22 +67,13 @@ export class TableTheme implements MarkdownBaseTheme {
   tableHeadTitleTextFontStyle: FontStyle | undefined = undefined // 表格头标题类型文本字体样式
   tableHeadTitleTextFontColor: ResourceColor | undefined = undefined // 表格头标题类型文本字体颜色
   tableHeadTitleTextLineHeight: number | string | Resource | undefined = undefined // 表格头标题类型文本行高
-  tableHeadTitleTextMarginLeft: Length = 8.0 // 表格头标题类型文本左边距
+  tableHeadTitleTextMarginLeft: Length = 0.0 // 表格头标题类型文本左边距
 
   tableHeadCopyIcon: Resource | undefined = undefined // 表格头复制图标
   tableHeadCopyIconWidth: Length = 24.0 // 表格头复制图标宽度
   tableHeadCopyIconHeight: Length = 24.0 // 表格头复制图标高度
-  tableHeadCopyTextSpacing: number = 5.0 // 表格头复制图标文本间距
-  tableHeadCopyTextIsShow: boolean = true // 表格头复制文本是否显示
-  tableHeadCopyButtonIsShow: boolean = true // 表格头复制按钮是否显示
+  tableHeadCopyIconMarginRight: Length = 0.0 // 表格头复制图标右边距
 
-  tableHeadCopyText: string = '复制表格' // 表格头复制文本
-  tableHeadCopyTextFontFamily: string | Resource | undefined = undefined // 表格头复制文本字体族
-  tableHeadCopyTextFontSize: number | string | Resource | undefined = undefined // 表格头复制文本字体大小
-  tableHeadCopyTextFontWeight: number | FontWeight | undefined = undefined // 表格头复制文本字体粗细
-  tableHeadCopyTextFontStyle: FontStyle | undefined = undefined // 表格头复制文本字体样式
-  tableHeadCopyTextFontColor: ResourceColor | undefined = undefined // 表格头复制文本字体颜色
-  tableHeadCopyTextLineHeight: number | string | Resource | undefined = undefined // 表格头复制文本行高
 
 
   /**
@@ -682,112 +673,15 @@ export class TableTheme implements MarkdownBaseTheme {
   }
 
   /**
-   * 设置表格头复制图标文本间距
+   * 设置表格头复制图标右边距
    *
-   * @param spacing 间距
+   * @param marginRight 右边距
    * @return TableTheme
    */
-  setTableHeadCopyTextSpacing(spacing: number): TableTheme {
-    this.tableHeadCopyTextSpacing = spacing;
+  setTableHeadCopyIconMarginRight(marginRight: Length): TableTheme {
+    this.tableHeadCopyIconMarginRight = marginRight;
     return this;
   }
 
-  /**
-   * 设置表格头复制文本是否显示
-   *
-   * @param isShow 是否显示
-   * @return TableTheme
-   */
-  setTableHeadCopyTextIsShow(isShow: boolean): TableTheme {
-    this.tableHeadCopyTextIsShow = isShow;
-    return this;
-  }
 
-  /**
-   * 设置表格头复制按钮是否显示
-   *
-   * @param isShow 是否显示
-   * @return TableTheme
-   */
-  setTableHeadCopyButtonIsShow(isShow: boolean): TableTheme {
-    this.tableHeadCopyButtonIsShow = isShow;
-    return this;
-  }
-
-  /**
-   * 设置表格头复制文本
-   *
-   * @param text 复制文本
-   * @return TableTheme
-   */
-  setTableHeadCopyText(text: string): TableTheme {
-    this.tableHeadCopyText = text;
-    return this;
-  }
-
-  /**
-   * 设置表格头复制文本字体族
-   *
-   * @param family 字体族
-   * @return TableTheme
-   */
-  setTableHeadCopyTextFontFamily(family: string | Resource | undefined): TableTheme {
-    this.tableHeadCopyTextFontFamily = family;
-    return this;
-  }
-
-  /**
-   * 设置表格头复制文本字体大小
-   *
-   * @param size 字体大小
-   * @return TableTheme
-   */
-  setTableHeadCopyTextFontSize(size: number | string | Resource | undefined): TableTheme {
-    this.tableHeadCopyTextFontSize = size;
-    return this;
-  }
-
-  /**
-   * 设置表格头复制文本字体粗细
-   *
-   * @param weight 字体粗细
-   * @return TableTheme
-   */
-  setTableHeadCopyTextFontWeight(weight: number | FontWeight | undefined): TableTheme {
-    this.tableHeadCopyTextFontWeight = weight;
-    return this;
-  }
-
-  /**
-   * 设置表格头复制文本字体样式
-   *
-   * @param style 字体样式
-   * @return TableTheme
-   */
-  setTableHeadCopyTextFontStyle(style: FontStyle | undefined): TableTheme {
-    this.tableHeadCopyTextFontStyle = style;
-    return this;
-  }
-
-  /**
-   * 设置表格头复制文本字体颜色
-   *
-   * @param color 颜色
-   * @return TableTheme
-   */
-  setTableHeadCopyTextFontColor(color: ResourceColor | undefined): TableTheme {
-    this.tableHeadCopyTextFontColor = color;
-    return this;
-  }
-
-  /**
-   * 设置表格头复制文本行高
-   *
-   * @param lineHeight 行高
-   * @return TableTheme
-   */
-  setTableHeadCopyTextLineHeight(lineHeight: number | string | Resource | undefined): TableTheme {
-    this.tableHeadCopyTextLineHeight = lineHeight;
-    return this;
-  }
 }

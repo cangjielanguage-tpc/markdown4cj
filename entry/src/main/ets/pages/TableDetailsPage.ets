@@ -164,32 +164,18 @@ struct TableDetailsPage {
   @State // 表头标题文本行高
   tableHeadTitleTextLineHeight: number | string | Resource = 22.0
   @State // 表头标题文本左边距
-  tableHeadTitleTextMarginLeft: Length = 8.0 // 表格头标题类型文本左边距
+  tableHeadTitleTextMarginLeft: Length = 0.0 // 表格头标题类型文本左边距
 
-  @State // 表头复制文本颜色
-  tableHeadCopyTextFontColor: ResourceColor | undefined = undefined
-  @State // 表头复制文本尺寸
-  tableHeadCopyTextFontSize: number | string | Resource = 14.0
-  @State // 表头复制文本字体样式
-  tableHeadCopyTextFontStyle: FontStyle = FontStyle.Normal
-  @State // 表头复制文本字体粗细
-  tableHeadCopyTextFontWeight: number | FontWeight = FontWeight.Bold
-  @State // 表头复制文本字体
-  tableHeadCopyTextFontFamily: string | Resource = 'HarmonyOS Sans'
-  @State // 表头复制文本行高
-  tableHeadCopyTextLineHeight: number | string | Resource = 22.0
-  @State // 表头复制文本是否显示
-  tableHeadCopyTextIsShow: boolean = false
-  @State // 表头复制按钮是否显示
-  tableHeadCopyButtonIsShow: boolean = true
+
   @State // 表格头复制图标
   tableHeadCopyIcon: boolean = true
   @State // 表格头复制图标宽度
   tableHeadCopyIconWidth: number = 24
   @State // 表格头复制图标高度
   tableHeadCopyIconHeight: number = 24
-  @State // 表格头复制图标文本间距
-  tableHeadCopyTextSpacing: number = 5
+  @State // 表格头复制图标右边距
+  tableHeadCopyIconMarginRight: Length = 0.0
+
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -276,18 +262,12 @@ struct TableDetailsPage {
       this.tableHeadTitleTextFontFamily = tableData._tableHeaderTitleTextFontFamily
       this.tableHeadTitleTextLineHeight = tableData._tableHeaderTitleTextLineHeight
       this.tableHeadTitleTextMarginLeft = tableData._tableHeaderTitleTextMarginLeft
-      this.tableHeadCopyTextFontColor = tableData._tableHeaderCopyTextFontColor
-      this.tableHeadCopyTextFontSize = tableData._tableHeaderCopyTextFontSize
-      this.tableHeadCopyTextFontStyle = tableData._tableHeaderCopyTextFontStyle
-      this.tableHeadCopyTextFontWeight = tableData._tableHeaderCopyTextFontWeight
-      this.tableHeadCopyTextFontFamily = tableData._tableHeaderCopyTextFontFamily
-      this.tableHeadCopyTextLineHeight = tableData._tableHeaderCopyTextLineHeight
-      this.tableHeadCopyTextIsShow = tableData._tableHeaderCopyTextIsShow
-      this.tableHeadCopyButtonIsShow = tableData._tableHeaderCopyButtonIsShow
+
       this.tableHeadCopyIcon = tableData._tableHeadCopyIcon
       this.tableHeadCopyIconWidth = tableData._tableHeadCopyIconWidth
       this.tableHeadCopyIconHeight = tableData._tableHeadCopyIconHeight
-      this.tableHeadCopyTextSpacing = tableData._tableHeadCopyTextSpacing
+      this.tableHeadCopyIconMarginRight = tableData._tableHeadCopyIconMarginRight
+
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -471,18 +451,12 @@ struct TableDetailsPage {
     tableTheme.setTableHeadTitleTextFontStyle(this.tableHeadTitleTextFontStyle)
     tableTheme.setTableHeadTitleTextLineHeight(this.tableHeadTitleTextLineHeight)
     tableTheme.setTableHeadTitleTextMarginLeft(this.tableHeadTitleTextMarginLeft)
-    tableTheme.setTableHeadCopyTextFontColor(this.tableHeadCopyTextFontColor)
-    tableTheme.setTableHeadCopyTextFontSize(this.tableHeadCopyTextFontSize)
-    tableTheme.setTableHeadCopyTextFontFamily(this.tableHeadCopyTextFontFamily)
-    tableTheme.setTableHeadCopyTextFontWeight(this.tableHeadCopyTextFontWeight)
-    tableTheme.setTableHeadCopyTextFontStyle(this.tableHeadCopyTextFontStyle)
-    tableTheme.setTableHeadCopyTextLineHeight(this.tableHeadCopyTextLineHeight)
-    tableTheme.setTableHeadCopyTextIsShow(this.tableHeadCopyTextIsShow)
-    tableTheme.setTableHeadCopyButtonIsShow(this.tableHeadCopyButtonIsShow)
+
     tableTheme.setTableHeadCopyIcon(this.tableHeadCopyIcon ? $r('app.media.startIcon') : undefined)
     tableTheme.setTableHeadCopyIconWidth(this.tableHeadCopyIconWidth)
     tableTheme.setTableHeadCopyIconHeight(this.tableHeadCopyIconHeight)
-    tableTheme.setTableHeadCopyTextSpacing(this.tableHeadCopyTextSpacing)
+    tableTheme.setTableHeadCopyIconMarginRight(this.tableHeadCopyIconMarginRight)
+
     theme.setTableTheme(tableTheme)
     
     return theme

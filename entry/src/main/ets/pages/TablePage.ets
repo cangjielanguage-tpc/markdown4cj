@@ -297,41 +297,10 @@ struct TablePage {
   @State // 表头标题文本行高
   tableHeaderTitleTextLineHeight: number = 22
   // 表头标题文本左边距列表
-  tableHeaderTitleTextMarginLeftList: Array<number> = [5, 8, 10, 15, 20, 40]
+  tableHeaderTitleTextMarginLeftList: Array<number> = [0, 5, 8, 10, 15, 20, 40]
   @State // 表头标题文本左边距
-  tableHeaderTitleTextMarginLeft: number = 5
-  // 表头复制文本颜色列表
-  tableHeaderCopyTextFontColorList: Array<ResourceColor | undefined> = colorListGeneralData
-  @State // 表头复制文本颜色
-  tableHeaderCopyTextFontColor: ResourceColor | undefined = undefined
-  // 表头复制文本尺寸列表
-  tableHeaderCopyTextFontSizeList: Array<number> = textSizeListGeneralData
-  @State // 表头复制文本尺寸
-  tableHeaderCopyTextFontSize: number = 14
-  // 表头复制文本字体样式列表
-  tableHeaderCopyTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
-  @State // 表头复制文本字体样式
-  tableHeaderCopyTextFontStyle: FontStyle = FontStyle.Normal
-  // 表头复制文本字体粗细列表
-  tableHeaderCopyTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
-  @State // 表头复制文本字体粗细
-  tableHeaderCopyTextFontWeight: FontWeight = FontWeight.Normal
-  // 表头复制文本字体列表
-  tableHeaderCopyTextFontFamilyList: Array<string> = textTypefaceListGeneralData
-  @State // 表头复制文本字体
-  tableHeaderCopyTextFontFamily: string = 'HarmonyOS Sans'
-  // 表头复制文本行高列表
-  tableHeaderCopyTextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State // 表头复制文本行高
-  tableHeaderCopyTextLineHeight: number = 22
-  // 表头复制文本是否显示列表
-  tableHeaderCopyTextIsShowList: Array<boolean> = booleanListGeneralData
-  @State // 表头复制文本是否显示
-  tableHeaderCopyTextIsShow: boolean = false
-  // 表头复制按钮是否显示列表
-  tableHeaderCopyButtonIsShowList: Array<boolean> = booleanListGeneralData
-  @State // 表头复制按钮是否显示
-  tableHeaderCopyButtonIsShow: boolean = true
+  tableHeaderTitleTextMarginLeft: number = 0
+
   // 表格头复制图标列表
   tableHeadCopyIconList: Array<boolean> = booleanListGeneralData
   @State // 表格头复制图标
@@ -344,10 +313,11 @@ struct TablePage {
   tableHeadCopyIconHeightList: Array<number> = [20, 22, 24, 26, 28, 30]
   @State // 表格头复制图标高度
   tableHeadCopyIconHeight: number = 24
-  // 表格头复制图标文本间距列表
-  tableHeadCopyTextSpacingList: Array<number> = [3, 5, 7, 9, 11]
-  @State // 表格头复制图标文本间距
-  tableHeadCopyTextSpacing: number = 5
+  // 表格头复制图标右边距列表
+  tableHeadCopyIconMarginRightList: Array<number> = [0, 5, 8, 10, 15, 20, 40]
+  @State // 表格头复制图标右边距
+  tableHeadCopyIconMarginRight: number = 0
+
   @State // 配置数据内容
   tableData: TableData = new TableData()
   heightMD: number = 30 * 1 // 乘以行数
@@ -480,18 +450,11 @@ struct TablePage {
                   this.tableData._tableHeaderTitleTextFontFamily = this.tableHeaderTitleTextFontFamily
                   this.tableData._tableHeaderTitleTextLineHeight = this.tableHeaderTitleTextLineHeight
                   this.tableData._tableHeaderTitleTextMarginLeft = this.tableHeaderTitleTextMarginLeft
-                  this.tableData._tableHeaderCopyTextFontColor = this.tableHeaderCopyTextFontColor
-                  this.tableData._tableHeaderCopyTextFontSize = this.tableHeaderCopyTextFontSize
-                  this.tableData._tableHeaderCopyTextFontStyle = this.tableHeaderCopyTextFontStyle
-                  this.tableData._tableHeaderCopyTextFontWeight = this.tableHeaderCopyTextFontWeight
-                  this.tableData._tableHeaderCopyTextFontFamily = this.tableHeaderCopyTextFontFamily
-                  this.tableData._tableHeaderCopyTextLineHeight = this.tableHeaderCopyTextLineHeight
-                  this.tableData._tableHeaderCopyTextIsShow = this.tableHeaderCopyTextIsShow
-                  this.tableData._tableHeaderCopyButtonIsShow = this.tableHeaderCopyButtonIsShow
                   this.tableData._tableHeadCopyIcon = this.tableHeadCopyIcon
                   this.tableData._tableHeadCopyIconWidth = this.tableHeadCopyIconWidth
                   this.tableData._tableHeadCopyIconHeight = this.tableHeadCopyIconHeight
-                  this.tableData._tableHeadCopyTextSpacing = this.tableHeadCopyTextSpacing
+                  this.tableData._tableHeadCopyIconMarginRight = this.tableHeadCopyIconMarginRight
+
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/TableDetailsPage", params: this.tableData })
                 })
@@ -1290,54 +1253,6 @@ struct TablePage {
             if (this.isExpanded10) {
               Column() {
                 BaseTabComponent({
-                  titleStr: "表头复制文本颜色 - ",
-                  typeEnum: TypeEnum.IS_COLOR,
-                  allListData: this.tableHeaderCopyTextFontColorList,
-                  allData: this.tableHeaderCopyTextFontColor
-                })
-                BaseTabComponent({
-                  titleStr: "表头复制文本尺寸 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.tableHeaderCopyTextFontSizeList,
-                  allData: this.tableHeaderCopyTextFontSize
-                })
-                BaseTabComponent({
-                  titleStr: "表头复制文本字体样式 - ",
-                  typeEnum: TypeEnum.IS_FONT_STYLE,
-                  allListData: this.tableHeaderCopyTextFontStyleList,
-                  allData: this.tableHeaderCopyTextFontStyle
-                })
-                BaseTabComponent({
-                  titleStr: "表头复制文本字体粗细 - ",
-                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
-                  allListData: this.tableHeaderCopyTextFontWeightList,
-                  allData: this.tableHeaderCopyTextFontWeight
-                })
-                BaseTabComponent({
-                  titleStr: "表头复制文本字体 - ",
-                  typeEnum: TypeEnum.IS_STRING,
-                  allListData: this.tableHeaderCopyTextFontFamilyList,
-                  allData: this.tableHeaderCopyTextFontFamily
-                })
-                BaseTabComponent({
-                  titleStr: "表头复制文本行高 - ",
-                  typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.tableHeaderCopyTextLineHeightList,
-                  allData: this.tableHeaderCopyTextLineHeight
-                })
-                BaseTabComponent({
-                  titleStr: "表格头复制文本是否显示 - ",
-                  typeEnum: TypeEnum.IS_BOOLEAN,
-                  allListData: this.tableHeaderCopyTextIsShowList,
-                  allData: this.tableHeaderCopyTextIsShow
-                })
-                BaseTabComponent({
-                  titleStr: "表格头复制按钮是否显示 - ",
-                  typeEnum: TypeEnum.IS_BOOLEAN,
-                  allListData: this.tableHeaderCopyButtonIsShowList,
-                  allData: this.tableHeaderCopyButtonIsShow
-                })
-                BaseTabComponent({
                   titleStr: "表格头复制图标 - ",
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.tableHeadCopyIconList,
@@ -1356,11 +1271,12 @@ struct TablePage {
                   allData: this.tableHeadCopyIconHeight
                 })
                 BaseTabComponent({
-                  titleStr: "表格头复制图标文本间距 - ",
+                  titleStr: "表格头复制图标右边距 - ",
                   typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.tableHeadCopyTextSpacingList,
-                  allData: this.tableHeadCopyTextSpacing
+                  allListData: this.tableHeadCopyIconMarginRightList,
+                  allData: this.tableHeadCopyIconMarginRight
                 })
+
               }
               .width('100%')
               .padding({ bottom: 5, left: 5, right: 5 })

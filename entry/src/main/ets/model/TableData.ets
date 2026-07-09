@@ -50,19 +50,12 @@ export class TableData extends BaseMDData {
   _tableHeaderTitleTextFontWeight: number | FontWeight = FontWeight.Bold // 表头标题文本字体粗细
   _tableHeaderTitleTextFontFamily: string | Resource = 'HarmonyOS Sans' // 表头标题文本字体
   _tableHeaderTitleTextLineHeight: number | string | Resource = 22.0 // 表头标题文本行高
-  _tableHeaderTitleTextMarginLeft: Length = 6.0 // 表头标题文本左边距
-  _tableHeaderCopyTextFontColor: ResourceColor | undefined = undefined // 表头复制文本颜色
-  _tableHeaderCopyTextFontSize: number | string | Resource = 14.0 // 表头复制文本尺寸
-  _tableHeaderCopyTextFontStyle: FontStyle = FontStyle.Normal // 表头复制文本字体样式
-  _tableHeaderCopyTextFontWeight: number | FontWeight = FontWeight.Normal // 表头复制文本字体粗细
-  _tableHeaderCopyTextFontFamily: string | Resource = 'HarmonyOS Sans' // 表头复制文本字体
-  _tableHeaderCopyTextLineHeight: number | string | Resource = 22.0 // 表头复制文本行高
-  _tableHeaderCopyTextIsShow: boolean = false // 表头复制文本是否显示
-  _tableHeaderCopyButtonIsShow: boolean = true // 表头复制按钮是否显示
+  _tableHeaderTitleTextMarginLeft: Length = 0.0 // 表头标题文本左边距
+
   _tableHeadCopyIcon: boolean = true // 表格头复制图标
   _tableHeadCopyIconWidth: number = 24 // 表格头复制图标宽度
   _tableHeadCopyIconHeight: number = 24 // 表格头复制图标高度
-  _tableHeadCopyTextSpacing: number = 5 // 表格头复制图标文本间距
+  _tableHeadCopyIconMarginRight: Length = 0.0 // 表格头复制图标右边距
 
   constructor() {
     super()

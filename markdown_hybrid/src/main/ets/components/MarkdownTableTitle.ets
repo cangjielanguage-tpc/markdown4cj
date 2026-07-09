@@ -41,28 +41,12 @@ export struct MarkDownTableTitle {
           .width(this.tableTheme.tableHeadCopyIconWidth)
           .height(this.tableTheme.tableHeadCopyIconHeight)
           .objectFit(ImageFit.Contain)
-          .visibility(this.tableTheme.tableHeadCopyIcon !== undefined ? Visibility.Visible : Visibility.Hidden)
-
-        Blank()
-          .width(this.tableTheme.tableHeadCopyTextSpacing)
-          .visibility(this.tableTheme.tableHeadCopyIcon !== undefined && this.tableTheme.tableHeadCopyTextIsShow ?
-          Visibility.Visible : Visibility.Hidden)
-
-        Text(this.tableTheme.tableHeadCopyText)
-          .fontFamily(this.tableTheme.tableHeadCopyTextFontFamily ?? this.tableTheme.tableTitleTextFontFamily)
-          .fontSize(this.tableTheme.tableHeadCopyTextFontSize ?? this.tableTheme.tableTitleTextFontSize)
-          .fontWeight(this.tableTheme.tableHeadCopyTextFontWeight ?? this.tableTheme.tableTitleTextFontWeight)
-          .fontStyle(this.tableTheme.tableHeadCopyTextFontStyle ?? this.tableTheme.tableTitleTextFontStyle)
-          .fontColor(this.tableTheme.tableHeadCopyTextFontColor ?? this.tableTheme.tableTitleTextFontColor)
-          .lineHeight(this.tableTheme.tableHeadCopyTextLineHeight ?? this.tableTheme.tableTitleTextLineHeight)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .visibility(this.tableTheme.tableHeadCopyTextIsShow ? Visibility.Visible : Visibility.None)
       }
       .onClick(() => {
         this.tableCopyCallback?.(this.nodeViewString.toString())
       })
-      .visibility(this.tableTheme.tableHeadCopyButtonIsShow ? Visibility.Visible : Visibility.Hidden)
+      .visibility(this.tableTheme.tableHeadCopyIcon !== undefined ? Visibility.Visible : Visibility.None)
+      .margin({ right: this.tableTheme.tableHeadCopyIconMarginRight })
       .padding({
         top: this.tableTheme.tableCellPaddingTop,
         bottom: this.tableTheme.tableCellPaddingBottom,
