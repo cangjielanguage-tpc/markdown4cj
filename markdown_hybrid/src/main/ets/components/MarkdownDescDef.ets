@@ -64,7 +64,7 @@ export struct MarkdownDescDef {
   }
 
   build() {
-    List({ scroller: this.scroller, space: this.definitionListTheme.definitionListDescriptionItemSpacing }) {
+    List({ scroller: this.scroller }) {
       LazyForEach(
         this.markdownDataSource,
         (item: NodeView, index: number) => {
