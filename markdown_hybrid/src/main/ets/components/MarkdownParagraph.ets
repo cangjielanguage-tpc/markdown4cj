@@ -2,6 +2,7 @@ import { image } from "@kit.ImageKit"
 import { resourceColorToNumber } from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import { NodeView } from "../model/NodeView"
+import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 import { LatexParseQueue } from "../model/LatexParseQueue"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { BoldTheme } from "../theme/BoldTheme"
@@ -16,6 +17,7 @@ import { MarkdownImageBlock } from "./MarkdownImageBlock"
 import { InlineCodeTheme } from "../theme/InlineCodeTheme"
 import { ItalicTheme } from "../theme/ItalicTheme"
 import { LatexMathTheme } from "../theme/LatexMathTheme"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 import { LinkTheme } from "../theme/LinkTheme"
 import { ParagraphTheme } from "../theme/ParagraphTheme"
 import { StrikethroughTheme } from "../theme/StrikethroughTheme"
@@ -23,10 +25,13 @@ import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import {
-  imageUrlHandle, imageWidthAndHeight, spanSoftLineBreak
+  imageUrlHandle,
+  imageWidthAndHeight,
+  spanSoftLineBreak
 } from "../utils/MarkdownUtils"
 import {
-  generateLinkIconPixelMap, LinkIconResult
+  generateLinkIconPixelMap,
+  LinkIconResult
 } from "../utils/MarkdownLinkIconGenerator"
 import {
   paragraphBackgroundColor,
@@ -41,7 +46,14 @@ import {
   spanLetterSpacing,
   spanLineHeight
 } from "../utils/MarkdownThemeUtils"
-import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
+import {
+  computeLinkRanges,
+  evaluateLinkExposure,
+  ParagraphViewport
+} from "../utils/MarkdownExposureUtils"
+import display from "@ohos.display"
+import { componentUtils } from "@kit.ArkUI"
+import { MarkdownVisibleRectHolder, MarkdownVisibleRectSnapshot } from "../model/MarkdownVisibleRectHolder"
 
 /**
  * 段落控件
@@ -50,6 +62,9 @@ import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagrap
 export struct MarkdownParagraph {
   @Consume placeholderPixelMap: PixelMap | undefined // 图片占位图
   @Consume isLatexMathEnabled: boolean // 数学公式插件是否启用
+  // CJMarkdown 根节点可见矩形（窗口坐标系 px）。链接曝光裁剪窗口=段落全局rect与该矩形求交，
+  // 替代整屏高度——避免段落被标题栏/面板/系统栏遮挡时仍判可见（过报）。
+  @Consume('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder
   @ObjectLink @Watch('refreshData') node: NodeView // 段落自身节点数据
   @ObjectLink headingTheme: HeadingTheme // 标题样式
   @ObjectLink globalTheme: GlobalTheme // 整体样式
@@ -80,10 +95,32 @@ export struct MarkdownParagraph {
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（链接显示/消失）
+  exposureThreshold: number = 0.5 // 曝光可见阈值
   @State @Watch('onListChanged') list: NodeView[] = [] // 段落子节点数据源
   private isAlive: boolean = true // 组件是否存活
+  private textController: TextController = new TextController() // 段落Text控制器，用于getRectsForRange拿链接矩形
+  private httpLinks: NodeView[] = [] // 段落内参与曝光的http链接（含rangeStart/rangeEnd）
+  private httpLinksDirty: boolean = true // httpLinks 是否需重算（首次/config同步后/refreshData后置脏）
+  private exposureTimerId: number = -1 // 曝光评估防抖定时器
+  // 段落在屏可见视口相关：段落全局rect ∩ CJMarkdown根可见矩形（窗口坐标系px）→ 平移到Text原点
+  private paragraphId: string = '' // 段落Text的唯一id（用于componentUtils.getRectangleById，aboutToAppear赋值）
+  private paragraphWidthPx: number = 0 // Text自身宽度（px，onAreaChange的vp转px，水平方向链接截断用）
+  private screenHeightPx: number = 0 // 屏幕高度（px，兜底用：visibleRectHolder未就绪时退化裁剪窗口）
+  private viewportReady: boolean = false // onAreaChange是否触发过（尺寸已就绪）
+  // CJMarkdown根可见矩形变化监听器（滚动/根尺寸变化时重算曝光）。aboutToAppear注册/aboutToDisappear注销。
+  private visibleRectListener: (r: MarkdownVisibleRectSnapshot) => void = () => {}
+
+  // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
+  // 未设回调时短路掉 computeLinkRanges/getRectsForRange/监听器/onVisibleAreaChange 等，省 CPU。
+  // 用普通方法而非 getter：规避 @Component struct 内 private get 在模板字符串/条件判断中的 quirks。
+  private isExposureEnabled(): boolean {
+    return this.elementExposureCallback !== undefined
+  }
 
   aboutToAppear(): void {
+    // 段落Text的唯一id：用nodeHash保证流式复用同一节点时id稳定（componentUtils.getRectangleById用它拿全局rect）
+    this.paragraphId = 'md-exp-' + this.node.nodeHash
     // 组件重建时（LazyForEach key变化导致销毁+重建），复用的LatexMathNode可能
     // 带有旧组件遗留的latexIsLoading=true（旧组件的异步loadLatexImage尚未走到!isAlive分支重置）
     // 此处重置，确保tryEnqueueLatexLoading能重新入队
@@ -93,10 +130,133 @@ export struct MarkdownParagraph {
       }
     }
     this.refreshData() // 首次加载
+    // 监听器无条件注册：aboutToAppear 时刻 @ObjectLink config 可能尚未与父组件状态同步
+    //（详情页在自身 aboutToAppear 才给 markdownConfiguration 赋带回调的新对象），此刻读
+    // elementExposureCallback 可能是 undefined。若在此一次性门控，会永久判 false 导致不订阅、
+    // config 同步后链路也活不过来。改为无条件注册，由 scheduleExposure/回调内部按运行时
+    // exposureEnabled 短路：config 同步后 exposureEnabled=true，链路自然活；没回调时每 tick 一次空 return。
+    this.visibleRectListener = (_r) => {
+      this.scheduleExposure()
+    }
+    this.visibleRectHolder.addListener(this.visibleRectListener)
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
+    // 监听器在 aboutToAppear 无条件注册，故此处无条件移除（removeListener 对未注册者是 no-op，安全）
+    this.visibleRectHolder.removeListener(this.visibleRectListener)
+    if (this.exposureTimerId !== -1) {
+      clearTimeout(this.exposureTimerId)
+      this.exposureTimerId = -1
+    }
+    // 组件回收时，对当前可见的链接补发一次 visible=false（保证显示/消失成对），再重置标志。
+    // 按运行时 exposureEnabled 门控：没回调则 httpLinks 恒空、无可见链接，跳过。
+    if (this.isExposureEnabled()) {
+      for (const link of this.httpLinks) {
+        if (link.isLinkVisible()) {
+          link.markLinkHidden()
+          this.elementExposureCallback?.({ type: 'link', visible: false, data: link.linkUrl ?? '' })
+        }
+      }
+    }
+  }
+
+  /**
+   * 拿屏幕高度（px）。display.getDefaultDisplaySync 在 aboutToAppear 之前可能拿不到，
+   * 故每次评估前兜底取一次。拿到后缓存。componentUtils.windowOffset 也是 px，单位一致。
+   */
+  private ensureScreenHeight(): void {
+    if (this.screenHeightPx > 0) {
+      return
+    }
+    try {
+      const d = display.getDefaultDisplaySync()
+      this.screenHeightPx = d.height
+    } catch (e) {
+      // ignore，下次再取
+    }
+  }
+
+  /**
+   * 防抖触发曝光评估。合并连续的 onAreaChange/onVisibleAreaChange/refreshData 触发。
+   * 评估后对「本次显示」的链接回调 visible=true，「本次消失」的回调 visible=false。
+   *
+   * 视口来源：componentUtils.getRectangleById(paragraphId) 拿段落相对窗口的全局 rect（px），
+   * 与屏幕高度求交得段落在屏可见区，再平移到 Text 内容区原点坐标系（与 getRectsForRange 同源）。
+   * 首屏在屏内的段落也能被覆盖：onAreaChange 首帧触发 → scheduleExposure → getRectangleById 拿到位置。
+   */
+  private scheduleExposure(): void {
+    if (!this.isAlive) {
+      return
+    }
+    // 未设曝光回调时直接短路（兜底：onAreaChange/onVisibleAreaChange 仍会触发本方法）
+    if (!this.isExposureEnabled()) {
+      return
+    }
+    // 懒补算：aboutToAppear→refreshData 首跑时 config 可能尚未同步（exposureEnabled=false 跳过了 computeLinkRanges），
+    // config 同步后 holder 通知/事件触发本方法，此处 httpLinks 仍为空（dirty=true）。检测到 dirty 则补算一次，
+    // 算完置 clean，避免无链接段落每次 scheduleExposure 都重算（无谓开销）。
+    if (this.httpLinksDirty && this.list.length > 0) {
+      let footnotePrefixLen: number = 0
+      if (this.node.footnoteID !== undefined) {
+        footnotePrefixLen = `[^${this.node.footnoteID}]: `.length
+      }
+      this.httpLinks = computeLinkRanges(this.list, this.globalTheme.isLineBreak, footnotePrefixLen)
+      this.httpLinksDirty = false
+    }
+    if (this.exposureTimerId !== -1) {
+      clearTimeout(this.exposureTimerId)
+    }
+    this.exposureTimerId = setTimeout(() => {
+      this.exposureTimerId = -1
+      if (!this.isAlive) {
+        return
+      }
+      if (!this.viewportReady) {
+        return
+      }
+      this.ensureScreenHeight()
+      if (this.screenHeightPx <= 0) {
+        return
+      }
+      // 段落相对窗口的全局矩形（px）：componentUtils 同步调用，setTimeout(0) 时已 layout 完成
+      let globalTop: number = 0
+      let globalBottom: number = 0
+      try {
+        const info = componentUtils.getRectangleById(this.paragraphId)
+        // windowOffset 相对应用窗口原点；size 是组件尺寸。均为 px。
+        globalTop = info.windowOffset.y
+        globalBottom = info.windowOffset.y + info.size.height
+      } catch (e) {
+        // 组件未挂载/id 未就绪，本次跳过
+        return
+      }
+      // 段落在屏可见视口（相对Text内容区原点，px）：
+      // 垂直裁剪窗口 = holder 推算的可见区域 [visTop, visBottom]（窗口 px，见 MarkdownVisibleRectHolder 算法）：
+      //   onAreaChange 拿矩形区域，onVisibleAreaChange 拿 ratio，每 50ms 按「移动方向 + ratio 变化」收缩可见区域。
+      // 段落Text不横滚，水平方向整宽可见：clipLeftPx=0, clipRightPx=widthPx
+      // holder.visReady=false（ratio 首次>0 前）退化用整屏 [0, screenH]，避免漏报。
+      const useVis: boolean = this.visibleRectHolder.visReady
+      const vpTop: number = useVis ? this.visibleRectHolder.visTop : 0
+      const vpBottom: number = useVis ? this.visibleRectHolder.visBottom : this.screenHeightPx
+      const clipTopPx: number = Math.max(vpTop, Math.min(vpBottom, globalTop))
+      const clipBottomPx: number = Math.min(vpBottom, Math.max(vpTop, globalBottom))
+      const viewport: ParagraphViewport = {
+        ready: clipBottomPx > clipTopPx && this.paragraphWidthPx > 0,
+        clipTopPx: clipTopPx - globalTop,
+        clipBottomPx: clipBottomPx - globalTop,
+        clipLeftPx: 0,
+        clipRightPx: this.paragraphWidthPx,
+        widthPx: this.paragraphWidthPx
+      }
+      const result = evaluateLinkExposure(this.textController, viewport, this.exposureThreshold, this.httpLinks)
+      for (const link of result.becameVisible) {
+        this.elementExposureCallback?.({ type: 'link', visible: true, data: link.linkUrl ?? '' })
+      }
+      for (const link of result.becameHidden) {
+        this.elementExposureCallback?.({ type: 'link', visible: false, data: link.linkUrl ?? '' })
+      }
+    }, 0)
   }
 
   build() {
@@ -133,7 +293,9 @@ export struct MarkdownParagraph {
   @Builder
   paragraphColumn() {
     Column() {
-      if (!this.imageTheme.isImageMixedLayout && this.list.length === 1 && (this.list[0].nodeType === "Image" || this.list[0].nodeType === "StyleImage" || this.list[0].nodeType === "ImageHtmlNode")) {
+      if (!this.imageTheme.isImageMixedLayout
+        && this.list.length === 1
+        && (this.list[0].nodeType === "Image" || this.list[0].nodeType === "StyleImage" || this.list[0].nodeType === "ImageHtmlNode")) {
         MarkdownImageBlock({
           item: this.list[0],
           imageTheme: this.imageTheme,
@@ -143,31 +305,53 @@ export struct MarkdownParagraph {
           imageReplaceCallback: this.imageReplaceCallback
         })
       } else {
-        Text() {
-          if (this.node.footnoteID !== undefined) {
-            Span(`[^${this.node.footnoteID}]: `)
-              .fontSize(this.paragraphTheme.paragraphTextFontSize)
-              .fontWeight(this.paragraphTheme.paragraphTextFontWeight)
-              .fontColor(this.paragraphTheme.paragraphTextFontColor)
-          }
-          ForEach(
-            this.list,
-            (item: NodeView, index: number) => {
-              this.paragraphInlineItem(item, index)
-            },
-            (item: NodeView, index: number) => {
-              return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
-            }
-          )
+      Text(undefined, { controller: this.textController }) {
+        if (this.node.footnoteID !== undefined) {
+          Span(`[^${this.node.footnoteID}]: `)
+            .fontSize(this.paragraphTheme.paragraphTextFontSize)
+            .fontWeight(this.paragraphTheme.paragraphTextFontWeight)
+            .fontColor(this.paragraphTheme.paragraphTextFontColor)
         }
-        .textAlign(TextAlign.Start)
-        .halfLeading(true)
-        .copyOption(
-          this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
+        ForEach(
+          this.list,
+          (item: NodeView, index: number) => {
+            this.paragraphInlineItem(item, index)
+          },
+          (item: NodeView, index: number) => {
+          return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
+        }
         )
-        .onCopy((str) => {
-          this.textCopyCallback?.(str)
-        })
+      }
+      .textAlign(TextAlign.Start)
+      .halfLeading(true)
+      .copyOption(
+        this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
+      )
+      .onCopy((str) => {
+        this.textCopyCallback?.(str)
+      })
+      .id(this.paragraphId)
+      .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, _currentRatio: number) => {
+        // 仅作触发用：ratio 阈值变化时重算曝光。不使用 isVisible 布尔门控可见性
+        // （实测滑动中 isVisible 会翻转竞态，门控会导致漏报）。真正的可见性由
+        // evaluateLinkExposure 的「链接rect ∩ 段落在屏可见视口」判定。
+        // 未设曝光回调时直接返回，滚动期不再走 scheduleExposure（连 setTimeout 都不开）。
+        if (!this.isExposureEnabled()) {
+          return
+        }
+        this.scheduleExposure()
+      })
+      .onAreaChange((_old: Area, newArea: Area) => {
+        // 段落Text自身宽度（vp→px）。全局位置由 componentUtils.getRectangleById 实时拿，
+        // 故此处只更新宽度（水平方向链接截断用）并触发评估。未启用曝光时跳过。
+        if (!this.isExposureEnabled()) {
+          return
+        }
+        const w: number = (newArea.width as number) ?? 0
+        this.paragraphWidthPx = vp2px(w)
+        this.viewportReady = true
+        this.scheduleExposure()
+      })
       }
     }
     .alignItems(HorizontalAlign.Start)
@@ -353,14 +537,6 @@ export struct MarkdownParagraph {
             .width(px2vp(item.linkIconWidth))
             .height(px2vp(item.linkIconHeight))
             .verticalAlign(ImageSpanAlignment.CENTER)
-            .margin({
-              left: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin
-                : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin
-                  : this.linkTheme.linkRectToolIconMargin,
-              right: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin
-                : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin
-                  : this.linkTheme.linkRectToolIconMargin
-            })
             .onClick(() => {
               if (item.linkUrl !== undefined) {
                 this.linkCallback?.(item.linkUrl)
@@ -387,58 +563,55 @@ export struct MarkdownParagraph {
     } else if (item.nodeType === "Image" || item.nodeType === "StyleImage" || item.nodeType === "ImageHtmlNode") {
       // 图片/图片Style/HTML图片
       if (item.imageReplacePixelMap !== undefined || item.imageUrl !== undefined) {
-        ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
-          .alt(this.placeholderPixelMap)
-          .margin({
-            top: this.imageTheme.imageMarginTop,
-            right: this.imageTheme.imageMarginRight,
-            bottom: this.imageTheme.imageMarginBottom,
-            left: this.imageTheme.imageMarginLeft
-          })
-          .borderRadius({
-            topLeft: item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
-            topRight: item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
-            bottomLeft: item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
-            bottomRight: item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
-          })
-          .borderWidth(this.imageTheme.imageBorderWidth)
-          .borderColor(this.imageTheme.imageBorderColor)
-          .borderStyle(this.imageTheme.imageBorderStyle)
-          .width(item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
-          .height(item.imageHeight)
-          .objectFit(this.imageTheme.imageFitType)
-          .verticalAlign(ImageSpanAlignment.CENTER)
-          .constraintSize({
-            maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
-            maxHeight: this.imageTheme.imageMaxHeight
-          })
-          .onClick(() => {
-            if (item.isLink) {
-              this.linkCallback?.(item.linkUrl ?? "")
-            } else {
-              this.imageCallback?.(item.imageUrl ?? "")
-            }
-          })
-          .onComplete((imageLoadResult) => {
-            const l = imageWidthAndHeight(
-              this.componentWidth,
-              imageLoadResult.width,
-              imageLoadResult.height,
-              item.imageStyleWidth ?? this.imageTheme.imageWidth,
-              item.imageStyleHeight ?? this.imageTheme.imageHeight,
-              this.imageTheme.imageMaxWidth,
-              this.imageTheme.imageMaxHeight,
-              this.imageTheme.imageFixedRatioWidth,
-              this.imageTheme.imageMaximumWidth
-            )
-            let w = l[0]
-            let h = l[1]
-            item.imageWidth = w
-            item.imageHeight = h
-            if (this.list.indexOf(item) >= 0) {
-              this.list = [...this.list]
-            }
-          })
+      ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
+        .alt(this.placeholderPixelMap)
+        .margin({
+          top: this.imageTheme.imageMarginTop,
+          right: this.imageTheme.imageMarginRight,
+          bottom: this.imageTheme.imageMarginBottom,
+          left: this.imageTheme.imageMarginLeft
+        })
+        .borderRadius({
+          topLeft: item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
+          topRight: item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
+          bottomLeft: item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
+          bottomRight: item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
+        })
+        .borderWidth(this.imageTheme.imageBorderWidth)
+        .borderColor(this.imageTheme.imageBorderColor)
+        .borderStyle(this.imageTheme.imageBorderStyle)
+        .width(item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
+        .height(item.imageHeight)
+        .objectFit(this.imageTheme.imageFitType)
+        .verticalAlign(ImageSpanAlignment.CENTER)
+        .constraintSize({ maxWidth: this.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.imageTheme.imageMaxHeight})
+        .onClick(()=>{
+          if(item.isLink){
+            this.linkCallback?.(item.linkUrl ?? "")
+          }else{
+            this.imageCallback?.(item.imageUrl ?? "")
+          }
+        })
+        .onComplete((imageLoadResult) => {
+          const l = imageWidthAndHeight(
+            this.componentWidth,
+            imageLoadResult.width,
+            imageLoadResult.height,
+            item.imageStyleWidth ?? this.imageTheme.imageWidth,
+            item.imageStyleHeight ?? this.imageTheme.imageHeight,
+            this.imageTheme.imageMaxWidth,
+            this.imageTheme.imageMaxHeight,
+            this.imageTheme.imageFixedRatioWidth,
+            this.imageTheme.imageMaximumWidth
+          )
+          let w = l[0]
+          let h = l[1]
+          item.imageWidth = w
+          item.imageHeight = h
+          if (this.list.indexOf(item) >= 0) {
+            this.list = [...this.list]
+          }
+        })
       }
     } else if (item.nodeType === "LatexMathNode") {
       // 数学公式行内 - 和图片一样直接用ImageSpan
@@ -461,8 +634,8 @@ export struct MarkdownParagraph {
   }
 
   /**
-   * 刷新数据
-   */
+    * 刷新数据
+    */
   refreshData() {
     const children = this.node.children
     if (children.length === 0) {
@@ -470,6 +643,8 @@ export struct MarkdownParagraph {
         old.releaseOwnPixelMaps()
       }
       this.list = []
+      this.httpLinks = []
+      this.httpLinksDirty = true
       return
     }
     const oldImageSizes: Map<string, number[]> = new Map()
@@ -499,6 +674,21 @@ export struct MarkdownParagraph {
       }
     }
     this.tryEnqueueLatexLoading()
+    // 标记 httpLinks 脏：list 变了偏移必变，需重算。dirty=true 后：
+    //  - 若已启用曝光：下面立即重算 + scheduleExposure
+    //  - 若未启用（config 尚未同步）：跳过，但 dirty 留 true，待 config 同步后 scheduleExposure 懒补算
+    this.httpLinksDirty = true
+    if (this.isExposureEnabled()) {
+      // 重算http链接在段落Text中的字符偏移（流式内容变化后偏移可能变）
+      // 脚注前缀[^id]: 在Text里作为首个Span渲染，占对应字符数，作为偏移起点
+      let footnotePrefixLen: number = 0
+      if (this.node.footnoteID !== undefined) {
+        footnotePrefixLen = `[^${this.node.footnoteID}]: `.length
+      }
+      this.httpLinks = computeLinkRanges(this.list, this.globalTheme.isLineBreak, footnotePrefixLen)
+      this.httpLinksDirty = false
+      this.scheduleExposure()
+    }
   }
 
   /**
@@ -710,4 +900,5 @@ export struct MarkdownParagraph {
         LatexParseQueue.notifyDone()
       })
   }
+
 }

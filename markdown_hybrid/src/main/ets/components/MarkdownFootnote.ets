@@ -29,6 +29,7 @@ import { TableTheme } from "../theme/TableTheme"
 import { VideoTheme } from "../theme/VideoTheme"
 import { footnoteBackgroundColor } from "../utils/MarkdownThemeUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
+import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 
 /**
  * 脚注控件
@@ -70,6 +71,8 @@ export struct MarkdownFootnote {
   footnoteCallback?: (index: string) => void // 脚注点击事件
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（链接显示/消失）
+  exposureThreshold: number = 0.5 // 曝光可见阈值
   imageCallback?: (url: string) => void // 图片点击事件
   imageDownloadCallback?: (url: string) => void // 图片下载事件
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
@@ -124,6 +127,8 @@ export struct MarkdownFootnote {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
+                elementExposureCallback: this.elementExposureCallback,
+                exposureThreshold: this.exposureThreshold,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,

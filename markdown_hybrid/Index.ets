@@ -35,6 +35,7 @@ export { MarkdownNodeViewString } from './src/main/ets/configs/MarkdownNodeViewS
 export { MarkdownPlugin } from './src/main/ets/plugin/MarkdownPlugin'
 export { DelimiterFilterMode } from './src/main/ets/enum/DelimiterFilterMode'
 export { NodeView } from './src/main/ets/model/NodeView'
+export { MarkdownExposureEvent } from './src/main/ets/model/MarkdownExposureEvent'
 export { TableHorizontalScrollSync } from './src/main/ets/model/TableHorizontalScrollSync'
 export { MarkdownScrollController } from './src/main/ets/controller/MarkdownScrollController'
 export { StickyScrollYHolder } from './src/main/ets/model/StickyScrollYHolder'

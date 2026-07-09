@@ -3,7 +3,7 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown,
   GlobalTheme,
   LinkTheme,
-  MarkdownConfiguration, MarkdownPlugin,
+  MarkdownConfiguration, MarkdownExposureEvent, MarkdownPlugin,
   // MarkdownScroller,
   MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -292,6 +292,7 @@ struct LinkDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setLinkCallback(this.linkCallBack.bind(this)) // 链接点击回调
+    config.setElementExposureCallback(this.elementExposureCallBack.bind(this)) // 元素曝光回调（链接显示/消失）
     return config
   }
 
@@ -411,5 +412,9 @@ struct LinkDetailsPage {
 
   linkCallBack(url: string): void {
     hilog.error(1, "1", `---url:${url}`)
+  }
+
+  elementExposureCallBack(event: MarkdownExposureEvent): void {
+    hilog.error(1, "1", `---elementExposure type:${event.type} visible:${event.visible} data:${event.data}`)
   }
 }

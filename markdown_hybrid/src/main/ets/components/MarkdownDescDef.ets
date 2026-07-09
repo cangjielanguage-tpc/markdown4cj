@@ -1,5 +1,6 @@
 import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
+import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 import { GlobalTheme } from "../theme/GlobalTheme"
 import { HeadingTheme } from "../theme/HeadingTheme"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
@@ -51,6 +52,8 @@ export struct MarkdownDescDef {
   footnoteCallback?: (index: string) => void // 脚注点击事件
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（链接显示/消失）
+  exposureThreshold: number = 0.5 // 曝光可见阈值
   imageCallback?: (url: string) => void // 图片点击事件
   imageDownloadCallback?: (url: string) => void // 图片下载事件
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
@@ -98,6 +101,8 @@ export struct MarkdownDescDef {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.linkCallback,
+                elementExposureCallback: this.elementExposureCallback,
+                exposureThreshold: this.exposureThreshold,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,

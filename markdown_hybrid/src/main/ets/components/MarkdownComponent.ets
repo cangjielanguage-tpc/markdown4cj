@@ -25,6 +25,8 @@ import { LatexParseQueue } from "../model/LatexParseQueue"
 import { MarkdownScrollController } from "../controller/MarkdownScrollController"
 import { StickyScrollYHolder } from "../model/StickyScrollYHolder"
 import { ArrayList } from "@kit.ArkTS"
+import { MarkdownVisibleRectHolder } from "../model/MarkdownVisibleRectHolder"
+import { componentUtils } from "@kit.ArkUI"
 
 @Component
 export struct CJMarkdown {
@@ -33,6 +35,14 @@ export struct CJMarkdown {
   @Provide placeholderPixelMap: PixelMap | undefined = undefined // 图片占位图
   @Provide isLatexMathEnabled: boolean = false // 数学公式插件是否启用（控制是否调用latexStringToImage）
   @Provide('mdStickyHolder') stickyHolder: StickyScrollYHolder = new StickyScrollYHolder() // 引用不变，不触发build()；通过setY+监听器通知MarkdownTable
+  // CJMarkdown 根节点可见矩形持有者：根 List 经 .id + onVisibleAreaChange(缓存ratio) +
+  // 50ms 轮询 componentUtils(读窗口rect) 喂给 holder.applyRect，推算可见区域 visTop/visBottom，
+  // 下发给 MarkdownParagraph/MarkdownTableCell 作链接曝光判定的「正交裁剪窗口」
+  // （替代整屏高度，避免被标题栏/面板/系统栏遮挡区域误判可见）。
+  @Provide('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder = new MarkdownVisibleRectHolder()
+  private rootId: string = 'md-root-' // CJMarkdown 根 List 的唯一 id（componentUtils.getRectangleById 用）。进程内多 CJMarkdown 实例时可能重名，但 demo 单实例够用。
+  private lastRatio: number = 0 // onVisibleAreaChange 最近一次 ratio（50ms tick 与 rect 一起喂给 holder）
+  private visibleTickId: number = -1 // 50ms 轮询定时器：读根 rect + lastRatio → holder.applyRect
   @State componentWidth: number = 0.0 // markdown控件宽度
   scroller: Scroller = new Scroller() // list控制器
   scrollController?: MarkdownScrollController // 外层滚动控制器（不固定高度模式由页面传入）
@@ -84,6 +94,40 @@ export struct CJMarkdown {
     }
   }
 
+  // 是否启用元素曝光统计：仅当 config.elementExposureCallback 已设置时为 true。
+  // 整条曝光链路（CJMarkdown 的 50ms 轮询 + holder，以及 MarkdownParagraph/MarkdownTableCell/
+  // MarkdownHeading 的 computeLinkRanges/getRectsForRange/监听器）都以此为开关，未设回调时全部短路不执行。
+  // 用方法而非 getter：@Component struct 内 `private get exposureEnabled` 在运行时返回 undefined
+  //（实测 cbDefined=true 但 tick#N disabled SKIP 持续 200+ tick），导致运行时门控永久判 false、整条链路死。
+  private isExposureEnabled(): boolean {
+    return this.config?.elementExposureCallback !== undefined
+  }
+
+  /**
+   * 50ms tick：用 componentUtils.getRectangleById 拿根 List 窗口 rect（px），
+   * 配 lastRatio（onVisibleAreaChange 缓存），喂给 holder.applyRect 运行方向/ratio 算法。
+   * onAreaChange/onVisibleAreaChange 在外层 Scroll 滑动时未必逐帧触发（离散 ratio 阈值 +
+   * onAreaChange 只在自身尺寸变时触发），故主动轮询保证滑动中 rectTop 采样。
+   */
+  private tickVisibleRect(): void {
+    if (!this.isAlive) {
+      return
+    }
+    // 运行时短路：aboutToAppear 起无条件定时器，此处按当下 config 状态决定是否干活。
+    // config 同步后变 true 才真正读 rect/喂 holder，否则空 return。
+    if (!this.isExposureEnabled()) {
+      return
+    }
+    try {
+      const info = componentUtils.getRectangleById(this.rootId)
+      const top: number = info.windowOffset.y
+      const bottom: number = info.windowOffset.y + info.size.height
+      this.visibleRectHolder.applyRect(top, bottom, this.lastRatio)
+    } catch (_e) {
+      // 组件未挂载/id 未就绪，本次跳过
+    }
+  }
+
   aboutToAppear(): void {
     this.isLatexMathEnabled = this.plugin.isLatexMathPlugin
     if (this.scrollController) {
@@ -94,10 +138,22 @@ export struct CJMarkdown {
     }
     this.refreshData() // 首次加载
     this.loadPlaceholderImage() // 占位图处理
+    // 定时器无条件启动：aboutToAppear 时刻 @ObjectLink config 可能尚未与父组件状态同步
+    //（详情页在自身 aboutToAppear 才给 markdownConfiguration 赋带回调的新对象），此刻读
+    // elementExposureCallback 可能是 undefined。若在此一次性门控，会永久判 false 导致整条链路死。
+    // 改为无条件起定时器，由 tickVisibleRect 内部按「运行时」exposureEnabled 短路：
+    // config 同步后变 true，链路自然活过来。没回调时每 50ms 一次空 return（微秒级）。
+    this.visibleTickId = setInterval(() => {
+      this.tickVisibleRect()
+    }, 50)
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
+    if (this.visibleTickId !== -1) {
+      clearInterval(this.visibleTickId)
+      this.visibleTickId = -1
+    }
     if (this.scrollController) {
       this.scrollController.setListener(null)
     }
@@ -174,6 +230,13 @@ export struct CJMarkdown {
       .alignListItem(ListItemAlign.Start)
       .scrollBar(BarState.Off)
       .enableScrollInteraction(this.config.markdownTheme.globalTheme.openGestureSwipe)
+      .id(this.isExposureEnabled() ? this.rootId : '')
+      .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, currentRatio: number) => {
+        if (!this.isExposureEnabled()) {
+          return
+        }
+        this.lastRatio = currentRatio
+      })
       .onSizeChange((oldValue, newValue) => {
         let newWidth: number = 0
         if (typeof newValue.width === 'number') {
@@ -220,6 +283,8 @@ export struct CJMarkdown {
                 footnoteCallback: this.footnoteCallback,
                 tocCallback: this.tocCallback,
                 linkCallback: this.config.linkCallback,
+                elementExposureCallback: this.config.elementExposureCallback,
+                exposureThreshold: this.config.exposureThreshold,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.config.imageDownloadCallback,
                 imageReplaceCallback: this.config.imageReplaceCallback
@@ -259,6 +324,8 @@ export struct CJMarkdown {
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    elementExposureCallback: this.config.elementExposureCallback,
+                    exposureThreshold: this.config.exposureThreshold
                   })
                 } else if (item.nodeType === "Paragraph") {
                   // 段落
@@ -289,6 +356,8 @@ export struct CJMarkdown {
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     linkCallback: this.config.linkCallback,
+                   elementExposureCallback: this.config.elementExposureCallback,
+                   exposureThreshold: this.config.exposureThreshold,
                     imageCallback: this.imageCallback,
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
@@ -365,6 +434,8 @@ export struct CJMarkdown {
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     linkCallback: this.config.linkCallback,
+                   elementExposureCallback: this.config.elementExposureCallback,
+                   exposureThreshold: this.config.exposureThreshold,
                     textCopyCallback: this.config.textCopyCallback,
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
@@ -418,6 +489,8 @@ export struct CJMarkdown {
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     linkCallback: this.config.linkCallback,
+                   elementExposureCallback: this.config.elementExposureCallback,
+                   exposureThreshold: this.config.exposureThreshold,
                     textCopyCallback: this.config.textCopyCallback,
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
@@ -470,6 +543,8 @@ export struct CJMarkdown {
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     linkCallback: this.config.linkCallback,
+                   elementExposureCallback: this.config.elementExposureCallback,
+                   exposureThreshold: this.config.exposureThreshold,
                     textCopyCallback: this.config.textCopyCallback,
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
@@ -534,6 +609,8 @@ export struct CJMarkdown {
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     linkCallback: this.config.linkCallback,
+                   elementExposureCallback: this.config.elementExposureCallback,
+                   exposureThreshold: this.config.exposureThreshold,
                     imageCallback: this.imageCallback,
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
@@ -583,6 +660,8 @@ export struct CJMarkdown {
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     linkCallback: this.config.linkCallback,
+                   elementExposureCallback: this.config.elementExposureCallback,
+                   exposureThreshold: this.config.exposureThreshold,
                     imageCallback: this.imageCallback,
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
@@ -624,6 +703,8 @@ export struct CJMarkdown {
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     linkCallback: this.config.linkCallback,
+                   elementExposureCallback: this.config.elementExposureCallback,
+                   exposureThreshold: this.config.exposureThreshold,
                     imageCallback: this.imageCallback,
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
@@ -687,6 +768,13 @@ export struct CJMarkdown {
       .scrollBar(BarState.Off)
       .enableScrollInteraction(this.config.markdownTheme.globalTheme.openGestureSwipe)
       .sticky(StickyStyle.Header)
+      .id(this.isExposureEnabled() ? this.rootId : '')
+      .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, currentRatio: number) => {
+        if (!this.isExposureEnabled()) {
+          return
+        }
+        this.lastRatio = currentRatio
+      })
       .onSizeChange((oldValue, newValue) => {
         let newWidth: number = 0
         if (typeof newValue.width === 'number') {

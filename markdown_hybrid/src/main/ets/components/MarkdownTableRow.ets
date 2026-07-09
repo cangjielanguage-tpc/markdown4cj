@@ -1,5 +1,6 @@
 import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
+import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 import { GlobalTheme } from "../theme/GlobalTheme"
 import { HeadingTheme } from "../theme/HeadingTheme"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
@@ -58,6 +59,8 @@ export struct MarkdownTableRow {
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（透传给TableCell）
+  exposureThreshold: number = 0.5 // 曝光阈值（透传给TableCell）
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -103,7 +106,9 @@ export struct MarkdownTableRow {
               linkCallback: this.linkCallback,
               imageCallback: this.imageCallback,
               imageDownloadCallback: this.imageDownloadCallback,
-              imageReplaceCallback: this.imageReplaceCallback
+              imageReplaceCallback: this.imageReplaceCallback,
+              elementExposureCallback: this.elementExposureCallback,
+              exposureThreshold: this.exposureThreshold
             })
           } else {
             // 其它

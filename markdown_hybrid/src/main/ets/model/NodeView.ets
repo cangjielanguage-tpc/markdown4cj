@@ -79,6 +79,9 @@ export class NodeView {
   linkIconText: string = '' // 链接图标生成时使用的文本（用于检测流式输出中文本变化，避免显示过期图标）
   linkIconWidth: number = 0 // 链接图标宽度 - 单位px
   linkIconHeight: number = 0 // 链接图标高度 - 单位px
+  rangeStart: number = 0 // 链接在段落Text内容中的起始字符偏移（曝光评估前由渲染层写入）
+  rangeEnd: number = 0 // 链接在段落Text内容中的结束字符偏移（exclusive）
+  private _linkVisible: boolean = false // 链接当前是否处于可见状态（曝光状态机标志，不随copyDataFrom拷贝，对象复用时保留）
 
   /**
    * 全量数据拷贝（包括children、nodeType等所有属性）
@@ -278,6 +281,37 @@ export class NodeView {
     this.isLinkStyle = source.isLinkStyle
     this.linkIconType = source.linkIconType
     this.linkTypeStr = source.linkTypeStr
+  }
+
+  /**
+   * 标记链接进入可见状态。
+   * @return 是否本次发生了翻转（true=从不可见→可见，需上报 visible=true；false=已在可见态，不重复上报）
+   */
+  markLinkVisible(): boolean {
+    if (!this._linkVisible) {
+      this._linkVisible = true
+      return true
+    }
+    return false
+  }
+
+  /**
+   * 标记链接离开可见状态。
+   * @return 是否本次发生了翻转（true=从可见→不可见，需上报 visible=false；false=本就不可见，不重复上报）
+   */
+  markLinkHidden(): boolean {
+    if (this._linkVisible) {
+      this._linkVisible = false
+      return true
+    }
+    return false
+  }
+
+  /**
+   * 链接当前是否处于可见状态。
+   */
+  isLinkVisible(): boolean {
+    return this._linkVisible
   }
 }
 

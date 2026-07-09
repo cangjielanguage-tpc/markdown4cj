@@ -1,6 +1,7 @@
 import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { CellWidthTracker } from "../model/CellWidthTracker"
 import { NodeView } from "../model/NodeView"
+import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 import { TableHorizontalScrollSync } from "../model/TableHorizontalScrollSync"
 import { StickyScrollYHolder, StickyOffsetHolder } from "../model/StickyScrollYHolder"
 import { GlobalTheme } from "../theme/GlobalTheme"
@@ -59,11 +60,14 @@ export struct MarkdownTable {
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（透传给TableRow→TableCell）
+  exposureThreshold: number = 0.5 // 曝光阈值（透传给TableRow→TableCell）
   scroller: Scroller = new Scroller() // list控制器（非sticky模式使用）
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown数据源（非sticky模式：全部行；sticky模式：body行）
   @State tableBlockCellSize: number = 0 // 表格总共有几列
   @Provide cellWidthTracker: CellWidthTracker = new CellWidthTracker(0) // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
   @Provide('tableColumnWidths') columnWidths: number[] = [] // 列宽快照（@Provide让TableCell通过@Consume直接读取，避免LazyForEach不刷新@Prop的问题）
+  @Provide tableContainerId: string = '' // 表格横向body Scroll容器id（TableCell曝光水平可见性判定用）
   private isAlive: boolean = true // 组件是否存活
   // ===== sticky 模式专用 =====
   private headerScroller: Scroller = new Scroller() // sticky 模式 header 横向 Scroll 控制器
@@ -96,6 +100,7 @@ export struct MarkdownTable {
   }
 
   aboutToAppear(): void {
+    this.tableContainerId = 'md-tbl-' + this.node.nodeHash
     this.cellWidthTracker.onWidthUpdated = () => {
       this.applyColumnWidths()
     }
@@ -328,7 +333,9 @@ export struct MarkdownTable {
                       linkCallback: this.linkCallback,
                       imageCallback: this.imageCallback,
                       imageDownloadCallback: this.imageDownloadCallback,
-                      imageReplaceCallback: this.imageReplaceCallback
+                      imageReplaceCallback: this.imageReplaceCallback,
+                      elementExposureCallback: this.elementExposureCallback,
+                      exposureThreshold: this.exposureThreshold
                     })
                   } else {
                     Text("")
@@ -346,6 +353,7 @@ export struct MarkdownTable {
         .scrollable(ScrollDirection.Horizontal)
         .scrollBar(this.tableTheme.tableScrollBarState)
         .scrollBarColor(this.tableTheme.tableScrollBarColor)
+        .id(this.tableContainerId)
       }
       .backgroundColor(this.globalTheme.backgroundColor)
       .borderStyle(this.tableTheme.tableBorderStyle)
@@ -424,7 +432,9 @@ export struct MarkdownTable {
             linkCallback: this.linkCallback,
             imageCallback: this.imageCallback,
             imageDownloadCallback: this.imageDownloadCallback,
-            imageReplaceCallback: this.imageReplaceCallback
+            imageReplaceCallback: this.imageReplaceCallback,
+            elementExposureCallback: this.elementExposureCallback,
+            exposureThreshold: this.exposureThreshold
           })
         }
         .scrollable(ScrollDirection.Horizontal)
@@ -485,7 +495,9 @@ export struct MarkdownTable {
               linkCallback: this.linkCallback,
               imageCallback: this.imageCallback,
               imageDownloadCallback: this.imageDownloadCallback,
-              imageReplaceCallback: this.imageReplaceCallback
+              imageReplaceCallback: this.imageReplaceCallback,
+              elementExposureCallback: this.elementExposureCallback,
+              exposureThreshold: this.exposureThreshold
             })
           },
           (item: NodeView, index: number) => {
@@ -498,6 +510,7 @@ export struct MarkdownTable {
     .scrollable(ScrollDirection.Horizontal)
     .scrollBar(this.tableTheme.tableScrollBarState)
     .scrollBarColor(this.tableTheme.tableScrollBarColor)
+    .id(this.tableContainerId)
     .onScrollFrameBegin((offset: number, state: ScrollState) => {
       if (state !== ScrollState.Idle) {
         const newX = this.bodyScroller.currentOffset().xOffset + offset
@@ -567,7 +580,9 @@ export struct MarkdownTable {
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
-                imageReplaceCallback: this.imageReplaceCallback
+                imageReplaceCallback: this.imageReplaceCallback,
+                elementExposureCallback: this.elementExposureCallback,
+                exposureThreshold: this.exposureThreshold
               })
             }
             .scrollable(ScrollDirection.Horizontal)
@@ -625,7 +640,9 @@ export struct MarkdownTable {
                 linkCallback: this.linkCallback,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
-                imageReplaceCallback: this.imageReplaceCallback
+                imageReplaceCallback: this.imageReplaceCallback,
+                elementExposureCallback: this.elementExposureCallback,
+                exposureThreshold: this.exposureThreshold
               })
             },
             (item: NodeView, index: number) => {
@@ -638,6 +655,7 @@ export struct MarkdownTable {
       .scrollable(ScrollDirection.Horizontal)
       .scrollBar(this.tableTheme.tableScrollBarState)
       .scrollBarColor(this.tableTheme.tableScrollBarColor)
+      .id(this.tableContainerId)
       .onScrollFrameBegin((offset: number, state: ScrollState) => {
         if (state !== ScrollState.Idle) {
           const newX = this.bodyScroller.currentOffset().xOffset + offset

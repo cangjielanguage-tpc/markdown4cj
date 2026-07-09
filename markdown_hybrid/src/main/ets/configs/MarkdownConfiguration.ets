@@ -1,6 +1,7 @@
 import { MarkdownTheme } from "../theme/MarkdownTheme"
 import { MarkdownHighlightParagraph } from "./MarkdownHighlightParagraph"
 import { MarkdownNodeViewString } from "./MarkdownNodeViewString"
+import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 
 /**
  * markdown配置
@@ -28,6 +29,8 @@ export class MarkdownConfiguration {
   markdownHighlightParagraph: MarkdownHighlightParagraph = new MarkdownHighlightParagraph() // 高亮段落设置
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
   markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown默认样式
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void = undefined // 元素曝光回调（链接显示/消失时触发）
+  exposureThreshold: number = 0.5 // 曝光可见阈值（0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见）
 
   /**
    * 设置链接点击回调
@@ -36,6 +39,29 @@ export class MarkdownConfiguration {
    */
   setLinkCallback(cb: (url: string) => void): MarkdownConfiguration {
     this.linkCallback = cb
+    return this
+  }
+
+  /**
+   * 设置元素曝光回调
+   * 链接（type='link'）进入屏幕可见区域时回调 visible=true，离开时回调 visible=false。
+   * 可见判定：链接渲染矩形与段落在屏可见区交集面积 / 链接面积 ≥ exposureThreshold。
+   * 同一链接持续停留不重复触发；滚出后再滚入会再次触发（一次显示+一次消失成对）。
+   *
+   * @param cb 曝光回调(event：{ type, visible, data })
+   */
+  setElementExposureCallback(cb: (event: MarkdownExposureEvent) => void): MarkdownConfiguration {
+    this.elementExposureCallback = cb
+    return this
+  }
+
+  /**
+   * 设置曝光可见阈值
+   *
+   * @param threshold 0~1，链接与可见区交集面积 / 链接面积 ≥ 此值才算可见。0=漏出任意像素即可见
+   */
+  setExposureThreshold(threshold: number): MarkdownConfiguration {
+    this.exposureThreshold = threshold
     return this
   }
 

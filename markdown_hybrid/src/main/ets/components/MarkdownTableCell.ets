@@ -4,6 +4,15 @@ import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_h
 import { CellWidthTracker } from "../model/CellWidthTracker"
 import { LatexParseQueue } from "../model/LatexParseQueue"
 import { NodeView } from "../model/NodeView"
+import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
+import {
+  computeLinkRanges,
+  evaluateLinkExposure,
+  ParagraphViewport
+} from "../utils/MarkdownExposureUtils"
+import display from "@ohos.display"
+import { componentUtils } from "@kit.ArkUI"
+import { MarkdownVisibleRectHolder, MarkdownVisibleRectSnapshot } from "../model/MarkdownVisibleRectHolder"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { BoldTheme } from "../theme/BoldTheme"
 import { DefinitionListTheme } from "../theme/DefinitionListTheme"
@@ -84,20 +93,206 @@ export struct MarkdownTableCell {
   @Consume('tableColumnWidths') columnWidths: number[] // 各列宽度快照（@Consume从MarkdownTable同步）
   @Consume cellWidthTracker: CellWidthTracker // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
   @Consume isLatexMathEnabled: boolean // 数学公式插件是否启用
+  @Consume tableContainerId: string // 表格横向body Scroll容器id（曝光水平可见性判定用）
+  // CJMarkdown 根节点可见矩形（窗口坐标系 px）。垂直裁剪窗口=cell全局rect与该矩形求交，
+  // 替代整屏高度——避免 cell 被标题栏/面板/系统栏遮挡时仍判可见（过报）。与 MarkdownParagraph 对称。
+  @Consume('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder
   @State @Watch('onListChanged') list: NodeView[] = [] // 表格格子子节点数据源
   private isAlive: boolean = true // 组件是否存活
+  // —— 曝光统计（照搬 MarkdownParagraph） ——
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（透传）
+  exposureThreshold: number = 0.5 // 曝光阈值（透传）
+  private textController: TextController = new TextController() // 用于getRectsForRange取链接渲染矩形
+  private httpLinks: NodeView[] = [] // 本段落内的http链接节点
+  private httpLinksDirty: boolean = true // httpLinks 是否需重算（首次/config同步后/refreshData后置脏）
+  private exposureTimerId: number = -1 // 曝光评估节流定时器
+  private cellId: string = '' // Text组件id，供componentUtils.getRectangleById使用
+  private cellWidthPx: number = 0 // Text当前宽度(px)
+  private screenHeightPx: number = 0 // 屏幕高度(px，兜底用：visibleRectHolder未就绪时退化裁剪窗口)
+  private screenWidthPx: number = 0 // 屏幕宽度(px，水平方向链接截断用)
+  private viewportReady: boolean = false // 视口宽度/屏幕高度是否已就绪
+  // CJMarkdown根可见矩形变化监听器（滚动/根尺寸变化时重算曝光）。aboutToAppear注册/aboutToDisappear注销。
+  private visibleRectListener: (r: MarkdownVisibleRectSnapshot) => void = () => {}
+
+  // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
+  // 未设回调时短路掉 computeLinkRanges/getRectsForRange/监听器/onVisibleAreaChange 等，省 CPU。
+  // 用普通方法而非 getter：规避 @Component struct 内 private get 在模板字符串/条件判断中的 quirks。
+  private isExposureEnabled(): boolean {
+    return this.elementExposureCallback !== undefined
+  }
 
   aboutToAppear(): void {
+    this.cellId = 'md-tcell-' + this.node.nodeHash + '-' + this.tableBlockCellRow + '-' + this.tableBlockCellCell
     for (const child of this.node.children) {
       if (child.nodeType === "LatexMathNode" && child.latexPixelMap === undefined && child.latexIsLoading) {
         child.latexIsLoading = false
       }
     }
     this.refreshData() // 首次加载（refreshData设置list，onListChanged内调用tryReplaceImages/tryGenerateLinkIcons）
+    // 监听器无条件注册：aboutToAppear 时刻 config 可能尚未与父组件同步（详情页在自身 aboutToAppear
+    // 才给 markdownConfiguration 赋带回调的新对象），此刻 elementExposureCallback 可能是 undefined。
+    // 若在此一次性门控会永久判 false。改为无条件注册，由 scheduleExposure/回调内部按运行时
+    // exposureEnabled 短路。与 MarkdownParagraph 对称。
+    this.visibleRectListener = (_r) => {
+      this.scheduleExposure()
+    }
+    this.visibleRectHolder.addListener(this.visibleRectListener)
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
+    // 监听器在 aboutToAppear 无条件注册，故此处无条件移除（removeListener 对未注册者是 no-op，安全）
+    this.visibleRectHolder.removeListener(this.visibleRectListener)
+    if (this.exposureTimerId !== -1) {
+      clearTimeout(this.exposureTimerId)
+      this.exposureTimerId = -1
+    }
+    // 组件回收时，对当前可见的链接补发一次 visible=false（保证显示/消失成对），再重置标志。
+    // 按运行时 exposureEnabled 门控：没回调则 httpLinks 恒空、无可见链接，跳过。
+    if (this.isExposureEnabled()) {
+      for (const link of this.httpLinks) {
+        if (link.isLinkVisible()) {
+          link.markLinkHidden()
+          this.elementExposureCallback?.({ type: 'link', visible: false, data: link.linkUrl ?? '' })
+        }
+      }
+    }
+  }
+
+  /**
+   * 拿屏幕高度（px）。display.getDefaultDisplaySync 在 aboutToAppear 之前可能拿不到，
+   * 故每次评估前兜底取一次。拿到后缓存。componentUtils.windowOffset 也是 px，单位一致。
+   */
+  private ensureScreenHeight(): void {
+    if (this.screenHeightPx > 0) {
+      return
+    }
+    try {
+      const d = display.getDefaultDisplaySync()
+      this.screenHeightPx = d.height
+    } catch (e) {
+      // ignore，下次再取
+    }
+  }
+
+  /**
+   * 拿屏幕宽度（px）。表格横向滚动时，cell 滚出屏幕右边界用此判定不可见。
+   */
+  private ensureScreenWidth(): void {
+    if (this.screenWidthPx > 0) {
+      return
+    }
+    try {
+      const d = display.getDefaultDisplaySync()
+      this.screenWidthPx = d.width
+    } catch (e) {
+      // ignore，下次再取
+    }
+  }
+
+  /**
+   * 防抖触发曝光评估。合并连续的 onAreaChange/onVisibleAreaChange/refreshData 触发。
+   * 评估后对「本次显示」的链接回调 visible=true，「本次消失」的回调 visible=false。
+   *
+   * 视口来源：componentUtils.getRectangleById(cellId) 拿格内Text相对窗口的全局 rect（px），
+   * 与屏幕高度求交得在屏可见区，再平移到 Text 内容区原点坐标系（与 getRectsForRange 同源）。
+   * 表格吸顶/横向滚动/外层滚动导致的位移都反映在 windowOffset 里，无需单独建模。
+   */
+  private scheduleExposure(): void {
+    if (!this.isAlive) {
+      return
+    }
+    // 未设曝光回调时直接短路（兜底：onAreaChange/onVisibleAreaChange 仍会触发本方法）
+    if (!this.isExposureEnabled()) {
+      return
+    }
+    // 懒补算：aboutToAppear→refreshData 首跑时 config 可能尚未同步（exposureEnabled=false 跳过了 computeLinkRanges），
+    // config 同步后 holder 通知/事件触发本方法，此处 httpLinks 仍为脏（dirty=true）。检测到 dirty 则补算一次（cell 无脚注前缀），
+    // 算完置 clean，避免无链接 cell 每次 scheduleExposure 都重算。
+    if (this.httpLinksDirty && this.list.length > 0) {
+      this.httpLinks = computeLinkRanges(this.list, this.globalTheme.isLineBreak, 0)
+      this.httpLinksDirty = false
+    }
+    // 仍无http链接的cell不参与曝光评估（省性能）
+    if (this.httpLinks.length === 0) {
+      return
+    }
+    if (this.exposureTimerId !== -1) {
+      clearTimeout(this.exposureTimerId)
+    }
+    this.exposureTimerId = setTimeout(() => {
+      this.exposureTimerId = -1
+      if (!this.isAlive) {
+        return
+      }
+      if (!this.viewportReady) {
+        return
+      }
+      this.ensureScreenHeight()
+      if (this.screenHeightPx <= 0) {
+        return
+      }
+      this.ensureScreenWidth() // 兜底用：容器id取不到时用屏幕宽做水平右边界
+      // 格内Text相对窗口的全局矩形（px）：componentUtils 同步调用，setTimeout(0) 时已 layout 完成
+      let cellLeft: number = 0
+      let cellTop: number = 0
+      let cellRight: number = 0
+      let cellBottom: number = 0
+      try {
+        const info = componentUtils.getRectangleById(this.cellId)
+        cellLeft = info.windowOffset.x
+        cellTop = info.windowOffset.y
+        cellRight = info.windowOffset.x + info.size.width
+        cellBottom = info.windowOffset.y + info.size.height
+      } catch (e) {
+        // 组件未挂载/id 未就绪，本次跳过
+        return
+      }
+      // 表格横向body Scroll容器全局水平范围（px）：cell 滚出容器右边界 = 被表格横向clip = 不可见
+      // 取不到容器id（header分支无id等）时退化为用屏幕宽兜底
+      let contLeft: number = 0
+      let contRight: number = this.screenWidthPx
+      if (this.tableContainerId.length > 0) {
+        try {
+          const cInfo = componentUtils.getRectangleById(this.tableContainerId)
+          contLeft = cInfo.windowOffset.x
+          contRight = cInfo.windowOffset.x + cInfo.size.width
+        } catch (e) {
+          // 容器未就绪，用屏幕宽兜底
+        }
+      }
+      // 水平可见：cell 全局水平区间与容器水平区间求交（cell 横滚出容器可见区被裁剪）
+      const hIntersectLeft: number = Math.max(cellLeft, contLeft)
+      const hIntersectRight: number = Math.min(cellRight, contRight)
+      const hVisible: boolean = hIntersectRight > hIntersectLeft
+      // 垂直裁剪窗口 = holder 推算的可见区域 [visTop, visBottom]（窗口 px，见 MarkdownVisibleRectHolder 算法）：
+      //   onAreaChange 拿矩形区域，onVisibleAreaChange 拿 ratio，每 50ms 按「移动方向 + ratio 变化」收缩可见区域。
+      // holder.visReady=false（ratio 首次>0 前）退化用整屏 [0, screenH]，避免漏报。
+      const useVis: boolean = this.visibleRectHolder.visReady
+      const vpTop: number = useVis ? this.visibleRectHolder.visTop : 0
+      const vpBottom: number = useVis ? this.visibleRectHolder.visBottom : this.screenHeightPx
+      // 格在屏可见视口（相对Text内容区原点，px）：
+      // 垂直=全局区间与根可见矩形求交后平移；水平=cell与容器水平交集平移到Text原点
+      const clipTopPx: number = Math.max(vpTop, Math.min(vpBottom, cellTop))
+      const clipBottomPx: number = Math.min(vpBottom, Math.max(vpTop, cellBottom))
+      const clipLeftPx: number = Math.max(0, hIntersectLeft - cellLeft)
+      const clipRightPx: number = Math.max(0, hIntersectRight - cellLeft)
+      const viewport: ParagraphViewport = {
+        ready: hVisible && clipBottomPx > clipTopPx && clipRightPx > clipLeftPx && this.cellWidthPx > 0,
+        clipTopPx: clipTopPx - cellTop,
+        clipBottomPx: clipBottomPx - cellTop,
+        clipLeftPx: clipLeftPx,
+        clipRightPx: clipRightPx,
+        widthPx: this.cellWidthPx
+      }
+      const result = evaluateLinkExposure(this.textController, viewport, this.exposureThreshold, this.httpLinks)
+      for (const link of result.becameVisible) {
+        this.elementExposureCallback?.({ type: 'link', visible: true, data: link.linkUrl ?? '' })
+      }
+      for (const link of result.becameHidden) {
+        this.elementExposureCallback?.({ type: 'link', visible: false, data: link.linkUrl ?? '' })
+      }
+    }, 0)
   }
 
   build() {
@@ -144,7 +339,7 @@ export struct MarkdownTableCell {
    */
   @Builder
   tableCellColumn() {
-    Text() {
+    Text(undefined, { controller: this.textController }) {
       ForEach(
         this.list,
         (item: NodeView, index: number) => {
@@ -162,6 +357,27 @@ export struct MarkdownTableCell {
     )
     .onCopy((str) => {
       this.textCopyCallback?.(str)
+    })
+    .id(this.cellId)
+    .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, _currentRatio: number) => {
+      // 仅作触发用，不用 isVisible 布尔门控可见性（实测滑动中会翻转竞态导致漏报）。
+      // 真正的可见性由 evaluateLinkExposure 的「链接rect ∩ 格在屏可见视口」判定。
+      // 未设曝光回调时直接返回，滚动期不再走 scheduleExposure（连 setTimeout 都不开）。
+      if (!this.isExposureEnabled()) {
+        return
+      }
+      this.scheduleExposure()
+    })
+    .onAreaChange((_old: Area, newArea: Area) => {
+      // 格内Text自身宽度（vp→px）。全局位置由 componentUtils.getRectangleById 实时拿，
+      // 故此处只更新宽度并触发评估。未启用曝光时跳过。
+      if (!this.isExposureEnabled()) {
+        return
+      }
+      const w: number = (newArea.width as number) ?? 0
+      this.cellWidthPx = vp2px(w)
+      this.viewportReady = true
+      this.scheduleExposure()
     })
   }
 
@@ -493,6 +709,8 @@ export struct MarkdownTableCell {
         old.releaseOwnPixelMaps()
       }
       this.list = []
+      this.httpLinks = []
+      this.httpLinksDirty = true
       return
     }
     const oldImageSizes: Map<string, number[]> = new Map()
@@ -519,6 +737,15 @@ export struct MarkdownTableCell {
       }
     }
     this.tryEnqueueLatexLoading()
+    // 标记 httpLinks 脏：list 变了偏移必变。dirty=true 后：已启用→下面立即重算；未启用（config
+    // 尚未同步）→跳过，dirty 留 true，待 config 同步后 scheduleExposure 懒补算。
+    this.httpLinksDirty = true
+    // 仅在启用曝光时重算http链接字符偏移并触发评估；未设回调时跳过（省遍历开销）
+    if (this.isExposureEnabled()) {
+      this.httpLinks = computeLinkRanges(this.list, this.globalTheme.isLineBreak, 0)
+      this.httpLinksDirty = false
+      this.scheduleExposure()
+    }
   }
 
   /**

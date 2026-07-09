@@ -337,6 +337,14 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "38、链接曝光功能",
+              0xFFFF0000,
+              "pages/LinkExposurePage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "【已废弃接口】",
               0xFFFF0000,
               "pages/deprecated/DeprecatedIndexPage"

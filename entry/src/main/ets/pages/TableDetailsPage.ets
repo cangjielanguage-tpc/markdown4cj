@@ -6,6 +6,7 @@ import { CJMarkdown,
   MarkdownScrollController,
   // MarkdownScroller,
   MarkdownTheme,
+  MarkdownExposureEvent,
   TableTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
@@ -365,12 +366,21 @@ struct TableDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setTableCopyCallback(this.tableCopyCallBack)
+    config.setElementExposureCallback(this.elementExposureCallBack.bind(this))
     return config
   }
 
 
   tableCopyCallBack(tableStr: string): void {
     hilog.error(1, "copyTable", `---tableStr = ${tableStr}`)
+  }
+
+  /**
+   * 元素曝光回调（链接显示/消失）：表格内 http 链接曝光验证用。
+   * 显示→visible=true，消失→visible=false，成对触发。
+   */
+  elementExposureCallBack(event: MarkdownExposureEvent): void {
+    hilog.error(1, "1", `---elementExposure type:${event.type} visible:${event.visible} data:${event.data}`)
   }
 
   setMarkdownTheme(): MarkdownTheme {

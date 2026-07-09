@@ -75,6 +75,8 @@
     "pages/ImageStyleDetailsPage",
     "pages/HighlightPage",
     "pages/HighlightDetailsPage",
+    "pages/LinkExposurePage",
+    "pages/LinkExposureDetailsPage",
     "pages/TocPage",
     "pages/TocDetailsPage",
     "pages/deprecated/Deprecated0Page",

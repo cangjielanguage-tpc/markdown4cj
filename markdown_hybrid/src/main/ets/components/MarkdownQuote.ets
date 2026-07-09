@@ -28,6 +28,7 @@ import { TableTheme } from "../theme/TableTheme"
 import { VideoTheme } from "../theme/VideoTheme"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownHeading } from "./MarkdownHeading"
+import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 import { MarkdownCodeFenced } from "./MarkdownCodeFenced"
 import { MarkdownCodeBlockList } from "./MarkdownCodeBlockList"
 import { MarkdownCodeIndented } from "./MarkdownCodeIndented"
@@ -80,6 +81,8 @@ export struct MarkdownQuote {
   footnoteCallback?: (index: string) => void // 脚注点击事件
   tocCallback?: (index: number) => void // TOC/标题ID点击事件
   linkCallback?: (url: string) => void // 链接点击事件
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（链接显示/消失）
+  exposureThreshold: number = 0.5 // 曝光可见阈值
   imageCallback?: (url: string) => void // 图片点击事件
   imageDownloadCallback?: (url: string) => void // 图片下载点击事件
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
@@ -130,7 +133,9 @@ export struct MarkdownQuote {
               latexMathTheme: this.latexMathTheme,
               latexImageCallback: this.latexImageCallback,
               latexStrCallback: this.latexStrCallback,
-              componentWidth: this.tableBlockComponentWidth
+              componentWidth: this.tableBlockComponentWidth,
+              elementExposureCallback: this.elementExposureCallback,
+              exposureThreshold: this.exposureThreshold
             })
           } else {
             ListItem() {
@@ -163,6 +168,8 @@ export struct MarkdownQuote {
                   footnoteCallback: this.footnoteCallback,
                   tocCallback: this.tocCallback,
                   linkCallback: this.linkCallback,
+                  elementExposureCallback: this.elementExposureCallback,
+                  exposureThreshold: this.exposureThreshold,
                   imageCallback: this.imageCallback,
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
@@ -201,6 +208,8 @@ export struct MarkdownQuote {
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  elementExposureCallback: this.elementExposureCallback,
+                  exposureThreshold: this.exposureThreshold
                 })
               } else if (item.nodeType === "FencedCodeBlockListBlock") {
                 // 围栏代码块列表
@@ -266,6 +275,8 @@ export struct MarkdownQuote {
                   footnoteCallback: this.footnoteCallback,
                   tocCallback: this.tocCallback,
                   linkCallback: this.linkCallback,
+                  elementExposureCallback: this.elementExposureCallback,
+                  exposureThreshold: this.exposureThreshold,
                   imageCallback: this.imageCallback,
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
@@ -319,6 +330,8 @@ export struct MarkdownQuote {
                   footnoteCallback: this.footnoteCallback,
                   tocCallback: this.tocCallback,
                   linkCallback: this.linkCallback,
+                  elementExposureCallback: this.elementExposureCallback,
+                  exposureThreshold: this.exposureThreshold,
                   imageCallback: this.imageCallback,
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
@@ -370,6 +383,8 @@ export struct MarkdownQuote {
                   footnoteCallback: this.footnoteCallback,
                   tocCallback: this.tocCallback,
                   linkCallback: this.linkCallback,
+                  elementExposureCallback: this.elementExposureCallback,
+                  exposureThreshold: this.exposureThreshold,
                   imageCallback: this.imageCallback,
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
@@ -438,7 +453,9 @@ export struct MarkdownQuote {
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   componentWidth: this.tableBlockComponentWidth,
-                  tableCopyCallback: this.tableCopyCallback
+                  tableCopyCallback: this.tableCopyCallback,
+                  elementExposureCallback: this.elementExposureCallback,
+                  exposureThreshold: this.exposureThreshold
                 })
               } else if (item.nodeType === "ThematicBreak") {
                 // 分割线
@@ -484,6 +501,8 @@ export struct MarkdownQuote {
                   footnoteCallback: this.footnoteCallback,
                   tocCallback: this.tocCallback,
                   linkCallback: this.linkCallback,
+                  elementExposureCallback: this.elementExposureCallback,
+                  exposureThreshold: this.exposureThreshold,
                   imageCallback: this.imageCallback,
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
