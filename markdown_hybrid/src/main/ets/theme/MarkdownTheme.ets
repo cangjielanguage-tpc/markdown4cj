@@ -1963,7 +1963,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setHeadingTopMargins(headingTopMargins: number): MarkdownTheme {
-    this.headingTheme.setMarginForAllHeadingEachLevel({top: headingTopMargins})
+    this.headingTheme.setMarginForAllHeadingEachLevel({ top: headingTopMargins })
     return this
   }
 
@@ -1976,7 +1976,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setHeadingBottomMargins(headingBottomMargins: number): MarkdownTheme {
-    this.headingTheme.setMarginForAllHeadingEachLevel({bottom: headingBottomMargins})
+    this.headingTheme.setMarginForAllHeadingEachLevel({ bottom: headingBottomMargins })
     return this
   }
 

@@ -167,10 +167,10 @@ export function nodeToNodeView(
     // 只有叶子节点可以复用（容器节点走copyDataFrom正常分支）
     // Link/HeadLink仅当isLinkStyle时为叶子节点（块状化），否则为Pattern2（子节点平铺）
     if (canReuse && nodeType !== 'Text' && nodeType !== 'Code' &&
-        nodeType !== 'FencedCodeBlock' && nodeType !== 'IndentedCodeBlock' &&
-        nodeType !== 'LatexMathNode' && nodeType !== 'LatexMathBlock' &&
-        nodeType !== 'Image' && nodeType !== 'StyleImage' && nodeType !== 'ImageHtmlNode' &&
-        !((nodeType === 'Link' || nodeType === 'HeadLink') && inheritedStyleView.isLinkStyle)) {
+      nodeType !== 'FencedCodeBlock' && nodeType !== 'IndentedCodeBlock' &&
+      nodeType !== 'LatexMathNode' && nodeType !== 'LatexMathBlock' &&
+      nodeType !== 'Image' && nodeType !== 'StyleImage' && nodeType !== 'ImageHtmlNode' &&
+      !((nodeType === 'Link' || nodeType === 'HeadLink') && inheritedStyleView.isLinkStyle)) {
       canReuse = false
     }
     // 提前读取props，用于复用判断和新NodeView创建
@@ -628,18 +628,18 @@ export function nodeToNodeView(
         if (imageStyles !== undefined && imageStyles !== null) {
           if (imageStyles.length > 0) {
             const picStyle = parsePicStyle(imageStyles)
-          if (picStyle.width !== undefined) {
-            currentView.imageStyleWidth = picStyle.width
-          }
-          if (picStyle.height !== undefined) {
-            currentView.imageStyleHeight = picStyle.height
-          }
-          if (picStyle.borderRadius !== undefined) {
-            currentView.imageRadius = picStyle.borderRadius
-          }
-          if (picStyle.align !== undefined) {
-            currentView.imageAlign = picStyle.align
-          }
+            if (picStyle.width !== undefined) {
+              currentView.imageStyleWidth = picStyle.width
+            }
+            if (picStyle.height !== undefined) {
+              currentView.imageStyleHeight = picStyle.height
+            }
+            if (picStyle.borderRadius !== undefined) {
+              currentView.imageRadius = picStyle.borderRadius
+            }
+            if (picStyle.align !== undefined) {
+              currentView.imageAlign = picStyle.align
+            }
           }
         }
         targetParentView.children.push(currentView)

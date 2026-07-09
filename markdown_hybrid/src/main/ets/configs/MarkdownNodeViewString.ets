@@ -101,7 +101,7 @@ export class MarkdownNodeViewString {
    * 处理不需要遍历children的叶子节点
    *
    * @param node 当前节点
-    * @return 是否为叶子节点
+   * @return 是否为叶子节点
    */
   private leafNode(node: NodeView): boolean {
     switch (node.nodeType) {

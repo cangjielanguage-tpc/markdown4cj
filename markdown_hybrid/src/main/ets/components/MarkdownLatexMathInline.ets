@@ -178,5 +178,4 @@ export struct MarkdownLatexMathInline {
         LatexParseQueue.notifyDone()
       })
   }
-
 }

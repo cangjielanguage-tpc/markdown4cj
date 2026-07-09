@@ -276,40 +276,88 @@ export class HeadingTheme implements MarkdownBaseTheme {
     }
     switch (level) {
       case 1:
-        if (t !== undefined) this.heading1MarginTop = t
-        if (r !== undefined) this.heading1MarginRight = r
-        if (b !== undefined) this.heading1MarginBottom = b
-        if (l !== undefined) this.heading1MarginLeft = l
+        if (t !== undefined) {
+          this.heading1MarginTop = t
+        }
+        if (r !== undefined) {
+          this.heading1MarginRight = r
+        }
+        if (b !== undefined) {
+          this.heading1MarginBottom = b
+        }
+        if (l !== undefined) {
+          this.heading1MarginLeft = l
+        }
         break
       case 2:
-        if (t !== undefined) this.heading2MarginTop = t
-        if (r !== undefined) this.heading2MarginRight = r
-        if (b !== undefined) this.heading2MarginBottom = b
-        if (l !== undefined) this.heading2MarginLeft = l
+        if (t !== undefined) {
+          this.heading2MarginTop = t
+        }
+        if (r !== undefined) {
+          this.heading2MarginRight = r
+        }
+        if (b !== undefined) {
+          this.heading2MarginBottom = b
+        }
+        if (l !== undefined) {
+          this.heading2MarginLeft = l
+        }
         break
       case 3:
-        if (t !== undefined) this.heading3MarginTop = t
-        if (r !== undefined) this.heading3MarginRight = r
-        if (b !== undefined) this.heading3MarginBottom = b
-        if (l !== undefined) this.heading3MarginLeft = l
+        if (t !== undefined) {
+          this.heading3MarginTop = t
+        }
+        if (r !== undefined) {
+          this.heading3MarginRight = r
+        }
+        if (b !== undefined) {
+          this.heading3MarginBottom = b
+        }
+        if (l !== undefined) {
+          this.heading3MarginLeft = l
+        }
         break
       case 4:
-        if (t !== undefined) this.heading4MarginTop = t
-        if (r !== undefined) this.heading4MarginRight = r
-        if (b !== undefined) this.heading4MarginBottom = b
-        if (l !== undefined) this.heading4MarginLeft = l
+        if (t !== undefined) {
+          this.heading4MarginTop = t
+        }
+        if (r !== undefined) {
+          this.heading4MarginRight = r
+        }
+        if (b !== undefined) {
+          this.heading4MarginBottom = b
+        }
+        if (l !== undefined) {
+          this.heading4MarginLeft = l
+        }
         break
       case 5:
-        if (t !== undefined) this.heading5MarginTop = t
-        if (r !== undefined) this.heading5MarginRight = r
-        if (b !== undefined) this.heading5MarginBottom = b
-        if (l !== undefined) this.heading5MarginLeft = l
+        if (t !== undefined) {
+          this.heading5MarginTop = t
+        }
+        if (r !== undefined) {
+          this.heading5MarginRight = r
+        }
+        if (b !== undefined) {
+          this.heading5MarginBottom = b
+        }
+        if (l !== undefined) {
+          this.heading5MarginLeft = l
+        }
         break
       case 6:
-        if (t !== undefined) this.heading6MarginTop = t
-        if (r !== undefined) this.heading6MarginRight = r
-        if (b !== undefined) this.heading6MarginBottom = b
-        if (l !== undefined) this.heading6MarginLeft = l
+        if (t !== undefined) {
+          this.heading6MarginTop = t
+        }
+        if (r !== undefined) {
+          this.heading6MarginRight = r
+        }
+        if (b !== undefined) {
+          this.heading6MarginBottom = b
+        }
+        if (l !== undefined) {
+          this.heading6MarginLeft = l
+        }
         break
     }
     return this
@@ -421,40 +469,88 @@ export class HeadingTheme implements MarkdownBaseTheme {
     }
     switch (level) {
       case 1:
-        if (t !== undefined) this.heading1PaddingTop = t
-        if (r !== undefined) this.heading1PaddingRight = r
-        if (b !== undefined) this.heading1PaddingBottom = b
-        if (l !== undefined) this.heading1PaddingLeft = l
+        if (t !== undefined) {
+          this.heading1PaddingTop = t
+        }
+        if (r !== undefined) {
+          this.heading1PaddingRight = r
+        }
+        if (b !== undefined) {
+          this.heading1PaddingBottom = b
+        }
+        if (l !== undefined) {
+          this.heading1PaddingLeft = l
+        }
         break
       case 2:
-        if (t !== undefined) this.heading2PaddingTop = t
-        if (r !== undefined) this.heading2PaddingRight = r
-        if (b !== undefined) this.heading2PaddingBottom = b
-        if (l !== undefined) this.heading2PaddingLeft = l
+        if (t !== undefined) {
+          this.heading2PaddingTop = t
+        }
+        if (r !== undefined) {
+          this.heading2PaddingRight = r
+        }
+        if (b !== undefined) {
+          this.heading2PaddingBottom = b
+        }
+        if (l !== undefined) {
+          this.heading2PaddingLeft = l
+        }
         break
       case 3:
-        if (t !== undefined) this.heading3PaddingTop = t
-        if (r !== undefined) this.heading3PaddingRight = r
-        if (b !== undefined) this.heading3PaddingBottom = b
-        if (l !== undefined) this.heading3PaddingLeft = l
+        if (t !== undefined) {
+          this.heading3PaddingTop = t
+        }
+        if (r !== undefined) {
+          this.heading3PaddingRight = r
+        }
+        if (b !== undefined) {
+          this.heading3PaddingBottom = b
+        }
+        if (l !== undefined) {
+          this.heading3PaddingLeft = l
+        }
         break
       case 4:
-        if (t !== undefined) this.heading4PaddingTop = t
-        if (r !== undefined) this.heading4PaddingRight = r
-        if (b !== undefined) this.heading4PaddingBottom = b
-        if (l !== undefined) this.heading4PaddingLeft = l
+        if (t !== undefined) {
+          this.heading4PaddingTop = t
+        }
+        if (r !== undefined) {
+          this.heading4PaddingRight = r
+        }
+        if (b !== undefined) {
+          this.heading4PaddingBottom = b
+        }
+        if (l !== undefined) {
+          this.heading4PaddingLeft = l
+        }
         break
       case 5:
-        if (t !== undefined) this.heading5PaddingTop = t
-        if (r !== undefined) this.heading5PaddingRight = r
-        if (b !== undefined) this.heading5PaddingBottom = b
-        if (l !== undefined) this.heading5PaddingLeft = l
+        if (t !== undefined) {
+          this.heading5PaddingTop = t
+        }
+        if (r !== undefined) {
+          this.heading5PaddingRight = r
+        }
+        if (b !== undefined) {
+          this.heading5PaddingBottom = b
+        }
+        if (l !== undefined) {
+          this.heading5PaddingLeft = l
+        }
         break
       case 6:
-        if (t !== undefined) this.heading6PaddingTop = t
-        if (r !== undefined) this.heading6PaddingRight = r
-        if (b !== undefined) this.heading6PaddingBottom = b
-        if (l !== undefined) this.heading6PaddingLeft = l
+        if (t !== undefined) {
+          this.heading6PaddingTop = t
+        }
+        if (r !== undefined) {
+          this.heading6PaddingRight = r
+        }
+        if (b !== undefined) {
+          this.heading6PaddingBottom = b
+        }
+        if (l !== undefined) {
+          this.heading6PaddingLeft = l
+        }
         break
     }
     return this

@@ -143,7 +143,9 @@ export struct MarkdownDesc {
               Text("")
             }
           }
-          .margin({ top: index === 0 ? 0 : index === 1 ? 0 : this.definitionListTheme.definitionListDescriptionItemSpacing })
+          .margin({
+            top: index === 0 ? 0 : index === 1 ? 0 : this.definitionListTheme.definitionListDescriptionItemSpacing
+          })
         },
         (item: NodeView, index: number) => {
           return `${index}-${item.nodeHash}`

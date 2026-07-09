@@ -318,8 +318,8 @@ export class JsNodePoolImpl implements JsNodePool {
  */
 export function traverseTree(node: JsNodeImpl | undefined, arr: Array<JsNodeImpl>) {
   if (node !== undefined) {
-    let child:JsNodeImpl|undefined = node.firstChild
-    let next:JsNodeImpl|undefined = node.next
+    let child: JsNodeImpl | undefined = node.firstChild
+    let next: JsNodeImpl | undefined = node.next
     node.reset()
     arr.push(node)
     traverseTree(child, arr)

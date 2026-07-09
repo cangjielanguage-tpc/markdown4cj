@@ -129,8 +129,6 @@ export struct MarkdownFootnote {
                 imageReplaceCallback: this.imageReplaceCallback,
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
               })
-            } else if (item.nodeType === "BlockAD") {
-              // 广告
             } else {
               // 其他
             }

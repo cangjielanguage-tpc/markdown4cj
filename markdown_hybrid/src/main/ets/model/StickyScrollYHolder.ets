@@ -11,7 +11,9 @@ export class StickyScrollYHolder {
   private listeners: Set<(y: number) => void> = new Set()
 
   setY(y: number): void {
-    if (this.y === y) return // 去重，避免相同值重复触发监听器
+    if (this.y === y) {
+      return
+    } // 去重，避免相同值重复触发监听器
     this.y = y
     this.listeners.forEach((l) => l(y))
   }

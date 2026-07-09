@@ -97,22 +97,18 @@ export class MarkdownPlugin {
    * emoji解析插件是否精简加载
    */
   isEmojiLight: boolean = false
-
   /**
    * 是否加载高亮解析插件
    */
   isHighlightPlugin: boolean = false
-
   /**
    * 是否加载白名单宽松分隔符插件
    */
   isWhitelistPlugin: boolean = false
-
   /**
    * 分隔符过滤模式
    */
   mode: DelimiterFilterMode = DelimiterFilterMode.Permissive
-
   /**
    * 白名单列表
    */
@@ -329,7 +325,7 @@ export class MarkdownPlugin {
    * @param mode 加载模式。 - undefined：不加载插件。DelimiterFilterMode：(0:宽松模式，1：严格模式)。Array<string>：白名单模式
    */
   setIsWhitelistPlugin(mode: undefined | DelimiterFilterMode | Array<string>): void {
-    if (mode ===  undefined) {
+    if (mode === undefined) {
       this.isWhitelistPlugin = false
       return
     }
@@ -382,9 +378,7 @@ export class MarkdownPlugin {
       TocPlugin: this.isTocPlugin,
       WhitelistLooseDelimiterPlugin: this.isWhitelistPlugin,
       WhitelistLooseDelimiterPlugin_DelimiterFilterMode:
-        this.mode === DelimiterFilterMode.Permissive ? "Permissive" :
-        this.mode === DelimiterFilterMode.Strict ? "Strict" :
-        this.whitelist
+      this.mode === DelimiterFilterMode.Permissive ? "Permissive" : this.mode === DelimiterFilterMode.Strict ? "Strict" : this.whitelist
     }
   }
 }

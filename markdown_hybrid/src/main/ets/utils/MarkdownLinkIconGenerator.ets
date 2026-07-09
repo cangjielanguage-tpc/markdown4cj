@@ -2,14 +2,27 @@ import { image } from "@kit.ImageKit"
 import { drawCircleImage, drawRectImage, drawRectToolImage } from 'libtext_to_img.so'
 import { LinkTheme } from "../theme/LinkTheme"
 import { urlSafeBase64Decode } from "./MarkdownUtils"
-import { NUM_00000000, NUM_33000000, NUM_333D73CF, NUM_33B41700, NUM_FF000000, NUM_FF0000FF, NUM_FF008000, NUM_FF3D73CF, NUM_FF888888, NUM_FF884800, NUM_FFB41700, NUM_FFFFFF00, NUM_FFFFFFFF, NUM_FFFF0000, NUM_FFFFA500, NUM_FFFFC0CB } from "../base/Constants"
-
-/**
- * 链接图标类型枚举
- */
-export const LINK_ICON_TYPE_CIRCLE = 0
-export const LINK_ICON_TYPE_RECT = 1
-export const LINK_ICON_TYPE_TOOL = 2
+import {
+  NUM_00000000,
+  NUM_33000000,
+  NUM_333D73CF,
+  NUM_33B41700,
+  NUM_FF000000,
+  NUM_FF0000FF,
+  NUM_FF008000,
+  NUM_FF3D73CF,
+  NUM_FF888888,
+  NUM_FF884800,
+  NUM_FFB41700,
+  NUM_FFFFFF00,
+  NUM_FFFFFFFF,
+  NUM_FFFF0000,
+  NUM_FFFFA500,
+  NUM_FFFFC0CB,
+  LINK_ICON_TYPE_CIRCLE,
+  LINK_ICON_TYPE_RECT,
+  LINK_ICON_TYPE_TOOL
+} from "../base/Constants"
 
 /**
  * 链接图标信息
@@ -51,19 +64,32 @@ function resourceColorToNumber(color: ResourceColor): number {
     const num = color
     if (num >= 0 && num <= 11) {
       switch (num) {
-        case 0: return NUM_FFFFFFFF
-        case 1: return NUM_FF000000
-        case 2: return NUM_FF0000FF
-        case 3: return NUM_FF884800
-        case 4: return NUM_FF888888
-        case 5: return NUM_FF008000
-        case 6: return NUM_FF888888
-        case 7: return NUM_FFFFFF00
-        case 8: return NUM_FFFF0000
-        case 9: return NUM_FFFFC0CB
-        case 10: return NUM_FFFFA500
-        case 11: return NUM_00000000
-        default: return NUM_FF000000
+        case 0:
+          return NUM_FFFFFFFF
+        case 1:
+          return NUM_FF000000
+        case 2:
+          return NUM_FF0000FF
+        case 3:
+          return NUM_FF884800
+        case 4:
+          return NUM_FF888888
+        case 5:
+          return NUM_FF008000
+        case 6:
+          return NUM_FF888888
+        case 7:
+          return NUM_FFFFFF00
+        case 8:
+          return NUM_FFFF0000
+        case 9:
+          return NUM_FFFFC0CB
+        case 10:
+          return NUM_FFFFA500
+        case 11:
+          return NUM_00000000
+        default:
+          return NUM_FF000000
       }
     }
     return num >>> 0
@@ -189,7 +215,9 @@ export function generateLinkIconPixelMap(
     const bgColor = resourceColorToNumber(linkTheme.linkRectIconBackgroundColor)
     const padding = vp2px(linkTheme.linkRectIconPadding)
     const radius = vp2px(linkTheme.linkRectIconRadius)
-    buffer = drawRectImage(trimmedText, fontSize, fontColor, fontBgColor, bgColor, textHeight, colorFormat, padding, radius, false)
+    buffer =
+      drawRectImage(trimmedText, fontSize, fontColor, fontBgColor, bgColor, textHeight, colorFormat, padding, radius,
+        false)
   } else {
     const colors = typeStringColorNum(iconInfo.typeStr)
     const textHeight = vp2px(lengthToNumber(linkTheme.linkRectToolIconHeight))

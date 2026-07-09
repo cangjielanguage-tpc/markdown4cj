@@ -6,7 +6,6 @@
 export class CellWidthTracker {
   widths: number[] = []
   onWidthUpdated?: () => void
-
   private cellWidths: Map<number, number[]> = new Map()
 
   constructor(size: number = 0) {

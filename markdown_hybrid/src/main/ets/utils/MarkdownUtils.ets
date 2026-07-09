@@ -1,33 +1,144 @@
 import {
-  SECONDS_PER_HOUR, SECONDS_PER_MINUTE,
-  NUM_FF000000, NUM_FFFFFFFF, NUM_00000000, NUM_FFC0C0C0, NUM_FF808080,
-  NUM_FF800000, NUM_FFFF0000, NUM_FF800080, NUM_FFFF00FF, NUM_FF008000,
-  NUM_FF00FF00, NUM_FF808000, NUM_FFFFFF00, NUM_FF000080, NUM_FF0000FF,
-  NUM_FF008080, NUM_FF00FFFF, NUM_FFF0F8FF, NUM_FFFAEBD7, NUM_FF7FFFD4,
-  NUM_FFF0FFFF, NUM_FFF5F5DC, NUM_FFFFE4C4, NUM_FF8A2BE2, NUM_FFA52A2A,
-  NUM_FFDEB887, NUM_FF5F9EA0, NUM_FF7FFF00, NUM_FFD2691E, NUM_FFFF7F50,
-  NUM_FF6495ED, NUM_FFFFF8DC, NUM_FFDC143C, NUM_FF00008B, NUM_FF008B8B,
-  NUM_FFB8860B, NUM_FFA9A9A9, NUM_FF006400, NUM_FFBDB76B, NUM_FF8B008B,
-  NUM_FF556B2F, NUM_FFFF8C00, NUM_FF9932CC, NUM_FF8B0000, NUM_FFE9967A,
-  NUM_FF8FBC8F, NUM_FF483D8B, NUM_FF2F4F4F, NUM_FF00CED1, NUM_FF9400D3,
-  NUM_FFFF1493, NUM_FF00BFFF, NUM_FF696969, NUM_FF1E90FF, NUM_FFB22222,
-  NUM_FFFFFAF0, NUM_FF228B22, NUM_FFDCDCDC, NUM_FFF8F8FF, NUM_FFFFD700,
-  NUM_FFDAA520, NUM_FFADFF2F, NUM_FFF0FFF0, NUM_FFFF69B4, NUM_FFCD5C5C,
-  NUM_FF4B0082, NUM_FFFFFFF0, NUM_FFF0E68C, NUM_FFE6E6FA, NUM_FFFFF0F5,
-  NUM_FF7CFC00, NUM_FFFFFACD, NUM_FFADD8E6, NUM_FFF08080, NUM_FFE0FFFF,
-  NUM_FFFAFAD2, NUM_FFD3D3D3, NUM_FF90EE90, NUM_FFFFB6C1, NUM_FFFFA07A,
-  NUM_FF20B2AA, NUM_FF87CEFA, NUM_FF778899, NUM_FFB0C4DE, NUM_FFFFFFE0,
-  NUM_FF32CD32, NUM_FFFAF0E6, NUM_FF66CDAA, NUM_FF0000CD, NUM_FFBA55D3,
-  NUM_FF9370DB, NUM_FF3CB371, NUM_FF7B68EE, NUM_FF00FA9A, NUM_FF48D1CC,
-  NUM_FFC71585, NUM_FF191970, NUM_FFF5FFFA, NUM_FFFFE4E1, NUM_FFFFE4B5,
-  NUM_FFFFDEAD, NUM_FFFDF5E6, NUM_FF6B8E23, NUM_FFFFA500, NUM_FFFF4500,
-  NUM_FFDA70D6, NUM_FFEEE8AA, NUM_FF98FB98, NUM_FFAFEEEE, NUM_FFDB7093,
-  NUM_FFFFEFD5, NUM_FFFFDAB9, NUM_FFCD853F, NUM_FFFFC0CB, NUM_FFDDA0DD,
-  NUM_FFB0E0E6, NUM_FFBC8F8F, NUM_FF4169E1, NUM_FF8B4513, NUM_FFFA8072,
-  NUM_FFF4A460, NUM_FF2E8B57, NUM_FFFFF5EE, NUM_FFA0522D, NUM_FF87CEEB,
-  NUM_FF6A5ACD, NUM_FF708090, NUM_FFFFFAFA, NUM_FF00FF7F, NUM_FF4682B4,
-  NUM_FFD2B48C, NUM_FFD8BFD8, NUM_FFFF6347, NUM_FF40E0D0, NUM_FFEE82EE,
-  NUM_FFF5DEB3, NUM_FFF5F5F5, NUM_FF9ACD32
+  SECONDS_PER_HOUR,
+  SECONDS_PER_MINUTE,
+  NUM_FF000000,
+  NUM_FFFFFFFF,
+  NUM_00000000,
+  NUM_FFC0C0C0,
+  NUM_FF808080,
+  NUM_FF800000,
+  NUM_FFFF0000,
+  NUM_FF800080,
+  NUM_FFFF00FF,
+  NUM_FF008000,
+  NUM_FF00FF00,
+  NUM_FF808000,
+  NUM_FFFFFF00,
+  NUM_FF000080,
+  NUM_FF0000FF,
+  NUM_FF008080,
+  NUM_FF00FFFF,
+  NUM_FFF0F8FF,
+  NUM_FFFAEBD7,
+  NUM_FF7FFFD4,
+  NUM_FFF0FFFF,
+  NUM_FFF5F5DC,
+  NUM_FFFFE4C4,
+  NUM_FF8A2BE2,
+  NUM_FFA52A2A,
+  NUM_FFDEB887,
+  NUM_FF5F9EA0,
+  NUM_FF7FFF00,
+  NUM_FFD2691E,
+  NUM_FFFF7F50,
+  NUM_FF6495ED,
+  NUM_FFFFF8DC,
+  NUM_FFDC143C,
+  NUM_FF00008B,
+  NUM_FF008B8B,
+  NUM_FFB8860B,
+  NUM_FFA9A9A9,
+  NUM_FF006400,
+  NUM_FFBDB76B,
+  NUM_FF8B008B,
+  NUM_FF556B2F,
+  NUM_FFFF8C00,
+  NUM_FF9932CC,
+  NUM_FF8B0000,
+  NUM_FFE9967A,
+  NUM_FF8FBC8F,
+  NUM_FF483D8B,
+  NUM_FF2F4F4F,
+  NUM_FF00CED1,
+  NUM_FF9400D3,
+  NUM_FFFF1493,
+  NUM_FF00BFFF,
+  NUM_FF696969,
+  NUM_FF1E90FF,
+  NUM_FFB22222,
+  NUM_FFFFFAF0,
+  NUM_FF228B22,
+  NUM_FFDCDCDC,
+  NUM_FFF8F8FF,
+  NUM_FFFFD700,
+  NUM_FFDAA520,
+  NUM_FFADFF2F,
+  NUM_FFF0FFF0,
+  NUM_FFFF69B4,
+  NUM_FFCD5C5C,
+  NUM_FF4B0082,
+  NUM_FFFFFFF0,
+  NUM_FFF0E68C,
+  NUM_FFE6E6FA,
+  NUM_FFFFF0F5,
+  NUM_FF7CFC00,
+  NUM_FFFFFACD,
+  NUM_FFADD8E6,
+  NUM_FFF08080,
+  NUM_FFE0FFFF,
+  NUM_FFFAFAD2,
+  NUM_FFD3D3D3,
+  NUM_FF90EE90,
+  NUM_FFFFB6C1,
+  NUM_FFFFA07A,
+  NUM_FF20B2AA,
+  NUM_FF87CEFA,
+  NUM_FF778899,
+  NUM_FFB0C4DE,
+  NUM_FFFFFFE0,
+  NUM_FF32CD32,
+  NUM_FFFAF0E6,
+  NUM_FF66CDAA,
+  NUM_FF0000CD,
+  NUM_FFBA55D3,
+  NUM_FF9370DB,
+  NUM_FF3CB371,
+  NUM_FF7B68EE,
+  NUM_FF00FA9A,
+  NUM_FF48D1CC,
+  NUM_FFC71585,
+  NUM_FF191970,
+  NUM_FFF5FFFA,
+  NUM_FFFFE4E1,
+  NUM_FFFFE4B5,
+  NUM_FFFFDEAD,
+  NUM_FFFDF5E6,
+  NUM_FF6B8E23,
+  NUM_FFFFA500,
+  NUM_FFFF4500,
+  NUM_FFDA70D6,
+  NUM_FFEEE8AA,
+  NUM_FF98FB98,
+  NUM_FFAFEEEE,
+  NUM_FFDB7093,
+  NUM_FFFFEFD5,
+  NUM_FFFFDAB9,
+  NUM_FFCD853F,
+  NUM_FFFFC0CB,
+  NUM_FFDDA0DD,
+  NUM_FFB0E0E6,
+  NUM_FFBC8F8F,
+  NUM_FF4169E1,
+  NUM_FF8B4513,
+  NUM_FFFA8072,
+  NUM_FFF4A460,
+  NUM_FF2E8B57,
+  NUM_FFFFF5EE,
+  NUM_FFA0522D,
+  NUM_FF87CEEB,
+  NUM_FF6A5ACD,
+  NUM_FF708090,
+  NUM_FFFFFAFA,
+  NUM_FF00FF7F,
+  NUM_FF4682B4,
+  NUM_FFD2B48C,
+  NUM_FFD8BFD8,
+  NUM_FFFF6347,
+  NUM_FF40E0D0,
+  NUM_FFEE82EE,
+  NUM_FFF5DEB3,
+  NUM_FFF5F5F5,
+  NUM_FF9ACD32
 } from "../base/Constants"
 import { BulletListTheme } from "../theme/BulletListTheme"
 
@@ -435,150 +546,292 @@ export function fontWeightToValue(weightString: string): FontWeight | undefined 
 function colorNameToArgb(colorStr: string): number | undefined {
   switch (colorStr) {
     // CSS基础色
-    case 'black': return NUM_FF000000
-    case 'silver': return NUM_FFC0C0C0
-    case 'gray': return NUM_FF808080
-    case 'grey': return NUM_FF808080
-    case 'white': return NUM_FFFFFFFF
-    case 'maroon': return NUM_FF800000
-    case 'red': return NUM_FFFF0000
-    case 'purple': return NUM_FF800080
-    case 'fuchsia': return NUM_FFFF00FF
-    case 'green': return NUM_FF008000
-    case 'lime': return NUM_FF00FF00
-    case 'olive': return NUM_FF808000
-    case 'yellow': return NUM_FFFFFF00
-    case 'navy': return NUM_FF000080
-    case 'blue': return NUM_FF0000FF
-    case 'teal': return NUM_FF008080
-    case 'aqua': return NUM_FF00FFFF
-    case 'cyan': return NUM_FF00FFFF
+    case 'black':
+      return NUM_FF000000
+    case 'silver':
+      return NUM_FFC0C0C0
+    case 'gray':
+      return NUM_FF808080
+    case 'grey':
+      return NUM_FF808080
+    case 'white':
+      return NUM_FFFFFFFF
+    case 'maroon':
+      return NUM_FF800000
+    case 'red':
+      return NUM_FFFF0000
+    case 'purple':
+      return NUM_FF800080
+    case 'fuchsia':
+      return NUM_FFFF00FF
+    case 'green':
+      return NUM_FF008000
+    case 'lime':
+      return NUM_FF00FF00
+    case 'olive':
+      return NUM_FF808000
+    case 'yellow':
+      return NUM_FFFFFF00
+    case 'navy':
+      return NUM_FF000080
+    case 'blue':
+      return NUM_FF0000FF
+    case 'teal':
+      return NUM_FF008080
+    case 'aqua':
+      return NUM_FF00FFFF
+    case 'cyan':
+      return NUM_FF00FFFF
     // 扩展色
-    case 'aliceblue': return NUM_FFF0F8FF
-    case 'antiquewhite': return NUM_FFFAEBD7
-    case 'aquamarine': return NUM_FF7FFFD4
-    case 'azure': return NUM_FFF0FFFF
-    case 'beige': return NUM_FFF5F5DC
-    case 'bisque': return NUM_FFFFE4C4
-    case 'blueviolet': return NUM_FF8A2BE2
-    case 'brown': return NUM_FFA52A2A
-    case 'burlywood': return NUM_FFDEB887
-    case 'cadetblue': return NUM_FF5F9EA0
-    case 'chartreuse': return NUM_FF7FFF00
-    case 'chocolate': return NUM_FFD2691E
-    case 'coral': return NUM_FFFF7F50
-    case 'cornflowerblue': return NUM_FF6495ED
-    case 'cornsilk': return NUM_FFFFF8DC
-    case 'crimson': return NUM_FFDC143C
-    case 'darkblue': return NUM_FF00008B
-    case 'darkcyan': return NUM_FF008B8B
-    case 'darkgoldenrod': return NUM_FFB8860B
-    case 'darkgray': return NUM_FFA9A9A9
-    case 'darkgreen': return NUM_FF006400
-    case 'darkkhaki': return NUM_FFBDB76B
-    case 'darkmagenta': return NUM_FF8B008B
-    case 'darkolivegreen': return NUM_FF556B2F
-    case 'darkorange': return NUM_FFFF8C00
-    case 'darkorchid': return NUM_FF9932CC
-    case 'darkred': return NUM_FF8B0000
-    case 'darksalmon': return NUM_FFE9967A
-    case 'darkseagreen': return NUM_FF8FBC8F
-    case 'darkslateblue': return NUM_FF483D8B
-    case 'darkslategray': return NUM_FF2F4F4F
-    case 'darkturquoise': return NUM_FF00CED1
-    case 'darkviolet': return NUM_FF9400D3
-    case 'deeppink': return NUM_FFFF1493
-    case 'deepskyblue': return NUM_FF00BFFF
-    case 'dimgray': return NUM_FF696969
-    case 'dodgerblue': return NUM_FF1E90FF
-    case 'firebrick': return NUM_FFB22222
-    case 'floralwhite': return NUM_FFFFFAF0
-    case 'forestgreen': return NUM_FF228B22
-    case 'gainsboro': return NUM_FFDCDCDC
-    case 'ghostwhite': return NUM_FFF8F8FF
-    case 'gold': return NUM_FFFFD700
-    case 'goldenrod': return NUM_FFDAA520
-    case 'greenyellow': return NUM_FFADFF2F
-    case 'honeydew': return NUM_FFF0FFF0
-    case 'hotpink': return NUM_FFFF69B4
-    case 'indianred': return NUM_FFCD5C5C
-    case 'indigo': return NUM_FF4B0082
-    case 'ivory': return NUM_FFFFFFF0
-    case 'khaki': return NUM_FFF0E68C
-    case 'lavender': return NUM_FFE6E6FA
-    case 'lavenderblush': return NUM_FFFFF0F5
-    case 'lawngreen': return NUM_FF7CFC00
-    case 'lemonchiffon': return NUM_FFFFFACD
-    case 'lightblue': return NUM_FFADD8E6
-    case 'lightcoral': return NUM_FFF08080
-    case 'lightcyan': return NUM_FFE0FFFF
-    case 'lightgoldenrodyellow': return NUM_FFFAFAD2
-    case 'lightgray': return NUM_FFD3D3D3
-    case 'lightgreen': return NUM_FF90EE90
-    case 'lightpink': return NUM_FFFFB6C1
-    case 'lightsalmon': return NUM_FFFFA07A
-    case 'lightseagreen': return NUM_FF20B2AA
-    case 'lightskyblue': return NUM_FF87CEFA
-    case 'lightslategray': return NUM_FF778899
-    case 'lightsteelblue': return NUM_FFB0C4DE
-    case 'lightyellow': return NUM_FFFFFFE0
-    case 'limegreen': return NUM_FF32CD32
-    case 'linen': return NUM_FFFAF0E6
-    case 'magenta': return NUM_FFFF00FF
-    case 'mediumaquamarine': return NUM_FF66CDAA
-    case 'mediumblue': return NUM_FF0000CD
-    case 'mediumorchid': return NUM_FFBA55D3
-    case 'mediumpurple': return NUM_FF9370DB
-    case 'mediumseagreen': return NUM_FF3CB371
-    case 'mediumslateblue': return NUM_FF7B68EE
-    case 'mediumspringgreen': return NUM_FF00FA9A
-    case 'mediumturquoise': return NUM_FF48D1CC
-    case 'mediumvioletred': return NUM_FFC71585
-    case 'midnightblue': return NUM_FF191970
-    case 'mintcream': return NUM_FFF5FFFA
-    case 'mistyrose': return NUM_FFFFE4E1
-    case 'moccasin': return NUM_FFFFE4B5
-    case 'navajowhite': return NUM_FFFFDEAD
-    case 'oldlace': return NUM_FFFDF5E6
-    case 'olivedrab': return NUM_FF6B8E23
-    case 'orange': return NUM_FFFFA500
-    case 'orangered': return NUM_FFFF4500
-    case 'orchid': return NUM_FFDA70D6
-    case 'palegoldenrod': return NUM_FFEEE8AA
-    case 'palegreen': return NUM_FF98FB98
-    case 'paleturquoise': return NUM_FFAFEEEE
-    case 'palevioletred': return NUM_FFDB7093
-    case 'papayawhip': return NUM_FFFFEFD5
-    case 'peachpuff': return NUM_FFFFDAB9
-    case 'peru': return NUM_FFCD853F
-    case 'pink': return NUM_FFFFC0CB
-    case 'plum': return NUM_FFDDA0DD
-    case 'powderblue': return NUM_FFB0E0E6
-    case 'rosybrown': return NUM_FFBC8F8F
-    case 'royalblue': return NUM_FF4169E1
-    case 'saddlebrown': return NUM_FF8B4513
-    case 'salmon': return NUM_FFFA8072
-    case 'sandybrown': return NUM_FFF4A460
-    case 'seagreen': return NUM_FF2E8B57
-    case 'seashell': return NUM_FFFFF5EE
-    case 'sienna': return NUM_FFA0522D
-    case 'skyblue': return NUM_FF87CEEB
-    case 'slateblue': return NUM_FF6A5ACD
-    case 'slategray': return NUM_FF708090
-    case 'snow': return NUM_FFFFFAFA
-    case 'springgreen': return NUM_FF00FF7F
-    case 'steelblue': return NUM_FF4682B4
-    case 'tan': return NUM_FFD2B48C
-    case 'thistle': return NUM_FFD8BFD8
-    case 'tomato': return NUM_FFFF6347
-    case 'turquoise': return NUM_FF40E0D0
-    case 'violet': return NUM_FFEE82EE
-    case 'wheat': return NUM_FFF5DEB3
-    case 'whitesmoke': return NUM_FFF5F5F5
-    case 'yellowgreen': return NUM_FF9ACD32
+    case 'aliceblue':
+      return NUM_FFF0F8FF
+    case 'antiquewhite':
+      return NUM_FFFAEBD7
+    case 'aquamarine':
+      return NUM_FF7FFFD4
+    case 'azure':
+      return NUM_FFF0FFFF
+    case 'beige':
+      return NUM_FFF5F5DC
+    case 'bisque':
+      return NUM_FFFFE4C4
+    case 'blueviolet':
+      return NUM_FF8A2BE2
+    case 'brown':
+      return NUM_FFA52A2A
+    case 'burlywood':
+      return NUM_FFDEB887
+    case 'cadetblue':
+      return NUM_FF5F9EA0
+    case 'chartreuse':
+      return NUM_FF7FFF00
+    case 'chocolate':
+      return NUM_FFD2691E
+    case 'coral':
+      return NUM_FFFF7F50
+    case 'cornflowerblue':
+      return NUM_FF6495ED
+    case 'cornsilk':
+      return NUM_FFFFF8DC
+    case 'crimson':
+      return NUM_FFDC143C
+    case 'darkblue':
+      return NUM_FF00008B
+    case 'darkcyan':
+      return NUM_FF008B8B
+    case 'darkgoldenrod':
+      return NUM_FFB8860B
+    case 'darkgray':
+      return NUM_FFA9A9A9
+    case 'darkgreen':
+      return NUM_FF006400
+    case 'darkkhaki':
+      return NUM_FFBDB76B
+    case 'darkmagenta':
+      return NUM_FF8B008B
+    case 'darkolivegreen':
+      return NUM_FF556B2F
+    case 'darkorange':
+      return NUM_FFFF8C00
+    case 'darkorchid':
+      return NUM_FF9932CC
+    case 'darkred':
+      return NUM_FF8B0000
+    case 'darksalmon':
+      return NUM_FFE9967A
+    case 'darkseagreen':
+      return NUM_FF8FBC8F
+    case 'darkslateblue':
+      return NUM_FF483D8B
+    case 'darkslategray':
+      return NUM_FF2F4F4F
+    case 'darkturquoise':
+      return NUM_FF00CED1
+    case 'darkviolet':
+      return NUM_FF9400D3
+    case 'deeppink':
+      return NUM_FFFF1493
+    case 'deepskyblue':
+      return NUM_FF00BFFF
+    case 'dimgray':
+      return NUM_FF696969
+    case 'dodgerblue':
+      return NUM_FF1E90FF
+    case 'firebrick':
+      return NUM_FFB22222
+    case 'floralwhite':
+      return NUM_FFFFFAF0
+    case 'forestgreen':
+      return NUM_FF228B22
+    case 'gainsboro':
+      return NUM_FFDCDCDC
+    case 'ghostwhite':
+      return NUM_FFF8F8FF
+    case 'gold':
+      return NUM_FFFFD700
+    case 'goldenrod':
+      return NUM_FFDAA520
+    case 'greenyellow':
+      return NUM_FFADFF2F
+    case 'honeydew':
+      return NUM_FFF0FFF0
+    case 'hotpink':
+      return NUM_FFFF69B4
+    case 'indianred':
+      return NUM_FFCD5C5C
+    case 'indigo':
+      return NUM_FF4B0082
+    case 'ivory':
+      return NUM_FFFFFFF0
+    case 'khaki':
+      return NUM_FFF0E68C
+    case 'lavender':
+      return NUM_FFE6E6FA
+    case 'lavenderblush':
+      return NUM_FFFFF0F5
+    case 'lawngreen':
+      return NUM_FF7CFC00
+    case 'lemonchiffon':
+      return NUM_FFFFFACD
+    case 'lightblue':
+      return NUM_FFADD8E6
+    case 'lightcoral':
+      return NUM_FFF08080
+    case 'lightcyan':
+      return NUM_FFE0FFFF
+    case 'lightgoldenrodyellow':
+      return NUM_FFFAFAD2
+    case 'lightgray':
+      return NUM_FFD3D3D3
+    case 'lightgreen':
+      return NUM_FF90EE90
+    case 'lightpink':
+      return NUM_FFFFB6C1
+    case 'lightsalmon':
+      return NUM_FFFFA07A
+    case 'lightseagreen':
+      return NUM_FF20B2AA
+    case 'lightskyblue':
+      return NUM_FF87CEFA
+    case 'lightslategray':
+      return NUM_FF778899
+    case 'lightsteelblue':
+      return NUM_FFB0C4DE
+    case 'lightyellow':
+      return NUM_FFFFFFE0
+    case 'limegreen':
+      return NUM_FF32CD32
+    case 'linen':
+      return NUM_FFFAF0E6
+    case 'magenta':
+      return NUM_FFFF00FF
+    case 'mediumaquamarine':
+      return NUM_FF66CDAA
+    case 'mediumblue':
+      return NUM_FF0000CD
+    case 'mediumorchid':
+      return NUM_FFBA55D3
+    case 'mediumpurple':
+      return NUM_FF9370DB
+    case 'mediumseagreen':
+      return NUM_FF3CB371
+    case 'mediumslateblue':
+      return NUM_FF7B68EE
+    case 'mediumspringgreen':
+      return NUM_FF00FA9A
+    case 'mediumturquoise':
+      return NUM_FF48D1CC
+    case 'mediumvioletred':
+      return NUM_FFC71585
+    case 'midnightblue':
+      return NUM_FF191970
+    case 'mintcream':
+      return NUM_FFF5FFFA
+    case 'mistyrose':
+      return NUM_FFFFE4E1
+    case 'moccasin':
+      return NUM_FFFFE4B5
+    case 'navajowhite':
+      return NUM_FFFFDEAD
+    case 'oldlace':
+      return NUM_FFFDF5E6
+    case 'olivedrab':
+      return NUM_FF6B8E23
+    case 'orange':
+      return NUM_FFFFA500
+    case 'orangered':
+      return NUM_FFFF4500
+    case 'orchid':
+      return NUM_FFDA70D6
+    case 'palegoldenrod':
+      return NUM_FFEEE8AA
+    case 'palegreen':
+      return NUM_FF98FB98
+    case 'paleturquoise':
+      return NUM_FFAFEEEE
+    case 'palevioletred':
+      return NUM_FFDB7093
+    case 'papayawhip':
+      return NUM_FFFFEFD5
+    case 'peachpuff':
+      return NUM_FFFFDAB9
+    case 'peru':
+      return NUM_FFCD853F
+    case 'pink':
+      return NUM_FFFFC0CB
+    case 'plum':
+      return NUM_FFDDA0DD
+    case 'powderblue':
+      return NUM_FFB0E0E6
+    case 'rosybrown':
+      return NUM_FFBC8F8F
+    case 'royalblue':
+      return NUM_FF4169E1
+    case 'saddlebrown':
+      return NUM_FF8B4513
+    case 'salmon':
+      return NUM_FFFA8072
+    case 'sandybrown':
+      return NUM_FFF4A460
+    case 'seagreen':
+      return NUM_FF2E8B57
+    case 'seashell':
+      return NUM_FFFFF5EE
+    case 'sienna':
+      return NUM_FFA0522D
+    case 'skyblue':
+      return NUM_FF87CEEB
+    case 'slateblue':
+      return NUM_FF6A5ACD
+    case 'slategray':
+      return NUM_FF708090
+    case 'snow':
+      return NUM_FFFFFAFA
+    case 'springgreen':
+      return NUM_FF00FF7F
+    case 'steelblue':
+      return NUM_FF4682B4
+    case 'tan':
+      return NUM_FFD2B48C
+    case 'thistle':
+      return NUM_FFD8BFD8
+    case 'tomato':
+      return NUM_FFFF6347
+    case 'turquoise':
+      return NUM_FF40E0D0
+    case 'violet':
+      return NUM_FFEE82EE
+    case 'wheat':
+      return NUM_FFF5DEB3
+    case 'whitesmoke':
+      return NUM_FFF5F5F5
+    case 'yellowgreen':
+      return NUM_FF9ACD32
     // HarmonyOS Color枚举
-    case 'transparent': return NUM_00000000
-    default: return undefined
+    case 'transparent':
+      return NUM_00000000
+    default:
+      return undefined
   }
 }
 
@@ -709,8 +962,12 @@ export function parsePicStyle(picStyle: Array<string> | undefined): PicStyleObj 
     }
     try {
       // 去除空格、引号、花括号，转小写
-      let style = str.replace(/ /g, '').replace(/"/g, '').replace(/'/g, '')
-        .replace(/{/g, '').replace(/}/g, '').toLowerCase()
+      let style = str.replace(/ /g, '')
+        .replace(/"/g, '')
+        .replace(/'/g, '')
+        .replace(/{/g, '')
+        .replace(/}/g, '')
+        .toLowerCase()
       // 去除开头的冒号（如 ":width=200" → "width=200"）
       if (style.startsWith(':')) {
         style = style.substring(1)

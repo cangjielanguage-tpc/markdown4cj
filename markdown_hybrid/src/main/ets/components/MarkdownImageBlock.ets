@@ -2,8 +2,7 @@ import { image } from "@kit.ImageKit"
 import { NodeView } from "../model/NodeView"
 import { ImageTheme } from "../theme/ImageTheme"
 import {
-  imageUrlHandle,
-  imageWidthAndHeight
+  imageUrlHandle, imageWidthAndHeight
 } from "../utils/MarkdownUtils"
 
 /**
@@ -83,7 +82,10 @@ export struct MarkdownImageBlock {
           .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
           .height(this.item.imageHeight)
           .objectFit(this.imageTheme.imageFitType)
-          .constraintSize({ maxWidth: this.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.imageTheme.imageMaxHeight })
+          .constraintSize({
+            maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
+            maxHeight: this.imageTheme.imageMaxHeight
+          })
           .onClick(() => {
             this.imageCallback?.(this.item.imageUrl ?? "")
           })
@@ -126,7 +128,10 @@ export struct MarkdownImageBlock {
           .height(this.item.imageHeight)
           .objectFit(this.imageTheme.imageFitType)
           .autoResize(this.imageTheme.imageAutoResize)
-          .constraintSize({ maxWidth: this.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.imageTheme.imageMaxHeight })
+          .constraintSize({
+            maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
+            maxHeight: this.imageTheme.imageMaxHeight
+          })
           .onClick(() => {
             this.imageCallback?.(this.item.imageUrl ?? "")
           })

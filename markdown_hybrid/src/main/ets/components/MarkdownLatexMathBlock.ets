@@ -228,5 +228,4 @@ export struct MarkdownLatexMathBlock {
         LatexParseQueue.notifyDone()
       })
   }
-
 }
