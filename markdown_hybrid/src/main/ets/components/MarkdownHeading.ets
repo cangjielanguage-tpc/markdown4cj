@@ -28,13 +28,10 @@ import { HeadingTheme } from '../theme/HeadingTheme'
 import { GlobalTheme } from '../theme/GlobalTheme'
 import { BlockQuoteTheme } from '../theme/BlockQuoteTheme'
 import {
-  imageUrlHandle,
-  imageWidthAndHeight,
-  spanSoftLineBreak
+  imageUrlHandle, imageWidthAndHeight, spanSoftLineBreak
 } from '../utils/MarkdownUtils'
 import {
-  generateLinkIconPixelMap,
-  LinkIconResult
+  generateLinkIconPixelMap, LinkIconResult
 } from '../utils/MarkdownLinkIconGenerator'
 import { SubTheme } from '../theme/SubTheme'
 import { SupTheme } from '../theme/SupTheme'
@@ -166,9 +163,7 @@ export struct MarkdownHeading {
   @Builder
   headingColumn() {
     Column() {
-      if (!this.imageTheme.isImageMixedLayout
-        && this.list.length === 1
-        && (this.list[0].nodeType === "Image" || this.list[0].nodeType === "StyleImage" || this.list[0].nodeType === "ImageHtmlNode")) {
+      if (!this.imageTheme.isImageMixedLayout && this.list.length === 1 && (this.list[0].nodeType === "Image" || this.list[0].nodeType === "StyleImage" || this.list[0].nodeType === "ImageHtmlNode")) {
         MarkdownImageBlock({
           item: this.list[0],
           imageTheme: this.imageTheme,
@@ -178,25 +173,25 @@ export struct MarkdownHeading {
           imageReplaceCallback: this.imageReplaceCallback
         })
       } else {
-      Text() {
-        ForEach(
-          this.list,
-          (item: NodeView, index: number) => {
-            this.headingInlineItem(item, index)
-          },
-          (item: NodeView, index: number) => {
-          return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
+        Text() {
+          ForEach(
+            this.list,
+            (item: NodeView, index: number) => {
+              this.headingInlineItem(item, index)
+            },
+            (item: NodeView, index: number) => {
+              return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
+            }
+          )
         }
+        .textAlign(TextAlign.Start)
+        .halfLeading(true)
+        .copyOption(
+          this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
         )
-      }
-      .textAlign(TextAlign.Start)
-      .halfLeading(true)
-      .copyOption(
-        this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
-      )
-      .onCopy((str) => {
-        this.textCopyCallback?.(str)
-      })
+        .onCopy((str) => {
+          this.textCopyCallback?.(str)
+        })
       }
 
       this.headingUnderline()
@@ -385,12 +380,8 @@ export struct MarkdownHeading {
             .height(px2vp(item.linkIconHeight))
             .verticalAlign(ImageSpanAlignment.CENTER)
             .margin({
-              left: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin
-                : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin
-                : this.linkTheme.linkRectToolIconMargin,
-              right: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin
-                : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin
-                : this.linkTheme.linkRectToolIconMargin
+              left: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin : this.linkTheme.linkRectToolIconMargin,
+              right: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin : this.linkTheme.linkRectToolIconMargin
             })
             .onClick(() => {
               if (item.linkUrl !== undefined) {
@@ -433,55 +424,58 @@ export struct MarkdownHeading {
     } else if (item.nodeType === "Image" || item.nodeType === "StyleImage" || item.nodeType === "ImageHtmlNode") {
       // 图片/图片Style/HTML图片
       if (item.imageReplacePixelMap !== undefined || item.imageUrl !== undefined) {
-      ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
-        .alt(this.placeholderPixelMap)
-        .margin({
-          top: this.imageTheme.imageMarginTop,
-          right: this.imageTheme.imageMarginRight,
-          bottom: this.imageTheme.imageMarginBottom,
-          left: this.imageTheme.imageMarginLeft
-        })
-        .borderRadius({
-          topLeft: item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
-          topRight: item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
-          bottomLeft: item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
-          bottomRight: item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
-        })
-        .borderWidth(this.imageTheme.imageBorderWidth)
-        .borderColor(this.imageTheme.imageBorderColor)
-        .borderStyle(this.imageTheme.imageBorderStyle)
-        .width(item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
-        .height(item.imageHeight)
-        .objectFit(this.imageTheme.imageFitType)
-        .verticalAlign(ImageSpanAlignment.CENTER)
-        .constraintSize({ maxWidth: this.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.imageTheme.imageMaxHeight})
-        .onClick(()=>{
-          if(item.isLink){
-            this.linkCallback?.(item.linkUrl ?? "")
-          }else{
-            this.imageCallback?.(item.imageUrl ?? "")
-          }
-        })
-        .onComplete((imageLoadResult) => {
-          const l = imageWidthAndHeight(
-            this.componentWidth,
-            imageLoadResult.width,
-            imageLoadResult.height,
-            item.imageStyleWidth ?? this.imageTheme.imageWidth,
-            item.imageStyleHeight ?? this.imageTheme.imageHeight,
-            this.imageTheme.imageMaxWidth,
-            this.imageTheme.imageMaxHeight,
-            this.imageTheme.imageFixedRatioWidth,
-            this.imageTheme.imageMaximumWidth
-          )
-          let w = l[0]
-          let h = l[1]
-          item.imageWidth = w
-          item.imageHeight = h
-          if (this.list.indexOf(item) >= 0) {
-            this.list = [...this.list]
-          }
-        })
+        ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
+          .alt(this.placeholderPixelMap)
+          .margin({
+            top: this.imageTheme.imageMarginTop,
+            right: this.imageTheme.imageMarginRight,
+            bottom: this.imageTheme.imageMarginBottom,
+            left: this.imageTheme.imageMarginLeft
+          })
+          .borderRadius({
+            topLeft: item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
+            topRight: item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
+            bottomLeft: item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
+            bottomRight: item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
+          })
+          .borderWidth(this.imageTheme.imageBorderWidth)
+          .borderColor(this.imageTheme.imageBorderColor)
+          .borderStyle(this.imageTheme.imageBorderStyle)
+          .width(item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
+          .height(item.imageHeight)
+          .objectFit(this.imageTheme.imageFitType)
+          .verticalAlign(ImageSpanAlignment.CENTER)
+          .constraintSize({
+            maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
+            maxHeight: this.imageTheme.imageMaxHeight
+          })
+          .onClick(() => {
+            if (item.isLink) {
+              this.linkCallback?.(item.linkUrl ?? "")
+            } else {
+              this.imageCallback?.(item.imageUrl ?? "")
+            }
+          })
+          .onComplete((imageLoadResult) => {
+            const l = imageWidthAndHeight(
+              this.componentWidth,
+              imageLoadResult.width,
+              imageLoadResult.height,
+              item.imageStyleWidth ?? this.imageTheme.imageWidth,
+              item.imageStyleHeight ?? this.imageTheme.imageHeight,
+              this.imageTheme.imageMaxWidth,
+              this.imageTheme.imageMaxHeight,
+              this.imageTheme.imageFixedRatioWidth,
+              this.imageTheme.imageMaximumWidth
+            )
+            let w = l[0]
+            let h = l[1]
+            item.imageWidth = w
+            item.imageHeight = h
+            if (this.list.indexOf(item) >= 0) {
+              this.list = [...this.list]
+            }
+          })
       }
     } else if (item.nodeType === "LatexMathNode") {
       // 数学公式行内 - 和图片一样直接用ImageSpan
@@ -768,5 +762,4 @@ export struct MarkdownHeading {
         LatexParseQueue.notifyDone()
       })
   }
-
 }

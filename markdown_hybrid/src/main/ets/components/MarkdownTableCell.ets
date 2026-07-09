@@ -1,5 +1,5 @@
 import { image } from "@kit.ImageKit"
-import { NUM_FF000000, resourceColorToNumber } from "../base/Constants"
+import { resourceColorToNumber } from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import { CellWidthTracker } from "../model/CellWidthTracker"
 import { LatexParseQueue } from "../model/LatexParseQueue"
@@ -26,8 +26,7 @@ import {
   imageUrlHandle, imageWidthAndHeight, lengthToVpNumber, spanSoftLineBreak
 } from "../utils/MarkdownUtils"
 import {
-  generateLinkIconPixelMap,
-  LinkIconResult
+  generateLinkIconPixelMap, LinkIconResult
 } from "../utils/MarkdownLinkIconGenerator"
 import {
   spanBackgroundColor,
@@ -123,7 +122,10 @@ export struct MarkdownTableCell {
     })
     .borderStyle(this.tableTheme.tableBorderStyle)
     .borderColor(this.tableTheme.tableBorderColor)
-    .constraintSize({ minWidth: this.columnWidths[this.tableBlockCellCell] ?? 0, maxWidth: this.tableTheme.tableMaxCellWidth })
+    .constraintSize({
+      minWidth: this.columnWidths[this.tableBlockCellCell] ?? 0,
+      maxWidth: this.tableTheme.tableMaxCellWidth
+    })
     .onSizeChange((oldValue, newValue) => {
       let newWidth: number = 0
       if (typeof newValue.width === 'number') {
@@ -328,59 +330,59 @@ export struct MarkdownTableCell {
     } else if (item.nodeType === "Image" || item.nodeType === "StyleImage" || item.nodeType === "ImageHtmlNode") {
       // 图片/图片Style/HTML图片
       if (item.imageReplacePixelMap !== undefined || item.imageUrl !== undefined) {
-      ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
-        .alt(this.placeholderPixelMap)
-        .margin({
-          top: this.imageTheme.imageMarginTop,
-          right: this.imageTheme.imageMarginRight,
-          bottom: this.imageTheme.imageMarginBottom,
-          left: this.imageTheme.imageMarginLeft
-        })
-        .borderRadius({
-          topLeft: item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
-          topRight: item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
-          bottomLeft: item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
-          bottomRight: item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
-        })
-        .borderWidth(this.imageTheme.imageBorderWidth)
-        .borderColor(this.imageTheme.imageBorderColor)
-        .borderStyle(this.imageTheme.imageBorderStyle)
-        .width(item.imageWidth ?? undefined)
-        .height(item.imageHeight)
-        .objectFit(this.imageTheme.imageFitType)
-        .verticalAlign(ImageSpanAlignment.CENTER)
-        .constraintSize({
-          maxWidth: this.tableTheme.tableMaxCellWidth,
-          maxHeight: this.imageTheme.imageMaxHeight
-        })
-        .onClick(() => {
-          if (item.isLink) {
-            this.linkCallback?.(item.linkUrl ?? "")
-          } else {
-            this.imageCallback?.(item.imageUrl ?? "")
-          }
-        })
-        .onComplete((imageLoadResult) => {
-          const cellMaxWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? this.componentWidth
-          const l = imageWidthAndHeight(
-            cellMaxWidth,
-            imageLoadResult.width,
-            imageLoadResult.height,
-            item.imageStyleWidth ?? this.imageTheme.imageWidth,
-            item.imageStyleHeight ?? this.imageTheme.imageHeight,
-            this.imageTheme.imageMaxWidth,
-            this.imageTheme.imageMaxHeight,
-            this.imageTheme.imageFixedRatioWidth,
-            this.imageTheme.imageMaximumWidth
-          )
-          let w = l[0]
-          let h = l[1]
-          item.imageWidth = w
-          item.imageHeight = h
-          if (this.list.indexOf(item) >= 0) {
-            this.list = [...this.list]
-          }
-        })
+        ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
+          .alt(this.placeholderPixelMap)
+          .margin({
+            top: this.imageTheme.imageMarginTop,
+            right: this.imageTheme.imageMarginRight,
+            bottom: this.imageTheme.imageMarginBottom,
+            left: this.imageTheme.imageMarginLeft
+          })
+          .borderRadius({
+            topLeft: item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
+            topRight: item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
+            bottomLeft: item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
+            bottomRight: item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
+          })
+          .borderWidth(this.imageTheme.imageBorderWidth)
+          .borderColor(this.imageTheme.imageBorderColor)
+          .borderStyle(this.imageTheme.imageBorderStyle)
+          .width(item.imageWidth ?? undefined)
+          .height(item.imageHeight)
+          .objectFit(this.imageTheme.imageFitType)
+          .verticalAlign(ImageSpanAlignment.CENTER)
+          .constraintSize({
+            maxWidth: this.tableTheme.tableMaxCellWidth,
+            maxHeight: this.imageTheme.imageMaxHeight
+          })
+          .onClick(() => {
+            if (item.isLink) {
+              this.linkCallback?.(item.linkUrl ?? "")
+            } else {
+              this.imageCallback?.(item.imageUrl ?? "")
+            }
+          })
+          .onComplete((imageLoadResult) => {
+            const cellMaxWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? this.componentWidth
+            const l = imageWidthAndHeight(
+              cellMaxWidth,
+              imageLoadResult.width,
+              imageLoadResult.height,
+              item.imageStyleWidth ?? this.imageTheme.imageWidth,
+              item.imageStyleHeight ?? this.imageTheme.imageHeight,
+              this.imageTheme.imageMaxWidth,
+              this.imageTheme.imageMaxHeight,
+              this.imageTheme.imageFixedRatioWidth,
+              this.imageTheme.imageMaximumWidth
+            )
+            let w = l[0]
+            let h = l[1]
+            item.imageWidth = w
+            item.imageHeight = h
+            if (this.list.indexOf(item) >= 0) {
+              this.list = [...this.list]
+            }
+          })
       }
     } else if (item.nodeType === "Link" || item.nodeType === "HeadLink") {
       if ((item.isBulletList || item.isOrderedList || item.isQuote || item.isDescList) && this.isSingleLinkNode() && !this.linkTheme.linkListIsIcon) {
@@ -406,12 +408,8 @@ export struct MarkdownTableCell {
             .height(px2vp(item.linkIconHeight))
             .verticalAlign(ImageSpanAlignment.CENTER)
             .margin({
-              left: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin
-                : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin
-                : this.linkTheme.linkRectToolIconMargin,
-              right: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin
-                : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin
-                : this.linkTheme.linkRectToolIconMargin
+              left: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin : this.linkTheme.linkRectToolIconMargin,
+              right: item.linkIconType === 0 ? this.linkTheme.linkCircleIconMargin : item.linkIconType === 1 ? this.linkTheme.linkRectIconMargin : this.linkTheme.linkRectToolIconMargin
             })
             .onClick(() => {
               if (item.linkUrl !== undefined) {
@@ -666,77 +664,76 @@ export struct MarkdownTableCell {
       const resPath: string | undefined = this.latexMathTheme.latexMathResPath
 
       latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
-      .then((buffer: ArrayBuffer) => {
-        if (!this.isAlive) {
-          item.latexIsLoading = false
-          LatexParseQueue.notifyDone()
-          return
-        }
-        const imageSource: image.ImageSource = image.createImageSource(buffer)
-        imageSource.createPixelMap().then((pm: PixelMap) => {
-          imageSource.release()
+        .then((buffer: ArrayBuffer) => {
           if (!this.isAlive) {
-            pm.release()
             item.latexIsLoading = false
             LatexParseQueue.notifyDone()
             return
           }
-          pm.getImageInfo().then((info: image.ImageInfo) => {
+          const imageSource: image.ImageSource = image.createImageSource(buffer)
+          imageSource.createPixelMap().then((pm: PixelMap) => {
+            imageSource.release()
             if (!this.isAlive) {
               pm.release()
               item.latexIsLoading = false
               LatexParseQueue.notifyDone()
               return
             }
-            // 流式输出中文本可能已变化，丢弃过期结果
-            // 重新触发onListChanged检查是否需要为新文本重新入队加载
-            if (item.nodeText !== capturedNodeText) {
-              pm.release()
-              LatexParseQueue.notifyDone()
-              this.list = [...this.list]
-              return
-            }
-            // 释放旧PixelMap（防御性：理论上此处应为undefined）
-            if (item.latexPixelMap !== undefined) {
-              try {
-                item.latexPixelMap.release()
-              } catch (e) {
-                console.error('TableCell latexPixelMap release failed: ' + JSON.stringify(e))
+            pm.getImageInfo().then((info: image.ImageInfo) => {
+              if (!this.isAlive) {
+                pm.release()
+                item.latexIsLoading = false
+                LatexParseQueue.notifyDone()
+                return
               }
-            }
-            item.latexPixelMap = pm
-            item.latexImageData = buffer
-            item.latexImageWidth = info.size.width
-            item.latexImageHeight = info.size.height
-            item.latexIsLoading = false
-            this.list = [...this.list] // 触发重渲染
-            LatexParseQueue.notifyDone()
+              // 流式输出中文本可能已变化，丢弃过期结果
+              // 重新触发onListChanged检查是否需要为新文本重新入队加载
+              if (item.nodeText !== capturedNodeText) {
+                pm.release()
+                LatexParseQueue.notifyDone()
+                this.list = [...this.list]
+                return
+              }
+              // 释放旧PixelMap（防御性：理论上此处应为undefined）
+              if (item.latexPixelMap !== undefined) {
+                try {
+                  item.latexPixelMap.release()
+                } catch (e) {
+                  console.error('TableCell latexPixelMap release failed: ' + JSON.stringify(e))
+                }
+              }
+              item.latexPixelMap = pm
+              item.latexImageData = buffer
+              item.latexImageWidth = info.size.width
+              item.latexImageHeight = info.size.height
+              item.latexIsLoading = false
+              this.list = [...this.list] // 触发重渲染
+              LatexParseQueue.notifyDone()
+            }).catch(() => {
+              pm.release()
+              // 仅当文本未变化时才重置loading，避免覆盖新一轮加载的loading状态
+              if (item.nodeText === capturedNodeText) {
+                item.latexIsLoading = false
+              }
+              LatexParseQueue.notifyDone()
+            })
           }).catch(() => {
-            pm.release()
-            // 仅当文本未变化时才重置loading，避免覆盖新一轮加载的loading状态
+            imageSource.release()
             if (item.nodeText === capturedNodeText) {
               item.latexIsLoading = false
             }
             LatexParseQueue.notifyDone()
           })
-        }).catch(() => {
-          imageSource.release()
+        })
+        .catch(() => {
           if (item.nodeText === capturedNodeText) {
             item.latexIsLoading = false
           }
           LatexParseQueue.notifyDone()
         })
-      })
-      .catch(() => {
-        if (item.nodeText === capturedNodeText) {
-          item.latexIsLoading = false
-        }
-        LatexParseQueue.notifyDone()
-      })
     } catch (e) {
       item.latexIsLoading = false
       LatexParseQueue.notifyDone()
     }
   }
-
 }

@@ -92,19 +92,19 @@ export struct MarkdownTableRow {
               latexMathTheme: this.latexMathTheme,
               latexImageCallback: this.latexImageCallback,
               latexStrCallback: this.latexStrCallback,
-               componentWidth: this.componentWidth,
-                tableBlockCellRow: this.tableBlockRowRow,
-                tableBlockCellCell: index,
-                 tableBlockCellCellSize: this.tableBlockRowCellSize,
-                 tableBlockCellRowSize: this.tableBlockRowRowSize,
-                textCopyCallback: this.textCopyCallback,
-               footnoteCallback: this.footnoteCallback,
-               tocCallback: this.tocCallback,
-               linkCallback: this.linkCallback,
-                imageCallback: this.imageCallback,
-                imageDownloadCallback: this.imageDownloadCallback,
-                imageReplaceCallback: this.imageReplaceCallback
-              })
+              componentWidth: this.componentWidth,
+              tableBlockCellRow: this.tableBlockRowRow,
+              tableBlockCellCell: index,
+              tableBlockCellCellSize: this.tableBlockRowCellSize,
+              tableBlockCellRowSize: this.tableBlockRowRowSize,
+              textCopyCallback: this.textCopyCallback,
+              footnoteCallback: this.footnoteCallback,
+              tocCallback: this.tocCallback,
+              linkCallback: this.linkCallback,
+              imageCallback: this.imageCallback,
+              imageDownloadCallback: this.imageDownloadCallback,
+              imageReplaceCallback: this.imageReplaceCallback
+            })
           } else {
             // 其它
             Text("")

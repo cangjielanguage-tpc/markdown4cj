@@ -4,38 +4,34 @@ import { TableTheme } from "../theme/TableTheme"
 
 @Component
 export struct MarkDownTableTitle {
-  @ObjectLink @Watch('refreshData') node: NodeView
-  @ObjectLink tableTheme: TableTheme
-  tableCopyCallback?: (str: string) => void
-  nodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString()
-
-  refreshData() {
-    this.nodeViewString.setRoot(this.node)
-  }
+  @ObjectLink @Watch('refreshData') node: NodeView // 表格自身节点数据
+  @ObjectLink tableTheme: TableTheme // 表格样式
+  tableCopyCallback?: (str: string) => void // 表格复制点击回调事件
+  nodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 表格全部文本对象
 
   aboutToAppear(): void {
-    this.refreshData()
+    this.refreshData() // 首次加载
   }
 
   build() {
     Row() {
-        Text(this.tableTheme.tableHeadTitleText)
-          .fontColor(this.tableTheme.tableHeadTitleTextFontColor ?? this.tableTheme.tableTitleTextFontColor)
-          .fontSize(this.tableTheme.tableHeadTitleTextFontSize ?? this.tableTheme.tableTitleTextFontSize)
-          .fontWeight(this.tableTheme.tableHeadTitleTextFontWeight ?? this.tableTheme.tableTitleTextFontWeight)
-          .fontStyle(this.tableTheme.tableHeadTitleTextFontStyle ?? this.tableTheme.tableTitleTextFontStyle)
-          .fontFamily(this.tableTheme.tableHeadTitleTextFontFamily ?? this.tableTheme.tableTitleTextFontFamily)
-          .lineHeight(this.tableTheme.tableHeadTitleTextLineHeight ?? this.tableTheme.tableTitleTextLineHeight)
-          .width('30%')
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-          .padding({
-            top: this.tableTheme.tableCellPaddingTop,
-            bottom: this.tableTheme.tableCellPaddingBottom,
-            left: this.tableTheme.tableCellPaddingLeft
-          })
-          .margin({ left: this.tableTheme.tableHeadTitleTextMarginLeft })
-          .visibility(this.tableTheme.tableHeadTitleText.length > 0?Visibility.Visible:Visibility.Hidden)
+      Text(this.tableTheme.tableHeadTitleText)
+        .fontColor(this.tableTheme.tableHeadTitleTextFontColor ?? this.tableTheme.tableTitleTextFontColor)
+        .fontSize(this.tableTheme.tableHeadTitleTextFontSize ?? this.tableTheme.tableTitleTextFontSize)
+        .fontWeight(this.tableTheme.tableHeadTitleTextFontWeight ?? this.tableTheme.tableTitleTextFontWeight)
+        .fontStyle(this.tableTheme.tableHeadTitleTextFontStyle ?? this.tableTheme.tableTitleTextFontStyle)
+        .fontFamily(this.tableTheme.tableHeadTitleTextFontFamily ?? this.tableTheme.tableTitleTextFontFamily)
+        .lineHeight(this.tableTheme.tableHeadTitleTextLineHeight ?? this.tableTheme.tableTitleTextLineHeight)
+        .width('30%')
+        .maxLines(1)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .padding({
+          top: this.tableTheme.tableCellPaddingTop,
+          bottom: this.tableTheme.tableCellPaddingBottom,
+          left: this.tableTheme.tableCellPaddingLeft
+        })
+        .margin({ left: this.tableTheme.tableHeadTitleTextMarginLeft })
+        .visibility(this.tableTheme.tableHeadTitleText.length > 0 ? Visibility.Visible : Visibility.Hidden)
 
       Blank()
         .layoutWeight(1)
@@ -49,7 +45,8 @@ export struct MarkDownTableTitle {
 
         Blank()
           .width(this.tableTheme.tableHeadCopyTextSpacing)
-          .visibility(this.tableTheme.tableHeadCopyIcon !== undefined && this.tableTheme.tableHeadCopyTextIsShow ? Visibility.Visible : Visibility.Hidden)
+          .visibility(this.tableTheme.tableHeadCopyIcon !== undefined && this.tableTheme.tableHeadCopyTextIsShow ?
+          Visibility.Visible : Visibility.Hidden)
 
         Text(this.tableTheme.tableHeadCopyText)
           .fontFamily(this.tableTheme.tableHeadCopyTextFontFamily ?? this.tableTheme.tableTitleTextFontFamily)
@@ -74,11 +71,18 @@ export struct MarkDownTableTitle {
     }
     .width('100%')
     .borderWidth({
-      bottom:this.tableTheme.tableBorderWidth
+      bottom: this.tableTheme.tableBorderWidth
     })
     .borderStyle(this.tableTheme.tableBorderStyle)
     .borderColor(this.tableTheme.tableBorderColor)
     .backgroundColor(this.tableTheme.tableTitleBackgroundColor)
     .alignItems(VerticalAlign.Center)
+  }
+
+  /**
+   * 刷新数据
+   */
+  refreshData() {
+    this.nodeViewString.setRoot(this.node)
   }
 }

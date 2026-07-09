@@ -717,7 +717,7 @@ export struct MarkdownTable {
       }
     }
     let changed = newWidths.length !== this.columnWidths.length
-    for (let i = 0; !changed && i < newWidths.length; i++) {
+    for (let i = 0;!changed && i < newWidths.length; i++) {
       if (newWidths[i] !== this.columnWidths[i]) {
         changed = true
       }
