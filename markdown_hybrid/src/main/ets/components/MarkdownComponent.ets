@@ -47,6 +47,8 @@ export struct CJMarkdown {
   private isAlive: boolean = true // 组件是否存活
   private throttleTimerId: number = -1 // 节流定时器ID
   private parseTimerId: number = -1 // 异步解析setTimeout定时器ID
+  private indexFootnoteHashMap: Map<string, number> = new Map<string, number>() // 脚注ID→列表索引映射
+  private indexTocHashMap: Map<number, number> = new Map<number, number>() // TOC标题索引→列表索引映射
   /**
    * 图片点击回调
    */
@@ -61,19 +63,25 @@ export struct CJMarkdown {
   }
   /**
    * 脚注点击回调
-   * 组件传入脚注ID（字符串），转换为数值索引后回调config
+   * 通过footnoteID查找脚注定义块的列表索引，滚动到该位置
    */
   footnoteCallback: (id: string) => void = (id: string) => {
-    const idx = Number(id)
-    if (!isNaN(idx)) {
+    const idx = this.indexFootnoteHashMap.get(id)
+    if (idx !== undefined) {
+      this.scroller.scrollToIndex(idx, true)
       this.config.footnoteCallback?.(idx)
     }
   }
   /**
    * TOC/标题ID点击回调
+   * 通过headLinkIndex验证目标标题位置，滚动到该位置
    */
   tocCallback: (index: number) => void = (index: number) => {
-    this.config.tocIndexCallback?.(index)
+    const idx = this.indexTocHashMap.get(index)
+    if (idx !== undefined) {
+      this.scroller.scrollToIndex(idx, true)
+      this.config.tocIndexCallback?.(idx)
+    }
   }
 
   aboutToAppear(): void {
@@ -818,16 +826,36 @@ export struct CJMarkdown {
       }
       if (nodeView.children.length === 0) {
         this.markdownDataSource.clear()
+        this.buildIndexMaps()
         this.config.markdownNodeViewString.setRoot(nodeView)
         this.appliedVersion = currentVersion
         return
       }
       this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+      this.buildIndexMaps()
       this.config.markdownHighlightParagraph.setAllParagraphItems(highlightSelectedList)
       this.config.markdownNodeViewString.setRoot(nodeView)
       this.appliedVersion = currentVersion
     } finally {
       this.jsNodePoolImpl.put(node)
+    }
+  }
+
+  /**
+   * 构建脚注ID和TOC标题索引的哈希映射表
+   * 遍历数据源，记录FootnoteBlock的footnoteID→列表索引，Heading/IdHeading的列表索引→列表索引
+   */
+  private buildIndexMaps(): void {
+    this.indexFootnoteHashMap.clear()
+    this.indexTocHashMap.clear()
+    const arr = this.markdownDataSource.getAllData()
+    for (let i = 0; i < arr.length; i++) {
+      const item = arr[i]
+      if (item.nodeType === "Heading" || item.nodeType === "IdHeading") {
+        this.indexTocHashMap.set(i, i)
+      } else if (item.nodeType === "FootnoteBlock") {
+        this.indexFootnoteHashMap.set(item.footnoteID ?? "", i)
+      }
     }
   }
 
