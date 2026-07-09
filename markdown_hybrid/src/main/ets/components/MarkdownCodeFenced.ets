@@ -1,4 +1,5 @@
 import { codeStringToColorString, PrismBlock, PrismNode, PrismRes } from "@cangjie-tpc/prism_hybrid"
+import { CodeFormatTS } from "@cangjie-tpc/codeformat_hybrid"
 import { NodeView } from "../model/NodeView"
 import { CodeBlockTheme } from "../theme/CodeBlockTheme"
 import { CodeLineComponent } from "./MarkdownCodeLine"
@@ -22,6 +23,7 @@ export struct MarkdownCodeFenced {
   private parseVersion: number = 0 // 解析版本号，每次解析递增
   private appliedVersion: number = 0 // 已应用的版本号，用于丢弃过期的异步解析结果
   private timerId: number = -1 // setTimeout定时器ID
+  private codeFormatTS: CodeFormatTS | null = null // 代码格式化工具实例
 
   aboutToAppear(): void {
     this.isAlive = true
@@ -137,6 +139,9 @@ export struct MarkdownCodeFenced {
   refreshData(): void {
     this.codeText = this.node.nodeText
     this.info = this.node.codeInfo
+    if (this.codeBlockTheme.codeBlockIsCodeFormat) {
+      this.codeText = this.formatCode(this.info, this.codeText)
+    }
     let arr = this.codeText.split("\n") // 代码块数据分割
     if (arr.length > 1 && arr[arr.length - 1] === "") {
       arr.pop()
@@ -150,6 +155,24 @@ export struct MarkdownCodeFenced {
       this.parseCodeSync()
     } else {
       this.parseCodeAsync()
+    }
+  }
+
+  /**
+   * 代码格式化
+   * 根据codeBlockUseTab选择Tab或空格缩进，失败时返回原始代码
+   */
+  private formatCode(info: string | undefined, code: string): string {
+    try {
+      if (this.codeFormatTS === null) {
+        this.codeFormatTS = new CodeFormatTS(true)
+      }
+      if (this.codeBlockTheme.codeBlockUseTab) {
+        return this.codeFormatTS.codeFormatWithTab(info, code)
+      }
+      return this.codeFormatTS.codeFormatWithWhiteSpace(info, code, Number(this.codeBlockTheme.codeBlockIndentWidth))
+    } catch (e) {
+      return code
     }
   }
 

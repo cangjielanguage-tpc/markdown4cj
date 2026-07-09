@@ -5,7 +5,7 @@ import { DividerTheme } from "../theme/DividerTheme"
  */
 @Component
 export struct MarkdownThematicBreak {
-  @ObjectLink dividerTheme: DividerTheme
+  @ObjectLink dividerTheme: DividerTheme // 分割线样式
 
   build() {
     Column() {

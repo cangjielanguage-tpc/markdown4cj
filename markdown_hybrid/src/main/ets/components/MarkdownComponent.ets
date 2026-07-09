@@ -22,7 +22,7 @@ import { MarkdownList } from "./MarkdownList"
 import { MarkdownQuote } from "./MarkdownQuote"
 import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
 import { LatexParseQueue } from "../model/LatexParseQueue"
-import { MarkdownScrollController } from "../model/MarkdownScrollController"
+import { MarkdownScrollController } from "../controller/MarkdownScrollController"
 import { StickyScrollYHolder } from "../model/StickyScrollYHolder"
 import { ArrayList } from "@kit.ArkTS"
 

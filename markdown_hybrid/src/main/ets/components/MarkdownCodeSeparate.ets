@@ -61,12 +61,18 @@ export struct MarkdownCodeSeparate {
             (num: number) => {
               ListItem() {
                 Text(num.toString())
-                  .fontFamily(this.codeBlockTheme.codeBlockLineNumberTextFontFamily ?? this.codeBlockTheme.codeBlockTextFontFamily)
-                  .fontSize(this.codeBlockTheme.codeBlockLineNumberTextFontSize ?? this.codeBlockTheme.codeBlockTextFontSize)
-                  .fontWeight(this.codeBlockTheme.codeBlockLineNumberTextFontWeight ?? this.codeBlockTheme.codeBlockTextFontWeight)
-                  .fontStyle(this.codeBlockTheme.codeBlockLineNumberTextFontStyle ?? this.codeBlockTheme.codeBlockTextFontStyle)
-                  .fontColor(this.codeBlockTheme.codeBlockLineNumberTextFontColor ?? this.codeBlockTheme.codeBlockTextFontColor)
-                  .lineHeight(this.codeBlockTheme.codeBlockLineNumberTextLineHeight ?? this.codeBlockTheme.codeBlockTextLineHeight)
+                  .fontFamily(this.codeBlockTheme.codeBlockLineNumberTextFontFamily ??
+                  this.codeBlockTheme.codeBlockTextFontFamily)
+                  .fontSize(this.codeBlockTheme.codeBlockLineNumberTextFontSize ??
+                  this.codeBlockTheme.codeBlockTextFontSize)
+                  .fontWeight(this.codeBlockTheme.codeBlockLineNumberTextFontWeight ??
+                  this.codeBlockTheme.codeBlockTextFontWeight)
+                  .fontStyle(this.codeBlockTheme.codeBlockLineNumberTextFontStyle ??
+                  this.codeBlockTheme.codeBlockTextFontStyle)
+                  .fontColor(this.codeBlockTheme.codeBlockLineNumberTextFontColor ??
+                  this.codeBlockTheme.codeBlockTextFontColor)
+                  .lineHeight(this.codeBlockTheme.codeBlockLineNumberTextLineHeight ??
+                  this.codeBlockTheme.codeBlockTextLineHeight)
                   .maxLines(1)
                   .textOverflow({ overflow: TextOverflow.Ellipsis })
                   .textAlign(TextAlign.End)
