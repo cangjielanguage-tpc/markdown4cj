@@ -226,7 +226,7 @@ export struct MarkdownTableCell {
         ))
         .fontWeight(spanFontWeight(
           item,
-          false,
+          this.tableBlockCellCell === 0 && this.tableTheme.tableFirstColumnIsBold,
           this.subTheme,
           this.supTheme,
           this.inlineCodeTheme,
