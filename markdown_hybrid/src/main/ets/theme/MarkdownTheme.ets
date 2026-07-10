@@ -475,7 +475,7 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setLatexMathTextSize(latexMathTextSize: number): MarkdownTheme {
-    this.latexMathTheme.setLatexMathDefaultTextFontSize(latexMathTextSize)
+    this.latexMathTheme.setLatexMathTextSize(latexMathTextSize)
     return this
   }
 
