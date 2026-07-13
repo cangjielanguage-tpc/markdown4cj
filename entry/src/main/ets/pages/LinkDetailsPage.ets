@@ -401,7 +401,8 @@ struct LinkDetailsPage {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     if (this.linkIsIcon) {
       plugin.setIsLinkViewPlugin(true) // 链接块状化插件
-    } else if (this.isLinkifyPlugin) {
+    }
+    if (this.isLinkifyPlugin) {
       plugin.setIsLinkifyPlugin(true) // 链接自动加载插件
     }
     plugin.setIsTablePlugin(true) // 表格插件

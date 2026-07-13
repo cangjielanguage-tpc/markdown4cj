@@ -42,7 +42,7 @@ export const textLineHeightListGeneralData: Array<number> = [10, 12, 14, 16, 20,
 /**
  * 通用文本字间距列表
  */
-export const textWordSpaceListGeneralData: Array<number> = [0, 0.5, 1, 2, 5, 10]
+export const textWordSpaceListGeneralData: Array<number> = [0, 0.5, 1, 2, 5, 10, 30]
   // [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 /**

@@ -1,5 +1,5 @@
 import { image } from "@kit.ImageKit"
-import { resourceColorToNumber } from "../base/Constants"
+import { resourceColorToNumber, LINK_ICON_TYPE_CIRCLE, LINK_ICON_TYPE_RECT } from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import {
   headingBackgroundColor,
@@ -34,6 +34,7 @@ import {
 } from '../utils/MarkdownUtils'
 import {
   generateLinkIconPixelMap,
+  computeLinkIconInfo,
   LinkIconResult
 } from '../utils/MarkdownLinkIconGenerator'
 import { SubTheme } from '../theme/SubTheme'
@@ -245,7 +246,7 @@ export struct MarkdownHeading {
             this.headingInlineItem(item, index)
           },
           (item: NodeView, index: number) => {
-          return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}`
+          return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
         }
         )
       }
@@ -466,6 +467,10 @@ export struct MarkdownHeading {
             .width(px2vp(item.linkIconWidth))
             .height(px2vp(item.linkIconHeight))
             .verticalAlign(ImageSpanAlignment.CENTER)
+            .margin({
+              left: this.getLinkIconMargin(item),
+              right: this.getLinkIconMargin(item)
+            })
             .onClick(() => {
               if (item.linkUrl !== undefined) {
                 this.linkCallback?.(item.linkUrl)
@@ -785,6 +790,20 @@ export struct MarkdownHeading {
   }
 
   /**
+   * 根据链接URL和文本计算图标外边距
+   */
+  private getLinkIconMargin(item: NodeView): number {
+    const iconType = item.linkIconType
+    if (iconType === LINK_ICON_TYPE_CIRCLE) {
+      return this.linkTheme.linkCircleIconMargin
+    } else if (iconType === LINK_ICON_TYPE_RECT) {
+      return this.linkTheme.linkRectIconMargin
+    } else {
+      return this.linkTheme.linkRectToolIconMargin
+    }
+  }
+
+  /**
    * 异步生成链接图标PixelMap（通过C++原生绘图）
    */
   private tryGenerateLinkIcons(): void {
@@ -792,6 +811,7 @@ export struct MarkdownHeading {
       if ((child.nodeType === "Link" || child.nodeType === "HeadLink") && child.isLinkStyle && !child.linkIconTried) {
         child.linkIconTried = true
         child.linkIconText = child.nodeText
+        child.linkIconType = computeLinkIconInfo(child.linkUrl ?? "", child.nodeText).iconType
         generateLinkIconPixelMap(child.nodeText, child.linkUrl ?? "", this.linkTheme)
           .then((result: LinkIconResult | undefined) => {
             if (!this.isAlive || result === undefined) {

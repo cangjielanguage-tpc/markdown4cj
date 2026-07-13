@@ -3558,7 +3558,7 @@ export class MarkdownTheme {
   /**
    * 设置定义列表术语和定义行之间间距
    *
-   * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
+   * @param descListTermAndDefMargins 定义列表术语和定义行之间间距 默认8.0
    * @deprecated since 1.4.0
    * @useinstead DefinitionListTheme#setDefinitionListTermToDescriptionSpacing
    * @return MarkdownTheme
