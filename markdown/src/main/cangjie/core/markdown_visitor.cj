@@ -10,6 +10,8 @@ package markdown.core
 public interface MarkdownVisitor <: Visitor {
     func renderProps(): RenderProps
 
+    func visitNode(node: Node): Unit
+
     /**
      * Visits all children of supplied node.
      *
@@ -152,7 +154,7 @@ class MarkdownVisitorImpl <: MarkdownVisitor {
         visitNode(customNode)
     }
 
-    private func visitNode(node: Node): Unit {
+    public func visitNode(node: Node): Unit {
         let nodeVisitor: ?NodeVisitor = nodes.get(node.getNodeType())
         if (let Some(f) <- nodeVisitor) {
             f(this, node)

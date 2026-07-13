@@ -33,11 +33,25 @@ class MarkdownCodeBlockListComponent {
     }
 
     func build() {
-        Column() {
-            codeBlockTitleComponent()
-            codeBlockComponent()
+        Row() {
+            Column() {
+                codeBlockTitleComponent()
+                codeBlockComponent()
+            }
+            .layoutWeight(1)
         }
-        .width(100.percent)
+        .padding(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingLeft
+        )
+        .margin(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
+        )
     }
 
     /**
@@ -112,18 +126,6 @@ class MarkdownCodeBlockListComponent {
         .borderWidth(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderWidth)
         .borderStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderStyle)
         .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-        .padding(
-            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingTop,
-            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingRight,
-            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingBottom,
-            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingLeft
-        )
-        .margin(
-            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
-            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
-            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
-            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
-        )
     }
 
     /**

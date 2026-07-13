@@ -59,8 +59,6 @@ class MarkdownCodeTextComponent {
         .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
         .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
         .textAlign(TextAlign.Start)
-        .maxLines(1)
-        .textOverflow(TextOverflow.Ellipsis)
     }
 
     /**

@@ -44,93 +44,94 @@ class MarkdownCodeComponent {
     }
 
     func build() {
-        Column() {
-            codeBlockButtonComponent()
-            Row() {
-                List(scroller: scroller1) {
-                    LazyForEach(
-                        lineInt64Array,
-                        itemGeneratorFunc: {
-                            item: String, idx: Int64 => ListItem() {
-                                Text((idx + 1).toString())
-                                    .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
-                                    .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
-                                    .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
-                                    .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
-                                    .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
-                                    .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
-                                    .maxLines(1)
-                                    .textOverflow(TextOverflow.Ellipsis)
-                                    .textAlign(TextAlign.End)
-                            }
-                        },
-                        keyGeneratorFunc: {
-                            item: String, idx: Int64 => "${idx}"
-                        }
-                    )
-                }
-                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockSeparateWidth)
-                .padding(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberDividerSpacing, left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberTextPaddingLeft)
-                .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockDividerStrokeWidth.vp))
-                .borderColor(codeDividerColor(markdownConfiguration.markdownTheme))
-                .height(100.percent)
-                .borderStyle(BorderStyle.Solid)
-                .scrollBar(BarState.Off)
-                .alignListItem(ListItemAlign.End)
-                .enabled(false)
-                .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
-                Scroll() {
-                    Column() {
-                        List(scroller: scroller2) {
-                            LazyForEach(
-                                lineStrArray,
-                                itemGeneratorFunc: {
-                                    item: String, idx: Int64 => ListItem() {
-                                        MarkdownCodeTextComponent(
-                                            markdownTheme: markdownConfiguration.markdownTheme,
-                                            codeText: item,
-                                            info: info,
-                                            codeTextComponents: codeTextComponents,
-                                            index: idx
-                                        )
-                                    }
-                                },
-                                keyGeneratorFunc: {
-                                    item: String, idx: Int64 => "${idx}"
+        Row() {
+            Column() {
+                codeBlockButtonComponent()
+                Row() {
+                    List(scroller: scroller1) {
+                        LazyForEach(
+                            lineInt64Array,
+                            itemGeneratorFunc: {
+                                item: String, idx: Int64 => ListItem() {
+                                    Text((idx + 1).toString())
+                                        .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
+                                        .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
+                                        .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
+                                        .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
+                                        .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
+                                        .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
+                                        .maxLines(1)
+                                        .textOverflow(TextOverflow.Ellipsis)
+                                        .textAlign(TextAlign.End)
                                 }
-                            )
+                            },
+                            keyGeneratorFunc: {
+                                item: String, idx: Int64 => "${idx}"
+                            }
+                        )
+                    }
+                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockSeparateWidth)
+                    .padding(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberDividerSpacing, left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberTextPaddingLeft)
+                    .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockDividerStrokeWidth.vp))
+                    .borderColor(codeDividerColor(markdownConfiguration.markdownTheme))
+                    .height(100.percent)
+                    .borderStyle(BorderStyle.Solid)
+                    .scrollBar(BarState.Off)
+                    .alignListItem(ListItemAlign.End)
+                    .enabled(false)
+                    .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
+
+                    Scroll() {
+                        Column() {
+                            List(scroller: scroller2) {
+                                LazyForEach(
+                                    lineStrArray,
+                                    itemGeneratorFunc: {
+                                        item: String, idx: Int64 => ListItem() {
+                                            MarkdownCodeTextComponent(
+                                                markdownTheme: markdownConfiguration.markdownTheme,
+                                                codeText: item,
+                                                info: info,
+                                                codeTextComponents: codeTextComponents,
+                                                index: idx
+                                            )
+                                        }
+                                    },
+                                    keyGeneratorFunc: {
+                                        item: String, idx: Int64 => "${idx}"
+                                    }
+                                )
+                            }
+                            .height(100.percent)
+                            .scrollBar(BarState.Off)
+                            .edgeEffect(EdgeEffect.None)
+                            .onReachEnd {
+                                => reachBottom = true
+                            }
+                            .onScroll {
+                                offset, _ =>
+                                    scroller1.scrollTo(xOffset: 0.0, yOffset: scroller2.currentOffset().yOffset)
+                                    checkScroll(offset)
+                            }
+                            .onTouch {
+                                evt => chatOnTouch(evt)
+                            }
+                            .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
                         }
-                        .height(100.percent)
-                        .scrollBar(BarState.Off)
-                        .edgeEffect(EdgeEffect.None)
-                        .onReachEnd {
-                            => reachBottom = true
-                        }
-                        .onScroll {
-                            offset, _ =>
-                                scroller1.scrollTo(xOffset: 0.0, yOffset: scroller2.currentOffset().yOffset)
-                                checkScroll(offset)
-                        }
-                        .onTouch {
-                            evt => chatOnTouch(evt)
-                        }
-                        .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
+                        .layoutWeight(1)
                     }
                     .layoutWeight(1)
+                    .scrollable(ScrollDirection.Horizontal)
+                    .scrollBar(BarState.Off)
+                    .align(Alignment.Start)
+                    .height(100.percent)
+                    .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
+                    .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginLeft, right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginRight)
                 }
-                .scrollable(ScrollDirection.Horizontal)
-                .scrollBar(BarState.Off)
-                .align(Alignment.Start)
-                .width(100.percent)
-                .height(100.percent)
-                .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
-                .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginLeft, right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginRight)
+                .layoutWeight(1)
             }
             .layoutWeight(1)
-            .width(100.percent)
         }
-        .width(100.percent)
-        .height(100.percent)
         .borderRadius(topLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopLeft, topRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopRight, bottomLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomLeft, bottomRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomRight)
         .borderColor(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderColor)
         .borderWidth(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderWidth)
@@ -141,6 +142,12 @@ class MarkdownCodeComponent {
             right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingRight,
             bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingBottom,
             left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingLeft
+        )
+        .margin(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
         )
     }
 

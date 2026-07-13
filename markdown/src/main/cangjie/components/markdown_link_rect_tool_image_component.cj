@@ -35,7 +35,7 @@ public class MarkdownLinkRectToolImageComponent {
         linkRectToolIconDividingLineWidth = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconDividingLineWidth.vp)().value
         linkRectToolIconLineLeftPadding = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconLineLeftPadding.vp)().value
         linkRectToolIconLineRightPadding = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconLineRightPadding.vp)().value
-        latexMathImagePixelmap() // 链接解析
+        linkRectToolImagePixelmap() // 链接解析
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -66,7 +66,7 @@ public class MarkdownLinkRectToolImageComponent {
     /**
      * 链接数据处理 - 行内链接
      */
-    func latexMathImagePixelmap(): Unit {
+    func linkRectToolImagePixelmap(): Unit {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
             pixelMap, height, width => launch {
                 imageHeight = height

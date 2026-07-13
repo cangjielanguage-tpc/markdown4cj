@@ -127,6 +127,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             "IgnoreBlockNode",
             {
                 visitor, node => visitor.visitChildren(node)
+                node.flat()
             }
         ).on(
             "IgnoreInlineNode",
@@ -175,8 +176,8 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         // replace htmlNode with tagNode
         node.replaceWith(tagNode)
 
-        // visit Children
-        visitor.visitChildren(tagNode)
+        // visit tagNode
+        visitor.visitNode(tagNode)
     }
 
     func tagCategory(rootTag: BlockImpl): BlockImpl {

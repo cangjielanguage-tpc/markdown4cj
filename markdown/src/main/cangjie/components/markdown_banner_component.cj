@@ -21,21 +21,23 @@ class MarkdownBannerComponent {
     }
 
     func build() {
-        Swiper(controller) {
-            ForEach(
-                bannerNodeViewList,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.nodeType == "Image") {
-                        // 图片节点
-                        imageBannerCommonmarkComponent(item)
-                    } else {
-                        // 其他节点
+        Row(){
+            Swiper(controller) {
+                ForEach(
+                    bannerNodeViewList,
+                    itemGeneratorFunc: {
+                        item: NodeView, idx: Int64 => if (item.nodeType == "Image") {
+                            // 图片节点
+                            imageBannerCommonmarkComponent(item)
+                        } else {
+                            // 其他节点
+                        }
                     }
-                }
-            )
+                )
+            }
+            .autoPlay(false)
+            .layoutWeight(1)
         }
-        .autoPlay(false)
-        .width(100.percent)
         .padding(
             top: markdownTheme.bannerTheme.bannerPaddingTop,
             right: markdownTheme.bannerTheme.bannerPaddingRight,
