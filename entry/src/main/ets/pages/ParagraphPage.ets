@@ -164,6 +164,12 @@ struct ParagraphPage {
   // 是否显示标题段落高亮效果
   showHighlightList: Array<boolean> = booleanListGeneralData
   @State showHighlight: boolean = true // 是否全量加载Markdown文本
+  // 段落加载动画启用列表
+  paragraphAnimationEnabledList: Array<boolean> = booleanListGeneralData
+  @State paragraphAnimationEnabled: boolean = false // 段落加载动画是否启用
+  // 段落加载动画时长列表
+  paragraphAnimationDurationList: Array<number> = [0, 200, 500, 1000, 2000]
+  @State paragraphAnimationDuration: number = 0 // 段落加载动画时长（ms）
   @State // 配置数据内容
   paragraphData: ParagraphData = new ParagraphData()
   @State isExpanded1: boolean = false // 控制展开/折叠状态
@@ -235,6 +241,8 @@ struct ParagraphPage {
                   this.paragraphData._paragraphTextFontFamily = this.paragraphTextFontFamily
                   this.paragraphData._paragraphTextLineHeight = this.paragraphTextLineHeight
                   this.paragraphData._paragraphTextLetterSpacing = this.paragraphTextLetterSpacing
+                  this.paragraphData._paragraphAnimationEnabled = this.paragraphAnimationEnabled
+                  this.paragraphData._paragraphAnimationDuration = this.paragraphAnimationDuration
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/ParagraphDetailsPage", params: this.paragraphData })
               })
@@ -545,6 +553,18 @@ struct ParagraphPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.showHighlightList,
                   allData: this.showHighlight
+                })
+                BaseTabComponent({
+                  titleStr: "段落加载动画启用 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.paragraphAnimationEnabledList,
+                  allData: this.paragraphAnimationEnabled
+                })
+                BaseTabComponent({
+                  titleStr: "段落加载动画时长(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.paragraphAnimationDurationList,
+                  allData: this.paragraphAnimationDuration
                 })
               }
               .width('100%')

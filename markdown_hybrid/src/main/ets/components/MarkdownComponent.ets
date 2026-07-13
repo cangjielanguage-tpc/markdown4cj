@@ -362,6 +362,8 @@ export struct CJMarkdown {
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    paragraphAnimationStart: this.config.paragraphAnimationStart,
+                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
                 } else if (item.nodeType === "FencedCodeBlockListBlock") {
                   // 围栏代码块列表
@@ -441,6 +443,8 @@ export struct CJMarkdown {
                     tocCallback: this.tocCallback,
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    paragraphAnimationStart: this.config.paragraphAnimationStart,
+                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
                 } else if (item.nodeType === "OrderedList") {
                   // 有序列表
@@ -496,6 +500,8 @@ export struct CJMarkdown {
                     tocCallback: this.tocCallback,
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    paragraphAnimationStart: this.config.paragraphAnimationStart,
+                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
                 } else if (item.nodeType === "BlockQuote") {
                   // 块引用
@@ -550,6 +556,8 @@ export struct CJMarkdown {
                     tocCallback: this.tocCallback,
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    paragraphAnimationStart: this.config.paragraphAnimationStart,
+                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
                 } else if (item.nodeType === "LatexMathBlock") {
                   // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本
@@ -673,6 +681,8 @@ export struct CJMarkdown {
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    paragraphAnimationStart: this.config.paragraphAnimationStart,
+                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
                 } else if (item.nodeType === "DescList") {
                   // 定义列表
@@ -709,6 +719,8 @@ export struct CJMarkdown {
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    paragraphAnimationStart: this.config.paragraphAnimationStart,
+                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
                 } else if (item.nodeType === "SlideBlock") {
                   // 图片幻灯片

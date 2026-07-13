@@ -25,6 +25,9 @@ export class MarkdownConfiguration {
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void = undefined // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   tableCopyCallback?: (text: string) => void = undefined // 表格复制点击事件
+  paragraphAnimationStart?: () => void = undefined // 段落动画开始回调
+  paragraphAnimationEnd?: () => void = undefined // 段落动画结束回调
+
 
   markdownHighlightParagraph: MarkdownHighlightParagraph = new MarkdownHighlightParagraph() // 高亮段落设置
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
@@ -85,6 +88,29 @@ export class MarkdownConfiguration {
     this.tableCopyCallback = cb
     return this
   }
+
+  /**
+   * 设置段落动画开始回调
+   *
+   * @param cb 段落动画开始回调
+   */
+  setParagraphAnimationStart(cb: () => void): MarkdownConfiguration {
+    this.paragraphAnimationStart = cb
+    return this
+  }
+
+  /**
+   * 设置段落动画结束回调
+   *
+   * @param cb 段落动画结束回调
+   */
+  setParagraphAnimationEnd(cb: () => void): MarkdownConfiguration {
+    this.paragraphAnimationEnd = cb
+    return this
+  }
+
+
+
 
 
   /**

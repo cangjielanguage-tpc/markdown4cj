@@ -98,6 +98,10 @@ struct ParagraphDetailsPage {
   paragraphTextLineHeight: number | string | Resource = 22.0
   @State // 段落文本字符间距
   paragraphTextLetterSpacing: number = 0.0
+  @State // 段落加载动画是否启用
+  paragraphAnimationEnabled: boolean = false
+  @State // 段落加载动画时长（ms）
+  paragraphAnimationDuration: number = 0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -152,6 +156,8 @@ struct ParagraphDetailsPage {
       this.paragraphTextFontFamily = paragraphData._paragraphTextFontFamily
       this.paragraphTextLineHeight = paragraphData._paragraphTextLineHeight
       this.paragraphTextLetterSpacing = paragraphData._paragraphTextLetterSpacing
+      this.paragraphAnimationEnabled = paragraphData._paragraphAnimationEnabled
+      this.paragraphAnimationDuration = paragraphData._paragraphAnimationDuration
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -268,8 +274,20 @@ struct ParagraphDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    config.setParagraphAnimationStart(this.paragraphAnimationStartCallBack)
+    config.setParagraphAnimationEnd(this.paragraphAnimationEndCallBack)
     return config
   }
+
+  paragraphAnimationStartCallBack(): void {
+    hilog.error(1, "paragraphAnimation", `---AnimationStart`)
+  }
+
+  paragraphAnimationEndCallBack(): void {
+    hilog.error(1, "paragraphAnimation", `---AnimationEnd`)
+  }
+
+
 
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
@@ -309,6 +327,8 @@ struct ParagraphDetailsPage {
     paragraphTheme.setParagraphTextFontFamily(this.paragraphTextFontFamily)
     paragraphTheme.setParagraphTextLineHeight(this.paragraphTextLineHeight)
     paragraphTheme.setParagraphTextLetterSpacing(this.paragraphTextLetterSpacing)
+    paragraphTheme.setParagraphAnimationEnabled(this.paragraphAnimationEnabled)
+    paragraphTheme.setParagraphAnimationDuration(this.paragraphAnimationDuration)
     theme.setParagraphTheme(paragraphTheme)
     
     return theme

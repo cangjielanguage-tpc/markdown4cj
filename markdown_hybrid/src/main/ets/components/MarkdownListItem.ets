@@ -99,6 +99,8 @@ export struct MarkdownListItem {
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   tableCopyCallback?: (str: string) => void // 复制点击事件
+  paragraphAnimationStart?: () => void // 段落动画开始回调
+  paragraphAnimationEnd?: () => void // 段落动画结束回调
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
@@ -179,6 +181,8 @@ export struct MarkdownListItem {
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  paragraphAnimationStart: this.paragraphAnimationStart,
+                  paragraphAnimationEnd: this.paragraphAnimationEnd,
                 })
               } else if (item.nodeType === "Heading" || item.nodeType === "IdHeading") {
                 // 标题/标题ID

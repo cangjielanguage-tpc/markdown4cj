@@ -98,6 +98,8 @@ export struct MarkdownParagraph {
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（链接显示/消失）
   exposureThreshold: number = 0.5 // 曝光可见阈值
+  paragraphAnimationStart?: () => void // 段落动画开始回调
+  paragraphAnimationEnd?: () => void // 段落动画结束回调
   @State @Watch('onListChanged') list: NodeView[] = [] // 段落子节点数据源
   private isAlive: boolean = true // 组件是否存活
   private textController: TextController = new TextController() // 段落Text控制器，用于getRectsForRange拿链接矩形
@@ -283,6 +285,21 @@ export struct MarkdownParagraph {
       right: this.paragraphTheme.paragraphMarginRight,
       bottom: this.paragraphTheme.paragraphMarginBottom,
       left: this.paragraphTheme.paragraphMarginLeft
+    })    .transition(
+      TransitionEffect.asymmetric(
+        this.paragraphTheme.paragraphAnimationEnabled
+          ? TransitionEffect.opacity(0).animation({ duration: this.paragraphTheme.paragraphAnimationDuration })
+          : TransitionEffect.IDENTITY,
+        TransitionEffect.IDENTITY
+      )
+    )
+    .onAppear(() => {
+      if (this.paragraphTheme.paragraphAnimationEnabled) {
+        this.paragraphAnimationStart?.()
+        setTimeout(() => {
+          this.paragraphAnimationEnd?.()
+        }, this.paragraphTheme.paragraphAnimationDuration)
+      }
     })
   }
 

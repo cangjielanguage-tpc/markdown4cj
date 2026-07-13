@@ -22,6 +22,8 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   paragraphTextFontFamily: string | Resource = 'HarmonyOS Sans' // 段落文本字体族
   paragraphTextLineHeight: number | string | Resource = 22.0 // 段落文本行高
   paragraphTextLetterSpacing: number = 0.0 // 段落文本字间距
+  paragraphAnimationEnabled: boolean = false // 段落加载动画是否启用
+  paragraphAnimationDuration: number = 0 // 段落加载动画时长（ms）
 
   /**
    * 设置段落背景颜色
@@ -194,6 +196,28 @@ export class ParagraphTheme implements MarkdownBaseTheme {
    */
   setParagraphTextLetterSpacing(spacing: number): ParagraphTheme {
     this.paragraphTextLetterSpacing = spacing
+    return this
+  }
+
+  /**
+   * 设置段落加载动画是否启用
+   *
+   * @param enabled 是否启用
+   * @return ParagraphTheme
+   */
+  setParagraphAnimationEnabled(enabled: boolean): ParagraphTheme {
+    this.paragraphAnimationEnabled = enabled
+    return this
+  }
+
+  /**
+   * 设置段落加载动画时长
+   *
+   * @param duration 动画时长（ms）
+   * @return ParagraphTheme
+   */
+  setParagraphAnimationDuration(duration: number): ParagraphTheme {
+    this.paragraphAnimationDuration = duration
     return this
   }
 }

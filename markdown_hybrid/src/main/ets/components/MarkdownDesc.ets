@@ -60,6 +60,8 @@ export struct MarkdownDesc {
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  paragraphAnimationStart?: () => void // 段落动画开始回调
+  paragraphAnimationEnd?: () => void // 段落动画结束回调
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
@@ -108,6 +110,8 @@ export struct MarkdownDesc {
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
+                paragraphAnimationStart: this.paragraphAnimationStart,
+                paragraphAnimationEnd: this.paragraphAnimationEnd,
               })
             } else if (item.nodeType === "DescTerm") {
               // 定义列表术语
@@ -144,6 +148,8 @@ export struct MarkdownDesc {
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
+                paragraphAnimationStart: this.paragraphAnimationStart,
+                paragraphAnimationEnd: this.paragraphAnimationEnd,
               })
             } else {
               // 其它
