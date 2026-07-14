@@ -12,6 +12,7 @@ internal import std.sync.AtomicBool
 internal import std.sync.Mutex
 internal import std.sync.Semaphore
 internal import std.sync.SyncCounter
+internal import std.sync.Timer
 
 // stdx
 internal import stdx.encoding.base64.fromBase64String

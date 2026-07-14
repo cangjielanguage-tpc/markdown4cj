@@ -67,6 +67,9 @@ public class MarkdownComponent {
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
     var imageAndVideoList: ArrayList<String> = ArrayList<String>() // 所有图片视频的url
     var oldOutput: String = "" // 上一次的输入内容
+    let isThrottled: AtomicBool = AtomicBool(false) // 节流标志
+    let hasPendingRefresh: AtomicBool = AtomicBool(false) // 节流期间有未处理的刷新请求
+    var throttleTimer: ?Timer = None // 节流定时器
     @State
     var lastViewIndex: Int64 = 0 // 最后一条数据的位置
 
@@ -78,6 +81,8 @@ public class MarkdownComponent {
     }
 
     protected override func aboutToDisappear(): Unit {
+        throttleTimer?.cancel()
+        throttleTimer = None
         MarkdownRefreshRegistry.clear()
     }
 
@@ -393,15 +398,47 @@ public class MarkdownComponent {
 
     /**
      * 刷新数据
+     * enableParseThrottle为true时，通过leading-edge节流控制解析频率
+     * enableParseThrottle为false时，直接触发解析，由调用方自行控制节流
+     */
+    func refreshData(): Unit {
+        if (!markdownConfiguration.markdownTheme.globalTheme.enableParseThrottle) {
+            executeRefresh()
+            return
+        }
+        if (isThrottled.load()) {
+            hasPendingRefresh.store(true)
+            return
+        }
+        isThrottled.store(true)
+        hasPendingRefresh.store(false)
+        executeRefresh()
+        let throttleMs = markdownConfiguration.markdownTheme.globalTheme.parseThrottleMs
+        if (throttleMs > 0) {
+            throttleTimer = Timer.once(throttleMs * Duration.millisecond) {
+                =>
+                    throttleTimer = None
+                    isThrottled.store(false)
+                    if (hasPendingRefresh.load()) {
+                        launch { refreshData() }
+                    }
+            }
+        } else {
+            isThrottled.store(false)
+        }
+    }
+
+    /**
+     * 执行实际解析与数据更新
      * 通过smartUpdateDataArray驱动UI更新，无需页面缓存。
-     * 根keyGenerator为"${idx}-${nodeHash}-${contentHash}"，
-     * contentHash变化时replaceData→notifyDataChange→key变化→框架重建组件。
+     * 根keyGenerator为"${idx}-${nodeHash}"（无contentHash），
+     * contentHash变化时通过MarkdownRefreshRegistry就地刷新组件。
      * @Watch在LazyForEach的updateWithValueParams中不触发，
      * 因此依赖key变化触发组件重建（aboutToAppear→refreshXxxData）。
      * 异步解析期间若output再次变化（流式输出），解析完成后通过
      * oldOutput != output检查重新触发refreshData，确保不丢更新。
      */
-    func refreshData(): Unit {
+    func executeRefresh(): Unit {
         if (markdownConfiguration.markdownTheme.globalTheme.isMarkdownParserSync) {
             // 同步解析
             let nodeview = mdparse()

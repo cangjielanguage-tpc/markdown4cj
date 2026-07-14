@@ -7,6 +7,8 @@ public class GlobalTheme <: MarkdownBaseTheme {
     public var stageContext: ?StageContext = None // markdown上下文 - 互操作
     public var uiAbilityContext: ?UIAbilityContext = None // markdown上下文 - 仓颉
     public var isMarkdownParserSync: Bool = false // markdown是否同步解析
+    public var enableParseThrottle: Bool = false // 是否启用解析节流（流式输出时控制解析频率）
+    public var parseThrottleMs: Int64 = 200 // 节流间隔（毫秒）
     public var isOnCopy: Bool = true // 是否打开长按复制粘贴
     public var blockMarginTop: Float64 = 0.0 // markdown全局上外边距
     public var blockMarginRight: Float64 = 0.0 // markdown全局右外边距
@@ -133,6 +135,28 @@ public class GlobalTheme <: MarkdownBaseTheme {
      */
     public func setBackgroundColor(color: Color): GlobalTheme {
         this.backgroundColor = color
+        return this
+    }
+
+    /**
+     * 设置是否启用解析节流
+     *
+     * @param enable 是否启用
+     * @return 当前GlobalTheme对象
+     */
+    public func setEnableParseThrottle(enable: Bool): GlobalTheme {
+        this.enableParseThrottle = enable
+        return this
+    }
+
+    /**
+     * 设置节流间隔
+     *
+     * @param throttleMs 节流间隔（毫秒）
+     * @return 当前GlobalTheme对象
+     */
+    public func setParseThrottleMs(throttleMs: Int64): GlobalTheme {
+        this.parseThrottleMs = throttleMs
         return this
     }
 }

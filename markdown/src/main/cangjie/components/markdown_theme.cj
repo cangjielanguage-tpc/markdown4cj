@@ -738,6 +738,30 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置是否启用解析节流
+     *
+     * @param enableParseThrottle 是否启用解析节流 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用GlobalTheme.setEnableParseThrottle方法代替", since: "1.4.0"]
+    public func setEnableParseThrottle(enableParseThrottle: Bool): MarkdownThemeBuilder {
+        this.globalTheme.enableParseThrottle = enableParseThrottle
+        return this
+    }
+
+    /**
+     * 设置节流间隔
+     *
+     * @param parseThrottleMs 节流间隔（毫秒） - 默认200
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用GlobalTheme.setParseThrottleMs方法代替", since: "1.4.0"]
+    public func setParseThrottleMs(parseThrottleMs: Int64): MarkdownThemeBuilder {
+        this.globalTheme.parseThrottleMs = parseThrottleMs
+        return this
+    }
+
+    /**
      * 设置是否打开长按复制粘贴
      *
      * @param isOnCopy 是否打开长按复制粘贴 - 默认true
