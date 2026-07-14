@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 class MarkdownHeadingComponent {
     var headingMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    @Watch[refreshHeadingData]
     var headingNodeView: NodeView // 标题控件自身节点
     @Prop
     var headingComponentWidth: Float64 // 控件宽度 - 单位vp
@@ -25,7 +24,12 @@ class MarkdownHeadingComponent {
     var headingNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
-        refreshHeadingData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(headingNodeView.nodeHash, refreshHeadingData)
+        refreshHeadingData(headingNodeView)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(headingNodeView.nodeHash)
     }
 
     func build() {
@@ -201,6 +205,7 @@ class MarkdownHeadingComponent {
                     MarkdownLatexMathInLineComponent(
                         markdownTheme: spanListMarkdownConfiguration.markdownTheme,
                         latexMathInLineStr: spanListNodeView.nodeText,
+                        nodeHash: spanListNodeView.nodeHash,
                         latexMathInLineComponentWidth: spanListComponentWidth,
                         latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
                         latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
@@ -247,7 +252,11 @@ class MarkdownHeadingComponent {
                 }
             },
             keyGeneratorFunc: {
-                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                spanListNodeView: NodeView, idx: Int64 =>
+                    if (spanListNodeView.nodeType == "LatexMathNode") {
+                        return "${idx}-${spanListNodeView.nodeHash}"
+                    }
+                    return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
             }
         )
     }
@@ -257,7 +266,8 @@ class MarkdownHeadingComponent {
      *
      * @param headingNodeView 刷新的新数据
      */
-    public func refreshHeadingData(): Unit {
+    public func refreshHeadingData(newNodeView: NodeView): Unit {
+        this.headingNodeView = newNodeView
         let refreshNodeViewChildren = headingNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let headingNodeViewListSize: Int64 = headingNodeViewList.size // 页面缓存的数据长度
@@ -282,6 +292,9 @@ class MarkdownHeadingComponent {
                     // 自身节点唯一ID不相同需要刷新数据
                     // 子节点唯一ID不相同需要刷新子节点数据
                     headingNodeViewList[i] = refreshNodeView
+                    if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
+                        MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)
+                    }
                 }
             }
             // 循环添加新数据
@@ -302,6 +315,9 @@ class MarkdownHeadingComponent {
                     // 自身节点唯一ID不相同需要刷新数据
                     // 子节点唯一ID不相同需要刷新子节点数据
                     headingNodeViewList[i] = refreshNodeView
+                    if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
+                        MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)
+                    }
                 }
             }
         } else {
@@ -318,6 +334,9 @@ class MarkdownHeadingComponent {
                     // 自身节点唯一ID不相同需要刷新数据
                     // 子节点唯一ID不相同需要刷新子节点数据
                     headingNodeViewList[i] = refreshNodeView
+                    if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
+                        MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)
+                    }
                 }
             }
             // 循环删除多余的旧数据

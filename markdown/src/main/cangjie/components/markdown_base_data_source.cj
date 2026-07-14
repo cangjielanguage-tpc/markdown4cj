@@ -352,6 +352,37 @@ public open class MarkdownBaseListDataSource<T> <: IDataSource<T> {
 
 
 /**
+ * 组件刷新注册表
+ * @Watch在LazyForEach的updateWithValueParams中不触发，
+ * 通过此注册表直接调用组件的refreshXxxData(newNodeView)就地更新，
+ * 避免组件重建导致的UI闪屏。
+ * 每个组件在aboutToAppear中注册，aboutToDisappear中注销。
+ */
+public class MarkdownRefreshRegistry {
+    private static let map: HashMap<Int64, (NodeView) -> Unit> = HashMap<Int64, (NodeView) -> Unit>()
+
+    public static func register(hash: Int64, callback: (NodeView) -> Unit): Unit {
+        map[hash] = callback
+    }
+
+    public static func unregister(hash: Int64): Unit {
+        map.remove(hash)
+    }
+
+    public static func refresh(hash: Int64, nodeView: NodeView): Unit {
+        match(map.get(hash)) {
+            case Some(cb) => cb(nodeView)
+            case _ => ()
+        }
+    }
+
+    public static func clear(): Unit {
+        map.clear()
+    }
+}
+
+
+/**
  * NodeView DataSource
  */
 public class NodeViewDataSource <: MarkdownBaseDataSource<NodeView> {
@@ -360,12 +391,12 @@ public class NodeViewDataSource <: MarkdownBaseDataSource<NodeView> {
     }
 
     /**
-     * 流式增量更新：逐个对比新旧数据的nodeHash/contentHash，替换变化的块
-     * Cangjie解析器每次生成全新NodeView对象，旧对象不会被复用，
-     * 因此直接用replaceData替换整个对象（不用copyDataFrom就地修改）。
-     * 根keyGenerator为"${idx}-${nodeHash}"（不含contentHash），
-     * contentHash变化时replaceData→notifyDataChange→@Watch触发子组件就地更新。
-     * 子组件keyGenerator含contentHash，key变化时框架重建孙组件。
+     * 流式增量更新：逐个对比新旧数据的nodeHash/contentHash
+     * - nodeHash变化：replaceData→notifyDataChange→框架重建组件
+     * - contentHash变化（nodeHash不变）：通过MarkdownRefreshRegistry直接调用
+     *   组件refreshXxxData(newNodeView)就地更新，不触发框架重建（避免闪屏）
+     * - 新增节点：addData→框架创建新组件
+     * - 删除节点：deleteData→框架销毁组件
      *
      * @param newData 解析后的新数据列表
      */
@@ -379,12 +410,16 @@ public class NodeViewDataSource <: MarkdownBaseDataSource<NodeView> {
         }
         let newLen = newData.size
         let minLen = if (existingLen < newLen) { existingLen } else { newLen }
-        // 对比重叠区间，hash变化时replaceData（触发key变化→组件重建）
         for (i in 0..minLen) {
             let oldNode = data_[i]
             let newNode = newData[i]
-            if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
+            if (oldNode.nodeHash != newNode.nodeHash) {
+                // nodeHash变化 → 框架重建组件
                 replaceData(i, newNode)
+            } else if (oldNode.contentHash != newNode.contentHash) {
+                // contentHash变化（nodeHash不变）→ 就地更新，不触发框架重建
+                data_[i] = newNode
+                MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)
             }
         }
         // 新增部分

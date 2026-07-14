@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 public class MarkdownQuoteComponent {
     var quoteMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    @Watch[refreshQuoteData]
     var quoteNodeView: NodeView // 列表节点
     @Prop
     var quoteComponentWidth: Float64 // 控件宽度 - 单位vp
@@ -38,7 +37,12 @@ public class MarkdownQuoteComponent {
     var quoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
-        refreshQuoteData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(quoteNodeView.nodeHash, refreshQuoteData)
+        refreshQuoteData(quoteNodeView)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(quoteNodeView.nodeHash)
     }
 
     func build() {
@@ -256,7 +260,8 @@ public class MarkdownQuoteComponent {
      * 通过smartUpdateDataArray驱动UI更新，无需页面缓存。
      * keyGenerator含contentHash，hash变化时框架自动重建对应组件。
      */
-    public func refreshQuoteData(): Unit {
+    public func refreshQuoteData(newNodeView: NodeView): Unit {
+        this.quoteNodeView = newNodeView
         let refreshNodeViewChildren = quoteNodeView.children // 子节点数据
         if (refreshNodeViewChildren.size == 0) {
             quoteNodeViewDataSource.clear()

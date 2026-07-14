@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 public class MarkdownDescDefComponent {
     var descDefMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    @Watch[refreshDescDefData]
     var descDefNodeView: NodeView // 定义列表解释控件自身节点
     @Prop
     var descDefComponentWidth: Float64 // 控件宽度 - 单位vp
@@ -21,7 +20,12 @@ public class MarkdownDescDefComponent {
     var descDefNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表解释控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
-        refreshDescDefData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(descDefNodeView.nodeHash, refreshDescDefData)
+        refreshDescDefData(descDefNodeView)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(descDefNodeView.nodeHash)
     }
 
     func build() {
@@ -64,7 +68,8 @@ public class MarkdownDescDefComponent {
      *
      * @param descDefNodeView 刷新的新数据
      */
-    public func refreshDescDefData(): Unit {
+    public func refreshDescDefData(newNodeView: NodeView): Unit {
+        this.descDefNodeView = newNodeView
         let refreshNodeViewChildren = descDefNodeView.children // 子节点数据
         if (refreshNodeViewChildren.size == 0) {
             descDefNodeViewDataSource.clear()

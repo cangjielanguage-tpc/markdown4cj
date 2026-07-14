@@ -77,6 +77,10 @@ public class MarkdownComponent {
         refreshData() // 首次加载
     }
 
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.clear()
+    }
+
     func build() {
         if (!markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsSeparate) {
             List(scroller: scroller, space: markdownConfiguration.markdownTheme.globalTheme.markdownBlockSpacing) {
@@ -390,9 +394,10 @@ public class MarkdownComponent {
     /**
      * 刷新数据
      * 通过smartUpdateDataArray驱动UI更新，无需页面缓存。
-     * 根keyGenerator为"${idx}-${nodeHash}"（不含contentHash），
-     * contentHash变化时通过@Watch触发子组件refreshXxxData就地更新。
-     * 子组件keyGenerator含contentHash，hash变化时框架重建孙组件。
+     * 根keyGenerator为"${idx}-${nodeHash}-${contentHash}"，
+     * contentHash变化时replaceData→notifyDataChange→key变化→框架重建组件。
+     * @Watch在LazyForEach的updateWithValueParams中不触发，
+     * 因此依赖key变化触发组件重建（aboutToAppear→refreshXxxData）。
      * 异步解析期间若output再次变化（流式输出），解析完成后通过
      * oldOutput != output检查重新触发refreshData，确保不丢更新。
      */

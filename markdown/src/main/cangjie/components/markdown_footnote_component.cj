@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 public class MarkdownFootnoteComponent {
     var footnoteMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    @Watch[refreshFootnoteData]
     var footnoteNodeView: NodeView // 脚注控件自身节点
     @Prop
     var footnoteComponentWidth: Float64 // 控件宽度 - 单位vp
@@ -21,7 +20,12 @@ public class MarkdownFootnoteComponent {
     var footnoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 脚注控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
-        refreshFootnoteData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(footnoteNodeView.nodeHash, refreshFootnoteData)
+        refreshFootnoteData(footnoteNodeView)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(footnoteNodeView.nodeHash)
     }
 
     func build() {
@@ -76,7 +80,8 @@ public class MarkdownFootnoteComponent {
      *
      * @param footnoteNodeView 刷新的新数据
      */
-    public func refreshFootnoteData(): Unit {
+    public func refreshFootnoteData(newNodeView: NodeView): Unit {
+        this.footnoteNodeView = newNodeView
         let refreshNodeViewChildren = footnoteNodeView.children // 子节点数据
         if (refreshNodeViewChildren.size == 0) {
             footnoteNodeViewDataSource.clear()

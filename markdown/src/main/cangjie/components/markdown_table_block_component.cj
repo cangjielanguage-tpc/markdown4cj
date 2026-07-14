@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 class MarkdownTableBlockComponent {
     var tableBlockMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    @Watch[refreshTableBlockData]
     var tableBlockNodeView: NodeView // 表格控件自身节点
     @State
     var tableBlockComponentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
@@ -24,7 +23,12 @@ class MarkdownTableBlockComponent {
     var tableBlockNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
-        refreshTableBlockData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(tableBlockNodeView.nodeHash, refreshTableBlockData)
+        refreshTableBlockData(tableBlockNodeView)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(tableBlockNodeView.nodeHash)
     }
 
     func build() {
@@ -87,7 +91,8 @@ class MarkdownTableBlockComponent {
      *
      * @param tableBlockRowNodeView 刷新的新数据
      */
-    func refreshTableBlockData(): Unit {
+    func refreshTableBlockData(newNodeView: NodeView): Unit {
+        this.tableBlockNodeView = newNodeView
         let refreshNodeViewChildren = tableBlockNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         if (refreshNodeViewSize == 0) {

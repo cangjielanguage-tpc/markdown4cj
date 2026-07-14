@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 class MarkdownCodeIndentedBlockComponent {
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
-    @Watch[refreshData]
     var codeText: String = "" // 代码内容
     @State
     var info: Option<String> = Option<String>.None // 代码类型
@@ -21,7 +20,12 @@ class MarkdownCodeIndentedBlockComponent {
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
 
     protected override func aboutToAppear(): Unit {
-        refreshData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(this.nodeHash, refreshData)
+        refreshDataInternal()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(this.nodeHash)
     }
 
     func build() {
@@ -185,7 +189,13 @@ class MarkdownCodeIndentedBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(): Unit {
+    public func refreshData(newNodeView: NodeView): Unit {
+        this.codeText = newNodeView.nodeText
+        this.nodeHash = newNodeView.nodeHash
+        refreshDataInternal()
+    }
+
+    public func refreshDataInternal(): Unit {
         let arr = this.codeText.split("\n") // 代码块数据分割
         lines = arr.size
         lineArray.set(Array<Int64>(lines, repeat: 0))

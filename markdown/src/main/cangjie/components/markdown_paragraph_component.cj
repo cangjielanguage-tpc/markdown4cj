@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 class MarkdownParagraphComponent {
     var paragraphMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    @Watch[refreshParagraphData]
     var paragraphNodeView: NodeView // 段落控件自身节点
     @Prop
     var paragraphComponentWidth: Float64 // 控件宽度 - 单位vp
@@ -26,7 +25,12 @@ class MarkdownParagraphComponent {
     var paragraphNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
-        refreshParagraphData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(paragraphNodeView.nodeHash, refreshParagraphData)
+        refreshParagraphData(paragraphNodeView)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(paragraphNodeView.nodeHash)
     }
 
     func build() {
@@ -196,6 +200,7 @@ class MarkdownParagraphComponent {
                     MarkdownLatexMathInLineComponent(
                         markdownTheme: spanListMarkdownConfiguration.markdownTheme,
                         latexMathInLineStr: spanListNodeView.nodeText,
+                        nodeHash: spanListNodeView.nodeHash,
                         latexMathInLineComponentWidth: spanListComponentWidth,
                         latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
                         latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
@@ -242,7 +247,11 @@ class MarkdownParagraphComponent {
                 }
             },
             keyGeneratorFunc: {
-                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                spanListNodeView: NodeView, idx: Int64 =>
+                    if (spanListNodeView.nodeType == "LatexMathNode") {
+                        return "${idx}-${spanListNodeView.nodeHash}"
+                    }
+                    return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
             }
         )
     }
@@ -253,7 +262,8 @@ class MarkdownParagraphComponent {
      *
      * @param paragraphNodeView 刷新的新数据
      */
-    public func refreshParagraphData(): Unit {
+    public func refreshParagraphData(newNodeView: NodeView): Unit {
+        this.paragraphNodeView = newNodeView
         let refreshNodeViewChildren = paragraphNodeView.children // 子节点数据
         if (refreshNodeViewChildren.size == 0) {
             paragraphNodeViewList.clear()
@@ -269,6 +279,9 @@ class MarkdownParagraphComponent {
             let newNode = refreshNodeViewChildren[i]
             if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
                 paragraphNodeViewList[i] = newNode
+                if (newNode.nodeType == "LatexMathNode" && oldNode.nodeHash == newNode.nodeHash) {
+                    MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)
+                }
             }
         }
         // 新增部分

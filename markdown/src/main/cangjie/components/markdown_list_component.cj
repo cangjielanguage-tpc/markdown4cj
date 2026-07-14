@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 public class MarkdownListComponent {
     var listMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    @Watch[refreshListData]
     var listNodeView: NodeView // 列表节点
     @Prop
     var listComponentWidth: Float64 // 控件宽度 - 单位vp
@@ -38,7 +37,12 @@ public class MarkdownListComponent {
     var listNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
-        refreshListData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(listNodeView.nodeHash, refreshListData)
+        refreshListData(listNodeView)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(listNodeView.nodeHash)
     }
 
     func build() {
@@ -175,7 +179,8 @@ public class MarkdownListComponent {
      * 通过smartUpdateDataArray驱动UI更新，无需页面缓存。
      * keyGenerator含contentHash，hash变化时框架自动重建对应组件。
      */
-    public func refreshListData(): Unit {
+    public func refreshListData(newNodeView: NodeView): Unit {
+        this.listNodeView = newNodeView
         let refreshNodeViewChildren = listNodeView.children // 子节点数据
         if (refreshNodeViewChildren.size == 0) {
             listNodeViewDataSource.clear()

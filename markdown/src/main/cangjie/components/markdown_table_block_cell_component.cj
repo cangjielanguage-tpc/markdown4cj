@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 class MarkdownTableBlockCellComponent {
     var tableBlockCellMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    @Watch[refreshTableBlockCellData]
     var tableBlockCellNodeView: NodeView // 表格Cell控件自身节点
     @Prop
     var tableBlockCellComponentWidth: Float64 // 控件宽度 - 单位vp
@@ -31,8 +30,13 @@ class MarkdownTableBlockCellComponent {
     var tableBlockCellNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
-        refreshTableBlockCellData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
+        refreshTableBlockCellData(tableBlockCellNodeView) // 初始化刷新数据
         refreshTextWidth() // 宽度刷新
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(tableBlockCellNodeView.nodeHash)
     }
 
     func build() {
@@ -130,6 +134,7 @@ class MarkdownTableBlockCellComponent {
                     MarkdownLatexMathInLineComponent(
                         markdownTheme: spanListMarkdownConfiguration.markdownTheme,
                         latexMathInLineStr: spanListNodeView.nodeText,
+                        nodeHash: spanListNodeView.nodeHash,
                         latexMathInLineComponentWidth: spanListComponentWidth,
                         latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
                         latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
@@ -166,7 +171,11 @@ class MarkdownTableBlockCellComponent {
                 }
             },
             keyGeneratorFunc: {
-                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                spanListNodeView: NodeView, idx: Int64 =>
+                    if (spanListNodeView.nodeType == "LatexMathNode") {
+                        return "${idx}-${spanListNodeView.nodeHash}"
+                    }
+                    return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
             }
         )
     }
@@ -233,7 +242,8 @@ class MarkdownTableBlockCellComponent {
      *
      * @param tableBlockCellNodeView 刷新的新数据
      */
-    public func refreshTableBlockCellData(): Unit {
+    public func refreshTableBlockCellData(newNodeView: NodeView): Unit {
+        this.tableBlockCellNodeView = newNodeView
         let refreshNodeViewChildren = tableBlockCellNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let tableBlockCellNodeViewListSize: Int64 = tableBlockCellNodeViewList.size // 页面缓存的数据长度
@@ -253,6 +263,9 @@ class MarkdownTableBlockCellComponent {
                 // 自身节点唯一ID不相同需要刷新数据
                 // 子节点唯一ID不相同需要刷新子节点数据
                 tableBlockCellNodeViewList[i] = newNode
+                if (newNode.nodeType == "LatexMathNode" && oldNode.nodeHash == newNode.nodeHash) {
+                    MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)
+                }
             }
         }
         // 新增部分

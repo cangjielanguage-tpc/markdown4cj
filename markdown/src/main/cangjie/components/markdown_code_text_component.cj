@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 class MarkdownCodeTextComponent {
     var markdownTheme: MarkdownTheme // markdown配置
     @State
-    @Watch[refreshData]
     var codeText: String = "" // 代码内容
     @State
     var info: Option<String> = Option<String>.None // 代码类型

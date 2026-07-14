@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 class MarkdownCodeComponent {
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
-    @Watch[refreshData]
     var codeText: String = "" // 代码内容
     @State
     var info: Option<String> = Option<String>.None // 代码类型
@@ -26,7 +25,12 @@ class MarkdownCodeComponent {
     var chatTouch: Bool = false // 手指是否触摸
 
     protected override func aboutToAppear(): Unit {
-        refreshData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(this.nodeHash, refreshData)
+        refreshDataInternal()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(this.nodeHash)
     }
 
     func build() {
@@ -83,7 +87,7 @@ class MarkdownCodeComponent {
                                         }
                                     },
                                     keyGeneratorFunc: {
-                                        item: String, idx: Int64 => "${idx}"
+                                        item: String, idx: Int64 => "${idx}-${item}"
                                     }
                                 )
                             }
@@ -276,7 +280,14 @@ class MarkdownCodeComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(): Unit {
+    public func refreshData(newNodeView: NodeView): Unit {
+        this.codeText = newNodeView.nodeText
+        this.info = newNodeView.codeInfo
+        this.nodeHash = newNodeView.nodeHash
+        refreshDataInternal()
+    }
+
+    public func refreshDataInternal(): Unit {
         let arr = this.codeText.split("\n") // 代码块数据分割
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度

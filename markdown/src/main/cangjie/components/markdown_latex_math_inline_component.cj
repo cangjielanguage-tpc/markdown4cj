@@ -8,7 +8,9 @@ import ohos.state_macro_manage.*
 @Component
 public class MarkdownLatexMathInLineComponent {
     var markdownTheme: MarkdownTheme // markdown样式
-    var latexMathInLineStr: String // 数学公式文本
+    @State
+    var latexMathInLineStr: String = "" // 数学公式文本
+    var nodeHash: Int64 = 0
     @Prop
     var latexMathInLineComponentWidth: Float64 // 控件宽度 - 单位vp
     var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit // 数学公式图片点击事件
@@ -32,11 +34,12 @@ public class MarkdownLatexMathInLineComponent {
     protected override func aboutToAppear(): Unit {
         latexMathTextSize = fp2px(markdownTheme.latexMathTheme.latexMathTextSize.fp)().value
         componentWidth = vp2px(latexMathInLineComponentWidth.vp)().value
+        MarkdownRefreshRegistry.register(nodeHash, refreshData)
         latexMathInLineParser()
     }
 
     protected override func aboutToDisappear(): Unit {
-        // 清除缓存
+        MarkdownRefreshRegistry.unregister(nodeHash)
         latexMathInLinePixelMap?.Release()
         latexMathInLinePixelMap = Option<PixelMap>.None
         latexMathInLineData = Option<Array<UInt8>>.None
@@ -95,5 +98,16 @@ public class MarkdownLatexMathInLineComponent {
             }
         }
         latexMathInLineFut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(latexMathInLineStr, markdownTheme, latexMathTextSize, componentWidth, latexStrCallback, callback)
+    }
+
+    public func refreshData(newNodeView: NodeView): Unit {
+        this.latexMathInLineStr = newNodeView.nodeText
+        this.nodeHash = newNodeView.nodeHash
+        latexMathInLineFut?.cancel()
+        latexMathInLinePixelMap?.Release()
+        latexMathInLinePixelMap = Option<PixelMap>.None
+        latexMathInLineData = Option<Array<UInt8>>.None
+        isLatexMathInLineParserEnd = false
+        latexMathInLineParser()
     }
 }

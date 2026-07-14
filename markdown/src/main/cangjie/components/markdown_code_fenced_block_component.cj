@@ -9,7 +9,6 @@ import ohos.state_macro_manage.*
 class MarkdownCodeFencedBlockComponent {
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
-    @Watch[refreshData]
     var codeText: String = "" // 代码内容
     @State
     var info: String = "" // 代码类型
@@ -29,10 +28,12 @@ class MarkdownCodeFencedBlockComponent {
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
         formatConfig = FormatConfig(useTab: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockUseTab, indentWidth: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIndentWidth)
-        refreshData() // 初始化刷新数据
+        MarkdownRefreshRegistry.register(this.nodeHash, refreshData)
+        refreshDataInternal()
     }
 
     protected override func aboutToDisappear(): Unit {
+        MarkdownRefreshRegistry.unregister(this.nodeHash)
         future?.cancel()
     }
 
@@ -201,7 +202,14 @@ class MarkdownCodeFencedBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(): Unit {
+    public func refreshData(newNodeView: NodeView): Unit {
+        this.codeText = newNodeView.nodeText
+        this.info = newNodeView.codeInfo()
+        this.nodeHash = newNodeView.nodeHash
+        refreshDataInternal()
+    }
+
+    public func refreshDataInternal(): Unit {
         this.isCodeNone = this.codeText.trimAscii().size > 0
         if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockParserSync) {
             stringCodeToResListSync(this.codeText)
