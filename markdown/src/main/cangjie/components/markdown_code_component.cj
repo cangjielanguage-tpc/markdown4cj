@@ -9,13 +9,12 @@ import ohos.state_macro_manage.*
 class MarkdownCodeComponent {
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
+    @Watch[refreshData]
     var codeText: String = "" // 代码内容
     @State
     var info: Option<String> = Option<String>.None // 代码类型
     @State
     var nodeHash: Int64 = 0 // hash
-    var codeComponents: HashMap<Int64, MarkdownCodeComponent> // 缓存的单独代码块控件
-    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent> // 缓存的单独代码块文本列表控件
     @State
     var lineStrArray: StringDataSource = StringDataSource(ArrayList<String>()) // 代码列表
     @State
@@ -27,20 +26,7 @@ class MarkdownCodeComponent {
     var chatTouch: Bool = false // 手指是否触摸
 
     protected override func aboutToAppear(): Unit {
-        refreshData(codeText, info, nodeHash) // 初始化刷新数据
-        codeComponents.add(nodeHash, this) // 缓存当前控件
-    }
-
-    protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = codeComponents.get(nodeHash)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                codeComponents.remove(nodeHash)
-            }
-        } else {
-            codeComponents.remove(nodeHash)
-        }
+        refreshData() // 初始化刷新数据
     }
 
     func build() {
@@ -92,7 +78,6 @@ class MarkdownCodeComponent {
                                                 markdownTheme: markdownConfiguration.markdownTheme,
                                                 codeText: item,
                                                 info: info,
-                                                codeTextComponents: codeTextComponents,
                                                 index: idx
                                             )
                                         }
@@ -291,10 +276,7 @@ class MarkdownCodeComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64): Unit {
-        this.codeText = codeText
-        this.info = info
-        this.nodeHash = nodeHash
+    public func refreshData(): Unit {
         let arr = this.codeText.split("\n") // 代码块数据分割
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
@@ -307,13 +289,9 @@ class MarkdownCodeComponent {
             // 循环判断历史数据有没有做过修改
             for (i in 0..dataSourceSize) {
                 if (lineStrArray.getData(i) != arr[i]) {
-                    // 最后一条数据通过页面缓存刷新
+                    // 数据变化时直接替换数据源
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
-                    let cache = codeTextComponents.get(i)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(arr[i], info)
-                    }
                 }
             }
             // 循环添加新数据
@@ -326,13 +304,9 @@ class MarkdownCodeComponent {
             let indexItem: Int64 = dataSourceSize
             for (i in 0..indexItem) {
                 if (lineStrArray.getData(i) != arr[i]) {
-                    // 最后一条数据通过页面缓存刷新
+                    // 数据变化时直接替换数据源
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
-                    let cache = codeTextComponents.get(i)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(arr[i], info)
-                    }
                 }
             }
         } else {
@@ -340,13 +314,9 @@ class MarkdownCodeComponent {
             // 循环判断历史数据有没有做过修改
             for (i in 0..refreshNodeViewSize) {
                 if (lineStrArray.getData(i) != arr[i]) {
-                    // 最后一条数据通过页面缓存刷新
+                    // 数据变化时直接替换数据源
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
-                    let cache = codeTextComponents.get(i)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(arr[i], info)
-                    }
                 }
             }
             // 循环删除多余的旧数据

@@ -9,6 +9,7 @@ import ohos.state_macro_manage.*
 class MarkdownCodeFencedBlockComponent {
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
+    @Watch[refreshData]
     var codeText: String = "" // 代码内容
     @State
     var info: String = "" // 代码类型
@@ -18,7 +19,6 @@ class MarkdownCodeFencedBlockComponent {
     var isCodeNone: Bool = false
     @State
     var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>() // 高亮代码列表
-    var fencedCodeComponents: HashMap<Int64, MarkdownCodeFencedBlockComponent> // 缓存的围栏代码块控件列表
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
     var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
@@ -29,20 +29,10 @@ class MarkdownCodeFencedBlockComponent {
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
         formatConfig = FormatConfig(useTab: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockUseTab, indentWidth: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIndentWidth)
-        refreshData(codeText, info, nodeHash) // 初始化刷新数据
-        fencedCodeComponents.add(nodeHash, this) // 缓存当前控件
+        refreshData() // 初始化刷新数据
     }
 
     protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = fencedCodeComponents.get(nodeHash)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                fencedCodeComponents.remove(nodeHash)
-            }
-        } else {
-            fencedCodeComponents.remove(nodeHash)
-        }
         future?.cancel()
     }
 
@@ -211,11 +201,8 @@ class MarkdownCodeFencedBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeTextStr: String, info: String, nodeHash: Int64): Unit {
-        this.codeText = codeTextStr
+    public func refreshData(): Unit {
         this.isCodeNone = this.codeText.trimAscii().size > 0
-        this.info = info
-        this.nodeHash = nodeHash
         if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockParserSync) {
             stringCodeToResListSync(this.codeText)
         } else {
@@ -276,6 +263,7 @@ class MarkdownCodeFencedBlockComponent {
      * 代码数据高亮解析
      */
     func stringCodeToResList(str: String) {
+        future?.cancel()
         let callback: (ArrayList<PrismNodesParseResUI>, Int64) -> Unit = {
             prismNodesParseResLists, lines => launch {
                 refreshLines(lines)

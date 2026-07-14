@@ -9,10 +9,10 @@ import ohos.state_macro_manage.*
 class MarkdownHeadingComponent {
     var headingMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
+    @Watch[refreshHeadingData]
     var headingNodeView: NodeView // 标题控件自身节点
     @Prop
     var headingComponentWidth: Float64 // 控件宽度 - 单位vp
-    var headingComponents: HashMap<Int64, MarkdownHeadingComponent> // 缓存的标题控件数据
     @BuilderParam
     var headingCustomHeadingLineBuilder: (NodeView, Int64) -> Unit // 自定义行内标题控件
     var headingImageCallback: (String) -> Unit // 图片点击事件
@@ -25,20 +25,7 @@ class MarkdownHeadingComponent {
     var headingNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
-        refreshHeadingData(headingNodeView) // 初始化刷新数据
-        headingComponents.add(headingNodeView.nodeHash, this) // 缓存当前控件
-    }
-
-    protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = headingComponents.get(headingNodeView.nodeHash)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                headingComponents.remove(headingNodeView.nodeHash)
-            }
-        } else {
-            headingComponents.remove(headingNodeView.nodeHash)
-        }
+        refreshHeadingData() // 初始化刷新数据
     }
 
     func build() {
@@ -270,8 +257,7 @@ class MarkdownHeadingComponent {
      *
      * @param headingNodeView 刷新的新数据
      */
-    public func refreshHeadingData(headingNodeView: NodeView): Unit {
-        this.headingNodeView = headingNodeView
+    public func refreshHeadingData(): Unit {
         let refreshNodeViewChildren = headingNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let headingNodeViewListSize: Int64 = headingNodeViewList.size // 页面缓存的数据长度
@@ -284,17 +270,56 @@ class MarkdownHeadingComponent {
         }
         if (refreshNodeViewSize > headingNodeViewListSize) {
             // 新数据大于页面数据
-            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环判断历史数据有没有做过修改
+            for (i in 0..headingNodeViewListSize) {
+                let refreshNodeView = refreshNodeViewChildren[i]
+                let dataSourceNode = headingNodeViewList[i]
+                let newNodeHash = refreshNodeView.nodeHash
+                let oldNodeHash = dataSourceNode.nodeHash
+                let newContentHash = refreshNodeView.contentHash
+                let oldContentHash = dataSourceNode.contentHash
+                if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
+                    // 自身节点唯一ID不相同需要刷新数据
+                    // 子节点唯一ID不相同需要刷新子节点数据
+                    headingNodeViewList[i] = refreshNodeView
+                }
+            }
             // 循环添加新数据
             for (i in headingNodeViewListSize..refreshNodeViewSize) {
                 headingNodeViewList.append(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == headingNodeViewListSize) {
             // 新数据等于页面数据
-            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环判断历史数据有没有做过修改
+            for (i in 0..headingNodeViewListSize) {
+                let refreshNodeView = refreshNodeViewChildren[i]
+                let dataSourceNode = headingNodeViewList[i]
+                let newNodeHash = refreshNodeView.nodeHash
+                let oldNodeHash = dataSourceNode.nodeHash
+                let newContentHash = refreshNodeView.contentHash
+                let oldContentHash = dataSourceNode.contentHash
+                if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
+                    // 自身节点唯一ID不相同需要刷新数据
+                    // 子节点唯一ID不相同需要刷新子节点数据
+                    headingNodeViewList[i] = refreshNodeView
+                }
+            }
         } else {
             // 新数据小于页面数据
-            refreshHeadingDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环判断历史数据有没有做过修改
+            for (i in 0..refreshNodeViewSize) {
+                let refreshNodeView = refreshNodeViewChildren[i]
+                let dataSourceNode = headingNodeViewList[i]
+                let newNodeHash = refreshNodeView.nodeHash
+                let oldNodeHash = dataSourceNode.nodeHash
+                let newContentHash = refreshNodeView.contentHash
+                let oldContentHash = dataSourceNode.contentHash
+                if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
+                    // 自身节点唯一ID不相同需要刷新数据
+                    // 子节点唯一ID不相同需要刷新子节点数据
+                    headingNodeViewList[i] = refreshNodeView
+                }
+            }
             // 循环删除多余的旧数据
             for (i in headingNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 headingNodeViewList.remove(i)
@@ -304,28 +329,6 @@ class MarkdownHeadingComponent {
             isOneLink = true
         } else {
             isOneLink = false
-        }
-    }
-
-    /**
-     * 循环判断历史数据有没有做过修改
-     *
-     * @param size 长度
-     * @param refreshNodeViews 刷新的数据
-     */
-    func refreshHeadingDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
-        for (i in 0..size) {
-            let refreshNodeView = refreshNodeViews[i]
-            let dataSourceNode = headingNodeViewList[i]
-            let newNodeHash = refreshNodeView.nodeHash
-            let oldNodeHash = dataSourceNode.nodeHash
-            let newContentHash = refreshNodeView.contentHash
-            let oldContentHash = dataSourceNode.contentHash
-            if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
-                // 自身节点唯一ID不相同需要刷新数据
-                // 子节点唯一ID不相同需要刷新子节点数据
-                headingNodeViewList[i] = refreshNodeView
-            }
         }
     }
 }

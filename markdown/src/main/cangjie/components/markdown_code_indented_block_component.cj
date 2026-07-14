@@ -9,32 +9,19 @@ import ohos.state_macro_manage.*
 class MarkdownCodeIndentedBlockComponent {
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
+    @Watch[refreshData]
     var codeText: String = "" // 代码内容
     @State
     var info: Option<String> = Option<String>.None // 代码类型
     @State
     var nodeHash: Int64 = 0 // hash
-    var indentedCodeComponents: HashMap<Int64, MarkdownCodeIndentedBlockComponent> // 缓存的缩进代码块控件列表
     @State
     var lines: Int64 = 0 // 代码行数
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
 
     protected override func aboutToAppear(): Unit {
-        refreshData(codeText, info, nodeHash) // 初始化刷新数据
-        indentedCodeComponents.add(nodeHash, this) // 缓存当前控件
-    }
-
-    protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = indentedCodeComponents.get(nodeHash)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                indentedCodeComponents.remove(nodeHash)
-            }
-        } else {
-            indentedCodeComponents.remove(nodeHash)
-        }
+        refreshData() // 初始化刷新数据
     }
 
     func build() {
@@ -198,10 +185,7 @@ class MarkdownCodeIndentedBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64): Unit {
-        this.info = info
-        this.codeText = codeText
-        this.nodeHash = nodeHash
+    public func refreshData(): Unit {
         let arr = this.codeText.split("\n") // 代码块数据分割
         lines = arr.size
         lineArray.set(Array<Int64>(lines, repeat: 0))

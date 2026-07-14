@@ -8,12 +8,13 @@ import ohos.state_macro_manage.*
 @Component
 public class MarkdownListComponent {
     var listMarkdownConfiguration: MarkdownConfiguration // markdown配置
+    @Prop
+    @Watch[refreshListData]
     var listNodeView: NodeView // 列表节点
     @Prop
     var listComponentWidth: Float64 // 控件宽度 - 单位vp
     @Prop
     var listTableBlockComponentWidth: Float64 // 表格控件宽度 - 单位vp
-    var listMarkdownCacheConfiguration: MarkdownCacheConfiguration // 缓存的数据
     var isOrdered: Bool // 是无序列表还是有序列表 - true：有序列表，fasle：无序列表
     @BuilderParam
     var listAdBuilder: (NodeView) -> Unit // 广告布局
@@ -37,20 +38,7 @@ public class MarkdownListComponent {
     var listNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
-        refreshListData(listNodeView) // 初始化刷新数据
-        listMarkdownCacheConfiguration.listComponents.add(listNodeView.nodeHash, this) // 缓存当前控件
-    }
-
-    protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = listMarkdownCacheConfiguration.listComponents.get(listNodeView.nodeHash)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                listMarkdownCacheConfiguration.listComponents.remove(listNodeView.nodeHash)
-            }
-        } else {
-            listMarkdownCacheConfiguration.listComponents.remove(listNodeView.nodeHash)
-        }
+        refreshListData() // 初始化刷新数据
     }
 
     func build() {
@@ -74,7 +62,6 @@ public class MarkdownListComponent {
                                     listItemNodeView: item,
                                     listItemComponentWidth: listComponentWidth,
                                     listItemTableBlockComponentWidth: listTableBlockComponentWidth,
-                                    listItemMarkdownCacheConfiguration: listMarkdownCacheConfiguration,
                                     listItemAdBuilder: listAdBuilder,
                                     listItemVideoBuilder: listVideoBuilder,
                                     listItemAudioBuilder: listAudioBuilder,
@@ -104,7 +91,6 @@ public class MarkdownListComponent {
                                     listItemNodeView: item,
                                     listItemComponentWidth: listComponentWidth,
                                     listItemTableBlockComponentWidth: listTableBlockComponentWidth,
-                                    listItemMarkdownCacheConfiguration: listMarkdownCacheConfiguration,
                                     listItemAdBuilder: listAdBuilder,
                                     listItemVideoBuilder: listVideoBuilder,
                                     listItemAudioBuilder: listAudioBuilder,
@@ -186,72 +172,15 @@ public class MarkdownListComponent {
 
     /**
      * 数据刷新
+     * 通过smartUpdateDataArray驱动UI更新，无需页面缓存。
+     * keyGenerator含contentHash，hash变化时框架自动重建对应组件。
      */
-    public func refreshListData(listNodeView: NodeView): Unit {
-        this.listNodeView = listNodeView
+    public func refreshListData(): Unit {
         let refreshNodeViewChildren = listNodeView.children // 子节点数据
-        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
-        let dataSourceSize: Int64 = listNodeViewDataSource.totalCount() // 页面缓存的数据长度
-        if (refreshNodeViewSize == 0) {
+        if (refreshNodeViewChildren.size == 0) {
             listNodeViewDataSource.clear()
             return
         }
-        if (refreshNodeViewSize > dataSourceSize) {
-            // 新数据大于页面数据
-            refreshListDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-            // 循环添加新数据
-            for (i in dataSourceSize..refreshNodeViewSize) {
-                listNodeViewDataSource.addData(refreshNodeViewChildren[i])
-            }
-        } else if (refreshNodeViewSize == dataSourceSize) {
-            // 新数据等于页面数据
-            refreshListDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-        } else {
-            // 新数据小于页面数据
-            refreshListDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-            // 循环删除多余的旧数据
-            for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
-                listNodeViewDataSource.deleteData(i)
-            }
-        }
-    }
-
-    /**
-     * 循环判断历史数据有没有做过修改
-     *
-     * @param size 长度
-     * @param refreshNodes 刷新的数据
-     */
-    func refreshListDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
-        for (i in 0..size) {
-            let refreshNodeView = refreshNodeViews[i]
-            let dataSourceNode = listNodeViewDataSource.getData(i)
-            let newNodeHash = refreshNodeView.nodeHash
-            let oldNodeHash = dataSourceNode.nodeHash
-            if (newNodeHash != oldNodeHash) {
-                // 自身节点唯一ID不相同需要刷新数据
-                listNodeViewDataSource.replaceData(i, refreshNodeView)
-                continue
-            }
-            let newContentHash = refreshNodeView.contentHash
-            let oldContentHash = dataSourceNode.contentHash
-            if (newContentHash != oldContentHash) {
-                // 子节点唯一ID不相同需要刷新子节点数据
-                if (refreshNodeView.nodeType == "ListItem" || refreshNodeView.nodeType == "TaskListItem") {
-                    // ListItem/TaskListItem节点
-                    let listItemComponents = listMarkdownCacheConfiguration.listItemComponents
-                    let cache = listItemComponents.get(newNodeHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshListItemData(refreshNodeView)
-                        listNodeViewDataSource.update(i, refreshNodeView)
-                    } else {
-                        listNodeViewDataSource.replaceData(i, refreshNodeView)
-                    }
-                    continue
-                }
-                // 其他节点
-                listNodeViewDataSource.replaceData(i, refreshNodeView)
-            }
-        }
+        listNodeViewDataSource.smartUpdateDataArray(refreshNodeViewChildren)
     }
 }

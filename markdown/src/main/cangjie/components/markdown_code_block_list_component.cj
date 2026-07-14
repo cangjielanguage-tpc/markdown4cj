@@ -8,6 +8,8 @@ import ohos.state_macro_manage.*
 @Component
 class MarkdownCodeBlockListComponent {
     var markdownConfiguration: MarkdownConfiguration // markdown配置
+    @Prop
+    @Watch[refreshData]
     var nodeView: NodeView // Node
     var strInfos: ArrayList<String> // 代码类型列表标题
     var strText: ArrayList<String> // 代码内容列表
@@ -25,7 +27,7 @@ class MarkdownCodeBlockListComponent {
 
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
-        stringCodeToResLists()
+        refreshData()
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -269,7 +271,7 @@ class MarkdownCodeBlockListComponent {
     /**
      * 代码数据高亮解析
      */
-    func stringCodeToResLists() {
+    public func refreshData() {
         let callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit = {
             prismNodesParseResLists => launch {
                 arrayLists = prismNodesParseResLists
@@ -277,6 +279,7 @@ class MarkdownCodeBlockListComponent {
         }
         lines = strText[idxSelect].lines().count()
         lineArray.set(Array<Int64>(lines, repeat: 0))
+        future?.cancel()
         future = MarkdownParseCodeUtil.stringToResLists(nodeView, markdownConfiguration, strText, psh, callback)
     }
 }

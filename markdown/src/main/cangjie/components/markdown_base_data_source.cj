@@ -358,6 +358,47 @@ public class NodeViewDataSource <: MarkdownBaseDataSource<NodeView> {
     public NodeViewDataSource(let data: ArrayList<NodeView>) {
         super(data)
     }
+
+    /**
+     * 流式增量更新：逐个对比新旧数据的nodeHash/contentHash，替换变化的块
+     * Cangjie解析器每次生成全新NodeView对象，旧对象不会被复用，
+     * 因此直接用replaceData替换整个对象（不用copyDataFrom就地修改）。
+     * 根keyGenerator为"${idx}-${nodeHash}"（不含contentHash），
+     * contentHash变化时replaceData→notifyDataChange→@Watch触发子组件就地更新。
+     * 子组件keyGenerator含contentHash，key变化时框架重建孙组件。
+     *
+     * @param newData 解析后的新数据列表
+     */
+    public func smartUpdateDataArray(newData: ArrayList<NodeView>): Unit {
+        let existingLen = data_.size
+        if (existingLen == 0) {
+            for (item in newData) {
+                addData(item)
+            }
+            return
+        }
+        let newLen = newData.size
+        let minLen = if (existingLen < newLen) { existingLen } else { newLen }
+        // 对比重叠区间，hash变化时replaceData（触发key变化→组件重建）
+        for (i in 0..minLen) {
+            let oldNode = data_[i]
+            let newNode = newData[i]
+            if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
+                replaceData(i, newNode)
+            }
+        }
+        // 新增部分
+        if (newLen > existingLen) {
+            for (i in existingLen..newLen) {
+                addData(newData[i])
+            }
+        } else if (existingLen > newLen) {
+            // 删除多余部分（从后往前删，避免索引移位）
+            for (i in existingLen - 1..=newLen : -1) {
+                deleteData(i)
+            }
+        }
+    }
 }
 
 /**

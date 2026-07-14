@@ -9,10 +9,10 @@ import ohos.state_macro_manage.*
 class MarkdownTableBlockCellComponent {
     var tableBlockCellMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
+    @Watch[refreshTableBlockCellData]
     var tableBlockCellNodeView: NodeView // 表格Cell控件自身节点
     @Prop
     var tableBlockCellComponentWidth: Float64 // 控件宽度 - 单位vp
-    var tableBlockCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent> // 缓存的表格Cell控件数据
     @BuilderParam
     var tableBlockCellCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格Cell控件
     var tableBlockCellImageCallback: (String) -> Unit // 图片点击事件
@@ -31,21 +31,8 @@ class MarkdownTableBlockCellComponent {
     var tableBlockCellNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
-        refreshTableBlockCellData(tableBlockCellNodeView) // 初始化刷新数据
-        tableBlockCellComponents.add(tableBlockCellNodeView.nodeHash, this) // 缓存当前控件
+        refreshTableBlockCellData() // 初始化刷新数据
         refreshTextWidth() // 宽度刷新
-    }
-
-    protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = tableBlockCellComponents.get(tableBlockCellNodeView.nodeHash)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                tableBlockCellComponents.remove(tableBlockCellNodeView.nodeHash)
-            }
-        } else {
-            tableBlockCellComponents.remove(tableBlockCellNodeView.nodeHash)
-        }
     }
 
     func build() {
@@ -246,8 +233,7 @@ class MarkdownTableBlockCellComponent {
      *
      * @param tableBlockCellNodeView 刷新的新数据
      */
-    public func refreshTableBlockCellData(tableBlockCellNodeView: NodeView): Unit {
-        this.tableBlockCellNodeView = tableBlockCellNodeView
+    public func refreshTableBlockCellData(): Unit {
         let refreshNodeViewChildren = tableBlockCellNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let tableBlockCellNodeViewListSize: Int64 = tableBlockCellNodeViewList.size // 页面缓存的数据长度
@@ -258,44 +244,26 @@ class MarkdownTableBlockCellComponent {
         if (refreshNodeViewSize > 0) {
             isRefresh = true
         }
+        // 对比重叠区间，hash变化时替换数据
+        let minLen = if (refreshNodeViewSize < tableBlockCellNodeViewListSize) { refreshNodeViewSize } else { tableBlockCellNodeViewListSize }
+        for (i in 0..minLen) {
+            let oldNode = tableBlockCellNodeViewList[i]
+            let newNode = refreshNodeViewChildren[i]
+            if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                // 子节点唯一ID不相同需要刷新子节点数据
+                tableBlockCellNodeViewList[i] = newNode
+            }
+        }
+        // 新增部分
         if (refreshNodeViewSize > tableBlockCellNodeViewListSize) {
-            // 新数据大于页面数据
-            refreshTableBlockCellDatas(tableBlockCellNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-            // 循环添加新数据
             for (i in tableBlockCellNodeViewListSize..refreshNodeViewSize) {
                 tableBlockCellNodeViewList.append(refreshNodeViewChildren[i])
             }
-        } else if (refreshNodeViewSize == tableBlockCellNodeViewListSize) {
-            // 新数据等于页面数据
-            refreshTableBlockCellDatas(tableBlockCellNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-        } else {
-            // 新数据小于页面数据
-            refreshTableBlockCellDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-            // 循环删除多余的旧数据
+        } else if (tableBlockCellNodeViewListSize > refreshNodeViewSize) {
+            // 删除多余部分（从后往前删，避免索引移位）
             for (i in tableBlockCellNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 tableBlockCellNodeViewList.remove(i)
-            }
-        }
-    }
-
-    /**
-     * 循环判断历史数据有没有做过修改
-     *
-     * @param size 长度
-     * @param refreshNodeViews 刷新的数据
-     */
-    func refreshTableBlockCellDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
-        for (i in 0..size) {
-            let refreshNodeView = refreshNodeViews[i]
-            let dataSourceNode = tableBlockCellNodeViewList[i]
-            let newNodeHash = refreshNodeView.nodeHash
-            let oldNodeHash = dataSourceNode.nodeHash
-            let newContentHash = refreshNodeView.contentHash
-            let oldContentHash = dataSourceNode.contentHash
-            if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
-                // 自身节点唯一ID不相同需要刷新数据
-                // 子节点唯一ID不相同需要刷新子节点数据
-                tableBlockCellNodeViewList[i] = refreshNodeView
             }
         }
     }

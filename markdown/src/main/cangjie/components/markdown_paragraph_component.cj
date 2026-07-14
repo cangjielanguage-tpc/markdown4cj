@@ -9,10 +9,10 @@ import ohos.state_macro_manage.*
 class MarkdownParagraphComponent {
     var paragraphMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
+    @Watch[refreshParagraphData]
     var paragraphNodeView: NodeView // 段落控件自身节点
     @Prop
     var paragraphComponentWidth: Float64 // 控件宽度 - 单位vp
-    var paragraphComponents: HashMap<Int64, MarkdownParagraphComponent> // 缓存的段落控件数据
     @BuilderParam
     var paragraphCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落控件
     var paragraphTocListOnClick: (Int64) -> Unit // TOC列表点击事件
@@ -26,20 +26,7 @@ class MarkdownParagraphComponent {
     var paragraphNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
-        refreshParagraphData(paragraphNodeView) // 初始化刷新数据
-        paragraphComponents.add(paragraphNodeView.nodeHash, this) // 缓存当前控件
-    }
-
-    protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = paragraphComponents.get(paragraphNodeView.nodeHash)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                paragraphComponents.remove(paragraphNodeView.nodeHash)
-            }
-        } else {
-            paragraphComponents.remove(paragraphNodeView.nodeHash)
-        }
+        refreshParagraphData() // 初始化刷新数据
     }
 
     func build() {
@@ -262,36 +249,36 @@ class MarkdownParagraphComponent {
 
     /**
      * 段落控件数据刷新
+     * 数据驱动：逐个对比新旧数据hash，替换变化的项，新增/删除差额
      *
      * @param paragraphNodeView 刷新的新数据
      */
-    public func refreshParagraphData(paragraphNodeView: NodeView): Unit {
-        this.paragraphNodeView = paragraphNodeView
+    public func refreshParagraphData(): Unit {
         let refreshNodeViewChildren = paragraphNodeView.children // 子节点数据
-        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
-        let paragraphNodeViewListSize: Int64 = paragraphNodeViewList.size // 页面缓存的数据长度
-        if (refreshNodeViewSize == 0) {
+        if (refreshNodeViewChildren.size == 0) {
             paragraphNodeViewList.clear()
             return
         }
-        if (refreshNodeViewSize > 0) {
-            isRefresh = true
+        isRefresh = true
+        // 增量更新：对比重叠区间hash，替换变化的项
+        let existingLen: Int64 = paragraphNodeViewList.size
+        let newLen: Int64 = refreshNodeViewChildren.size
+        let minLen = if (existingLen < newLen) { existingLen } else { newLen }
+        for (i in 0..minLen) {
+            let oldNode = paragraphNodeViewList[i]
+            let newNode = refreshNodeViewChildren[i]
+            if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
+                paragraphNodeViewList[i] = newNode
+            }
         }
-        if (refreshNodeViewSize > paragraphNodeViewListSize) {
-            // 新数据大于页面数据
-            refreshParagraphDatas(paragraphNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-            // 循环添加新数据
-            for (i in paragraphNodeViewListSize..refreshNodeViewSize) {
+        // 新增部分
+        if (newLen > existingLen) {
+            for (i in existingLen..newLen) {
                 paragraphNodeViewList.append(refreshNodeViewChildren[i])
             }
-        } else if (refreshNodeViewSize == paragraphNodeViewListSize) {
-            // 新数据等于页面数据
-            refreshParagraphDatas(paragraphNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-        } else {
-            // 新数据小于页面数据
-            refreshParagraphDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
-            // 循环删除多余的旧数据
-            for (i in paragraphNodeViewListSize - 1..=refreshNodeViewSize : -1) {
+        } else if (existingLen > newLen) {
+            // 删除多余部分（从后往前删）
+            for (i in existingLen - 1..=newLen : -1) {
                 paragraphNodeViewList.remove(i)
             }
         }
@@ -299,28 +286,6 @@ class MarkdownParagraphComponent {
             isOneLink = true
         } else {
             isOneLink = false
-        }
-    }
-
-    /**
-     * 循环判断历史数据有没有做过修改
-     *
-     * @param size 长度
-     * @param refreshNodeViews 刷新的数据
-     */
-    func refreshParagraphDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
-        for (i in 0..size) {
-            let refreshNodeView = refreshNodeViews[i]
-            let dataSourceNode = paragraphNodeViewList[i]
-            let newNodeHash = refreshNodeView.nodeHash
-            let oldNodeHash = dataSourceNode.nodeHash
-            let newContentHash = refreshNodeView.contentHash
-            let oldContentHash = dataSourceNode.contentHash
-            if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
-                // 自身节点唯一ID不相同需要刷新数据
-                // 子节点唯一ID不相同需要刷新子节点数据
-                paragraphNodeViewList[i] = refreshNodeView
-            }
         }
     }
 }
