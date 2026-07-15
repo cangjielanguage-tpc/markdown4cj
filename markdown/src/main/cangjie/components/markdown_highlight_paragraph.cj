@@ -69,6 +69,7 @@ public class MarkdownHighlightParagraph {
 
     /**
      * 设置指定段落高亮显示
+     * 同时通知MarkdownHighlightRegistry触发已注册组件的UI更新
      *
      * @param index 段落nodeHash
      * @param color 段落高亮颜色
@@ -82,11 +83,13 @@ public class MarkdownHighlightParagraph {
             return false
         }
         selectedParagraphItemList.add(index)
+        MarkdownHighlightRegistry.highlight(Int64.parse(index), color)
         return true
     }
 
     /**
      * 取消指定段落的高亮
+     * 同时通知MarkdownHighlightRegistry取消已注册组件的UI更新
      *
      * @param index 段落nodeHash
      *
@@ -98,15 +101,18 @@ public class MarkdownHighlightParagraph {
         if (existed) {
             selectedParagraphItemList.remove(index)
         }
+        MarkdownHighlightRegistry.clearHighlight(Int64.parse(index))
         return existed
     }
 
     /**
      * 取消所有段落高亮
+     * 同时通知MarkdownHighlightRegistry取消所有已注册组件的UI更新
      */
     public func clearAllParagraphHighlights(): Unit {
         selectedParagraphItem = ""
         selectedParagraphItemColor = None
         selectedParagraphItemList.clear()
+        MarkdownHighlightRegistry.clearAll()
     }
 }

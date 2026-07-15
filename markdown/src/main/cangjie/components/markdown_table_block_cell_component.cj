@@ -33,10 +33,16 @@ class MarkdownTableBlockCellComponent {
         MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
         refreshTableBlockCellData(tableBlockCellNodeView) // 初始化刷新数据
         refreshTextWidth() // 宽度刷新
+        // 链接曝光注册
+        if (tableBlockCellMarkdownConfiguration.elementExposureCallback.isSome()) {
+            let urls = MarkdownLinkExposureRegistry.extractHttpLinks(tableBlockCellNodeView)
+            MarkdownLinkExposureRegistry.register(tableBlockCellNodeView.nodeHash, urls)
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
         MarkdownRefreshRegistry.unregister(tableBlockCellNodeView.nodeHash)
+        MarkdownLinkExposureRegistry.unregister(tableBlockCellNodeView.nodeHash)
     }
 
     func build() {

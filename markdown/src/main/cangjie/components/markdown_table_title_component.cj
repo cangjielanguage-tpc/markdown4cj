@@ -14,15 +14,21 @@ class MarkdownTableTitleComponent {
 
     func build() {
         Row {
-            Text(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadTitleText)
-                .fontColor(getHeadTitleFontColor())
-                .fontSize(getHeadTitleFontSize())
-                .fontStyle(getHeadTitleFontStyle())
-                .fontWeight(getHeadTitleFontWeight())
-                .fontFamily(getHeadTitleFontFamily())
-                .lineHeight(getHeadTitleLineHeight())
-                .letterSpacing(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableTitleTextLetterSpacing)
-                .margin(left: tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadTitleTextMarginLeft)
+            if (tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadTitleText.size > 0) {
+                Text(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadTitleText)
+                    .fontColor(getHeadTitleFontColor())
+                    .fontSize(getHeadTitleFontSize())
+                    .fontStyle(getHeadTitleFontStyle())
+                    .fontWeight(getHeadTitleFontWeight())
+                    .fontFamily(getHeadTitleFontFamily())
+                    .lineHeight(getHeadTitleLineHeight())
+                    .letterSpacing(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableTitleTextLetterSpacing)
+                    .margin(left: tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadTitleTextMarginLeft)
+                    .maxLines(1)
+                    .textOverflow(TextOverflow.Ellipsis)
+                    .constraintSize(minWidth: 30.percent)
+                    .layoutWeight(1)
+            }
             if (tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadCopyIcon.isSome()) {
                 Image(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadCopyIcon())
                     .width(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadCopyIconWidth)
@@ -43,6 +49,9 @@ class MarkdownTableTitleComponent {
         .backgroundColor(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableTitleBackgroundColor)
         .justifyContent(FlexAlign.SpaceBetween)
         .alignItems(VerticalAlign.Center)
+        .borderStyle(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
+        .borderWidth(top: 0.0, bottom: tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth, left: 0.0, right: 0.0)
+        .borderColor(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
     }
 
     func getHeadTitleFontColor(): Color {

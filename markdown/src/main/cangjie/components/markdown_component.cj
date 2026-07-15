@@ -69,6 +69,7 @@ public class MarkdownComponent {
     var oldOutput: String = "" // 上一次的输入内容
     let isThrottled: AtomicBool = AtomicBool(false) // 节流标志
     let hasPendingRefresh: AtomicBool = AtomicBool(false) // 节流期间有未处理的刷新请求
+    let isAlive: AtomicBool = AtomicBool(true) // 组件存活标志（用于定时器回调守卫）
     var throttleTimer: ?Timer = None // 节流定时器
     var stickyHolder: StickyScrollYHolder = StickyScrollYHolder() // 表格吸顶滚动Y持有者
     @State
@@ -93,6 +94,7 @@ public class MarkdownComponent {
     }
 
     protected override func aboutToDisappear(): Unit {
+        isAlive.store(false)
         throttleTimer?.cancel()
         throttleTimer = None
         MarkdownRefreshRegistry.clear()
@@ -416,7 +418,13 @@ public class MarkdownComponent {
                 }
             },
             keyGeneratorFunc: {
-                item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}"
+                item: NodeView, idx: Int64 => if (item.nodeType == "LatexMathBlock") {
+                    return "${idx}-${item.nodeHash}-${item.contentHash}"
+                }
+                if (item.nodeType == "TableBlock") {
+                    return "${idx}-${item.nodeHash}-${markdownConfiguration.markdownTheme.tableTheme.tableStickyHeader}"
+                }
+                return "${idx}-${item.nodeHash}"
             }
         )
     }
@@ -443,6 +451,9 @@ public class MarkdownComponent {
             throttleTimer = Timer.once(throttleMs * Duration.millisecond) {
                 =>
                     throttleTimer = None
+                    if (!isAlive.load()) {
+                        return
+                    }
                     isThrottled.store(false)
                     if (hasPendingRefresh.load()) {
                         launch { refreshData() }

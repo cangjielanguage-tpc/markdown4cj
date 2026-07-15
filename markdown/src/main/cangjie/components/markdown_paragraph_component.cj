@@ -46,11 +46,11 @@ class MarkdownParagraphComponent {
             }
         })
         // 段落加载动画回调
-        if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationEnabled) {
+        if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
             if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphAnimationStart) {
                 cb()
             }
-            let duration = paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationDuration
+            let duration = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
             let endCb = paragraphMarkdownConfiguration.paragraphAnimationEnd
             Timer.once(Int64(duration) * Duration.millisecond, { =>
                 if (let Some(cb) <- endCb) {
@@ -81,8 +81,8 @@ class MarkdownParagraphComponent {
      * 启用时使用渐显（OPACITY），禁用时使用IDENTITY（无效果）
      */
     func getTransitionEffect(): TransitionEffect {
-        if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationEnabled) {
-            return TransitionEffect.OPACITY.animation(AnimateParam(duration: Int32(paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationDuration)))
+        if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
+            return TransitionEffect.OPACITY.animation(AnimateParam(duration: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration))
         }
         return TransitionEffect.IDENTITY
     }

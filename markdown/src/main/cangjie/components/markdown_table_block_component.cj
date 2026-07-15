@@ -102,6 +102,7 @@ class MarkdownTableBlockComponent {
                     })
                 }
                 .backgroundColor(tableBlockMarkdownConfiguration.markdownTheme.globalTheme.backgroundColor)
+                .zIndex(1)
                 .offset(x: 0.0, y: stickyOffset)
                 .interopOnSizeChange({
                     old, new =>
@@ -180,7 +181,7 @@ class MarkdownTableBlockComponent {
                 old, new =>
                     this.tablePaddingTopNum = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingTop
                     this.tableBorderTopNum = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth
-                    this.tableY = new.position.y
+                    this.tableY = new.position.y + tableBlockMarkdownConfiguration.markdownTheme.globalTheme.blockMarginTop + this.tableBorderTopNum + this.tablePaddingTopNum
                     this.tableHeight = new.height
                     onTableAreaChanged()
             })
@@ -344,10 +345,8 @@ class MarkdownTableBlockComponent {
     }
 
     /**
-     * 序列化表格为纯文本
-     * 每行的单元格用制表符(\t)分隔，行与行用换行符(\n)分隔
-     *
-     * @return 表格纯文本
+     * 序列化表格为纯文本（对齐ArkTS MarkdownNodeViewString.toString格式）
+     * 每个单元格后跟空格，每行后跟换行符
      */
     func getFullTableText(): String {
         let children = tableBlockNodeView.children
@@ -356,16 +355,11 @@ class MarkdownTableBlockComponent {
         }
         var result = ""
         for (i in 0..children.size) {
-            if (i > 0) {
-                result = result + "\n"
-            }
             let row = children[i]
             for (j in 0..row.children.size) {
-                if (j > 0) {
-                    result = result + "\t"
-                }
-                result = result + extractNodeText(row.children[j])
+                result = result + extractNodeText(row.children[j]) + " "
             }
+            result = result + "\n"
         }
         return result
     }

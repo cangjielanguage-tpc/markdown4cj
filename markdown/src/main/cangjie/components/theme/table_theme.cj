@@ -597,6 +597,28 @@ public class TableTheme <: MarkdownBaseTheme {
     }
 
     /**
+     * 设置表格头复制图标宽度
+     *
+     * @param width 宽度
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadCopyIconWidth(width: Float64): TableTheme {
+        this.tableHeadCopyIconWidth = width
+        return this
+    }
+
+    /**
+     * 设置表格头复制图标高度
+     *
+     * @param height 高度
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadCopyIconHeight(height: Float64): TableTheme {
+        this.tableHeadCopyIconHeight = height
+        return this
+    }
+
+    /**
      * 设置表格头复制图标右外边距
      *
      * @param marginRight 右外边距
