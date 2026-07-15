@@ -50,7 +50,7 @@ class MarkdownTableTitleComponent {
         .justifyContent(FlexAlign.SpaceBetween)
         .alignItems(VerticalAlign.Center)
         .borderStyle(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
-        .borderWidth(top: 0.0, bottom: tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth, left: 0.0, right: 0.0)
+        .borderWidth(EdgeWidths(bottom: tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth))
         .borderColor(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
     }
 
