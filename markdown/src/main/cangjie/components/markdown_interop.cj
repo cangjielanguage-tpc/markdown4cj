@@ -190,3 +190,27 @@ extend List {
         return this
     }
 }
+
+public func getGlobalString(key: String): String {
+    try {
+        let ctx = getCtx()
+        let global = ctx.global
+        if (global.hasProperty(key)) {
+            return String.fromJSValue(ctx, global[key])
+        }
+    } catch (e: Exception) {
+    }
+    return ""
+}
+
+public func callGlobalFunc(funcName: String, arg: String): Unit {
+    try {
+        let ctx = getCtx()
+        let global = ctx.global
+        if (global.hasProperty(funcName)) {
+            let funcObj = global[funcName].asFunction(ctx)
+            funcObj.call([ctx.string(arg).toJSValue()])
+        }
+    } catch (e: Exception) {
+    }
+}
