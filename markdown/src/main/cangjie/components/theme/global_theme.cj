@@ -18,6 +18,8 @@ public class GlobalTheme <: MarkdownBaseTheme {
     public var isLineBreak: Bool = false // 软换行是否换行
     public var openGestureSwipe: Bool = false // markdown是否支持滚动手势
     public var backgroundColor: Color = COLOR_TRANSPARENT // 背景颜色
+    public var paragraphAnimationEnabled: Bool = false // 是否启用段落加载动画
+    public var paragraphAnimationDuration: Int32 = 300 // 段落加载动画时长（毫秒）
 
     /**
      * 设置markdown上下文 - 互操作
@@ -157,6 +159,29 @@ public class GlobalTheme <: MarkdownBaseTheme {
      */
     public func setParseThrottleMs(throttleMs: Int64): GlobalTheme {
         this.parseThrottleMs = throttleMs
+        return this
+    }
+
+    /**
+     * 设置段落加载动画是否启用
+     * 开启后段落出现时从透明渐变为不透明（渐显），消失时从不透明渐变为透明（渐隐）
+     *
+     * @param enable 是否启用
+     * @return 当前GlobalTheme对象
+     */
+    public func setParagraphAnimationEnabled(enable: Bool): GlobalTheme {
+        this.paragraphAnimationEnabled = enable
+        return this
+    }
+
+    /**
+     * 设置段落加载动画时长
+     *
+     * @param duration 动画时长（毫秒）
+     * @return 当前GlobalTheme对象
+     */
+    public func setParagraphAnimationDuration(duration: Int32): GlobalTheme {
+        this.paragraphAnimationDuration = duration
         return this
     }
 }

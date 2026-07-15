@@ -35,6 +35,13 @@ public class MarkdownConfiguration {
     protected var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
     protected var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
     protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
+    protected var tableCopyCallback: ?(String) -> Unit = None // 表格复制按钮的点击事件
+    protected var elementExposureCallback: ?(MarkdownExposureEvent) -> Unit = None // 元素曝光回调（链接显示/消失时触发）
+    protected var exposureThreshold: Float64 = 0.5 // 曝光可见阈值（0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见）
+    protected var markdownHighlightParagraph: MarkdownHighlightParagraph = MarkdownHighlightParagraph() // 高亮段落设置
+    protected var scrollController: ?MarkdownScrollController = None // 外层滚动控制器（用于不固定高度模式下吸顶）
+    protected var paragraphAnimationStart: ?() -> Unit = None // 段落动画开始回调
+    protected var paragraphAnimationEnd: ?() -> Unit = None // 段落动画结束回调
 
     protected init(builder: MarkdownConfigurationBuilder) {
         this.markdownTheme = builder.markdownTheme
@@ -55,6 +62,13 @@ public class MarkdownConfiguration {
         this.tocIndexCallback = builder.tocIndexCallback
         this.footnoteCallback = builder.footnoteCallback
         this.nodeString = builder.nodeString
+        this.tableCopyCallback = builder.tableCopyCallback
+        this.elementExposureCallback = builder.elementExposureCallback
+        this.exposureThreshold = builder.exposureThreshold
+        this.markdownHighlightParagraph = builder.markdownHighlightParagraph
+        this.scrollController = builder.scrollController
+        this.paragraphAnimationStart = builder.paragraphAnimationStart
+        this.paragraphAnimationEnd = builder.paragraphAnimationEnd
     }
 
     /**
@@ -119,6 +133,13 @@ public class MarkdownConfigurationBuilder {
     var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
     var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
     var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
+    var tableCopyCallback: ?(String) -> Unit = None // 表格复制按钮的点击事件
+    var elementExposureCallback: ?(MarkdownExposureEvent) -> Unit = None // 元素曝光回调（链接显示/消失时触发）
+    var exposureThreshold: Float64 = 0.5 // 曝光可见阈值（0~1）
+    var markdownHighlightParagraph: MarkdownHighlightParagraph = MarkdownHighlightParagraph() // 高亮段落设置
+    var scrollController: ?MarkdownScrollController = None // 外层滚动控制器（用于不固定高度模式下吸顶）
+    var paragraphAnimationStart: ?() -> Unit = None // 段落动画开始回调
+    var paragraphAnimationEnd: ?() -> Unit = None // 段落动画结束回调
 
     init() {
     }
@@ -142,6 +163,13 @@ public class MarkdownConfigurationBuilder {
         this.tocIndexCallback = configuration.tocIndexCallback
         this.footnoteCallback = configuration.footnoteCallback
         this.nodeString = configuration.nodeString
+        this.tableCopyCallback = configuration.tableCopyCallback
+        this.elementExposureCallback = configuration.elementExposureCallback
+        this.exposureThreshold = configuration.exposureThreshold
+        this.markdownHighlightParagraph = configuration.markdownHighlightParagraph
+        this.scrollController = configuration.scrollController
+        this.paragraphAnimationStart = configuration.paragraphAnimationStart
+        this.paragraphAnimationEnd = configuration.paragraphAnimationEnd
     }
 
     /**
@@ -364,6 +392,88 @@ public class MarkdownConfigurationBuilder {
      */
     public func setNodeString(nodeString: (NodeViewStringBuilder) -> Unit): MarkdownConfigurationBuilder {
         this.nodeString = nodeString
+        return this
+    }
+
+    /**
+     * 设置表格复制按钮的点击事件
+     *
+     * @param tableCopyCallback 表格复制点击回调接口 (String:表格纯文本内容)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableCopyCallback(tableCopyCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.tableCopyCallback = tableCopyCallback
+        return this
+    }
+
+    /**
+     * 设置元素曝光回调
+     * 链接（type='link'）进入屏幕可见区域时回调 visible=true，离开时回调 visible=false。
+     * 可见判定：链接渲染矩形与段落在屏可见区交集面积 / 链接面积 ≥ exposureThreshold。
+     * 同一链接持续停留不重复触发；滚出后再滚入会再次触发（一次显示+一次消失成对）。
+     *
+     * @param elementExposureCallback 曝光回调 (MarkdownExposureEvent: { type, visible, data })
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setElementExposureCallback(elementExposureCallback: (MarkdownExposureEvent) -> Unit): MarkdownConfigurationBuilder {
+        this.elementExposureCallback = elementExposureCallback
+        return this
+    }
+
+    /**
+     * 设置曝光可见阈值
+     *
+     * @param threshold 0~1，链接与可见区交集面积 / 链接面积 ≥ 此值才算可见。0=漏出任意像素即可见
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setExposureThreshold(threshold: Float64): MarkdownConfigurationBuilder {
+        this.exposureThreshold = threshold
+        return this
+    }
+
+    /**
+     * 设置高亮段落配置
+     *
+     * @param markdownHighlightParagraph 高亮段落配置对象
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setMarkdownHighlightParagraph(markdownHighlightParagraph: MarkdownHighlightParagraph): MarkdownConfigurationBuilder {
+        this.markdownHighlightParagraph = markdownHighlightParagraph
+        return this
+    }
+
+    /**
+     * 设置外层滚动控制器
+     * 不固定高度模式下，页面通过此控制器将外层Scroll的滚动Y传递给MarkdownComponent，
+     * 实现表格吸顶功能。固定高度模式下无需设置。
+     *
+     * @param scrollController 外层滚动控制器
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setScrollController(scrollController: MarkdownScrollController): MarkdownConfigurationBuilder {
+        this.scrollController = scrollController
+        return this
+    }
+
+    /**
+     * 设置段落动画开始回调
+     *
+     * @param cb 段落动画开始回调
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setParagraphAnimationStart(cb: () -> Unit): MarkdownConfigurationBuilder {
+        this.paragraphAnimationStart = cb
+        return this
+    }
+
+    /**
+     * 设置段落动画结束回调
+     *
+     * @param cb 段落动画结束回调
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setParagraphAnimationEnd(cb: () -> Unit): MarkdownConfigurationBuilder {
+        this.paragraphAnimationEnd = cb
         return this
     }
 

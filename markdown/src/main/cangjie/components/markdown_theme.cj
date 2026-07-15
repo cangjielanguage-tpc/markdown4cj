@@ -221,6 +221,7 @@ public class MarkdownThemeBuilder {
 
         // 代码块主题
         this.codeBlockTheme.setCodeBlockBorderColor(COLOR_TRANSPARENT) // 代码块边框颜色
+            .setCodeBlockIsDark(false) // 代码块暗色主题
             .setCodeBlockListTitleSelectTextColor(COLOR_RED) // 列表标题选中文本颜色
             .setCodeBlockListTitleUnselectTextColor(COLOR_BLACK) // 列表标题未选中文本颜色
             .setCodeBlockListTitleSelectBackgroundColor(COLOR_GRAY) // 列表标题选中背景颜色
@@ -334,6 +335,7 @@ public class MarkdownThemeBuilder {
 
         // 代码块主题
         this.codeBlockTheme.setCodeBlockBorderColor(COLOR_TRANSPARENT) // 代码块边框颜色
+            .setCodeBlockIsDark(true) // 代码块暗色主题
             .setCodeBlockListTitleSelectTextColor(COLOR_FF4A90E2) // 列表标题选中文本颜色
             .setCodeBlockListTitleUnselectTextColor(COLOR_FFE0E0E0) // 列表标题未选中文本颜色
             .setCodeBlockListTitleSelectBackgroundColor(COLOR_FF2D2D2D) // 列表标题选中背景颜色
@@ -714,6 +716,18 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置markdown上下文
+     *
+     * @param context markdown上下文
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用GlobalTheme.setStageContext方法代替", since: "1.4.0"]
+    public func setContext(context: StageContext): MarkdownThemeBuilder {
+        this.globalTheme.stageContext = context
+        return this
+    }
+
+    /**
      * 设置markdown上下文 - 仓颉
      *
      * @param uiAbilityContext markdown上下文 - 默认None
@@ -758,6 +772,32 @@ public class MarkdownThemeBuilder {
     @Deprecated["用GlobalTheme.setParseThrottleMs方法代替", since: "1.4.0"]
     public func setParseThrottleMs(parseThrottleMs: Int64): MarkdownThemeBuilder {
         this.globalTheme.parseThrottleMs = parseThrottleMs
+        return this
+    }
+
+    /**
+     * 设置是否启用段落加载动画
+     *
+     * @param enable 是否启用 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用GlobalTheme.setParagraphAnimationEnabled方法代替", since: "1.4.0"]
+    public func setParagraphAnimationEnabled(enable: Bool): MarkdownThemeBuilder {
+        this.globalTheme.paragraphAnimationEnabled = enable
+        this.paragraphTheme.paragraphAnimationEnabled = enable
+        return this
+    }
+
+    /**
+     * 设置段落加载动画时长
+     *
+     * @param duration 动画时长（毫秒） - 默认300
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用GlobalTheme.setParagraphAnimationDuration方法代替", since: "1.4.0"]
+    public func setParagraphAnimationDuration(duration: Int32): MarkdownThemeBuilder {
+        this.globalTheme.paragraphAnimationDuration = duration
+        this.paragraphTheme.paragraphAnimationDuration = duration
         return this
     }
 
@@ -1540,6 +1580,30 @@ public class MarkdownThemeBuilder {
     @Deprecated["用CodeBlockTheme.setCodeBlockParserSync方法代替", since: "1.4.0"]
     public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): MarkdownThemeBuilder {
         this.codeBlockTheme.codeBlockParserSync = isCodeBlockParserSync
+        return this
+    }
+
+    /**
+     * 设置代码块是否暗色主题
+     *
+     * @param isDark 是否暗色
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用CodeBlockTheme.setCodeBlockIsDark方法代替", since: "1.4.0"]
+    public func setCodeBlockIsDark(isDark: Bool): MarkdownThemeBuilder {
+        this.codeBlockTheme.setCodeBlockIsDark(isDark)
+        return this
+    }
+
+    /**
+     * 设置代码块是否暗色主题
+     *
+     * @param isDark 是否暗色
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用CodeBlockTheme.setCodeBlockIsDark方法代替", since: "1.4.0"]
+    public func setIsDark(isDark: Bool): MarkdownThemeBuilder {
+        this.codeBlockTheme.setCodeBlockIsDark(isDark)
         return this
     }
 
@@ -3540,6 +3604,54 @@ public class MarkdownThemeBuilder {
     @Deprecated["用TableTheme.setTableScrollBarColor方法代替", since: "1.4.0"]
     public func setTableScrollBarColor(tableScrollBarColor: Color): MarkdownThemeBuilder {
         this.tableTheme.tableScrollBarColor = tableScrollBarColor
+        return this
+    }
+
+    /**
+     * 设置表格标题行是否吸顶
+     *
+     * @param tableStickyHeader 是否吸顶 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用TableTheme.setTableStickyHeader方法代替", since: "1.4.0"]
+    public func setTableStickyHeader(tableStickyHeader: Bool): MarkdownThemeBuilder {
+        this.tableTheme.tableStickyHeader = tableStickyHeader
+        return this
+    }
+
+    /**
+     * 设置表格头复制按钮是否显示
+     *
+     * @param tableHeadIsShow 是否显示
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用TableTheme.setTableHeadIsShow方法代替", since: "1.4.0"]
+    public func setTableHeadIsShow(tableHeadIsShow: Bool): MarkdownThemeBuilder {
+        this.tableTheme.tableHeadIsShow = tableHeadIsShow
+        return this
+    }
+
+    /**
+     * 设置表格头标题文字
+     *
+     * @param tableHeadTitleText 标题文字
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用TableTheme.setTableHeadTitleText方法代替", since: "1.4.0"]
+    public func setTableHeadTitleText(tableHeadTitleText: String): MarkdownThemeBuilder {
+        this.tableTheme.tableHeadTitleText = tableHeadTitleText
+        return this
+    }
+
+    /**
+     * 设置表格头复制图标
+     *
+     * @param tableHeadCopyIcon 复制图标资源
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    @Deprecated["用TableTheme.setTableHeadCopyIcon方法代替", since: "1.4.0"]
+    public func setTableHeadCopyIcon(tableHeadCopyIcon: AppResource): MarkdownThemeBuilder {
+        this.tableTheme.tableHeadCopyIcon = tableHeadCopyIcon
         return this
     }
 

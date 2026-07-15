@@ -70,6 +70,7 @@ public class MarkdownComponent {
     let isThrottled: AtomicBool = AtomicBool(false) // 节流标志
     let hasPendingRefresh: AtomicBool = AtomicBool(false) // 节流期间有未处理的刷新请求
     var throttleTimer: ?Timer = None // 节流定时器
+    var stickyHolder: StickyScrollYHolder = StickyScrollYHolder() // 表格吸顶滚动Y持有者
     @State
     var lastViewIndex: Int64 = 0 // 最后一条数据的位置
 
@@ -77,13 +78,30 @@ public class MarkdownComponent {
         tableBlockComponentWidth = markdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth - markdownConfiguration.markdownTheme.tableTheme.tableCellPaddingLeft - markdownConfiguration.markdownTheme.tableTheme.tableCellPaddingRight - 2.0 * markdownConfiguration.markdownTheme.tableTheme.tableBorderWidth // 表格每个格子最大宽度
         incBase = IncreaseParserV2(markdownPlugin) // 加载插件
         componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value // 默认控件宽度等于屏幕宽度
+        // 表格吸顶初始化
+        if (markdownConfiguration.markdownTheme.tableTheme.tableStickyHeader) {
+            stickyHolder.setEnabled(true)
+        }
+        if (let Some(ctrl) <- markdownConfiguration.scrollController) {
+            ctrl.setListener({ y: Float64 => stickyHolder.setY(y) })
+        }
         refreshData() // 首次加载
+        // 链接曝光初始化
+        if (let Some(cb) <- markdownConfiguration.elementExposureCallback) {
+            MarkdownLinkExposureRegistry.setExposureCallback(cb)
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
         throttleTimer?.cancel()
         throttleTimer = None
         MarkdownRefreshRegistry.clear()
+        MarkdownLinkExposureRegistry.clear()
+        MarkdownHighlightRegistry.clear()
+        stickyHolder.clearListeners()
+        if (let Some(ctrl) <- markdownConfiguration.scrollController) {
+            ctrl.setListener(Option<(Float64) -> Unit>.None)
+        }
     }
 
     func build() {
@@ -97,6 +115,12 @@ public class MarkdownComponent {
             .alignListItem(ListItemAlign.Start)
             .scrollBar(BarState.Off)
             .enableScrollInteraction(markdownConfiguration.markdownTheme.globalTheme.openGestureSwipe)
+            .onScroll({
+                offset: Float64, state: ScrollState =>
+                    if (markdownConfiguration.markdownTheme.tableTheme.tableStickyHeader) {
+                        stickyHolder.setY(scroller.currentOffset().yOffset)
+                    }
+            })
             .interopOnSizeChange {
                 old, new => if (componentWidth != new.width) {
                     componentWidth = new.width
@@ -297,7 +321,8 @@ public class MarkdownComponent {
                             tableBlockComponentWidth: tableBlockComponentWidth,
                             tableBlockCustomTableLineBuilder: customTableLineBuilder,
                             tableBlockImageCallback: imageCallback,
-                            tableBlockFootnoteCallback: footnoteCallback
+                            tableBlockFootnoteCallback: footnoteCallback,
+                            tableBlockStickyHolder: stickyHolder
                         )
                     }
                 } else if (item.nodeType == "ThematicBreak") {
@@ -446,6 +471,7 @@ public class MarkdownComponent {
                 let refreshNodeViewChildren = v.children // 子节点数据
                 if (refreshNodeViewChildren.size == 0) {
                     nodeViewDataSource.clear()
+                    rebuildIndexes(ArrayList<NodeView>())
                     return
                 }
                 nodeViewDataSource.smartUpdateDataArray(refreshNodeViewChildren)
@@ -466,6 +492,7 @@ public class MarkdownComponent {
                         launch {
                             if (refreshNodeViewChildren.size == 0) {
                                 nodeViewDataSource.clear()
+                                rebuildIndexes(ArrayList<NodeView>())
                             } else {
                                 nodeViewDataSource.smartUpdateDataArray(refreshNodeViewChildren)
                                 rebuildIndexes(refreshNodeViewChildren)
@@ -523,14 +550,19 @@ public class MarkdownComponent {
     func rebuildIndexes(children: ArrayList<NodeView>): Unit {
         indexTocHashMap.clear()
         indexFootnoteHashMap.clear()
+        let highlightParagraphItems = ArrayList<String>()
         let size: Int64 = children.size
         for (i in 0..size) {
             if (children[i].nodeType == "Heading" || children[i].nodeType == "IdHeading") {
                 indexTocHashMap.add(i, i)
+                highlightParagraphItems.add("${children[i].nodeHash}")
             } else if (children[i].nodeType == "FootnoteBlock") {
                 indexFootnoteHashMap.add(children[i].footnoteID(), i)
+            } else if (children[i].nodeType == "Paragraph" || children[i].nodeType == "TableBlock" || children[i].nodeType == "BlockQuote" || children[i].nodeType == "OrderedList" || children[i].nodeType == "BulletList") {
+                highlightParagraphItems.add("${children[i].nodeHash}")
             }
         }
+        markdownConfiguration.markdownHighlightParagraph.setAllParagraphItems(highlightParagraphItems)
         lastViewIndex = nodeViewDataSource.totalCount() - 1
     }
 

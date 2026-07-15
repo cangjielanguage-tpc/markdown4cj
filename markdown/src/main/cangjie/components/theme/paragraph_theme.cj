@@ -20,6 +20,8 @@ public class ParagraphTheme <: MarkdownBaseTheme {
     public var paragraphTextFontFamily: String = "HarmonyOS Sans" // 段落文本字体
     public var paragraphTextLineHeight: Float64 = 22.0 // 段落文本行高
     public var paragraphTextLetterSpacing: Float64 = 0.0 // 段落文本字符间距
+    public var paragraphAnimationEnabled: Bool = false // 段落加载动画是否启用
+    public var paragraphAnimationDuration: Int32 = 0 // 段落加载动画时长（毫秒）
 
     /**
      * 设置段落背景颜色
@@ -168,6 +170,28 @@ public class ParagraphTheme <: MarkdownBaseTheme {
      */
     public func setParagraphTextLetterSpacing(spacing: Float64): ParagraphTheme {
         this.paragraphTextLetterSpacing = spacing
+        return this
+    }
+
+    /**
+     * 设置段落加载动画是否启用
+     *
+     * @param enabled 是否启用
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphAnimationEnabled(enabled: Bool): ParagraphTheme {
+        this.paragraphAnimationEnabled = enabled
+        return this
+    }
+
+    /**
+     * 设置段落加载动画时长
+     *
+     * @param duration 动画时长（毫秒）
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphAnimationDuration(duration: Int32): ParagraphTheme {
+        this.paragraphAnimationDuration = duration
         return this
     }
 }

@@ -23,20 +23,73 @@ class MarkdownParagraphComponent {
     var isOneLink: Bool = false // 是否只有一条链接数据
     @State
     var paragraphNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
+    @State
+    var paragraphHighlightColor: Color = COLOR_TRANSPARENT // 段落高亮颜色
+    @State
+    var hasParagraphHighlight: Bool = false // 段落是否处于高亮状态
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(paragraphNodeView.nodeHash, refreshParagraphData)
         refreshParagraphData(paragraphNodeView)
+        // 链接曝光注册
+        if (paragraphMarkdownConfiguration.elementExposureCallback.isSome()) {
+            let urls = MarkdownLinkExposureRegistry.extractHttpLinks(paragraphNodeView)
+            MarkdownLinkExposureRegistry.register(paragraphNodeView.nodeHash, urls)
+        }
+        // 段落高亮注册
+        MarkdownHighlightRegistry.register(paragraphNodeView.nodeHash, { color: ?Color =>
+            if (let Some(c) <- color) {
+                paragraphHighlightColor = c
+                hasParagraphHighlight = true
+            } else {
+                hasParagraphHighlight = false
+            }
+        })
+        // 段落加载动画回调
+        if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationEnabled) {
+            if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphAnimationStart) {
+                cb()
+            }
+            let duration = paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationDuration
+            let endCb = paragraphMarkdownConfiguration.paragraphAnimationEnd
+            Timer.once(Int64(duration) * Duration.millisecond, { =>
+                if (let Some(cb) <- endCb) {
+                    cb()
+                }
+            })
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
         MarkdownRefreshRegistry.unregister(paragraphNodeView.nodeHash)
+        MarkdownLinkExposureRegistry.unregister(paragraphNodeView.nodeHash)
+        MarkdownHighlightRegistry.unregister(paragraphNodeView.nodeHash)
+    }
+
+    /**
+     * 获取段落背景色：高亮时用高亮色，否则用默认背景色
+     */
+    func getParagraphBackground(): Color {
+        if (hasParagraphHighlight) {
+            return paragraphHighlightColor
+        }
+        return paragraphBackgroundColor(paragraphMarkdownConfiguration.markdownTheme, paragraphNodeView)
+    }
+
+    /**
+     * 获取段落加载动画转场效果
+     * 启用时使用渐显（OPACITY），禁用时使用IDENTITY（无效果）
+     */
+    func getTransitionEffect(): TransitionEffect {
+        if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationEnabled) {
+            return TransitionEffect.OPACITY.animation(AnimateParam(duration: Int32(paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationDuration)))
+        }
+        return TransitionEffect.IDENTITY
     }
 
     func build() {
         Row() {
-            Column() {
-                if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
+            Column() {                if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
                     if (paragraphMarkdownConfiguration.imageReplaceCallback.isNone()) {
                         if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
                             MarkdownImageRawFileComponent(
@@ -112,7 +165,7 @@ class MarkdownParagraphComponent {
             .justifyContent(FlexAlign.Center)
             .layoutWeight(1)
         }
-        .backgroundColor(paragraphBackgroundColor(paragraphMarkdownConfiguration.markdownTheme, paragraphNodeView))
+        .backgroundColor(getParagraphBackground())
         .padding(
             top: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingTop,
             right: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingRight,
@@ -125,6 +178,7 @@ class MarkdownParagraphComponent {
             bottom: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginBottom,
             left: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginLeft
         )
+        .transition(getTransitionEffect())
     }
 
     /**

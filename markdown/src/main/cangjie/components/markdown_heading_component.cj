@@ -22,14 +22,68 @@ class MarkdownHeadingComponent {
     var isOneLink: Bool = false // 是否只有一条链接数据
     @State
     var headingNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
+    @State
+    var headingHighlightColor: Color = COLOR_TRANSPARENT // 标题高亮颜色
+    @State
+    var hasHeadingHighlight: Bool = false // 标题是否处于高亮状态
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(headingNodeView.nodeHash, refreshHeadingData)
         refreshHeadingData(headingNodeView)
+        // 链接曝光注册
+        if (headingMarkdownConfiguration.elementExposureCallback.isSome()) {
+            let urls = MarkdownLinkExposureRegistry.extractHttpLinks(headingNodeView)
+            MarkdownLinkExposureRegistry.register(headingNodeView.nodeHash, urls)
+        }
+        // 段落高亮注册
+        MarkdownHighlightRegistry.register(headingNodeView.nodeHash, { color: ?Color =>
+            if (let Some(c) <- color) {
+                headingHighlightColor = c
+                hasHeadingHighlight = true
+            } else {
+                hasHeadingHighlight = false
+            }
+        })
+        // 段落加载动画回调
+        if (headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationEnabled) {
+            if (let Some(cb) <- headingMarkdownConfiguration.paragraphAnimationStart) {
+                cb()
+            }
+            let duration = headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationDuration
+            let endCb = headingMarkdownConfiguration.paragraphAnimationEnd
+            Timer.once(Int64(duration) * Duration.millisecond, { =>
+                if (let Some(cb) <- endCb) {
+                    cb()
+                }
+            })
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
         MarkdownRefreshRegistry.unregister(headingNodeView.nodeHash)
+        MarkdownLinkExposureRegistry.unregister(headingNodeView.nodeHash)
+        MarkdownHighlightRegistry.unregister(headingNodeView.nodeHash)
+    }
+
+    /**
+     * 获取标题背景色：高亮时用高亮色，否则用默认背景色
+     */
+    func getHeadingBackground(): Color {
+        if (hasHeadingHighlight) {
+            return headingHighlightColor
+        }
+        return headingBackgroundColor(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme, headingNodeView)
+    }
+
+    /**
+     * 获取标题加载动画转场效果
+     * 启用时使用渐显（OPACITY），禁用时使用IDENTITY（无效果）
+     */
+    func getTransitionEffect(): TransitionEffect {
+        if (headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationEnabled) {
+            return TransitionEffect.OPACITY.animation(AnimateParam(duration: Int32(headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphAnimationDuration)))
+        }
+        return TransitionEffect.IDENTITY
     }
 
     func build() {
@@ -123,7 +177,7 @@ class MarkdownHeadingComponent {
             .justifyContent(FlexAlign.Center)
             .layoutWeight(1)
         }
-        .backgroundColor(headingBackgroundColor(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme, headingNodeView))
+        .backgroundColor(getHeadingBackground())
         .padding(
             top: headingPaddingTop(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
             right: headingPaddingRight(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
@@ -136,6 +190,7 @@ class MarkdownHeadingComponent {
             bottom: headingMarginBottom(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
             left: headingMarginLeft(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme)
         )
+        .transition(getTransitionEffect())
     }
 
     /**

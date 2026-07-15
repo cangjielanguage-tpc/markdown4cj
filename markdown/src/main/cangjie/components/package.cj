@@ -78,6 +78,10 @@ internal import ohos.component.TextDecorationType
 internal import ohos.component.ImageFit
 internal import ohos.component.ListItem
 internal import ohos.component.List
+internal import ohos.component.StickyStyle
+internal import ohos.component.ListItemGroup
+internal import ohos.component.ListItemGroupParams
+internal import ohos.component.ScrollState
 internal import ohos.component.Alignment
 internal import ohos.component.FontWeight
 internal import ohos.component.TextAlign
@@ -120,6 +124,9 @@ internal import ohos.component.Divider
 internal import ohos.component.CopyOptions
 internal import ohos.component.TextBackgroundStyle
 internal import ohos.component.BorderRadiuses
+internal import ohos.component.TransitionEffect
+internal import ohos.component.AnimateParam
+internal import ohos.component.Curve
 internal import ohos.concurrency.launch
 internal import ohos.device_info.DeviceInfo
 internal import ohos.display.getDefaultDisplaySync

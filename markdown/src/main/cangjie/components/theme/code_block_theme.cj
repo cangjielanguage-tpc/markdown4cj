@@ -5,6 +5,7 @@ package markdown.components.theme
  */
 public class CodeBlockTheme <: MarkdownBaseTheme {
     public var codeBlockIsCodeFormat: Bool = false // 是否格式化围栏代码块内容
+    public var codeBlockIsDark: Bool = false // 代码块是否暗色主题
     public var codeBlockUseTab: Bool = false // codeformat是否用制表符
     public var codeBlockIndentWidth: Int64 = 4 // codeformat空格缩进数量
     public var codeBlockParserSync: Bool = false // 围栏代码块代码高亮是否同步解析
@@ -98,6 +99,17 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      */
     public func setCodeBlockIsCodeFormat(isCodeFormat: Bool): CodeBlockTheme {
         this.codeBlockIsCodeFormat = isCodeFormat
+        return this
+    }
+
+    /**
+     * 设置代码块是否暗色主题
+     *
+     * @param isDark 是否暗色
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockIsDark(isDark: Bool): CodeBlockTheme {
+        this.codeBlockIsDark = isDark
         return this
     }
 

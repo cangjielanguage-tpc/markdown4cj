@@ -45,6 +45,20 @@ public class TableTheme <: MarkdownBaseTheme {
     public var tableContentTextFontFamily: String = "HarmonyOS Sans" // 表格内容文本字体
     public var tableContentTextLineHeight: Float64 = 22.0 // 表格内容文本行高
     public var tableContentTextLetterSpacing: Float64 = 0.0 // 表格内容文本字符间距
+    public var tableStickyHeader: Bool = false // 表格标题行是否吸顶（仅当外层List可滚动时生效）
+    public var tableHeadIsShow: Bool = true // 表格头复制按钮是否显示
+    public var tableHeadTitleText: String = "比较" // 表格头标题
+    public var tableHeadTitleTextFontFamily: ?String = None // 表格头标题类型文本字体族
+    public var tableHeadTitleTextFontSize: ?Float64 = None // 表格头标题类型文本字体大小
+    public var tableHeadTitleTextFontWeight: ?FontWeight = None // 表格头标题类型文本字体粗细
+    public var tableHeadTitleTextFontStyle: ?FontStyle = None // 表格头标题类型文本字体样式
+    public var tableHeadTitleTextFontColor: ?Color = None // 表格头标题类型文本字体颜色
+    public var tableHeadTitleTextLineHeight: ?Float64 = None // 表格头标题类型文本行高
+    public var tableHeadTitleTextMarginLeft: Float64 = 0.0 // 表格头标题类型文本左边距
+    public var tableHeadCopyIcon: ?AppResource = None // 表格头复制图标
+    public var tableHeadCopyIconWidth: Float64 = 24.0 // 表格头复制图标宽度
+    public var tableHeadCopyIconHeight: Float64 = 24.0 // 表格头复制图标高度
+    public var tableHeadCopyIconMarginRight: Float64 = 0.0 // 表格头复制图标右外边距
 
     /**
      * 设置表格标题背景颜色
@@ -442,6 +456,154 @@ public class TableTheme <: MarkdownBaseTheme {
      */
     public func setTableContentTextLetterSpacing(spacing: Float64): TableTheme {
         this.tableContentTextLetterSpacing = spacing
+        return this
+    }
+
+    /**
+     * 设置表格标题行是否吸顶
+     * 开启后表格标题行将在外层List滚动时吸顶显示；
+     * 关闭后回退为Scroll>List>rows的传统结构（标题不吸顶）。
+     * 注意：仅当外层List有固定高度可滚动时吸顶才可见；不固定高度时需通过MarkdownScrollController传入外层滚动Y。
+     *
+     * @param enable 是否吸顶
+     * @return 当前TableTheme对象
+     */
+    public func setTableStickyHeader(enable: Bool): TableTheme {
+        this.tableStickyHeader = enable
+        return this
+    }
+
+    /**
+     * 设置表格头复制按钮是否显示
+     *
+     * @param show 是否显示
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadIsShow(show: Bool): TableTheme {
+        this.tableHeadIsShow = show
+        return this
+    }
+
+    /**
+     * 设置表格头标题文字
+     *
+     * @param text 标题文字
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadTitleText(text: String): TableTheme {
+        this.tableHeadTitleText = text
+        return this
+    }
+
+    /**
+     * 设置表格头标题文本字体族
+     *
+     * @param family 字体族
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadTitleTextFontFamily(family: ?String): TableTheme {
+        this.tableHeadTitleTextFontFamily = family
+        return this
+    }
+
+    /**
+     * 设置表格头标题文本字体大小
+     *
+     * @param size 字体大小
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadTitleTextFontSize(size: ?Float64): TableTheme {
+        this.tableHeadTitleTextFontSize = size
+        return this
+    }
+
+    /**
+     * 设置表格头标题文本字体粗细
+     *
+     * @param weight 字体粗细
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadTitleTextFontWeight(weight: ?FontWeight): TableTheme {
+        this.tableHeadTitleTextFontWeight = weight
+        return this
+    }
+
+    /**
+     * 设置表格头标题文本字体样式
+     *
+     * @param style 字体样式
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadTitleTextFontStyle(style: ?FontStyle): TableTheme {
+        this.tableHeadTitleTextFontStyle = style
+        return this
+    }
+
+    /**
+     * 设置表格头标题文本字体颜色
+     *
+     * @param color 颜色
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadTitleTextFontColor(color: ?Color): TableTheme {
+        this.tableHeadTitleTextFontColor = color
+        return this
+    }
+
+    /**
+     * 设置表格头标题文本行高
+     *
+     * @param lineHeight 行高
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadTitleTextLineHeight(lineHeight: ?Float64): TableTheme {
+        this.tableHeadTitleTextLineHeight = lineHeight
+        return this
+    }
+
+    /**
+     * 设置表格头标题左外边距
+     *
+     * @param marginLeft 左外边距
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadTitleTextMarginLeft(marginLeft: Float64): TableTheme {
+        this.tableHeadTitleTextMarginLeft = marginLeft
+        return this
+    }
+
+    /**
+     * 设置表格头复制图标
+     *
+     * @param icon 复制图标资源
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadCopyIcon(icon: AppResource): TableTheme {
+        this.tableHeadCopyIcon = icon
+        return this
+    }
+
+    /**
+     * 设置表格头复制图标尺寸
+     *
+     * @param width 宽度
+     * @param height 高度
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadCopyIconSize(width!: Float64 = 24.0, height!: Float64 = 24.0): TableTheme {
+        this.tableHeadCopyIconWidth = width
+        this.tableHeadCopyIconHeight = height
+        return this
+    }
+
+    /**
+     * 设置表格头复制图标右外边距
+     *
+     * @param marginRight 右外边距
+     * @return 当前TableTheme对象
+     */
+    public func setTableHeadCopyIconMarginRight(marginRight: Float64): TableTheme {
+        this.tableHeadCopyIconMarginRight = marginRight
         return this
     }
 }
