@@ -62,6 +62,7 @@ export struct MarkdownTable {
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  customLongPressCallback?: () => void = undefined // 自定义长按事件
   elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（透传给TableRow→TableCell）
   exposureThreshold: number = 0.5 // 曝光阈值（透传给TableRow→TableCell）
   scroller: Scroller = new Scroller() // list控制器（非sticky模式使用）
@@ -337,6 +338,7 @@ export struct MarkdownTable {
                       imageDownloadCallback: this.imageDownloadCallback,
                       imageReplaceCallback: this.imageReplaceCallback,
                       markdownHighlightParagraph: this.markdownHighlightParagraph,
+                      customLongPressCallback: this.customLongPressCallback,
                       elementExposureCallback: this.elementExposureCallback,
                       exposureThreshold: this.exposureThreshold
                     })
@@ -437,6 +439,7 @@ export struct MarkdownTable {
             imageDownloadCallback: this.imageDownloadCallback,
             imageReplaceCallback: this.imageReplaceCallback,
             markdownHighlightParagraph: this.markdownHighlightParagraph,
+            customLongPressCallback: this.customLongPressCallback,
             elementExposureCallback: this.elementExposureCallback,
             exposureThreshold: this.exposureThreshold
           })
@@ -501,6 +504,7 @@ export struct MarkdownTable {
               imageDownloadCallback: this.imageDownloadCallback,
               imageReplaceCallback: this.imageReplaceCallback,
               markdownHighlightParagraph: this.markdownHighlightParagraph,
+              customLongPressCallback: this.customLongPressCallback,
               elementExposureCallback: this.elementExposureCallback,
               exposureThreshold: this.exposureThreshold
             })
@@ -587,6 +591,7 @@ export struct MarkdownTable {
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
+                customLongPressCallback: this.customLongPressCallback,
                 elementExposureCallback: this.elementExposureCallback,
                 exposureThreshold: this.exposureThreshold
               })
@@ -648,6 +653,7 @@ export struct MarkdownTable {
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
+                customLongPressCallback: this.customLongPressCallback,
                 elementExposureCallback: this.elementExposureCallback,
                 exposureThreshold: this.exposureThreshold
               })

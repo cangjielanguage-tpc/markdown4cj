@@ -25,9 +25,9 @@ export class MarkdownConfiguration {
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void = undefined // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   tableCopyCallback?: (text: string) => void = undefined // 表格复制点击事件
+  customLongPressCallback?: () => void = undefined // 自定义长按事件
   paragraphAnimationStart?: () => void = undefined // 段落动画开始回调
   paragraphAnimationEnd?: () => void = undefined // 段落动画结束回调
-
 
   markdownHighlightParagraph: MarkdownHighlightParagraph = new MarkdownHighlightParagraph() // 高亮段落设置
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
@@ -78,7 +78,6 @@ export class MarkdownConfiguration {
     return this
   }
 
-
   /**
    * 设置表格复制的点击事件
    *
@@ -108,10 +107,6 @@ export class MarkdownConfiguration {
     this.paragraphAnimationEnd = cb
     return this
   }
-
-
-
-
 
   /**
    * 设置图片点击回调
@@ -263,6 +258,15 @@ export class MarkdownConfiguration {
   setLatexStrCallback(cb: (str: string) => string): MarkdownConfiguration {
     this.latexStrCallback = cb
     return this
+  }
+
+  /**
+   * 自定义长按事件
+   *
+   * @param cb 自定义长按事件
+   */
+  setLongCallback(cb: () => void): void {
+    this.customLongPressCallback = cb
   }
 
   /**

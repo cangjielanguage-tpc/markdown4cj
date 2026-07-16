@@ -62,6 +62,7 @@ import display from "@ohos.display"
 import { componentUtils, PromptAction } from "@kit.ArkUI"
 import { MarkdownVisibleRectHolder, MarkdownVisibleRectSnapshot } from "../model/MarkdownVisibleRectHolder"
 import { pasteboard } from "@kit.BasicServicesKit"
+import hilog from "@ohos.hilog"
 
 /**
  * 段落控件
@@ -107,6 +108,7 @@ export struct MarkdownParagraph {
   exposureThreshold: number = 0.5 // 曝光可见阈值
   paragraphAnimationStart?: () => void // 段落动画开始回调
   paragraphAnimationEnd?: () => void // 段落动画结束回调
+  customLongPressCallback?: () => void = undefined // 自定义长按事件
   @State @Watch('onListChanged') list: NodeView[] = [] // 段落子节点数据源
   private isAlive: boolean = true // 组件是否存活
   private textController: TextController = new TextController() // 段落Text控制器，用于getRectsForRange拿链接矩形
@@ -406,11 +408,27 @@ export struct MarkdownParagraph {
             .onActionEnd((event: GestureEvent) => {
               if (!this.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
                 this.textBackgroundColor = COLOR_TRANSPARENT
-                this.markdownHighlightParagraph.customLongPressCallback?.() // 调用用户自定义长按回调方法
+                this.customLongPressCallback?.() // 调用用户自定义长按回调方法
               }
             })
         )
-        .bindSelectionMenu(TextSpanType.DEFAULT, this.CustomMenu, TextResponseType.LONG_PRESS, {
+        .bindSelectionMenu(TextSpanType.TEXT, this.CustomMenu, TextResponseType.LONG_PRESS, {
+          onMenuShow: () => {
+            this.needHideMenu = false
+          },
+          onMenuHide: () => {
+            this.needHideMenu = true
+          }
+        })
+        .bindSelectionMenu(TextSpanType.IMAGE, this.NullMenu(), TextResponseType.LONG_PRESS, {
+          onMenuShow: () => {
+            this.needHideMenu = false
+          },
+          onMenuHide: () => {
+            this.needHideMenu = true
+          }
+        })
+        .bindSelectionMenu(TextSpanType.MIXED, this.CustomMenu, TextResponseType.LONG_PRESS, {
           onMenuShow: () => {
             this.needHideMenu = false
           },
@@ -756,6 +774,12 @@ export struct MarkdownParagraph {
     .borderRadius(5)
     .shadow(ShadowStyle.OUTER_DEFAULT_LG) // 阴影
   }
+
+  /**
+   * 自定义空白菜单
+   */
+  @Builder
+  NullMenu() {}
 
   /**
     * 刷新数据

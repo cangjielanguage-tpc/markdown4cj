@@ -85,6 +85,7 @@ export struct MarkdownFootnote {
   codeFullScreenCallback?: (code: string, language: string | undefined) => void // 代码全屏点击事件
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  customLongPressCallback?: () => void = undefined // 自定义长按事件
   paragraphAnimationStart?: () => void // 段落动画开始回调
   paragraphAnimationEnd?: () => void // 段落动画结束回调
   scroller: Scroller = new Scroller() // list控制器
@@ -135,6 +136,7 @@ export struct MarkdownFootnote {
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
+                customLongPressCallback: this.customLongPressCallback,
                 paragraphAnimationStart: this.paragraphAnimationStart,
                 paragraphAnimationEnd: this.paragraphAnimationEnd,
               })

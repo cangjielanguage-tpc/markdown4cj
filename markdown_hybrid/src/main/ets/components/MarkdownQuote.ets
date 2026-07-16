@@ -96,6 +96,7 @@ export struct MarkdownQuote {
   tableCopyCallback?: (str: string) => void // 复制点击事件
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  customLongPressCallback?: () => void = undefined // 自定义长按事件
   paragraphAnimationStart?: () => void // 段落动画开始回调
   paragraphAnimationEnd?: () => void // 段落动画结束回调
   @Prop listDepth: number = 0 // 嵌套深度
@@ -137,6 +138,7 @@ export struct MarkdownQuote {
               latexStrCallback: this.latexStrCallback,
               componentWidth: this.tableBlockComponentWidth,
               markdownHighlightParagraph: this.markdownHighlightParagraph,
+              customLongPressCallback: this.customLongPressCallback,
               elementExposureCallback: this.elementExposureCallback,
               exposureThreshold: this.exposureThreshold
             })
@@ -177,6 +179,7 @@ export struct MarkdownQuote {
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback,
                   paragraphAnimationStart: this.paragraphAnimationStart,
                   paragraphAnimationEnd: this.paragraphAnimationEnd,
                 })
@@ -213,6 +216,7 @@ export struct MarkdownQuote {
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback,
                   elementExposureCallback: this.elementExposureCallback,
                   exposureThreshold: this.exposureThreshold
                 })
@@ -294,6 +298,7 @@ export struct MarkdownQuote {
                   codeFullScreenCallback: this.codeFullScreenCallback,
                   tableCopyCallback: this.tableCopyCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "OrderedList") {
                 // 有序列表
@@ -349,6 +354,7 @@ export struct MarkdownQuote {
                   codeFullScreenCallback: this.codeFullScreenCallback,
                   tableCopyCallback: this.tableCopyCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "BlockQuote") {
                 // 块引用
@@ -403,6 +409,7 @@ export struct MarkdownQuote {
                   listDepth: this.listDepth + 1,
                   tableCopyCallback: this.tableCopyCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "LatexMathBlock") {
                 // 数学公式块：闭合时渲染图片，未闭合时渲染文本
@@ -460,6 +467,7 @@ export struct MarkdownQuote {
                   componentWidth: this.tableBlockComponentWidth,
                   tableCopyCallback: this.tableCopyCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback,
                   elementExposureCallback: this.elementExposureCallback,
                   exposureThreshold: this.exposureThreshold
                 })
@@ -520,6 +528,7 @@ export struct MarkdownQuote {
                   codeCopyCallback: this.codeCopyCallback,
                   codeFullScreenCallback: this.codeFullScreenCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "SlideBlock") {
                 // 图片幻灯片

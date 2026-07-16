@@ -12,7 +12,6 @@ export class MarkdownHighlightParagraph {
   selectedParagraphItemColor: ResourceColor = "" // 当前高亮显示的段落的背景色
   beforeSelectedParagraphBackgroundColor: ResourceColor = COLOR_FFE0E0E0 // 当前长按未触发弹窗时段落前的背景色，默认透明
   selectedParagraphBackgroundColor: ResourceColor = COLOR_FF4A90E2 // 当前长按放手后选中文字的背景色，默认蓝色
-  customLongPressCallback?: () => void = undefined // 自定义长按事件
 
   /**
    * (markdown解析后自动调用)设置所有可以设置高亮的段落nodeHash集合
@@ -94,14 +93,5 @@ export class MarkdownHighlightParagraph {
    */
   setSelectedParagraphBackgroundColor(backgroundColor: ResourceColor): void {
     this.selectedParagraphBackgroundColor = backgroundColor
-  }
-
-  /**
-   * 自定义长按事件
-   *
-   * @param cb 自定义长按事件
-   */
-  setLongCallback(cb: () => void): void {
-    this.customLongPressCallback = cb
   }
 }

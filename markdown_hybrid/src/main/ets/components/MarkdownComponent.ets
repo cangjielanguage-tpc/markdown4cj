@@ -288,7 +288,8 @@ export struct CJMarkdown {
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.config.imageDownloadCallback,
                 imageReplaceCallback: this.config.imageReplaceCallback,
-                markdownHighlightParagraph: this.config.markdownHighlightParagraph
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                customLongPressCallback: this.config.customLongPressCallback
               })
             } else {
               ListItem() {
@@ -325,6 +326,7 @@ export struct CJMarkdown {
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    customLongPressCallback: this.config.customLongPressCallback,
                     elementExposureCallback: this.config.elementExposureCallback,
                     exposureThreshold: this.config.exposureThreshold
                   })
@@ -357,12 +359,13 @@ export struct CJMarkdown {
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     linkCallback: this.config.linkCallback,
-                   elementExposureCallback: this.config.elementExposureCallback,
-                   exposureThreshold: this.config.exposureThreshold,
+                    elementExposureCallback: this.config.elementExposureCallback,
+                    exposureThreshold: this.config.exposureThreshold,
                     imageCallback: this.imageCallback,
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    customLongPressCallback: this.config.customLongPressCallback,
                     paragraphAnimationStart: this.config.paragraphAnimationStart,
                     paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
@@ -437,13 +440,14 @@ export struct CJMarkdown {
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     linkCallback: this.config.linkCallback,
-                   elementExposureCallback: this.config.elementExposureCallback,
-                   exposureThreshold: this.config.exposureThreshold,
+                    elementExposureCallback: this.config.elementExposureCallback,
+                    exposureThreshold: this.config.exposureThreshold,
                     textCopyCallback: this.config.textCopyCallback,
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    customLongPressCallback: this.config.customLongPressCallback,
                     paragraphAnimationStart: this.config.paragraphAnimationStart,
                     paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
@@ -494,13 +498,14 @@ export struct CJMarkdown {
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     linkCallback: this.config.linkCallback,
-                   elementExposureCallback: this.config.elementExposureCallback,
-                   exposureThreshold: this.config.exposureThreshold,
+                    elementExposureCallback: this.config.elementExposureCallback,
+                    exposureThreshold: this.config.exposureThreshold,
                     textCopyCallback: this.config.textCopyCallback,
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    customLongPressCallback: this.config.customLongPressCallback,
                     paragraphAnimationStart: this.config.paragraphAnimationStart,
                     paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
@@ -550,13 +555,14 @@ export struct CJMarkdown {
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     linkCallback: this.config.linkCallback,
-                   elementExposureCallback: this.config.elementExposureCallback,
-                   exposureThreshold: this.config.exposureThreshold,
+                    elementExposureCallback: this.config.elementExposureCallback,
+                    exposureThreshold: this.config.exposureThreshold,
                     textCopyCallback: this.config.textCopyCallback,
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    customLongPressCallback: this.config.customLongPressCallback,
                     paragraphAnimationStart: this.config.paragraphAnimationStart,
                     paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
@@ -624,7 +630,8 @@ export struct CJMarkdown {
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     tableCopyCallback: this.config.tableCopyCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph
+                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    customLongPressCallback: this.config.customLongPressCallback
                   })
                 } else if (item.nodeType === "ThematicBreak") {
                   // 分割线
@@ -670,8 +677,8 @@ export struct CJMarkdown {
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     linkCallback: this.config.linkCallback,
-                   elementExposureCallback: this.config.elementExposureCallback,
-                   exposureThreshold: this.config.exposureThreshold,
+                    elementExposureCallback: this.config.elementExposureCallback,
+                    exposureThreshold: this.config.exposureThreshold,
                     imageCallback: this.imageCallback,
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
@@ -683,6 +690,7 @@ export struct CJMarkdown {
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    customLongPressCallback: this.config.customLongPressCallback,
                     paragraphAnimationStart: this.config.paragraphAnimationStart,
                     paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })
@@ -715,12 +723,13 @@ export struct CJMarkdown {
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     linkCallback: this.config.linkCallback,
-                   elementExposureCallback: this.config.elementExposureCallback,
-                   exposureThreshold: this.config.exposureThreshold,
+                    elementExposureCallback: this.config.elementExposureCallback,
+                    exposureThreshold: this.config.exposureThreshold,
                     imageCallback: this.imageCallback,
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                    customLongPressCallback: this.config.customLongPressCallback,
                     paragraphAnimationStart: this.config.paragraphAnimationStart,
                     paragraphAnimationEnd: this.config.paragraphAnimationEnd,
                   })

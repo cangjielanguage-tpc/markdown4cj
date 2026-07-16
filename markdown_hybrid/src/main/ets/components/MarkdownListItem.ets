@@ -98,6 +98,7 @@ export struct MarkdownListItem {
   codeFullScreenCallback?: (code: string, language: string | undefined) => void // 代码全屏点击事件
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  customLongPressCallback?: () => void = undefined // 自定义长按事件
   tableCopyCallback?: (str: string) => void // 复制点击事件
   paragraphAnimationStart?: () => void // 段落动画开始回调
   paragraphAnimationEnd?: () => void // 段落动画结束回调
@@ -142,6 +143,7 @@ export struct MarkdownListItem {
               latexStrCallback: this.latexStrCallback,
               componentWidth: this.tableBlockComponentWidth,
               markdownHighlightParagraph: this.markdownHighlightParagraph,
+              customLongPressCallback: this.customLongPressCallback,
               elementExposureCallback: this.elementExposureCallback,
               exposureThreshold: this.exposureThreshold
             })
@@ -182,6 +184,7 @@ export struct MarkdownListItem {
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback,
                   paragraphAnimationStart: this.paragraphAnimationStart,
                   paragraphAnimationEnd: this.paragraphAnimationEnd,
                 })
@@ -220,6 +223,7 @@ export struct MarkdownListItem {
                   imageDownloadCallback: this.imageDownloadCallback,
                   imageReplaceCallback: this.imageReplaceCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "FencedCodeBlockListBlock") {
                 // 围栏代码块列表
@@ -299,6 +303,7 @@ export struct MarkdownListItem {
                   codeFullScreenCallback: this.codeFullScreenCallback,
                   tableCopyCallback: this.tableCopyCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "OrderedList") {
                 // 有序列表
@@ -354,6 +359,7 @@ export struct MarkdownListItem {
                   codeFullScreenCallback: this.codeFullScreenCallback,
                   tableCopyCallback: this.tableCopyCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "BlockQuote") {
                 // 块引用
@@ -408,6 +414,7 @@ export struct MarkdownListItem {
                   listDepth: this.listDepth + 1,
                   tableCopyCallback: this.tableCopyCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "LatexMathBlock") {
                 // 数学公式块：闭合时渲染图片，未闭合时渲染文本
@@ -465,6 +472,7 @@ export struct MarkdownListItem {
                   componentWidth: this.tableBlockComponentWidth,
                   tableCopyCallback: this.tableCopyCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback,
                   elementExposureCallback: this.elementExposureCallback,
                   exposureThreshold: this.exposureThreshold
                 })
@@ -525,6 +533,7 @@ export struct MarkdownListItem {
                   codeCopyCallback: this.codeCopyCallback,
                   codeFullScreenCallback: this.codeFullScreenCallback,
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
+                  customLongPressCallback: this.customLongPressCallback
                 })
               } else if (item.nodeType === "SlideBlock") {
                 // 图片幻灯片

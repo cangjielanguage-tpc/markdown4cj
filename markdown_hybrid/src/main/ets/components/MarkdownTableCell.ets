@@ -94,6 +94,7 @@ export struct MarkdownTableCell {
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
+  customLongPressCallback?: () => void = undefined // 自定义长按事件
   @Prop tableBlockCellRow: number // 表格的第几行
   @Prop tableBlockCellCell: number // 表格的第几条
   @Prop tableBlockCellCellSize: number // 表格总共有几列
@@ -364,6 +365,7 @@ export struct MarkdownTableCell {
           this.tableCellInlineItem(item, index)
         },
         (item: NodeView, index: number) => {
+          this.updateTextContent(item) // 整理出当前所有的文本
           return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
         }
       )
@@ -414,11 +416,27 @@ export struct MarkdownTableCell {
         .onActionEnd((event: GestureEvent) => {
           if (!this.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
             this.textBackgroundColor = COLOR_TRANSPARENT
-            this.markdownHighlightParagraph.customLongPressCallback?.() // 调用用户自定义长按回调方法
+            this.customLongPressCallback?.() // 调用用户自定义长按回调方法
           }
         })
     )
-    .bindSelectionMenu(TextSpanType.DEFAULT, this.CustomMenu, TextResponseType.LONG_PRESS, {
+    .bindSelectionMenu(TextSpanType.TEXT, this.CustomMenu, TextResponseType.LONG_PRESS, {
+      onMenuShow: () => {
+        this.needHideMenu = false
+      },
+      onMenuHide: () => {
+        this.needHideMenu = true
+      }
+    })
+    .bindSelectionMenu(TextSpanType.IMAGE, this.NullMenu(), TextResponseType.LONG_PRESS, {
+      onMenuShow: () => {
+        this.needHideMenu = false
+      },
+      onMenuHide: () => {
+        this.needHideMenu = true
+      }
+    })
+    .bindSelectionMenu(TextSpanType.MIXED, this.CustomMenu, TextResponseType.LONG_PRESS, {
       onMenuShow: () => {
         this.needHideMenu = false
       },
@@ -771,6 +789,12 @@ export struct MarkdownTableCell {
     .borderRadius(5)
     .shadow(ShadowStyle.OUTER_DEFAULT_LG) // 阴影
   }
+
+  /**
+   * 自定义空白菜单
+   */
+  @Builder
+  NullMenu() {}
 
   /**
    * 表格左部边框宽度
