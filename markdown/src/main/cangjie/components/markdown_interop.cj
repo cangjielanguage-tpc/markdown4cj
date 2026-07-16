@@ -214,3 +214,12 @@ public func callGlobalFunc(funcName: String, arg: String): Unit {
     } catch (e: Exception) {
     }
 }
+
+public func setGlobalString(key: String, value: String): Unit {
+    try {
+        let ctx = getCtx()
+        let global = ctx.global
+        global[key] = ctx.string(value).toJSValue()
+    } catch (e: Exception) {
+    }
+}

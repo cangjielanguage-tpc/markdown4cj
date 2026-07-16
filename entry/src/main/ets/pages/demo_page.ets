@@ -3,7 +3,12 @@ import { CJHybridComponentV2 } from '@cangjie/cjhybridview';
 @Entry
 @Component
 struct Demo_page {
+  @StorageProp('safeTop') safeTop: number = 0
   @State message: string = 'Hello World';
+
+  aboutToAppear(): void {
+      globalThis.safeTop = this.safeTop.toString()
+  }
 
   build() {
     Column() {

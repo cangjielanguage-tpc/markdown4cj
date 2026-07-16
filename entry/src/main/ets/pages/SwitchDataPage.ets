@@ -1,26 +1,20 @@
 import { CJHybridComponentV2 } from '@cangjie/cjhybridview'
-import { getFileListStr, getFileContextStr } from '../utils/FileUtils'
+import { getFileListStr } from '../utils/FileUtils'
 
 @Entry
 @Component
 struct SwitchDataPage {
   @StorageProp('safeTop') safeTop: number = 0
-  @State content: string = ""
+  @State fileList: string = ""
   @State ready: boolean = false
 
   aboutToAppear(): void {
-    let rawfilePath = "033_FullTextSwitch/"
-    let fileList = getFileListStr(rawfilePath)
-    let allContent = ""
-    for (let i = 0; i < fileList.length; i++) {
-      let fileContent = getFileContextStr(rawfilePath + fileList[i])
-      if (fileContent !== "") {
-        allContent += fileContent + "\n\n---\n\n"
-      }
-    }
-    this.content = allContent
-    globalThis.markdownContent = this.content
+    let files = getFileListStr("033_FullTextSwitch/")
+    this.fileList = files.join(",")
+    globalThis.fileList = this.fileList
+    globalThis.rawFilePath = "033_FullTextSwitch"
     this.ready = true
+    globalThis.safeTop = this.safeTop.toString()
   }
 
   build() {
@@ -31,7 +25,6 @@ struct SwitchDataPage {
           component: 'SwitchDataPage'
         })
       }
-      .padding({ top: this.safeTop })
       .height('100%')
       .width('100%')
     }

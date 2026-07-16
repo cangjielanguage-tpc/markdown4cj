@@ -22,17 +22,19 @@ export default class EntryAbility extends UIAbility {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
     let context = this.context;
     baseManager = context.resourceManager;
+    // Set up full screen and safe area BEFORE loadContent so pages get correct safeTop
+    const win = windowStage.getMainWindowSync()
+    AppStorage.setOrCreate('windowClass', win)
+    win.setWindowLayoutFullScreen(true)
+    const top = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect
+    AppStorage.setOrCreate<number>('safeTop', px2vp(top.height))
+    const bottom = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR).bottomRect
+    AppStorage.setOrCreate<number>('safeBottom', px2vp(bottom.height))
     windowStage.loadContent('pages/IndexPage', (err) => {
       if (err.code) {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
         return;
       }
-      const win = windowStage.getMainWindowSync()
-      win.setWindowLayoutFullScreen(true)
-      const top = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM).topRect
-      AppStorage.setOrCreate<number>('safeTop', px2vp(top.height))
-      const bottom = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_NAVIGATION_INDICATOR).bottomRect
-      AppStorage.setOrCreate<number>('safeBottom', px2vp(bottom.height))
       hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
     });
   }

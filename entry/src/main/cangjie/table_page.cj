@@ -1,0 +1,419 @@
+package ohos_app_cangjie_entry
+
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+import ohos.hybrid_base.*
+import markdown.components.*
+import markdown.components.theme.*
+
+@HybridComponentEntry
+@Component
+class TablePage {
+    @State
+    var fileListStr: String = getGlobalString("fileList")
+    @State
+    var isExpanded1: Bool = false
+    @State
+    var isExpanded2: Bool = false
+    @State
+    var mdStr: String = ""
+    @State
+    var isInputEnded: Bool = true
+    @State
+    var incrementalAnalysis: Bool = false
+    @State
+    var selectedFileName: String = ""
+    @State var cfg_isFull: String = "true"
+    @State var cfg_incrementalAnalysis: String = "false"
+    @State var cfg_enableParseThrottle: String = "false"
+    @State var cfg_parseThrottleMs: String = "200"
+    @State var cfg_time: String = "50"
+    @State var cfg_textNumber: String = "10"
+    @State var cfg_isMarkdownParserSync: String = "false"
+    @State var cfg_isOnCopy: String = "false"
+    @State var cfg_blockMarginTop: String = "0"
+    @State var cfg_blockMarginRight: String = "0"
+    @State var cfg_blockMarginBottom: String = "0"
+    @State var cfg_blockMarginLeft: String = "0"
+    @State var cfg_markdownBlockSpacing: String = "8"
+    @State var cfg_isLineBreak: String = "false"
+    @State var cfg_backgroundColor: String = "undefined"
+    @State var cfg_openGestureSwipeTest: String = "false"
+    @State var cfg_openGestureSwipe: String = "false"
+    @State var cfg_tableBorderColor: String = "undefined"
+    @State var cfg_tableTitleTextFontColor: String = "undefined"
+    @State var cfg_tableContentTextFontColor: String = "undefined"
+    @State var cfg_tableTitleBackgroundColor: String = "undefined"
+    @State var cfg_tableContentOddRowBackgroundColor: String = "undefined"
+    @State var cfg_tableContentEvenRowBackgroundColor: String = "undefined"
+    @State var cfg_tableStickyHeader: String = "true"
+    @State var cfg_tableFirstColumnIsBold: String = "false"
+    @State var cfg_tableTitleTextFontSize: String = "undefined"
+    @State var cfg_tableContentTextFontSize: String = "undefined"
+
+    @State var cfg_tableMarginTop: String = "0"
+    @State var cfg_tableMarginRight: String = "0"
+    @State var cfg_tableMarginBottom: String = "0"
+    @State var cfg_tableMarginLeft: String = "0"
+    @State var cfg_tablePaddingTop: String = "0"
+    @State var cfg_tablePaddingRight: String = "0"
+    @State var cfg_tablePaddingBottom: String = "0"
+    @State var cfg_tablePaddingLeft: String = "0"
+    @State var cfg_tableCellPaddingTop: String = "0"
+    @State var cfg_tableCellPaddingRight: String = "0"
+    @State var cfg_tableCellPaddingBottom: String = "0"
+    @State var cfg_tableCellPaddingLeft: String = "0"
+    @State var cfg_tableBorderStyle: String = "Solid"
+    @State var cfg_tableBorderWidth: String = "0"
+    @State var cfg_tableRadiusTopLeft: String = "0"
+    @State var cfg_tableRadiusTopRight: String = "0"
+    @State var cfg_tableRadiusBottomLeft: String = "0"
+    @State var cfg_tableRadiusBottomRight: String = "0"
+    @State var cfg_tableScrollBarState: String = "Off"
+    @State var cfg_tableScrollBarColor: String = "undefined"
+    @State var cfg_tableMinCellWidth: String = "0"
+    @State var cfg_tableMaxCellWidth: String = "0"
+    @State var cfg_tableTitleTextFontStyle: String = "undefined"
+    @State var cfg_tableTitleTextFontWeight: String = "Normal"
+    @State var cfg_tableTitleTextFontFamily: String = "undefined"
+    @State var cfg_tableTitleTextLineHeight: String = "undefined"
+    @State var cfg_tableTitleTextLetterSpacing: String = "undefined"
+    @State var cfg_tableContentTextFontStyle: String = "undefined"
+    @State var cfg_tableContentTextFontWeight: String = "Normal"
+    @State var cfg_tableContentTextFontFamily: String = "undefined"
+    @State var cfg_tableContentTextLineHeight: String = "undefined"
+    @State var cfg_tableContentTextLetterSpacing: String = "undefined"
+    @State var cfg_tableHeadIsShow: String = "false"
+    @State var cfg_tableHeadTitleText: String = "比较"
+    @State var cfg_tableHeadTitleTextMarginLeft: String = "0"
+    @State var cfg_tableHeadCopyIconWidth: String = "0"
+    @State var cfg_tableHeadCopyIconHeight: String = "0"
+    @State var cfg_tableHeadCopyIconMarginRight: String = "0"
+    func getFileList(): Array<String> {
+        if (fileListStr == "") {
+            return []
+        }
+        return fileListStr.split(",")
+    }
+
+    func loadFile(item: String) {
+        let rawFilePath = getGlobalString("rawFilePath")
+        let fullPath = rawFilePath + "/" + item
+        callGlobalFunc("loadContent", fullPath)
+        let fullContent = getGlobalString("markdownContent")
+        selectedFileName = item
+        let isFull = parseBool(cfg_isFull)
+        let textNumber = parseInt64(cfg_textNumber)
+        let timeMs = parseInt64(cfg_time)
+        let incremental = parseBool(cfg_incrementalAnalysis)
+        incrementalAnalysis = incremental
+        streamLoad(
+            fullContent,
+            isFull,
+            textNumber,
+            timeMs,
+            { cumulative, ended =>
+                mdStr = cumulative
+                isInputEnded = ended
+            }
+        )
+    }
+
+    func buildConfig(): MarkdownConfiguration {
+        let themeBuilder = MarkdownTheme.createDefaultBuilder()
+        let globalTheme = GlobalTheme()
+        globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
+        globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
+        globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
+        globalTheme.blockMarginLeft = parseFloat64(cfg_blockMarginLeft)
+        globalTheme.markdownBlockSpacing = parseInt64(cfg_markdownBlockSpacing)
+        globalTheme.isLineBreak = parseBool(cfg_isLineBreak)
+        globalTheme.isOnCopy = parseBool(cfg_isOnCopy)
+        globalTheme.isMarkdownParserSync = parseBool(cfg_isMarkdownParserSync)
+        globalTheme.openGestureSwipe = parseBool(cfg_openGestureSwipe)
+        globalTheme.enableParseThrottle = parseBool(cfg_enableParseThrottle)
+        globalTheme.parseThrottleMs = parseInt64(cfg_parseThrottleMs)
+        if (cfg_backgroundColor != "undefined") {
+            globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
+        }
+        themeBuilder.setGlobalTheme(globalTheme)
+
+        let tableTheme = TableTheme()
+        if (cfg_tableBorderColor != "undefined") {
+            tableTheme.setTableBorderColor(parseColor(cfg_tableBorderColor))
+        }
+        if (cfg_tableTitleTextFontColor != "undefined") {
+            tableTheme.setTableTitleTextFontColor(parseColor(cfg_tableTitleTextFontColor))
+        }
+        if (cfg_tableContentTextFontColor != "undefined") {
+            tableTheme.setTableContentTextFontColor(parseColor(cfg_tableContentTextFontColor))
+        }
+        if (cfg_tableTitleBackgroundColor != "undefined") {
+            tableTheme.setTableTitleBackgroundColor(parseColor(cfg_tableTitleBackgroundColor))
+        }
+        if (cfg_tableContentOddRowBackgroundColor != "undefined") {
+            tableTheme.setTableContentOddRowBackgroundColor(parseColor(cfg_tableContentOddRowBackgroundColor))
+        }
+        if (cfg_tableContentEvenRowBackgroundColor != "undefined") {
+            tableTheme.setTableContentEvenRowBackgroundColor(parseColor(cfg_tableContentEvenRowBackgroundColor))
+        }
+        tableTheme.setTableStickyHeader(parseBool(cfg_tableStickyHeader))
+        tableTheme.setTableFirstColumnIsBold(parseBool(cfg_tableFirstColumnIsBold))
+        if (cfg_tableTitleTextFontSize != "undefined") {
+            tableTheme.setTableTitleTextFontSize(parseFloat64(cfg_tableTitleTextFontSize))
+        }
+        if (cfg_tableContentTextFontSize != "undefined") {
+            tableTheme.setTableContentTextFontSize(parseFloat64(cfg_tableContentTextFontSize))
+        }
+        tableTheme.setTableBorderStyle(parseBorderStyle(cfg_tableBorderStyle))
+        tableTheme.setTableBorderWidth(parseFloat64(cfg_tableBorderWidth))
+        tableTheme.setTableScrollBarState(parseBarState(cfg_tableScrollBarState))
+        if (cfg_tableScrollBarColor != "undefined") {
+            tableTheme.setTableScrollBarColor(parseColor(cfg_tableScrollBarColor))
+        }
+        tableTheme.setTableMinCellWidth(parseFloat64(cfg_tableMinCellWidth))
+        tableTheme.setTableMaxCellWidth(parseFloat64(cfg_tableMaxCellWidth))
+        if (cfg_tableTitleTextFontStyle != "undefined") {
+            tableTheme.setTableTitleTextFontStyle(parseFontStyle(cfg_tableTitleTextFontStyle))
+        }
+        tableTheme.setTableTitleTextFontWeight(parseFontWeight(cfg_tableTitleTextFontWeight))
+        if (cfg_tableTitleTextFontFamily != "undefined") {
+            tableTheme.setTableTitleTextFontFamily(cfg_tableTitleTextFontFamily)
+        }
+        if (cfg_tableTitleTextLineHeight != "undefined") {
+            tableTheme.setTableTitleTextLineHeight(parseFloat64(cfg_tableTitleTextLineHeight))
+        }
+        if (cfg_tableTitleTextLetterSpacing != "undefined") {
+            tableTheme.setTableTitleTextLetterSpacing(parseFloat64(cfg_tableTitleTextLetterSpacing))
+        }
+        if (cfg_tableContentTextFontStyle != "undefined") {
+            tableTheme.setTableContentTextFontStyle(parseFontStyle(cfg_tableContentTextFontStyle))
+        }
+        tableTheme.setTableContentTextFontWeight(parseFontWeight(cfg_tableContentTextFontWeight))
+        if (cfg_tableContentTextFontFamily != "undefined") {
+            tableTheme.setTableContentTextFontFamily(cfg_tableContentTextFontFamily)
+        }
+        if (cfg_tableContentTextLineHeight != "undefined") {
+            tableTheme.setTableContentTextLineHeight(parseFloat64(cfg_tableContentTextLineHeight))
+        }
+        if (cfg_tableContentTextLetterSpacing != "undefined") {
+            tableTheme.setTableContentTextLetterSpacing(parseFloat64(cfg_tableContentTextLetterSpacing))
+        }
+        tableTheme.setTableHeadIsShow(parseBool(cfg_tableHeadIsShow))
+        tableTheme.setTableHeadTitleText(cfg_tableHeadTitleText)
+        tableTheme.setTableHeadTitleTextMarginLeft(parseFloat64(cfg_tableHeadTitleTextMarginLeft))
+        tableTheme.setTableHeadCopyIconWidth(parseFloat64(cfg_tableHeadCopyIconWidth))
+        tableTheme.setTableHeadCopyIconHeight(parseFloat64(cfg_tableHeadCopyIconHeight))
+        tableTheme.setTableHeadCopyIconMarginRight(parseFloat64(cfg_tableHeadCopyIconMarginRight))
+        tableTheme.setTableRadius(topLeft: parseFloat64(cfg_tableRadiusTopLeft), topRight: parseFloat64(cfg_tableRadiusTopRight), bottomLeft: parseFloat64(cfg_tableRadiusBottomLeft), bottomRight: parseFloat64(cfg_tableRadiusBottomRight))
+        tableTheme.setTablePadding(top: parseFloat64(cfg_tablePaddingTop), right: parseFloat64(cfg_tablePaddingRight), bottom: parseFloat64(cfg_tablePaddingBottom), left: parseFloat64(cfg_tablePaddingLeft))
+        tableTheme.setTableCellPadding(top: parseFloat64(cfg_tableCellPaddingTop), right: parseFloat64(cfg_tableCellPaddingRight), bottom: parseFloat64(cfg_tableCellPaddingBottom), left: parseFloat64(cfg_tableCellPaddingLeft))
+        tableTheme.setTableMargin(top: parseFloat64(cfg_tableMarginTop), right: parseFloat64(cfg_tableMarginRight), bottom: parseFloat64(cfg_tableMarginBottom), left: parseFloat64(cfg_tableMarginLeft))
+        themeBuilder.setTableTheme(tableTheme)
+        let theme = themeBuilder.build()
+        let configBuilder = MarkdownConfiguration.emptyBuilder()
+        configBuilder.setMarkdownTheme(theme)
+        return configBuilder.build()
+    }
+
+    public func build() {
+        Column {
+            Text("点击文件名加载:")
+                .fontSize(14.0)
+                .margin(top: 5.0)
+
+            Flex(FlexOptions(direction: FlexDirection.Row, wrap: FlexWrap.Wrap)) {
+                ForEach(
+                    getFileList(),
+                    itemGeneratorFunc: {
+                        item: String, _: Int64 =>
+                            Text(item)
+                                .fontSize(12.0)
+                                .fontColor(0xFFFFFFFF)
+                                .backgroundColor(0xFF2196F3)
+                                .height(25.0)
+                                .padding(5.0)
+                                .borderRadius(5.0)
+                                .maxLines(1)
+                                .textOverflow(TextOverflow.Clip)
+                                .margin(2.0)
+                                .onClick {evt => loadFile(item)}
+                    }
+                )
+            }
+            .padding(5.0)
+            .width(100.percent)
+            .backgroundColor(0xFFEAEAEA)
+
+            Scroll {
+                Column {
+
+                    Column {
+                        Row {
+                            Text("通用样式配置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded1) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded1 = !isExpanded1
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded1 = !isExpanded1
+                        }
+
+                        if (isExpanded1) {
+                            Column {
+                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_isFull = v })
+                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_incrementalAnalysis = v })
+                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_enableParseThrottle = v })
+                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", onSelect: { v => cfg_parseThrottleMs = v })
+                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", onSelect: { v => cfg_time = v })
+                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", onSelect: { v => cfg_textNumber = v })
+                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isMarkdownParserSync = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginTop = v })
+                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginRight = v })
+                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginBottom = v })
+                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginLeft = v })
+                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", onSelect: { v => cfg_markdownBlockSpacing = v })
+                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isLineBreak = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipeTest = v })
+                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipe = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("专有样式配置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded2) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded2 = !isExpanded2
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded2 = !isExpanded2
+                        }
+
+                        if (isExpanded2) {
+                            Column {
+                                ConfigTabSelector(title: "表格边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableBorderColor = v })
+                                ConfigTabSelector(title: "表格标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontColor = v })
+                                ConfigTabSelector(title: "表格内容文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontColor = v })
+                                ConfigTabSelector(title: "表格标题背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleBackgroundColor = v })
+                                ConfigTabSelector(title: "表格奇数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentOddRowBackgroundColor = v })
+                                ConfigTabSelector(title: "表格偶数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentEvenRowBackgroundColor = v })
+                                ConfigTabSelector(title: "表格表头吸顶 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_tableStickyHeader = v })
+                                ConfigTabSelector(title: "表格首列加粗 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_tableFirstColumnIsBold = v })
+                                ConfigTabSelector(title: "表格标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontSize = v })
+                                ConfigTabSelector(title: "表格内容文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontSize = v })
+                                ConfigTabSelector(title: "表格上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginTop = v })
+                                ConfigTabSelector(title: "表格右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginRight = v })
+                                ConfigTabSelector(title: "表格下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginBottom = v })
+                                ConfigTabSelector(title: "表格左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginLeft = v })
+                                ConfigTabSelector(title: "表格上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tablePaddingTop = v })
+                                ConfigTabSelector(title: "表格右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tablePaddingRight = v })
+                                ConfigTabSelector(title: "表格下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tablePaddingBottom = v })
+                                ConfigTabSelector(title: "表格左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tablePaddingLeft = v })
+                                ConfigTabSelector(title: "表格单元格上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingTop = v })
+                                ConfigTabSelector(title: "表格单元格右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingRight = v })
+                                ConfigTabSelector(title: "表格单元格下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingBottom = v })
+                                ConfigTabSelector(title: "表格单元格左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingLeft = v })
+                                ConfigTabSelector(title: "表格边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_tableBorderStyle = v })
+                                ConfigTabSelector(title: "表格边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableBorderWidth = v })
+                                ConfigTabSelector(title: "表格圆角左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusTopLeft = v })
+                                ConfigTabSelector(title: "表格圆角右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusTopRight = v })
+                                ConfigTabSelector(title: "表格圆角左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "表格圆角右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusBottomRight = v })
+                                ConfigTabSelector(title: "表格滚动条状态 - ", options: barStateList, defaultValue: "Off", configKey: "", onSelect: { v => cfg_tableScrollBarState = v })
+                                ConfigTabSelector(title: "表格滚动条颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableScrollBarColor = v })
+                                ConfigTabSelector(title: "表格最小单元格宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMinCellWidth = v })
+                                ConfigTabSelector(title: "表格最大单元格宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMaxCellWidth = v })
+                                ConfigTabSelector(title: "表格标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontStyle = v })
+                                ConfigTabSelector(title: "表格标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_tableTitleTextFontWeight = v })
+                                ConfigTabSelector(title: "表格标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontFamily = v })
+                                ConfigTabSelector(title: "表格标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextLineHeight = v })
+                                ConfigTabSelector(title: "表格标题文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextLetterSpacing = v })
+                                ConfigTabSelector(title: "表格内容文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontStyle = v })
+                                ConfigTabSelector(title: "表格内容文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_tableContentTextFontWeight = v })
+                                ConfigTabSelector(title: "表格内容文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontFamily = v })
+                                ConfigTabSelector(title: "表格内容文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextLineHeight = v })
+                                ConfigTabSelector(title: "表格内容文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextLetterSpacing = v })
+                                ConfigTabSelector(title: "表格头部是否显示 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_tableHeadIsShow = v })
+                                ConfigTabSelector(title: "表格头部标题文本 - ", options: tableHeadTitleTextList, defaultValue: "比较", configKey: "", onSelect: { v => cfg_tableHeadTitleText = v })
+                                ConfigTabSelector(title: "表格头部标题文本左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadTitleTextMarginLeft = v })
+                                ConfigTabSelector(title: "表格头部复制图标宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconWidth = v })
+                                ConfigTabSelector(title: "表格头部复制图标高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconHeight = v })
+                                ConfigTabSelector(title: "表格头部复制图标右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconMarginRight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    if (mdStr != "") {
+                        Text("预览: " + selectedFileName)
+                            .fontSize(14.0)
+                            .fontColor(0xFF333333)
+                            .margin(top: 10.0, left: 5.0)
+                        Column {
+                            MarkdownComponent(
+                                output: mdStr,
+                                isInputEnded: isInputEnded,
+                                incrementalAnalysis: incrementalAnalysis,
+                                scroller: Scroller(),
+                                markdownConfiguration: buildConfig()
+                            )
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .backgroundColor(0xFFFFFFFF)
+                    }
+                }
+                .padding(top: 10.0, bottom: 100.0)
+                .justifyContent(FlexAlign.Start)
+            }
+            .scrollable(ScrollDirection.Vertical)
+            .align(Alignment.Top)
+            .layoutWeight(1)
+        }
+        .width(100.percent)
+        .height(90.0.percent)
+        .backgroundColor(0xFFEAEAEA)
+        .justifyContent(FlexAlign.Start)
+    }
+}

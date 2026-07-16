@@ -26,7 +26,11 @@ class SwitchDataPage {
                 }
             }
             .scrollable(ScrollDirection.Vertical)
+            .align(Alignment.Top)
             .layoutWeight(1)
         }
+        .width(100.percent)
+        .height(100.percent)
+        .justifyContent(FlexAlign.Start)
     }
 }
