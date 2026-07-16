@@ -147,6 +147,13 @@ export class MarkdownConfiguration {
   setFootnoteCallback(cb: (funcArg0: number | undefined) => void): void
 
   /**
+   * 自定义长按事件
+   *
+   * @param cb 自定义长按事件
+   */
+  setLongCallback(cb: () => void): void
+  
+  /**
    * 设置markdown样式
    *
    * @param markdownTheme markdown样式
@@ -2108,12 +2115,5 @@ export class MarkdownHighlightParagraph {
    * @param backgroundColor 选中文字的背景色
    */
   setSelectedParagraphBackgroundColor(backgroundColor: ResourceColor): void
-
-  /**
-   * 自定义长按事件
-   *
-   * @param cb 自定义长按事件
-   */
-  setLongCallback(cb: () => void): void
 }
 ```

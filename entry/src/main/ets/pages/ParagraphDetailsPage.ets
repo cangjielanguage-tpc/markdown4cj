@@ -294,7 +294,7 @@ struct ParagraphDetailsPage {
     if (this.selectedParagraphBackgroundColor !== undefined) {
       config.getMarkdownHighlightParagraph().setSelectedParagraphBackgroundColor(this.selectedParagraphBackgroundColor)
     }
-    config.getMarkdownHighlightParagraph().setLongCallback(this.longPressCallback.bind(this))
+    config.setLongCallback(this.longPressCallback.bind(this))
     return config
   }
 

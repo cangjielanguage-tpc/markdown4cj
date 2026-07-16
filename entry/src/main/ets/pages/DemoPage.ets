@@ -290,7 +290,7 @@ struct DemoPage {
             Row() {
               Text("特殊配置")
                 .fontSize(16)
-                .fontWeight(FontWeight.Bold)
+                .fontWeight('#FFF5F5F5')
                 .layoutWeight(1)
               Text(this.isExpanded2 ? "▲" : "▼")
                 .fontSize(16)
