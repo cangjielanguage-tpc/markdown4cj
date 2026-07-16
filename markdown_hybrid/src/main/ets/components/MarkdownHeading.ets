@@ -1,5 +1,11 @@
 import { image } from "@kit.ImageKit"
-import { resourceColorToNumber, LINK_ICON_TYPE_CIRCLE, LINK_ICON_TYPE_RECT } from "../base/Constants"
+import { resourceColorToNumber, LINK_ICON_TYPE_CIRCLE, LINK_ICON_TYPE_RECT, COLOR_FFE0E0E0,
+  COLOR_FF4A90E2,
+  COLOR_TRANSPARENT,
+  COLOR_FF808080,
+  COLOR_FF191919,
+  COLOR_FFF5F2F0,
+  COLOR_WHITE} from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import {
   headingBackgroundColor,
@@ -55,7 +61,7 @@ import { ImageTheme } from '../theme/ImageTheme'
 import { MarkdownImageBlock } from './MarkdownImageBlock'
 import display from '@ohos.display'
 import { MarkdownHighlightParagraph } from '../configs/MarkdownHighlightParagraph'
-import { componentUtils } from '@kit.ArkUI'
+import { componentUtils, PromptAction } from '@kit.ArkUI'
 import { MarkdownExposureEvent } from '../model/MarkdownExposureEvent'
 import {
   computeLinkRanges,
@@ -63,6 +69,7 @@ import {
   ParagraphViewport
 } from '../utils/MarkdownExposureUtils'
 import { MarkdownVisibleRectHolder, MarkdownVisibleRectSnapshot } from '../model/MarkdownVisibleRectHolder'
+import { pasteboard } from "@kit.BasicServicesKit"
 
 /**
  * 标题控件
@@ -120,6 +127,16 @@ export struct MarkdownHeading {
   private viewportReady: boolean = false // onAreaChange是否触发过（尺寸已就绪）
   // CJMarkdown根可见矩形变化监听器（滚动/根尺寸变化时重算曝光）。aboutToAppear注册/aboutToDisappear注销。
   private visibleRectListener: (r: MarkdownVisibleRectSnapshot) => void = () => {}
+
+  @State textBackgroundColor: ResourceColor = COLOR_TRANSPARENT // 被长按段落实时背景颜色
+  @State selectBackgroundColor: ResourceColor = COLOR_FF4A90E2 // 选中文本的背景颜色
+  @State selectStart: number = 0 // 选中文本的开始位置
+  @State selectEnd: number = 0 // 选中文本的结束位置
+  private textContent: string = "" // 文本内容
+  private promptAction: PromptAction = this.getUIContext().getPromptAction()
+  private delayTime: number = 300 // 自定义菜单关闭延时时间（毫秒）
+  private timerId: number = -1 // 自定义菜单关闭延时定时器 ID
+  @State @Watch('onParamChange') needHideMenu: boolean = false // 需要监听的条件参数
 
   // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
   // 未设回调时短路掉 computeLinkRanges/getRectsForRange/监听器/onVisibleAreaChange 等，省 CPU。
@@ -239,47 +256,77 @@ export struct MarkdownHeading {
           imageReplaceCallback: this.imageReplaceCallback
         })
       } else {
-      Text(undefined, { controller: this.textController }) {
-        ForEach(
-          this.list,
-          (item: NodeView, index: number) => {
-            this.headingInlineItem(item, index)
-          },
-          (item: NodeView, index: number) => {
-          return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
+        Text(undefined, { controller: this.textController }) {
+          ForEach(
+            this.list,
+            (item: NodeView, index: number) => {
+              this.headingInlineItem(item, index)
+            },
+            (item: NodeView, index: number) => {
+              this.updateTextContent(item) // 整理出当前所有的文本
+              return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
+            }
+          )
         }
+        .textAlign(TextAlign.Start)
+        .halfLeading(true)
+        .copyOption(
+          this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
         )
-      }
-      .textAlign(TextAlign.Start)
-      .halfLeading(true)
-      .copyOption(
-        this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
-      )
-      .onCopy((str) => {
-        this.textCopyCallback?.(str)
-      })
-      .id(this.headingId)
-      .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, _currentRatio: number) => {
-        // 仅作触发用：ratio 阈值变化时重算曝光。不使用 isVisible 布尔门控可见性
-        // （实测滑动中 isVisible 会翻转竞态，门控会导致漏报）。真正的可见性由
-        // evaluateLinkExposure 的「链接rect ∩ 标题在屏可见视口」判定。
-        // 未设曝光回调时直接返回，滚动期不再走 scheduleExposure（连 setTimeout 都不开）。
-        if (!this.isExposureEnabled()) {
-          return
-        }
-        this.scheduleExposure()
-      })
-      .onAreaChange((_old: Area, newArea: Area) => {
-        // 标题Text自身宽度（vp→px）。全局位置由 componentUtils.getRectangleById 实时拿，
-        // 故此处只更新宽度（水平方向链接截断用）并触发评估。未启用曝光时跳过。
-        if (!this.isExposureEnabled()) {
-          return
-        }
-        const w: number = (newArea.width as number) ?? 0
-        this.headingWidthPx = vp2px(w)
-        this.viewportReady = true
-        this.scheduleExposure()
-      })
+        .onCopy((str) => {
+          this.textCopyCallback?.(str)
+        })
+        .id(this.headingId)
+        .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, _currentRatio: number) => {
+          // 仅作触发用：ratio 阈值变化时重算曝光。不使用 isVisible 布尔门控可见性
+          // （实测滑动中 isVisible 会翻转竞态，门控会导致漏报）。真正的可见性由
+          // evaluateLinkExposure 的「链接rect ∩ 标题在屏可见视口」判定。
+          // 未设曝光回调时直接返回，滚动期不再走 scheduleExposure（连 setTimeout 都不开）。
+          if (!this.isExposureEnabled()) {
+            return
+          }
+          this.scheduleExposure()
+        })
+        .onAreaChange((_old: Area, newArea: Area) => {
+          // 标题Text自身宽度（vp→px）。全局位置由 componentUtils.getRectangleById 实时拿，
+          // 故此处只更新宽度（水平方向链接截断用）并触发评估。未启用曝光时跳过。
+          if (!this.isExposureEnabled()) {
+            return
+          }
+          const w: number = (newArea.width as number) ?? 0
+          this.headingWidthPx = vp2px(w)
+          this.viewportReady = true
+          this.scheduleExposure()
+        })
+        .backgroundColor(this.textBackgroundColor)
+        .selectedBackgroundColor(this.selectBackgroundColor)
+        .selection(this.selectStart, this.selectEnd)
+        .onTextSelectionChange((selectionStart: number, selectionEnd: number): void => {
+          this.selectStart = selectionStart
+          this.selectEnd = selectionEnd
+          this.textBackgroundColor = COLOR_TRANSPARENT
+          this.selectBackgroundColor = this.markdownHighlightParagraph.selectedParagraphBackgroundColor
+        })
+        .parallelGesture(
+          LongPressGesture({ repeat: false, duration: 400})
+            .onAction((event: GestureEvent) => {
+              this.textBackgroundColor = this.markdownHighlightParagraph.beforeSelectedParagraphBackgroundColor
+            })
+            .onActionEnd((event: GestureEvent) => {
+              if (!this.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
+                this.textBackgroundColor = COLOR_TRANSPARENT
+                this.markdownHighlightParagraph.customLongPressCallback?.() // 调用用户自定义长按回调方法
+              }
+            })
+        )
+        .bindSelectionMenu(TextSpanType.DEFAULT, this.CustomMenu, TextResponseType.LONG_PRESS, {
+          onMenuShow: () => {
+            this.needHideMenu = false
+          },
+          onMenuHide: () => {
+            this.needHideMenu = true
+          }
+        })
       }
 
       this.headingUnderline()
@@ -598,6 +645,60 @@ export struct MarkdownHeading {
         .strokeWidth(this.headingTheme.heading2UnderlineHeight)
         .margin({ top: this.headingTheme.heading2UnderlineSpacing })
     }
+  }
+
+  /**
+   * 自定义菜单
+   */
+  @Builder
+  CustomMenu() {
+    Row() {
+      // 菜单项：复制
+      Column() {
+        Text('复制')
+          .fontSize(14)
+          .fontColor(COLOR_FF191919)
+      }
+      .padding({ left: 10, right: 10, top: 8, bottom: 8 })
+      .onClick(() => {
+        // 获取选中文本并复制到剪贴板
+        let selectedText = this.textContent.substring(this.selectStart, this.selectEnd)
+        let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, selectedText)
+        pasteboard.getSystemPasteboard().setData(pasteData)
+        this.promptAction.showToast({
+          message: '已复制文本',
+          duration: 1000
+        })
+        this.textController.closeSelectionMenu()
+      })
+
+      // 分割线
+      Divider()
+        .height(10)
+        .strokeWidth(1)
+        .color(COLOR_FF808080)
+        .vertical(true)
+
+      // 菜单项：粘贴
+      Column() {
+        Text('粘贴')
+          .fontSize(14)
+          .fontColor(COLOR_FF191919)
+      }
+      .padding({ left: 10, right: 10, top: 8, bottom: 8 })
+      .onClick(() => {
+        this.promptAction.showToast({
+          message: '文本粘贴',
+          duration: 1000
+        })
+        this.textController.closeSelectionMenu()
+      })
+    }
+    .backgroundColor(COLOR_WHITE)
+    .borderWidth(1)
+    .borderColor(COLOR_FFF5F2F0)
+    .borderRadius(5)
+    .shadow(ShadowStyle.OUTER_DEFAULT_LG) // 阴影
   }
 
   /**
@@ -972,4 +1073,52 @@ export struct MarkdownHeading {
       })
   }
 
+  // 更新文本内容
+  private updateTextContent(item: NodeView): void {
+    if (item.nodeType === "Text" || item.nodeType === "Code" || item.nodeType === "Footnote") {
+      this.textContent =  this.textContent + item.nodeText
+    } else if (item.nodeType === "SoftLineBreak") {
+      // 软换行
+      this.textContent =  this.textContent + spanSoftLineBreak(this.globalTheme.isLineBreak)
+    } else if (item.nodeType === "HardLineBreak") {
+      // 硬换行
+      this.textContent =  this.textContent + "\n"
+    } else if (item.nodeType === "Link" || item.nodeType === "HeadLink" || item.nodeType === "LatexMathNode" ||
+      item.nodeType === "Image" || item.nodeType === "StyleImage" || item.nodeType === "ImageHtmlNode") {
+      // 非文本节点，不处理
+    } else {
+      this.textContent =  this.textContent + item.nodeText
+    }
+  }
+
+  // 参数变化时的回调
+  onParamChange(): void {
+    if (this.needHideMenu) {
+      this.startDelay() // 参数变为 true：启动延时
+    } else {
+      this.cancelDelay() // 参数变为 false：取消延时
+    }
+  }
+
+  // 启动弹窗关闭判断延时
+  private startDelay(): void {
+    this.cancelDelay() // 先清除之前的定时器，防止重复
+    this.timerId = setTimeout(() => {
+      // 延时到期，再次检查参数状态，参数仍为 true，关闭长按菜单
+      if (this.needHideMenu) {
+        this.selectStart = -1
+        this.selectEnd = -1
+        this.textController.closeSelectionMenu()
+      }
+      this.timerId = -1
+    }, this.delayTime)
+  }
+
+  // 取消弹窗关闭判断延时
+  private cancelDelay(): void {
+    if (this.timerId !== -1) {
+      clearTimeout(this.timerId)
+      this.timerId = -1
+    }
+  }
 }

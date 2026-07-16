@@ -20,6 +20,7 @@ import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import { MarkdownTableCell } from "./MarkdownTableCell"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 
 /**
  * 表格行控件
@@ -45,6 +46,7 @@ export struct MarkdownTableRow {
   @ObjectLink tableTheme: TableTheme // 表格样式
   @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
+  @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   @Prop tableBlockRowRow: number = 0 // 表格的第几行
   @Prop tableBlockRowCellSize: number = 0 // 表格总共有几列
@@ -107,6 +109,7 @@ export struct MarkdownTableRow {
               imageCallback: this.imageCallback,
               imageDownloadCallback: this.imageDownloadCallback,
               imageReplaceCallback: this.imageReplaceCallback,
+              markdownHighlightParagraph: this.markdownHighlightParagraph,
               elementExposureCallback: this.elementExposureCallback,
               exposureThreshold: this.exposureThreshold
             })

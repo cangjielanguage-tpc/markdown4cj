@@ -284,4 +284,11 @@ export class MarkdownConfiguration {
     this.markdownTheme = markdownTheme
     return this
   }
+
+  /**
+   * 获取高亮设置对象
+   */
+  getMarkdownHighlightParagraph(): MarkdownHighlightParagraph {
+    return this.markdownHighlightParagraph
+  }
 }

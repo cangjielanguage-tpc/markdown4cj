@@ -287,7 +287,8 @@ export struct CJMarkdown {
                 exposureThreshold: this.config.exposureThreshold,
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.config.imageDownloadCallback,
-                imageReplaceCallback: this.config.imageReplaceCallback
+                imageReplaceCallback: this.config.imageReplaceCallback,
+                markdownHighlightParagraph: this.config.markdownHighlightParagraph
               })
             } else {
               ListItem() {
@@ -617,12 +618,13 @@ export struct CJMarkdown {
                     footnoteCallback: this.footnoteCallback,
                     tocCallback: this.tocCallback,
                     linkCallback: this.config.linkCallback,
-                   elementExposureCallback: this.config.elementExposureCallback,
-                   exposureThreshold: this.config.exposureThreshold,
+                    elementExposureCallback: this.config.elementExposureCallback,
+                    exposureThreshold: this.config.exposureThreshold,
                     imageCallback: this.imageCallback,
                     imageDownloadCallback: this.config.imageDownloadCallback,
                     imageReplaceCallback: this.config.imageReplaceCallback,
-                    tableCopyCallback: this.config.tableCopyCallback
+                    tableCopyCallback: this.config.tableCopyCallback,
+                    markdownHighlightParagraph: this.config.markdownHighlightParagraph
                   })
                 } else if (item.nodeType === "ThematicBreak") {
                   // 分割线

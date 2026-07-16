@@ -141,6 +141,7 @@ export struct MarkdownListItem {
               latexImageCallback: this.latexImageCallback,
               latexStrCallback: this.latexStrCallback,
               componentWidth: this.tableBlockComponentWidth,
+              markdownHighlightParagraph: this.markdownHighlightParagraph,
               elementExposureCallback: this.elementExposureCallback,
               exposureThreshold: this.exposureThreshold
             })
@@ -462,7 +463,8 @@ export struct MarkdownListItem {
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   componentWidth: this.tableBlockComponentWidth,
-                                    tableCopyCallback: this.tableCopyCallback,
+                  tableCopyCallback: this.tableCopyCallback,
+                  markdownHighlightParagraph: this.markdownHighlightParagraph,
                   elementExposureCallback: this.elementExposureCallback,
                   exposureThreshold: this.exposureThreshold
                 })

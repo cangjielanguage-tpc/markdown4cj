@@ -24,6 +24,7 @@ import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import { MarkdownTableRow } from "./MarkdownTableRow"
 import { MarkDownTableTitle } from "./MarkdownTableTitle"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 
 /**
  * 表格控件
@@ -49,6 +50,7 @@ export struct MarkdownTable {
   @ObjectLink tableTheme: TableTheme // 表格样式
   @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
+  @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop @Watch('onComponentWidthChanged') componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
   footnoteCallback?: (index: string) => void // 脚注点击事件
@@ -334,6 +336,7 @@ export struct MarkdownTable {
                       imageCallback: this.imageCallback,
                       imageDownloadCallback: this.imageDownloadCallback,
                       imageReplaceCallback: this.imageReplaceCallback,
+                      markdownHighlightParagraph: this.markdownHighlightParagraph,
                       elementExposureCallback: this.elementExposureCallback,
                       exposureThreshold: this.exposureThreshold
                     })
@@ -433,6 +436,7 @@ export struct MarkdownTable {
             imageCallback: this.imageCallback,
             imageDownloadCallback: this.imageDownloadCallback,
             imageReplaceCallback: this.imageReplaceCallback,
+            markdownHighlightParagraph: this.markdownHighlightParagraph,
             elementExposureCallback: this.elementExposureCallback,
             exposureThreshold: this.exposureThreshold
           })
@@ -496,6 +500,7 @@ export struct MarkdownTable {
               imageCallback: this.imageCallback,
               imageDownloadCallback: this.imageDownloadCallback,
               imageReplaceCallback: this.imageReplaceCallback,
+              markdownHighlightParagraph: this.markdownHighlightParagraph,
               elementExposureCallback: this.elementExposureCallback,
               exposureThreshold: this.exposureThreshold
             })
@@ -581,6 +586,7 @@ export struct MarkdownTable {
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
                 elementExposureCallback: this.elementExposureCallback,
                 exposureThreshold: this.exposureThreshold
               })
@@ -641,6 +647,7 @@ export struct MarkdownTable {
                 imageCallback: this.imageCallback,
                 imageDownloadCallback: this.imageDownloadCallback,
                 imageReplaceCallback: this.imageReplaceCallback,
+                markdownHighlightParagraph: this.markdownHighlightParagraph,
                 elementExposureCallback: this.elementExposureCallback,
                 exposureThreshold: this.exposureThreshold
               })

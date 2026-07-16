@@ -136,6 +136,7 @@ export struct MarkdownQuote {
               latexImageCallback: this.latexImageCallback,
               latexStrCallback: this.latexStrCallback,
               componentWidth: this.tableBlockComponentWidth,
+              markdownHighlightParagraph: this.markdownHighlightParagraph,
               elementExposureCallback: this.elementExposureCallback,
               exposureThreshold: this.exposureThreshold
             })
@@ -458,6 +459,7 @@ export struct MarkdownQuote {
                   latexStrCallback: this.latexStrCallback,
                   componentWidth: this.tableBlockComponentWidth,
                   tableCopyCallback: this.tableCopyCallback,
+                  markdownHighlightParagraph: this.markdownHighlightParagraph,
                   elementExposureCallback: this.elementExposureCallback,
                   exposureThreshold: this.exposureThreshold
                 })

@@ -1,5 +1,10 @@
 import { image } from "@kit.ImageKit"
-import { resourceColorToNumber, LINK_ICON_TYPE_CIRCLE, LINK_ICON_TYPE_RECT } from "../base/Constants"
+import { resourceColorToNumber, LINK_ICON_TYPE_CIRCLE, LINK_ICON_TYPE_RECT, COLOR_TRANSPARENT,
+  COLOR_FF4A90E2,
+  COLOR_FF191919,
+  COLOR_FF808080,
+  COLOR_WHITE,
+  COLOR_FFF5F2F0} from "../base/Constants"
 import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_hybrid"
 import { CellWidthTracker } from "../model/CellWidthTracker"
 import { LatexParseQueue } from "../model/LatexParseQueue"
@@ -11,7 +16,7 @@ import {
   ParagraphViewport
 } from "../utils/MarkdownExposureUtils"
 import display from "@ohos.display"
-import { componentUtils } from "@kit.ArkUI"
+import { componentUtils, PromptAction } from "@kit.ArkUI"
 import { MarkdownVisibleRectHolder, MarkdownVisibleRectSnapshot } from "../model/MarkdownVisibleRectHolder"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { BoldTheme } from "../theme/BoldTheme"
@@ -50,6 +55,8 @@ import {
   spanLineHeight,
   tableCellBackgroundColor
 } from "../utils/MarkdownThemeUtils"
+import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
+import { pasteboard } from "@kit.BasicServicesKit"
 
 /**
  * 表格格子控件
@@ -76,6 +83,7 @@ export struct MarkdownTableCell {
   @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
   @ObjectLink imageTheme: ImageTheme // 图片样式
   @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
+  @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
   footnoteCallback?: (index: string) => void // 脚注点击事件
@@ -113,6 +121,16 @@ export struct MarkdownTableCell {
   private viewportReady: boolean = false // 视口宽度/屏幕高度是否已就绪
   // CJMarkdown根可见矩形变化监听器（滚动/根尺寸变化时重算曝光）。aboutToAppear注册/aboutToDisappear注销。
   private visibleRectListener: (r: MarkdownVisibleRectSnapshot) => void = () => {}
+
+  @State textBackgroundColor: ResourceColor = COLOR_TRANSPARENT // 被长按段落实时背景颜色
+  @State selectBackgroundColor: ResourceColor = COLOR_FF4A90E2 // 选中文本的背景颜色
+  @State selectStart: number = 0 // 选中文本的开始位置
+  @State selectEnd: number = 0 // 选中文本的结束位置
+  private textContent: string = "" // 文本内容
+  private promptAction: PromptAction = this.getUIContext().getPromptAction()
+  private delayTime: number = 500 // 自定义菜单关闭延时时间（毫秒）
+  private timerId: number = -1 // 自定义菜单关闭延时定时器 ID
+  @State @Watch('onParamChange') needHideMenu: boolean = false // 需要监听的条件参数
 
   // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
   // 未设回调时短路掉 computeLinkRanges/getRectsForRange/监听器/onVisibleAreaChange 等，省 CPU。
@@ -378,6 +396,35 @@ export struct MarkdownTableCell {
       this.cellWidthPx = vp2px(w)
       this.viewportReady = true
       this.scheduleExposure()
+    })
+    .backgroundColor(this.textBackgroundColor)
+    .selectedBackgroundColor(this.selectBackgroundColor)
+    .selection(this.selectStart, this.selectEnd)
+    .onTextSelectionChange((selectionStart: number, selectionEnd: number): void => {
+      this.selectStart = selectionStart
+      this.selectEnd = selectionEnd
+      this.textBackgroundColor = COLOR_TRANSPARENT
+      this.selectBackgroundColor = this.markdownHighlightParagraph.selectedParagraphBackgroundColor
+    })
+    .parallelGesture(
+      LongPressGesture({ repeat: false, duration: 400})
+        .onAction((event: GestureEvent) => {
+          this.textBackgroundColor = this.markdownHighlightParagraph.beforeSelectedParagraphBackgroundColor
+        })
+        .onActionEnd((event: GestureEvent) => {
+          if (!this.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
+            this.textBackgroundColor = COLOR_TRANSPARENT
+            this.markdownHighlightParagraph.customLongPressCallback?.() // 调用用户自定义长按回调方法
+          }
+        })
+    )
+    .bindSelectionMenu(TextSpanType.DEFAULT, this.CustomMenu, TextResponseType.LONG_PRESS, {
+      onMenuShow: () => {
+        this.needHideMenu = false
+      },
+      onMenuHide: () => {
+        this.needHideMenu = true
+      }
     })
   }
 
@@ -669,6 +716,60 @@ export struct MarkdownTableCell {
     } else {
       // 其它
     }
+  }
+
+  /**
+   * 自定义菜单
+   */
+  @Builder
+  CustomMenu() {
+    Row() {
+      // 菜单项：复制
+      Column() {
+        Text('复制')
+          .fontSize(14)
+          .fontColor(COLOR_FF191919)
+      }
+      .padding({ left: 10, right: 10, top: 8, bottom: 8 })
+      .onClick(() => {
+        // 获取选中文本并复制到剪贴板
+        let selectedText = this.textContent.substring(this.selectStart, this.selectEnd)
+        let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, selectedText)
+        pasteboard.getSystemPasteboard().setData(pasteData)
+        this.promptAction.showToast({
+          message: '已复制文本',
+          duration: 1000
+        })
+        this.textController.closeSelectionMenu()
+      })
+
+      // 分割线
+      Divider()
+        .height(10)
+        .strokeWidth(1)
+        .color(COLOR_FF808080)
+        .vertical(true)
+
+      // 菜单项：粘贴
+      Column() {
+        Text('粘贴')
+          .fontSize(14)
+          .fontColor(COLOR_FF191919)
+      }
+      .padding({ left: 10, right: 10, top: 8, bottom: 8 })
+      .onClick(() => {
+        this.promptAction.showToast({
+          message: '文本粘贴',
+          duration: 1000
+        })
+        this.textController.closeSelectionMenu()
+      })
+    }
+    .backgroundColor(COLOR_WHITE)
+    .borderWidth(1)
+    .borderColor(COLOR_FFF5F2F0)
+    .borderRadius(5)
+    .shadow(ShadowStyle.OUTER_DEFAULT_LG) // 阴影
   }
 
   /**
@@ -976,6 +1077,55 @@ export struct MarkdownTableCell {
     } catch (e) {
       item.latexIsLoading = false
       LatexParseQueue.notifyDone()
+    }
+  }
+
+  // 更新文本内容
+  private updateTextContent(item: NodeView): void {
+    if (item.nodeType === "Text" || item.nodeType === "Code" || item.nodeType === "Footnote") {
+      this.textContent =  this.textContent + item.nodeText
+    } else if (item.nodeType === "SoftLineBreak") {
+      // 软换行
+      this.textContent =  this.textContent + spanSoftLineBreak(this.globalTheme.isLineBreak)
+    } else if (item.nodeType === "HardLineBreak") {
+      // 硬换行
+      this.textContent =  this.textContent + "\n"
+    } else if (item.nodeType === "Link" || item.nodeType === "HeadLink" || item.nodeType === "LatexMathNode" ||
+      item.nodeType === "Image" || item.nodeType === "StyleImage" || item.nodeType === "ImageHtmlNode") {
+      // 非文本节点，不处理
+    } else {
+      this.textContent =  this.textContent + item.nodeText
+    }
+  }
+
+  // 参数变化时的回调
+  onParamChange(): void {
+    if (this.needHideMenu) {
+      this.startDelay() // 参数变为 true：启动延时
+    } else {
+      this.cancelDelay() // 参数变为 false：取消延时
+    }
+  }
+
+  // 启动弹窗关闭判断延时
+  private startDelay(): void {
+    this.cancelDelay() // 先清除之前的定时器，防止重复
+    this.timerId = setTimeout(() => {
+      // 延时到期，再次检查参数状态，参数仍为 true，关闭长按菜单
+      if (this.needHideMenu) {
+        this.selectStart = -1
+        this.selectEnd = -1
+        this.textController.closeSelectionMenu()
+      }
+      this.timerId = -1
+    }, this.delayTime)
+  }
+
+  // 取消弹窗关闭判断延时
+  private cancelDelay(): void {
+    if (this.timerId !== -1) {
+      clearTimeout(this.timerId)
+      this.timerId = -1
     }
   }
 }

@@ -972,7 +972,7 @@ export function headingBackgroundColor(
   isQuote: boolean,
   nodeHash: string
 ): ResourceColor {
-  if (markdownHighlightParagraph.getSelectedParagraphItemList().has(nodeHash)) {
+  if (markdownHighlightParagraph.getSelectedParagraphItems().has(nodeHash)) {
     return markdownHighlightParagraph.selectedParagraphItemColor
   }
   if (isQuote) {
@@ -1245,7 +1245,7 @@ export function paragraphBackgroundColor(
   isQuote: boolean,
   nodeHash: string
 ): ResourceColor {
-  if (markdownHighlightParagraph.getSelectedParagraphItemList().has(nodeHash)) {
+  if (markdownHighlightParagraph.getSelectedParagraphItems().has(nodeHash)) {
     return markdownHighlightParagraph.selectedParagraphItemColor
   }
   if (isQuote) {
