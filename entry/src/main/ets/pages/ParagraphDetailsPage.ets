@@ -11,6 +11,9 @@ import hilog from '@ohos.hilog'
 import { ParagraphData } from '../model/ParagraphData'
 import { ConfigurationConstant } from '@kit.AbilityKit'
 import { COLOR_FF4A90E2, NUM_FFE9967A } from '@cangjie-tpc/markdown_hybrid/src/main/ets/base/Constants'
+import {
+  MarkdownHighlightParagraph
+} from '@cangjie-tpc/markdown_hybrid/src/main/ets/configs/MarkdownHighlightParagraph'
 
 @Entry
 @Component
@@ -64,6 +67,10 @@ struct ParagraphDetailsPage {
   openGestureSwipeTest: boolean = false
   @State // 流式输入是否输入结束(true:结束输入,false:持续输入)
   isInputEnded: boolean = false
+  @State // 当前长按未触发弹窗时段落前的背景色
+  beforeSelectedParagraphBackgroundColor: ResourceColor | undefined = undefined
+  @State // 当前长按放手后选中文字的背景色
+  selectedParagraphBackgroundColor: ResourceColor | undefined = undefined
 
   // ---------- 专有
   @State // 段落背景颜色
@@ -109,6 +116,8 @@ struct ParagraphDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // 段落背景高亮设置
+  markdownHighlight: MarkdownHighlightParagraph = new MarkdownHighlightParagraph()
 
   @State
   showHighlight: boolean = true
@@ -139,6 +148,8 @@ struct ParagraphDetailsPage {
       this.openGestureSwipe = paragraphData._openGestureSwipe
       this.openGestureSwipeTest = paragraphData._openGestureSwipeTest
       this.showHighlight = paragraphData._showHighlight
+      this.beforeSelectedParagraphBackgroundColor = paragraphData._beforeSelectedParagraphBackgroundColor
+      this.selectedParagraphBackgroundColor = paragraphData._selectedParagraphBackgroundColor
       // ---------- 专有
       this.paragraphBackgroundColor = paragraphData._paragraphBackgroundColor
       this.paragraphMarginTop = paragraphData._paragraphMarginTop
@@ -164,6 +175,7 @@ struct ParagraphDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+    this.markdownHighlight = this.markdownConfiguration.getMarkdownHighlightParagraph()
 
     if (this.isFull) {
       this.isInputEnded = true
@@ -199,7 +211,7 @@ struct ParagraphDetailsPage {
         Row() {
           Button("获取所有高亮节点").fontSize(14)
             .onClick(() => {
-              this.highlightIndexList = this.getAllItems()
+              this.highlightIndexList = this.markdownHighlight.getAllParagraphItems()
               hilog.error(1111, 'MarkdownCX', '所有ID：' + this.highlightIndexList)
             })
 
@@ -211,9 +223,9 @@ struct ParagraphDetailsPage {
                 this.currentIndex = -1
               } else {
                 // 删除当前高亮，添加上一个高亮
-                this.markdownConfiguration.markdownHighlightParagraph.clearParagraphHighlight(this.highlightIndexList[this.currentIndex])
+                this.markdownHighlight.clearParagraphHighlight(this.highlightIndexList[this.currentIndex])
                 this.currentIndex = this.currentIndex - 1
-                this.markdownConfiguration.markdownHighlightParagraph.highlightParagraph(this.highlightIndexList[this.currentIndex], COLOR_FF4A90E2)
+                this.markdownHighlight.setParagraphHighlight(this.highlightIndexList[this.currentIndex], COLOR_FF4A90E2)
               }
               hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
             })
@@ -226,16 +238,16 @@ struct ParagraphDetailsPage {
                 this.currentIndex = this.highlightIndexList.length
               } else {
                 // 删除当前高亮，添加上一个高亮
-                this.markdownConfiguration.markdownHighlightParagraph.clearParagraphHighlight(this.highlightIndexList[this.currentIndex])
+                this.markdownHighlight.clearParagraphHighlight(this.highlightIndexList[this.currentIndex])
                 this.currentIndex = this.currentIndex + 1
-                this.markdownConfiguration.markdownHighlightParagraph.highlightParagraph(this.highlightIndexList[this.currentIndex], NUM_FFE9967A)
+                this.markdownHighlight.setParagraphHighlight(this.highlightIndexList[this.currentIndex], NUM_FFE9967A)
               }
               hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
             })
 
           Button("清除所有").fontSize(14)
             .onClick(() => {
-              this.markdownConfiguration.markdownHighlightParagraph.clearAllParagraphHighlights()
+              this.markdownHighlight.clearAllParagraphHighlights()
               this.currentIndex = -1
               this.currentItem = ''
             })
@@ -276,6 +288,13 @@ struct ParagraphDetailsPage {
     let config = new MarkdownConfiguration()
     config.setParagraphAnimationStart(this.paragraphAnimationStartCallBack)
     config.setParagraphAnimationEnd(this.paragraphAnimationEndCallBack)
+    if (this.beforeSelectedParagraphBackgroundColor !== undefined) {
+      config.getMarkdownHighlightParagraph().setBeforeSelectedParagraphBackgroundColor(this.beforeSelectedParagraphBackgroundColor)
+    }
+    if (this.selectedParagraphBackgroundColor !== undefined) {
+      config.getMarkdownHighlightParagraph().setSelectedParagraphBackgroundColor(this.selectedParagraphBackgroundColor)
+    }
+    config.getMarkdownHighlightParagraph().setLongCallback(this.longPressCallback.bind(this))
     return config
   }
 
@@ -286,8 +305,6 @@ struct ParagraphDetailsPage {
   paragraphAnimationEndCallBack(): void {
     hilog.error(1, "paragraphAnimation", `---AnimationEnd`)
   }
-
-
 
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
@@ -340,7 +357,7 @@ struct ParagraphDetailsPage {
     return plugin
   }
 
-  getAllItems(): Array<string> {
-    return this.markdownConfiguration.markdownHighlightParagraph.getAllParagraphItems()
+  longPressCallback(): void {
+    hilog.error(1, "1", `-----> 自定义长按回调方法触发 <-----`)
   }
 }

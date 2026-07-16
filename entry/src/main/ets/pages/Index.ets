@@ -113,7 +113,7 @@ struct DemoPage {
   }
 
   setMarkdownTheme(h: string): void {
-    this.markdownConfiguration.markdownHighlightParagraph.highlightParagraph(h, COLOR_RED)
+    this.markdownConfiguration.markdownHighlightParagraph.setParagraphHighlight(h, COLOR_RED)
   }
 
   setMarkdownTheme2(h: string): void {

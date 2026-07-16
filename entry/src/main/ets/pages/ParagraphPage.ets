@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -164,6 +164,12 @@ struct ParagraphPage {
   // 是否显示标题段落高亮效果
   showHighlightList: Array<boolean> = booleanListGeneralData
   @State showHighlight: boolean = true // 是否全量加载Markdown文本
+  // 当前长按未触发弹窗时段落前的背景色列表
+  beforeSelectedParagraphBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State beforeSelectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按未触发弹窗时段落前的背景色
+  // 当前长按放手后选中文字的背景色列表
+  selectedParagraphBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State selectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按放手后选中文字的背景色
   // 段落加载动画启用列表
   paragraphAnimationEnabledList: Array<boolean> = booleanListGeneralData
   @State paragraphAnimationEnabled: boolean = false // 段落加载动画是否启用
@@ -189,7 +195,7 @@ struct ParagraphPage {
         this.safeTop
       )
 
-      // md鏂囨。灞曠ず閮ㄥ垎
+      // md文档展示部分
       Grid() {
         ForEach(this.folderList, (item: string, index: number) => {
           GridItem() {
@@ -223,6 +229,8 @@ struct ParagraphPage {
                   this.paragraphData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.paragraphData._pagePath = `${this.rawFilePath}/${item}`
                   this.paragraphData._showHighlight = this.showHighlight
+                  this.paragraphData._beforeSelectedParagraphBackgroundColor = this.beforeSelectedParagraphBackgroundColor
+                  this.paragraphData._selectedParagraphBackgroundColor = this.selectedParagraphBackgroundColor
 
                   // ---------- 专有
                   this.paragraphData._paragraphBackgroundColor = this.paragraphBackgroundColor
@@ -553,6 +561,18 @@ struct ParagraphPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.showHighlightList,
                   allData: this.showHighlight
+                })
+                BaseTabComponent({
+                  titleStr: "当前长按未触发弹窗时段落前的背景色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.beforeSelectedParagraphBackgroundColorList,
+                  allData: this.beforeSelectedParagraphBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "当前长按放手后选中文字的背景色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.selectedParagraphBackgroundColorList,
+                  allData: this.selectedParagraphBackgroundColor
                 })
                 BaseTabComponent({
                   titleStr: "段落加载动画启用 - ",

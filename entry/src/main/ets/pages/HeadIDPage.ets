@@ -113,7 +113,7 @@ struct HeadIDPage {
         this.safeTop
       )
 
-      // md鏂囨。灞曠ず閮ㄥ垎
+      // md文档展示部分
       Grid() {
         ForEach(this.folderList, (item: string, index: number) => {
           GridItem() {

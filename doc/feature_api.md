@@ -152,6 +152,11 @@ export class MarkdownConfiguration {
    * @param markdownTheme markdown样式
    */
   setMarkdownTheme(markdownTheme: MarkdownTheme): void
+  
+  /**
+   * 获取高亮设置对象
+   */
+  getMarkdownHighlightParagraph(): MarkdownHighlightParagraph
 }
 ```
 
@@ -2055,5 +2060,60 @@ export class MarkdownRectResult {
    * @returns 子组件高度
    */
   getItemRectHeight(): number
+}
+```
+
+### class MarkdownHighlightParagraph
+
+Markdown段落高亮配置
+
+```ets
+export class MarkdownHighlightParagraph {
+  /**
+   * 获取所有可以设置高亮的段落的nodeHash集合
+   * @return 段落nodeHash集合
+   */
+  getAllParagraphItems(): Array<string>
+
+  /**
+   * 设置指定段落高亮显示
+   * @param nodeHash 段落nodeHash
+   * @param color 段落高亮颜色
+   *
+   * @return 是否设置成功 false表示已经设置过或设置失败
+   */
+  setParagraphHighlight(nodeHash: string, color: ResourceColor): boolean
+
+  /**
+   * 取消指定段落的高亮
+   * @param nodeHash 段落nodeHash
+   *
+   * @return 是否取消成功 false表示该段落没有高亮
+   */
+  clearParagraphHighlight(nodeHash: string): boolean
+
+  /**
+   * 取消所有段落高亮
+   */
+  clearAllParagraphHighlights(): void
+
+  /**
+   * 设置当前长按未触发弹窗时段落前的背景色
+   * @param backgroundColor 段落背景色
+   */
+  setBeforeSelectedParagraphBackgroundColor(backgroundColor: ResourceColor): void
+
+  /**
+   * 设置当前长按放手后选中文字的背景色
+   * @param backgroundColor 选中文字的背景色
+   */
+  setSelectedParagraphBackgroundColor(backgroundColor: ResourceColor): void
+
+  /**
+   * 自定义长按事件
+   *
+   * @param cb 自定义长按事件
+   */
+  setLongCallback(cb: () => void): void
 }
 ```

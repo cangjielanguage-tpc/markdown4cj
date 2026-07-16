@@ -154,7 +154,7 @@ struct HeadIDDetailsPage {
                 // 删除当前高亮，添加上一个高亮
                 this.markdownConfiguration.markdownHighlightParagraph.clearParagraphHighlight(this.highlightIndexList[this.currentIndex])
                 this.currentIndex = this.currentIndex - 1
-                this.markdownConfiguration.markdownHighlightParagraph.highlightParagraph(this.highlightIndexList[this.currentIndex], COLOR_FF4A90E2)
+                this.markdownConfiguration.markdownHighlightParagraph.setParagraphHighlight(this.highlightIndexList[this.currentIndex], COLOR_FF4A90E2)
               }
               hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
             })
@@ -169,7 +169,7 @@ struct HeadIDDetailsPage {
                 // 删除当前高亮，添加上一个高亮
                 this.markdownConfiguration.markdownHighlightParagraph.clearParagraphHighlight(this.highlightIndexList[this.currentIndex])
                 this.currentIndex = this.currentIndex + 1
-                this.markdownConfiguration.markdownHighlightParagraph.highlightParagraph(this.highlightIndexList[this.currentIndex], NUM_FFE9967A)
+                this.markdownConfiguration.markdownHighlightParagraph.setParagraphHighlight(this.highlightIndexList[this.currentIndex], NUM_FFE9967A)
               }
               hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
             })

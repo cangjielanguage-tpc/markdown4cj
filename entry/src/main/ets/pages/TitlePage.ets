@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -389,6 +389,12 @@ struct TitlePage {
   // 是否显示标题段落高亮效果
   showHighlightList: Array<boolean> = booleanListGeneralData
   @State showHighlight: boolean = true // 是否全量加载Markdown文本
+  // 当前长按未触发弹窗时段落前的背景色列表
+  beforeSelectedParagraphBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State beforeSelectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按未触发弹窗时段落前的背景色
+  // 当前长按放手后选中文字的背景色列表
+  selectedParagraphBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State selectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按放手后选中文字的背景色
 
   @State titleData: TitleData = new TitleData() // 配置数据内容
   @State isExpanded1: boolean = false // 控制展开/折叠状态
@@ -413,7 +419,7 @@ struct TitlePage {
         this.safeTop
       )
 
-      // md鏂囨。灞曠ず閮ㄥ垎
+      // md文档展示部分
       Grid() {
         ForEach(this.folderList, (item: string, index: number) => {
           GridItem() {
@@ -447,6 +453,8 @@ struct TitlePage {
                   this.titleData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.titleData._pagePath = `${this.rawFilePath}/${item}`
                   this.titleData._showHighlight = this.showHighlight
+                  this.titleData._beforeSelectedParagraphBackgroundColor = this.beforeSelectedParagraphBackgroundColor
+                  this.titleData._selectedParagraphBackgroundColor = this.selectedParagraphBackgroundColor
                   // ---------- 专有 - 一级标题
                   this.titleData._heading1BackgroundColor = this.heading1BackgroundColor
                   this.titleData._heading1MarginTop = this.heading1MarginTop
@@ -1532,6 +1540,18 @@ struct TitlePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.showHighlightList,
                   allData: this.showHighlight
+                })
+                BaseTabComponent({
+                  titleStr: "当前长按未触发弹窗时段落前的背景色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.beforeSelectedParagraphBackgroundColorList,
+                  allData: this.beforeSelectedParagraphBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "当前长按放手后选中文字的背景色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.selectedParagraphBackgroundColorList,
+                  allData: this.selectedParagraphBackgroundColor
                 })
               }
               .width('100%')

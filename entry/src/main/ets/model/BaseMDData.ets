@@ -22,7 +22,9 @@ export class BaseMDData {
   _openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
   _pagePath: string = "" // Markdown文本rawfile路径
 
-  _showHighlight: boolean = false; // 是否显示段落高亮
+  _showHighlight: boolean = false // 是否开启段落背景高亮功能
+  _beforeSelectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按未触发弹窗时段落前的背景色
+  _selectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按放手后选中文字的背景色
 
   constructor() {
   }

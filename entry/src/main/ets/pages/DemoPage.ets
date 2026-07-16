@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseMDData } from '../model/BaseMDData'
@@ -85,6 +85,12 @@ struct DemoPage {
   // 是否显示标题段落高亮效果
   showHighlightList: Array<boolean> = booleanListGeneralData
   @State showHighlight: boolean = true // 是否全量加载Markdown文本
+  // 当前长按未触发弹窗时段落前的背景色列表
+  beforeSelectedParagraphBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State beforeSelectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按未触发弹窗时段落前的背景色
+  // 当前长按放手后选中文字的背景色列表
+  selectedParagraphBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
+  @State selectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按放手后选中文字的背景色
   @State baseMDData: BaseMDData = new BaseMDData() // 数据
   @State isExpanded1: boolean = false // 控制展开/折叠状态
   @State isExpanded2: boolean = false // 控制展开/折叠状态
@@ -102,7 +108,7 @@ struct DemoPage {
         this.safeTop
       )
 
-      // md鏂囨。灞曠ず閮ㄥ垎
+      // md文档展示部分
       Grid() {
         ForEach(this.folderList, (item: string, index: number) => {
           GridItem() {
@@ -134,6 +140,8 @@ struct DemoPage {
                   this.baseMDData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.baseMDData._pagePath = `${this.rawFilePath}/${item}`
                   this.baseMDData._showHighlight = this.showHighlight
+                  this.baseMDData._beforeSelectedParagraphBackgroundColor = this.beforeSelectedParagraphBackgroundColor
+                  this.baseMDData._selectedParagraphBackgroundColor = this.selectedParagraphBackgroundColor
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/DemoDetailsPage", params: this.baseMDData })
               })
@@ -280,7 +288,7 @@ struct DemoPage {
 
           Column() {
             Row() {
-              Text("专有样式配置")
+              Text("特殊配置")
                 .fontSize(16)
                 .fontWeight(FontWeight.Bold)
                 .layoutWeight(1)
@@ -306,6 +314,18 @@ struct DemoPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.showHighlightList,
                   allData: this.showHighlight
+                })
+                BaseTabComponent({
+                  titleStr: "当前长按未触发弹窗时段落前的背景色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.beforeSelectedParagraphBackgroundColorList,
+                  allData: this.beforeSelectedParagraphBackgroundColor
+                })
+                BaseTabComponent({
+                  titleStr: "当前长按放手后选中文字的背景色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.selectedParagraphBackgroundColorList,
+                  allData: this.selectedParagraphBackgroundColor
                 })
               }
               .width('100%')
