@@ -6,11 +6,14 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
 class Demo_page {
     @State
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     var mdStr: String = """
 ### 标题1
 
@@ -69,7 +72,7 @@ Heading level 2
                     output: mdStr,
                     isInputEnded: true,
                     incrementalAnalysis: false,
-                    scroller: Scroller()
+                    scroller: scroller
                 )
             }
         }

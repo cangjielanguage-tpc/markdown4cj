@@ -91,10 +91,10 @@ class MarkdownHeadingComponent {
             Column() {
                 if (!headingMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
                     if (headingMarkdownConfiguration.imageReplaceCallback.isNone()) {
-                        if (headingNodeViewList[0].imageUrl().startsWith("./")) {
+                        if (headingNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
                             MarkdownImageRawFileComponent(
                                 rawFileMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
-                                rawFileDestination: headingNodeViewList[0].imageUrl(),
+                                rawFileDestination: headingNodeViewList[0].imageUrl.getOrThrow(),
                                 rawFileComponentWidth: headingComponentWidth,
                                 rawFileImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
                                 rawFileImageCallback: headingImageCallback,
@@ -109,7 +109,7 @@ class MarkdownHeadingComponent {
                         } else {
                             MarkdownImageUrlComponent(
                                 urlMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
-                                urlDestination: headingNodeViewList[0].imageUrl(),
+                                urlDestination: headingNodeViewList[0].imageUrl.getOrThrow(),
                                 urlComponentWidth: headingComponentWidth,
                                 urlImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
                                 urlImageCallback: headingImageCallback,
@@ -123,13 +123,13 @@ class MarkdownHeadingComponent {
                             )
                         }
                     } else {
-                        if (headingNodeViewList[0].imageUrl().startsWith("./")) {
+                        if (headingNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
                             MarkdownImageCallbackRawFileComponent(
                                 rawFileCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
-                                rawFileCallbackDestination: headingNodeViewList[0].imageUrl(),
+                                rawFileCallbackDestination: headingNodeViewList[0].imageUrl.getOrThrow(),
                                 rawFileCallbackComponentWidth: headingComponentWidth,
                                 rawFileCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
-                                rawFileCallbackImageReplaceCallback: headingMarkdownConfiguration.imageReplaceCallback(),
+                                rawFileCallbackImageReplaceCallback: headingMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
                                 rawFileCallbackImageCallback: headingImageCallback,
                                 rawFileCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
                                 rawFileCallbackLink: headingNodeViewList[0].isLink,
@@ -142,10 +142,10 @@ class MarkdownHeadingComponent {
                         } else {
                             MarkdownImageCallbackUrlComponent(
                                 urlCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
-                                urlCallbackDestination: headingNodeViewList[0].imageUrl(),
+                                urlCallbackDestination: headingNodeViewList[0].imageUrl.getOrThrow(),
                                 urlCallbackComponentWidth: headingComponentWidth,
                                 urlCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
-                                urlCallbackImageReplaceCallback: headingMarkdownConfiguration.imageReplaceCallback(),
+                                urlCallbackImageReplaceCallback: headingMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
                                 urlCallbackImageCallback: headingImageCallback,
                                 urlCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
                                 urlCallbackLink: headingNodeViewList[0].isLink,

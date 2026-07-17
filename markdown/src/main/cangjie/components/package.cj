@@ -69,6 +69,7 @@ internal import ohos.component.ReuseParams
 internal import ohos.component.DataChangeListener
 internal import ohos.component.Scroller
 internal import ohos.component.TouchEvent
+internal import ohos.component.ClickEvent
 internal import ohos.component.HorizontalAlign
 internal import ohos.component.Text
 internal import ohos.component.Span
@@ -127,7 +128,16 @@ internal import ohos.component.BorderRadiuses
 internal import ohos.component.TransitionEffect
 internal import ohos.component.AnimateParam
 internal import ohos.component.Curve
+internal import ohos.component.bind
+internal import ohos.component.TextSpanType
+internal import ohos.component.TextResponseType
+internal import ohos.component.GestureEvent
+internal import kit.UIKit.LongPressGesture
 internal import ohos.concurrency.launch
+internal import ohos.prompt_action.PromptAction
+internal import ohos.pasteboard.createData
+internal import ohos.pasteboard.getSystemPasteboard
+internal import ohos.pasteboard.MIMETYPE_TEXT_PLAIN
 internal import ohos.device_info.DeviceInfo
 internal import ohos.display.getDefaultDisplaySync
 internal import ohos.image.ImageSource

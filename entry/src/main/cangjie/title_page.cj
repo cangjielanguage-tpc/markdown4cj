@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,18 @@ class TitlePage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
+    @State
+    var isExpanded4: Bool = false
+    @State
+    var isExpanded5: Bool = false
+    @State
+    var isExpanded6: Bool = false
+    @State
+    var isExpanded7: Bool = false
+    @State
+    var isExpanded8: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -49,6 +62,18 @@ class TitlePage {
     @State var cfg_heading1BackgroundColor: String = "undefined"
     @State var cfg_heading1UnderlineColor: String = "undefined"
     @State var cfg_heading1UnderlineHeight: String = "undefined"
+    @State var cfg_heading1TextFontStyle: String = "undefined"
+    @State var cfg_heading1TextLineHeight: String = "undefined"
+    @State var cfg_heading1TextLetterSpacing: String = "undefined"
+    @State var cfg_heading1UnderlineSpacing: String = "0"
+    @State var cfg_heading1MarginTop: String = "0"
+    @State var cfg_heading1MarginRight: String = "0"
+    @State var cfg_heading1MarginBottom: String = "0"
+    @State var cfg_heading1MarginLeft: String = "0"
+    @State var cfg_heading1PaddingTop: String = "0"
+    @State var cfg_heading1PaddingRight: String = "0"
+    @State var cfg_heading1PaddingBottom: String = "0"
+    @State var cfg_heading1PaddingLeft: String = "0"
 
     @State var cfg_heading2TextFontColor: String = "undefined"
     @State var cfg_heading2TextFontSize: String = "undefined"
@@ -145,6 +170,11 @@ class TitlePage {
     @State var cfg_heading6PaddingRight: String = "0"
     @State var cfg_heading6PaddingBottom: String = "0"
     @State var cfg_heading6PaddingLeft: String = "0"
+    @State var cfg_showHighlight: String = "true"
+    @State var cfg_beforeSelectedParagraphBackgroundColor: String = "undefined"
+    @State var cfg_selectedParagraphBackgroundColor: String = "undefined"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -163,16 +193,33 @@ class TitlePage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -214,6 +261,16 @@ class TitlePage {
         if (cfg_heading1UnderlineHeight != "undefined") {
             headingTheme.setUnderlineHeightForDesignateHeading(1, parseFloat64(cfg_heading1UnderlineHeight))
         }
+        if (cfg_heading1TextFontStyle != "undefined") {
+            headingTheme.setTextFontStyleForDesignateHeading(1, parseFontStyle(cfg_heading1TextFontStyle))
+        }
+        if (cfg_heading1TextLineHeight != "undefined") {
+            headingTheme.setTextLineHeightForDesignateHeading(1, parseFloat64(cfg_heading1TextLineHeight))
+        }
+        if (cfg_heading1TextLetterSpacing != "undefined") {
+            headingTheme.setTextLetterSpacingForDesignateHeading(1, parseFloat64(cfg_heading1TextLetterSpacing))
+        }
+        headingTheme.setUnderlineSpacingForDesignateHeading(1, parseFloat64(cfg_heading1UnderlineSpacing))
         if (cfg_heading2TextFontColor != "undefined") {
             headingTheme.setTextFontColorForDesignateHeading(2, parseColor(cfg_heading2TextFontColor))
         }
@@ -349,11 +406,13 @@ class TitlePage {
         }
         headingTheme.setUnderlineHeightForDesignateHeading(6, parseFloat64(cfg_heading6UnderlineHeight))
         headingTheme.setUnderlineSpacingForDesignateHeading(6, parseFloat64(cfg_heading6UnderlineSpacing))
+        headingTheme.setPaddingForDesignateHeading(1, top: parseFloat64(cfg_heading1PaddingTop), right: parseFloat64(cfg_heading1PaddingRight), bottom: parseFloat64(cfg_heading1PaddingBottom), left: parseFloat64(cfg_heading1PaddingLeft))
         headingTheme.setPaddingForDesignateHeading(2, top: parseFloat64(cfg_heading2PaddingTop), right: parseFloat64(cfg_heading2PaddingRight), bottom: parseFloat64(cfg_heading2PaddingBottom), left: parseFloat64(cfg_heading2PaddingLeft))
         headingTheme.setPaddingForDesignateHeading(3, top: parseFloat64(cfg_heading3PaddingTop), right: parseFloat64(cfg_heading3PaddingRight), bottom: parseFloat64(cfg_heading3PaddingBottom), left: parseFloat64(cfg_heading3PaddingLeft))
         headingTheme.setPaddingForDesignateHeading(4, top: parseFloat64(cfg_heading4PaddingTop), right: parseFloat64(cfg_heading4PaddingRight), bottom: parseFloat64(cfg_heading4PaddingBottom), left: parseFloat64(cfg_heading4PaddingLeft))
         headingTheme.setPaddingForDesignateHeading(5, top: parseFloat64(cfg_heading5PaddingTop), right: parseFloat64(cfg_heading5PaddingRight), bottom: parseFloat64(cfg_heading5PaddingBottom), left: parseFloat64(cfg_heading5PaddingLeft))
         headingTheme.setPaddingForDesignateHeading(6, top: parseFloat64(cfg_heading6PaddingTop), right: parseFloat64(cfg_heading6PaddingRight), bottom: parseFloat64(cfg_heading6PaddingBottom), left: parseFloat64(cfg_heading6PaddingLeft))
+        headingTheme.setMarginForDesignateHeading(1, top: parseFloat64(cfg_heading1MarginTop), right: parseFloat64(cfg_heading1MarginRight), bottom: parseFloat64(cfg_heading1MarginBottom), left: parseFloat64(cfg_heading1MarginLeft))
         headingTheme.setMarginForDesignateHeading(2, top: parseFloat64(cfg_heading2MarginTop), right: parseFloat64(cfg_heading2MarginRight), bottom: parseFloat64(cfg_heading2MarginBottom), left: parseFloat64(cfg_heading2MarginLeft))
         headingTheme.setMarginForDesignateHeading(3, top: parseFloat64(cfg_heading3MarginTop), right: parseFloat64(cfg_heading3MarginRight), bottom: parseFloat64(cfg_heading3MarginBottom), left: parseFloat64(cfg_heading3MarginLeft))
         headingTheme.setMarginForDesignateHeading(4, top: parseFloat64(cfg_heading4MarginTop), right: parseFloat64(cfg_heading4MarginRight), bottom: parseFloat64(cfg_heading4MarginBottom), left: parseFloat64(cfg_heading4MarginLeft))
@@ -452,7 +511,7 @@ class TitlePage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("一级标题")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -476,11 +535,58 @@ class TitlePage {
                             Column {
                                 ConfigTabSelector(title: "H1标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1TextFontColor = v })
                                 ConfigTabSelector(title: "H1标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1TextFontSize = v })
+                                ConfigTabSelector(title: "H1标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1TextFontStyle = v })
                                 ConfigTabSelector(title: "H1标题字体粗细 - ", options: fontWeightList, defaultValue: "Bold", configKey: "", onSelect: { v => cfg_heading1TextFontWeight = v })
                                 ConfigTabSelector(title: "H1标题字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1TextFontFamily = v })
+                                ConfigTabSelector(title: "H1标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1TextLineHeight = v })
+                                ConfigTabSelector(title: "H1标题文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1TextLetterSpacing = v })
                                 ConfigTabSelector(title: "H1标题背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1BackgroundColor = v })
                                 ConfigTabSelector(title: "H1标题下划线颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1UnderlineColor = v })
                                 ConfigTabSelector(title: "H1标题下划线高度 - ", options: lineOrBorderWidthList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading1UnderlineHeight = v })
+                                ConfigTabSelector(title: "H1标题距离标题文本间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1UnderlineSpacing = v })
+                                ConfigTabSelector(title: "H1标题上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1MarginTop = v })
+                                ConfigTabSelector(title: "H1标题右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1MarginRight = v })
+                                ConfigTabSelector(title: "H1标题下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1MarginBottom = v })
+                                ConfigTabSelector(title: "H1标题左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1MarginLeft = v })
+                                ConfigTabSelector(title: "H1标题上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1PaddingTop = v })
+                                ConfigTabSelector(title: "H1标题右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1PaddingRight = v })
+                                ConfigTabSelector(title: "H1标题下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1PaddingBottom = v })
+                                ConfigTabSelector(title: "H1标题左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading1PaddingLeft = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("二级标题")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
                                 ConfigTabSelector(title: "H2文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading2TextFontColor = v })
                                 ConfigTabSelector(title: "H2文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading2TextFontSize = v })
                                 ConfigTabSelector(title: "H2文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading2TextFontStyle = v })
@@ -500,6 +606,41 @@ class TitlePage {
                                 ConfigTabSelector(title: "H2右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading2PaddingRight = v })
                                 ConfigTabSelector(title: "H2下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading2PaddingBottom = v })
                                 ConfigTabSelector(title: "H2左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading2PaddingLeft = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("三级标题")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded4) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded4 = !isExpanded4
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded4 = !isExpanded4
+                        }
+
+                        if (isExpanded4) {
+                            Column {
                                 ConfigTabSelector(title: "H3文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading3TextFontColor = v })
                                 ConfigTabSelector(title: "H3文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading3TextFontSize = v })
                                 ConfigTabSelector(title: "H3文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading3TextFontStyle = v })
@@ -519,6 +660,41 @@ class TitlePage {
                                 ConfigTabSelector(title: "H3右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading3PaddingRight = v })
                                 ConfigTabSelector(title: "H3下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading3PaddingBottom = v })
                                 ConfigTabSelector(title: "H3左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading3PaddingLeft = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("四级标题")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded5) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded5 = !isExpanded5
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded5 = !isExpanded5
+                        }
+
+                        if (isExpanded5) {
+                            Column {
                                 ConfigTabSelector(title: "H4文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading4TextFontColor = v })
                                 ConfigTabSelector(title: "H4文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading4TextFontSize = v })
                                 ConfigTabSelector(title: "H4文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading4TextFontStyle = v })
@@ -538,6 +714,41 @@ class TitlePage {
                                 ConfigTabSelector(title: "H4右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading4PaddingRight = v })
                                 ConfigTabSelector(title: "H4下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading4PaddingBottom = v })
                                 ConfigTabSelector(title: "H4左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading4PaddingLeft = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("五级标题")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded6) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded6 = !isExpanded6
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded6 = !isExpanded6
+                        }
+
+                        if (isExpanded6) {
+                            Column {
                                 ConfigTabSelector(title: "H5文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading5TextFontColor = v })
                                 ConfigTabSelector(title: "H5文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading5TextFontSize = v })
                                 ConfigTabSelector(title: "H5文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading5TextFontStyle = v })
@@ -557,6 +768,41 @@ class TitlePage {
                                 ConfigTabSelector(title: "H5右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading5PaddingRight = v })
                                 ConfigTabSelector(title: "H5下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading5PaddingBottom = v })
                                 ConfigTabSelector(title: "H5左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_heading5PaddingLeft = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("六级标题")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded7) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded7 = !isExpanded7
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded7 = !isExpanded7
+                        }
+
+                        if (isExpanded7) {
+                            Column {
                                 ConfigTabSelector(title: "H6文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading6TextFontColor = v })
                                 ConfigTabSelector(title: "H6文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading6TextFontSize = v })
                                 ConfigTabSelector(title: "H6文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_heading6TextFontStyle = v })
@@ -587,6 +833,44 @@ class TitlePage {
                     .borderRadius(5.0)
                     .backgroundColor(0xFF317AFF)
 
+                    Column {
+                        Row {
+                            Text("特殊设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded8) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded8 = !isExpanded8
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded8 = !isExpanded8
+                        }
+
+                        if (isExpanded8) {
+                            Column {
+                                ConfigTabSelector(title: "是否开启标题段落高亮显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_showHighlight = v })
+                                ConfigTabSelector(title: "当前长按未触发弹窗时段落前的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_beforeSelectedParagraphBackgroundColor = v })
+                                ConfigTabSelector(title: "当前长按放手后选中文字的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_selectedParagraphBackgroundColor = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
                     if (mdStr != "") {
                         Text("预览: " + selectedFileName)
                             .fontSize(14.0)
@@ -597,7 +881,7 @@ class TitlePage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -606,7 +890,6 @@ class TitlePage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -614,7 +897,7 @@ class TitlePage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

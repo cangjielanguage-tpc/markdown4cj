@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,12 @@ class AudioPage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
+    @State
+    var isExpanded4: Bool = false
+    @State
+    var isExpanded5: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -100,6 +107,8 @@ class AudioPage {
     @State var cfg_audioButtonTextFontWeight: String = "Normal"
     @State var cfg_audioButtonTextFontFamily: String = "undefined"
     @State var cfg_audioButtonTextLineHeight: String = "undefined"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -118,16 +127,33 @@ class AudioPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -325,7 +351,7 @@ class AudioPage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("音频边距和边框")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -349,8 +375,6 @@ class AudioPage {
                             Column {
                                 ConfigTabSelector(title: "音频背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioBackgroundColor = v })
                                 ConfigTabSelector(title: "音频边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioBorderColor = v })
-                                ConfigTabSelector(title: "音频标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextFontColor = v })
-                                ConfigTabSelector(title: "音频按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "音频上外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioMarginTop = v })
                                 ConfigTabSelector(title: "音频右外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioMarginRight = v })
                                 ConfigTabSelector(title: "音频下外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioMarginBottom = v })
@@ -369,6 +393,41 @@ class AudioPage {
                                 ConfigTabSelector(title: "音频阴影颜色值 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioShadowColor = v })
                                 ConfigTabSelector(title: "音频阴影X轴偏移量 - ", options: offsetList, defaultValue: "0", configKey: "", onSelect: { v => cfg_audioShadowOffsetX = v })
                                 ConfigTabSelector(title: "音频阴影Y轴偏移量 - ", options: offsetList, defaultValue: "2", configKey: "", onSelect: { v => cfg_audioShadowOffsetY = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("音频图标和其他")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
                                 ConfigTabSelector(title: "音频图标宽度 - ", options: widthOrHeightList, defaultValue: "40", configKey: "", onSelect: { v => cfg_audioIconWidth = v })
                                 ConfigTabSelector(title: "音频图标高度 - ", options: widthOrHeightList, defaultValue: "40", configKey: "", onSelect: { v => cfg_audioIconHeight = v })
                                 ConfigTabSelector(title: "音频图标左上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioIconRadiusTopLeft = v })
@@ -377,17 +436,42 @@ class AudioPage {
                                 ConfigTabSelector(title: "音频图标右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioIconRadiusBottomRight = v })
                                 ConfigTabSelector(title: "音频图标缩放类型 - ", options: imageFitList, defaultValue: "Contain", configKey: "", onSelect: { v => cfg_audioIconFitType = v })
                                 ConfigTabSelector(title: "音频标题文本和类型文本间距 - ", options: spaceList, defaultValue: "2", configKey: "", onSelect: { v => cfg_audioTitleToTypeSpacing = v })
-                                ConfigTabSelector(title: "音频标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextFontSize = v })
-                                ConfigTabSelector(title: "音频标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextFontStyle = v })
-                                ConfigTabSelector(title: "音频标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_audioTitleTextFontWeight = v })
-                                ConfigTabSelector(title: "音频标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextFontFamily = v })
-                                ConfigTabSelector(title: "音频标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextLineHeight = v })
-                                ConfigTabSelector(title: "音频类型文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextFontColor = v })
-                                ConfigTabSelector(title: "音频类型文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextFontSize = v })
-                                ConfigTabSelector(title: "音频类型文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextFontStyle = v })
-                                ConfigTabSelector(title: "音频类型文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_audioTypeTextFontWeight = v })
-                                ConfigTabSelector(title: "音频类型文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextFontFamily = v })
-                                ConfigTabSelector(title: "音频类型文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("音频按钮")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded4) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded4 = !isExpanded4
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded4 = !isExpanded4
+                        }
+
+                        if (isExpanded4) {
+                            Column {
+                                ConfigTabSelector(title: "音频按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "音频按钮宽度 - ", options: widthOrHeightList, defaultValue: "84", configKey: "", onSelect: { v => cfg_audioButtonWidth = v })
                                 ConfigTabSelector(title: "音频按钮高度 - ", options: widthOrHeightList, defaultValue: "32", configKey: "", onSelect: { v => cfg_audioButtonHeight = v })
                                 ConfigTabSelector(title: "音频按钮边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_audioButtonBorderStyle = v })
@@ -415,6 +499,53 @@ class AudioPage {
                     .borderRadius(5.0)
                     .backgroundColor(0xFF317AFF)
 
+                    Column {
+                        Row {
+                            Text("音频标题和类型文本")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded5) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded5 = !isExpanded5
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded5 = !isExpanded5
+                        }
+
+                        if (isExpanded5) {
+                            Column {
+                                ConfigTabSelector(title: "音频标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextFontColor = v })
+                                ConfigTabSelector(title: "音频标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextFontSize = v })
+                                ConfigTabSelector(title: "音频标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextFontStyle = v })
+                                ConfigTabSelector(title: "音频标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_audioTitleTextFontWeight = v })
+                                ConfigTabSelector(title: "音频标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextFontFamily = v })
+                                ConfigTabSelector(title: "音频标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTitleTextLineHeight = v })
+                                ConfigTabSelector(title: "音频类型文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextFontColor = v })
+                                ConfigTabSelector(title: "音频类型文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextFontSize = v })
+                                ConfigTabSelector(title: "音频类型文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextFontStyle = v })
+                                ConfigTabSelector(title: "音频类型文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_audioTypeTextFontWeight = v })
+                                ConfigTabSelector(title: "音频类型文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextFontFamily = v })
+                                ConfigTabSelector(title: "音频类型文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioTypeTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
                     if (mdStr != "") {
                         Text("预览: " + selectedFileName)
                             .fontSize(14.0)
@@ -425,7 +556,7 @@ class AudioPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -434,7 +565,6 @@ class AudioPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -442,7 +572,7 @@ class AudioPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

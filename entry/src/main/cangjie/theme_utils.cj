@@ -2,8 +2,6 @@ package ohos_app_cangjie_entry
 
 import ohos.base.*
 import ohos.component.*
-import std.sync.Timer
-import ohos.concurrency.launch
 import markdown.components.*
 import markdown.components.theme.*
 
@@ -178,39 +176,6 @@ func parseLatexMathColorFormat(s: String): LatexMathColorFormat {
     }
 }
 
-func getConfig(key: String, defaultValue: String): String {
-    let v = getGlobalString(key)
-    if (v == "") {
-        return defaultValue
-    }
-    return v
-}
-
-func createGeneralConfig(): MarkdownConfiguration {
-    let themeBuilder = MarkdownTheme.createDefaultBuilder()
-    let globalTheme = GlobalTheme()
-    globalTheme.blockMarginTop = parseFloat64(getConfig("config_blockMarginTop", "0"))
-    globalTheme.blockMarginRight = parseFloat64(getConfig("config_blockMarginRight", "0"))
-    globalTheme.blockMarginBottom = parseFloat64(getConfig("config_blockMarginBottom", "0"))
-    globalTheme.blockMarginLeft = parseFloat64(getConfig("config_blockMarginLeft", "0"))
-    globalTheme.markdownBlockSpacing = parseInt64(getConfig("config_markdownBlockSpacing", "8"))
-    globalTheme.isLineBreak = parseBool(getConfig("config_isLineBreak", "false"))
-    globalTheme.isOnCopy = parseBool(getConfig("config_isOnCopy", "false"))
-    globalTheme.isMarkdownParserSync = parseBool(getConfig("config_isMarkdownParserSync", "false"))
-    globalTheme.openGestureSwipe = parseBool(getConfig("config_openGestureSwipe", "false"))
-    globalTheme.enableParseThrottle = parseBool(getConfig("config_enableParseThrottle", "false"))
-    globalTheme.parseThrottleMs = parseInt64(getConfig("config_parseThrottleMs", "200"))
-    let bgColor = getConfig("config_backgroundColor", "undefined")
-    if (bgColor != "undefined") {
-        globalTheme.backgroundColor = parseColor(bgColor)
-    }
-    themeBuilder.setGlobalTheme(globalTheme)
-    let theme = themeBuilder.build()
-    let configBuilder = MarkdownConfiguration.emptyBuilder()
-    configBuilder.setMarkdownTheme(theme)
-    return configBuilder.build()
-}
-
 /**
  * 从指定路径加载 rawfile 文本内容（通过互操作 globalThis.loadContent）
  * @param fullPath rawfile 路径
@@ -221,66 +186,3 @@ func loadRawfileText(fullPath: String): String {
     return getGlobalString("markdownContent")
 }
 
-/**
- * 增量流式输出辅助函数
- * 根据全量/增量配置选择加载方式：
- *   - isFull=true: 一次性返回全部内容
- *   - isFull=false: 通过回调分块回传，模拟流式输出
- *
- * @param fullContent 完整文本
- * @param isFull 是否全量加载
- * @param textNumber 每次增量文本数量
- * @param timeMs 增量加载间隔时间(ms)
- * @param onChunk 每次增量的回调(累计内容, 是否结束)
- */
-public func streamLoad(
-    fullContent: String,
-    isFull: Bool,
-    textNumber: Int64,
-    timeMs: Int64,
-    onChunk: (String, Bool) -> Unit
-): Unit {
-    if (isFull) {
-        onChunk(fullContent, true)
-        return
-    }
-    if (fullContent.size == 0) {
-        onChunk("", true)
-        return
-    }
-    streamStep(fullContent, 0, textNumber, timeMs, onChunk)
-}
-
-/**
- * 流式加载单步推进（递归通过 Timer.once 调度）
- *
- * @param fullContent 完整文本
- * @param index 当前累计输出位置
- * @param textNumber 每次增量文本数量
- * @param timeMs 增量加载间隔时间(ms)
- * @param onChunk 每次增量的回调(累计内容, 是否结束)
- */
-public func streamStep(
-    fullContent: String,
-    index: Int64,
-    textNumber: Int64,
-    timeMs: Int64,
-    onChunk: (String, Bool) -> Unit
-): Unit {
-    let total = fullContent.size
-    var next = index + textNumber
-    if (next > total) {
-        next = total
-    }
-    let cumulative = fullContent[0..next]
-    let ended = (next >= total)
-    onChunk(cumulative, ended)
-    if (!ended) {
-        let nextStep = next
-        Timer.once(timeMs * Duration.millisecond) { =>
-            launch {
-                streamStep(fullContent, nextStep, textNumber, timeMs, onChunk)
-            }
-        }
-    }
-}

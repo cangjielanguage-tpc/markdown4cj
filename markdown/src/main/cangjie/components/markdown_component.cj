@@ -568,7 +568,7 @@ public class MarkdownComponent {
                 indexTocHashMap.add(i, i)
                 highlightParagraphItems.add("${children[i].nodeHash}")
             } else if (children[i].nodeType == "FootnoteBlock") {
-                indexFootnoteHashMap.add(children[i].footnoteID(), i)
+                indexFootnoteHashMap.add(children[i].footnoteID.getOrThrow(), i)
             } else if (children[i].nodeType == "Paragraph" || children[i].nodeType == "TableBlock" || children[i].nodeType == "BlockQuote" || children[i].nodeType == "OrderedList" || children[i].nodeType == "BulletList") {
                 highlightParagraphItems.add("${children[i].nodeHash}")
             }

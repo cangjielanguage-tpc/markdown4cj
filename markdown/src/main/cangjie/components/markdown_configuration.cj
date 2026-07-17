@@ -42,6 +42,7 @@ public class MarkdownConfiguration {
     protected var scrollController: ?MarkdownScrollController = None // 外层滚动控制器（用于不固定高度模式下吸顶）
     protected var paragraphAnimationStart: ?() -> Unit = None // 段落动画开始回调
     protected var paragraphAnimationEnd: ?() -> Unit = None // 段落动画结束回调
+    protected var customLongPressCallback: ?(String) -> Unit = None // 段落长按回调（返回段落纯文本内容）
 
     protected init(builder: MarkdownConfigurationBuilder) {
         this.markdownTheme = builder.markdownTheme
@@ -69,6 +70,7 @@ public class MarkdownConfiguration {
         this.scrollController = builder.scrollController
         this.paragraphAnimationStart = builder.paragraphAnimationStart
         this.paragraphAnimationEnd = builder.paragraphAnimationEnd
+        this.customLongPressCallback = builder.customLongPressCallback
     }
 
     /**
@@ -140,6 +142,7 @@ public class MarkdownConfigurationBuilder {
     var scrollController: ?MarkdownScrollController = None // 外层滚动控制器（用于不固定高度模式下吸顶）
     var paragraphAnimationStart: ?() -> Unit = None // 段落动画开始回调
     var paragraphAnimationEnd: ?() -> Unit = None // 段落动画结束回调
+    var customLongPressCallback: ?(String) -> Unit = None // 段落长按回调（返回段落纯文本内容）
 
     init() {
     }
@@ -170,6 +173,7 @@ public class MarkdownConfigurationBuilder {
         this.scrollController = configuration.scrollController
         this.paragraphAnimationStart = configuration.paragraphAnimationStart
         this.paragraphAnimationEnd = configuration.paragraphAnimationEnd
+        this.customLongPressCallback = configuration.customLongPressCallback
     }
 
     /**
@@ -474,6 +478,28 @@ public class MarkdownConfigurationBuilder {
      */
     public func setParagraphAnimationEnd(cb: () -> Unit): MarkdownConfigurationBuilder {
         this.paragraphAnimationEnd = cb
+        return this
+    }
+
+    /**
+     * 设置段落长按回调
+     * 长按段落时触发，回调参数为当前段落的纯文本内容
+     *
+     * 使用示例：
+     * ```cangjie
+     * let config = MarkdownConfiguration.builder()
+     *     .setCustomLongPressCallback({ text: String =>
+     *         // text 为长按段落的纯文本内容，可在此处执行自定义操作（如弹Toast、跳转等）
+     *         PromptAction.showToast(message: "长按段落: ${text}", duration: 2000)
+     *     })
+     *     .build()
+     * ```
+     *
+     * @param cb 段落长按回调，参数为当前段落的纯文本内容
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setCustomLongPressCallback(cb: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.customLongPressCallback = cb
         return this
     }
 

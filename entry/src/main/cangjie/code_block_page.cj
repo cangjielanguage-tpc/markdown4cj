@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,16 @@ class CodeBlockPage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
+    @State
+    var isExpanded4: Bool = false
+    @State
+    var isExpanded5: Bool = false
+    @State
+    var isExpanded6: Bool = false
+    @State
+    var isExpanded7: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -118,6 +129,8 @@ class CodeBlockPage {
     @State var cfg_codeBlockTextMarginRight: String = "undefined"
     @State var cfg_codeBlockTextMarginLeft: String = "undefined"
     @State var cfg_codeBlockTextFontWeight: String = "Normal"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -136,16 +149,33 @@ class CodeBlockPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -415,7 +445,7 @@ class CodeBlockPage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("边距和边框")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -437,14 +467,9 @@ class CodeBlockPage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "代码块暗色主题 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_codeBlockIsDark = v })
                                 ConfigTabSelector(title: "代码块背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockBackgroundColor = v })
                                 ConfigTabSelector(title: "代码块边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockBorderColor = v })
                                 ConfigTabSelector(title: "代码块边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockBorderWidth = v })
-                                ConfigTabSelector(title: "代码块复制按钮可见 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockCopyButtonIsShow = v })
-                                ConfigTabSelector(title: "代码块全屏按钮可见 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockFullScreenButtonIsShow = v })
-                                ConfigTabSelector(title: "代码块行号可见 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockLineNumberIsShow = v })
-                                ConfigTabSelector(title: "代码块文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockTextFontSize = v })
                                 ConfigTabSelector(title: "代码块上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_codeBlockMarginTop = v })
                                 ConfigTabSelector(title: "代码块右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_codeBlockMarginRight = v })
                                 ConfigTabSelector(title: "代码块下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_codeBlockMarginBottom = v })
@@ -458,6 +483,41 @@ class CodeBlockPage {
                                 ConfigTabSelector(title: "代码块边框左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_codeBlockRadiusBottomLeft = v })
                                 ConfigTabSelector(title: "代码块边框右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_codeBlockRadiusBottomRight = v })
                                 ConfigTabSelector(title: "代码块边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_codeBlockBorderStyle = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("类型文本")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
                                 ConfigTabSelector(title: "代码块类型和代码块内容间距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockTitleLayoutMarginBottom = v })
                                 ConfigTabSelector(title: "代码块类型左边距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockTypeTextMarginLeft = v })
                                 ConfigTabSelector(title: "代码块没有代码类型时默认显示文本 - ", options: codeBlockTypeTextList, defaultValue: "", configKey: "", onSelect: { v => cfg_codeBlockTypeText = v })
@@ -467,6 +527,42 @@ class CodeBlockPage {
                                 ConfigTabSelector(title: "代码块类型文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_codeBlockTypeTextFontWeight = v })
                                 ConfigTabSelector(title: "代码块类型文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockTypeTextFontFamily = v })
                                 ConfigTabSelector(title: "代码块类型文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockTypeTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("复制相关")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded4) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded4 = !isExpanded4
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded4 = !isExpanded4
+                        }
+
+                        if (isExpanded4) {
+                            Column {
+                                ConfigTabSelector(title: "代码块复制按钮可见 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockCopyButtonIsShow = v })
                                 ConfigTabSelector(title: "代码块代码复制和代码全屏间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyFullScreenSpacing = v })
                                 ConfigTabSelector(title: "代码块代码复制文本是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockCopyTextIsShow = v })
                                 ConfigTabSelector(title: "代码块代码复制图标宽度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyIconWidth = v })
@@ -479,6 +575,42 @@ class CodeBlockPage {
                                 ConfigTabSelector(title: "代码块代码复制文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_codeBlockCopyTextFontWeight = v })
                                 ConfigTabSelector(title: "代码块代码复制文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyTextFontFamily = v })
                                 ConfigTabSelector(title: "代码块代码复制文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("全屏相关")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded5) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded5 = !isExpanded5
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded5 = !isExpanded5
+                        }
+
+                        if (isExpanded5) {
+                            Column {
+                                ConfigTabSelector(title: "代码块全屏按钮可见 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockFullScreenButtonIsShow = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockFullScreenTextIsShow = v })
                                 ConfigTabSelector(title: "代码块代码全屏图标宽度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockFullScreenIconWidth = v })
                                 ConfigTabSelector(title: "代码块代码全屏图标高度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockFullScreenIconHeight = v })
@@ -490,6 +622,42 @@ class CodeBlockPage {
                                 ConfigTabSelector(title: "代码块代码全屏文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_codeBlockFullScreenTextFontWeight = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockFullScreenTextFontFamily = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockFullScreenTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("代码块行号")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded6) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded6 = !isExpanded6
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded6 = !isExpanded6
+                        }
+
+                        if (isExpanded6) {
+                            Column {
+                                ConfigTabSelector(title: "代码块行号可见 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockLineNumberIsShow = v })
                                 ConfigTabSelector(title: "代码块代码行号左内边距 - ", options: spaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockLineNumberTextPaddingLeft = v })
                                 ConfigTabSelector(title: "代码块代码行号文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockLineNumberTextFontColor = v })
                                 ConfigTabSelector(title: "代码块代码行号文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockLineNumberTextFontSize = v })
@@ -500,6 +668,43 @@ class CodeBlockPage {
                                 ConfigTabSelector(title: "代码块代码行号和代码块中间分割线颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockDividerColor = v })
                                 ConfigTabSelector(title: "代码块代码行号和代码块中间分割线宽度 - ", options: lineOrBorderWidthList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockDividerStrokeWidth = v })
                                 ConfigTabSelector(title: "代码块代码行号和分割线间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockLineNumberDividerSpacing = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("代码块文本")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded7) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded7 = !isExpanded7
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded7 = !isExpanded7
+                        }
+
+                        if (isExpanded7) {
+                            Column {
+                                ConfigTabSelector(title: "代码块暗色主题 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_codeBlockIsDark = v })
+                                ConfigTabSelector(title: "代码块文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockTextFontSize = v })
                                 ConfigTabSelector(title: "是否格式化围栏代码块内容 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_codeBlockIsCodeFormat = v })
                                 ConfigTabSelector(title: "codeformat是否用制表符 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_codeBlockUseTab = v })
                                 ConfigTabSelector(title: "codeformat空格缩进数量 - ", options: codeBlockIndentWidthList, defaultValue: "4", configKey: "", onSelect: { v => cfg_codeBlockIndentWidth = v })
@@ -533,7 +738,7 @@ class CodeBlockPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -542,7 +747,6 @@ class CodeBlockPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -550,7 +754,7 @@ class CodeBlockPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

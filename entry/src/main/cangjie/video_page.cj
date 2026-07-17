@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,14 @@ class VideoPage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
+    @State
+    var isExpanded4: Bool = false
+    @State
+    var isExpanded5: Bool = false
+    @State
+    var isExpanded6: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -109,6 +118,8 @@ class VideoPage {
     @State var cfg_videoDownloadButtonTextFontWeight: String = "Normal"
     @State var cfg_videoDownloadButtonTextFontFamily: String = "undefined"
     @State var cfg_videoDownloadButtonTextLineHeight: String = "undefined"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -127,16 +138,33 @@ class VideoPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -341,7 +369,7 @@ class VideoPage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("视频基本属性")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -365,7 +393,6 @@ class VideoPage {
                             Column {
                                 ConfigTabSelector(title: "视频背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoBackgroundColor = v })
                                 ConfigTabSelector(title: "视频边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoBorderColor = v })
-                                ConfigTabSelector(title: "视频时间文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoTimeTextFontColor = v })
                                 ConfigTabSelector(title: "视频上外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoMarginTop = v })
                                 ConfigTabSelector(title: "视频右外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoMarginRight = v })
                                 ConfigTabSelector(title: "视频下外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoMarginBottom = v })
@@ -381,9 +408,80 @@ class VideoPage {
                                 ConfigTabSelector(title: "视频边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_videoBorderStyle = v })
                                 ConfigTabSelector(title: "视频边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", onSelect: { v => cfg_videoBorderWidth = v })
                                 ConfigTabSelector(title: "视频图片缩放类型 - ", options: imageFitList, defaultValue: "Cover", configKey: "", onSelect: { v => cfg_videoImageFitType = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("播放按钮")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
                                 ConfigTabSelector(title: "播放按钮图标宽度 - ", options: widthOrHeightList, defaultValue: "60", configKey: "", onSelect: { v => cfg_videoPlayIconWidth = v })
                                 ConfigTabSelector(title: "播放按钮图标高度 - ", options: widthOrHeightList, defaultValue: "60", configKey: "", onSelect: { v => cfg_videoPlayIconHeight = v })
                                 ConfigTabSelector(title: "播放按钮图标缩放类型 - ", options: imageFitList, defaultValue: "Contain", configKey: "", onSelect: { v => cfg_videoPlayIconFitType = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("视频时间文本和底部布局")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded4) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded4 = !isExpanded4
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded4 = !isExpanded4
+                        }
+
+                        if (isExpanded4) {
+                            Column {
+                                ConfigTabSelector(title: "视频时间文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoTimeTextFontColor = v })
                                 ConfigTabSelector(title: "视频时间文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoTimeTextFontSize = v })
                                 ConfigTabSelector(title: "视频时间文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoTimeTextFontStyle = v })
                                 ConfigTabSelector(title: "视频时间文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_videoTimeTextFontWeight = v })
@@ -393,6 +491,41 @@ class VideoPage {
                                 ConfigTabSelector(title: "视频时间文本居底边距 - ", options: marginList, defaultValue: "10", configKey: "", onSelect: { v => cfg_videoTimeTextMarginBottom = v })
                                 ConfigTabSelector(title: "底部布局是否显示 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_videoBottomLayoutVisible = v })
                                 ConfigTabSelector(title: "底部布局距离视频上边距 - ", options: marginList, defaultValue: "14", configKey: "", onSelect: { v => cfg_videoBottomLayoutMarginTop = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("发布按钮")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded5) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded5 = !isExpanded5
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded5 = !isExpanded5
+                        }
+
+                        if (isExpanded5) {
+                            Column {
                                 ConfigTabSelector(title: "视频发布按钮是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_videoReleaseButtonVisible = v })
                                 ConfigTabSelector(title: "视频发布按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoReleaseButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "视频发布按钮宽度 - ", options: widthOrHeightList, defaultValue: "144", configKey: "", onSelect: { v => cfg_videoReleaseButtonWidth = v })
@@ -411,6 +544,41 @@ class VideoPage {
                                 ConfigTabSelector(title: "视频发布按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_videoReleaseButtonTextFontWeight = v })
                                 ConfigTabSelector(title: "视频发布按钮文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoReleaseButtonTextFontFamily = v })
                                 ConfigTabSelector(title: "视频发布按钮文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoReleaseButtonTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("下载按钮")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded6) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded6 = !isExpanded6
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded6 = !isExpanded6
+                        }
+
+                        if (isExpanded6) {
+                            Column {
                                 ConfigTabSelector(title: "视频下载按钮是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_videoDownloadButtonVisible = v })
                                 ConfigTabSelector(title: "视频下载按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoDownloadButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "视频下载按钮宽度 - ", options: widthOrHeightList, defaultValue: "144", configKey: "", onSelect: { v => cfg_videoDownloadButtonWidth = v })
@@ -450,7 +618,7 @@ class VideoPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -459,7 +627,6 @@ class VideoPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -467,7 +634,7 @@ class VideoPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

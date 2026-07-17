@@ -6,15 +6,68 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import markdown.components.*
 
+func isColorValue(s: String): Bool {
+    return s == "#FF000000" || s == "#FFFFFFFF" || s == "#FFFF0000" ||
+           s == "#FF00FF00" || s == "#FF0000FF" || s == "#FF808080" ||
+           s == "#FFFA8072" || s == "#FFFFD700" || s == "#FFEE82EE" ||
+           s == "#FF7EC0EE" || s == "#00000000"
+}
+
+func colorToUInt32(s: String): UInt32 {
+    match (s) {
+        case "#FF000000" => 0xFF000000
+        case "#FFFFFFFF" => 0xFFFFFFFF
+        case "#FFFF0000" => 0xFFFF0000
+        case "#FF00FF00" => 0xFF00FF00
+        case "#FF0000FF" => 0xFF0000FF
+        case "#FF808080" => 0xFF808080
+        case "#FFFA8072" => 0xFFFA8072
+        case "#FFFFD700" => 0xFFFFD700
+        case "#FFEE82EE" => 0xFFEE82EE
+        case "#FF7EC0EE" => 0xFF7EC0EE
+        case "#00000000" => 0xFFCCCCCC
+        case _ => 0xFF317AFF
+    }
+}
+
+func contrastColor(s: String): UInt32 {
+    match (s) {
+        case "#FF000000" => 0xFFFFFFFF
+        case "#FF808080" => 0xFFFFFFFF
+        case "#FF0000FF" => 0xFFFFFFFF
+        case "#FFFF0000" => 0xFFFFFFFF
+        case "#FFFA8072" => 0xFF000000
+        case "#FFFFD700" => 0xFF000000
+        case "#FFEE82EE" => 0xFF000000
+        case "#FF7EC0EE" => 0xFF000000
+        case "#FFFFFFFF" => 0xFF000000
+        case "#FF00FF00" => 0xFF000000
+        case "#00000000" => 0xFF000000
+        case _ => 0xFFFFFFFF
+    }
+}
+
+func colorDisplayName(s: String): String {
+    match (s) {
+        case "#FF000000" => "黑"
+        case "#FFFFFFFF" => "白"
+        case "#FFFF0000" => "红"
+        case "#FF00FF00" => "绿"
+        case "#FF0000FF" => "蓝"
+        case "#FF808080" => "灰"
+        case "#FFFA8072" => "肉粉"
+        case "#FFFFD700" => "金"
+        case "#FFEE82EE" => "紫罗兰"
+        case "#FF7EC0EE" => "天空蓝"
+        case "#00000000" => "透明"
+        case _ => s
+    }
+}
+
 /**
  * 配置选项卡组件
  * 使用 Flex+Wrap 实现自动换行的按钮布局（参考 BaseTabComponent）
- *
- * 数据传递支持两种模式：
- *   1. 新模式（推荐）：通过 onSelect 回调将选中值回传父组件，不走 globalThis 互操作
- *   2. 兼容模式：通过 configKey + setGlobalString 走 globalThis（旧页面逐步迁移）
- *
- * 同时传入时优先使用 onSelect 回调。
+ * 颜色选项自动显示为色块（背景=颜色值，文字=中文名称+对比色）
  */
 @Component
 class ConfigTabSelector {
@@ -37,10 +90,31 @@ class ConfigTabSelector {
                     .fontSize(16.0)
                     .textAlign(TextAlign.Start)
                     .layoutWeight(1)
-                Text(if (currentValue == "") { defaultValue } else { currentValue })
+                Text(
+                    if (isColorValue(if (currentValue == "") { defaultValue } else { currentValue })) {
+                        colorDisplayName(if (currentValue == "") { defaultValue } else { currentValue })
+                    } else {
+                        if (currentValue == "") { defaultValue } else { currentValue }
+                    }
+                )
                     .fontSize(16.0)
                     .textAlign(TextAlign.End)
                     .margin(right: 5.0)
+                    .backgroundColor(
+                        if (isColorValue(if (currentValue == "") { defaultValue } else { currentValue })) {
+                            colorToUInt32(if (currentValue == "") { defaultValue } else { currentValue })
+                        } else {
+                            0xFFE0E0E0
+                        }
+                    )
+                    .fontColor(
+                        if (isColorValue(if (currentValue == "") { defaultValue } else { currentValue })) {
+                            contrastColor(if (currentValue == "") { defaultValue } else { currentValue })
+                        } else {
+                            0xFF000000
+                        }
+                    )
+                    .padding(2.0)
             }
             .width(100.percent)
             .backgroundColor(0xFFE0E0E0)
@@ -52,13 +126,13 @@ class ConfigTabSelector {
                     options,
                     itemGeneratorFunc: {
                         item: String, _: Int64 =>
-                            Button(item)
+                            Button(if (isColorValue(item)) { colorDisplayName(item) } else { item })
                                 .shape(ShapeType.Capsule)
                                 .height(25.0)
                                 .margin(2.0)
-                                .backgroundColor(0xFF317AFF)
+                                .backgroundColor(if (isColorValue(item)) { colorToUInt32(item) } else { 0xFF317AFF })
                                 .fontSize(14.0)
-                                .fontColor(0xFFFFFFFF)
+                                .fontColor(if (isColorValue(item)) { contrastColor(item) } else { 0xFFFFFFFF })
                                 .onClick {evt =>
                                     currentValue = item
                                     if (let Some(cb) <- onSelect) {

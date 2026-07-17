@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,12 @@ class LinkPage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
+    @State
+    var isExpanded4: Bool = false
+    @State
+    var isExpanded5: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -56,7 +63,11 @@ class LinkPage {
     @State var cfg_linkTextLetterSpacing: String = "undefined"
     @State var cfg_linkTextDecorationType: String = "None"
     @State var cfg_linkTextDecorationStyle: String = "Solid"
-    @State var cfg_linkTextBackgroundRadius: String = "0"
+    @State var cfg_linkTextBackgroundRadiusTopLeft: String = "0"
+    @State var cfg_linkTextBackgroundRadiusTopRight: String = "0"
+    @State var cfg_linkTextBackgroundRadiusBottomLeft: String = "0"
+    @State var cfg_linkTextBackgroundRadiusBottomRight: String = "0"
+    @State var cfg_isLoadLinkifyPlugin: String = "true"
     @State var cfg_linkCircleIconBackgroundColor: String = "undefined"
     @State var cfg_linkCircleIconButtonBackgroundColor: String = "undefined"
     @State var cfg_linkCircleIconTextSize: String = "undefined"
@@ -81,6 +92,8 @@ class LinkPage {
     @State var cfg_linkRectToolIconMargin: String = "0"
     @State var cfg_linkRectToolIconLineLeftPadding: String = "0"
     @State var cfg_linkRectToolIconLineRightPadding: String = "0"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -99,16 +112,33 @@ class LinkPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -160,7 +190,7 @@ class LinkPage {
         }
         linkTheme.setLinkTextDecorationType(parseTextDecorationType(cfg_linkTextDecorationType))
         linkTheme.setLinkTextDecorationStyle(parseTextDecorationStyle(cfg_linkTextDecorationStyle))
-        linkTheme.setLinkTextBackgroundRadius(parseFloat64(cfg_linkTextBackgroundRadius))
+        linkTheme.setLinkTextBackgroundRadius(topLeft: parseFloat64(cfg_linkTextBackgroundRadiusTopLeft), topRight: parseFloat64(cfg_linkTextBackgroundRadiusTopRight), bottomLeft: parseFloat64(cfg_linkTextBackgroundRadiusBottomLeft), bottomRight: parseFloat64(cfg_linkTextBackgroundRadiusBottomRight))
         if (cfg_linkCircleIconBackgroundColor != "undefined") {
             linkTheme.setLinkCircleIconBackgroundColor(parseColor(cfg_linkCircleIconBackgroundColor))
         }
@@ -300,7 +330,7 @@ class LinkPage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("圆形图片和其他设置")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -323,25 +353,49 @@ class LinkPage {
                         if (isExpanded2) {
                             Column {
                                 ConfigTabSelector(title: "链接是否图片显示 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_linkIsIcon = v })
-                                ConfigTabSelector(title: "链接文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextFontColor = v })
-                                ConfigTabSelector(title: "链接文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextFontSize = v })
-                                ConfigTabSelector(title: "链接下划线颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextDecorationColor = v })
-                                ConfigTabSelector(title: "链接背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextBackgroundColor = v })
-                                ConfigTabSelector(title: "链接字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_linkTextFontWeight = v })
-                                ConfigTabSelector(title: "链接字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextFontFamily = v })
                                 ConfigTabSelector(title: "链接列表是否图标 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_linkListIsIcon = v })
-                                ConfigTabSelector(title: "链接文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextFontStyle = v })
-                                ConfigTabSelector(title: "链接文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextLineHeight = v })
-                                ConfigTabSelector(title: "链接文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextLetterSpacing = v })
-                                ConfigTabSelector(title: "链接文本装饰类型 - ", options: textDecorationTypeList, defaultValue: "None", configKey: "", onSelect: { v => cfg_linkTextDecorationType = v })
-                                ConfigTabSelector(title: "链接文本装饰样式 - ", options: textDecorationStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_linkTextDecorationStyle = v })
-                                ConfigTabSelector(title: "链接文本背景圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkTextBackgroundRadius = v })
+                                ConfigTabSelector(title: "是否加载链接自动解析插件 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_isLoadLinkifyPlugin = v })
                                 ConfigTabSelector(title: "链接圆形图标背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkCircleIconBackgroundColor = v })
                                 ConfigTabSelector(title: "链接圆形图标按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkCircleIconButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "链接圆形图标文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkCircleIconTextSize = v })
                                 ConfigTabSelector(title: "链接圆形图标文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkCircleIconTextColor = v })
                                 ConfigTabSelector(title: "链接圆形图标圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkCircleIconRadius = v })
                                 ConfigTabSelector(title: "链接圆形图标外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkCircleIconMargin = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("圆角矩形设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
                                 ConfigTabSelector(title: "链接矩形图标背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkRectIconBackgroundColor = v })
                                 ConfigTabSelector(title: "链接矩形图标按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkRectIconButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "链接矩形图标文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkRectIconTextSize = v })
@@ -350,6 +404,41 @@ class LinkPage {
                                 ConfigTabSelector(title: "链接矩形图标内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkRectIconPadding = v })
                                 ConfigTabSelector(title: "链接矩形图标圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkRectIconRadius = v })
                                 ConfigTabSelector(title: "链接矩形图标外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkRectIconMargin = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("空心圆角矩形设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded4) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded4 = !isExpanded4
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded4 = !isExpanded4
+                        }
+
+                        if (isExpanded4) {
+                            Column {
                                 ConfigTabSelector(title: "链接矩形工具图标背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkRectToolIconBackgroundColor = v })
                                 ConfigTabSelector(title: "链接矩形工具图标按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkRectToolIconButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "链接矩形工具图标文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkRectToolIconTextSize = v })
@@ -371,6 +460,56 @@ class LinkPage {
                     .borderRadius(5.0)
                     .backgroundColor(0xFF317AFF)
 
+                    Column {
+                        Row {
+                            Text("链接文本设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded5) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded5 = !isExpanded5
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded5 = !isExpanded5
+                        }
+
+                        if (isExpanded5) {
+                            Column {
+                                ConfigTabSelector(title: "链接文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextFontColor = v })
+                                ConfigTabSelector(title: "链接文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextFontSize = v })
+                                ConfigTabSelector(title: "链接下划线颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextDecorationColor = v })
+                                ConfigTabSelector(title: "链接背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextBackgroundColor = v })
+                                ConfigTabSelector(title: "链接字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_linkTextFontWeight = v })
+                                ConfigTabSelector(title: "链接字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextFontFamily = v })
+                                ConfigTabSelector(title: "链接文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextFontStyle = v })
+                                ConfigTabSelector(title: "链接文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextLineHeight = v })
+                                ConfigTabSelector(title: "链接文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_linkTextLetterSpacing = v })
+                                ConfigTabSelector(title: "链接文本装饰类型 - ", options: textDecorationTypeList, defaultValue: "None", configKey: "", onSelect: { v => cfg_linkTextDecorationType = v })
+                                ConfigTabSelector(title: "链接文本装饰样式 - ", options: textDecorationStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_linkTextDecorationStyle = v })
+                                ConfigTabSelector(title: "链接文本背景左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkTextBackgroundRadiusTopLeft = v })
+                                ConfigTabSelector(title: "链接文本背景右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkTextBackgroundRadiusTopRight = v })
+                                ConfigTabSelector(title: "链接文本背景左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkTextBackgroundRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "链接文本背景右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_linkTextBackgroundRadiusBottomRight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
                     if (mdStr != "") {
                         Text("预览: " + selectedFileName)
                             .fontSize(14.0)
@@ -381,7 +520,7 @@ class LinkPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -390,7 +529,6 @@ class LinkPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -398,7 +536,7 @@ class LinkPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

@@ -16,8 +16,46 @@ public class MarkdownHighlightParagraph {
 
     public var selectedParagraphItem: String = "" // 当前高亮显示的段落的nodeHash
     public var selectedParagraphItemColor: ?Color = None // 当前高亮显示的段落的背景色
+    public var beforeSelectedParagraphBackgroundColor: ?Color = None // 长按前段落默认背景色（用于长按后恢复）
+    public var selectedParagraphBackgroundColor: ?Color = None // 长按选中段落的背景色
 
     public init() {
+    }
+
+    /**
+     * 设置长按选中段落的背景色
+     *
+     * @param color 长按选中段落的背景色
+     */
+    public func setSelectedParagraphBackgroundColor(color: Color): Unit {
+        this.selectedParagraphBackgroundColor = color
+    }
+
+    /**
+     * 获取长按选中段落的背景色
+     *
+     * @return 长按选中段落的背景色
+     */
+    public func getSelectedParagraphBackgroundColor(): ?Color {
+        return this.selectedParagraphBackgroundColor
+    }
+
+    /**
+     * 设置长按前段落默认背景色
+     *
+     * @param color 长按前段落默认背景色
+     */
+    public func setBeforeSelectedParagraphBackgroundColor(color: Color): Unit {
+        this.beforeSelectedParagraphBackgroundColor = color
+    }
+
+    /**
+     * 获取长按前段落默认背景色
+     *
+     * @return 长按前段落默认背景色
+     */
+    public func getBeforeSelectedParagraphBackgroundColor(): ?Color {
+        return this.beforeSelectedParagraphBackgroundColor
     }
 
     /**

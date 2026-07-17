@@ -40,16 +40,16 @@ public class MarkdownLinkRectImageComponent {
 
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
-            ImageSpan(imagePixelMap())
-                .width(imageWidth().px)
-                .height(imageHeight().px)
+            ImageSpan(imagePixelMap.getOrThrow())
+                .width(imageWidth.getOrThrow().px)
+                .height(imageHeight.getOrThrow().px)
                 .objectFit(ImageFit.Contain)
                 .constraintSize(maxWidth: maxWidth)
                 .verticalAlign(ImageSpanAlignment.CENTER)
                 .margin(right: markdownConfiguration.markdownTheme.linkTheme.linkRectIconMargin, left: markdownConfiguration.markdownTheme.linkTheme.linkRectIconMargin)
                 .onClick {
                     evt => if (markdownConfiguration.linkCallback.isSome()) {
-                        markdownConfiguration.linkCallback()(strUrl)
+                        markdownConfiguration.linkCallback.getOrThrow()(strUrl)
                     }
                 }
         }

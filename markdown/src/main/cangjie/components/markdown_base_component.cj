@@ -231,18 +231,18 @@ func spanLinkComponent(
             false
         )
     } else {
-        if (spanListNodeView.linkUrl().startsWith("http://") || spanListNodeView.linkUrl().startsWith("https://")) {
+        if (spanListNodeView.linkUrl.getOrThrow().startsWith("http://") || spanListNodeView.linkUrl.getOrThrow().startsWith("https://")) {
             if (spanListNodeView.nodeText.trimAscii().toRuneArray().size > 1) {
                 MarkdownLinkRectImageComponent(
                     markdownConfiguration: spanListMarkdownConfiguration,
                     strText: spanListNodeView.nodeText.trimAscii(),
-                    strUrl: spanListNodeView.linkUrl()
+                    strUrl: spanListNodeView.linkUrl.getOrThrow()
                 )
             } else if (spanListNodeView.nodeText.trimAscii().toRuneArray().size == 1) {
                 MarkdownLinkCircleImageComponent(
                     markdownConfiguration: spanListMarkdownConfiguration,
                     strText: spanListNodeView.nodeText.trimAscii(),
-                    strUrl: spanListNodeView.linkUrl()
+                    strUrl: spanListNodeView.linkUrl.getOrThrow()
                 )
             }
         } else {
@@ -250,8 +250,8 @@ func spanLinkComponent(
                 MarkdownLinkRectToolImageComponent(
                     markdownConfiguration: spanListMarkdownConfiguration,
                     strText: spanListNodeView.nodeText.trimAscii(),
-                    strUrl: spanListNodeView.linkUrl(),
-                    strType: urlSafeBase64Decode(spanListNodeView.linkUrl())
+                    strUrl: spanListNodeView.linkUrl.getOrThrow(),
+                    strType: urlSafeBase64Decode(spanListNodeView.linkUrl.getOrThrow())
                 )
             }
         }
@@ -270,11 +270,11 @@ func spanImageComponent(
 ) {
     if (spanListMarkdownConfiguration.imageReplaceCallback.isNone()) {
         // 没有图片替换回调接口
-        if (spanListNodeView.imageUrl().startsWith("./")) {
+        if (spanListNodeView.imageUrl.getOrThrow().startsWith("./")) {
             // 本地图片
             MarkdownSpanImageRawFileComponent(
                 rawFileMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                rawFileDestination: spanListNodeView.imageUrl(),
+                rawFileDestination: spanListNodeView.imageUrl.getOrThrow(),
                 rawFileComponentWidth: spanListComponentWidth,
                 rawFileImageCallback: spanListImageCallback,
                 rawFileLinkCallback: spanListMarkdownConfiguration.linkCallback,
@@ -289,7 +289,7 @@ func spanImageComponent(
             // url
             MarkdownSpanImageUrlComponent(
                 urlMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                urlDestination: spanListNodeView.imageUrl(),
+                urlDestination: spanListNodeView.imageUrl.getOrThrow(),
                 urlComponentWidth: spanListComponentWidth,
                 urlImageCallback: spanListImageCallback,
                 urlLinkCallback: spanListMarkdownConfiguration.linkCallback,
@@ -303,13 +303,13 @@ func spanImageComponent(
         }
     } else {
         // 有图片替换回调接口
-        if (spanListNodeView.imageUrl().startsWith("./")) {
+        if (spanListNodeView.imageUrl.getOrThrow().startsWith("./")) {
             // 本地图片
             MarkdownSpanImageCallbackRawFileComponent(
                 rawFileCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                rawFileCallbackDestination: spanListNodeView.imageUrl(),
+                rawFileCallbackDestination: spanListNodeView.imageUrl.getOrThrow(),
                 rawFileCallbackComponentWidth: spanListComponentWidth,
-                rawFileCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback(),
+                rawFileCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
                 rawFileCallbackImageCallback: spanListImageCallback,
                 rawFileCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
                 rawFileCallbackLink: spanListNodeView.isLink,
@@ -323,9 +323,9 @@ func spanImageComponent(
             // url
             MarkdownSpanImageCallbackUrlComponent(
                 urlCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                urlCallbackDestination: spanListNodeView.imageUrl(),
+                urlCallbackDestination: spanListNodeView.imageUrl.getOrThrow(),
                 urlCallbackComponentWidth: spanListComponentWidth,
-                urlCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback(),
+                urlCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
                 urlCallbackImageCallback: spanListImageCallback,
                 urlCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
                 urlCallbackLink: spanListNodeView.isLink,

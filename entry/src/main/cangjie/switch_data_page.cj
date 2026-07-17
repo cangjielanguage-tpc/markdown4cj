@@ -6,11 +6,14 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
 class SwitchDataPage {
     @State
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     var mdStr: String = getGlobalString("markdownContent")
 
     public func build() {
@@ -21,7 +24,7 @@ class SwitchDataPage {
                         output: mdStr,
                         isInputEnded: true,
                         incrementalAnalysis: false,
-                        scroller: Scroller()
+                        scroller: scroller
                     )
                 }
             }

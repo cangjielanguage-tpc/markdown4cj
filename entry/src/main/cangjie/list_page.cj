@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,12 @@ class ListPage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
+    @State
+    var isExpanded4: Bool = false
+    @State
+    var isExpanded5: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -85,6 +92,8 @@ class ListPage {
     @State var cfg_bulletListCheckboxHeight: String = "0"
     @State var cfg_bulletListCheckboxSelectedColor: String = "undefined"
     @State var cfg_bulletListCheckboxShape: String = "ROUNDED_SQUARE"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -103,16 +112,33 @@ class ListPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -287,7 +313,7 @@ class ListPage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("有序列表设置")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -327,6 +353,41 @@ class ListPage {
                                 ConfigTabSelector(title: "有序列表标记文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_orderedListMarkerTextFontWeight = v })
                                 ConfigTabSelector(title: "有序列表标记文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_orderedListMarkerTextFontFamily = v })
                                 ConfigTabSelector(title: "有序列表标记文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_orderedListMarkerTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("无序和任务列表通用设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
                                 ConfigTabSelector(title: "无序列表背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBackgroundColor = v })
                                 ConfigTabSelector(title: "无序列表上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListMarginTop = v })
                                 ConfigTabSelector(title: "无序列表右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListMarginRight = v })
@@ -338,6 +399,41 @@ class ListPage {
                                 ConfigTabSelector(title: "无序列表左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListPaddingLeft = v })
                                 ConfigTabSelector(title: "无序列表子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListChildSpacing = v })
                                 ConfigTabSelector(title: "无序列表子子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListChildChildSpacing = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("无序列表设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded4) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded4 = !isExpanded4
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded4 = !isExpanded4
+                        }
+
+                        if (isExpanded4) {
+                            Column {
                                 ConfigTabSelector(title: "无序列表项目符号间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListBulletSpacing = v })
                                 ConfigTabSelector(title: "无序列表项目符号是否圆形 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_bulletListBulletIsCircle = v })
                                 ConfigTabSelector(title: "无序列表项目符号文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBulletTextFontColor = v })
@@ -346,6 +442,41 @@ class ListPage {
                                 ConfigTabSelector(title: "无序列表项目符号文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_bulletListBulletTextFontWeight = v })
                                 ConfigTabSelector(title: "无序列表项目符号文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBulletTextFontFamily = v })
                                 ConfigTabSelector(title: "无序列表项目符号文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBulletTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("任务列表设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded5) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded5 = !isExpanded5
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded5 = !isExpanded5
+                        }
+
+                        if (isExpanded5) {
+                            Column {
                                 ConfigTabSelector(title: "无序列表复选框间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListCheckboxSpacing = v })
                                 ConfigTabSelector(title: "无序列表复选框宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListCheckboxWidth = v })
                                 ConfigTabSelector(title: "无序列表复选框高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListCheckboxHeight = v })
@@ -372,7 +503,7 @@ class ListPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -381,7 +512,6 @@ class ListPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -389,7 +519,7 @@ class ListPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

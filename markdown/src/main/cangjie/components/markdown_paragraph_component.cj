@@ -27,6 +27,17 @@ class MarkdownParagraphComponent {
     var paragraphHighlightColor: Color = COLOR_TRANSPARENT // 段落高亮颜色
     @State
     var hasParagraphHighlight: Bool = false // 段落是否处于高亮状态
+    @State
+    var paragraphTextContent: String = "" // 段落纯文本内容（用于长按回调与划选复制）
+    @State
+    var paragraphSelectionStart: Int32 = -1 // 段落文本划选起始位置，-1表示未划选
+    @State
+    var paragraphSelectionEnd: Int32 = -1 // 段落文本划选结束位置，-1表示未划选
+    @State
+    var paragraphLongPressBackgroundColor: Color = COLOR_TRANSPARENT // 当前长按背景色
+    @State
+    var paragraphIsLongPressed: Bool = false // 当前是否处于长按状态
+    var paragraphSelectionMenuTimer: ?Timer = None // 选区菜单自动隐藏定时器
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(paragraphNodeView.nodeHash, refreshParagraphData)
@@ -45,31 +56,26 @@ class MarkdownParagraphComponent {
                 hasParagraphHighlight = false
             }
         })
-        // 段落加载动画回调
-        if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
-            if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphAnimationStart) {
-                cb()
-            }
-            let duration = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
-            let endCb = paragraphMarkdownConfiguration.paragraphAnimationEnd
-            Timer.once(Int64(duration) * Duration.millisecond, { =>
-                if (let Some(cb) <- endCb) {
-                    cb()
-                }
-            })
-        }
     }
 
     protected override func aboutToDisappear(): Unit {
         MarkdownRefreshRegistry.unregister(paragraphNodeView.nodeHash)
         MarkdownLinkExposureRegistry.unregister(paragraphNodeView.nodeHash)
         MarkdownHighlightRegistry.unregister(paragraphNodeView.nodeHash)
+        // 组件销毁时清理选区菜单隐藏定时器
+        if (paragraphSelectionMenuTimer.isSome()) {
+            paragraphSelectionMenuTimer.getOrThrow().cancel()
+            paragraphSelectionMenuTimer = None
+        }
     }
 
     /**
-     * 获取段落背景色：高亮时用高亮色，否则用默认背景色
+     * 获取段落背景色：高亮时用高亮色，长按选中时用长按色，否则用默认背景色
      */
     func getParagraphBackground(): Color {
+        if (paragraphIsLongPressed) {
+            return paragraphLongPressBackgroundColor
+        }
         if (hasParagraphHighlight) {
             return paragraphHighlightColor
         }
@@ -78,23 +84,219 @@ class MarkdownParagraphComponent {
 
     /**
      * 获取段落加载动画转场效果
-     * 启用时使用渐显（OPACITY），禁用时使用IDENTITY（无效果）
+     * 启用时进入渐显（OPACITY），退出无效果，保证流式输出历史UI稳定
      */
     func getTransitionEffect(): TransitionEffect {
         if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
-            return TransitionEffect.OPACITY.animation(AnimateParam(duration: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration))
+            let duration = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
+            let appearEffect = TransitionEffect.opacity(0.0).animation(AnimateParam(duration: duration))
+            return TransitionEffect.asymmetric(appearEffect, TransitionEffect.IDENTITY)
         }
         return TransitionEffect.IDENTITY
     }
 
+    /**
+     * 获取段落纯文本内容
+     * 递归拼接段落内文本、链接标题、换行等，用于长按回调与划选复制
+     *
+     * @param node 段落节点
+     * @return 段落纯文本内容
+     */
+    func getParagraphTextContent(node: NodeView): String {
+        var result = StringBuilder()
+        if (node.footnoteID.isSome()) {
+            result.append("[^")
+            result.append(node.footnoteID.getOrThrow())
+            result.append("]: ")
+        }
+        for (child in node.children) {
+            appendNodeTextContent(child, result)
+        }
+        return result.toString()
+    }
+
+    /**
+     * 递归拼接单个节点的纯文本内容
+     *
+     * @param node 当前节点
+     * @param builder 字符串构建器
+     */
+    func appendNodeTextContent(node: NodeView, builder: StringBuilder): Unit {
+        let nodeType = node.nodeType
+        if (nodeType == "Text" || nodeType == "Code" || nodeType == "Footnote") {
+            builder.append(node.nodeText)
+        } else if (nodeType == "SoftLineBreak") {
+            builder.append("\n")
+        } else if (nodeType == "HardLineBreak") {
+            builder.append("\n")
+        } else if (nodeType == "Link" || nodeType == "HeadLink") {
+            if (node.linkTitle.isSome()) {
+                builder.append(node.linkTitle.getOrThrow())
+            } else {
+                for (child in node.children) {
+                    appendNodeTextContent(child, builder)
+                }
+            }
+        } else if (node.children.size > 0) {
+            for (child in node.children) {
+                appendNodeTextContent(child, builder)
+            }
+        }
+    }
+
+    /**
+     * 将选中的文本写入系统剪贴板并显示提示
+     *
+     * @param selectedText 选中的文本
+     */
+    func copySelectedTextToClipboard(selectedText: String): Unit {
+        if (selectedText.isEmpty()) {
+            return
+        }
+        let pasteboardData = createData(MIMETYPE_TEXT_PLAIN, selectedText)
+        getSystemPasteboard().setData(pasteboardData)
+        PromptAction.showToast(message: "复制成功", duration: 2000)
+        if (let Some(cb) <- paragraphMarkdownConfiguration.textCopyCallback) {
+            cb(selectedText)
+        }
+    }
+
+    /**
+     * 获取选中的文本内容
+     *
+     * @return 选中的文本内容
+     */
+    func getSelectedTextContent(): String {
+        if (paragraphSelectionStart < 0 || paragraphSelectionEnd < 0 || paragraphSelectionStart >= paragraphSelectionEnd) {
+            return ""
+        }
+        let start = Int64(paragraphSelectionStart)
+        let end = Int64(paragraphSelectionEnd)
+        let contentLength = paragraphTextContent.size
+        if (start >= contentLength) {
+            return ""
+        }
+        let safeEnd = if (end > contentLength) { contentLength } else { end }
+        return paragraphTextContent[start..safeEnd]
+    }
+
+    /**
+     * 显示自定义选区菜单（复制按钮）
+     * 由于仓颉 bindSelectionMenu 要求 Builder 无参，通过成员状态传递选中信息
+     */
+    @Builder
+    func customSelectionMenu(): Unit {
+        Column() {
+            Text("复制")
+                .fontSize(14.0)
+                .fontColor(COLOR_WHITE)
+                .padding(12.0)
+                .backgroundColor(COLOR_FF4A90E2)
+                .borderRadius(8.0)
+                .onClick({ event: ClickEvent =>
+                    copySelectedTextToClipboard(getSelectedTextContent())
+                    paragraphSelectionStart = -1
+                    paragraphSelectionEnd = -1
+                })
+        }
+        .padding(8.0)
+        .backgroundColor(COLOR_FFF5F2F0)
+        .borderRadius(12.0)
+    }
+
+    /**
+     * 空选区菜单，用于不需要显示菜单的场景
+     */
+    @Builder
+    func nullSelectionMenu(): Unit {
+        Column() {
+        }
+        .width(0.0)
+        .height(0.0)
+    }
+
+    /**
+     * 获取长按选中段落的背景色
+     * 优先使用 MarkdownHighlightParagraph 中的配置，其次使用 ParagraphTheme 配置，最后使用默认浅灰色
+     *
+     * @return 长按选中段落的背景色
+     */
+    func getLongPressSelectedBackgroundColor(): Color {
+        let theme = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme
+        let highlightParagraph = paragraphMarkdownConfiguration.markdownHighlightParagraph
+        if (highlightParagraph.selectedParagraphBackgroundColor.isSome()) {
+            return highlightParagraph.selectedParagraphBackgroundColor.getOrThrow()
+        }
+        if (theme.paragraphSelectedBackgroundColor.isSome()) {
+            return theme.paragraphSelectedBackgroundColor.getOrThrow()
+        }
+        return Color(0xFFE0E0E0)
+    }
+
+    /**
+     * 获取长按前段落默认背景色
+     * 优先使用 MarkdownHighlightParagraph 中的配置，其次使用 ParagraphTheme 配置，最后使用当前背景色
+     *
+     * @return 长按前段落默认背景色
+     */
+    func getLongPressBeforeBackgroundColor(): Color {
+        let theme = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme
+        let highlightParagraph = paragraphMarkdownConfiguration.markdownHighlightParagraph
+        if (highlightParagraph.beforeSelectedParagraphBackgroundColor.isSome()) {
+            return highlightParagraph.beforeSelectedParagraphBackgroundColor.getOrThrow()
+        }
+        if (theme.paragraphBeforeSelectedBackgroundColor.isSome()) {
+            return theme.paragraphBeforeSelectedBackgroundColor.getOrThrow()
+        }
+        return getParagraphBackground()
+    }
+
+    /**
+     * 处理长按段落开始
+     * 按下时设置为长按背景色
+     */
+    func handleParagraphLongPressStart(): Unit {
+        paragraphLongPressBackgroundColor = getLongPressSelectedBackgroundColor()
+        paragraphIsLongPressed = true
+    }
+
+    /**
+     * 处理长按段落结束
+     * 先标记为非长按状态，再获取默认背景色，避免获取到长按背景色
+     */
+    func handleParagraphLongPressEnd(): Unit {
+        paragraphIsLongPressed = false
+        paragraphLongPressBackgroundColor = getLongPressBeforeBackgroundColor()
+    }
+
+    /**
+     * 处理长按段落取消
+     * 先标记为非长按状态，再获取默认背景色，避免获取到长按背景色
+     */
+    func handleParagraphLongPressCancel(): Unit {
+        paragraphIsLongPressed = false
+        paragraphLongPressBackgroundColor = getLongPressBeforeBackgroundColor()
+    }
+
+    /**
+     * 触发段落长按回调
+     * 优先回调外部自定义长按，未设置时无操作
+     */
+    func triggerParagraphLongPressCallback(): Unit {
+        if (let Some(cb) <- paragraphMarkdownConfiguration.customLongPressCallback) {
+            cb(paragraphTextContent)
+        }
+    }
+
     func build() {
         Row() {
-            Column() {                if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
+            Column() {
+                if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
                     if (paragraphMarkdownConfiguration.imageReplaceCallback.isNone()) {
-                        if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
+                        if (paragraphNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
                             MarkdownImageRawFileComponent(
                                 rawFileMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
-                                rawFileDestination: paragraphNodeViewList[0].imageUrl(),
+                                rawFileDestination: paragraphNodeViewList[0].imageUrl.getOrThrow(),
                                 rawFileComponentWidth: paragraphComponentWidth,
                                 rawFileImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
                                 rawFileImageCallback: paragraphImageCallback,
@@ -109,7 +311,7 @@ class MarkdownParagraphComponent {
                         } else {
                             MarkdownImageUrlComponent(
                                 urlMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
-                                urlDestination: paragraphNodeViewList[0].imageUrl(),
+                                urlDestination: paragraphNodeViewList[0].imageUrl.getOrThrow(),
                                 urlComponentWidth: paragraphComponentWidth,
                                 urlImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
                                 urlImageCallback: paragraphImageCallback,
@@ -123,13 +325,13 @@ class MarkdownParagraphComponent {
                             )
                         }
                     } else {
-                        if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
+                        if (paragraphNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
                             MarkdownImageCallbackRawFileComponent(
                                 rawFileCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
-                                rawFileCallbackDestination: paragraphNodeViewList[0].imageUrl(),
+                                rawFileCallbackDestination: paragraphNodeViewList[0].imageUrl.getOrThrow(),
                                 rawFileCallbackComponentWidth: paragraphComponentWidth,
                                 rawFileCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
-                                rawFileCallbackImageReplaceCallback: paragraphMarkdownConfiguration.imageReplaceCallback(),
+                                rawFileCallbackImageReplaceCallback: paragraphMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
                                 rawFileCallbackImageCallback: paragraphImageCallback,
                                 rawFileCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
                                 rawFileCallbackLink: paragraphNodeViewList[0].isLink,
@@ -142,10 +344,10 @@ class MarkdownParagraphComponent {
                         } else {
                             MarkdownImageCallbackUrlComponent(
                                 urlCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
-                                urlCallbackDestination: paragraphNodeViewList[0].imageUrl(),
+                                urlCallbackDestination: paragraphNodeViewList[0].imageUrl.getOrThrow(),
                                 urlCallbackComponentWidth: paragraphComponentWidth,
                                 urlCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
-                                urlCallbackImageReplaceCallback: paragraphMarkdownConfiguration.imageReplaceCallback(),
+                                urlCallbackImageReplaceCallback: paragraphMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
                                 urlCallbackImageCallback: paragraphImageCallback,
                                 urlCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
                                 urlCallbackLink: paragraphNodeViewList[0].isLink,
@@ -179,6 +381,21 @@ class MarkdownParagraphComponent {
             left: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginLeft
         )
         .transition(getTransitionEffect())
+        .onAppear({ =>
+            // 段落加载动画开始回调在组件显示时触发
+            if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
+                if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphAnimationStart) {
+                    cb()
+                }
+                let duration = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
+                let endCb = paragraphMarkdownConfiguration.paragraphAnimationEnd
+                Timer.once(Int64(duration) * Duration.millisecond, { =>
+                    if (let Some(cb) <- endCb) {
+                        cb()
+                    }
+                })
+            }
+        })
     }
 
     /**
@@ -188,7 +405,7 @@ class MarkdownParagraphComponent {
     func paragraphComponent() {
         Text() {
             if (paragraphNodeView.footnoteID.isSome()) {
-                Span("[^${paragraphNodeView.footnoteID()}]: ")
+                Span("[^${paragraphNodeView.footnoteID.getOrThrow()}]: ")
                     .fontSize(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontSize)
                     .fontWeight(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontWeight)
                     .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontColor)
@@ -211,6 +428,91 @@ class MarkdownParagraphComponent {
         } else {
             CopyOptions.None
         })
+        .selection(paragraphSelectionStart, paragraphSelectionEnd)
+        .onTextSelectionChange({ start: Int32, end: Int32 =>
+            paragraphSelectionStart = start
+            paragraphSelectionEnd = end
+            // 划选时取消长按背景，避免视觉冲突
+            if (paragraphIsLongPressed) {
+                paragraphIsLongPressed = false
+                paragraphLongPressBackgroundColor = getParagraphBackground()
+            }
+        })
+        .bindSelectionMenu(
+            TextSpanType.TEXT,
+            bind(customSelectionMenu, this),
+            TextResponseType.RIGHT_CLICK,
+            onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
+                paragraphSelectionStart = selectionStart
+                paragraphSelectionEnd = selectionEnd
+                // 选区菜单3秒后自动隐藏
+                if (paragraphSelectionMenuTimer.isSome()) {
+                    paragraphSelectionMenuTimer.getOrThrow().cancel()
+                }
+                paragraphSelectionMenuTimer = Timer.once(Int64(3000) * Duration.millisecond, { =>
+                    paragraphSelectionStart = -1
+                    paragraphSelectionEnd = -1
+                    paragraphSelectionMenuTimer = None
+                })
+            },
+            onDisappear: { =>
+                // 菜单隐藏时清理定时器与选区状态
+                if (paragraphSelectionMenuTimer.isSome()) {
+                    paragraphSelectionMenuTimer.getOrThrow().cancel()
+                    paragraphSelectionMenuTimer = None
+                }
+                paragraphSelectionStart = -1
+                paragraphSelectionEnd = -1
+            }
+        )
+        .bindSelectionMenu(
+            TextSpanType.IMAGE,
+            bind(nullSelectionMenu, this),
+            TextResponseType.RIGHT_CLICK,
+            onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
+                paragraphSelectionStart = selectionStart
+                paragraphSelectionEnd = selectionEnd
+            },
+            onDisappear: { =>
+                paragraphSelectionStart = -1
+                paragraphSelectionEnd = -1
+            }
+        )
+        .bindSelectionMenu(
+            TextSpanType.MIXED,
+            bind(customSelectionMenu, this),
+            TextResponseType.RIGHT_CLICK,
+            onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
+                paragraphSelectionStart = selectionStart
+                paragraphSelectionEnd = selectionEnd
+                // 选区菜单3秒后自动隐藏
+                if (paragraphSelectionMenuTimer.isSome()) {
+                    paragraphSelectionMenuTimer.getOrThrow().cancel()
+                }
+                paragraphSelectionMenuTimer = Timer.once(Int64(3000) * Duration.millisecond, { =>
+                    paragraphSelectionStart = -1
+                    paragraphSelectionEnd = -1
+                    paragraphSelectionMenuTimer = None
+                })
+            },
+            onDisappear: { =>
+                paragraphSelectionStart = -1
+                paragraphSelectionEnd = -1
+            }
+        )
+        .parallelGesture(
+            LongPressGesture()
+                .onAction({ event: GestureEvent =>
+                    handleParagraphLongPressStart()
+                })
+                .onActionEnd({ event: GestureEvent =>
+                    handleParagraphLongPressEnd()
+                    triggerParagraphLongPressCallback()
+                })
+                .onActionCancel({ =>
+                    handleParagraphLongPressCancel()
+                })
+        )
         .onCopy({
             str => if (let Some(v) <- paragraphMarkdownConfiguration.textCopyCallback) {
                 v(str)
@@ -354,5 +656,7 @@ class MarkdownParagraphComponent {
         } else {
             isOneLink = false
         }
+        // 更新段落纯文本内容，供长按回调与划选复制使用
+        paragraphTextContent = getParagraphTextContent(paragraphNodeView)
     }
 }

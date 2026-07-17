@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -54,6 +55,9 @@ class CodeLinePage {
     @State var cfg_inlineCodeTextBackgroundTopRight: String = "0"
     @State var cfg_inlineCodeTextBackgroundBottomLeft: String = "0"
     @State var cfg_inlineCodeTextBackgroundBottomRight: String = "0"
+    @State var cfg_inlineCodeTextFontStyle: String = "undefined"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -72,16 +76,33 @@ class CodeLinePage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -112,6 +133,9 @@ class CodeLinePage {
         }
         if (cfg_inlineCodeTextBackgroundColor != "undefined") {
             inlineCodeTheme.setInlineCodeTextBackgroundColor(parseColor(cfg_inlineCodeTextBackgroundColor))
+        }
+        if (cfg_inlineCodeTextFontStyle != "undefined") {
+            inlineCodeTheme.setInlineCodeTextFontStyle(parseFontStyle(cfg_inlineCodeTextFontStyle))
         }
         inlineCodeTheme.setInlineCodeTextFontWeight(parseFontWeight(cfg_inlineCodeTextFontWeight))
         if (cfg_inlineCodeTextFontFamily != "undefined") {
@@ -242,6 +266,7 @@ class CodeLinePage {
                                 ConfigTabSelector(title: "内联代码文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_inlineCodeTextFontColor = v })
                                 ConfigTabSelector(title: "内联代码文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_inlineCodeTextFontSize = v })
                                 ConfigTabSelector(title: "内联代码背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_inlineCodeTextBackgroundColor = v })
+                                ConfigTabSelector(title: "内联代码文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_inlineCodeTextFontStyle = v })
                                 ConfigTabSelector(title: "内联代码字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_inlineCodeTextFontWeight = v })
                                 ConfigTabSelector(title: "内联代码文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_inlineCodeTextFontFamily = v })
                                 ConfigTabSelector(title: "内联代码文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_inlineCodeTextLineHeight = v })
@@ -271,7 +296,7 @@ class CodeLinePage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -280,7 +305,6 @@ class CodeLinePage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -288,7 +312,7 @@ class CodeLinePage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

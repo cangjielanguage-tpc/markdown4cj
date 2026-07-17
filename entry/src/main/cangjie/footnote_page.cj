@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,8 @@ class FootnotePage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -54,7 +57,10 @@ class FootnotePage {
     @State var cfg_footnoteRefTextLetterSpacing: String = "undefined"
     @State var cfg_footnoteRefTextDecorationType: String = "None"
     @State var cfg_footnoteRefTextDecorationStyle: String = "Solid"
-    @State var cfg_footnoteRefTextBackgroundRadius: String = "0"
+    @State var cfg_footnoteRefTextBackgroundRadiusTopLeft: String = "0"
+    @State var cfg_footnoteRefTextBackgroundRadiusTopRight: String = "0"
+    @State var cfg_footnoteRefTextBackgroundRadiusBottomLeft: String = "0"
+    @State var cfg_footnoteRefTextBackgroundRadiusBottomRight: String = "0"
     @State var cfg_footnoteDefBackgroundColor: String = "undefined"
     @State var cfg_footnoteDefMarginTop: String = "0"
     @State var cfg_footnoteDefMarginRight: String = "0"
@@ -64,6 +70,8 @@ class FootnotePage {
     @State var cfg_footnoteDefPaddingRight: String = "0"
     @State var cfg_footnoteDefPaddingBottom: String = "0"
     @State var cfg_footnoteDefPaddingLeft: String = "0"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -82,16 +90,33 @@ class FootnotePage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -141,7 +166,7 @@ class FootnotePage {
         }
         footnoteRefTheme.setFootnoteRefTextDecorationType(parseTextDecorationType(cfg_footnoteRefTextDecorationType))
         footnoteRefTheme.setFootnoteRefTextDecorationStyle(parseTextDecorationStyle(cfg_footnoteRefTextDecorationStyle))
-        footnoteRefTheme.setFootnoteRefTextBackgroundRadius(parseFloat64(cfg_footnoteRefTextBackgroundRadius))
+        footnoteRefTheme.setFootnoteRefTextBackgroundRadius(topLeft: parseFloat64(cfg_footnoteRefTextBackgroundRadiusTopLeft), topRight: parseFloat64(cfg_footnoteRefTextBackgroundRadiusTopRight), bottomLeft: parseFloat64(cfg_footnoteRefTextBackgroundRadiusBottomLeft), bottomRight: parseFloat64(cfg_footnoteRefTextBackgroundRadiusBottomRight))
         themeBuilder.setFootnoteRefTheme(footnoteRefTheme)
 
         let footnoteDefTheme = FootnoteDefTheme()
@@ -243,7 +268,7 @@ class FootnotePage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("脚注定义")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -265,6 +290,50 @@ class FootnotePage {
 
                         if (isExpanded2) {
                             Column {
+                                ConfigTabSelector(title: "脚注定义背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_footnoteDefBackgroundColor = v })
+                                ConfigTabSelector(title: "脚注定义上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefMarginTop = v })
+                                ConfigTabSelector(title: "脚注定义右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefMarginRight = v })
+                                ConfigTabSelector(title: "脚注定义下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefMarginBottom = v })
+                                ConfigTabSelector(title: "脚注定义左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefMarginLeft = v })
+                                ConfigTabSelector(title: "脚注定义上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefPaddingTop = v })
+                                ConfigTabSelector(title: "脚注定义右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefPaddingRight = v })
+                                ConfigTabSelector(title: "脚注定义下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefPaddingBottom = v })
+                                ConfigTabSelector(title: "脚注定义左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefPaddingLeft = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("脚注引用")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
                                 ConfigTabSelector(title: "脚注引用文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_footnoteRefTextFontColor = v })
                                 ConfigTabSelector(title: "脚注引用下划线颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_footnoteRefTextDecorationColor = v })
                                 ConfigTabSelector(title: "脚注引用背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_footnoteRefTextBackgroundColor = v })
@@ -276,16 +345,10 @@ class FootnotePage {
                                 ConfigTabSelector(title: "脚注引用文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_footnoteRefTextLetterSpacing = v })
                                 ConfigTabSelector(title: "脚注引用文本装饰类型 - ", options: textDecorationTypeList, defaultValue: "None", configKey: "", onSelect: { v => cfg_footnoteRefTextDecorationType = v })
                                 ConfigTabSelector(title: "脚注引用文本装饰样式 - ", options: textDecorationStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_footnoteRefTextDecorationStyle = v })
-                                ConfigTabSelector(title: "脚注引用文本背景圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteRefTextBackgroundRadius = v })
-                                ConfigTabSelector(title: "脚注定义背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_footnoteDefBackgroundColor = v })
-                                ConfigTabSelector(title: "脚注定义上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefMarginTop = v })
-                                ConfigTabSelector(title: "脚注定义右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefMarginRight = v })
-                                ConfigTabSelector(title: "脚注定义下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefMarginBottom = v })
-                                ConfigTabSelector(title: "脚注定义左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefMarginLeft = v })
-                                ConfigTabSelector(title: "脚注定义上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefPaddingTop = v })
-                                ConfigTabSelector(title: "脚注定义右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefPaddingRight = v })
-                                ConfigTabSelector(title: "脚注定义下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefPaddingBottom = v })
-                                ConfigTabSelector(title: "脚注定义左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteDefPaddingLeft = v })
+                                ConfigTabSelector(title: "脚注引用文本背景左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteRefTextBackgroundRadiusTopLeft = v })
+                                ConfigTabSelector(title: "脚注引用文本背景右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteRefTextBackgroundRadiusTopRight = v })
+                                ConfigTabSelector(title: "脚注引用文本背景左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteRefTextBackgroundRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "脚注引用文本背景右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_footnoteRefTextBackgroundRadiusBottomRight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -307,7 +370,7 @@ class FootnotePage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -316,7 +379,6 @@ class FootnotePage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -324,7 +386,7 @@ class FootnotePage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -49,6 +50,9 @@ class SubPage {
     @State var cfg_subTextFontStyle: String = "undefined"
     @State var cfg_subTextFontFamily: String = "undefined"
     @State var cfg_subTextLetterSpacing: String = "undefined"
+    @State var cfg_subTextFontWeight: String = "Normal"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -67,16 +71,33 @@ class SubPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -109,6 +130,7 @@ class SubPage {
         if (cfg_subTextFontStyle != "undefined") {
             subTheme.setSubTextFontStyle(parseFontStyle(cfg_subTextFontStyle))
         }
+        subTheme.setSubTextFontWeight(parseFontWeight(cfg_subTextFontWeight))
         if (cfg_subTextFontFamily != "undefined") {
             subTheme.setSubTextFontFamily(cfg_subTextFontFamily)
         }
@@ -234,6 +256,7 @@ class SubPage {
                                 ConfigTabSelector(title: "下标文本尺寸 - ", options: smallTextSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_subTextFontSize = v })
                                 ConfigTabSelector(title: "下标基线偏移 - ", options: offsetList, defaultValue: "0", configKey: "", onSelect: { v => cfg_subTextBaselineOffset = v })
                                 ConfigTabSelector(title: "下标文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_subTextFontStyle = v })
+                                ConfigTabSelector(title: "下标文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_subTextFontWeight = v })
                                 ConfigTabSelector(title: "下标文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_subTextFontFamily = v })
                                 ConfigTabSelector(title: "下标文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_subTextLetterSpacing = v })
                             }
@@ -257,7 +280,7 @@ class SubPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -266,7 +289,6 @@ class SubPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -274,7 +296,7 @@ class SubPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

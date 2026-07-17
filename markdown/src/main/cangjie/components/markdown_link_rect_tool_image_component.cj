@@ -47,9 +47,9 @@ public class MarkdownLinkRectToolImageComponent {
 
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
-            ImageSpan(imagePixelMap())
-                .width(imageWidth().px)
-                .height(imageHeight().px)
+            ImageSpan(imagePixelMap.getOrThrow())
+                .width(imageWidth.getOrThrow().px)
+                .height(imageHeight.getOrThrow().px)
                 .objectFit(ImageFit.Contain)
                 .constraintSize(maxWidth: maxWidth)
                 .verticalAlign(ImageSpanAlignment.CENTER)
@@ -57,7 +57,7 @@ public class MarkdownLinkRectToolImageComponent {
                 .margin(right: markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconMargin, left: markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconMargin)
                 .onClick {
                     evt => if (markdownConfiguration.linkCallback.isSome()) {
-                        markdownConfiguration.linkCallback()(strUrl)
+                        markdownConfiguration.linkCallback.getOrThrow()(strUrl)
                     }
                 }
         }

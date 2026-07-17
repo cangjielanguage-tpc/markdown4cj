@@ -36,16 +36,16 @@ public class MarkdownLinkCircleImageComponent {
 
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
-            ImageSpan(imagePixelMap())
-                .width(imageWidth().px)
-                .height(imageHeight().px)
+            ImageSpan(imagePixelMap.getOrThrow())
+                .width(imageWidth.getOrThrow().px)
+                .height(imageHeight.getOrThrow().px)
                 .objectFit(ImageFit.Contain)
                 .constraintSize(maxWidth: maxWidth)
                 .verticalAlign(ImageSpanAlignment.CENTER)
                 .margin(right: markdownConfiguration.markdownTheme.linkTheme.linkCircleIconMargin, left: markdownConfiguration.markdownTheme.linkTheme.linkCircleIconMargin)
                 .onClick {
                     evt => if (markdownConfiguration.linkCallback.isSome()) {
-                        markdownConfiguration.linkCallback()(strUrl)
+                        markdownConfiguration.linkCallback.getOrThrow()(strUrl)
                     }
                 }
         }

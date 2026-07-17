@@ -20,7 +20,9 @@ class MarkdownTableBlockComponent {
     var tableBlockCellSize: Int64 = 0 // 表格总共有几列
     @State
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>() // 表格宽度列表
-    var tableBlockNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
+    var tableBlockNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源（保留兼容）
+    @State
+    var tableBlockBodyRows: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 表格body行数据（ForEach用）
     var tableBlockStickyHolder: ?StickyScrollYHolder = None // 吸顶滚动Y持有者
     var stickyListenerId: Int64 = -1 // 吸顶监听器ID（用于removeListener）
     @State
@@ -66,58 +68,58 @@ class MarkdownTableBlockComponent {
 
     func build() {
         if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && tableBlockStickyHolder.isSome()) {
-            // 吸顶模式：Column(header offset吸顶 + body)
+            // 吸顶模式：Column 包裹整个表格（外层已有 ListItem）
             Column {
-                // 吸顶header
-                Column {
-                    if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableHeadIsShow) {
-                        MarkdownTableTitleComponent(
-                            tableTitleMarkdownConfiguration: tableBlockMarkdownConfiguration,
-                            tableTitleFullText: tableBlockFullText
-                        )
-                    }
-                    Scroll(headerScroller) {
-                        MarkdownTableBlockRowComponent(
-                            tableBlockRowMarkdownConfiguration: tableBlockMarkdownConfiguration,
-                            tableBlockRowNodeView: tableBlockHeaderNodeView,
-                            tableBlockRowComponentWidth: tableBlockComponentWidth,
-                            tableBlockRowCustomTableLineBuilder: tableBlockCustomTableLineBuilder,
-                            tableBlockRowImageCallback: tableBlockImageCallback,
-                            tableBlockRowFootnoteCallback: tableBlockFootnoteCallback,
-                            tableBlockRowRow: 0,
-                            tableBlockRowCellSize: tableBlockCellSize,
-                            cellWidthArrayIndexed: cellWidthArrayIndexed
-                        )
-                    }
-                    .scrollable(ScrollDirection.Horizontal)
-                    .scrollBar(BarState.Off)
-                    .onScrollFrameBegin({
-                        offset: Float64, state: ScrollState =>
-                            match (state) {
-                                case ScrollState.Idle => ()
-                                case _ =>
-                                    syncManager.onHeaderScrolled(headerScroller.currentOffset().xOffset + offset)
+                    // 吸顶header（用 offset 钉在视口顶部）
+                    if (tableBlockNodeView.children.size > 0) {
+                        Column {
+                            if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableHeadIsShow) {
+                                MarkdownTableTitleComponent(
+                                    tableTitleMarkdownConfiguration: tableBlockMarkdownConfiguration,
+                                    tableTitleFullText: tableBlockFullText
+                                )
                             }
-                            return offset
-                    })
-                }
-                .backgroundColor(tableBlockMarkdownConfiguration.markdownTheme.globalTheme.backgroundColor)
-                .zIndex(1)
-                .offset(x: 0.0, y: stickyOffset)
-                .interopOnSizeChange({
-                    old, new =>
-                        this.stickyContentHeight = new.height
-                        onTableAreaChanged()
-                })
-                // body
-                Scroll(bodyScroller) {
-                    List() {
-                        LazyForEach(
-                            tableBlockNodeViewDataSource,
-                            itemGeneratorFunc: {
-                                nodeView: NodeView, idRow: Int64 => if (nodeView.nodeType == "TableRow") {
-                                    // 表格Row
-                                    ListItem() {
+                            Scroll(headerScroller) {
+                                MarkdownTableBlockRowComponent(
+                                    tableBlockRowMarkdownConfiguration: tableBlockMarkdownConfiguration,
+                                    tableBlockRowNodeView: tableBlockNodeView.children[0],
+                                    tableBlockRowComponentWidth: tableBlockComponentWidth,
+                                    tableBlockRowCustomTableLineBuilder: tableBlockCustomTableLineBuilder,
+                                    tableBlockRowImageCallback: tableBlockImageCallback,
+                                    tableBlockRowFootnoteCallback: tableBlockFootnoteCallback,
+                                    tableBlockRowRow: 0,
+                                    tableBlockRowCellSize: tableBlockCellSize,
+                                    cellWidthArrayIndexed: cellWidthArrayIndexed
+                                )
+                            }
+                            .scrollable(ScrollDirection.Horizontal)
+                            .scrollBar(BarState.Off)
+                            .onScrollFrameBegin({
+                                offset: Float64, state: ScrollState =>
+                                    match (state) {
+                                        case ScrollState.Idle => ()
+                                        case _ =>
+                                            syncManager.onHeaderScrolled(headerScroller.currentOffset().xOffset + offset)
+                                    }
+                                    return offset
+                            })
+                        }
+                        .backgroundColor(tableBlockMarkdownConfiguration.markdownTheme.globalTheme.backgroundColor)
+                        .offset(x: 0.0, y: stickyOffset)
+                        .zIndex(1)
+                        .onAreaChange({
+                            old, new =>
+                                stickyContentHeight = new.height
+                                onTableAreaChanged()
+                        })
+                    }
+                    // body（Scroll > Column > ForEach，对齐ArkTS tableBodyBuilder结构）
+                    Scroll(bodyScroller) {
+                        Column {
+                            ForEach(
+                                tableBlockBodyRows,
+                                itemGeneratorFunc: {
+                                    nodeView: NodeView, idRow: Int64 => if (nodeView.nodeType == "TableRow") {
                                         MarkdownTableBlockRowComponent(
                                             tableBlockRowMarkdownConfiguration: tableBlockMarkdownConfiguration,
                                             tableBlockRowNodeView: nodeView,
@@ -129,36 +131,29 @@ class MarkdownTableBlockComponent {
                                             tableBlockRowCellSize: tableBlockCellSize,
                                             cellWidthArrayIndexed: cellWidthArrayIndexed
                                         )
-                                    }
-                                } else {
-                                    ListItem() {
+                                    } else {
                                         Text("")
                                     }
+                                },
+                                keyGeneratorFunc: {
+                                    tableHeaderOrBody: NodeView, idx: Int64 => return "${idx}-${tableHeaderOrBody.nodeHash}-${tableHeaderOrBody.contentHash}"
                                 }
-                            },
-                            keyGeneratorFunc: {
-                                tableHeaderOrBody: NodeView, idx: Int64 => return "${idx}-${tableHeaderOrBody.nodeHash}-${tableHeaderOrBody.contentHash}"
-                            }
-                        )
-                    }
-                    .borderStyle(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
-                    .borderWidth(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth)
-                    .borderColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
-                    .borderRadius(topLeft: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusTopLeft.vp, topRight: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusTopRight.vp, bottomLeft: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusBottomLeft.vp, bottomRight: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusBottomRight.vp)
-                    .alignListItem(ListItemAlign.Start)
-                }
-                .scrollable(ScrollDirection.Horizontal)
-                .scrollBar(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableScrollBarState)
-                .scrollBarColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableScrollBarColor)
-                .onScrollFrameBegin({
-                    offset: Float64, state: ScrollState =>
-                        match (state) {
-                            case ScrollState.Idle => ()
-                            case _ =>
-                                syncManager.onBodyScrolled(bodyScroller.currentOffset().xOffset + offset)
+                            )
                         }
-                        return offset
-                })
+                        .alignItems(HorizontalAlign.Start)
+                    }
+                    .scrollable(ScrollDirection.Horizontal)
+                    .scrollBar(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableScrollBarState)
+                    .scrollBarColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableScrollBarColor)
+                    .onScrollFrameBegin({
+                        offset: Float64, state: ScrollState =>
+                            match (state) {
+                                case ScrollState.Idle => ()
+                                case _ =>
+                                    syncManager.onBodyScrolled(bodyScroller.currentOffset().xOffset + offset)
+                            }
+                            return offset
+                    })
             }
             .backgroundColor(tableBlockMarkdownConfiguration.markdownTheme.globalTheme.backgroundColor)
             .borderStyle(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
@@ -177,6 +172,7 @@ class MarkdownTableBlockComponent {
                 bottom: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginBottom,
                 left: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginLeft
             )
+            .clip(true)
             .onAreaChange({
                 old, new =>
                     this.tablePaddingTopNum = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingTop
@@ -186,7 +182,7 @@ class MarkdownTableBlockComponent {
                     onTableAreaChanged()
             })
         } else {
-            // 非吸顶模式：Column(标题 + Scroll > List > LazyForEach)
+            // 非吸顶模式：Column(标题 + Scroll > Column > ForEach)
             Column {
                 if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableHeadIsShow) {
                     MarkdownTableTitleComponent(
@@ -195,29 +191,24 @@ class MarkdownTableBlockComponent {
                     )
                 }
                 Scroll() {
-                    List() {
-                        LazyForEach(
-                            tableBlockNodeViewDataSource,
+                    Column {
+                        ForEach(
+                            tableBlockBodyRows,
                             itemGeneratorFunc: {
                                 nodeView: NodeView, idRow: Int64 => if (nodeView.nodeType == "TableRow") {
-                                    // 表格Row
-                                    ListItem() {
-                                        MarkdownTableBlockRowComponent(
-                                            tableBlockRowMarkdownConfiguration: tableBlockMarkdownConfiguration,
-                                            tableBlockRowNodeView: nodeView,
-                                            tableBlockRowComponentWidth: tableBlockComponentWidth,
-                                            tableBlockRowCustomTableLineBuilder: tableBlockCustomTableLineBuilder,
-                                            tableBlockRowImageCallback: tableBlockImageCallback,
-                                            tableBlockRowFootnoteCallback: tableBlockFootnoteCallback,
-                                            tableBlockRowRow: idRow,
-                                            tableBlockRowCellSize: tableBlockCellSize,
-                                            cellWidthArrayIndexed: cellWidthArrayIndexed
-                                        )
-                                    }
+                                    MarkdownTableBlockRowComponent(
+                                        tableBlockRowMarkdownConfiguration: tableBlockMarkdownConfiguration,
+                                        tableBlockRowNodeView: nodeView,
+                                        tableBlockRowComponentWidth: tableBlockComponentWidth,
+                                        tableBlockRowCustomTableLineBuilder: tableBlockCustomTableLineBuilder,
+                                        tableBlockRowImageCallback: tableBlockImageCallback,
+                                        tableBlockRowFootnoteCallback: tableBlockFootnoteCallback,
+                                        tableBlockRowRow: idRow,
+                                        tableBlockRowCellSize: tableBlockCellSize,
+                                        cellWidthArrayIndexed: cellWidthArrayIndexed
+                                    )
                                 } else {
-                                    ListItem() {
-                                        Text("")
-                                    }
+                                    Text("")
                                 }
                             },
                             keyGeneratorFunc: {
@@ -225,16 +216,17 @@ class MarkdownTableBlockComponent {
                             }
                         )
                     }
-                    .borderStyle(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
-                    .borderWidth(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth)
-                    .borderColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
-                    .borderRadius(topLeft: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusTopLeft.vp, topRight: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusTopRight.vp, bottomLeft: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusBottomLeft.vp, bottomRight: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusBottomRight.vp)
-                    .alignListItem(ListItemAlign.Start)
+                    .alignItems(HorizontalAlign.Start)
                 }
                 .scrollable(ScrollDirection.Horizontal)
                 .scrollBar(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableScrollBarState)
                 .scrollBarColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableScrollBarColor)
             }
+            .backgroundColor(tableBlockMarkdownConfiguration.markdownTheme.globalTheme.backgroundColor)
+            .borderStyle(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
+            .borderWidth(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth)
+            .borderColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
+            .borderRadius(topLeft: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusTopLeft.vp, topRight: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusTopRight.vp, bottomLeft: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusBottomLeft.vp, bottomRight: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusBottomRight.vp)
             .padding(
                 top: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingTop,
                 right: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingRight,
@@ -247,6 +239,7 @@ class MarkdownTableBlockComponent {
                 bottom: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginBottom,
                 left: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginLeft
             )
+            .clip(true)
         }
     }
 
@@ -263,6 +256,7 @@ class MarkdownTableBlockComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         if (refreshNodeViewSize == 0) {
             tableBlockNodeViewDataSource.clear()
+            tableBlockBodyRows.clear()
             return
         }
         var cellSize = 0 // 表格总共有几列
@@ -278,17 +272,39 @@ class MarkdownTableBlockComponent {
         if (isSticky) {
             // 吸顶模式：header = children[0], body = children[1:]
             tableBlockHeaderNodeView = refreshNodeViewChildren[0]
-            let bodyRows = ArrayList<NodeView>()
-            for (i in 1..refreshNodeViewSize) {
-                bodyRows.add(refreshNodeViewChildren[i])
-            }
-            // 增量对比hash更新body数据源
-            tableBlockNodeViewDataSource.smartUpdateDataArray(bodyRows)
+            // 增量更新body行数据（ForEach用）
+            updateBodyRows(refreshNodeViewChildren, 1, refreshNodeViewSize)
         } else {
             // 非吸顶模式：全部行
-            tableBlockNodeViewDataSource.smartUpdateDataArray(refreshNodeViewChildren)
+            updateBodyRows(refreshNodeViewChildren, 0, refreshNodeViewSize)
         }
         tableBlockFullText = getFullTableText()
+    }
+
+    /**
+     * 增量更新body行数据（对齐smartUpdateDataArray逻辑，但用于ForEach）
+     * 对比nodeHash/contentHash，仅更新变化的行
+     */
+    func updateBodyRows(children: ArrayList<NodeView>, start: Int64, end: Int64): Unit {
+        let newLen = end - start
+        let oldLen = tableBlockBodyRows.size
+        let minLen = if (newLen < oldLen) { newLen } else { oldLen }
+        for (i in 0..minLen) {
+            let oldNode = tableBlockBodyRows[i]
+            let newNode = children[start + i]
+            if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
+                tableBlockBodyRows[i] = newNode
+            }
+        }
+        if (newLen > oldLen) {
+            for (i in oldLen..newLen) {
+                tableBlockBodyRows.append(children[start + i])
+            }
+        } else if (oldLen > newLen) {
+            for (i in oldLen - 1..=newLen : -1) {
+                tableBlockBodyRows.remove(i)
+            }
+        }
     }
 
     /**

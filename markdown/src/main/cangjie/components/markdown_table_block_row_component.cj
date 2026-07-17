@@ -61,6 +61,7 @@ class MarkdownTableBlockRowComponent {
                 }
             )
         }
+        .backgroundColor(tableBlockRowMarkdownConfiguration.markdownTheme.globalTheme.backgroundColor)
     }
 
     /**

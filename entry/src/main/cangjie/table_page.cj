@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,24 @@ class TablePage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
+    @State
+    var isExpanded4: Bool = false
+    @State
+    var isExpanded5: Bool = false
+    @State
+    var isExpanded6: Bool = false
+    @State
+    var isExpanded7: Bool = false
+    @State
+    var isExpanded8: Bool = false
+    @State
+    var isExpanded9: Bool = false
+    @State
+    var isExpanded10: Bool = false
+    @State
+    var isExpanded11: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -91,6 +110,14 @@ class TablePage {
     @State var cfg_tableHeadCopyIconWidth: String = "0"
     @State var cfg_tableHeadCopyIconHeight: String = "0"
     @State var cfg_tableHeadCopyIconMarginRight: String = "0"
+    @State var cfg_tableHeadTitleTextFontColor: String = "undefined"
+    @State var cfg_tableHeadTitleTextFontSize: String = "undefined"
+    @State var cfg_tableHeadTitleTextFontStyle: String = "undefined"
+    @State var cfg_tableHeadTitleTextFontWeight: String = "Normal"
+    @State var cfg_tableHeadTitleTextFontFamily: String = "undefined"
+    @State var cfg_tableHeadTitleTextLineHeight: String = "undefined"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -109,16 +136,33 @@ class TablePage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -207,6 +251,22 @@ class TablePage {
         tableTheme.setTableHeadCopyIconWidth(parseFloat64(cfg_tableHeadCopyIconWidth))
         tableTheme.setTableHeadCopyIconHeight(parseFloat64(cfg_tableHeadCopyIconHeight))
         tableTheme.setTableHeadCopyIconMarginRight(parseFloat64(cfg_tableHeadCopyIconMarginRight))
+        if (cfg_tableHeadTitleTextFontColor != "undefined") {
+            tableTheme.setTableHeadTitleTextFontColor(parseColor(cfg_tableHeadTitleTextFontColor))
+        }
+        if (cfg_tableHeadTitleTextFontSize != "undefined") {
+            tableTheme.setTableHeadTitleTextFontSize(parseFloat64(cfg_tableHeadTitleTextFontSize))
+        }
+        if (cfg_tableHeadTitleTextFontStyle != "undefined") {
+            tableTheme.setTableHeadTitleTextFontStyle(parseFontStyle(cfg_tableHeadTitleTextFontStyle))
+        }
+        tableTheme.setTableHeadTitleTextFontWeight(parseFontWeight(cfg_tableHeadTitleTextFontWeight))
+        if (cfg_tableHeadTitleTextFontFamily != "undefined") {
+            tableTheme.setTableHeadTitleTextFontFamily(cfg_tableHeadTitleTextFontFamily)
+        }
+        if (cfg_tableHeadTitleTextLineHeight != "undefined") {
+            tableTheme.setTableHeadTitleTextLineHeight(parseFloat64(cfg_tableHeadTitleTextLineHeight))
+        }
         tableTheme.setTableRadius(topLeft: parseFloat64(cfg_tableRadiusTopLeft), topRight: parseFloat64(cfg_tableRadiusTopRight), bottomLeft: parseFloat64(cfg_tableRadiusBottomLeft), bottomRight: parseFloat64(cfg_tableRadiusBottomRight))
         tableTheme.setTablePadding(top: parseFloat64(cfg_tablePaddingTop), right: parseFloat64(cfg_tablePaddingRight), bottom: parseFloat64(cfg_tablePaddingBottom), left: parseFloat64(cfg_tablePaddingLeft))
         tableTheme.setTableCellPadding(top: parseFloat64(cfg_tableCellPaddingTop), right: parseFloat64(cfg_tableCellPaddingRight), bottom: parseFloat64(cfg_tableCellPaddingBottom), left: parseFloat64(cfg_tableCellPaddingLeft))
@@ -304,7 +364,7 @@ class TablePage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("边距设置")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -326,16 +386,6 @@ class TablePage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "表格边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableBorderColor = v })
-                                ConfigTabSelector(title: "表格标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontColor = v })
-                                ConfigTabSelector(title: "表格内容文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontColor = v })
-                                ConfigTabSelector(title: "表格标题背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleBackgroundColor = v })
-                                ConfigTabSelector(title: "表格奇数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentOddRowBackgroundColor = v })
-                                ConfigTabSelector(title: "表格偶数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentEvenRowBackgroundColor = v })
-                                ConfigTabSelector(title: "表格表头吸顶 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_tableStickyHeader = v })
-                                ConfigTabSelector(title: "表格首列加粗 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_tableFirstColumnIsBold = v })
-                                ConfigTabSelector(title: "表格标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontSize = v })
-                                ConfigTabSelector(title: "表格内容文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontSize = v })
                                 ConfigTabSelector(title: "表格上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginTop = v })
                                 ConfigTabSelector(title: "表格右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginRight = v })
                                 ConfigTabSelector(title: "表格下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginBottom = v })
@@ -348,32 +398,363 @@ class TablePage {
                                 ConfigTabSelector(title: "表格单元格右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingRight = v })
                                 ConfigTabSelector(title: "表格单元格下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingBottom = v })
                                 ConfigTabSelector(title: "表格单元格左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingLeft = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("边框设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
+                                ConfigTabSelector(title: "表格边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableBorderColor = v })
                                 ConfigTabSelector(title: "表格边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_tableBorderStyle = v })
                                 ConfigTabSelector(title: "表格边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableBorderWidth = v })
                                 ConfigTabSelector(title: "表格圆角左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusTopLeft = v })
                                 ConfigTabSelector(title: "表格圆角右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusTopRight = v })
                                 ConfigTabSelector(title: "表格圆角左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusBottomLeft = v })
                                 ConfigTabSelector(title: "表格圆角右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusBottomRight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("滚动条和其他设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded4) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded4 = !isExpanded4
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded4 = !isExpanded4
+                        }
+
+                        if (isExpanded4) {
+                            Column {
+                                ConfigTabSelector(title: "表格首列加粗 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_tableFirstColumnIsBold = v })
                                 ConfigTabSelector(title: "表格滚动条状态 - ", options: barStateList, defaultValue: "Off", configKey: "", onSelect: { v => cfg_tableScrollBarState = v })
                                 ConfigTabSelector(title: "表格滚动条颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableScrollBarColor = v })
                                 ConfigTabSelector(title: "表格最小单元格宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMinCellWidth = v })
                                 ConfigTabSelector(title: "表格最大单元格宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMaxCellWidth = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("标题文本设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded5) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded5 = !isExpanded5
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded5 = !isExpanded5
+                        }
+
+                        if (isExpanded5) {
+                            Column {
+                                ConfigTabSelector(title: "表格标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontColor = v })
+                                ConfigTabSelector(title: "表格标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontSize = v })
                                 ConfigTabSelector(title: "表格标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontStyle = v })
                                 ConfigTabSelector(title: "表格标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_tableTitleTextFontWeight = v })
                                 ConfigTabSelector(title: "表格标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontFamily = v })
                                 ConfigTabSelector(title: "表格标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextLineHeight = v })
                                 ConfigTabSelector(title: "表格标题文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextLetterSpacing = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("内容文本设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded6) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded6 = !isExpanded6
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded6 = !isExpanded6
+                        }
+
+                        if (isExpanded6) {
+                            Column {
+                                ConfigTabSelector(title: "表格内容文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontColor = v })
+                                ConfigTabSelector(title: "表格内容文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontSize = v })
                                 ConfigTabSelector(title: "表格内容文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontStyle = v })
                                 ConfigTabSelector(title: "表格内容文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_tableContentTextFontWeight = v })
                                 ConfigTabSelector(title: "表格内容文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontFamily = v })
                                 ConfigTabSelector(title: "表格内容文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextLineHeight = v })
                                 ConfigTabSelector(title: "表格内容文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextLetterSpacing = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("吸顶设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded7) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded7 = !isExpanded7
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded7 = !isExpanded7
+                        }
+
+                        if (isExpanded7) {
+                            Column {
+                                ConfigTabSelector(title: "表格表头吸顶 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_tableStickyHeader = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("表格复制栏设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded8) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded8 = !isExpanded8
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded8 = !isExpanded8
+                        }
+
+                        if (isExpanded8) {
+                            Column {
                                 ConfigTabSelector(title: "表格头部是否显示 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_tableHeadIsShow = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("表头标题文本设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded9) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded9 = !isExpanded9
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded9 = !isExpanded9
+                        }
+
+                        if (isExpanded9) {
+                            Column {
                                 ConfigTabSelector(title: "表格头部标题文本 - ", options: tableHeadTitleTextList, defaultValue: "比较", configKey: "", onSelect: { v => cfg_tableHeadTitleText = v })
                                 ConfigTabSelector(title: "表格头部标题文本左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadTitleTextMarginLeft = v })
+                                ConfigTabSelector(title: "表头标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontColor = v })
+                                ConfigTabSelector(title: "表头标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontSize = v })
+                                ConfigTabSelector(title: "表头标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontStyle = v })
+                                ConfigTabSelector(title: "表头标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontWeight = v })
+                                ConfigTabSelector(title: "表头标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontFamily = v })
+                                ConfigTabSelector(title: "表头标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextLineHeight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("表头复制文本设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded10) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded10 = !isExpanded10
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded10 = !isExpanded10
+                        }
+
+                        if (isExpanded10) {
+                            Column {
                                 ConfigTabSelector(title: "表格头部复制图标宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconWidth = v })
                                 ConfigTabSelector(title: "表格头部复制图标高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconHeight = v })
                                 ConfigTabSelector(title: "表格头部复制图标右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconMarginRight = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("背景设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded11) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded11 = !isExpanded11
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded11 = !isExpanded11
+                        }
+
+                        if (isExpanded11) {
+                            Column {
+                                ConfigTabSelector(title: "表格标题背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleBackgroundColor = v })
+                                ConfigTabSelector(title: "表格奇数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentOddRowBackgroundColor = v })
+                                ConfigTabSelector(title: "表格偶数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentEvenRowBackgroundColor = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -395,7 +776,7 @@ class TablePage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -404,7 +785,6 @@ class TablePage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -412,7 +792,7 @@ class TablePage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

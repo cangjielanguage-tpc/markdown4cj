@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,10 @@ class ImagePage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
+    @State
+    var isExpanded4: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -79,6 +84,8 @@ class ImagePage {
     @State var cfg_imageDownloadButtonTextFontWeight: String = "Normal"
     @State var cfg_imageDownloadButtonTextFontFamily: String = "undefined"
     @State var cfg_imageDownloadButtonTextLineHeight: String = "undefined"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -97,16 +104,33 @@ class ImagePage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -268,7 +292,7 @@ class ImagePage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("图片边距和边框")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -292,10 +316,6 @@ class ImagePage {
                             Column {
                                 ConfigTabSelector(title: "图片边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_imageBorderColor = v })
                                 ConfigTabSelector(title: "图片边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_imageBorderWidth = v })
-                                ConfigTabSelector(title: "图片适应方式 - ", options: imageFitList, defaultValue: "Contain", configKey: "", onSelect: { v => cfg_imageFitType = v })
-                                ConfigTabSelector(title: "图片自动调整 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_imageAutoResize = v })
-                                ConfigTabSelector(title: "图片最大宽度 - ", options: widthOrHeightList, defaultValue: "100", configKey: "", onSelect: { v => cfg_imageMaximumWidth = v })
-                                ConfigTabSelector(title: "图片下载按钮可见 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_imageDownloadButtonVisible = v })
                                 ConfigTabSelector(title: "图片上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageMarginTop = v })
                                 ConfigTabSelector(title: "图片右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageMarginRight = v })
                                 ConfigTabSelector(title: "图片下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageMarginBottom = v })
@@ -305,6 +325,44 @@ class ImagePage {
                                 ConfigTabSelector(title: "图片圆角左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageRadiusBottomLeft = v })
                                 ConfigTabSelector(title: "图片圆角右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageRadiusBottomRight = v })
                                 ConfigTabSelector(title: "图片边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_imageBorderStyle = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("图片设置和其他")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
+                                ConfigTabSelector(title: "图片适应方式 - ", options: imageFitList, defaultValue: "Contain", configKey: "", onSelect: { v => cfg_imageFitType = v })
+                                ConfigTabSelector(title: "图片自动调整 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_imageAutoResize = v })
+                                ConfigTabSelector(title: "图片最大宽度 - ", options: widthOrHeightList, defaultValue: "100", configKey: "", onSelect: { v => cfg_imageMaximumWidth = v })
                                 ConfigTabSelector(title: "图片是否混合布局 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_imageMixedLayout = v })
                                 ConfigTabSelector(title: "图片固定比例宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageFixedRatioWidth = v })
                                 ConfigTabSelector(title: "图片最大高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageMaxHeight = v })
@@ -312,6 +370,42 @@ class ImagePage {
                                 ConfigTabSelector(title: "图片最大宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageMaxWidth = v })
                                 ConfigTabSelector(title: "图片宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageWidth = v })
                                 ConfigTabSelector(title: "图片底部布局距图片上边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageBottomLayoutMarginTop = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("图片下载按钮")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded4) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded4 = !isExpanded4
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded4 = !isExpanded4
+                        }
+
+                        if (isExpanded4) {
+                            Column {
+                                ConfigTabSelector(title: "图片下载按钮可见 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_imageDownloadButtonVisible = v })
                                 ConfigTabSelector(title: "图片下载按钮宽度 - ", options: widthOrHeightList, defaultValue: "144", configKey: "", onSelect: { v => cfg_imageDownloadButtonWidth = v })
                                 ConfigTabSelector(title: "图片下载按钮高度 - ", options: widthOrHeightList, defaultValue: "44", configKey: "", onSelect: { v => cfg_imageDownloadButtonHeight = v })
                                 ConfigTabSelector(title: "图片下载按钮圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageDownloadButtonRadius = v })
@@ -347,7 +441,7 @@ class ImagePage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -356,7 +450,6 @@ class ImagePage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -364,7 +457,7 @@ class ImagePage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

@@ -9,6 +9,7 @@ let COLOR_FF191919: Color = Color(0xFF191919)
 let COLOR_FFEAEAEA: Color = Color(0xFFEAEAEA)
 let COLOR_E6000000: Color = Color(0xE6000000)
 let COLOR_FFF5F5F5: Color = Color(0xFFF5F5F5)
+let COLOR_FFF5F2F0: Color = Color(0xFFF5F2F0)
 let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
 let COLOR_33000000: Color = Color(0x33000000)
 let COLOR_1A000000: Color = Color(0x1A000000)
@@ -50,15 +51,15 @@ func spanSoftLineBreak(isLineBreak: Bool): String {
  */
 func spanOnClick(markdownConfiguration: MarkdownConfiguration, nodeView: NodeView, tocListOnClick: ?(Int64) -> Unit, footnoteCallback: (String) -> Unit): Unit {
     if (nodeView.footnoteID.isSome()) {
-        footnoteCallback(nodeView.footnoteID()) // 脚注
+        footnoteCallback(nodeView.footnoteID.getOrThrow()) // 脚注
         return
     }
     if (nodeView.headLinkIndex.isSome() && tocListOnClick.isSome()) {
-        tocListOnClick()(nodeView.headLinkIndex()) // TOC/标题ID
+        tocListOnClick.getOrThrow()(nodeView.headLinkIndex.getOrThrow()) // TOC/标题ID
         return
     }
     if (markdownConfiguration.linkCallback.isSome() && nodeView.linkUrl.isSome()) {
-        markdownConfiguration.linkCallback()(nodeView.linkUrl()) // 链接
+        markdownConfiguration.linkCallback.getOrThrow()(nodeView.linkUrl.getOrThrow()) // 链接
         return
     }
 }

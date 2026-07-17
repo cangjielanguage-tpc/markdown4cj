@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -50,6 +51,21 @@ class ParagraphPage {
     @State var cfg_paragraphTextLineHeight: String = "undefined"
     @State var cfg_paragraphTextLetterSpacing: String = "undefined"
     @State var cfg_paragraphBackgroundColor: String = "undefined"
+    @State var cfg_paragraphMarginTop: String = "0"
+    @State var cfg_paragraphMarginRight: String = "0"
+    @State var cfg_paragraphMarginBottom: String = "0"
+    @State var cfg_paragraphMarginLeft: String = "0"
+    @State var cfg_paragraphPaddingTop: String = "0"
+    @State var cfg_paragraphPaddingRight: String = "0"
+    @State var cfg_paragraphPaddingBottom: String = "0"
+    @State var cfg_paragraphPaddingLeft: String = "0"
+    @State var cfg_showHighlight: String = "true"
+    @State var cfg_beforeSelectedParagraphBackgroundColor: String = "undefined"
+    @State var cfg_selectedParagraphBackgroundColor: String = "undefined"
+    @State var cfg_paragraphAnimationEnabled: String = "false"
+    @State var cfg_paragraphAnimationDuration: String = "0"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
 
     func getFileList(): Array<String> {
         if (fileListStr == "") {
@@ -69,16 +85,33 @@ class ParagraphPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -121,6 +154,10 @@ class ParagraphPage {
         if (cfg_paragraphBackgroundColor != "undefined") {
             paragraphTheme.setParagraphBackgroundColor(parseColor(cfg_paragraphBackgroundColor))
         }
+        paragraphTheme.setParagraphMargin(top: parseFloat64(cfg_paragraphMarginTop), right: parseFloat64(cfg_paragraphMarginRight), bottom: parseFloat64(cfg_paragraphMarginBottom), left: parseFloat64(cfg_paragraphMarginLeft))
+        paragraphTheme.setParagraphPadding(top: parseFloat64(cfg_paragraphPaddingTop), right: parseFloat64(cfg_paragraphPaddingRight), bottom: parseFloat64(cfg_paragraphPaddingBottom), left: parseFloat64(cfg_paragraphPaddingLeft))
+        paragraphTheme.setParagraphAnimationEnabled(parseBool(cfg_paragraphAnimationEnabled))
+        paragraphTheme.setParagraphAnimationDuration(Int32(parseInt64(cfg_paragraphAnimationDuration)))
         themeBuilder.setParagraphTheme(paragraphTheme)
         let theme = themeBuilder.build()
         let configBuilder = MarkdownConfiguration.emptyBuilder()
@@ -244,6 +281,19 @@ class ParagraphPage {
                                 ConfigTabSelector(title: "段落文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_paragraphTextLineHeight = v })
                                 ConfigTabSelector(title: "段落文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_paragraphTextLetterSpacing = v })
                                 ConfigTabSelector(title: "段落背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_paragraphBackgroundColor = v })
+                                ConfigTabSelector(title: "段落上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphMarginTop = v })
+                                ConfigTabSelector(title: "段落右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphMarginRight = v })
+                                ConfigTabSelector(title: "段落下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphMarginBottom = v })
+                                ConfigTabSelector(title: "段落左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphMarginLeft = v })
+                                ConfigTabSelector(title: "段落上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphPaddingTop = v })
+                                ConfigTabSelector(title: "段落右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphPaddingRight = v })
+                                ConfigTabSelector(title: "段落下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphPaddingBottom = v })
+                                ConfigTabSelector(title: "段落左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphPaddingLeft = v })
+                                ConfigTabSelector(title: "是否开启标题段落高亮显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_showHighlight = v })
+                                ConfigTabSelector(title: "当前长按未触发弹窗时段落前的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_beforeSelectedParagraphBackgroundColor = v })
+                                ConfigTabSelector(title: "当前长按放手后选中文字的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_selectedParagraphBackgroundColor = v })
+                                ConfigTabSelector(title: "段落加载动画启用 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_paragraphAnimationEnabled = v })
+                                ConfigTabSelector(title: "段落加载动画时长(ms) - ", options: timeList, defaultValue: "0", configKey: "", onSelect: { v => cfg_paragraphAnimationDuration = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -265,7 +315,7 @@ class ParagraphPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -274,7 +324,6 @@ class ParagraphPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -282,7 +331,7 @@ class ParagraphPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -42,6 +43,9 @@ class AllPage {
     @State var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State var cfg_openGestureSwipe: String = "false"
+    @State var cfg_isDark: String = "false"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
 
     func getFileList(): Array<String> {
         if (fileListStr == "") {
@@ -61,16 +65,33 @@ class AllPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -91,6 +112,7 @@ class AllPage {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
         themeBuilder.setGlobalTheme(globalTheme)
+        themeBuilder.setIsDark(parseBool(cfg_isDark))
         let theme = themeBuilder.build()
         let configBuilder = MarkdownConfiguration.emptyBuilder()
         configBuilder.setMarkdownTheme(theme)
@@ -128,7 +150,6 @@ class AllPage {
 
             Scroll {
                 Column {
-
                     Column {
                         Row {
                             Text("通用样式配置")
@@ -181,6 +202,42 @@ class AllPage {
                     .borderRadius(5.0)
                     .backgroundColor(0xFF317AFF)
 
+                    Column {
+                        Row {
+                            Text("专有样式配置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded2) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded2 = !isExpanded2
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded2 = !isExpanded2
+                        }
+
+                        if (isExpanded2) {
+                            Column {
+                                ConfigTabSelector(title: "代码使用深色模式 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isDark = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
 
                     if (mdStr != "") {
                         Text("预览: " + selectedFileName)
@@ -192,7 +249,7 @@ class AllPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -201,7 +258,6 @@ class AllPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -209,7 +265,7 @@ class AllPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

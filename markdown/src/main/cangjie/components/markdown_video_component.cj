@@ -23,7 +23,7 @@ public class MarkdownVideoComponent {
     var time: String = "" // 视频时长
 
     protected override func aboutToAppear(): Unit {
-        imageVideoUrl = nodeView.imageUrl()
+        imageVideoUrl = nodeView.imageUrl.getOrThrow()
         // 视频的图片替换回调
         videoImageCallback(
             imageVideoUrl,

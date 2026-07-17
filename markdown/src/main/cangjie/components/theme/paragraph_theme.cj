@@ -22,6 +22,8 @@ public class ParagraphTheme <: MarkdownBaseTheme {
     public var paragraphTextLetterSpacing: Float64 = 0.0 // 段落文本字符间距
     public var paragraphAnimationEnabled: Bool = false // 段落加载动画是否启用
     public var paragraphAnimationDuration: Int32 = 0 // 段落加载动画时长（毫秒）
+    public var paragraphBeforeSelectedBackgroundColor: ?Color = None // 长按前段落默认背景色（用于长按后恢复）
+    public var paragraphSelectedBackgroundColor: ?Color = None // 长按选中段落的背景色
 
     /**
      * 设置段落背景颜色
@@ -192,6 +194,30 @@ public class ParagraphTheme <: MarkdownBaseTheme {
      */
     public func setParagraphAnimationDuration(duration: Int32): ParagraphTheme {
         this.paragraphAnimationDuration = duration
+        return this
+    }
+
+    /**
+     * 设置长按前段落默认背景色
+     * 长按段落背景效果触发前使用，用于长按结束后恢复默认背景
+     *
+     * @param color 长按前段落默认背景色
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphBeforeSelectedBackgroundColor(color: Color): ParagraphTheme {
+        this.paragraphBeforeSelectedBackgroundColor = color
+        return this
+    }
+
+    /**
+     * 设置长按选中段落的背景色
+     * 长按段落时将该颜色设置为段落背景
+     *
+     * @param color 长按选中段落的背景色
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphSelectedBackgroundColor(color: Color): ParagraphTheme {
+        this.paragraphSelectedBackgroundColor = color
         return this
     }
 }

@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
+import ohos.concurrency.launch
 
 @HybridComponentEntry
 @Component
@@ -17,6 +18,8 @@ class LatexMathPage {
     var isExpanded1: Bool = false
     @State
     var isExpanded2: Bool = false
+    @State
+    var isExpanded3: Bool = false
     @State
     var mdStr: String = ""
     @State
@@ -62,6 +65,8 @@ class LatexMathPage {
     @State var cfg_latexMathTextSize: String = "undefined"
     @State var cfg_latexMathColorFormat: String = "COLOR_FORMAT_BGRA_8888"
     @State var cfg_latexMathBlockCenter: String = "false"
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -80,16 +85,33 @@ class LatexMathPage {
         let timeMs = parseInt64(cfg_time)
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
-        streamLoad(
-            fullContent,
-            isFull,
-            textNumber,
-            timeMs,
-            { cumulative, ended =>
-                mdStr = cumulative
-                isInputEnded = ended
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
             }
-        )
+        }
     }
 
     func buildConfig(): MarkdownConfiguration {
@@ -231,7 +253,7 @@ class LatexMathPage {
 
                     Column {
                         Row {
-                            Text("专有样式配置")
+                            Text("边距设置")
                                 .fontSize(16.0)
                                 .fontColor(0xFFF5F5F5)
                                 .fontWeight(FontWeight.Bold)
@@ -253,9 +275,6 @@ class LatexMathPage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "公式未加载文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontColor = v })
-                                ConfigTabSelector(title: "公式背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathBackgroundColor = v })
-                                ConfigTabSelector(title: "公式文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathTextColor = v })
                                 ConfigTabSelector(title: "数学公式上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathMarginTop = v })
                                 ConfigTabSelector(title: "数学公式右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathMarginRight = v })
                                 ConfigTabSelector(title: "数学公式下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathMarginBottom = v })
@@ -264,14 +283,52 @@ class LatexMathPage {
                                 ConfigTabSelector(title: "数学公式右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathPaddingRight = v })
                                 ConfigTabSelector(title: "数学公式下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathPaddingBottom = v })
                                 ConfigTabSelector(title: "数学公式左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathPaddingLeft = v })
+                                ConfigTabSelector(title: "数学公式颜色格式 - ", options: latexMathColorFormatList, defaultValue: "COLOR_FORMAT_BGRA_8888", configKey: "", onSelect: { v => cfg_latexMathColorFormat = v })
+                                ConfigTabSelector(title: "数学公式是否居中 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_latexMathBlockCenter = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("文本设置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded3) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded3 = !isExpanded3
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded3 = !isExpanded3
+                        }
+
+                        if (isExpanded3) {
+                            Column {
+                                ConfigTabSelector(title: "公式未加载文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontColor = v })
+                                ConfigTabSelector(title: "公式背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathBackgroundColor = v })
+                                ConfigTabSelector(title: "公式文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathTextColor = v })
                                 ConfigTabSelector(title: "数学公式是否显示默认文本 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_latexMathDefaultText = v })
                                 ConfigTabSelector(title: "数学公式默认文本文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontSize = v })
                                 ConfigTabSelector(title: "数学公式默认文本文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontStyle = v })
                                 ConfigTabSelector(title: "数学公式默认文本文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontWeight = v })
                                 ConfigTabSelector(title: "数学公式默认文本文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontFamily = v })
                                 ConfigTabSelector(title: "数学公式文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathTextSize = v })
-                                ConfigTabSelector(title: "数学公式颜色格式 - ", options: latexMathColorFormatList, defaultValue: "COLOR_FORMAT_BGRA_8888", configKey: "", onSelect: { v => cfg_latexMathColorFormat = v })
-                                ConfigTabSelector(title: "数学公式是否居中 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_latexMathBlockCenter = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -293,7 +350,7 @@ class LatexMathPage {
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
-                                scroller: Scroller(),
+                                scroller: scroller,
                                 markdownConfiguration: buildConfig()
                             )
                         }
@@ -302,7 +359,6 @@ class LatexMathPage {
                         .backgroundColor(0xFFFFFFFF)
                     }
                 }
-                .padding(top: 10.0, bottom: 100.0)
                 .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
@@ -310,7 +366,7 @@ class LatexMathPage {
             .layoutWeight(1)
         }
         .width(100.percent)
-        .height(90.0.percent)
+        .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }

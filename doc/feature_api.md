@@ -254,6 +254,25 @@ public class MarkdownConfigurationBuilder {
     public func setNodeString(nodeString: (NodeViewStringBuilder) -> Unit): MarkdownConfigurationBuilder
 
     /**
+     * 设置段落长按回调
+     * 长按段落时触发，回调参数为当前段落的纯文本内容
+     *
+     * 使用示例：
+     * ```cangjie
+     * let config = MarkdownConfiguration.builder()
+     *     .setCustomLongPressCallback({ text: String =>
+     *         // text 为长按段落的纯文本内容，可在此处执行自定义操作（如弹Toast、跳转等）
+     *         PromptAction.showToast(message: "长按段落: ${text}", duration: 2000)
+     *     })
+     *     .build()
+     * ```
+     *
+     * @param cb 段落长按回调，参数为当前段落的纯文本内容
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setCustomLongPressCallback(cb: (String) -> Unit): MarkdownConfigurationBuilder
+
+    /**
      * 返回Config对象
      *
      * @return MarkdownConfiguration MarkdownConfiguration对象

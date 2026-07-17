@@ -58,16 +58,16 @@ class MarkdownBannerComponent {
     @Builder
     func imageBannerCommonmarkComponent(item: NodeView) {
         if (markdownTheme.bannerTheme.bannerPlaceholder.isSome()) {
-            Image(item.imageUrl())
-                .alt(markdownTheme.bannerTheme.bannerPlaceholder())
+            Image(item.imageUrl.getOrThrow())
+                .alt(markdownTheme.bannerTheme.bannerPlaceholder.getOrThrow())
                 .objectFit(ImageFit.Contain)
                 .autoResize(markdownTheme.imageTheme.imageAutoResize)
-                .onClick {evt => imageOnClick(item.imageUrl(), imageCallback)}
+                .onClick {evt => imageOnClick(item.imageUrl.getOrThrow(), imageCallback)}
         } else {
-            Image(item.imageUrl())
+            Image(item.imageUrl.getOrThrow())
                 .objectFit(ImageFit.Contain)
                 .autoResize(markdownTheme.imageTheme.imageAutoResize)
-                .onClick {evt => imageOnClick(item.imageUrl(), imageCallback)}
+                .onClick {evt => imageOnClick(item.imageUrl.getOrThrow(), imageCallback)}
         }
     }
 }
