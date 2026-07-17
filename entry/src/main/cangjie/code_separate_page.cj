@@ -85,6 +85,7 @@ class CodeSeparatePage {
     @State var cfg_codeBlockFullScreenButtonIsShow: String = "true"
     @State var cfg_codeBlockFullScreenTextIsShow: String = "true"
     @State var cfg_codeBlockLineNumberIsShow: String = "true"
+    @State var cfg_codeBlockCopyIcon: String = "undefined"
     @State var cfg_codeBlockCopyIconWidth: String = "undefined"
     @State var cfg_codeBlockCopyIconHeight: String = "undefined"
     @State var cfg_codeBlockCopyIconTextSpacing: String = "undefined"
@@ -95,6 +96,7 @@ class CodeSeparatePage {
     @State var cfg_codeBlockCopyTextFontWeight: String = "Normal"
     @State var cfg_codeBlockCopyTextFontFamily: String = "undefined"
     @State var cfg_codeBlockCopyTextLineHeight: String = "undefined"
+    @State var cfg_codeBlockFullScreenIcon: String = "undefined"
     @State var cfg_codeBlockFullScreenIconWidth: String = "undefined"
     @State var cfg_codeBlockFullScreenIconHeight: String = "undefined"
     @State var cfg_codeBlockFullScreenIconTextSpacing: String = "undefined"
@@ -233,8 +235,14 @@ class CodeSeparatePage {
         codeBlockTheme.setCodeBlockIsDark(parseBool(cfg_codeBlockIsDark))
         codeBlockTheme.setCodeBlockCopyButtonIsShow(parseBool(cfg_codeBlockCopyButtonIsShow))
         codeBlockTheme.setCodeBlockCopyTextIsShow(parseBool(cfg_codeBlockCopyTextIsShow))
+        if (let Some(v) <- parseAppResource(cfg_codeBlockCopyIcon)) {
+            codeBlockTheme.setCodeBlockCopyIcon(v)
+        }
         codeBlockTheme.setCodeBlockFullScreenButtonIsShow(parseBool(cfg_codeBlockFullScreenButtonIsShow))
         codeBlockTheme.setCodeBlockFullScreenTextIsShow(parseBool(cfg_codeBlockFullScreenTextIsShow))
+        if (let Some(v) <- parseAppResource(cfg_codeBlockFullScreenIcon)) {
+            codeBlockTheme.setCodeBlockFullScreenIcon(v)
+        }
         codeBlockTheme.setCodeBlockLineNumberIsShow(parseBool(cfg_codeBlockLineNumberIsShow))
         if (cfg_codeBlockCopyIconWidth != "undefined") {
             codeBlockTheme.setCodeBlockCopyIconWidth(parseFloat64(cfg_codeBlockCopyIconWidth))
@@ -573,6 +581,7 @@ class CodeSeparatePage {
                                 ConfigTabSelector(title: "代码块代码复制和代码全屏间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyFullScreenSpacing = v })
                                 ConfigTabSelector(title: "代码块代码复制按钮是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockCopyButtonIsShow = v })
                                 ConfigTabSelector(title: "代码块代码复制文本是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockCopyTextIsShow = v })
+                                ConfigTabSelector(title: "代码块代码复制按钮默认图标 - ", options: iconShortList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyIcon = v })
                                 ConfigTabSelector(title: "代码块代码复制图标宽度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyIconWidth = v })
                                 ConfigTabSelector(title: "代码块代码复制图标高度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyIconHeight = v })
                                 ConfigTabSelector(title: "代码块代码复制图标和文本间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockCopyIconTextSpacing = v })
@@ -620,6 +629,7 @@ class CodeSeparatePage {
                             Column {
                                 ConfigTabSelector(title: "代码块代码全屏按钮是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockFullScreenButtonIsShow = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_codeBlockFullScreenTextIsShow = v })
+                                ConfigTabSelector(title: "代码块代码全屏按钮默认图标 - ", options: iconShortList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockFullScreenIcon = v })
                                 ConfigTabSelector(title: "代码块代码全屏图标宽度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockFullScreenIconWidth = v })
                                 ConfigTabSelector(title: "代码块代码全屏图标高度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockFullScreenIconHeight = v })
                                 ConfigTabSelector(title: "代码块代码全屏图标和文本间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_codeBlockFullScreenIconTextSpacing = v })

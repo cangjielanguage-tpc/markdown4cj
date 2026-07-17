@@ -1,63 +1,121 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 表格样式
  */
-public class TableTheme <: MarkdownBaseTheme {
+@Observed
+public class TableTheme {
+    @Publish
     public var tableTitleBackgroundColor: Color = COLOR_WHITE // 表格标题背景颜色
+    @Publish
     public var tableContentOddRowBackgroundColor: Color = COLOR_FFE0E0E0 // 表格内容奇数行背景颜色
+    @Publish
     public var tableContentEvenRowBackgroundColor: Color = COLOR_WHITE // 表格内容偶数行背景颜色
+    @Publish
     public var tableMarginTop: Float64 = 0.0 // 表格上外边距
+    @Publish
     public var tableMarginRight: Float64 = 0.0 // 表格右外边距
+    @Publish
     public var tableMarginBottom: Float64 = 0.0 // 表格下外边距
+    @Publish
     public var tableMarginLeft: Float64 = 0.0 // 表格左外边距
+    @Publish
     public var tablePaddingTop: Float64 = 0.0 // 表格上内边距
+    @Publish
     public var tablePaddingRight: Float64 = 0.0 // 表格右内边距
+    @Publish
     public var tablePaddingBottom: Float64 = 0.0 // 表格下内边距
+    @Publish
     public var tablePaddingLeft: Float64 = 0.0 // 表格左内边距
+    @Publish
     public var tableCellPaddingTop: Float64 = 4.0 // 表格内容上内边距
+    @Publish
     public var tableCellPaddingRight: Float64 = 4.0 // 表格内容右内边距
+    @Publish
     public var tableCellPaddingBottom: Float64 = 4.0 // 表格内容下内边距
+    @Publish
     public var tableCellPaddingLeft: Float64 = 4.0 // 表格内容左内边距
+    @Publish
     public var tableBorderStyle: BorderStyle = BorderStyle.Solid // 表格边框样式
+    @Publish
     public var tableBorderWidth: Float64 = 1.0 // 表格边框宽度
+    @Publish
     public var tableBorderColor: Color = COLOR_BLACK // 表格边框颜色
+    @Publish
     public var tableRadiusTopLeft: Float64 = 5.0 // 表格边框左上圆角
+    @Publish
     public var tableRadiusTopRight: Float64 = 5.0 // 表格边框右上圆角
+    @Publish
     public var tableRadiusBottomLeft: Float64 = 5.0 // 表格边框左下圆角
+    @Publish
     public var tableRadiusBottomRight: Float64 = 5.0 // 表格边框右下圆角
+    @Publish
     public var tableScrollBarState: BarState = BarState.Off // 表格滚动条状态，默认不显示
+    @Publish
     public var tableScrollBarColor: Color = COLOR_FF191919 // 表格滚动条颜色
+    @Publish
     public var tableMinCellWidth: Float64 = 50.0 // 表格一格最小宽度
+    @Publish
     public var tableMaxCellWidth: Float64 = 300.0 // 表格一格最大宽度
+    @Publish
     public var tableFirstColumnIsBold: Bool = false // 表格第一列是否加粗 - 默认表格标题粗细
+    @Publish
     public var tableTitleTextFontColor: Color = COLOR_FF191919 // 表格标题文本颜色
+    @Publish
     public var tableTitleTextFontSize: Float64 = 14.0 // 表格标题文本尺寸
+    @Publish
     public var tableTitleTextFontStyle: FontStyle = FontStyle.Normal // 表格标题文本字体样式
+    @Publish
     public var tableTitleTextFontWeight: FontWeight = FontWeight.W600 // 表格标题文本字体粗细
+    @Publish
     public var tableTitleTextFontFamily: String = "HarmonyOS Sans" // 表格标题文本字体
+    @Publish
     public var tableTitleTextLineHeight: Float64 = 22.0 // 表格标题文本行高
+    @Publish
     public var tableTitleTextLetterSpacing: Float64 = 0.0 // 表格标题文本字符间距
+    @Publish
     public var tableContentTextFontColor: Color = COLOR_FF191919 // 表格内容文本颜色
+    @Publish
     public var tableContentTextFontSize: Float64 = 14.0 // 表格内容文本尺寸
+    @Publish
     public var tableContentTextFontStyle: FontStyle = FontStyle.Normal // 表格内容文本字体样式
+    @Publish
     public var tableContentTextFontWeight: FontWeight = FontWeight.W400 // 表格内容文本字体粗细
+    @Publish
     public var tableContentTextFontFamily: String = "HarmonyOS Sans" // 表格内容文本字体
+    @Publish
     public var tableContentTextLineHeight: Float64 = 22.0 // 表格内容文本行高
+    @Publish
     public var tableContentTextLetterSpacing: Float64 = 0.0 // 表格内容文本字符间距
+    @Publish
     public var tableStickyHeader: Bool = false // 表格标题行是否吸顶（仅当外层List可滚动时生效）
+    @Publish
     public var tableHeadIsShow: Bool = true // 表格头复制按钮是否显示
+    @Publish
     public var tableHeadTitleText: String = "比较" // 表格头标题
-    public var tableHeadTitleTextFontFamily: ?String = None // 表格头标题类型文本字体族
-    public var tableHeadTitleTextFontSize: ?Float64 = None // 表格头标题类型文本字体大小
-    public var tableHeadTitleTextFontWeight: ?FontWeight = None // 表格头标题类型文本字体粗细
-    public var tableHeadTitleTextFontStyle: ?FontStyle = None // 表格头标题类型文本字体样式
-    public var tableHeadTitleTextFontColor: ?Color = None // 表格头标题类型文本字体颜色
-    public var tableHeadTitleTextLineHeight: ?Float64 = None // 表格头标题类型文本行高
+    @Publish
+    public var tableHeadTitleTextFontFamily: ?String = Option<String>.None // 表格头标题类型文本字体族
+    @Publish
+    public var tableHeadTitleTextFontSize: ?Float64 = Option<Float64>.None // 表格头标题类型文本字体大小
+    @Publish
+    public var tableHeadTitleTextFontWeight: ?FontWeight = Option<FontWeight>.None // 表格头标题类型文本字体粗细
+    @Publish
+    public var tableHeadTitleTextFontStyle: ?FontStyle = Option<FontStyle>.None // 表格头标题类型文本字体样式
+    @Publish
+    public var tableHeadTitleTextFontColor: ?Color = Option<Color>.None // 表格头标题类型文本字体颜色
+    @Publish
+    public var tableHeadTitleTextLineHeight: ?Float64 = Option<Float64>.None // 表格头标题类型文本行高
+    @Publish
     public var tableHeadTitleTextMarginLeft: Float64 = 0.0 // 表格头标题类型文本左边距
-    public var tableHeadCopyIcon: ?AppResource = None // 表格头复制图标
+    @Publish
+    public var tableHeadCopyIcon: ?AppResource = Option<AppResource>.None // 表格头复制图标
+    @Publish
     public var tableHeadCopyIconWidth: Float64 = 24.0 // 表格头复制图标宽度
+    @Publish
     public var tableHeadCopyIconHeight: Float64 = 24.0 // 表格头复制图标高度
+    @Publish
     public var tableHeadCopyIconMarginRight: Float64 = 0.0 // 表格头复制图标右外边距
 
     /**

@@ -1,24 +1,43 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 全局样式
  */
-public class GlobalTheme <: MarkdownBaseTheme {
-    public var stageContext: ?StageContext = None // markdown上下文 - 互操作
-    public var uiAbilityContext: ?UIAbilityContext = None // markdown上下文 - 仓颉
+@Observed
+public class GlobalTheme {
+    @Publish
+    public var stageContext: ?StageContext = Option<StageContext>.None // markdown上下文 - 互操作
+    @Publish
+    public var uiAbilityContext: ?UIAbilityContext = Option<UIAbilityContext>.None // markdown上下文 - 仓颉
+    @Publish
     public var isMarkdownParserSync: Bool = false // markdown是否同步解析
+    @Publish
     public var enableParseThrottle: Bool = false // 是否启用解析节流（流式输出时控制解析频率）
+    @Publish
     public var parseThrottleMs: Int64 = 200 // 节流间隔（毫秒）
+    @Publish
     public var isOnCopy: Bool = true // 是否打开长按复制粘贴
+    @Publish
     public var blockMarginTop: Float64 = 0.0 // markdown全局上外边距
+    @Publish
     public var blockMarginRight: Float64 = 0.0 // markdown全局右外边距
+    @Publish
     public var blockMarginBottom: Float64 = 0.0 // markdown全局下外边距
+    @Publish
     public var blockMarginLeft: Float64 = 0.0 // markdown全局左外边距
+    @Publish
     public var markdownBlockSpacing: Int64 = 8 // markdown子组件主轴方向的间隔
+    @Publish
     public var isLineBreak: Bool = false // 软换行是否换行
+    @Publish
     public var openGestureSwipe: Bool = false // markdown是否支持滚动手势
+    @Publish
     public var backgroundColor: Color = COLOR_TRANSPARENT // 背景颜色
+    @Publish
     public var paragraphAnimationEnabled: Bool = false // 是否启用段落加载动画
+    @Publish
     public var paragraphAnimationDuration: Int32 = 300 // 段落加载动画时长（毫秒）
 
     /**

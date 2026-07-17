@@ -84,3 +84,9 @@ let barStateList: Array<String> = ["Off", "On", "Auto"]
 let checkBoxShapeList: Array<String> = ["CIRCLE", "ROUNDED_SQUARE"]
 
 let latexMathColorFormatList: Array<String> = ["COLOR_FORMAT_RGB_565", "COLOR_FORMAT_BGRA_8888"]
+
+let iconList: Array<String> = ["undefined", "startIcon", "app_icon"]
+
+let iconShortList: Array<String> = ["undefined", "startIcon"]
+
+let videoPlaceholderList: Array<String> = ["undefined", "background", "you"]

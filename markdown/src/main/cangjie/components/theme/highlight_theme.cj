@@ -1,20 +1,35 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 高亮文本样式
  */
-public class HighlightTheme <: MarkdownBaseTheme {
-    public var highlightTextFontColor: ?Color = None // 高亮文本文本颜色
-    public var highlightTextFontSize: ?Float64 = None // 高亮文本文本尺寸
-    public var highlightTextFontStyle: ?FontStyle = None // 高亮文本文本字体样式
-    public var highlightTextFontWeight: ?FontWeight = None // 高亮文本文本字体粗细
-    public var highlightTextFontFamily: ?String = None // 高亮文本文本字体
-    public var highlightTextLineHeight: ?Float64 = None // 高亮文本文本行高
-    public var highlightTextLetterSpacing: ?Float64 = None // 高亮文本文本字符间距
+@Observed
+public class HighlightTheme {
+    @Publish
+    public var highlightTextFontColor: ?Color = Option<Color>.None // 高亮文本文本颜色
+    @Publish
+    public var highlightTextFontSize: ?Float64 = Option<Float64>.None // 高亮文本文本尺寸
+    @Publish
+    public var highlightTextFontStyle: ?FontStyle = Option<FontStyle>.None // 高亮文本文本字体样式
+    @Publish
+    public var highlightTextFontWeight: ?FontWeight = Option<FontWeight>.None // 高亮文本文本字体粗细
+    @Publish
+    public var highlightTextFontFamily: ?String = Option<String>.None // 高亮文本文本字体
+    @Publish
+    public var highlightTextLineHeight: ?Float64 = Option<Float64>.None // 高亮文本文本行高
+    @Publish
+    public var highlightTextLetterSpacing: ?Float64 = Option<Float64>.None // 高亮文本文本字符间距
+    @Publish
     public var highlightTextBackgroundColor: Color = COLOR_FFFFF59D // 高亮文本文本背景颜色
+    @Publish
     public var highlightTextBackgroundRadiusTopLeft: Float64 = 0.0 // 高亮文本文本背景左上圆角
+    @Publish
     public var highlightTextBackgroundRadiusTopRight: Float64 = 0.0 // 高亮文本文本背景右上圆角
+    @Publish
     public var highlightTextBackgroundRadiusBottomLeft: Float64 = 0.0 // 高亮文本文本背景左下圆角
+    @Publish
     public var highlightTextBackgroundRadiusBottomRight: Float64 = 0.0 // 高亮文本文本背景右下圆角
 
     /**

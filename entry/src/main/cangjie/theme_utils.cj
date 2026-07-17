@@ -2,6 +2,9 @@ package ohos_app_cangjie_entry
 
 import ohos.base.*
 import ohos.component.*
+import ohos.ark_interop.*
+import ohos.ark_interop_helper.*
+import kit.LocalizationKit.AppResource
 import markdown.components.*
 import markdown.components.theme.*
 
@@ -184,5 +187,34 @@ func parseLatexMathColorFormat(s: String): LatexMathColorFormat {
 func loadRawfileText(fullPath: String): String {
     callGlobalFunc("loadContent", fullPath)
     return getGlobalString("markdownContent")
+}
+
+func parseAppResource(s: String): ?AppResource {
+    if (s == "undefined") {
+        return None
+    }
+    try {
+        let ctx = getCtx()
+        let global = ctx.global
+        if (global.hasProperty("appResources")) {
+            let resMap = global["appResources"].asObject(ctx)
+            if (resMap.hasProperty(s)) {
+                let value = resMap[s]
+                if (value.isUndefined()) {
+                    return None
+                }
+                let obj = value.asObject()
+                return AppResource(
+                    String.fromJSValue(ctx, obj["bundleName"]),
+                    String.fromJSValue(ctx, obj["moduleName"]),
+                    Int32.fromJSValue(ctx, obj["id"]),
+                    params: [],
+                    resType: Int32.fromJSValue(ctx, obj["type"]),
+                )
+            }
+        }
+    } catch (e: Exception) {
+    }
+    return None
 }
 

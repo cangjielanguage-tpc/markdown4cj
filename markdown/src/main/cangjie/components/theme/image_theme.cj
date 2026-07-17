@@ -1,49 +1,93 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 图片样式
  */
-public class ImageTheme <: MarkdownBaseTheme {
+@Observed
+public class ImageTheme {
+    @Publish
     public var imageMarginTop: Float64 = 0.0 // 图片上外边距
+    @Publish
     public var imageMarginRight: Float64 = 0.0 // 图片右外边距
+    @Publish
     public var imageMarginBottom: Float64 = 0.0 // 图片下外边距
+    @Publish
     public var imageMarginLeft: Float64 = 0.0 // 图片左外边距
+    @Publish
     public var imageRadiusTopLeft: Float64 = 0.0 // 图片边框左上圆角
+    @Publish
     public var imageRadiusTopRight: Float64 = 0.0 // 图片边框右上圆角
+    @Publish
     public var imageRadiusBottomLeft: Float64 = 0.0 // 图片边框左下圆角
+    @Publish
     public var imageRadiusBottomRight: Float64 = 0.0 // 图片边框右下圆角
+    @Publish
     public var imageBorderStyle: BorderStyle = BorderStyle.Solid // 图片边框样式
+    @Publish
     public var imageBorderWidth: Float64 = 0.0 // 图片边框宽度
+    @Publish
     public var imageBorderColor: Color = COLOR_BLACK // 图片边框颜色
-    public var imagePlaceholder: ?AppResource = None // 图片默认占位图
+    @Publish
+    public var imagePlaceholder: ?AppResource = Option<AppResource>.None // 图片默认占位图
+    @Publish
     public var imageAutoResize: Bool = true // 网络图片是否压缩
+    @Publish
     public var isImageMixedLayout: Bool = true // 是否图文混排
+    @Publish
     public var imageMaximumWidth: Float64 = 1.0 // 图片基于自身宽度缩放百分比
-    public var imageFixedRatioWidth: ?Float64 = None // 图片基于父布局宽度缩放百分比
-    public var imageMaxHeight: ?Float64 = None // 图片最大高度
-    public var imageHeight: ?Float64 = None // 图片高度
-    public var imageMaxWidth: ?Float64 = None // 图片最大宽度
-    public var imageWidth: ?Float64 = None // 图片宽度
+    @Publish
+    public var imageFixedRatioWidth: ?Float64 = Option<Float64>.None // 图片基于父布局宽度缩放百分比
+    @Publish
+    public var imageMaxHeight: ?Float64 = Option<Float64>.None // 图片最大高度
+    @Publish
+    public var imageHeight: ?Float64 = Option<Float64>.None // 图片高度
+    @Publish
+    public var imageMaxWidth: ?Float64 = Option<Float64>.None // 图片最大宽度
+    @Publish
+    public var imageWidth: ?Float64 = Option<Float64>.None // 图片宽度
+    @Publish
     public var imageFitType: ImageFit = ImageFit.Contain // 图片缩放类型
+    @Publish
     public var imageBottomLayoutMarginTop: Float64 = 14.0 // 底部布局距离图片上边距
+    @Publish
     public var imageDownloadButtonVisible: Bool = false // 图片下载按钮是否显示
+    @Publish
     public var imageDownloadButtonWidth: Float64 = 296.0 // 图片下载按钮宽度
+    @Publish
     public var imageDownloadButtonHeight: Float64 = 44.0 // 图片下载按钮高度
+    @Publish
     public var imageDownloadButtonRadiusTopLeft: Float64 = 22.0 // 图片下载按钮左上圆角
+    @Publish
     public var imageDownloadButtonRadiusTopRight: Float64 = 22.0 // 图片下载按钮右上圆角
+    @Publish
     public var imageDownloadButtonRadiusBottomLeft: Float64 = 22.0 // 图片下载按钮左下圆角
+    @Publish
     public var imageDownloadButtonRadiusBottomRight: Float64 = 22.0 // 图片下载按钮右下圆角
+    @Publish
     public var imageDownloadButtonIconTextGap: Float64 = 6.0 // 图片下载按钮图标和文本间距
-    public var imageDownloadButtonIcon: ?AppResource = None // 图片下载按钮图标
+    @Publish
+    public var imageDownloadButtonIcon: ?AppResource = Option<AppResource>.None // 图片下载按钮图标
+    @Publish
     public var imageDownloadButtonIconWidth: Float64 = 18.0 // 图片下载按钮图标宽度
+    @Publish
     public var imageDownloadButtonIconHeight: Float64 = 18.0 // 图片下载按钮图标高度
+    @Publish
     public var imageDownloadButtonBackgroundColor: Color = COLOR_FFF5F5F5 // 图片下载按钮背景颜色
+    @Publish
     public var imageDownloadButtonText: String = "下载图片" // 图片下载按钮默认文本内容
+    @Publish
     public var imageDownloadButtonTextFontColor: Color = COLOR_E6000000 // 图片下载按钮文本颜色
+    @Publish
     public var imageDownloadButtonTextFontSize: Float64 = 16.0 // 图片下载按钮文本尺寸
+    @Publish
     public var imageDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal // 图片下载按钮文本字体样式
+    @Publish
     public var imageDownloadButtonTextFontWeight: FontWeight = FontWeight.W500 // 图片下载按钮文本字体粗细
+    @Publish
     public var imageDownloadButtonTextFontFamily: String = "HarmonyOS Sans" // 图片下载按钮文本字体
+    @Publish
     public var imageDownloadButtonTextLineHeight: Float64 = 22.0 // 图片下载按钮文本行高
 
     /**

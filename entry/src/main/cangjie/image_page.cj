@@ -51,6 +51,7 @@ class ImagePage {
     @State var cfg_imageBorderWidth: String = "undefined"
     @State var cfg_imageFitType: String = "Contain"
     @State var cfg_imageAutoResize: String = "true"
+    @State var cfg_imagePlaceholder: String = "undefined"
     @State var cfg_imageMaximumWidth: String = "100"
     @State var cfg_imageDownloadButtonVisible: String = "true"
 
@@ -74,6 +75,7 @@ class ImagePage {
     @State var cfg_imageDownloadButtonHeight: String = "44"
     @State var cfg_imageDownloadButtonRadius: String = "0"
     @State var cfg_imageDownloadButtonIconTextGap: String = "6"
+    @State var cfg_imageDownloadButtonIcon: String = "undefined"
     @State var cfg_imageDownloadButtonIconWidth: String = "18"
     @State var cfg_imageDownloadButtonIconHeight: String = "18"
     @State var cfg_imageDownloadButtonBackgroundColor: String = "undefined"
@@ -161,6 +163,9 @@ class ImagePage {
         }
         imageTheme.setImageFitType(parseImageFit(cfg_imageFitType))
         imageTheme.setImageAutoResize(parseBool(cfg_imageAutoResize))
+        if (let Some(v) <- parseAppResource(cfg_imagePlaceholder)) {
+            imageTheme.setImagePlaceholder(v)
+        }
         imageTheme.setImageMaximumWidth(parseFloat64(cfg_imageMaximumWidth))
         imageTheme.setImageDownloadButtonVisible(parseBool(cfg_imageDownloadButtonVisible))
         imageTheme.setImageBorderStyle(parseBorderStyle(cfg_imageBorderStyle))
@@ -175,6 +180,9 @@ class ImagePage {
         imageTheme.setImageDownloadButtonHeight(parseFloat64(cfg_imageDownloadButtonHeight))
         imageTheme.setImageDownloadButtonRadius(parseFloat64(cfg_imageDownloadButtonRadius))
         imageTheme.setImageDownloadButtonIconTextGap(parseFloat64(cfg_imageDownloadButtonIconTextGap))
+        if (let Some(v) <- parseAppResource(cfg_imageDownloadButtonIcon)) {
+            imageTheme.setImageDownloadButtonIcon(v)
+        }
         imageTheme.setImageDownloadButtonIconWidth(parseFloat64(cfg_imageDownloadButtonIconWidth))
         imageTheme.setImageDownloadButtonIconHeight(parseFloat64(cfg_imageDownloadButtonIconHeight))
         if (cfg_imageDownloadButtonBackgroundColor != "undefined") {
@@ -362,6 +370,7 @@ class ImagePage {
                             Column {
                                 ConfigTabSelector(title: "图片适应方式 - ", options: imageFitList, defaultValue: "Contain", configKey: "", onSelect: { v => cfg_imageFitType = v })
                                 ConfigTabSelector(title: "图片自动调整 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_imageAutoResize = v })
+                                ConfigTabSelector(title: "图片默认占位图 - ", options: iconShortList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_imagePlaceholder = v })
                                 ConfigTabSelector(title: "图片最大宽度 - ", options: widthOrHeightList, defaultValue: "100", configKey: "", onSelect: { v => cfg_imageMaximumWidth = v })
                                 ConfigTabSelector(title: "图片是否混合布局 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_imageMixedLayout = v })
                                 ConfigTabSelector(title: "图片固定比例宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageFixedRatioWidth = v })
@@ -409,6 +418,7 @@ class ImagePage {
                                 ConfigTabSelector(title: "图片下载按钮宽度 - ", options: widthOrHeightList, defaultValue: "144", configKey: "", onSelect: { v => cfg_imageDownloadButtonWidth = v })
                                 ConfigTabSelector(title: "图片下载按钮高度 - ", options: widthOrHeightList, defaultValue: "44", configKey: "", onSelect: { v => cfg_imageDownloadButtonHeight = v })
                                 ConfigTabSelector(title: "图片下载按钮圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_imageDownloadButtonRadius = v })
+                                ConfigTabSelector(title: "图片下载按钮图标 - ", options: iconShortList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_imageDownloadButtonIcon = v })
                                 ConfigTabSelector(title: "图片下载按钮图标和文本间距 - ", options: spaceList, defaultValue: "6", configKey: "", onSelect: { v => cfg_imageDownloadButtonIconTextGap = v })
                                 ConfigTabSelector(title: "图片下载按钮图标宽度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", onSelect: { v => cfg_imageDownloadButtonIconWidth = v })
                                 ConfigTabSelector(title: "图片下载按钮图标高度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", onSelect: { v => cfg_imageDownloadButtonIconHeight = v })

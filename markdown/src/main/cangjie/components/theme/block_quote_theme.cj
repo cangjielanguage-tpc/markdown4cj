@@ -1,24 +1,43 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 块引用样式
  */
-public class BlockQuoteTheme <: MarkdownBaseTheme {
+@Observed
+public class BlockQuoteTheme {
+    @Publish
     public var blockQuoteBackgroundColor: Color = COLOR_FFEAEAEA // 块引用背景颜色
+    @Publish
     public var blockQuoteMarginTop: Float64 = 0.0 // 块引用上外边距
+    @Publish
     public var blockQuoteMarginRight: Float64 = 0.0 // 块引用右外边距
+    @Publish
     public var blockQuoteMarginBottom: Float64 = 0.0 // 块引用下外边距
+    @Publish
     public var blockQuoteMarginLeft: Float64 = 8.0 // 块引用左外边距
+    @Publish
     public var blockQuotePaddingTop: Float64 = 0.0 // 块引用上内边距
+    @Publish
     public var blockQuotePaddingRight: Float64 = 0.0 // 块引用右内边距
+    @Publish
     public var blockQuotePaddingBottom: Float64 = 0.0 // 块引用下内边距
+    @Publish
     public var blockQuotePaddingLeft: Float64 = 8.0 // 块引用左内边距
+    @Publish
     public var blockQuoteRadiusTopLeft: Float64 = 0.0 // 块引用边框左上圆角
+    @Publish
     public var blockQuoteRadiusTopRight: Float64 = 0.0 // 块引用边框右上圆角
+    @Publish
     public var blockQuoteRadiusBottomLeft: Float64 = 0.0 // 块引用边框左下圆角
+    @Publish
     public var blockQuoteRadiusBottomRight: Float64 = 0.0 // 块引用边框右下圆角
+    @Publish
     public var blockQuoteLeftBorderWidth: Float64 = 1.0 // 块引用左侧边框宽度
+    @Publish
     public var blockQuoteLeftBorderColor: Color = COLOR_FF191919 // 块引用左侧边框颜色
+    @Publish
     public var blockQuoteChildSpacing: Int64 = 8 // 块引用子模块间距
 
     /**

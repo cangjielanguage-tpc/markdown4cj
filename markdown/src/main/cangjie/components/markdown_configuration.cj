@@ -4,25 +4,28 @@ import ohos.state_macro_manage.*
 
 /**
  * markdown配置
+ * 使用 @Observed + @Publish 实现样式实时变动，修改markdownTheme后UI自动更新
  */
+@Observed
 public class MarkdownConfiguration {
-    protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build() // markdown默认样式
-    protected var textCopyCallback: ?(String) -> Unit = None // 文本复制的点击事件
-    protected var linkCallback: ?(String) -> Unit = None // 链接的点击事件
-    protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None // 图片的点击事件
-    protected var imageReplaceCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
-    protected var imageDownloadCallback: ?(String) -> Unit = None // 图片下载的点击事件
-    protected var audioCallback: ?(String) -> Unit = None // 音频的点击事件
-    protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None // 视频的点击事件
-    protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
+    @Publish
+    var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build() // markdown默认样式
+    var textCopyCallback: ?(String) -> Unit = None // 文本复制的点击事件
+    var linkCallback: ?(String) -> Unit = None // 链接的点击事件
+    var imageCallback: ?(String, ArrayList<String>) -> Unit = None // 图片的点击事件
+    var imageReplaceCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
+    var imageDownloadCallback: ?(String) -> Unit = None // 图片下载的点击事件
+    var audioCallback: ?(String) -> Unit = None // 音频的点击事件
+    var videoCallback: ?(String, ArrayList<String>) -> Unit = None // 视频的点击事件
+    var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
         url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
     } // 视频的图片替换回调
-    protected var videoReleaseCallback: ?(String) -> Unit = None // 视频发布的点击事件
-    protected var videoDownloadCallback: ?(String) -> Unit = None // 视频下载的点击事件
-    protected var codeCopyCallback: ?(String) -> Unit = None // 代码复制按钮的点击事件
-    protected var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None // 代码全屏按钮的点击事件
-    protected var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None // 数学公式图片点击事件
-    protected var latexStrCallback: (String) -> String = {
+    var videoReleaseCallback: ?(String) -> Unit = None // 视频发布的点击事件
+    var videoDownloadCallback: ?(String) -> Unit = None // 视频下载的点击事件
+    var codeCopyCallback: ?(String) -> Unit = None // 代码复制按钮的点击事件
+    var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None // 代码全屏按钮的点击事件
+    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None // 数学公式图片点击事件
+    var latexStrCallback: (String) -> String = {
         data: String =>
             var dataNew = data.replace("{aligned*}", "{aligned}")
             dataNew = dataNew.replace("{align*}", "{align}")
@@ -32,49 +35,21 @@ public class MarkdownConfiguration {
             dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
             return dataNew
     } // 数学公式数据处理事件
-    protected var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
-    protected var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
-    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
-    protected var tableCopyCallback: ?(String) -> Unit = None // 表格复制按钮的点击事件
-    protected var elementExposureCallback: ?(MarkdownExposureEvent) -> Unit = None // 元素曝光回调（链接显示/消失时触发）
-    protected var exposureThreshold: Float64 = 0.5 // 曝光可见阈值（0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见）
-    protected var markdownHighlightParagraph: MarkdownHighlightParagraph = MarkdownHighlightParagraph() // 高亮段落设置
-    protected var scrollController: ?MarkdownScrollController = None // 外层滚动控制器（用于不固定高度模式下吸顶）
-    protected var paragraphAnimationStart: ?() -> Unit = None // 段落动画开始回调
-    protected var paragraphAnimationEnd: ?() -> Unit = None // 段落动画结束回调
-    protected var customLongPressCallback: ?(String) -> Unit = None // 段落长按回调（返回段落纯文本内容）
-
-    protected init(builder: MarkdownConfigurationBuilder) {
-        this.markdownTheme = builder.markdownTheme
-        this.textCopyCallback = builder.textCopyCallback
-        this.linkCallback = builder.linkCallback
-        this.imageCallback = builder.imageCallback
-        this.imageReplaceCallback = builder.imageReplaceCallback
-        this.imageDownloadCallback = builder.imageDownloadCallback
-        this.audioCallback = builder.audioCallback
-        this.videoCallback = builder.videoCallback
-        this.videoImageCallback = builder.videoImageCallback
-        this.videoReleaseCallback = builder.videoReleaseCallback
-        this.videoDownloadCallback = builder.videoDownloadCallback
-        this.codeCopyCallback = builder.codeCopyCallback
-        this.codeFullScreenCallback = builder.codeFullScreenCallback
-        this.latexImageCallback = builder.latexImageCallback
-        this.latexStrCallback = builder.latexStrCallback
-        this.tocIndexCallback = builder.tocIndexCallback
-        this.footnoteCallback = builder.footnoteCallback
-        this.nodeString = builder.nodeString
-        this.tableCopyCallback = builder.tableCopyCallback
-        this.elementExposureCallback = builder.elementExposureCallback
-        this.exposureThreshold = builder.exposureThreshold
-        this.markdownHighlightParagraph = builder.markdownHighlightParagraph
-        this.scrollController = builder.scrollController
-        this.paragraphAnimationStart = builder.paragraphAnimationStart
-        this.paragraphAnimationEnd = builder.paragraphAnimationEnd
-        this.customLongPressCallback = builder.customLongPressCallback
-    }
+    var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
+    var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
+    var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
+    var tableCopyCallback: ?(String) -> Unit = None // 表格复制按钮的点击事件
+    var elementExposureCallback: ?(MarkdownExposureEvent) -> Unit = None // 元素曝光回调（链接显示/消失时触发）
+    var exposureThreshold: Float64 = 0.5 // 曝光可见阈值（0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见）
+    var markdownHighlightParagraph: MarkdownHighlightParagraph = MarkdownHighlightParagraph() // 高亮段落设置
+    var scrollController: ?MarkdownScrollController = None // 外层滚动控制器（用于不固定高度模式下吸顶）
+    var paragraphAnimationStart: ?() -> Unit = None // 段落动画开始回调
+    var paragraphAnimationEnd: ?() -> Unit = None // 段落动画结束回调
+    var customLongPressCallback: ?(String) -> Unit = None // 段落长按回调（返回段落纯文本内容）
 
     /**
      * 创建Config对象
+     * @Observed 类不能定义构造函数，由宏自动生成命名参数构造函数
      *
      * @return MarkdownConfiguration 创建空的MarkdownConfiguration对象
      */
@@ -505,10 +480,38 @@ public class MarkdownConfigurationBuilder {
 
     /**
      * 返回Config对象
+     * @Observed 类由宏自动生成命名参数构造函数，直接传入所有属性
      *
      * @return MarkdownConfiguration MarkdownConfiguration对象
      */
     public func build(): MarkdownConfiguration {
-        return MarkdownConfiguration(this)
+        return MarkdownConfiguration(
+            markdownTheme: markdownTheme,
+            textCopyCallback: textCopyCallback,
+            linkCallback: linkCallback,
+            imageCallback: imageCallback,
+            imageReplaceCallback: imageReplaceCallback,
+            imageDownloadCallback: imageDownloadCallback,
+            audioCallback: audioCallback,
+            videoCallback: videoCallback,
+            videoImageCallback: videoImageCallback,
+            videoReleaseCallback: videoReleaseCallback,
+            videoDownloadCallback: videoDownloadCallback,
+            codeCopyCallback: codeCopyCallback,
+            codeFullScreenCallback: codeFullScreenCallback,
+            latexImageCallback: latexImageCallback,
+            latexStrCallback: latexStrCallback,
+            tocIndexCallback: tocIndexCallback,
+            footnoteCallback: footnoteCallback,
+            nodeString: nodeString,
+            tableCopyCallback: tableCopyCallback,
+            elementExposureCallback: elementExposureCallback,
+            exposureThreshold: exposureThreshold,
+            markdownHighlightParagraph: markdownHighlightParagraph,
+            scrollController: scrollController,
+            paragraphAnimationStart: paragraphAnimationStart,
+            paragraphAnimationEnd: paragraphAnimationEnd,
+            customLongPressCallback: customLongPressCallback
+        )
     }
 }

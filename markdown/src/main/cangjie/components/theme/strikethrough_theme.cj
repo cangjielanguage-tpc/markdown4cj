@@ -1,17 +1,29 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 删除线文本样式
  */
-public class StrikethroughTheme <: MarkdownBaseTheme {
-    public var strikethroughTextFontColor: ?Color = None // 删除线文本颜色
-    public var strikethroughTextFontSize: ?Float64 = None // 删除线文本尺寸
-    public var strikethroughTextFontStyle: ?FontStyle = None // 删除线文本字体样式
-    public var strikethroughTextFontWeight: ?FontWeight = None // 删除线文本字体粗细
-    public var strikethroughTextFontFamily: ?String = None // 删除线文本字体
-    public var strikethroughTextLineHeight: ?Float64 = None // 删除线文本行高
-    public var strikethroughTextLetterSpacing: ?Float64 = None // 删除线文本字符间距
+@Observed
+public class StrikethroughTheme {
+    @Publish
+    public var strikethroughTextFontColor: ?Color = Option<Color>.None // 删除线文本颜色
+    @Publish
+    public var strikethroughTextFontSize: ?Float64 = Option<Float64>.None // 删除线文本尺寸
+    @Publish
+    public var strikethroughTextFontStyle: ?FontStyle = Option<FontStyle>.None // 删除线文本字体样式
+    @Publish
+    public var strikethroughTextFontWeight: ?FontWeight = Option<FontWeight>.None // 删除线文本字体粗细
+    @Publish
+    public var strikethroughTextFontFamily: ?String = Option<String>.None // 删除线文本字体
+    @Publish
+    public var strikethroughTextLineHeight: ?Float64 = Option<Float64>.None // 删除线文本行高
+    @Publish
+    public var strikethroughTextLetterSpacing: ?Float64 = Option<Float64>.None // 删除线文本字符间距
+    @Publish
     public var strikethroughTextDecorationColor: Color = COLOR_FF191919 // 删除线文本装饰线颜色
+    @Publish
     public var strikethroughTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID // 删除线文本装饰线样式
 
     /**

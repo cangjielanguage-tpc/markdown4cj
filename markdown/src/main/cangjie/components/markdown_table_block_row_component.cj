@@ -18,8 +18,7 @@ class MarkdownTableBlockRowComponent {
     var tableBlockRowFootnoteCallback: (String) -> Unit // 脚注点击事件
     var tableBlockRowRow: Int64 // 表格的第几行
     var tableBlockRowCellSize: Int64 // 表格总共有几列
-    @Prop
-    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表
+    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表（共享引用，传递给Cell）
     @State
     var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // UI数据源
 

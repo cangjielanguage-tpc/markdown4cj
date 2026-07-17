@@ -1,69 +1,71 @@
 package markdown.components
 
+import ohos.state_macro_manage.*
+
 /**
  * Markdown用户可设置的样式
+ * 使用 @Observed + @Publish 实现样式实时变动，修改属性后UI自动更新
  */
+@Observed
 public class MarkdownTheme {
-    protected var globalTheme: GlobalTheme = GlobalTheme() // 全局样式
-    protected var paragraphTheme: ParagraphTheme = ParagraphTheme() // 段落样式
-    protected var headingTheme: HeadingTheme = HeadingTheme() // 标题样式
-    protected var tableTheme: TableTheme = TableTheme() // 表格样式
-    protected var dividerTheme: DividerTheme = DividerTheme() // 分割线样式
-    protected var blockQuoteTheme: BlockQuoteTheme = BlockQuoteTheme() // 块引用样式
-    protected var orderedListTheme: OrderedListTheme = OrderedListTheme() // 有序列表样式
-    protected var bulletListTheme: BulletListTheme = BulletListTheme() // 无序/任务列表样式
-    protected var definitionListTheme: DefinitionListTheme = DefinitionListTheme() // 定义列表样式
-    protected var codeBlockTheme: CodeBlockTheme = CodeBlockTheme() // 代码块样式
-    protected var audioTheme: AudioTheme = AudioTheme() // 音频样式
-    protected var videoTheme: VideoTheme = VideoTheme() // 视频样式
-    protected var bannerTheme: BannerTheme = BannerTheme() // banner样式
-    protected var footnoteDefTheme: FootnoteDefTheme = FootnoteDefTheme() // 脚注定义样式
-    protected var footnoteRefTheme: FootnoteRefTheme = FootnoteRefTheme() // 脚注引用样式
-    protected var inlineCodeTheme: InlineCodeTheme = InlineCodeTheme() // 内联代码样式
-    protected var boldTheme: BoldTheme = BoldTheme() // 加粗文本样式
-    protected var latexMathTheme: LatexMathTheme = LatexMathTheme() // 数学公式样式
-    protected var htmlUnderlineTheme: HtmlUnderlineTheme = HtmlUnderlineTheme() // HTML下划线文本样式
-    protected var imageTheme: ImageTheme = ImageTheme() // 图片样式
-    protected var italicTheme: ItalicTheme = ItalicTheme() // 斜体文本样式
-    protected var linkTheme: LinkTheme = LinkTheme() // 链接文本样式
-    protected var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
-    protected var highlightTheme: HighlightTheme = HighlightTheme() // 高亮样式
-    protected var subTheme: SubTheme = SubTheme() // 下标文本样式
-    protected var supTheme: SupTheme = SupTheme() // 上标文本样式
-    protected var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
-
-    protected init(builder: MarkdownThemeBuilder) {
-        this.globalTheme = builder.globalTheme
-        this.paragraphTheme = builder.paragraphTheme
-        this.headingTheme = builder.headingTheme
-        this.tableTheme = builder.tableTheme
-        this.dividerTheme = builder.dividerTheme
-        this.blockQuoteTheme = builder.blockQuoteTheme
-        this.orderedListTheme = builder.orderedListTheme
-        this.bulletListTheme = builder.bulletListTheme
-        this.definitionListTheme = builder.definitionListTheme
-        this.codeBlockTheme = builder.codeBlockTheme
-        this.audioTheme = builder.audioTheme
-        this.videoTheme = builder.videoTheme
-        this.bannerTheme = builder.bannerTheme
-        this.footnoteDefTheme = builder.footnoteDefTheme
-        this.footnoteRefTheme = builder.footnoteRefTheme
-        this.inlineCodeTheme = builder.inlineCodeTheme
-        this.boldTheme = builder.boldTheme
-        this.latexMathTheme = builder.latexMathTheme
-        this.htmlUnderlineTheme = builder.htmlUnderlineTheme
-        this.imageTheme = builder.imageTheme
-        this.italicTheme = builder.italicTheme
-        this.linkTheme = builder.linkTheme
-        this.strikethroughTheme = builder.strikethroughTheme
-        this.highlightTheme = builder.highlightTheme
-        this.subTheme = builder.subTheme
-        this.supTheme = builder.supTheme
-        this.prismTheme = builder.prismTheme
-    }
+    @Publish
+    var globalTheme: GlobalTheme = GlobalTheme() // 全局样式
+    @Publish
+    var paragraphTheme: ParagraphTheme = ParagraphTheme() // 段落样式
+    @Publish
+    var headingTheme: HeadingTheme = HeadingTheme() // 标题样式
+    @Publish
+    var tableTheme: TableTheme = TableTheme() // 表格样式
+    @Publish
+    var dividerTheme: DividerTheme = DividerTheme() // 分割线样式
+    @Publish
+    var blockQuoteTheme: BlockQuoteTheme = BlockQuoteTheme() // 块引用样式
+    @Publish
+    var orderedListTheme: OrderedListTheme = OrderedListTheme() // 有序列表样式
+    @Publish
+    var bulletListTheme: BulletListTheme = BulletListTheme() // 无序/任务列表样式
+    @Publish
+    var definitionListTheme: DefinitionListTheme = DefinitionListTheme() // 定义列表样式
+    @Publish
+    var codeBlockTheme: CodeBlockTheme = CodeBlockTheme() // 代码块样式
+    @Publish
+    var audioTheme: AudioTheme = AudioTheme() // 音频样式
+    @Publish
+    var videoTheme: VideoTheme = VideoTheme() // 视频样式
+    @Publish
+    var bannerTheme: BannerTheme = BannerTheme() // banner样式
+    @Publish
+    var footnoteDefTheme: FootnoteDefTheme = FootnoteDefTheme() // 脚注定义样式
+    @Publish
+    var footnoteRefTheme: FootnoteRefTheme = FootnoteRefTheme() // 脚注引用样式
+    @Publish
+    var inlineCodeTheme: InlineCodeTheme = InlineCodeTheme() // 内联代码样式
+    @Publish
+    var boldTheme: BoldTheme = BoldTheme() // 加粗文本样式
+    @Publish
+    var latexMathTheme: LatexMathTheme = LatexMathTheme() // 数学公式样式
+    @Publish
+    var htmlUnderlineTheme: HtmlUnderlineTheme = HtmlUnderlineTheme() // HTML下划线文本样式
+    @Publish
+    var imageTheme: ImageTheme = ImageTheme() // 图片样式
+    @Publish
+    var italicTheme: ItalicTheme = ItalicTheme() // 斜体文本样式
+    @Publish
+    var linkTheme: LinkTheme = LinkTheme() // 链接文本样式
+    @Publish
+    var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
+    @Publish
+    var highlightTheme: HighlightTheme = HighlightTheme() // 高亮样式
+    @Publish
+    var subTheme: SubTheme = SubTheme() // 下标文本样式
+    @Publish
+    var supTheme: SupTheme = SupTheme() // 上标文本样式
+    @Publish
+    var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
 
     /**
      * 创建Theme对象
+     * @Observed 类不能定义构造函数，由宏自动生成命名参数构造函数
      *
      * @return MarkdownTheme 创建空的MarkdownTheme对象
      */
@@ -922,7 +924,7 @@ public class MarkdownThemeBuilder {
                 this.linkTheme.linkTextFontSize = 14.0
             }
         } else {
-            this.linkTheme.linkTextFontSize = None
+            this.linkTheme.linkTextFontSize = Option<Float64>.None
         }
         return this
     }
@@ -3827,10 +3829,39 @@ public class MarkdownThemeBuilder {
 
     /**
      * 返回Theme对象
+     * @Observed 类由宏自动生成命名参数构造函数，直接传入所有属性
      *
      * @return MarkdownTheme MarkdownTheme对象
      */
     public func build(): MarkdownTheme {
-        return MarkdownTheme(this)
+        return MarkdownTheme(
+            globalTheme: globalTheme,
+            paragraphTheme: paragraphTheme,
+            headingTheme: headingTheme,
+            tableTheme: tableTheme,
+            dividerTheme: dividerTheme,
+            blockQuoteTheme: blockQuoteTheme,
+            orderedListTheme: orderedListTheme,
+            bulletListTheme: bulletListTheme,
+            definitionListTheme: definitionListTheme,
+            codeBlockTheme: codeBlockTheme,
+            audioTheme: audioTheme,
+            videoTheme: videoTheme,
+            bannerTheme: bannerTheme,
+            footnoteDefTheme: footnoteDefTheme,
+            footnoteRefTheme: footnoteRefTheme,
+            inlineCodeTheme: inlineCodeTheme,
+            boldTheme: boldTheme,
+            latexMathTheme: latexMathTheme,
+            htmlUnderlineTheme: htmlUnderlineTheme,
+            imageTheme: imageTheme,
+            italicTheme: italicTheme,
+            linkTheme: linkTheme,
+            strikethroughTheme: strikethroughTheme,
+            highlightTheme: highlightTheme,
+            subTheme: subTheme,
+            supTheme: supTheme,
+            prismTheme: prismTheme
+        )
     }
 }

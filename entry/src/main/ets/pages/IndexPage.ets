@@ -32,6 +32,12 @@ struct IndexPage {
       globalThis.markdownContent = content
     }
     globalThis.safeTop = this.safeTop.toString()
+    globalThis.appResources = {
+      "startIcon": $r('app.media.startIcon'),
+      "app_icon": $r('app.media.app_icon'),
+      "background": $r('app.media.background'),
+      "you": $r('app.media.you'),
+    }
   }
 
   build() {

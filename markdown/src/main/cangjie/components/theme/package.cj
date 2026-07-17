@@ -5,6 +5,9 @@ internal import ohos.component.*
 internal import ohos.resource_manager.*
 internal import ohos.ability.UIAbilityContext
 internal import ohos.ark_interop_helper.*
+internal import ohos.state_manage.ObservedObject
+internal import ohos.state_manage.ObservedProperty
+internal import ohos.state_manage.ObservedComplexAbstract
 
 let COLOR_WHITE: Color = Color.WHITE
 let COLOR_RED: Color = Color.RED

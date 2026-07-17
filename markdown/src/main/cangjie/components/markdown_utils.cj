@@ -1391,6 +1391,40 @@ func imageSpanBorderRadius(radius: Option<Length>, imageBorderRadiusTopLeft: Flo
 }
 
 /**
+ * 计算ImageSpan初始宽度
+ * 对齐ArkTS: .width(item.imageWidth ?? (componentWidth > 0 ? componentWidth * imageMaximumWidth : undefined))
+ *
+ * @param imageWidth 节点配置的图片宽度
+ * @param componentWidth 组件宽度
+ * @param imageMaximumWidth 主题配置的最大宽度比例
+ * @return Length 初始宽度
+ */
+func spanImageInitWidth(imageWidth: Option<Length>, componentWidth: Float64, imageMaximumWidth: Float64): Length {
+    if (let Some(v) <- imageWidth) {
+        return v
+    }
+    if (componentWidth > 0.0) {
+        return (componentWidth * imageMaximumWidth).vp
+    }
+    return 100.percent
+}
+
+/**
+ * 计算图片单个圆角值
+ * 对齐ArkTS: item.imageRadius ?? themeRadius
+ *
+ * @param imageRadius 节点配置的图片圆角
+ * @param themeRadius 主题配置的圆角
+ * @return Float64 圆角值
+ */
+func spanImageRadiusValue(imageRadius: Option<Length>, themeRadius: Float64): Float64 {
+    if (let Some(v) <- imageRadius) {
+        return length2Float(v)
+    }
+    return themeRadius
+}
+
+/**
  * 将Length转换成Float64
  *
  * @param length ?Length

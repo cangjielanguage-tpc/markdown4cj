@@ -70,6 +70,8 @@ class VideoPage {
     @State var cfg_videoBorderStyle: String = "Solid"
     @State var cfg_videoBorderWidth: String = "0"
     @State var cfg_videoImageFitType: String = "Cover"
+    @State var cfg_videoPlaceholder: String = "undefined"
+    @State var cfg_videoPlayIcon: String = "undefined"
     @State var cfg_videoPlayIconWidth: String = "60"
     @State var cfg_videoPlayIconHeight: String = "60"
     @State var cfg_videoPlayIconFitType: String = "Contain"
@@ -90,6 +92,7 @@ class VideoPage {
     @State var cfg_videoReleaseButtonRadiusTopRight: String = "undefined"
     @State var cfg_videoReleaseButtonRadiusBottomLeft: String = "undefined"
     @State var cfg_videoReleaseButtonRadiusBottomRight: String = "undefined"
+    @State var cfg_videoReleaseButtonIcon: String = "undefined"
     @State var cfg_videoReleaseButtonIconTextGap: String = "6"
     @State var cfg_videoReleaseButtonIconWidth: String = "18"
     @State var cfg_videoReleaseButtonIconHeight: String = "18"
@@ -108,6 +111,7 @@ class VideoPage {
     @State var cfg_videoDownloadButtonRadiusTopRight: String = "undefined"
     @State var cfg_videoDownloadButtonRadiusBottomLeft: String = "undefined"
     @State var cfg_videoDownloadButtonRadiusBottomRight: String = "undefined"
+    @State var cfg_videoDownloadButtonIcon: String = "undefined"
     @State var cfg_videoDownloadButtonIconTextGap: String = "6"
     @State var cfg_videoDownloadButtonIconWidth: String = "18"
     @State var cfg_videoDownloadButtonIconHeight: String = "18"
@@ -199,6 +203,12 @@ class VideoPage {
         videoTheme.setVideoBorderStyle(parseBorderStyle(cfg_videoBorderStyle))
         videoTheme.setVideoBorderWidth(parseFloat64(cfg_videoBorderWidth))
         videoTheme.setVideoImageFitType(parseImageFit(cfg_videoImageFitType))
+        if (let Some(v) <- parseAppResource(cfg_videoPlaceholder)) {
+            videoTheme.setVideoPlaceholder(v)
+        }
+        if (let Some(v) <- parseAppResource(cfg_videoPlayIcon)) {
+            videoTheme.setVideoPlayIcon(v)
+        }
         videoTheme.setVideoPlayIconWidth(parseFloat64(cfg_videoPlayIconWidth))
         videoTheme.setVideoPlayIconHeight(parseFloat64(cfg_videoPlayIconHeight))
         videoTheme.setVideoPlayIconFitType(parseImageFit(cfg_videoPlayIconFitType))
@@ -225,6 +235,9 @@ class VideoPage {
         }
         videoTheme.setVideoReleaseButtonWidth(parseFloat64(cfg_videoReleaseButtonWidth))
         videoTheme.setVideoReleaseButtonHeight(parseFloat64(cfg_videoReleaseButtonHeight))
+        if (let Some(v) <- parseAppResource(cfg_videoReleaseButtonIcon)) {
+            videoTheme.setVideoReleaseButtonIcon(v)
+        }
         videoTheme.setVideoReleaseButtonIconTextGap(parseFloat64(cfg_videoReleaseButtonIconTextGap))
         videoTheme.setVideoReleaseButtonIconWidth(parseFloat64(cfg_videoReleaseButtonIconWidth))
         videoTheme.setVideoReleaseButtonIconHeight(parseFloat64(cfg_videoReleaseButtonIconHeight))
@@ -251,6 +264,9 @@ class VideoPage {
         }
         videoTheme.setVideoDownloadButtonWidth(parseFloat64(cfg_videoDownloadButtonWidth))
         videoTheme.setVideoDownloadButtonHeight(parseFloat64(cfg_videoDownloadButtonHeight))
+        if (let Some(v) <- parseAppResource(cfg_videoDownloadButtonIcon)) {
+            videoTheme.setVideoDownloadButtonIcon(v)
+        }
         videoTheme.setVideoDownloadButtonIconTextGap(parseFloat64(cfg_videoDownloadButtonIconTextGap))
         videoTheme.setVideoDownloadButtonIconWidth(parseFloat64(cfg_videoDownloadButtonIconWidth))
         videoTheme.setVideoDownloadButtonIconHeight(parseFloat64(cfg_videoDownloadButtonIconHeight))
@@ -391,6 +407,7 @@ class VideoPage {
 
                         if (isExpanded2) {
                             Column {
+                                ConfigTabSelector(title: "视频占位图 - ", options: videoPlaceholderList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoPlaceholder = v })
                                 ConfigTabSelector(title: "视频背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoBackgroundColor = v })
                                 ConfigTabSelector(title: "视频边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoBorderColor = v })
                                 ConfigTabSelector(title: "视频上外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoMarginTop = v })
@@ -443,6 +460,7 @@ class VideoPage {
 
                         if (isExpanded3) {
                             Column {
+                                ConfigTabSelector(title: "播放按钮图标 - ", options: iconList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoPlayIcon = v })
                                 ConfigTabSelector(title: "播放按钮图标宽度 - ", options: widthOrHeightList, defaultValue: "60", configKey: "", onSelect: { v => cfg_videoPlayIconWidth = v })
                                 ConfigTabSelector(title: "播放按钮图标高度 - ", options: widthOrHeightList, defaultValue: "60", configKey: "", onSelect: { v => cfg_videoPlayIconHeight = v })
                                 ConfigTabSelector(title: "播放按钮图标缩放类型 - ", options: imageFitList, defaultValue: "Contain", configKey: "", onSelect: { v => cfg_videoPlayIconFitType = v })
@@ -534,6 +552,7 @@ class VideoPage {
                                 ConfigTabSelector(title: "视频发布按钮右上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoReleaseButtonRadiusTopRight = v })
                                 ConfigTabSelector(title: "视频发布按钮左下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoReleaseButtonRadiusBottomLeft = v })
                                 ConfigTabSelector(title: "视频发布按钮右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoReleaseButtonRadiusBottomRight = v })
+                                ConfigTabSelector(title: "视频发布按钮图标 - ", options: iconList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoReleaseButtonIcon = v })
                                 ConfigTabSelector(title: "视频发布按钮图标和文本间距 - ", options: spaceList, defaultValue: "6", configKey: "", onSelect: { v => cfg_videoReleaseButtonIconTextGap = v })
                                 ConfigTabSelector(title: "视频发布按钮图标宽度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", onSelect: { v => cfg_videoReleaseButtonIconWidth = v })
                                 ConfigTabSelector(title: "视频发布按钮图标高度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", onSelect: { v => cfg_videoReleaseButtonIconHeight = v })
@@ -587,6 +606,7 @@ class VideoPage {
                                 ConfigTabSelector(title: "视频下载按钮右上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoDownloadButtonRadiusTopRight = v })
                                 ConfigTabSelector(title: "视频下载按钮左下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoDownloadButtonRadiusBottomLeft = v })
                                 ConfigTabSelector(title: "视频下载按钮右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoDownloadButtonRadiusBottomRight = v })
+                                ConfigTabSelector(title: "视频下载按钮图标 - ", options: iconList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_videoDownloadButtonIcon = v })
                                 ConfigTabSelector(title: "视频下载按钮图标和文本间距 - ", options: spaceList, defaultValue: "6", configKey: "", onSelect: { v => cfg_videoDownloadButtonIconTextGap = v })
                                 ConfigTabSelector(title: "视频下载按钮图标宽度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", onSelect: { v => cfg_videoDownloadButtonIconWidth = v })
                                 ConfigTabSelector(title: "视频下载按钮图标高度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", onSelect: { v => cfg_videoDownloadButtonIconHeight = v })

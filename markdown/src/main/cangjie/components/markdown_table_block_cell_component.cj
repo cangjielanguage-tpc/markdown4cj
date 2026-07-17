@@ -20,11 +20,7 @@ class MarkdownTableBlockCellComponent {
     var tableBlockCellRow: Int64 // 表格的第几行
     var tableBlockCellCell: Int64 // 表格的第几条
     var tableBlockCellCellSize: Int64 // 表格总共有几列
-    @Prop
-    @Watch[refreshTextWidth]
-    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表
-    @State
-    var tableBlockCellMinCellWidth: Float64 = 0.0 // 表格Cell最小宽度
+    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表（共享引用，@Observed+@Publish自动响应式）
     @State
     var isRefresh: Bool = false // 表格Cell子节点是否不为0
     @State
@@ -33,7 +29,6 @@ class MarkdownTableBlockCellComponent {
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
         refreshTableBlockCellData(tableBlockCellNodeView) // 初始化刷新数据
-        refreshTextWidth() // 宽度刷新
         // 链接曝光注册（与段落组件保持一致）
         if (tableBlockCellMarkdownConfiguration.elementExposureCallback.isSome()) {
             let urls = MarkdownLinkExposureRegistry.extractHttpLinks(tableBlockCellNodeView)
@@ -58,7 +53,7 @@ class MarkdownTableBlockCellComponent {
         .borderWidth(EdgeWidths(left: leftWidths().vp, right: rightWidths().vp, top: topWidths().vp, bottom: bottomWidths().vp))
         .borderStyle(tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
         .borderColor(tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
-        .constraintSize(minWidth: tableBlockCellMinCellWidth.vp, maxWidth: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth.vp)
+        .constraintSize(minWidth: currentMinWidth().vp, maxWidth: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth.vp)
         .interopOnSizeChange({
             old, new =>
                 if (old.width == new.width) {
@@ -67,7 +62,8 @@ class MarkdownTableBlockCellComponent {
                 let newWidth: Float64 = new.width
                 if (let Some(v) <- cellWidthArrayIndexed.get().get(tableBlockCellCell)) {
                     if (v.index == tableBlockCellCell && newWidth > v.minWidth) {
-                        cellWidthArrayIndexed[tableBlockCellCell] = CellWidthArrayIndexedClass(minWidth: newWidth, index: tableBlockCellCell)
+                        // 直接修改 @Publish 属性，通知所有观察该属性的组件重渲染
+                        v.minWidth = newWidth
                     }
                 }
         })
@@ -209,16 +205,17 @@ class MarkdownTableBlockCellComponent {
     }
 
     /**
-     * 表格最小宽度刷新
+     * 获取当前Cell的最小宽度
+     * 直接读取 @Publish minWidth 属性，建立响应式依赖
+     * 当其他Cell更新同一列的minWidth时，本Cell会自动重渲染
+     *
+     * @return Float64 最小宽度（vp）
      */
-    func refreshTextWidth(): Unit {
+    func currentMinWidth(): Float64 {
         if (let Some(v) <- cellWidthArrayIndexed.get().get(tableBlockCellCell)) {
-            if (v.index == tableBlockCellCell && v.minWidth > tableBlockCellMinCellWidth) {
-                tableBlockCellMinCellWidth = v.minWidth
-            }
-        } else {
-            tableBlockCellMinCellWidth = tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMinCellWidth
+            return v.minWidth
         }
+        return tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMinCellWidth
     }
 
     /**

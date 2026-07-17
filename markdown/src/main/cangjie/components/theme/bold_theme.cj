@@ -1,16 +1,26 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 加粗文本样式
  */
-public class BoldTheme <: MarkdownBaseTheme {
-    public var boldTextFontColor: ?Color = None // 加粗文本颜色
-    public var boldTextFontSize: ?Float64 = None // 加粗文本尺寸
-    public var boldTextFontStyle: ?FontStyle = None // 加粗文本字体样式
+@Observed
+public class BoldTheme {
+    @Publish
+    public var boldTextFontColor: ?Color = Option<Color>.None // 加粗文本颜色
+    @Publish
+    public var boldTextFontSize: ?Float64 = Option<Float64>.None // 加粗文本尺寸
+    @Publish
+    public var boldTextFontStyle: ?FontStyle = Option<FontStyle>.None // 加粗文本字体样式
+    @Publish
     public var boldTextFontWeight: FontWeight = FontWeight.W600 // 加粗文本字体粗细
-    public var boldTextFontFamily: ?String = None // 加粗文本字体
-    public var boldTextLineHeight: ?Float64 = None // 加粗文本行高
-    public var boldTextLetterSpacing: ?Float64 = None // 加粗文本字符间距
+    @Publish
+    public var boldTextFontFamily: ?String = Option<String>.None // 加粗文本字体
+    @Publish
+    public var boldTextLineHeight: ?Float64 = Option<Float64>.None // 加粗文本行高
+    @Publish
+    public var boldTextLetterSpacing: ?Float64 = Option<Float64>.None // 加粗文本字符间距
 
     /**
      * 设置加粗文本颜色

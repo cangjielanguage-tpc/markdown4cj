@@ -72,6 +72,7 @@ class AudioPage {
     @State var cfg_audioShadowColor: String = "undefined"
     @State var cfg_audioShadowOffsetX: String = "0"
     @State var cfg_audioShadowOffsetY: String = "2"
+    @State var cfg_audioIcon: String = "undefined"
     @State var cfg_audioIconWidth: String = "40"
     @State var cfg_audioIconHeight: String = "40"
     @State var cfg_audioIconRadiusTopLeft: String = "undefined"
@@ -196,6 +197,9 @@ class AudioPage {
         }
         audioTheme.setAudioShadowOffsetX(parseFloat64(cfg_audioShadowOffsetX))
         audioTheme.setAudioShadowOffsetY(parseFloat64(cfg_audioShadowOffsetY))
+        if (let Some(v) <- parseAppResource(cfg_audioIcon)) {
+            audioTheme.setAudioIcon(v)
+        }
         audioTheme.setAudioIconWidth(parseFloat64(cfg_audioIconWidth))
         audioTheme.setAudioIconHeight(parseFloat64(cfg_audioIconHeight))
         audioTheme.setAudioIconFitType(parseImageFit(cfg_audioIconFitType))
@@ -428,6 +432,7 @@ class AudioPage {
 
                         if (isExpanded3) {
                             Column {
+                                ConfigTabSelector(title: "音频图标 - ", options: iconList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioIcon = v })
                                 ConfigTabSelector(title: "音频图标宽度 - ", options: widthOrHeightList, defaultValue: "40", configKey: "", onSelect: { v => cfg_audioIconWidth = v })
                                 ConfigTabSelector(title: "音频图标高度 - ", options: widthOrHeightList, defaultValue: "40", configKey: "", onSelect: { v => cfg_audioIconHeight = v })
                                 ConfigTabSelector(title: "音频图标左上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_audioIconRadiusTopLeft = v })

@@ -1,15 +1,25 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 下标文本样式
  */
-public class SubTheme <: MarkdownBaseTheme {
-    public var subTextFontColor: ?Color = None // 下标文本颜色
+@Observed
+public class SubTheme {
+    @Publish
+    public var subTextFontColor: ?Color = Option<Color>.None // 下标文本颜色
+    @Publish
     public var subTextFontSize: Float64 = 8.0 // 下标文本尺寸
-    public var subTextFontStyle: ?FontStyle = None // 下标文本字体样式
-    public var subTextFontWeight: ?FontWeight = None // 下标文本字体粗细
-    public var subTextFontFamily: ?String = None // 下标文本字体
-    public var subTextLetterSpacing: ?Float64 = None // 下标文本字符间距
+    @Publish
+    public var subTextFontStyle: ?FontStyle = Option<FontStyle>.None // 下标文本字体样式
+    @Publish
+    public var subTextFontWeight: ?FontWeight = Option<FontWeight>.None // 下标文本字体粗细
+    @Publish
+    public var subTextFontFamily: ?String = Option<String>.None // 下标文本字体
+    @Publish
+    public var subTextLetterSpacing: ?Float64 = Option<Float64>.None // 下标文本字符间距
+    @Publish
     public var subTextBaselineOffset: Float64 = 0.0 // 下标文本基线的偏移量
 
     /**

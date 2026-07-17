@@ -1,49 +1,93 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 链接文本样式
  */
-public class LinkTheme <: MarkdownBaseTheme {
+@Observed
+public class LinkTheme {
+    @Publish
     public var linkIsIcon: Bool = false // 链接是否是图片显示
+    @Publish
     public var linkListIsIcon: Bool = false // 列表中的单行链接是否是图片显示
+    @Publish
     public var linkTextFontColor: Color = COLOR_RED // 链接文本颜色
-    public var linkTextFontSize: ?Float64 = None // 链接文本尺寸
-    public var linkTextFontStyle: ?FontStyle = None // 链接文本字体样式
-    public var linkTextFontWeight: ?FontWeight = None // 链接文本字体粗细
-    public var linkTextFontFamily: ?String = None // 链接文本字体
-    public var linkTextLineHeight: ?Float64 = None // 链接文本行高
-    public var linkTextLetterSpacing: ?Float64 = None // 链接文本字符间距
+    @Publish
+    public var linkTextFontSize: ?Float64 = Option<Float64>.None // 链接文本尺寸
+    @Publish
+    public var linkTextFontStyle: ?FontStyle = Option<FontStyle>.None // 链接文本字体样式
+    @Publish
+    public var linkTextFontWeight: ?FontWeight = Option<FontWeight>.None // 链接文本字体粗细
+    @Publish
+    public var linkTextFontFamily: ?String = Option<String>.None // 链接文本字体
+    @Publish
+    public var linkTextLineHeight: ?Float64 = Option<Float64>.None // 链接文本行高
+    @Publish
+    public var linkTextLetterSpacing: ?Float64 = Option<Float64>.None // 链接文本字符间距
+    @Publish
     public var linkTextDecorationType: TextDecorationType = TextDecorationType.Underline // 链接文本装饰线类型
+    @Publish
     public var linkTextDecorationColor: Color = COLOR_RED // 链接文本装饰线颜色
+    @Publish
     public var linkTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID // 链接文本装饰线样式
+    @Publish
     public var linkTextBackgroundColor: Color = COLOR_TRANSPARENT // 链接文本背景颜色
+    @Publish
     public var linkTextBackgroundRadiusTopLeft: Float64 = 0.0 // 链接文本背景左上圆角
+    @Publish
     public var linkTextBackgroundRadiusTopRight: Float64 = 0.0 // 链接文本背景右上圆角
+    @Publish
     public var linkTextBackgroundRadiusBottomLeft: Float64 = 0.0 // 链接文本背景左下圆角
+    @Publish
     public var linkTextBackgroundRadiusBottomRight: Float64 = 0.0 // 链接文本背景右下圆角
+    @Publish
     public var linkCircleIconBackgroundColor: Color = COLOR_TRANSPARENT // 圆形图片格式链接主题背景颜色
+    @Publish
     public var linkCircleIconButtonBackgroundColor: Color = COLOR_BLACK // 圆形图片格式链接控件背景颜色
+    @Publish
     public var linkCircleIconTextSize: Float64 = 14.0 // 圆形图片格式链接文字大小 - 实际使用要转换
+    @Publish
     public var linkCircleIconTextColor: Color = COLOR_WHITE // 圆形图片格式链接文字颜色
+    @Publish
     public var linkCircleIconRadius: Float64 = 20.0 // 圆形图片格式链接半径 - 实际使用要转换
+    @Publish
     public var linkCircleIconMargin: Float64 = 6.0 // 圆形图片格式链接左右外边距
+    @Publish
     public var linkRectIconBackgroundColor: Color = COLOR_TRANSPARENT // 圆角矩形图片格式链接主题背景颜色
+    @Publish
     public var linkRectIconButtonBackgroundColor: Color = COLOR_BLACK // 圆角矩形图片格式链接控件背景颜色
+    @Publish
     public var linkRectIconTextSize: Float64 = 14.0 // 圆角矩形图片格式链接文字大小 - 实际使用要转换
+    @Publish
     public var linkRectIconTextColor: Color = COLOR_WHITE // 圆角矩形图片格式链接文字颜色
+    @Publish
     public var linkRectIconHeight: Float64 = 20.0 // 圆角矩形图片格式链接控件高度 - 实际使用要转换
+    @Publish
     public var linkRectIconPadding: Float64 = 6.0 // 圆角矩形图片格式链接左右内边距 - 实际使用要转换
+    @Publish
     public var linkRectIconRadius: Float64 = 6.0 // 圆角矩形图片格式链接圆角半径 - 实际使用要转换
+    @Publish
     public var linkRectIconMargin: Float64 = 6.0 // 圆角矩形图片格式链接左右外边距
+    @Publish
     public var linkRectToolIconBackgroundColor: Color = COLOR_TRANSPARENT // 空心圆角矩形图片格式链接主题背景颜色
+    @Publish
     public var linkRectToolIconButtonBackgroundColor: Color = COLOR_WHITE // 空心圆角矩形图片格式链接控件背景颜色
+    @Publish
     public var linkRectToolIconTextSize: Float64 = 14.0 // 空心圆角矩形图片格式链接文字大小 - 实际使用要转换
+    @Publish
     public var linkRectToolIconHeight: Float64 = 21.0 // 空心圆角矩形图片格式链接控件高度 - 实际使用要转换
+    @Publish
     public var linkRectToolIconPadding: Float64 = 6.0 // 空心圆角矩形图片格式链接左右内边距 - 实际使用要转换
+    @Publish
     public var linkRectToolIconBorderWidth: Float64 = 1.0 // 空心圆角矩形图片格式链接边框宽度 - 实际使用要转换
+    @Publish
     public var linkRectToolIconDividingLineWidth: Float64 = 1.0 // 空心圆角矩形图片格式链接分割线宽度 - 实际使用要转换
+    @Publish
     public var linkRectToolIconMargin: Float64 = 6.0 // 空心圆角矩形图片格式链接左右外边距
+    @Publish
     public var linkRectToolIconLineLeftPadding: Float64 = 3.0 // 空心圆角矩形图片格式分割线和文本左边距 - 实际使用要转换
+    @Publish
     public var linkRectToolIconLineRightPadding: Float64 = 3.0 // 空心圆角矩形图片格式分割线和文本右边距 - 实际使用要转换
 
     /**

@@ -1,66 +1,127 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 音频样式
  */
-public class AudioTheme <: MarkdownBaseTheme {
+@Observed
+public class AudioTheme {
+    @Publish
     public var audioBackgroundColor: Color = COLOR_TRANSPARENT // 音频背景颜色
+    @Publish
     public var audioMarginTop: Float64 = 0.0 // 音频上外边距
+    @Publish
     public var audioMarginRight: Float64 = 0.0 // 音频右外边距
+    @Publish
     public var audioMarginBottom: Float64 = 0.0 // 音频下外边距
+    @Publish
     public var audioMarginLeft: Float64 = 0.0 // 音频左外边距
+    @Publish
     public var audioPaddingTop: Float64 = 12.0 // 音频上内边距
+    @Publish
     public var audioPaddingRight: Float64 = 16.0 // 音频右内边距
+    @Publish
     public var audioPaddingBottom: Float64 = 12.0 // 音频下内边距
+    @Publish
     public var audioPaddingLeft: Float64 = 12.0 // 音频左内边距
+    @Publish
     public var audioBorderStyle: BorderStyle = BorderStyle.Solid // 音频边框样式
+    @Publish
     public var audioBorderWidth: Float64 = 0.5 // 音频边框宽度
+    @Publish
     public var audioBorderColor: Color = COLOR_33000000 // 音频边框颜色
+    @Publish
     public var audioRadiusTopLeft: Float64 = 12.0 // 音频边框左上圆角
+    @Publish
     public var audioRadiusTopRight: Float64 = 12.0 // 音频边框右上圆角
+    @Publish
     public var audioRadiusBottomLeft: Float64 = 12.0 // 音频边框左下圆角
+    @Publish
     public var audioRadiusBottomRight: Float64 = 12.0 // 音频边框右下圆角
+    @Publish
     public var audioShadowRadius: Float64 = 12.0 // 音频阴影模糊半径
+    @Publish
     public var audioShadowColor: Color = COLOR_1A000000 // 音频阴影颜色值
+    @Publish
     public var audioShadowOffsetX: Float64 = 0.0 // 音频阴影X轴偏移量
+    @Publish
     public var audioShadowOffsetY: Float64 = 2.0 // 音频阴影Y轴偏移量
-    public var audioIcon: ?AppResource = None // 音频图标
+    @Publish
+    public var audioIcon: ?AppResource = Option<AppResource>.None // 音频图标
+    @Publish
     public var audioIconWidth: Float64 = 40.0 // 音频图标宽度
+    @Publish
     public var audioIconHeight: Float64 = 40.0 // 音频图标高度
+    @Publish
     public var audioIconRadiusTopLeft: Float64 = 8.0 // 音频图标左上圆角
+    @Publish
     public var audioIconRadiusTopRight: Float64 = 8.0 // 音频图标右上圆角
+    @Publish
     public var audioIconRadiusBottomLeft: Float64 = 8.0 // 音频图标左下圆角
+    @Publish
     public var audioIconRadiusBottomRight: Float64 = 8.0 // 音频图标右下圆角
+    @Publish
     public var audioIconFitType: ImageFit = ImageFit.Cover // 音频图标缩放类型
+    @Publish
     public var audioTitleToTypeSpacing: Float64 = 2.0 // 音频标题文本和类型文本间距
+    @Publish
     public var audioTitleTextFontColor: Color = COLOR_BLACK // 音频标题文本颜色
+    @Publish
     public var audioTitleTextFontSize: Float64 = 15.0 // 音频标题文本尺寸
+    @Publish
     public var audioTitleTextFontStyle: FontStyle = FontStyle.Normal // 音频标题文本字体样式
+    @Publish
     public var audioTitleTextFontWeight: FontWeight = FontWeight.W700 // 音频标题文本字体粗细
+    @Publish
     public var audioTitleTextFontFamily: String = "HarmonyOS Sans" // 音频标题文本字体
+    @Publish
     public var audioTitleTextLineHeight: Float64 = 20.0 // 音频标题文本行高
+    @Publish
     public var audioTypeTextFontColor: Color = COLOR_80000000 // 音频类型文本颜色
+    @Publish
     public var audioTypeTextFontSize: Float64 = 11.0 // 音频类型文本尺寸
+    @Publish
     public var audioTypeTextFontStyle: FontStyle = FontStyle.Normal // 音频类型文本字体样式
+    @Publish
     public var audioTypeTextFontWeight: FontWeight = FontWeight.W400 // 音频类型文本字体粗细
+    @Publish
     public var audioTypeTextFontFamily: String = "HarmonyOS Sans" // 音频类型文本字体
+    @Publish
     public var audioTypeTextLineHeight: Float64 = 15.0 // 音频类型文本行高
+    @Publish
     public var audioButtonBackgroundColor: Color = COLOR_BLACK // 音频按钮背景颜色
+    @Publish
     public var audioButtonWidth: Float64 = 84.0 // 音频按钮宽度
+    @Publish
     public var audioButtonHeight: Float64 = 32.0 // 音频按钮高度
+    @Publish
     public var audioButtonBorderStyle: BorderStyle = BorderStyle.Solid // 音频按钮边框样式
+    @Publish
     public var audioButtonBorderWidth: Float64 = 0.0 // 音频按钮边框宽度
+    @Publish
     public var audioButtonBorderColor: Color = COLOR_TRANSPARENT // 音频按钮边框颜色
+    @Publish
     public var audioButtonRadiusTopLeft: Float64 = 16.0 // 音频按钮边框左上圆角
+    @Publish
     public var audioButtonRadiusTopRight: Float64 = 16.0 // 音频按钮边框右上圆角
+    @Publish
     public var audioButtonRadiusBottomLeft: Float64 = 16.0 // 音频按钮边框左下圆角
+    @Publish
     public var audioButtonRadiusBottomRight: Float64 = 16.0 // 音频按钮边框右下圆角
+    @Publish
     public var audioButtonText: String = "立即播放" // 音频按钮默认文本内容
+    @Publish
     public var audioButtonTextFontColor: Color = COLOR_WHITE // 音频按钮文本颜色
+    @Publish
     public var audioButtonTextFontSize: Float64 = 14.0 // 音频按钮文本尺寸
+    @Publish
     public var audioButtonTextFontStyle: FontStyle = FontStyle.Normal // 音频按钮文本字体样式
+    @Publish
     public var audioButtonTextFontWeight: FontWeight = FontWeight.W500 // 音频按钮文本字体粗细
+    @Publish
     public var audioButtonTextFontFamily: String = "HarmonyOS Sans" // 音频按钮文本字体
+    @Publish
     public var audioButtonTextLineHeight: Float64 = 22.0 // 音频按钮文本行高
 
     /**

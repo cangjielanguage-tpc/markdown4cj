@@ -1,15 +1,24 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 斜体文本样式
  */
-public class ItalicTheme <: MarkdownBaseTheme {
-    public var italicTextFontColor: ?Color = None // 斜体文本颜色
-    public var italicTextFontSize: ?Float64 = None // 斜体文本尺寸
-    public var italicTextFontWeight: ?FontWeight = None // 斜体文本字体粗细
-    public var italicTextFontFamily: ?String = None // 斜体文本字体
-    public var italicTextLineHeight: ?Float64 = None // 斜体文本行高
-    public var italicTextLetterSpacing: ?Float64 = None // 斜体文本字符间距
+@Observed
+public class ItalicTheme {
+    @Publish
+    public var italicTextFontColor: ?Color = Option<Color>.None // 斜体文本颜色
+    @Publish
+    public var italicTextFontSize: ?Float64 = Option<Float64>.None // 斜体文本尺寸
+    @Publish
+    public var italicTextFontWeight: ?FontWeight = Option<FontWeight>.None // 斜体文本字体粗细
+    @Publish
+    public var italicTextFontFamily: ?String = Option<String>.None // 斜体文本字体
+    @Publish
+    public var italicTextLineHeight: ?Float64 = Option<Float64>.None // 斜体文本行高
+    @Publish
+    public var italicTextLetterSpacing: ?Float64 = Option<Float64>.None // 斜体文本字符间距
 
     /**
      * 设置斜体文本颜色

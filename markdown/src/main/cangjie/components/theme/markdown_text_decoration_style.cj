@@ -1,5 +1,7 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 装饰线样式枚举
  */

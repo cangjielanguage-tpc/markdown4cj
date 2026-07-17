@@ -1,18 +1,30 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * banner样式
  */
-public class BannerTheme <: MarkdownBaseTheme {
+@Observed
+public class BannerTheme {
+    @Publish
     public var bannerMarginTop: Float64 = 0.0 // banner上外边距
+    @Publish
     public var bannerMarginRight: Float64 = 0.0 // banner右外边距
+    @Publish
     public var bannerMarginBottom: Float64 = 0.0 // banner下外边距
+    @Publish
     public var bannerMarginLeft: Float64 = 0.0 // banner左外边距
+    @Publish
     public var bannerPaddingTop: Float64 = 0.0 // banner上内边距
+    @Publish
     public var bannerPaddingRight: Float64 = 0.0 // banner右内边距
+    @Publish
     public var bannerPaddingBottom: Float64 = 0.0 // banner下内边距
+    @Publish
     public var bannerPaddingLeft: Float64 = 0.0 // banner左内边距
-    public var bannerPlaceholder: ?AppResource = None // banner占位图
+    @Publish
+    public var bannerPlaceholder: ?AppResource = Option<AppResource>.None // banner占位图
 
     /**
      * 统一设置banner整体外边距

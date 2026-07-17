@@ -1,32 +1,59 @@
 package markdown.components.theme
 
+import ohos.state_macro_manage.*
+
 /**
  * 无序/任务列表样式
  */
-public class BulletListTheme <: MarkdownBaseTheme {
-    public var bulletListBackgroundColor: ?Color = None // 无序/任务背景颜色
+@Observed
+public class BulletListTheme {
+    @Publish
+    public var bulletListBackgroundColor: ?Color = Option<Color>.None // 无序/任务背景颜色
+    @Publish
     public var bulletListMarginTop: Float64 = 0.0 // 无序/任务上外边距
+    @Publish
     public var bulletListMarginRight: Float64 = 0.0 // 无序/任务右外边距
+    @Publish
     public var bulletListMarginBottom: Float64 = 0.0 // 无序/任务下外边距
+    @Publish
     public var bulletListMarginLeft: Float64 = 8.0 // 无序/任务左外边距
+    @Publish
     public var bulletListPaddingTop: Float64 = 0.0 // 无序/任务上内边距
+    @Publish
     public var bulletListPaddingRight: Float64 = 0.0 // 无序/任务右内边距
+    @Publish
     public var bulletListPaddingBottom: Float64 = 0.0 // 无序/任务下内边距
+    @Publish
     public var bulletListPaddingLeft: Float64 = 0.0 // 无序/任务左内边距
+    @Publish
     public var bulletListChildSpacing: Int64 = 8 // 无序/任务子模块上下间距
+    @Publish
     public var bulletListChildChildSpacing: Int64 = 8 // 无序/任务子模块中子模块上下间距
+    @Publish
     public var bulletListBulletSpacing: Float64 = 8.0 // 无序列表列表符号和列表内容间距
+    @Publish
     public var bulletListBulletIsCircle: Bool = false // 无序列表列表符号是否全部是实心圆型
+    @Publish
     public var bulletListBulletTextFontColor: Color = COLOR_FF191919 // 无序列表列表符号文本颜色
+    @Publish
     public var bulletListBulletTextFontSize: Float64 = 4.0 // 无序列表列表符号文本尺寸
+    @Publish
     public var bulletListBulletTextFontStyle: FontStyle = FontStyle.Normal // 无序列表列表符号文本字体样式
+    @Publish
     public var bulletListBulletTextFontWeight: FontWeight = FontWeight.W400 // 无序列表列表符号文本字体粗细
+    @Publish
     public var bulletListBulletTextFontFamily: String = "HarmonyOS Sans" // 无序列表列表符号文本字体
+    @Publish
     public var bulletListBulletTextLineHeight: Float64 = 18.0 // 无序列表列表符号文本行高
+    @Publish
     public var bulletListCheckboxSpacing: Float64 = 8.0 // 任务列表多选框和列表内容间距
+    @Publish
     public var bulletListCheckboxWidth: Float64 = 15.0 // 任务列表多选框宽度
+    @Publish
     public var bulletListCheckboxHeight: Float64 = 15.0 // 任务列表多选框高度
+    @Publish
     public var bulletListCheckboxSelectedColor: Color = COLOR_GRAY // 任务列表多选框选中颜色
+    @Publish
     public var bulletListCheckboxShape: CheckBoxShape = CheckBoxShape.ROUNDED_SQUARE // 任务列表多选框形状
 
     /**
