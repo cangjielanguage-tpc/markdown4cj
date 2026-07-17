@@ -106,7 +106,7 @@ class HighlightPage {
     }
 
     func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefaultBuilder()
+        let themeBuilder = MarkdownTheme.createDefault()
         let globalTheme = GlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
@@ -149,10 +149,10 @@ class HighlightPage {
         }
         highlightTheme.setHighlightTextBackgroundRadius(topLeft: parseFloat64(cfg_highlightTextBackgroundTopLeft), topRight: parseFloat64(cfg_highlightTextBackgroundTopRight), bottomLeft: parseFloat64(cfg_highlightTextBackgroundBottomLeft), bottomRight: parseFloat64(cfg_highlightTextBackgroundBottomRight))
         themeBuilder.setHighlightTheme(highlightTheme)
-        let theme = themeBuilder.build()
-        let configBuilder = MarkdownConfiguration.emptyBuilder()
+        let theme = themeBuilder
+        let configBuilder = MarkdownConfiguration.createEmpty()
         configBuilder.setMarkdownTheme(theme)
-        return configBuilder.build()
+        return configBuilder
     }
 
     public func build() {
@@ -211,23 +211,23 @@ class HighlightPage {
 
                         if (isExpanded1) {
                             Column {
-                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_isFull = v })
-                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_incrementalAnalysis = v })
-                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_enableParseThrottle = v })
-                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", onSelect: { v => cfg_parseThrottleMs = v })
-                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", onSelect: { v => cfg_time = v })
-                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", onSelect: { v => cfg_textNumber = v })
-                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isOnCopy = v })
-                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginTop = v })
-                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginRight = v })
-                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginBottom = v })
-                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginLeft = v })
-                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", onSelect: { v => cfg_markdownBlockSpacing = v })
-                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_backgroundColor = v })
-                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipeTest = v })
-                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipe = v })
+                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isFull, onSelect: { v => cfg_isFull = v })
+                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_incrementalAnalysis, onSelect: { v => cfg_incrementalAnalysis = v })
+                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_enableParseThrottle, onSelect: { v => cfg_enableParseThrottle = v })
+                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", currentValue: cfg_parseThrottleMs, onSelect: { v => cfg_parseThrottleMs = v })
+                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
+                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
+                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
+                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
+                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
+                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
+                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
+                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
+                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -263,18 +263,18 @@ class HighlightPage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "高亮文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_highlightTextFontColor = v })
-                                ConfigTabSelector(title: "高亮文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_highlightTextFontSize = v })
-                                ConfigTabSelector(title: "高亮文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_highlightTextFontWeight = v })
-                                ConfigTabSelector(title: "高亮文本背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_highlightTextBackgroundColor = v })
-                                ConfigTabSelector(title: "高亮文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_highlightTextFontStyle = v })
-                                ConfigTabSelector(title: "高亮文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_highlightTextFontFamily = v })
-                                ConfigTabSelector(title: "高亮文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_highlightTextLineHeight = v })
-                                ConfigTabSelector(title: "高亮文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_highlightTextLetterSpacing = v })
-                                ConfigTabSelector(title: "高亮文本背景左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_highlightTextBackgroundTopLeft = v })
-                                ConfigTabSelector(title: "高亮文本背景右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_highlightTextBackgroundTopRight = v })
-                                ConfigTabSelector(title: "高亮文本背景左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_highlightTextBackgroundBottomLeft = v })
-                                ConfigTabSelector(title: "高亮文本背景右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_highlightTextBackgroundBottomRight = v })
+                                ConfigTabSelector(title: "高亮文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontColor, onSelect: { v => cfg_highlightTextFontColor = v })
+                                ConfigTabSelector(title: "高亮文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontSize, onSelect: { v => cfg_highlightTextFontSize = v })
+                                ConfigTabSelector(title: "高亮文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_highlightTextFontWeight, onSelect: { v => cfg_highlightTextFontWeight = v })
+                                ConfigTabSelector(title: "高亮文本背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextBackgroundColor, onSelect: { v => cfg_highlightTextBackgroundColor = v })
+                                ConfigTabSelector(title: "高亮文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontStyle, onSelect: { v => cfg_highlightTextFontStyle = v })
+                                ConfigTabSelector(title: "高亮文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontFamily, onSelect: { v => cfg_highlightTextFontFamily = v })
+                                ConfigTabSelector(title: "高亮文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextLineHeight, onSelect: { v => cfg_highlightTextLineHeight = v })
+                                ConfigTabSelector(title: "高亮文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextLetterSpacing, onSelect: { v => cfg_highlightTextLetterSpacing = v })
+                                ConfigTabSelector(title: "高亮文本背景左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_highlightTextBackgroundTopLeft, onSelect: { v => cfg_highlightTextBackgroundTopLeft = v })
+                                ConfigTabSelector(title: "高亮文本背景右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_highlightTextBackgroundTopRight, onSelect: { v => cfg_highlightTextBackgroundTopRight = v })
+                                ConfigTabSelector(title: "高亮文本背景左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_highlightTextBackgroundBottomLeft, onSelect: { v => cfg_highlightTextBackgroundBottomLeft = v })
+                                ConfigTabSelector(title: "高亮文本背景右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_highlightTextBackgroundBottomRight, onSelect: { v => cfg_highlightTextBackgroundBottomRight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

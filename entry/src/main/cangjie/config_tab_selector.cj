@@ -79,9 +79,9 @@ class ConfigTabSelector {
     var defaultValue: String
     @Prop
     var configKey: String
+    @Prop
+    var currentValue: String
     var onSelect: ?(String) -> Unit = None
-    @State
-    var currentValue: String = ""
 
     public func build() {
         Column {
@@ -91,25 +91,25 @@ class ConfigTabSelector {
                     .textAlign(TextAlign.Start)
                     .layoutWeight(1)
                 Text(
-                    if (isColorValue(if (currentValue == "") { defaultValue } else { currentValue })) {
-                        colorDisplayName(if (currentValue == "") { defaultValue } else { currentValue })
+                    if (isColorValue(currentValue)) {
+                        colorDisplayName(currentValue)
                     } else {
-                        if (currentValue == "") { defaultValue } else { currentValue }
+                        currentValue
                     }
                 )
                     .fontSize(16.0)
                     .textAlign(TextAlign.End)
                     .margin(right: 5.0)
                     .backgroundColor(
-                        if (isColorValue(if (currentValue == "") { defaultValue } else { currentValue })) {
-                            colorToUInt32(if (currentValue == "") { defaultValue } else { currentValue })
+                        if (isColorValue(currentValue)) {
+                            colorToUInt32(currentValue)
                         } else {
                             0xFFE0E0E0
                         }
                     )
                     .fontColor(
-                        if (isColorValue(if (currentValue == "") { defaultValue } else { currentValue })) {
-                            contrastColor(if (currentValue == "") { defaultValue } else { currentValue })
+                        if (isColorValue(currentValue)) {
+                            contrastColor(currentValue)
                         } else {
                             0xFF000000
                         }
@@ -134,13 +134,12 @@ class ConfigTabSelector {
                                 .fontSize(14.0)
                                 .fontColor(if (isColorValue(item)) { contrastColor(item) } else { 0xFFFFFFFF })
                                 .onClick {evt =>
-                                    currentValue = item
                                     if (let Some(cb) <- onSelect) {
                                         cb(item)
                                     } else if (configKey != "") {
                                         setGlobalString(configKey, item)
                                     }
-                                }
+                            }
                     }
                 )
             }

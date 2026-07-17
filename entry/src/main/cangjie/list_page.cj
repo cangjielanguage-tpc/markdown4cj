@@ -142,7 +142,7 @@ class ListPage {
     }
 
     func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefaultBuilder()
+        let themeBuilder = MarkdownTheme.createDefault()
         let globalTheme = GlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
@@ -221,10 +221,10 @@ class ListPage {
         bulletListTheme.setBulletListMargin(top: parseFloat64(cfg_bulletListMarginTop), right: parseFloat64(cfg_bulletListMarginRight), bottom: parseFloat64(cfg_bulletListMarginBottom), left: parseFloat64(cfg_bulletListMarginLeft))
         bulletListTheme.setBulletListPadding(top: parseFloat64(cfg_bulletListPaddingTop), right: parseFloat64(cfg_bulletListPaddingRight), bottom: parseFloat64(cfg_bulletListPaddingBottom), left: parseFloat64(cfg_bulletListPaddingLeft))
         themeBuilder.setBulletListTheme(bulletListTheme)
-        let theme = themeBuilder.build()
-        let configBuilder = MarkdownConfiguration.emptyBuilder()
+        let theme = themeBuilder
+        let configBuilder = MarkdownConfiguration.createEmpty()
         configBuilder.setMarkdownTheme(theme)
-        return configBuilder.build()
+        return configBuilder
     }
 
     public func build() {
@@ -283,23 +283,23 @@ class ListPage {
 
                         if (isExpanded1) {
                             Column {
-                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_isFull = v })
-                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_incrementalAnalysis = v })
-                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_enableParseThrottle = v })
-                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", onSelect: { v => cfg_parseThrottleMs = v })
-                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", onSelect: { v => cfg_time = v })
-                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", onSelect: { v => cfg_textNumber = v })
-                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isOnCopy = v })
-                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginTop = v })
-                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginRight = v })
-                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginBottom = v })
-                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginLeft = v })
-                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", onSelect: { v => cfg_markdownBlockSpacing = v })
-                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_backgroundColor = v })
-                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipeTest = v })
-                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipe = v })
+                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isFull, onSelect: { v => cfg_isFull = v })
+                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_incrementalAnalysis, onSelect: { v => cfg_incrementalAnalysis = v })
+                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_enableParseThrottle, onSelect: { v => cfg_enableParseThrottle = v })
+                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", currentValue: cfg_parseThrottleMs, onSelect: { v => cfg_parseThrottleMs = v })
+                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
+                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
+                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
+                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
+                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
+                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
+                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
+                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
+                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -335,24 +335,24 @@ class ListPage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "有序列表标记文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_orderedListMarkerTextFontColor = v })
-                                ConfigTabSelector(title: "有序列表标记文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_orderedListMarkerTextFontSize = v })
-                                ConfigTabSelector(title: "有序列表背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_orderedListBackgroundColor = v })
-                                ConfigTabSelector(title: "有序列表上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListMarginTop = v })
-                                ConfigTabSelector(title: "有序列表右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListMarginRight = v })
-                                ConfigTabSelector(title: "有序列表下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListMarginBottom = v })
-                                ConfigTabSelector(title: "有序列表左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListMarginLeft = v })
-                                ConfigTabSelector(title: "有序列表上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListPaddingTop = v })
-                                ConfigTabSelector(title: "有序列表右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListPaddingRight = v })
-                                ConfigTabSelector(title: "有序列表下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListPaddingBottom = v })
-                                ConfigTabSelector(title: "有序列表左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListPaddingLeft = v })
-                                ConfigTabSelector(title: "有序列表子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListChildSpacing = v })
-                                ConfigTabSelector(title: "有序列表子子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListChildChildSpacing = v })
-                                ConfigTabSelector(title: "有序列表标记间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_orderedListMarkerSpacing = v })
-                                ConfigTabSelector(title: "有序列表标记文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_orderedListMarkerTextFontStyle = v })
-                                ConfigTabSelector(title: "有序列表标记文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_orderedListMarkerTextFontWeight = v })
-                                ConfigTabSelector(title: "有序列表标记文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_orderedListMarkerTextFontFamily = v })
-                                ConfigTabSelector(title: "有序列表标记文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_orderedListMarkerTextLineHeight = v })
+                                ConfigTabSelector(title: "有序列表标记文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_orderedListMarkerTextFontColor, onSelect: { v => cfg_orderedListMarkerTextFontColor = v })
+                                ConfigTabSelector(title: "有序列表标记文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_orderedListMarkerTextFontSize, onSelect: { v => cfg_orderedListMarkerTextFontSize = v })
+                                ConfigTabSelector(title: "有序列表背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_orderedListBackgroundColor, onSelect: { v => cfg_orderedListBackgroundColor = v })
+                                ConfigTabSelector(title: "有序列表上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListMarginTop, onSelect: { v => cfg_orderedListMarginTop = v })
+                                ConfigTabSelector(title: "有序列表右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListMarginRight, onSelect: { v => cfg_orderedListMarginRight = v })
+                                ConfigTabSelector(title: "有序列表下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListMarginBottom, onSelect: { v => cfg_orderedListMarginBottom = v })
+                                ConfigTabSelector(title: "有序列表左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListMarginLeft, onSelect: { v => cfg_orderedListMarginLeft = v })
+                                ConfigTabSelector(title: "有序列表上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListPaddingTop, onSelect: { v => cfg_orderedListPaddingTop = v })
+                                ConfigTabSelector(title: "有序列表右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListPaddingRight, onSelect: { v => cfg_orderedListPaddingRight = v })
+                                ConfigTabSelector(title: "有序列表下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListPaddingBottom, onSelect: { v => cfg_orderedListPaddingBottom = v })
+                                ConfigTabSelector(title: "有序列表左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListPaddingLeft, onSelect: { v => cfg_orderedListPaddingLeft = v })
+                                ConfigTabSelector(title: "有序列表子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListChildSpacing, onSelect: { v => cfg_orderedListChildSpacing = v })
+                                ConfigTabSelector(title: "有序列表子子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListChildChildSpacing, onSelect: { v => cfg_orderedListChildChildSpacing = v })
+                                ConfigTabSelector(title: "有序列表标记间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_orderedListMarkerSpacing, onSelect: { v => cfg_orderedListMarkerSpacing = v })
+                                ConfigTabSelector(title: "有序列表标记文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_orderedListMarkerTextFontStyle, onSelect: { v => cfg_orderedListMarkerTextFontStyle = v })
+                                ConfigTabSelector(title: "有序列表标记文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_orderedListMarkerTextFontWeight, onSelect: { v => cfg_orderedListMarkerTextFontWeight = v })
+                                ConfigTabSelector(title: "有序列表标记文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_orderedListMarkerTextFontFamily, onSelect: { v => cfg_orderedListMarkerTextFontFamily = v })
+                                ConfigTabSelector(title: "有序列表标记文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_orderedListMarkerTextLineHeight, onSelect: { v => cfg_orderedListMarkerTextLineHeight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -388,17 +388,17 @@ class ListPage {
 
                         if (isExpanded3) {
                             Column {
-                                ConfigTabSelector(title: "无序列表背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBackgroundColor = v })
-                                ConfigTabSelector(title: "无序列表上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListMarginTop = v })
-                                ConfigTabSelector(title: "无序列表右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListMarginRight = v })
-                                ConfigTabSelector(title: "无序列表下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListMarginBottom = v })
-                                ConfigTabSelector(title: "无序列表左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListMarginLeft = v })
-                                ConfigTabSelector(title: "无序列表上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListPaddingTop = v })
-                                ConfigTabSelector(title: "无序列表右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListPaddingRight = v })
-                                ConfigTabSelector(title: "无序列表下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListPaddingBottom = v })
-                                ConfigTabSelector(title: "无序列表左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListPaddingLeft = v })
-                                ConfigTabSelector(title: "无序列表子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListChildSpacing = v })
-                                ConfigTabSelector(title: "无序列表子子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListChildChildSpacing = v })
+                                ConfigTabSelector(title: "无序列表背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_bulletListBackgroundColor, onSelect: { v => cfg_bulletListBackgroundColor = v })
+                                ConfigTabSelector(title: "无序列表上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListMarginTop, onSelect: { v => cfg_bulletListMarginTop = v })
+                                ConfigTabSelector(title: "无序列表右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListMarginRight, onSelect: { v => cfg_bulletListMarginRight = v })
+                                ConfigTabSelector(title: "无序列表下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListMarginBottom, onSelect: { v => cfg_bulletListMarginBottom = v })
+                                ConfigTabSelector(title: "无序列表左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListMarginLeft, onSelect: { v => cfg_bulletListMarginLeft = v })
+                                ConfigTabSelector(title: "无序列表上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListPaddingTop, onSelect: { v => cfg_bulletListPaddingTop = v })
+                                ConfigTabSelector(title: "无序列表右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListPaddingRight, onSelect: { v => cfg_bulletListPaddingRight = v })
+                                ConfigTabSelector(title: "无序列表下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListPaddingBottom, onSelect: { v => cfg_bulletListPaddingBottom = v })
+                                ConfigTabSelector(title: "无序列表左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListPaddingLeft, onSelect: { v => cfg_bulletListPaddingLeft = v })
+                                ConfigTabSelector(title: "无序列表子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListChildSpacing, onSelect: { v => cfg_bulletListChildSpacing = v })
+                                ConfigTabSelector(title: "无序列表子子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListChildChildSpacing, onSelect: { v => cfg_bulletListChildChildSpacing = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -434,14 +434,14 @@ class ListPage {
 
                         if (isExpanded4) {
                             Column {
-                                ConfigTabSelector(title: "无序列表项目符号间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListBulletSpacing = v })
-                                ConfigTabSelector(title: "无序列表项目符号是否圆形 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_bulletListBulletIsCircle = v })
-                                ConfigTabSelector(title: "无序列表项目符号文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBulletTextFontColor = v })
-                                ConfigTabSelector(title: "无序列表项目符号文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBulletTextFontSize = v })
-                                ConfigTabSelector(title: "无序列表项目符号文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBulletTextFontStyle = v })
-                                ConfigTabSelector(title: "无序列表项目符号文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_bulletListBulletTextFontWeight = v })
-                                ConfigTabSelector(title: "无序列表项目符号文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBulletTextFontFamily = v })
-                                ConfigTabSelector(title: "无序列表项目符号文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListBulletTextLineHeight = v })
+                                ConfigTabSelector(title: "无序列表项目符号间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListBulletSpacing, onSelect: { v => cfg_bulletListBulletSpacing = v })
+                                ConfigTabSelector(title: "无序列表项目符号是否圆形 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_bulletListBulletIsCircle, onSelect: { v => cfg_bulletListBulletIsCircle = v })
+                                ConfigTabSelector(title: "无序列表项目符号文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_bulletListBulletTextFontColor, onSelect: { v => cfg_bulletListBulletTextFontColor = v })
+                                ConfigTabSelector(title: "无序列表项目符号文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_bulletListBulletTextFontSize, onSelect: { v => cfg_bulletListBulletTextFontSize = v })
+                                ConfigTabSelector(title: "无序列表项目符号文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_bulletListBulletTextFontStyle, onSelect: { v => cfg_bulletListBulletTextFontStyle = v })
+                                ConfigTabSelector(title: "无序列表项目符号文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_bulletListBulletTextFontWeight, onSelect: { v => cfg_bulletListBulletTextFontWeight = v })
+                                ConfigTabSelector(title: "无序列表项目符号文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_bulletListBulletTextFontFamily, onSelect: { v => cfg_bulletListBulletTextFontFamily = v })
+                                ConfigTabSelector(title: "无序列表项目符号文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_bulletListBulletTextLineHeight, onSelect: { v => cfg_bulletListBulletTextLineHeight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -477,11 +477,11 @@ class ListPage {
 
                         if (isExpanded5) {
                             Column {
-                                ConfigTabSelector(title: "无序列表复选框间距 - ", options: spaceList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListCheckboxSpacing = v })
-                                ConfigTabSelector(title: "无序列表复选框宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListCheckboxWidth = v })
-                                ConfigTabSelector(title: "无序列表复选框高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_bulletListCheckboxHeight = v })
-                                ConfigTabSelector(title: "无序列表复选框选中颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_bulletListCheckboxSelectedColor = v })
-                                ConfigTabSelector(title: "无序列表复选框形状 - ", options: checkBoxShapeList, defaultValue: "ROUNDED_SQUARE", configKey: "", onSelect: { v => cfg_bulletListCheckboxShape = v })
+                                ConfigTabSelector(title: "无序列表复选框间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListCheckboxSpacing, onSelect: { v => cfg_bulletListCheckboxSpacing = v })
+                                ConfigTabSelector(title: "无序列表复选框宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListCheckboxWidth, onSelect: { v => cfg_bulletListCheckboxWidth = v })
+                                ConfigTabSelector(title: "无序列表复选框高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_bulletListCheckboxHeight, onSelect: { v => cfg_bulletListCheckboxHeight = v })
+                                ConfigTabSelector(title: "无序列表复选框选中颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_bulletListCheckboxSelectedColor, onSelect: { v => cfg_bulletListCheckboxSelectedColor = v })
+                                ConfigTabSelector(title: "无序列表复选框形状 - ", options: checkBoxShapeList, defaultValue: "ROUNDED_SQUARE", configKey: "", currentValue: cfg_bulletListCheckboxShape, onSelect: { v => cfg_bulletListCheckboxShape = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

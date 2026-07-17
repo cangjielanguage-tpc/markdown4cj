@@ -304,6 +304,10 @@ func spanImageComponent(
                 spanListComponentWidth,
                 spanListMarkdownConfiguration.markdownTheme.imageTheme.imageMaximumWidth
             ))
+            .height(spanImageInitHeight(
+                spanListNodeView.imageHeight,
+                spanListMarkdownConfiguration.markdownTheme.imageTheme.imageHeight
+            ))
             .objectFit(spanListMarkdownConfiguration.markdownTheme.imageTheme.imageFitType)
             .verticalAlign(ImageSpanAlignment.CENTER)
             .constraintSize(maxWidth: 100.percent)

@@ -166,7 +166,7 @@ class TablePage {
     }
 
     func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefaultBuilder()
+        let themeBuilder = MarkdownTheme.createDefault()
         let globalTheme = GlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
@@ -272,10 +272,10 @@ class TablePage {
         tableTheme.setTableCellPadding(top: parseFloat64(cfg_tableCellPaddingTop), right: parseFloat64(cfg_tableCellPaddingRight), bottom: parseFloat64(cfg_tableCellPaddingBottom), left: parseFloat64(cfg_tableCellPaddingLeft))
         tableTheme.setTableMargin(top: parseFloat64(cfg_tableMarginTop), right: parseFloat64(cfg_tableMarginRight), bottom: parseFloat64(cfg_tableMarginBottom), left: parseFloat64(cfg_tableMarginLeft))
         themeBuilder.setTableTheme(tableTheme)
-        let theme = themeBuilder.build()
-        let configBuilder = MarkdownConfiguration.emptyBuilder()
+        let theme = themeBuilder
+        let configBuilder = MarkdownConfiguration.createEmpty()
         configBuilder.setMarkdownTheme(theme)
-        return configBuilder.build()
+        return configBuilder
     }
 
     public func build() {
@@ -334,23 +334,23 @@ class TablePage {
 
                         if (isExpanded1) {
                             Column {
-                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_isFull = v })
-                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_incrementalAnalysis = v })
-                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_enableParseThrottle = v })
-                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", onSelect: { v => cfg_parseThrottleMs = v })
-                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", onSelect: { v => cfg_time = v })
-                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", onSelect: { v => cfg_textNumber = v })
-                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isOnCopy = v })
-                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginTop = v })
-                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginRight = v })
-                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginBottom = v })
-                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginLeft = v })
-                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", onSelect: { v => cfg_markdownBlockSpacing = v })
-                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_backgroundColor = v })
-                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipeTest = v })
-                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipe = v })
+                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isFull, onSelect: { v => cfg_isFull = v })
+                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_incrementalAnalysis, onSelect: { v => cfg_incrementalAnalysis = v })
+                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_enableParseThrottle, onSelect: { v => cfg_enableParseThrottle = v })
+                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", currentValue: cfg_parseThrottleMs, onSelect: { v => cfg_parseThrottleMs = v })
+                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
+                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
+                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
+                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
+                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
+                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
+                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
+                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
+                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -386,18 +386,18 @@ class TablePage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "表格上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginTop = v })
-                                ConfigTabSelector(title: "表格右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginRight = v })
-                                ConfigTabSelector(title: "表格下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginBottom = v })
-                                ConfigTabSelector(title: "表格左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMarginLeft = v })
-                                ConfigTabSelector(title: "表格上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tablePaddingTop = v })
-                                ConfigTabSelector(title: "表格右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tablePaddingRight = v })
-                                ConfigTabSelector(title: "表格下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tablePaddingBottom = v })
-                                ConfigTabSelector(title: "表格左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tablePaddingLeft = v })
-                                ConfigTabSelector(title: "表格单元格上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingTop = v })
-                                ConfigTabSelector(title: "表格单元格右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingRight = v })
-                                ConfigTabSelector(title: "表格单元格下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingBottom = v })
-                                ConfigTabSelector(title: "表格单元格左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableCellPaddingLeft = v })
+                                ConfigTabSelector(title: "表格上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableMarginTop, onSelect: { v => cfg_tableMarginTop = v })
+                                ConfigTabSelector(title: "表格右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableMarginRight, onSelect: { v => cfg_tableMarginRight = v })
+                                ConfigTabSelector(title: "表格下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableMarginBottom, onSelect: { v => cfg_tableMarginBottom = v })
+                                ConfigTabSelector(title: "表格左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableMarginLeft, onSelect: { v => cfg_tableMarginLeft = v })
+                                ConfigTabSelector(title: "表格上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_tablePaddingTop, onSelect: { v => cfg_tablePaddingTop = v })
+                                ConfigTabSelector(title: "表格右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_tablePaddingRight, onSelect: { v => cfg_tablePaddingRight = v })
+                                ConfigTabSelector(title: "表格下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_tablePaddingBottom, onSelect: { v => cfg_tablePaddingBottom = v })
+                                ConfigTabSelector(title: "表格左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_tablePaddingLeft, onSelect: { v => cfg_tablePaddingLeft = v })
+                                ConfigTabSelector(title: "表格单元格上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableCellPaddingTop, onSelect: { v => cfg_tableCellPaddingTop = v })
+                                ConfigTabSelector(title: "表格单元格右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableCellPaddingRight, onSelect: { v => cfg_tableCellPaddingRight = v })
+                                ConfigTabSelector(title: "表格单元格下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableCellPaddingBottom, onSelect: { v => cfg_tableCellPaddingBottom = v })
+                                ConfigTabSelector(title: "表格单元格左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableCellPaddingLeft, onSelect: { v => cfg_tableCellPaddingLeft = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -433,13 +433,13 @@ class TablePage {
 
                         if (isExpanded3) {
                             Column {
-                                ConfigTabSelector(title: "表格边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableBorderColor = v })
-                                ConfigTabSelector(title: "表格边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", onSelect: { v => cfg_tableBorderStyle = v })
-                                ConfigTabSelector(title: "表格边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableBorderWidth = v })
-                                ConfigTabSelector(title: "表格圆角左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusTopLeft = v })
-                                ConfigTabSelector(title: "表格圆角右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusTopRight = v })
-                                ConfigTabSelector(title: "表格圆角左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusBottomLeft = v })
-                                ConfigTabSelector(title: "表格圆角右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableRadiusBottomRight = v })
+                                ConfigTabSelector(title: "表格边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableBorderColor, onSelect: { v => cfg_tableBorderColor = v })
+                                ConfigTabSelector(title: "表格边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", currentValue: cfg_tableBorderStyle, onSelect: { v => cfg_tableBorderStyle = v })
+                                ConfigTabSelector(title: "表格边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", currentValue: cfg_tableBorderWidth, onSelect: { v => cfg_tableBorderWidth = v })
+                                ConfigTabSelector(title: "表格圆角左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_tableRadiusTopLeft, onSelect: { v => cfg_tableRadiusTopLeft = v })
+                                ConfigTabSelector(title: "表格圆角右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_tableRadiusTopRight, onSelect: { v => cfg_tableRadiusTopRight = v })
+                                ConfigTabSelector(title: "表格圆角左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_tableRadiusBottomLeft, onSelect: { v => cfg_tableRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "表格圆角右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_tableRadiusBottomRight, onSelect: { v => cfg_tableRadiusBottomRight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -475,11 +475,11 @@ class TablePage {
 
                         if (isExpanded4) {
                             Column {
-                                ConfigTabSelector(title: "表格首列加粗 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_tableFirstColumnIsBold = v })
-                                ConfigTabSelector(title: "表格滚动条状态 - ", options: barStateList, defaultValue: "Off", configKey: "", onSelect: { v => cfg_tableScrollBarState = v })
-                                ConfigTabSelector(title: "表格滚动条颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableScrollBarColor = v })
-                                ConfigTabSelector(title: "表格最小单元格宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMinCellWidth = v })
-                                ConfigTabSelector(title: "表格最大单元格宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableMaxCellWidth = v })
+                                ConfigTabSelector(title: "表格首列加粗 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_tableFirstColumnIsBold, onSelect: { v => cfg_tableFirstColumnIsBold = v })
+                                ConfigTabSelector(title: "表格滚动条状态 - ", options: barStateList, defaultValue: "Off", configKey: "", currentValue: cfg_tableScrollBarState, onSelect: { v => cfg_tableScrollBarState = v })
+                                ConfigTabSelector(title: "表格滚动条颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableScrollBarColor, onSelect: { v => cfg_tableScrollBarColor = v })
+                                ConfigTabSelector(title: "表格最小单元格宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_tableMinCellWidth, onSelect: { v => cfg_tableMinCellWidth = v })
+                                ConfigTabSelector(title: "表格最大单元格宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_tableMaxCellWidth, onSelect: { v => cfg_tableMaxCellWidth = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -515,13 +515,13 @@ class TablePage {
 
                         if (isExpanded5) {
                             Column {
-                                ConfigTabSelector(title: "表格标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontColor = v })
-                                ConfigTabSelector(title: "表格标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontSize = v })
-                                ConfigTabSelector(title: "表格标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontStyle = v })
-                                ConfigTabSelector(title: "表格标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_tableTitleTextFontWeight = v })
-                                ConfigTabSelector(title: "表格标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextFontFamily = v })
-                                ConfigTabSelector(title: "表格标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextLineHeight = v })
-                                ConfigTabSelector(title: "表格标题文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleTextLetterSpacing = v })
+                                ConfigTabSelector(title: "表格标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableTitleTextFontColor, onSelect: { v => cfg_tableTitleTextFontColor = v })
+                                ConfigTabSelector(title: "表格标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableTitleTextFontSize, onSelect: { v => cfg_tableTitleTextFontSize = v })
+                                ConfigTabSelector(title: "表格标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableTitleTextFontStyle, onSelect: { v => cfg_tableTitleTextFontStyle = v })
+                                ConfigTabSelector(title: "表格标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_tableTitleTextFontWeight, onSelect: { v => cfg_tableTitleTextFontWeight = v })
+                                ConfigTabSelector(title: "表格标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableTitleTextFontFamily, onSelect: { v => cfg_tableTitleTextFontFamily = v })
+                                ConfigTabSelector(title: "表格标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableTitleTextLineHeight, onSelect: { v => cfg_tableTitleTextLineHeight = v })
+                                ConfigTabSelector(title: "表格标题文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableTitleTextLetterSpacing, onSelect: { v => cfg_tableTitleTextLetterSpacing = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -557,13 +557,13 @@ class TablePage {
 
                         if (isExpanded6) {
                             Column {
-                                ConfigTabSelector(title: "表格内容文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontColor = v })
-                                ConfigTabSelector(title: "表格内容文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontSize = v })
-                                ConfigTabSelector(title: "表格内容文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontStyle = v })
-                                ConfigTabSelector(title: "表格内容文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_tableContentTextFontWeight = v })
-                                ConfigTabSelector(title: "表格内容文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextFontFamily = v })
-                                ConfigTabSelector(title: "表格内容文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextLineHeight = v })
-                                ConfigTabSelector(title: "表格内容文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentTextLetterSpacing = v })
+                                ConfigTabSelector(title: "表格内容文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableContentTextFontColor, onSelect: { v => cfg_tableContentTextFontColor = v })
+                                ConfigTabSelector(title: "表格内容文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableContentTextFontSize, onSelect: { v => cfg_tableContentTextFontSize = v })
+                                ConfigTabSelector(title: "表格内容文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableContentTextFontStyle, onSelect: { v => cfg_tableContentTextFontStyle = v })
+                                ConfigTabSelector(title: "表格内容文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_tableContentTextFontWeight, onSelect: { v => cfg_tableContentTextFontWeight = v })
+                                ConfigTabSelector(title: "表格内容文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableContentTextFontFamily, onSelect: { v => cfg_tableContentTextFontFamily = v })
+                                ConfigTabSelector(title: "表格内容文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableContentTextLineHeight, onSelect: { v => cfg_tableContentTextLineHeight = v })
+                                ConfigTabSelector(title: "表格内容文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableContentTextLetterSpacing, onSelect: { v => cfg_tableContentTextLetterSpacing = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -599,7 +599,7 @@ class TablePage {
 
                         if (isExpanded7) {
                             Column {
-                                ConfigTabSelector(title: "表格表头吸顶 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_tableStickyHeader = v })
+                                ConfigTabSelector(title: "表格表头吸顶 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_tableStickyHeader, onSelect: { v => cfg_tableStickyHeader = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -635,7 +635,7 @@ class TablePage {
 
                         if (isExpanded8) {
                             Column {
-                                ConfigTabSelector(title: "表格头部是否显示 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_tableHeadIsShow = v })
+                                ConfigTabSelector(title: "表格头部是否显示 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_tableHeadIsShow, onSelect: { v => cfg_tableHeadIsShow = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -671,14 +671,14 @@ class TablePage {
 
                         if (isExpanded9) {
                             Column {
-                                ConfigTabSelector(title: "表格头部标题文本 - ", options: tableHeadTitleTextList, defaultValue: "比较", configKey: "", onSelect: { v => cfg_tableHeadTitleText = v })
-                                ConfigTabSelector(title: "表格头部标题文本左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadTitleTextMarginLeft = v })
-                                ConfigTabSelector(title: "表头标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontColor = v })
-                                ConfigTabSelector(title: "表头标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontSize = v })
-                                ConfigTabSelector(title: "表头标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontStyle = v })
-                                ConfigTabSelector(title: "表头标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontWeight = v })
-                                ConfigTabSelector(title: "表头标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextFontFamily = v })
-                                ConfigTabSelector(title: "表头标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableHeadTitleTextLineHeight = v })
+                                ConfigTabSelector(title: "表格头部标题文本 - ", options: tableHeadTitleTextList, defaultValue: "比较", configKey: "", currentValue: cfg_tableHeadTitleText, onSelect: { v => cfg_tableHeadTitleText = v })
+                                ConfigTabSelector(title: "表格头部标题文本左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableHeadTitleTextMarginLeft, onSelect: { v => cfg_tableHeadTitleTextMarginLeft = v })
+                                ConfigTabSelector(title: "表头标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableHeadTitleTextFontColor, onSelect: { v => cfg_tableHeadTitleTextFontColor = v })
+                                ConfigTabSelector(title: "表头标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableHeadTitleTextFontSize, onSelect: { v => cfg_tableHeadTitleTextFontSize = v })
+                                ConfigTabSelector(title: "表头标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableHeadTitleTextFontStyle, onSelect: { v => cfg_tableHeadTitleTextFontStyle = v })
+                                ConfigTabSelector(title: "表头标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_tableHeadTitleTextFontWeight, onSelect: { v => cfg_tableHeadTitleTextFontWeight = v })
+                                ConfigTabSelector(title: "表头标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableHeadTitleTextFontFamily, onSelect: { v => cfg_tableHeadTitleTextFontFamily = v })
+                                ConfigTabSelector(title: "表头标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableHeadTitleTextLineHeight, onSelect: { v => cfg_tableHeadTitleTextLineHeight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -714,9 +714,9 @@ class TablePage {
 
                         if (isExpanded10) {
                             Column {
-                                ConfigTabSelector(title: "表格头部复制图标宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconWidth = v })
-                                ConfigTabSelector(title: "表格头部复制图标高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconHeight = v })
-                                ConfigTabSelector(title: "表格头部复制图标右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_tableHeadCopyIconMarginRight = v })
+                                ConfigTabSelector(title: "表格头部复制图标宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_tableHeadCopyIconWidth, onSelect: { v => cfg_tableHeadCopyIconWidth = v })
+                                ConfigTabSelector(title: "表格头部复制图标高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_tableHeadCopyIconHeight, onSelect: { v => cfg_tableHeadCopyIconHeight = v })
+                                ConfigTabSelector(title: "表格头部复制图标右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableHeadCopyIconMarginRight, onSelect: { v => cfg_tableHeadCopyIconMarginRight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -752,9 +752,9 @@ class TablePage {
 
                         if (isExpanded11) {
                             Column {
-                                ConfigTabSelector(title: "表格标题背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableTitleBackgroundColor = v })
-                                ConfigTabSelector(title: "表格奇数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentOddRowBackgroundColor = v })
-                                ConfigTabSelector(title: "表格偶数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_tableContentEvenRowBackgroundColor = v })
+                                ConfigTabSelector(title: "表格标题背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableTitleBackgroundColor, onSelect: { v => cfg_tableTitleBackgroundColor = v })
+                                ConfigTabSelector(title: "表格奇数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableContentOddRowBackgroundColor, onSelect: { v => cfg_tableContentOddRowBackgroundColor = v })
+                                ConfigTabSelector(title: "表格偶数行背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableContentEvenRowBackgroundColor, onSelect: { v => cfg_tableContentEvenRowBackgroundColor = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

@@ -1410,6 +1410,24 @@ func spanImageInitWidth(imageWidth: Option<Length>, componentWidth: Float64, ima
 }
 
 /**
+ * 计算图片初始高度
+ * 如果节点指定了图片高度，使用节点高度；否则使用主题配置的高度
+ *
+ * @param imageHeight 节点配置的图片高度
+ * @param themeHeight 主题配置的图片高度
+ * @return Length 初始高度
+ */
+func spanImageInitHeight(imageHeight: Option<Length>, themeHeight: ?Float64): Length {
+    if (let Some(v) <- imageHeight) {
+        return v
+    }
+    if (let Some(h) <- themeHeight) {
+        return h.vp
+    }
+    return 100.percent
+}
+
+/**
  * 计算图片单个圆角值
  * 对齐ArkTS: item.imageRadius ?? themeRadius
  *

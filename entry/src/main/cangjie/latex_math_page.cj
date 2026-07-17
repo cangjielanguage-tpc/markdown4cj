@@ -115,7 +115,7 @@ class LatexMathPage {
     }
 
     func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefaultBuilder()
+        let themeBuilder = MarkdownTheme.createDefault()
         let globalTheme = GlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
@@ -161,10 +161,10 @@ class LatexMathPage {
         latexMathTheme.setLatexMathMargin(top: parseFloat64(cfg_latexMathMarginTop), right: parseFloat64(cfg_latexMathMarginRight), bottom: parseFloat64(cfg_latexMathMarginBottom), left: parseFloat64(cfg_latexMathMarginLeft))
         latexMathTheme.setLatexMathPadding(top: parseFloat64(cfg_latexMathPaddingTop), right: parseFloat64(cfg_latexMathPaddingRight), bottom: parseFloat64(cfg_latexMathPaddingBottom), left: parseFloat64(cfg_latexMathPaddingLeft))
         themeBuilder.setLatexMathTheme(latexMathTheme)
-        let theme = themeBuilder.build()
-        let configBuilder = MarkdownConfiguration.emptyBuilder()
+        let theme = themeBuilder
+        let configBuilder = MarkdownConfiguration.createEmpty()
         configBuilder.setMarkdownTheme(theme)
-        return configBuilder.build()
+        return configBuilder
     }
 
     public func build() {
@@ -223,23 +223,23 @@ class LatexMathPage {
 
                         if (isExpanded1) {
                             Column {
-                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", onSelect: { v => cfg_isFull = v })
-                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_incrementalAnalysis = v })
-                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_enableParseThrottle = v })
-                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", onSelect: { v => cfg_parseThrottleMs = v })
-                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", onSelect: { v => cfg_time = v })
-                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", onSelect: { v => cfg_textNumber = v })
-                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isOnCopy = v })
-                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginTop = v })
-                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginRight = v })
-                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginBottom = v })
-                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_blockMarginLeft = v })
-                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", onSelect: { v => cfg_markdownBlockSpacing = v })
-                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_backgroundColor = v })
-                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipeTest = v })
-                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_openGestureSwipe = v })
+                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isFull, onSelect: { v => cfg_isFull = v })
+                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_incrementalAnalysis, onSelect: { v => cfg_incrementalAnalysis = v })
+                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_enableParseThrottle, onSelect: { v => cfg_enableParseThrottle = v })
+                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", currentValue: cfg_parseThrottleMs, onSelect: { v => cfg_parseThrottleMs = v })
+                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
+                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
+                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
+                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
+                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
+                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
+                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
+                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
+                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -275,16 +275,16 @@ class LatexMathPage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "数学公式上外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathMarginTop = v })
-                                ConfigTabSelector(title: "数学公式右外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathMarginRight = v })
-                                ConfigTabSelector(title: "数学公式下外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathMarginBottom = v })
-                                ConfigTabSelector(title: "数学公式左外边距 - ", options: marginList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathMarginLeft = v })
-                                ConfigTabSelector(title: "数学公式上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathPaddingTop = v })
-                                ConfigTabSelector(title: "数学公式右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathPaddingRight = v })
-                                ConfigTabSelector(title: "数学公式下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathPaddingBottom = v })
-                                ConfigTabSelector(title: "数学公式左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", onSelect: { v => cfg_latexMathPaddingLeft = v })
-                                ConfigTabSelector(title: "数学公式颜色格式 - ", options: latexMathColorFormatList, defaultValue: "COLOR_FORMAT_BGRA_8888", configKey: "", onSelect: { v => cfg_latexMathColorFormat = v })
-                                ConfigTabSelector(title: "数学公式是否居中 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_latexMathBlockCenter = v })
+                                ConfigTabSelector(title: "数学公式上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_latexMathMarginTop, onSelect: { v => cfg_latexMathMarginTop = v })
+                                ConfigTabSelector(title: "数学公式右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_latexMathMarginRight, onSelect: { v => cfg_latexMathMarginRight = v })
+                                ConfigTabSelector(title: "数学公式下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_latexMathMarginBottom, onSelect: { v => cfg_latexMathMarginBottom = v })
+                                ConfigTabSelector(title: "数学公式左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_latexMathMarginLeft, onSelect: { v => cfg_latexMathMarginLeft = v })
+                                ConfigTabSelector(title: "数学公式上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_latexMathPaddingTop, onSelect: { v => cfg_latexMathPaddingTop = v })
+                                ConfigTabSelector(title: "数学公式右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_latexMathPaddingRight, onSelect: { v => cfg_latexMathPaddingRight = v })
+                                ConfigTabSelector(title: "数学公式下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_latexMathPaddingBottom, onSelect: { v => cfg_latexMathPaddingBottom = v })
+                                ConfigTabSelector(title: "数学公式左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_latexMathPaddingLeft, onSelect: { v => cfg_latexMathPaddingLeft = v })
+                                ConfigTabSelector(title: "数学公式颜色格式 - ", options: latexMathColorFormatList, defaultValue: "COLOR_FORMAT_BGRA_8888", configKey: "", currentValue: cfg_latexMathColorFormat, onSelect: { v => cfg_latexMathColorFormat = v })
+                                ConfigTabSelector(title: "数学公式是否居中 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_latexMathBlockCenter, onSelect: { v => cfg_latexMathBlockCenter = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -320,15 +320,15 @@ class LatexMathPage {
 
                         if (isExpanded3) {
                             Column {
-                                ConfigTabSelector(title: "公式未加载文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontColor = v })
-                                ConfigTabSelector(title: "公式背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathBackgroundColor = v })
-                                ConfigTabSelector(title: "公式文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathTextColor = v })
-                                ConfigTabSelector(title: "数学公式是否显示默认文本 - ", options: booleanList, defaultValue: "false", configKey: "", onSelect: { v => cfg_latexMathDefaultText = v })
-                                ConfigTabSelector(title: "数学公式默认文本文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontSize = v })
-                                ConfigTabSelector(title: "数学公式默认文本文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontStyle = v })
-                                ConfigTabSelector(title: "数学公式默认文本文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontWeight = v })
-                                ConfigTabSelector(title: "数学公式默认文本文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathDefaultTextFontFamily = v })
-                                ConfigTabSelector(title: "数学公式文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", onSelect: { v => cfg_latexMathTextSize = v })
+                                ConfigTabSelector(title: "公式未加载文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathDefaultTextFontColor, onSelect: { v => cfg_latexMathDefaultTextFontColor = v })
+                                ConfigTabSelector(title: "公式背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathBackgroundColor, onSelect: { v => cfg_latexMathBackgroundColor = v })
+                                ConfigTabSelector(title: "公式文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathTextColor, onSelect: { v => cfg_latexMathTextColor = v })
+                                ConfigTabSelector(title: "数学公式是否显示默认文本 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_latexMathDefaultText, onSelect: { v => cfg_latexMathDefaultText = v })
+                                ConfigTabSelector(title: "数学公式默认文本文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathDefaultTextFontSize, onSelect: { v => cfg_latexMathDefaultTextFontSize = v })
+                                ConfigTabSelector(title: "数学公式默认文本文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathDefaultTextFontStyle, onSelect: { v => cfg_latexMathDefaultTextFontStyle = v })
+                                ConfigTabSelector(title: "数学公式默认文本文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_latexMathDefaultTextFontWeight, onSelect: { v => cfg_latexMathDefaultTextFontWeight = v })
+                                ConfigTabSelector(title: "数学公式默认文本文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathDefaultTextFontFamily, onSelect: { v => cfg_latexMathDefaultTextFontFamily = v })
+                                ConfigTabSelector(title: "数学公式文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathTextSize, onSelect: { v => cfg_latexMathTextSize = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
