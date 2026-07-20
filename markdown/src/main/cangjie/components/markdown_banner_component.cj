@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownBannerComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown配置
     var nodeView: NodeView // 图片幻灯片image
     var imageCallback: (String) -> Unit // 图片点击事件

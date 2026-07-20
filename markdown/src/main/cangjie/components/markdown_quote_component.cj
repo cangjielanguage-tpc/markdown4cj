@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownQuoteComponent {
+    @Prop
     var quoteMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var quoteNodeView: NodeView // 列表节点

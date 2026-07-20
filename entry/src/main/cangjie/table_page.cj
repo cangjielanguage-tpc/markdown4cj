@@ -217,8 +217,14 @@ class TablePage {
         if (cfg_tableScrollBarColor != "undefined") {
             tableTheme.setTableScrollBarColor(parseColor(cfg_tableScrollBarColor))
         }
-        tableTheme.setTableMinCellWidth(parseFloat64(cfg_tableMinCellWidth))
-        tableTheme.setTableMaxCellWidth(parseFloat64(cfg_tableMaxCellWidth))
+        let minCellWidth = parseFloat64(cfg_tableMinCellWidth)
+        if (minCellWidth > 0.0) {
+            tableTheme.setTableMinCellWidth(minCellWidth)
+        }
+        let maxCellWidth = parseFloat64(cfg_tableMaxCellWidth)
+        if (maxCellWidth > 0.0) {
+            tableTheme.setTableMaxCellWidth(maxCellWidth)
+        }
         if (cfg_tableTitleTextFontStyle != "undefined") {
             tableTheme.setTableTitleTextFontStyle(parseFontStyle(cfg_tableTitleTextFontStyle))
         }

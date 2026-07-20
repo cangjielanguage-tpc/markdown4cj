@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownSpanImageCallbackUrlComponent {
+    @Prop
     var urlCallbackMarkdownTheme: MarkdownTheme // markdown配置
     var urlCallbackDestination: String // 图片链接
     @Prop var urlCallbackComponentWidth: Float64 // 控件宽度 - 单位vp

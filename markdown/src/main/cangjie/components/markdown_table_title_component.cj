@@ -8,6 +8,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownTableTitleComponent {
+    @Prop
     var tableTitleMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var tableTitleFullText: String // 表格序列化的纯文本

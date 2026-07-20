@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownSpanImageUrlComponent {
+    @Prop
     var urlMarkdownTheme: MarkdownTheme // markdown配置
     var urlDestination: String // 图片链接
     @Prop var urlComponentWidth: Float64 // 控件宽度 - 单位vp
@@ -19,8 +20,8 @@ public class MarkdownSpanImageUrlComponent {
     var urlImageRadius: Option<Length> // 图片圆角
     var urlImageAlign: Option<HorizontalAlign> // 图片对齐方式
     @State var urlImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
-    @State var urlHeight: Float64 = 0.0 // 图片最终高度 - 单位px
-    @State var urlWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
+    @State var urlHeight: Option<Float64> = Option<Float64>.None // 图片最终高度 - 单位px
+    @State var urlWidth: Option<Float64> = Option<Float64>.None // 图片最终宽度 - 单位px
     @State var urlRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State var urlRadiusTopRight: Float64 = 0.0 // 图片右上圆角 - 单位vp
     @State var urlRadiusBottomLeft: Float64 = 0.0 // 图片左下圆角 - 单位vp
@@ -148,8 +149,8 @@ public class MarkdownSpanImageUrlComponent {
                 .borderWidth(urlMarkdownTheme.imageTheme.imageBorderWidth)
                 .borderColor(urlMarkdownTheme.imageTheme.imageBorderColor)
                 .borderStyle(urlMarkdownTheme.imageTheme.imageBorderStyle)
-                .width(urlWidth.px)
-                .height(urlHeight.px)
+                .width(urlWidth)
+                .height(urlHeight)
                 .objectFit(urlMarkdownTheme.imageTheme.imageFitType)
                 .verticalAlign(ImageSpanAlignment.CENTER)
                 .constraintSize(maxWidth: 100.percent)
@@ -169,8 +170,8 @@ public class MarkdownSpanImageUrlComponent {
                             urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
                             urlMarkdownTheme.imageTheme.imageMaximumWidth
                         )
-                        urlWidth = res[0]
-                        urlHeight = res[1]
+                        urlWidth = Some(res[0])
+                        urlHeight = Some(res[1])
                         urlImageType = 1
                 }
                 .onError {

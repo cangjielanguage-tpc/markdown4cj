@@ -10,6 +10,7 @@ public class MarkdownCardComponent {
     /**
      * markdown配置
      */
+    @Prop
     var markdownConfiguration: MarkdownConfiguration
 
     /**

@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownImageCallbackUrlComponent {
+    @Prop
     var urlCallbackMarkdownTheme: MarkdownTheme // markdown配置
     var urlCallbackDestination: String // 图片链接
     @Prop

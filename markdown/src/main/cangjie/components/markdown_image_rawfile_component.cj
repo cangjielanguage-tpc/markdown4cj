@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownImageRawFileComponent {
+    @Prop
     var rawFileMarkdownTheme: MarkdownTheme // markdown配置
     var rawFileDestination: String // 图片链接
     @Prop

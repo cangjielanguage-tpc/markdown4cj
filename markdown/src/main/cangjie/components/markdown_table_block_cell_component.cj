@@ -8,6 +8,7 @@ import ohos.component_utils.*
  */
 @Component
 class MarkdownTableBlockCellComponent {
+    @Prop
     var tableBlockCellMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var tableBlockCellNodeView: NodeView // 表格Cell控件自身节点

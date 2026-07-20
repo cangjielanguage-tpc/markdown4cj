@@ -24,7 +24,8 @@ class SwitchDataPage {
                         output: mdStr,
                         isInputEnded: true,
                         incrementalAnalysis: false,
-                        scroller: scroller
+                        scroller: scroller,
+                        markdownConfiguration: MarkdownConfiguration.create()
                     )
                 }
             }

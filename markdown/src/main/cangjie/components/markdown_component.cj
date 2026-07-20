@@ -18,7 +18,8 @@ public class MarkdownComponent {
     @Prop
     @Watch[analysisData]
     var incrementalAnalysis: Bool // markdown是否增量解析(true:增量解析,false:全量解析)
-    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.create() // markdown配置
+    @Prop
+    var markdownConfiguration: MarkdownConfiguration // markdown配置
     var markdownPlugin: Markdown = Markdown
         .builder()
         .usePlugin(HtmlPlugin.create()) // HTML插件

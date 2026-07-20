@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownHeadingComponent {
+    @Prop
     var headingMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var headingNodeView: NodeView // 标题控件自身节点

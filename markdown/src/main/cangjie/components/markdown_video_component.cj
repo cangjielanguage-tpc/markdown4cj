@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownVideoComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown样式
     var nodeView: NodeView // NodeView
     var videoCallback: (String) -> Unit // 视频点击事件

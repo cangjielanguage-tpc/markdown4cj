@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownCodeBlockListComponent {
+    @Prop
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var nodeView: NodeView // Node

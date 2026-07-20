@@ -166,15 +166,30 @@ class ImagePage {
         if (let Some(v) <- parseAppResource(cfg_imagePlaceholder)) {
             imageTheme.setImagePlaceholder(v)
         }
-        imageTheme.setImageMaximumWidth(parseFloat64(cfg_imageMaximumWidth))
+        imageTheme.setImageMaximumWidth(parseFloat64(cfg_imageMaximumWidth) / 100.0)
         imageTheme.setImageDownloadButtonVisible(parseBool(cfg_imageDownloadButtonVisible))
         imageTheme.setImageBorderStyle(parseBorderStyle(cfg_imageBorderStyle))
         imageTheme.setIsImageMixedLayout(parseBool(cfg_imageMixedLayout))
-        imageTheme.setImageFixedRatioWidth(parseFloat64(cfg_imageFixedRatioWidth))
-        imageTheme.setImageMaxHeight(parseFloat64(cfg_imageMaxHeight))
-        imageTheme.setImageHeight(parseFloat64(cfg_imageHeight))
-        imageTheme.setImageMaxWidth(parseFloat64(cfg_imageMaxWidth))
-        imageTheme.setImageWidth(parseFloat64(cfg_imageWidth))
+        let imageFixedRatioWidth = parseFloat64(cfg_imageFixedRatioWidth) / 100.0
+        if (imageFixedRatioWidth > 0.0) {
+            imageTheme.setImageFixedRatioWidth(imageFixedRatioWidth)
+        }
+        let imageMaxHeight = parseFloat64(cfg_imageMaxHeight)
+        if (imageMaxHeight > 0.0) {
+            imageTheme.setImageMaxHeight(imageMaxHeight)
+        }
+        let imageHeight = parseFloat64(cfg_imageHeight)
+        if (imageHeight > 0.0) {
+            imageTheme.setImageHeight(imageHeight)
+        }
+        let imageMaxWidth = parseFloat64(cfg_imageMaxWidth)
+        if (imageMaxWidth > 0.0) {
+            imageTheme.setImageMaxWidth(imageMaxWidth)
+        }
+        let imageWidth = parseFloat64(cfg_imageWidth)
+        if (imageWidth > 0.0) {
+            imageTheme.setImageWidth(imageWidth)
+        }
         imageTheme.setImageBottomLayoutMarginTop(parseFloat64(cfg_imageBottomLayoutMarginTop))
         imageTheme.setImageDownloadButtonWidth(parseFloat64(cfg_imageDownloadButtonWidth))
         imageTheme.setImageDownloadButtonHeight(parseFloat64(cfg_imageDownloadButtonHeight))

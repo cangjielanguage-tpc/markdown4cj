@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownTableBlockRowComponent {
+    @Prop
     var tableBlockRowMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var tableBlockRowNodeView: NodeView // 表格Row控件自身节点

@@ -7,11 +7,12 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownTableBlockComponent {
+    @Prop
     var tableBlockMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var tableBlockNodeView: NodeView // 表格控件自身节点
-    @State
-    var tableBlockComponentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
+    @Prop
+    var tableBlockComponentWidth: Float64 // 控件宽度 - 单位vp
     @BuilderParam
     var tableBlockCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格Cell控件
     var tableBlockImageCallback: (String) -> Unit // 图片点击事件

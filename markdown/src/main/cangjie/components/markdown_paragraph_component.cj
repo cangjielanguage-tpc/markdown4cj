@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownParagraphComponent {
+    @Prop
     var paragraphMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var paragraphNodeView: NodeView // 段落控件自身节点

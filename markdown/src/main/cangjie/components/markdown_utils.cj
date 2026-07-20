@@ -1399,14 +1399,14 @@ func imageSpanBorderRadius(radius: Option<Length>, imageBorderRadiusTopLeft: Flo
  * @param imageMaximumWidth 主题配置的最大宽度比例
  * @return Length 初始宽度
  */
-func spanImageInitWidth(imageWidth: Option<Length>, componentWidth: Float64, imageMaximumWidth: Float64): Length {
+func spanImageInitWidth(imageWidth: Option<Length>, componentWidth: Float64, imageMaximumWidth: Float64): Option<Length> {
     if (let Some(v) <- imageWidth) {
-        return v
+        return Some(v)
     }
     if (componentWidth > 0.0) {
-        return (componentWidth * imageMaximumWidth).vp
+        return Some((componentWidth * imageMaximumWidth).vp)
     }
-    return 100.percent
+    return Option<Length>.None
 }
 
 /**
@@ -1417,14 +1417,16 @@ func spanImageInitWidth(imageWidth: Option<Length>, componentWidth: Float64, ima
  * @param themeHeight 主题配置的图片高度
  * @return Length 初始高度
  */
-func spanImageInitHeight(imageHeight: Option<Length>, themeHeight: ?Float64): Length {
+func spanImageInitHeight(imageHeight: Option<Length>, themeHeight: ?Float64): Option<Length> {
     if (let Some(v) <- imageHeight) {
-        return v
+        return Some(v)
     }
     if (let Some(h) <- themeHeight) {
-        return h.vp
+        if (h > 0.0) {
+            return Some(h.vp)
+        }
     }
-    return 100.percent
+    return Option<Length>.None
 }
 
 /**

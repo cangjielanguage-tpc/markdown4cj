@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownLatexMathInLineComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown样式
     @State
     var latexMathInLineStr: String = "" // 数学公式文本

@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownCodeTextComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown配置
     @State
     var codeText: String = "" // 代码内容

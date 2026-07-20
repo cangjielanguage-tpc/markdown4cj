@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownAudioComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown样式
     var nodeView: NodeView // NodeView
     var audioCallback: ?(String) -> Unit = None // 音频的点击事件

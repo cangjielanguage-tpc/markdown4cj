@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownDescDefComponent {
+    @Prop
     var descDefMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var descDefNodeView: NodeView // 定义列表解释控件自身节点

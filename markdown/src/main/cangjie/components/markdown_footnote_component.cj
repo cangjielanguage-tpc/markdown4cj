@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownFootnoteComponent {
+    @Prop
     var footnoteMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
     var footnoteNodeView: NodeView // 脚注控件自身节点

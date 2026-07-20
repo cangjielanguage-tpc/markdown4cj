@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownLinkCircleImageComponent {
+    @Prop
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     var strUrl: String // 链接
     var strText: String // 链接内容

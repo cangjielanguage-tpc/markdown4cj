@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownImageDownloadComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown配置
     var destination: String // 图片链接
     var imageDownloadCallback: ?(String) -> Unit // 图片下载的点击事件

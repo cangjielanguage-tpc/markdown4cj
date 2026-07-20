@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownSpanImageRawFileComponent {
+    @Prop
     var rawFileMarkdownTheme: MarkdownTheme // markdown配置
     var rawFileDestination: String // 图片链接
     @Prop
@@ -24,9 +25,9 @@ public class MarkdownSpanImageRawFileComponent {
     @State
     var rawFileImagePixelMap: Option<PixelMap> = Option<PixelMap>.None // 图片数据
     @State
-    var rawFileHeight: Float64 = 0.0 // 图片最终高度 - 单位px
+    var rawFileHeight: Option<Float64> = Option<Float64>.None // 图片最终高度 - 单位px
     @State
-    var rawFileWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
+    var rawFileWidth: Option<Float64> = Option<Float64>.None // 图片最终宽度 - 单位px
     @State
     var rawFileRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State
@@ -89,8 +90,8 @@ public class MarkdownSpanImageRawFileComponent {
                     .borderWidth(rawFileMarkdownTheme.imageTheme.imageBorderWidth)
                     .borderColor(rawFileMarkdownTheme.imageTheme.imageBorderColor)
                     .borderStyle(rawFileMarkdownTheme.imageTheme.imageBorderStyle)
-                    .width(rawFileWidth.px)
-                    .height(rawFileHeight.px)
+                    .width(rawFileWidth)
+                    .height(rawFileHeight)
                     .objectFit(rawFileMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     .constraintSize(maxWidth: 100.percent)
@@ -139,8 +140,8 @@ public class MarkdownSpanImageRawFileComponent {
                         rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth,
                         rawFileMarkdownTheme.imageTheme.imageMaximumWidth
                     )
-                    rawFileWidth = res[0]
-                    rawFileHeight = res[1]
+                    rawFileWidth = Some(res[0])
+                    rawFileHeight = Some(res[1])
                     rawFileImageType = 1
                 } else {
                     rawFileImageType = 2
