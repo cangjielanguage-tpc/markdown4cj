@@ -118,6 +118,11 @@ class TablePage {
     @State var cfg_tableHeadTitleTextLineHeight: String = "undefined"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    var outerScroller: Scroller = Scroller() // 外层Scroll的Scroller（用于非固定高度模式下传递滚动Y给MarkdownComponent）
+    let mdScrollController = MarkdownScrollController() // 外层滚动控制器（非固定高度模式下传递滚动Y给MarkdownComponent）
+    var contentHeight: Float64 = 0.0 // Scroll内容高度（Column高度，用于clamp scrollY）
+    var viewportHeight: Float64 = 0.0 // Scroll视口高度（用于clamp scrollY）
+    var markdownStartY: Float64 = 0.0 // markdown容器在Scroll内容Column中的Y（layout-time常量，onAreaChange获取）
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -212,7 +217,10 @@ class TablePage {
             tableTheme.setTableContentTextFontSize(parseFloat64(cfg_tableContentTextFontSize))
         }
         tableTheme.setTableBorderStyle(parseBorderStyle(cfg_tableBorderStyle))
-        tableTheme.setTableBorderWidth(parseFloat64(cfg_tableBorderWidth))
+        let tableBorderWidth = parseFloat64(cfg_tableBorderWidth)
+        if (tableBorderWidth > 0.0) {
+            tableTheme.setTableBorderWidth(tableBorderWidth)
+        }
         tableTheme.setTableScrollBarState(parseBarState(cfg_tableScrollBarState))
         if (cfg_tableScrollBarColor != "undefined") {
             tableTheme.setTableScrollBarColor(parseColor(cfg_tableScrollBarColor))
@@ -273,7 +281,14 @@ class TablePage {
         if (cfg_tableHeadTitleTextLineHeight != "undefined") {
             tableTheme.setTableHeadTitleTextLineHeight(parseFloat64(cfg_tableHeadTitleTextLineHeight))
         }
-        tableTheme.setTableRadius(topLeft: parseFloat64(cfg_tableRadiusTopLeft), topRight: parseFloat64(cfg_tableRadiusTopRight), bottomLeft: parseFloat64(cfg_tableRadiusBottomLeft), bottomRight: parseFloat64(cfg_tableRadiusBottomRight))
+        let tableRadiusTopLeft = parseFloat64(cfg_tableRadiusTopLeft)
+        let tableRadiusTopRight = parseFloat64(cfg_tableRadiusTopRight)
+        let tableRadiusBottomLeft = parseFloat64(cfg_tableRadiusBottomLeft)
+        let tableRadiusBottomRight = parseFloat64(cfg_tableRadiusBottomRight)
+        // 当值为0时不设置，使用TableTheme默认值5.0
+        if (tableRadiusTopLeft > 0.0 || tableRadiusTopRight > 0.0 || tableRadiusBottomLeft > 0.0 || tableRadiusBottomRight > 0.0) {
+            tableTheme.setTableRadius(topLeft: tableRadiusTopLeft, topRight: tableRadiusTopRight, bottomLeft: tableRadiusBottomLeft, bottomRight: tableRadiusBottomRight)
+        }
         tableTheme.setTablePadding(top: parseFloat64(cfg_tablePaddingTop), right: parseFloat64(cfg_tablePaddingRight), bottom: parseFloat64(cfg_tablePaddingBottom), left: parseFloat64(cfg_tablePaddingLeft))
         tableTheme.setTableCellPadding(top: parseFloat64(cfg_tableCellPaddingTop), right: parseFloat64(cfg_tableCellPaddingRight), bottom: parseFloat64(cfg_tableCellPaddingBottom), left: parseFloat64(cfg_tableCellPaddingLeft))
         tableTheme.setTableMargin(top: parseFloat64(cfg_tableMarginTop), right: parseFloat64(cfg_tableMarginRight), bottom: parseFloat64(cfg_tableMarginBottom), left: parseFloat64(cfg_tableMarginLeft))
@@ -281,6 +296,10 @@ class TablePage {
         let theme = themeBuilder
         let configBuilder = MarkdownConfiguration.createEmpty()
         configBuilder.setMarkdownTheme(theme)
+        // 非固定高度模式下，传递外层滚动控制器给MarkdownComponent，用于表格吸顶
+        if (!parseBool(cfg_openGestureSwipe)) {
+            configBuilder.setScrollController(mdScrollController)
+        }
         return configBuilder
     }
 
@@ -313,7 +332,7 @@ class TablePage {
             .width(100.percent)
             .backgroundColor(0xFFEAEAEA)
 
-            Scroll {
+            Scroll(outerScroller) {
                 Column {
 
                     Column {
@@ -777,25 +796,85 @@ class TablePage {
                             .fontSize(14.0)
                             .fontColor(0xFF333333)
                             .margin(top: 10.0, left: 5.0)
-                        Column {
-                            MarkdownComponent(
-                                output: mdStr,
-                                isInputEnded: isInputEnded,
-                                incrementalAnalysis: incrementalAnalysis,
-                                scroller: scroller,
-                                markdownConfiguration: buildConfig()
-                            )
+                        if (parseBool(cfg_openGestureSwipe)){
+                            Column {
+                                MarkdownComponent(
+                                    output: mdStr,
+                                    isInputEnded: isInputEnded,
+                                    incrementalAnalysis: incrementalAnalysis,
+                                    scroller: scroller,
+                                    markdownConfiguration: buildConfig()
+                                )
+                            }
+                            .width(100.percent)
+                            .height(600.0)
+                            .padding(5.0)
+                            .backgroundColor(0xFFFFFFFF)
+                            .onAreaChange({
+                                old, new =>
+                                    // 加padding(5.0)：MarkdownComponent在容器padding内侧，
+                                    // markdownStartY应为MarkdownComponent的顶部位置
+                                    markdownStartY = new.position.y + 5.0
+                                    println("[STICKY-AREA] fixed-height branch position.y=${new.position.y} height=${new.height} markdownStartY=${markdownStartY}")
+                            })
+                        } else {
+                            Column {
+                                MarkdownComponent(
+                                    output: mdStr,
+                                    isInputEnded: isInputEnded,
+                                    incrementalAnalysis: incrementalAnalysis,
+                                    scroller: scroller,
+                                    markdownConfiguration: buildConfig()
+                                )
+                            }
+                            .width(100.percent)
+                            .padding(5.0)
+                            .backgroundColor(0xFFFFFFFF)
+                            .onAreaChange({
+                                old, new =>
+                                    markdownStartY = new.position.y + 5.0
+                                    println("[STICKY-AREA] non-fixed-height branch position.y=${new.position.y} height=${new.height} markdownStartY=${markdownStartY}")
+                            })
                         }
-                        .width(100.percent)
-                        .padding(5.0)
-                        .backgroundColor(0xFFFFFFFF)
                     }
                 }
                 .justifyContent(FlexAlign.Start)
+                .onAreaChange({
+                    old, new =>
+                        contentHeight = new.height
+                })
             }
             .scrollable(ScrollDirection.Vertical)
             .align(Alignment.Top)
+            .edgeEffect(EdgeEffect.None)
             .layoutWeight(1)
+            .onAreaChange({
+                old, new =>
+                    viewportHeight = new.height
+            })
+            .onScrollFrameBegin({
+                offset: Float64, state: ScrollState =>
+                    var newY = outerScroller.currentOffset().yOffset + offset
+                    if (newY < 0.0) {
+                        newY = 0.0
+                    }
+                    let maxScrollY = if (contentHeight > viewportHeight) {
+                        contentHeight - viewportHeight
+                    } else {
+                        0.0
+                    }
+                    if (maxScrollY > 0.0 && newY > maxScrollY) {
+                        newY = maxScrollY
+                    }
+                    // 传递relativeScrollY = scrollY - markdownStartY
+                    // （markdown起点已滚出视口顶部的距离；<0表示markdown尚未到达视口顶部）
+                    let relScrollY = newY - markdownStartY
+                    if (relScrollY > 0.0) {
+                        println("[STICKY-PAGE] newY=${newY} markdownStartY=${markdownStartY} relScrollY=${relScrollY}")
+                    }
+                    mdScrollController.notifyScrollY(relScrollY)
+                    offset
+            })
         }
         .width(100.percent)
         .layoutWeight(1)

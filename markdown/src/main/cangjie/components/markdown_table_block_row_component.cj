@@ -4,6 +4,7 @@ import ohos.state_macro_manage.*
 
 /**
  * 表格Row控件
+ * 对齐ArkUI MarkdownTableRow.ets：Cell通过@Consume获取columnWidths/cellWidthTracker，无需Row透传
  */
 @Component
 class MarkdownTableBlockRowComponent {
@@ -19,7 +20,7 @@ class MarkdownTableBlockRowComponent {
     var tableBlockRowFootnoteCallback: (String) -> Unit // 脚注点击事件
     var tableBlockRowRow: Int64 // 表格的第几行
     var tableBlockRowCellSize: Int64 // 表格总共有几列
-    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表（共享引用，传递给Cell）
+    var tableBlockRowRowSize: Int64 // 表格总共有几行
     @State
     var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // UI数据源
 
@@ -38,7 +39,6 @@ class MarkdownTableBlockRowComponent {
                 tableBlockRowNodeViewList,
                 itemGeneratorFunc: {
                     nodeview: NodeView, idx: Int64 => if (nodeview.nodeType == "TableCell") {
-                        // 表格Cell节点
                         MarkdownTableBlockCellComponent(
                             tableBlockCellMarkdownConfiguration: tableBlockRowMarkdownConfiguration,
                             tableBlockCellNodeView: nodeview,
@@ -49,10 +49,9 @@ class MarkdownTableBlockRowComponent {
                             tableBlockCellRow: tableBlockRowRow,
                             tableBlockCellCell: idx,
                             tableBlockCellCellSize: tableBlockRowCellSize,
-                            cellWidthArrayIndexed: cellWidthArrayIndexed,
+                            tableBlockCellRowSize: tableBlockRowRowSize
                         )
                     } else {
-                        // 其他节点
                         Text("")
                     }
                 },
@@ -67,34 +66,30 @@ class MarkdownTableBlockRowComponent {
     /**
      * 表格Row控件数据刷新
      *
-     * @param tableBlockRowNodeView 刷新的新数据
+     * @param newNodeView 刷新的新数据
      */
     public func refreshTableBlockRowData(newNodeView: NodeView): Unit {
         this.tableBlockRowNodeView = newNodeView
-        let refreshNodeViewChildren = tableBlockRowNodeView.children // 子节点数据
-        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
-        let dataSourceSize: Int64 = tableBlockRowNodeViewList.size // 页面缓存的数据长度
+        let refreshNodeViewChildren = tableBlockRowNodeView.children
+        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size
+        let dataSourceSize: Int64 = tableBlockRowNodeViewList.size
         if (refreshNodeViewSize == 0) {
             tableBlockRowNodeViewList.clear()
             return
         }
-        // 对比重叠区间，hash变化时替换数据
         let minLen = if (refreshNodeViewSize < dataSourceSize) { refreshNodeViewSize } else { dataSourceSize }
         for (i in 0..minLen) {
             let oldNode = tableBlockRowNodeViewList[i]
             let newNode = refreshNodeViewChildren[i]
             if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
-                // 自身节点或子节点唯一ID不相同需要刷新数据
                 tableBlockRowNodeViewList[i] = newNode
             }
         }
-        // 新增部分
         if (refreshNodeViewSize > dataSourceSize) {
             for (i in dataSourceSize..refreshNodeViewSize) {
                 tableBlockRowNodeViewList.append(refreshNodeViewChildren[i])
             }
         } else if (dataSourceSize > refreshNodeViewSize) {
-            // 删除多余部分（从后往前删，避免索引移位）
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 tableBlockRowNodeViewList.remove(i)
             }

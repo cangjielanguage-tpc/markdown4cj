@@ -172,7 +172,8 @@ class MarkdownListItemComponent {
                                 tableBlockComponentWidth: listItemTableBlockComponentWidth,
                                 tableBlockCustomTableLineBuilder: listItemCustomTableLineBuilder,
                                 tableBlockImageCallback: listItemImageCallback,
-                                tableBlockFootnoteCallback: listItemFootnoteCallback
+                                tableBlockFootnoteCallback: listItemFootnoteCallback,
+                                tableBlockListItemIndex: Int32(-1)
                             )
                         } else if (item.nodeType == "ThematicBreak") {
                             // 分割线

@@ -72,19 +72,22 @@ public class MarkdownComponent {
     let hasPendingRefresh: AtomicBool = AtomicBool(false) // 节流期间有未处理的刷新请求
     let isAlive: AtomicBool = AtomicBool(true) // 组件存活标志（用于定时器回调守卫）
     var throttleTimer: ?Timer = None // 节流定时器
-    var stickyHolder: StickyScrollYHolder = StickyScrollYHolder() // 表格吸顶滚动Y持有者
+    @Provide["mdStickyHolder"]
+    var stickyHolder: StickyScrollYHolder = StickyScrollYHolder() // 表格吸顶滚动Y持有者（@Provide供后代Table @Consume）
     @State
     var lastViewIndex: Int64 = 0 // 最后一条数据的位置
 
     protected override func aboutToAppear(): Unit {
-        tableBlockComponentWidth = markdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth - markdownConfiguration.markdownTheme.tableTheme.tableCellPaddingLeft - markdownConfiguration.markdownTheme.tableTheme.tableCellPaddingRight - 2.0 * markdownConfiguration.markdownTheme.tableTheme.tableBorderWidth // 表格每个格子最大宽度
         incBase = IncreaseParserV2(markdownPlugin) // 加载插件
         componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value // 默认控件宽度等于屏幕宽度
+        tableBlockComponentWidth = componentWidth // 表格总宽度等于屏幕宽度
         // 表格吸顶初始化
         if (markdownConfiguration.markdownTheme.tableTheme.tableStickyHeader) {
             stickyHolder.setEnabled(true)
+            stickyHolder.setScroller(scroller)
         }
         if (let Some(ctrl) <- markdownConfiguration.scrollController) {
+            // 外层Scroll滚动模式（非固定高度场景）：页面通过controller传递relativeScrollY
             ctrl.setListener({ y: Float64 => stickyHolder.setY(y) })
         }
         refreshData() // 首次加载
@@ -118,17 +121,21 @@ public class MarkdownComponent {
             .alignListItem(ListItemAlign.Start)
             .scrollBar(BarState.Off)
             .enableScrollInteraction(markdownConfiguration.markdownTheme.globalTheme.openGestureSwipe)
+            .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
             .onScroll({
                 offset: Float64, state: ScrollState =>
-                    if (markdownConfiguration.markdownTheme.tableTheme.tableStickyHeader) {
+                    // 内层List滚动模式（未提供scrollController时）：用List内部scrollY驱动吸顶
+                    if (markdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && markdownConfiguration.scrollController.isNone()) {
                         stickyHolder.setY(scroller.currentOffset().yOffset)
                     }
             })
-            .interopOnSizeChange {
-                old, new => if (componentWidth != new.width) {
-                    componentWidth = new.width
-                }
-            }
+            .onAreaChange({
+                old, new =>
+                    if (componentWidth != new.width) {
+                        componentWidth = new.width
+                        tableBlockComponentWidth = new.width
+                    }
+            })
         } else {
             List(scroller: scrollerCode, space: markdownConfiguration.markdownTheme.globalTheme.markdownBlockSpacing) {
                 LazyForEach(
@@ -325,7 +332,7 @@ public class MarkdownComponent {
                             tableBlockCustomTableLineBuilder: customTableLineBuilder,
                             tableBlockImageCallback: imageCallback,
                             tableBlockFootnoteCallback: footnoteCallback,
-                            tableBlockStickyHolder: stickyHolder
+                            tableBlockListItemIndex: Int32(idx)
                         )
                     }
                 } else if (item.nodeType == "ThematicBreak") {

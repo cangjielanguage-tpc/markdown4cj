@@ -173,7 +173,8 @@ public class MarkdownQuoteComponent {
                                 tableBlockComponentWidth: quoteTableBlockComponentWidth,
                                 tableBlockCustomTableLineBuilder: quoteCustomTableLineBuilder,
                                 tableBlockImageCallback: quoteImageCallback,
-                                tableBlockFootnoteCallback: quoteFootnoteCallback
+                                tableBlockFootnoteCallback: quoteFootnoteCallback,
+                                tableBlockListItemIndex: Int32(-1)
                             )
                         } else if (item.nodeType == "ThematicBreak") {
                             // 分割线

@@ -5,6 +5,8 @@ import ohos.component_utils.*
 
 /**
  * 表格Cell控件
+ * 对齐ArkUI MarkdownTableCell.ets：@Consume tableColumnWidths/cellWidthTracker
+ * onAreaChange写入tracker → onWidthUpdated回调 → applyColumnWidths → columnWidths重赋值 → @Consume触发Cell重渲染
  */
 @Component
 class MarkdownTableBlockCellComponent {
@@ -21,7 +23,11 @@ class MarkdownTableBlockCellComponent {
     var tableBlockCellRow: Int64 // 表格的第几行
     var tableBlockCellCell: Int64 // 表格的第几条
     var tableBlockCellCellSize: Int64 // 表格总共有几列
-    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表（共享引用，@Observed+@Publish自动响应式）
+    var tableBlockCellRowSize: Int64 // 表格总共有几行
+    @Consume["tableColumnWidths"]
+    var columnWidths: Array<Float64> // 各列宽度快照（@Consume从MarkdownTableBlockComponent同步）
+    @Consume
+    var cellWidthTracker: CellWidthTracker // 列宽跟踪器（非@Observed，onAreaChange只写不触发重渲染）
     @State
     var isRefresh: Bool = false // 表格Cell子节点是否不为0
     @State
@@ -29,8 +35,7 @@ class MarkdownTableBlockCellComponent {
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
-        refreshTableBlockCellData(tableBlockCellNodeView) // 初始化刷新数据
-        // 链接曝光注册（与段落组件保持一致）
+        refreshTableBlockCellData(tableBlockCellNodeView)
         if (tableBlockCellMarkdownConfiguration.elementExposureCallback.isSome()) {
             let urls = MarkdownLinkExposureRegistry.extractHttpLinks(tableBlockCellNodeView)
             MarkdownLinkExposureRegistry.register(tableBlockCellNodeView.nodeHash, urls)
@@ -54,20 +59,27 @@ class MarkdownTableBlockCellComponent {
         .borderWidth(EdgeWidths(left: leftWidths().vp, right: rightWidths().vp, top: topWidths().vp, bottom: bottomWidths().vp))
         .borderStyle(tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
         .borderColor(tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
-        .constraintSize(minWidth: currentMinWidth().vp, maxWidth: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth.vp)
-        .interopOnSizeChange({
+        .constraintSize(minWidth: currentColumnWidth().vp, maxWidth: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth.vp)
+        .onAreaChange({
             old, new =>
                 if (old.width == new.width) {
                     return
                 }
-                let newWidth: Float64 = new.width
-                if (let Some(v) <- cellWidthArrayIndexed.get().get(tableBlockCellCell)) {
-                    if (v.index == tableBlockCellCell && newWidth > v.minWidth) {
-                        // 直接修改 @Publish 属性，通知所有观察该属性的组件重渲染
-                        v.minWidth = newWidth
-                    }
+                if (new.width > 0.0) {
+                    cellWidthTracker.updateCellWidth(tableBlockCellRow, tableBlockCellCell, new.width)
                 }
         })
+    }
+
+    /**
+     * 从@Consume columnWidths读取当前列宽度
+     * 建立响应式依赖：columnWidths重赋值时触发Cell重渲染
+     */
+    func currentColumnWidth(): Float64 {
+        if (tableBlockCellCell >= 0 && tableBlockCellCell < Int64(columnWidths.size)) {
+            return columnWidths[tableBlockCellCell]
+        }
+        return 0.0
     }
 
     /**
@@ -191,32 +203,18 @@ class MarkdownTableBlockCellComponent {
      * 表格顶部边框宽度
      */
     func topWidths(): Float64 {
-        return if (tableBlockCellRow == 0) {
-            0.0
-        } else {
-            tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth
-        }
+        return 0.0
     }
 
     /**
      * 表格底部边框宽度
      */
     func bottomWidths(): Float64 {
-        return 0.0
-    }
-
-    /**
-     * 获取当前Cell的最小宽度
-     * 直接读取 @Publish minWidth 属性，建立响应式依赖
-     * 当其他Cell更新同一列的minWidth时，本Cell会自动重渲染
-     *
-     * @return Float64 最小宽度（vp）
-     */
-    func currentMinWidth(): Float64 {
-        if (let Some(v) <- cellWidthArrayIndexed.get().get(tableBlockCellCell)) {
-            return v.minWidth
+        return if (tableBlockCellRow == tableBlockCellRowSize - 1) {
+            0.0
+        } else {
+            tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth
         }
-        return tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMinCellWidth
     }
 
     /**

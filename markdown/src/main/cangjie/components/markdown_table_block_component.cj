@@ -4,6 +4,7 @@ import ohos.state_macro_manage.*
 
 /**
  * 表格控件
+ * 对齐ArkUI MarkdownTable.ets：@Provide cellWidthTracker/columnWidths，@Consume mdStickyHolder
  */
 @Component
 class MarkdownTableBlockComponent {
@@ -12,64 +13,72 @@ class MarkdownTableBlockComponent {
     @Prop
     var tableBlockNodeView: NodeView // 表格控件自身节点
     @Prop
+    @Watch[onComponentWidthChanged]
     var tableBlockComponentWidth: Float64 // 控件宽度 - 单位vp
     @BuilderParam
     var tableBlockCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格Cell控件
     var tableBlockImageCallback: (String) -> Unit // 图片点击事件
     var tableBlockFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var tableBlockListItemIndex: Int32 = -1 // 当前表格所在外层List的ListItem索引（用于scroller.getItemRect查询视口位置）
+    @Consume["mdStickyHolder"]
+    var stickyHolder: StickyScrollYHolder // 吸顶滚动Y持有者（@Consume从MarkdownComponent同步）
+    @Provide
+    var cellWidthTracker: CellWidthTracker = CellWidthTracker() // 列宽跟踪器（非@Observed，onAreaChange只写不触发重渲染）
+    @Provide["tableColumnWidths"]
+    var columnWidths: Array<Float64> = Array<Float64>(0, repeat: 0.0) // 列宽快照（@Provide让TableCell通过@Consume直接读取）
     @State
     var tableBlockCellSize: Int64 = 0 // 表格总共有几列
     @State
-    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>() // 表格宽度列表
-    var tableBlockNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源（保留兼容）
-    @State
     var tableBlockBodyRows: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 表格body行数据（ForEach用）
-    var tableBlockStickyHolder: ?StickyScrollYHolder = None // 吸顶滚动Y持有者
-    var stickyListenerId: Int64 = -1 // 吸顶监听器ID（用于removeListener）
     @State
     var tableBlockHeaderNodeView: NodeView = NodeView() // 吸顶模式下的标题行数据
     @State
     var tableBlockFullText: String = "" // 表格序列化的纯文本（用于复制按钮）
+    @State
+    var useOffsetSticky: Bool = false // 是否使用 offset sticky 模式（aboutToAppear时确定）
+    @State
+    var tableY: Float64 = 999999.0 // 表格在父容器中的Y位置（onAreaChange获取）
+    @State
+    var tableHeight: Float64 = 0.0 // 表格总高度（onAreaChange获取）
+    @State
+    var stickyContentHeight: Float64 = 0.0 // 吸顶内容总高度（header高度，onAreaChange获取）
+    @State
+    var stickyOffset: Float64 = 0.0 // 吸顶偏移量
+    var tablePaddingTopNum: Float64 = 0.0 // tablePaddingTop的数值
+    var tableBorderTopNum: Float64 = 0.0 // tableBorderWidth的数值
+    var blockMarginTopNum: Float64 = 0.0 // globalTheme.blockMarginTop的数值
+    var stickyListenerId: Int64 = -1 // 吸顶监听器ID（用于removeListener）
     let headerScroller: Scroller = Scroller() // 吸顶模式header横向Scroll控制器
     let bodyScroller: Scroller = Scroller() // 吸顶模式body横向Scroll控制器
     let syncManager: TableHorizontalScrollSync = TableHorizontalScrollSync() // header/body横向滚动同步器
-    var tableY: Float64 = 999999.0 // 表格在父容器中的Y位置（onAreaChange获取）
-    var tableHeight: Float64 = 0.0 // 表格总高度（onAreaChange获取）
-    var stickyContentHeight: Float64 = 0.0 // 吸顶内容总高度（header高度，onAreaChange获取）
-    var tablePaddingTopNum: Float64 = 0.0 // tablePaddingTop的数值
-    var tableBorderTopNum: Float64 = 0.0 // tableBorderWidth的数值
-    @State
-    var stickyOffset: Float64 = 0.0 // 吸顶偏移量
+    var oldStickyRowCount: Int64 = 0 // sticky模式上一次的总行数（含标题行），用于行减少时清理列宽记录
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockNodeView.nodeHash, refreshTableBlockData)
-        let isSticky = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && tableBlockStickyHolder.isSome()
-        if (isSticky) {
+        cellWidthTracker.onWidthUpdated = { => this.applyColumnWidths() }
+        useOffsetSticky = stickyHolder.getEnabled()
+        if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && useOffsetSticky) {
             syncManager.registerHeader(headerScroller)
             syncManager.registerBody(bodyScroller)
-            if (let Some(holder) <- tableBlockStickyHolder) {
-                stickyListenerId = holder.addListener(onStickyYChanged)
-            }
+            stickyListenerId = stickyHolder.addListener(onStickyYChanged)
         }
         refreshTableBlockData(tableBlockNodeView)
     }
 
     protected override func aboutToDisappear(): Unit {
         MarkdownRefreshRegistry.unregister(tableBlockNodeView.nodeHash)
-        let isSticky = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && tableBlockStickyHolder.isSome()
-        if (isSticky) {
+        cellWidthTracker.onWidthUpdated = None
+        if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && useOffsetSticky) {
             syncManager.unregisterHeader()
             syncManager.unregisterBody()
             syncManager.reset()
-            if (let Some(holder) <- tableBlockStickyHolder) {
-                holder.removeListener(stickyListenerId)
-            }
+            stickyHolder.removeListener(stickyListenerId)
         }
     }
 
     func build() {
-        if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && tableBlockStickyHolder.isSome()) {
-            // 吸顶模式：Column 包裹整个表格（外层已有 ListItem）
+        if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && useOffsetSticky) {
+            // offset sticky 模式：Column 包裹整个表格（外层已有 ListItem）
             Column {
                     // 吸顶header（用 offset 钉在视口顶部）
                     if (tableBlockNodeView.children.size > 0) {
@@ -90,7 +99,7 @@ class MarkdownTableBlockComponent {
                                     tableBlockRowFootnoteCallback: tableBlockFootnoteCallback,
                                     tableBlockRowRow: 0,
                                     tableBlockRowCellSize: tableBlockCellSize,
-                                    cellWidthArrayIndexed: cellWidthArrayIndexed
+                                    tableBlockRowRowSize: tableBlockNodeView.children.size
                                 )
                             }
                             .scrollable(ScrollDirection.Horizontal)
@@ -114,7 +123,7 @@ class MarkdownTableBlockComponent {
                                 onTableAreaChanged()
                         })
                     }
-                    // body（Scroll > Column > ForEach，对齐ArkTS tableBodyBuilder结构）
+                    // body（Scroll > Column > ForEach）
                     Scroll(bodyScroller) {
                         Column {
                             ForEach(
@@ -130,7 +139,7 @@ class MarkdownTableBlockComponent {
                                             tableBlockRowFootnoteCallback: tableBlockFootnoteCallback,
                                             tableBlockRowRow: idRow + 1,
                                             tableBlockRowCellSize: tableBlockCellSize,
-                                            cellWidthArrayIndexed: cellWidthArrayIndexed
+                                            tableBlockRowRowSize: tableBlockNodeView.children.size
                                         )
                                     } else {
                                         Text("")
@@ -176,10 +185,12 @@ class MarkdownTableBlockComponent {
             .clip(true)
             .onAreaChange({
                 old, new =>
-                    this.tablePaddingTopNum = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingTop
-                    this.tableBorderTopNum = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth
-                    this.tableY = new.position.y + tableBlockMarkdownConfiguration.markdownTheme.globalTheme.blockMarginTop + this.tableBorderTopNum + this.tablePaddingTopNum
-                    this.tableHeight = new.height
+                    tablePaddingTopNum = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingTop
+                    tableBorderTopNum = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth
+                    blockMarginTopNum = tableBlockMarkdownConfiguration.markdownTheme.globalTheme.blockMarginTop
+                    tableY = new.position.y
+                    tableHeight = new.height
+                    println("[STICKY-TABLE-AREA] idx=${tableBlockListItemIndex} position.y=${new.position.y} height=${new.height}")
                     onTableAreaChanged()
             })
         } else {
@@ -206,7 +217,7 @@ class MarkdownTableBlockComponent {
                                         tableBlockRowFootnoteCallback: tableBlockFootnoteCallback,
                                         tableBlockRowRow: idRow,
                                         tableBlockRowCellSize: tableBlockCellSize,
-                                        cellWidthArrayIndexed: cellWidthArrayIndexed
+                                        tableBlockRowRowSize: tableBlockNodeView.children.size
                                     )
                                 } else {
                                     Text("")
@@ -248,43 +259,46 @@ class MarkdownTableBlockComponent {
      * 表格控件数据刷新
      * 吸顶模式下：header=children[0], body=children[1:]
      * 非吸顶模式下：全部行在数据源中
-     *
-     * @param newNodeView 刷新的新数据
      */
     func refreshTableBlockData(newNodeView: NodeView): Unit {
         this.tableBlockNodeView = newNodeView
-        let refreshNodeViewChildren = tableBlockNodeView.children // 子节点数据
-        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
+        let refreshNodeViewChildren = tableBlockNodeView.children
+        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size
         if (refreshNodeViewSize == 0) {
-            tableBlockNodeViewDataSource.clear()
             tableBlockBodyRows.clear()
+            tableBlockCellSize = 0
+            cellWidthTracker.resize(0)
+            columnWidths = Array<Float64>(0, repeat: 0.0)
+            oldStickyRowCount = 0
             return
         }
-        var cellSize = 0 // 表格总共有几列
+        var cellSize = 0
         if (refreshNodeViewSize > 0) {
             cellSize = refreshNodeViewChildren[0].children.size
         }
         if (cellSize != tableBlockCellSize) {
-            cellWidthArrayIndexed.clear()
             tableBlockCellSize = cellSize
-            createListCellWidth()
+            cellWidthTracker.resize(cellSize)
         }
-        let isSticky = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && tableBlockStickyHolder.isSome()
-        if (isSticky) {
-            // 吸顶模式：header = children[0], body = children[1:]
+        if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && useOffsetSticky) {
             tableBlockHeaderNodeView = refreshNodeViewChildren[0]
-            // 增量更新body行数据（ForEach用）
+            let newRowCount = refreshNodeViewSize
+            if (newRowCount < oldStickyRowCount) {
+                for (i in newRowCount..oldStickyRowCount) {
+                    cellWidthTracker.clearRow(i)
+                }
+            }
+            oldStickyRowCount = newRowCount
             updateBodyRows(refreshNodeViewChildren, 1, refreshNodeViewSize)
         } else {
-            // 非吸顶模式：全部行
             updateBodyRows(refreshNodeViewChildren, 0, refreshNodeViewSize)
         }
         tableBlockFullText = getFullTableText()
+        applyColumnWidths()
     }
 
     /**
-     * 增量更新body行数据（对齐smartUpdateDataArray逻辑，但用于ForEach）
-     * 对比nodeHash/contentHash，仅更新变化的行
+     * 增量更新body行数据
      */
     func updateBodyRows(children: ArrayList<NodeView>, start: Int64, end: Int64): Unit {
         let newLen = end - start
@@ -309,19 +323,48 @@ class MarkdownTableBlockComponent {
     }
 
     /**
-     * 创建表格格子最小宽度的最大值列表
+     * 对比tracker中的列宽与当前@State，仅在变化时更新以避免不必要重渲染
+     * 每列宽度 = max(tracker测量值, componentWidth均分值)
+     * - tracker有数据时：列宽≥内容最大宽度（列对齐）且≥evenWidth（充满屏幕）
+     * - tracker无数据时：列宽=evenWidth（充满屏幕，待cell渲染后tracker更新）
+     * - tracker宽度>evenWidth时：列宽=tracker宽度（内容超宽，横向滚动）
      */
-    func createListCellWidth() {
-        for (i in 0..tableBlockCellSize) {
-            cellWidthArrayIndexed.append(CellWidthArrayIndexedClass(minWidth: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMinCellWidth, index: i))
+    func applyColumnWidths(): Unit {
+        let trackerWidths = cellWidthTracker.getWidths()
+        let size = trackerWidths.size
+        if (size == 0) {
+            if (columnWidths.size > 0) {
+                columnWidths = Array<Float64>(0, repeat: 0.0)
+            }
+            return
+        }
+        let newWidths = Array<Float64>(size, repeat: 0.0)
+        for (i in 0..size) {
+            newWidths[i] = trackerWidths[i]
+        }
+        if (tableBlockComponentWidth > 0.0 && size > 0) {
+            let evenWidth = tableBlockComponentWidth / Float64(size)
+            for (i in 0..size) {
+                if (newWidths[i] < evenWidth) {
+                    newWidths[i] = evenWidth
+                }
+            }
+        }
+        var changed = newWidths.size != columnWidths.size
+        var i = 0
+        while (!changed && i < size) {
+            if (newWidths[i] != columnWidths[i]) {
+                changed = true
+            }
+            i += 1
+        }
+        if (changed) {
+            columnWidths = newWidths
         }
     }
 
     /**
      * 外层滚动Y变化回调
-     * 由StickyScrollYHolder调用，计算吸顶偏移量并更新stickyOffset
-     *
-     * @param y 当前滚动Y值
      */
     func onStickyYChanged(y: Float64): Unit {
         recalculateOffset(y)
@@ -331,26 +374,53 @@ class MarkdownTableBlockComponent {
      * 表格位置/高度变化时重新计算偏移
      */
     func onTableAreaChanged(): Unit {
-        if (let Some(holder) <- tableBlockStickyHolder) {
-            recalculateOffset(holder.getY())
-        }
+        applyColumnWidths()
+        recalculateOffset(stickyHolder.getY())
     }
 
     /**
-     * 计算header吸顶偏移量并更新stickyOffset
-     * - offset <= 0：表格未滚出视口，不吸顶
-     * - upperBound <= 0：表格比吸顶内容短，不吸顶
-     * - offset >= upperBound：吸顶内容底部到达表格底部，锁定在upperBound
-     * - 0 < offset < upperBound：正常吸顶，钉在视口顶部
+     * 控件宽度变化时重新应用列宽
+     */
+    func onComponentWidthChanged(): Unit {
+        applyColumnWidths()
+    }
+
+    /**
+     * 计算 header 吸顶偏移量并更新 stickyOffset（统一公式，对齐ArkUI MarkdownTable.ets）
      *
-     * @param scrollY 当前外层滚动Y值
+     * offset = scrollY - tableYTotal
+     *   scrollY < 0：markdown起点尚未到达视口顶部，不吸顶
+     *   offset <= 0：表格顶部未滚出视口顶部，不吸顶
+     *   upperBound <= 0：表格比吸顶内容短，不吸顶
+     *   offset >= upperBound：吸顶内容底部到达表格底部，锁定在upperBound
+     *   0 < offset < upperBound：正常吸顶，钉在视口顶部
+     *
+     * tableYTotal = listItemPositionInList + position.y + blockMarginTop + borderTop + paddingTop
+     *   listItemPositionInList = getListItemY(idx) + getListScrollY()（layout-time常量，ListItem在List内容中的绝对位置）
+     *   position.y = 表格border box顶在ListItem中的Y（Cangjie onAreaChange，layout-time常量，与ArkUI一致）
+     *   blockMarginTop = List的margin（markdown整体上边距）
+     *   borderTop + paddingTop = 从border box顶到header所在的content box顶的距离
+     *
+     * scrollY语义：
+     *   外层Scroll模式：页面传递relativeScrollY = scrollY - markdownStartY
+     *   内层List模式：onScroll传递List内部scrollY = scroller.currentOffset().yOffset
      */
     func recalculateOffset(scrollY: Float64): Unit {
-        if (scrollY < 0.0 || tableY == 999999.0) {
+        if (scrollY < 0.0) {
             stickyOffset = 0.0
             return
         }
-        let offset = scrollY - tableY
+        if (tableY == 999999.0 || tableBlockListItemIndex < 0) {
+            stickyOffset = 0.0
+            return
+        }
+        let itemY = stickyHolder.getListItemY(tableBlockListItemIndex)
+        let listScrollY = stickyHolder.getListScrollY()
+        let listItemPositionInList = itemY + listScrollY
+        // position.y是border box顶（与ArkUI一致），需加borderTop + paddingTop到content box顶
+        let tableYTotal = listItemPositionInList + tableY + blockMarginTopNum + tableBorderTopNum + tablePaddingTopNum
+        let offset = scrollY - tableYTotal
+        // 上界 = 表格总高度 - borderTop - paddingTop - 吸顶内容高度
         let upperBound = tableHeight - tableBorderTopNum - tablePaddingTopNum - stickyContentHeight
         if (offset <= 0.0 || upperBound <= 0.0) {
             stickyOffset = 0.0
@@ -359,11 +429,14 @@ class MarkdownTableBlockComponent {
         } else {
             stickyOffset = offset
         }
+        // [DEBUG] 吸顶调试日志（吸顶激活时输出，便于定位间隙来源）
+        if (stickyOffset > 0.0) {
+            println("[STICKY-DEBUG] idx=${tableBlockListItemIndex} scrollY=${scrollY} itemY=${itemY} listScrollY=${listScrollY} tableY(position.y)=${tableY} blockMarginTop=${blockMarginTopNum} tableBorderTop=${tableBorderTopNum} tablePaddingTop=${tablePaddingTopNum} tableYTotal=${tableYTotal} offset=${offset} upperBound=${upperBound} stickyOffset=${stickyOffset} tableHeight=${tableHeight} stickyContentHeight=${stickyContentHeight}")
+        }
     }
 
     /**
-     * 序列化表格为纯文本（对齐ArkTS MarkdownNodeViewString.toString格式）
-     * 每个单元格后跟空格，每行后跟换行符
+     * 序列化表格为纯文本
      */
     func getFullTableText(): String {
         let children = tableBlockNodeView.children
@@ -383,9 +456,6 @@ class MarkdownTableBlockComponent {
 
     /**
      * 递归提取NodeView的纯文本
-     *
-     * @param node 节点
-     * @return 节点及其所有子节点的文本拼接
      */
     func extractNodeText(node: NodeView): String {
         var text = node.nodeText
