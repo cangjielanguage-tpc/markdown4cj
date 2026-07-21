@@ -2,6 +2,7 @@
   "src": [
     "pages/ABCustomPage",
     "pages/AllPage",
+    "pages/AllPageCopyPage",
     "pages/AudioPage",
     "pages/BannerPage",
     "pages/BigDataPage",
