@@ -8,6 +8,7 @@ import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
 import ohos.concurrency.launch
+import ohos.hilog.*
 
 @HybridComponentEntry
 @Component
@@ -107,6 +108,7 @@ class TablePage {
     @State var cfg_tableHeadIsShow: String = "false"
     @State var cfg_tableHeadTitleText: String = "比较"
     @State var cfg_tableHeadTitleTextMarginLeft: String = "0"
+    @State var cfg_tableHeadCopyIcon: String = "undefined"
     @State var cfg_tableHeadCopyIconWidth: String = "0"
     @State var cfg_tableHeadCopyIconHeight: String = "0"
     @State var cfg_tableHeadCopyIconMarginRight: String = "0"
@@ -262,6 +264,9 @@ class TablePage {
         tableTheme.setTableHeadIsShow(parseBool(cfg_tableHeadIsShow))
         tableTheme.setTableHeadTitleText(cfg_tableHeadTitleText)
         tableTheme.setTableHeadTitleTextMarginLeft(parseFloat64(cfg_tableHeadTitleTextMarginLeft))
+        if (let Some(v) <- parseAppResource(cfg_tableHeadCopyIcon)) {
+            tableTheme.setTableHeadCopyIcon(v)
+        }
         tableTheme.setTableHeadCopyIconWidth(parseFloat64(cfg_tableHeadCopyIconWidth))
         tableTheme.setTableHeadCopyIconHeight(parseFloat64(cfg_tableHeadCopyIconHeight))
         tableTheme.setTableHeadCopyIconMarginRight(parseFloat64(cfg_tableHeadCopyIconMarginRight))
@@ -295,6 +300,8 @@ class TablePage {
         themeBuilder.setTableTheme(tableTheme)
         let theme = themeBuilder
         let configBuilder = MarkdownConfiguration.createEmpty()
+        configBuilder.setTableCopyCallback(tableString)
+
         configBuilder.setMarkdownTheme(theme)
         // 非固定高度模式下，传递外层滚动控制器给MarkdownComponent，用于表格吸顶
         if (!parseBool(cfg_openGestureSwipe)) {
@@ -739,6 +746,7 @@ class TablePage {
 
                         if (isExpanded10) {
                             Column {
+                                ConfigTabSelector(title: "表格头复制图标 - ", options: iconShortList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableHeadCopyIcon, onSelect: { v => cfg_tableHeadCopyIcon = v })
                                 ConfigTabSelector(title: "表格头部复制图标宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_tableHeadCopyIconWidth, onSelect: { v => cfg_tableHeadCopyIconWidth = v })
                                 ConfigTabSelector(title: "表格头部复制图标高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_tableHeadCopyIconHeight, onSelect: { v => cfg_tableHeadCopyIconHeight = v })
                                 ConfigTabSelector(title: "表格头部复制图标右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableHeadCopyIconMarginRight, onSelect: { v => cfg_tableHeadCopyIconMarginRight = v })
@@ -880,5 +888,9 @@ class TablePage {
         .layoutWeight(1)
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
+    }
+
+    func tableString(str: String): Unit {
+        Hilog.error(1, "1", "---------str:${str}")
     }
 }
