@@ -14,6 +14,12 @@ class Demo_page {
     @State
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+    }
     var mdStr: String = """
 ### 标题1
 
@@ -73,7 +79,7 @@ Heading level 2
                     isInputEnded: true,
                     incrementalAnalysis: false,
                     scroller: scroller,
-                    markdownConfiguration: MarkdownConfiguration.create()
+                    markdownConfiguration: markdownConfiguration
                 )
             }
         }

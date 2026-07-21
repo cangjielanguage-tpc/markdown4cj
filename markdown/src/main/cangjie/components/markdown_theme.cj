@@ -353,6 +353,15 @@ public class MarkdownTheme {
     }
 
     /**
+     * 获取全局样式
+     *
+     * @return GlobalTheme 当前GlobalTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getGlobalTheme(): GlobalTheme {
+        return globalTheme
+    }
+
+    /**
      * 设置段落样式
      *
      * @param paragraphTheme 段落样式 - 默认ParagraphTheme()
@@ -361,6 +370,215 @@ public class MarkdownTheme {
     public func setParagraphTheme(paragraphTheme: ParagraphTheme): MarkdownTheme {
         this.paragraphTheme = paragraphTheme
         return this
+    }
+
+    /**
+     * 获取段落样式
+     *
+     * @return ParagraphTheme 当前ParagraphTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getParagraphTheme(): ParagraphTheme {
+        return paragraphTheme
+    }
+
+    /**
+     * 获取标题样式
+     * @return HeadingTheme 当前HeadingTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getHeadingTheme(): HeadingTheme {
+        return headingTheme
+    }
+
+    /**
+     * 获取表格样式
+     * @return TableTheme 当前TableTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getTableTheme(): TableTheme {
+        return tableTheme
+    }
+
+    /**
+     * 获取分割线样式
+     * @return DividerTheme 当前DividerTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getDividerTheme(): DividerTheme {
+        return dividerTheme
+    }
+
+    /**
+     * 获取块引用样式
+     * @return BlockQuoteTheme 当前BlockQuoteTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getBlockQuoteTheme(): BlockQuoteTheme {
+        return blockQuoteTheme
+    }
+
+    /**
+     * 获取有序列表样式
+     * @return OrderedListTheme 当前OrderedListTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getOrderedListTheme(): OrderedListTheme {
+        return orderedListTheme
+    }
+
+    /**
+     * 获取无序/任务列表样式
+     * @return BulletListTheme 当前BulletListTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getBulletListTheme(): BulletListTheme {
+        return bulletListTheme
+    }
+
+    /**
+     * 获取定义列表样式
+     * @return DefinitionListTheme 当前DefinitionListTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getDefinitionListTheme(): DefinitionListTheme {
+        return definitionListTheme
+    }
+
+    /**
+     * 获取代码块样式
+     * @return CodeBlockTheme 当前CodeBlockTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getCodeBlockTheme(): CodeBlockTheme {
+        return codeBlockTheme
+    }
+
+    /**
+     * 获取音频样式
+     * @return AudioTheme 当前AudioTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getAudioTheme(): AudioTheme {
+        return audioTheme
+    }
+
+    /**
+     * 获取视频样式
+     * @return VideoTheme 当前VideoTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getVideoTheme(): VideoTheme {
+        return videoTheme
+    }
+
+    /**
+     * 获取banner样式
+     * @return BannerTheme 当前BannerTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getBannerTheme(): BannerTheme {
+        return bannerTheme
+    }
+
+    /**
+     * 获取脚注定义样式
+     * @return FootnoteDefTheme 当前FootnoteDefTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getFootnoteDefTheme(): FootnoteDefTheme {
+        return footnoteDefTheme
+    }
+
+    /**
+     * 获取脚注引用样式
+     * @return FootnoteRefTheme 当前FootnoteRefTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getFootnoteRefTheme(): FootnoteRefTheme {
+        return footnoteRefTheme
+    }
+
+    /**
+     * 获取内联代码样式
+     * @return InlineCodeTheme 当前InlineCodeTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getInlineCodeTheme(): InlineCodeTheme {
+        return inlineCodeTheme
+    }
+
+    /**
+     * 获取加粗文本样式
+     * @return BoldTheme 当前BoldTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getBoldTheme(): BoldTheme {
+        return boldTheme
+    }
+
+    /**
+     * 获取数学公式样式
+     * @return LatexMathTheme 当前LatexMathTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getLatexMathTheme(): LatexMathTheme {
+        return latexMathTheme
+    }
+
+    /**
+     * 获取HTML下划线文本样式
+     * @return HtmlUnderlineTheme 当前HtmlUnderlineTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getHtmlUnderlineTheme(): HtmlUnderlineTheme {
+        return htmlUnderlineTheme
+    }
+
+    /**
+     * 获取图片样式
+     * @return ImageTheme 当前ImageTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getImageTheme(): ImageTheme {
+        return imageTheme
+    }
+
+    /**
+     * 获取斜体文本样式
+     * @return ItalicTheme 当前ItalicTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getItalicTheme(): ItalicTheme {
+        return italicTheme
+    }
+
+    /**
+     * 获取链接文本样式
+     * @return LinkTheme 当前LinkTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getLinkTheme(): LinkTheme {
+        return linkTheme
+    }
+
+    /**
+     * 获取删除线文本样式
+     * @return StrikethroughTheme 当前StrikethroughTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getStrikethroughTheme(): StrikethroughTheme {
+        return strikethroughTheme
+    }
+
+    /**
+     * 获取高亮样式
+     * @return HighlightTheme 当前HighlightTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getHighlightTheme(): HighlightTheme {
+        return highlightTheme
+    }
+
+    /**
+     * 获取下标文本样式
+     * @return SubTheme 当前SubTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getSubTheme(): SubTheme {
+        return subTheme
+    }
+
+    /**
+     * 获取上标文本样式
+     * @return SupTheme 当前SupTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getSupTheme(): SupTheme {
+        return supTheme
+    }
+
+    /**
+     * 获取markdown代码高亮样式
+     * @return PrismTheme 当前PrismTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getPrismTheme(): PrismTheme {
+        return prismTheme
     }
 
     /**

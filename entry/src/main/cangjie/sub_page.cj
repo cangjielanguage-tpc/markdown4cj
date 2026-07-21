@@ -28,31 +28,42 @@ class SubPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_subTextFontColor: String = "undefined"
-    @State var cfg_subTextFontSize: String = "undefined"
-    @State var cfg_subTextBaselineOffset: String = "0"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_subTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_subTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_subTextBaselineOffset: String = "0"
 
-    @State var cfg_subTextFontStyle: String = "undefined"
-    @State var cfg_subTextFontFamily: String = "undefined"
-    @State var cfg_subTextLetterSpacing: String = "undefined"
-    @State var cfg_subTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_subTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_subTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_subTextLetterSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_subTextFontWeight: String = "Normal"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -100,9 +111,9 @@ class SubPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -117,9 +128,8 @@ class SubPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let subTheme = SubTheme()
+        let subTheme = theme.getSubTheme()
         if (cfg_subTextFontColor != "undefined") {
             subTheme.setSubTextFontColor(parseColor(cfg_subTextFontColor))
         }
@@ -137,11 +147,6 @@ class SubPage {
         if (cfg_subTextLetterSpacing != "undefined") {
             subTheme.setSubTextLetterSpacing(parseFloat64(cfg_subTextLetterSpacing))
         }
-        themeBuilder.setSubTheme(subTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -281,7 +286,7 @@ class SubPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

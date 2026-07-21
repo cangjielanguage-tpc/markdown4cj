@@ -81,6 +81,15 @@ public class MarkdownConfiguration {
     }
 
     /**
+     * 获取Markdown样式
+     *
+     * @return MarkdownTheme 当前MarkdownTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getMarkdownTheme(): MarkdownTheme {
+        return markdownTheme
+    }
+
+    /**
      * 设置文本复制的点击事件
      *
      * @param textCopyCallback 文本复制的点击事件 (String:复制文本)

@@ -34,66 +34,78 @@ class ListPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_orderedListMarkerTextFontColor: String = "undefined"
-    @State var cfg_orderedListMarkerTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarkerTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarkerTextFontSize: String = "undefined"
 
-    @State var cfg_orderedListBackgroundColor: String = "undefined"
-    @State var cfg_orderedListMarginTop: String = "0"
-    @State var cfg_orderedListMarginRight: String = "0"
-    @State var cfg_orderedListMarginBottom: String = "0"
-    @State var cfg_orderedListMarginLeft: String = "0"
-    @State var cfg_orderedListPaddingTop: String = "0"
-    @State var cfg_orderedListPaddingRight: String = "0"
-    @State var cfg_orderedListPaddingBottom: String = "0"
-    @State var cfg_orderedListPaddingLeft: String = "0"
-    @State var cfg_orderedListChildSpacing: String = "0"
-    @State var cfg_orderedListChildChildSpacing: String = "0"
-    @State var cfg_orderedListMarkerSpacing: String = "0"
-    @State var cfg_orderedListMarkerTextFontStyle: String = "undefined"
-    @State var cfg_orderedListMarkerTextFontWeight: String = "Normal"
-    @State var cfg_orderedListMarkerTextFontFamily: String = "undefined"
-    @State var cfg_orderedListMarkerTextLineHeight: String = "undefined"
-    @State var cfg_bulletListBackgroundColor: String = "undefined"
-    @State var cfg_bulletListMarginTop: String = "0"
-    @State var cfg_bulletListMarginRight: String = "0"
-    @State var cfg_bulletListMarginBottom: String = "0"
-    @State var cfg_bulletListMarginLeft: String = "0"
-    @State var cfg_bulletListPaddingTop: String = "0"
-    @State var cfg_bulletListPaddingRight: String = "0"
-    @State var cfg_bulletListPaddingBottom: String = "0"
-    @State var cfg_bulletListPaddingLeft: String = "0"
-    @State var cfg_bulletListChildSpacing: String = "0"
-    @State var cfg_bulletListChildChildSpacing: String = "0"
-    @State var cfg_bulletListBulletSpacing: String = "0"
-    @State var cfg_bulletListBulletIsCircle: String = "false"
-    @State var cfg_bulletListBulletTextFontColor: String = "undefined"
-    @State var cfg_bulletListBulletTextFontSize: String = "undefined"
-    @State var cfg_bulletListBulletTextFontStyle: String = "undefined"
-    @State var cfg_bulletListBulletTextFontWeight: String = "Normal"
-    @State var cfg_bulletListBulletTextFontFamily: String = "undefined"
-    @State var cfg_bulletListBulletTextLineHeight: String = "undefined"
-    @State var cfg_bulletListCheckboxSpacing: String = "0"
-    @State var cfg_bulletListCheckboxWidth: String = "0"
-    @State var cfg_bulletListCheckboxHeight: String = "0"
-    @State var cfg_bulletListCheckboxSelectedColor: String = "undefined"
-    @State var cfg_bulletListCheckboxShape: String = "ROUNDED_SQUARE"
+    @State @Watch[onConfigChanged] var cfg_orderedListBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListPaddingTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListPaddingRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListPaddingBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListPaddingLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListChildSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListChildChildSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarkerSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarkerTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarkerTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarkerTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_orderedListMarkerTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_bulletListBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_bulletListMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListPaddingTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListPaddingRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListPaddingBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListPaddingLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListChildSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListChildChildSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListBulletSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListBulletIsCircle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_bulletListBulletTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_bulletListBulletTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_bulletListBulletTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_bulletListBulletTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_bulletListBulletTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_bulletListBulletTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_bulletListCheckboxSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListCheckboxWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListCheckboxHeight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bulletListCheckboxSelectedColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_bulletListCheckboxShape: String = "ROUNDED_SQUARE"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
+
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -141,9 +153,9 @@ class ListPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -158,9 +170,8 @@ class ListPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let orderedListTheme = OrderedListTheme()
+        let orderedListTheme = theme.getOrderedListTheme()
         if (cfg_orderedListMarkerTextFontColor != "undefined") {
             orderedListTheme.setOrderedListMarkerTextFontColor(parseColor(cfg_orderedListMarkerTextFontColor))
         }
@@ -185,9 +196,8 @@ class ListPage {
         }
         orderedListTheme.setOrderedListMargin(top: parseFloat64(cfg_orderedListMarginTop), right: parseFloat64(cfg_orderedListMarginRight), bottom: parseFloat64(cfg_orderedListMarginBottom), left: parseFloat64(cfg_orderedListMarginLeft))
         orderedListTheme.setOrderedListPadding(top: parseFloat64(cfg_orderedListPaddingTop), right: parseFloat64(cfg_orderedListPaddingRight), bottom: parseFloat64(cfg_orderedListPaddingBottom), left: parseFloat64(cfg_orderedListPaddingLeft))
-        themeBuilder.setOrderedListTheme(orderedListTheme)
 
-        let bulletListTheme = BulletListTheme()
+        let bulletListTheme = theme.getBulletListTheme()
         if (cfg_bulletListBackgroundColor != "undefined") {
             bulletListTheme.setBulletListBackgroundColor(parseColor(cfg_bulletListBackgroundColor))
         }
@@ -220,11 +230,6 @@ class ListPage {
         bulletListTheme.setBulletListCheckboxShape(parseCheckBoxShape(cfg_bulletListCheckboxShape))
         bulletListTheme.setBulletListMargin(top: parseFloat64(cfg_bulletListMarginTop), right: parseFloat64(cfg_bulletListMarginRight), bottom: parseFloat64(cfg_bulletListMarginBottom), left: parseFloat64(cfg_bulletListMarginLeft))
         bulletListTheme.setBulletListPadding(top: parseFloat64(cfg_bulletListPaddingTop), right: parseFloat64(cfg_bulletListPaddingRight), bottom: parseFloat64(cfg_bulletListPaddingBottom), left: parseFloat64(cfg_bulletListPaddingLeft))
-        themeBuilder.setBulletListTheme(bulletListTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -504,7 +509,7 @@ class ListPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

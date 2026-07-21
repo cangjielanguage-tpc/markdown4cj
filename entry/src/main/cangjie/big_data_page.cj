@@ -28,23 +28,34 @@ class BigDataPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
 
     func getFileList(): Array<String> {
         if (fileListStr == "") {
@@ -93,9 +104,9 @@ class BigDataPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -110,11 +121,6 @@ class BigDataPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -213,7 +219,7 @@ class BigDataPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

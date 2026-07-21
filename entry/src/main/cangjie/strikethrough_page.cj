@@ -28,33 +28,44 @@ class StrikethroughPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_strikethroughTextFontColor: String = "undefined"
-    @State var cfg_strikethroughTextFontSize: String = "undefined"
-    @State var cfg_strikethroughTextFontStyle: String = "undefined"
-    @State var cfg_strikethroughTextFontWeight: String = "Normal"
-    @State var cfg_strikethroughTextFontFamily: String = "undefined"
-    @State var cfg_strikethroughTextLineHeight: String = "undefined"
-    @State var cfg_strikethroughTextLetterSpacing: String = "undefined"
-    @State var cfg_strikethroughTextDecorationColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextLetterSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextDecorationColor: String = "undefined"
 
-    @State var cfg_strikethroughTextDecorationStyle: String = "SOLID"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextDecorationStyle: String = "SOLID"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -102,9 +113,9 @@ class StrikethroughPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -119,9 +130,8 @@ class StrikethroughPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let strikethroughTheme = StrikethroughTheme()
+        let strikethroughTheme = theme.getStrikethroughTheme()
         if (cfg_strikethroughTextFontColor != "undefined") {
             strikethroughTheme.setStrikethroughTextFontColor(parseColor(cfg_strikethroughTextFontColor))
         }
@@ -145,11 +155,6 @@ class StrikethroughPage {
             strikethroughTheme.setStrikethroughTextDecorationColor(parseColor(cfg_strikethroughTextDecorationColor))
         }
         strikethroughTheme.setStrikethroughTextDecorationStyle(parseTextDecorationStyle(cfg_strikethroughTextDecorationStyle))
-        themeBuilder.setStrikethroughTheme(strikethroughTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -291,7 +296,7 @@ class StrikethroughPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

@@ -66,86 +66,131 @@ func spanOnClick(markdownConfiguration: MarkdownConfiguration, nodeView: NodeVie
 
 /**
  * 设置文本字体族
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param subFamily 下标文本字体
+ * @param supFamily 上标文本字体
+ * @param codeFamily 内联代码文本字体
+ * @param boldFamily 加粗文本字体
+ * @param italicFamily 斜体文本字体
+ * @param strikeFamily 删除线文本字体
+ * @param highlightFamily 高亮文本字体
+ * @param underlineFamily 下划线文本字体
+ * @param linkFamily 链接文本字体
+ * @param footnoteFamily 脚注引用文本字体
+ * @param h1 一级标题文本字体
+ * @param h2 二级标题文本字体
+ * @param h3 三级标题文本字体
+ * @param h4 四级标题文本字体
+ * @param h5 五级标题文本字体
+ * @param h6 六级标题文本字体
+ * @param tableTitle 表格标题文本字体
+ * @param tableContent 表格内容文本字体
+ * @param paragraph 段落文本字体
  * @return 文本字体族
  */
-func spanFontFamily(nodeView: NodeView, markdownTheme: MarkdownTheme): String {
-    if (nodeView.isSubNode && markdownTheme.subTheme.subTextFontFamily.isSome()) {
-        return markdownTheme.subTheme.subTextFontFamily() // 下标
+func spanFontFamily(
+    nodeView: NodeView,
+    subFamily: ?String, supFamily: ?String, codeFamily: ?String,
+    boldFamily: ?String, italicFamily: ?String, strikeFamily: ?String,
+    highlightFamily: ?String, underlineFamily: ?String, linkFamily: ?String,
+    footnoteFamily: ?String,
+    h1: String, h2: String, h3: String, h4: String, h5: String, h6: String,
+    tableTitle: String, tableContent: String, paragraph: String
+): String {
+    if (nodeView.isSubNode && subFamily.isSome()) {
+        return subFamily() // 下标
     }
-    if (nodeView.isSupNode && markdownTheme.supTheme.supTextFontFamily.isSome()) {
-        return markdownTheme.supTheme.supTextFontFamily() // 上标
+    if (nodeView.isSupNode && supFamily.isSome()) {
+        return supFamily() // 上标
     }
-    if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextFontFamily.isSome()) {
-        return markdownTheme.inlineCodeTheme.inlineCodeTextFontFamily() // 内联代码
+    if (nodeView.isInLineCode && codeFamily.isSome()) {
+        return codeFamily() // 内联代码
     }
-    if (nodeView.isStrongEmphasis && markdownTheme.boldTheme.boldTextFontFamily.isSome()) {
-        return markdownTheme.boldTheme.boldTextFontFamily() // 加粗
+    if (nodeView.isStrongEmphasis && boldFamily.isSome()) {
+        return boldFamily() // 加粗
     }
-    if (nodeView.isEmphasis && markdownTheme.italicTheme.italicTextFontFamily.isSome()) {
-        return markdownTheme.italicTheme.italicTextFontFamily() // 斜体
+    if (nodeView.isEmphasis && italicFamily.isSome()) {
+        return italicFamily() // 斜体
     }
-    if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontFamily.isSome()) {
-        return markdownTheme.strikethroughTheme.strikethroughTextFontFamily() // 删除线
+    if (nodeView.isStrikethrough && strikeFamily.isSome()) {
+        return strikeFamily() // 删除线
     }
-    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontFamily.isSome()) {
-        return markdownTheme.highlightTheme.highlightTextFontFamily() // 高亮
+    if (nodeView.isHighlight && highlightFamily.isSome()) {
+        return highlightFamily() // 高亮
     }
-    if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontFamily.isSome()) {
-        return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontFamily() // 下划线
+    if (nodeView.isUnderlineNode && underlineFamily.isSome()) {
+        return underlineFamily() // 下划线
     }
-    if (nodeView.isLink && markdownTheme.linkTheme.linkTextFontFamily.isSome()) {
-        return markdownTheme.linkTheme.linkTextFontFamily() // 链接
+    if (nodeView.isLink && linkFamily.isSome()) {
+        return linkFamily() // 链接
     }
-    if (nodeView.isFootnote && markdownTheme.footnoteRefTheme.footnoteRefTextFontFamily.isSome()) {
-        return markdownTheme.footnoteRefTheme.footnoteRefTextFontFamily() // 脚注引用
+    if (nodeView.isFootnote && footnoteFamily.isSome()) {
+        return footnoteFamily() // 脚注引用
     }
     if (nodeView.isHeading) {
-        return headingFontFamily(nodeView.headingLevel, markdownTheme) // 标题
+        return match (nodeView.headingLevel) {
+            case 1 => h1 // 一级标题
+            case 2 => h2 // 二级标题
+            case 3 => h3 // 三级标题
+            case 4 => h4 // 四级标题
+            case 5 => h5 // 五级标题
+            case 6 => h6 // 六级标题
+            case _ => h6 // 其他
+        }
     }
     if (nodeView.isTable) {
         if (nodeView.isTableHead) {
-            return markdownTheme.tableTheme.tableTitleTextFontFamily // 表格标题
+            return tableTitle // 表格标题
         }
-        return markdownTheme.tableTheme.tableContentTextFontFamily // 表格内容
+        return tableContent // 表格内容
     }
-    return markdownTheme.paragraphTheme.paragraphTextFontFamily // 段落
-}
-
-/**
- * 设置不同等级标题文本字体族
- *
- * @param level 标题等级
- * @param markdownTheme markdown样式
- * @return 标题文本字体族
- */
-func headingFontFamily(level: Int64, markdownTheme: MarkdownTheme): String {
-    return match (level) {
-        case 1 => markdownTheme.headingTheme.heading1TextFontFamily // 一级标题
-        case 2 => markdownTheme.headingTheme.heading2TextFontFamily // 二级标题
-        case 3 => markdownTheme.headingTheme.heading3TextFontFamily // 三级标题
-        case 4 => markdownTheme.headingTheme.heading4TextFontFamily // 四级标题
-        case 5 => markdownTheme.headingTheme.heading5TextFontFamily // 五级标题
-        case 6 => markdownTheme.headingTheme.heading6TextFontFamily // 六级标题
-        case _ => markdownTheme.headingTheme.heading6TextFontFamily // 其他
-    }
+    return paragraph // 段落
 }
 
 /**
  * 设置文本字体大小
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param subSize 下标文本尺寸
+ * @param supSize 上标文本尺寸
+ * @param codeSize 内联代码文本尺寸
+ * @param boldSize 加粗文本尺寸
+ * @param italicSize 斜体文本尺寸
+ * @param strikeSize 删除线文本尺寸
+ * @param highlightSize 高亮文本尺寸
+ * @param underlineSize 下划线文本尺寸
+ * @param linkSize 链接文本尺寸
+ * @param footnoteSize 脚注引用文本尺寸
+ * @param h1 一级标题文本尺寸
+ * @param h2 二级标题文本尺寸
+ * @param h3 三级标题文本尺寸
+ * @param h4 四级标题文本尺寸
+ * @param h5 五级标题文本尺寸
+ * @param h6 六级标题文本尺寸
+ * @param tableTitle 表格标题文本尺寸
+ * @param tableContent 表格内容文本尺寸
+ * @param paragraph 段落文本尺寸
  * @return 文本字体大小
  */
-func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
+func spanFontSize(
+    nodeView: NodeView,
+    subSize: Float64, supSize: Float64, codeSize: ?Float64,
+    boldSize: ?Float64, italicSize: ?Float64, strikeSize: ?Float64,
+    highlightSize: ?Float64, underlineSize: ?Float64, linkSize: ?Float64,
+    footnoteSize: ?Float64,
+    h1: Float64, h2: Float64, h3: Float64, h4: Float64, h5: Float64, h6: Float64,
+    tableTitle: Float64, tableContent: Float64, paragraph: Float64
+): Float64 {
     if (nodeView.isSubNode) {
-        return markdownTheme.subTheme.subTextFontSize // 下标
+        return subSize // 下标
     }
     if (nodeView.isSupNode) {
-        return markdownTheme.supTheme.supTextFontSize // 上标
+        return supSize // 上标
     }
     if (nodeView.isFontNode) {
         if (let Some(v) <- nodeView.fontNodeSize) {
@@ -157,224 +202,274 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
             return v // SpanNode
         }
     }
-    if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextFontSize.isSome()) {
-        return markdownTheme.inlineCodeTheme.inlineCodeTextFontSize() // 内联代码
+    if (nodeView.isInLineCode && codeSize.isSome()) {
+        return codeSize() // 内联代码
     }
-    if (nodeView.isStrongEmphasis && markdownTheme.boldTheme.boldTextFontSize.isSome()) {
-        return markdownTheme.boldTheme.boldTextFontSize() // 加粗
+    if (nodeView.isStrongEmphasis && boldSize.isSome()) {
+        return boldSize() // 加粗
     }
-    if (nodeView.isEmphasis && markdownTheme.italicTheme.italicTextFontSize.isSome()) {
-        return markdownTheme.italicTheme.italicTextFontSize() // 斜体
+    if (nodeView.isEmphasis && italicSize.isSome()) {
+        return italicSize() // 斜体
     }
-    if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontSize.isSome()) {
-        return markdownTheme.strikethroughTheme.strikethroughTextFontSize() // 删除线
+    if (nodeView.isStrikethrough && strikeSize.isSome()) {
+        return strikeSize() // 删除线
     }
-    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontSize.isSome()) {
-        return markdownTheme.highlightTheme.highlightTextFontSize() // 高亮
+    if (nodeView.isHighlight && highlightSize.isSome()) {
+        return highlightSize() // 高亮
     }
-    if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontSize.isSome()) {
-        return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontSize() // 下划线
+    if (nodeView.isUnderlineNode && underlineSize.isSome()) {
+        return underlineSize() // 下划线
     }
-    if (nodeView.isLink && markdownTheme.linkTheme.linkTextFontSize.isSome()) {
-        return markdownTheme.linkTheme.linkTextFontSize() // 链接
+    if (nodeView.isLink && linkSize.isSome()) {
+        return linkSize() // 链接
     }
-    if (nodeView.isFootnote && markdownTheme.footnoteRefTheme.footnoteRefTextFontSize.isSome()) {
-        return markdownTheme.footnoteRefTheme.footnoteRefTextFontSize() // 脚注引用
+    if (nodeView.isFootnote && footnoteSize.isSome()) {
+        return footnoteSize() // 脚注引用
     }
     if (nodeView.isHeading) {
-        return headingTextSize(nodeView.headingLevel, markdownTheme) // 标题
+        return match (nodeView.headingLevel) {
+            case 1 => h1 // 一级标题
+            case 2 => h2 // 二级标题
+            case 3 => h3 // 三级标题
+            case 4 => h4 // 四级标题
+            case 5 => h5 // 五级标题
+            case 6 => h6 // 六级标题
+            case _ => h6 // 其他
+        }
     }
     if (nodeView.isTable) {
         if (nodeView.isTableHead) {
-            return markdownTheme.tableTheme.tableTitleTextFontSize // 表格标题
+            return tableTitle // 表格标题
         }
-        return markdownTheme.tableTheme.tableContentTextFontSize // 表格内容
+        return tableContent // 表格内容
     }
-    return markdownTheme.paragraphTheme.paragraphTextFontSize // 段落
-}
-
-/**
- * 设置不同等级标题文本字体大小
- *
- * @param level 标题等级
- * @param markdownTheme markdown样式
- * @return 标题文本字体大小
- */
-func headingTextSize(level: Int64, markdownTheme: MarkdownTheme): Float64 {
-    return match (level) {
-        case 1 => markdownTheme.headingTheme.heading1TextFontSize // 一级标题
-        case 2 => markdownTheme.headingTheme.heading2TextFontSize // 二级标题
-        case 3 => markdownTheme.headingTheme.heading3TextFontSize // 三级标题
-        case 4 => markdownTheme.headingTheme.heading4TextFontSize // 四级标题
-        case 5 => markdownTheme.headingTheme.heading5TextFontSize // 五级标题
-        case 6 => markdownTheme.headingTheme.heading6TextFontSize // 六级标题
-        case _ => markdownTheme.headingTheme.heading6TextFontSize // 其他
-    }
+    return paragraph // 段落
 }
 
 /**
  * 设置文本的字体粗细
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
  * @param isTableFirst 表格第一列是否加粗
- * @param markdownTheme markdown样式
+ * @param subWeight 下标文本字体粗细
+ * @param supWeight 上标文本字体粗细
+ * @param codeWeight 内联代码文本字体粗细
+ * @param boldWeight 加粗文本字体粗细
+ * @param italicWeight 斜体文本字体粗细
+ * @param strikeWeight 删除线文本字体粗细
+ * @param highlightWeight 高亮文本字体粗细
+ * @param underlineWeight 下划线文本字体粗细
+ * @param linkWeight 链接文本字体粗细
+ * @param footnoteWeight 脚注引用文本字体粗细
+ * @param h1 一级标题文本字体粗细
+ * @param h2 二级标题文本字体粗细
+ * @param h3 三级标题文本字体粗细
+ * @param h4 四级标题文本字体粗细
+ * @param h5 五级标题文本字体粗细
+ * @param h6 六级标题文本字体粗细
+ * @param tableTitle 表格标题文本字体粗细
+ * @param tableContent 表格内容文本字体粗细
+ * @param descTerm 定义列表术语文本字体粗细
+ * @param paragraph 段落文本字体粗细
  * @return 文本的字体粗细
  */
-func spanFontWeight(nodeView: NodeView, isTableFirst: Bool, markdownTheme: MarkdownTheme): FontWeight {
+func spanFontWeight(
+    nodeView: NodeView, isTableFirst: Bool,
+    subWeight: ?FontWeight, supWeight: ?FontWeight, codeWeight: ?FontWeight,
+    boldWeight: FontWeight, italicWeight: ?FontWeight, strikeWeight: ?FontWeight,
+    highlightWeight: ?FontWeight, underlineWeight: ?FontWeight, linkWeight: ?FontWeight,
+    footnoteWeight: ?FontWeight,
+    h1: FontWeight, h2: FontWeight, h3: FontWeight, h4: FontWeight, h5: FontWeight, h6: FontWeight,
+    tableTitle: FontWeight, tableContent: FontWeight, descTerm: FontWeight, paragraph: FontWeight
+): FontWeight {
     if (nodeView.isSpanNode) {
         if (let Some(v) <- nodeView.spanNodeWeight) {
             return v // SpanNode
         }
     }
-    if (nodeView.isSubNode && markdownTheme.subTheme.subTextFontWeight.isSome()) {
-        return markdownTheme.subTheme.subTextFontWeight() // 下标
+    if (nodeView.isSubNode && subWeight.isSome()) {
+        return subWeight() // 下标
     }
-    if (nodeView.isSupNode && markdownTheme.supTheme.supTextFontWeight.isSome()) {
-        return markdownTheme.supTheme.supTextFontWeight() // 上标
+    if (nodeView.isSupNode && supWeight.isSome()) {
+        return supWeight() // 上标
     }
-    if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextFontWeight.isSome()) {
-        return markdownTheme.inlineCodeTheme.inlineCodeTextFontWeight() // 内联代码
+    if (nodeView.isInLineCode && codeWeight.isSome()) {
+        return codeWeight() // 内联代码
     }
     if (nodeView.isStrongEmphasis) {
-        return markdownTheme.boldTheme.boldTextFontWeight // 加粗
+        return boldWeight // 加粗
     }
-    if (nodeView.isEmphasis && markdownTheme.italicTheme.italicTextFontWeight.isSome()) {
-        return markdownTheme.italicTheme.italicTextFontWeight() // 斜体
+    if (nodeView.isEmphasis && italicWeight.isSome()) {
+        return italicWeight() // 斜体
     }
-    if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontWeight.isSome()) {
-        return markdownTheme.strikethroughTheme.strikethroughTextFontWeight() // 删除线
+    if (nodeView.isStrikethrough && strikeWeight.isSome()) {
+        return strikeWeight() // 删除线
     }
-    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontWeight.isSome()) {
-        return markdownTheme.highlightTheme.highlightTextFontWeight() // 高亮
+    if (nodeView.isHighlight && highlightWeight.isSome()) {
+        return highlightWeight() // 高亮
     }
-    if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontWeight.isSome()) {
-        return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontWeight() // 下划线
+    if (nodeView.isUnderlineNode && underlineWeight.isSome()) {
+        return underlineWeight() // 下划线
     }
-    if (nodeView.isLink && markdownTheme.linkTheme.linkTextFontWeight.isSome()) {
-        return markdownTheme.linkTheme.linkTextFontWeight() // 链接
+    if (nodeView.isLink && linkWeight.isSome()) {
+        return linkWeight() // 链接
     }
-    if (nodeView.isFootnote && markdownTheme.footnoteRefTheme.footnoteRefTextFontWeight.isSome()) {
-        return markdownTheme.footnoteRefTheme.footnoteRefTextFontWeight() // 脚注引用
+    if (nodeView.isFootnote && footnoteWeight.isSome()) {
+        return footnoteWeight() // 脚注引用
     }
     if (nodeView.isHeading) {
-        return headingFontWeight(nodeView.headingLevel, markdownTheme) // 标题
+        return match (nodeView.headingLevel) {
+            case 1 => h1 // 一级标题
+            case 2 => h2 // 二级标题
+            case 3 => h3 // 三级标题
+            case 4 => h4 // 四级标题
+            case 5 => h5 // 五级标题
+            case 6 => h6 // 六级标题
+            case _ => h6 // 其他
+        }
     }
     if (nodeView.isTable) {
         if (nodeView.isTableHead || isTableFirst) {
-            return markdownTheme.tableTheme.tableTitleTextFontWeight // 表格标题
+            return tableTitle // 表格标题
         }
-        return markdownTheme.tableTheme.tableContentTextFontWeight // 表格内容
+        return tableContent // 表格内容
     }
     if (nodeView.isDescTerm) {
-        return markdownTheme.definitionListTheme.definitionListTermTextFontWeight // 定义列表术语
+        return descTerm // 定义列表术语
     }
-    return markdownTheme.paragraphTheme.paragraphTextFontWeight // 段落
-}
-
-/**
- * 设置不同等级标题文本的字体粗细
- *
- * @param level 标题等级
- * @param markdownTheme markdown样式
- * @return 标题文本的字体粗细
- */
-func headingFontWeight(level: Int64, markdownTheme: MarkdownTheme): FontWeight {
-    return match (level) {
-        case 1 => markdownTheme.headingTheme.heading1TextFontWeight // 一级标题
-        case 2 => markdownTheme.headingTheme.heading2TextFontWeight // 二级标题
-        case 3 => markdownTheme.headingTheme.heading3TextFontWeight // 三级标题
-        case 4 => markdownTheme.headingTheme.heading4TextFontWeight // 四级标题
-        case 5 => markdownTheme.headingTheme.heading5TextFontWeight // 五级标题
-        case 6 => markdownTheme.headingTheme.heading6TextFontWeight // 六级标题
-        case _ => markdownTheme.headingTheme.heading6TextFontWeight // 其他
-    }
+    return paragraph // 段落
 }
 
 /**
  * 设置文本字体样式
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param subStyle 下标文本字体样式
+ * @param supStyle 上标文本字体样式
+ * @param codeStyle 内联代码文本字体样式
+ * @param boldStyle 加粗文本字体样式
+ * @param strikeStyle 删除线文本字体样式
+ * @param highlightStyle 高亮文本字体样式
+ * @param underlineStyle 下划线文本字体样式
+ * @param linkStyle 链接文本字体样式
+ * @param footnoteStyle 脚注引用文本字体样式
+ * @param h1 一级标题文本字体样式
+ * @param h2 二级标题文本字体样式
+ * @param h3 三级标题文本字体样式
+ * @param h4 四级标题文本字体样式
+ * @param h5 五级标题文本字体样式
+ * @param h6 六级标题文本字体样式
+ * @param tableTitle 表格标题文本字体样式
+ * @param tableContent 表格内容文本字体样式
+ * @param descTerm 定义列表术语文本字体样式
+ * @param paragraph 段落文本字体样式
  * @return 文本字体样式
  */
-func spanFontStyle(nodeView: NodeView, markdownTheme: MarkdownTheme): FontStyle {
-    if (nodeView.isSubNode && markdownTheme.subTheme.subTextFontStyle.isSome()) {
-        return markdownTheme.subTheme.subTextFontStyle() // 下标
+func spanFontStyle(
+    nodeView: NodeView,
+    subStyle: ?FontStyle, supStyle: ?FontStyle, codeStyle: ?FontStyle,
+    boldStyle: ?FontStyle, strikeStyle: ?FontStyle, highlightStyle: ?FontStyle,
+    underlineStyle: ?FontStyle, linkStyle: ?FontStyle, footnoteStyle: ?FontStyle,
+    h1: FontStyle, h2: FontStyle, h3: FontStyle, h4: FontStyle, h5: FontStyle, h6: FontStyle,
+    tableTitle: FontStyle, tableContent: FontStyle, descTerm: FontStyle, paragraph: FontStyle
+): FontStyle {
+    if (nodeView.isSubNode && subStyle.isSome()) {
+        return subStyle() // 下标
     }
-    if (nodeView.isSupNode && markdownTheme.supTheme.supTextFontStyle.isSome()) {
-        return markdownTheme.supTheme.supTextFontStyle() // 上标
+    if (nodeView.isSupNode && supStyle.isSome()) {
+        return supStyle() // 上标
     }
-    if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextFontStyle.isSome()) {
-        return markdownTheme.inlineCodeTheme.inlineCodeTextFontStyle() // 内联代码
+    if (nodeView.isInLineCode && codeStyle.isSome()) {
+        return codeStyle() // 内联代码
     }
-    if (nodeView.isStrongEmphasis && markdownTheme.boldTheme.boldTextFontStyle.isSome()) {
-        return markdownTheme.boldTheme.boldTextFontStyle() // 加粗
+    if (nodeView.isStrongEmphasis && boldStyle.isSome()) {
+        return boldStyle() // 加粗
     }
     if (nodeView.isEmphasis) {
         return FontStyle.Italic // 斜体
     }
-    if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontStyle.isSome()) {
-        return markdownTheme.strikethroughTheme.strikethroughTextFontStyle() // 删除线
+    if (nodeView.isStrikethrough && strikeStyle.isSome()) {
+        return strikeStyle() // 删除线
     }
-    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontStyle.isSome()) {
-        return markdownTheme.highlightTheme.highlightTextFontStyle() // 高亮
+    if (nodeView.isHighlight && highlightStyle.isSome()) {
+        return highlightStyle() // 高亮
     }
-    if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontStyle.isSome()) {
-        return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontStyle() // 下划线
+    if (nodeView.isUnderlineNode && underlineStyle.isSome()) {
+        return underlineStyle() // 下划线
     }
-    if (nodeView.isLink && markdownTheme.linkTheme.linkTextFontStyle.isSome()) {
-        return markdownTheme.linkTheme.linkTextFontStyle() // 链接
+    if (nodeView.isLink && linkStyle.isSome()) {
+        return linkStyle() // 链接
     }
-    if (nodeView.isFootnote && markdownTheme.footnoteRefTheme.footnoteRefTextFontStyle.isSome()) {
-        return markdownTheme.footnoteRefTheme.footnoteRefTextFontStyle() // 脚注引用
+    if (nodeView.isFootnote && footnoteStyle.isSome()) {
+        return footnoteStyle() // 脚注引用
     }
     if (nodeView.isHeading) {
-        return headingFontStyle(nodeView.headingLevel, markdownTheme) // 标题
+        return match (nodeView.headingLevel) {
+            case 1 => h1 // 一级标题
+            case 2 => h2 // 二级标题
+            case 3 => h3 // 三级标题
+            case 4 => h4 // 四级标题
+            case 5 => h5 // 五级标题
+            case 6 => h6 // 六级标题
+            case _ => h6 // 其他
+        }
     }
     if (nodeView.isTable) {
         if (nodeView.isTableHead) {
-            return markdownTheme.tableTheme.tableTitleTextFontStyle // 表格标题
+            return tableTitle // 表格标题
         }
-        return markdownTheme.tableTheme.tableContentTextFontStyle // 表格内容
+        return tableContent // 表格内容
     }
     if (nodeView.isDescTerm) {
-        return markdownTheme.definitionListTheme.definitionListTermTextFontStyle // 定义列表术语
+        return descTerm // 定义列表术语
     }
-    return markdownTheme.paragraphTheme.paragraphTextFontStyle // 段落
-}
-
-/**
- * 设置不同等级标题文本字体样式
- *
- * @param level 标题等级
- * @param markdownTheme markdown样式
- * @return 标题文本字体样式
- */
-func headingFontStyle(level: Int64, markdownTheme: MarkdownTheme): FontStyle {
-    return match (level) {
-        case 1 => markdownTheme.headingTheme.heading1TextFontStyle // 一级标题
-        case 2 => markdownTheme.headingTheme.heading2TextFontStyle // 二级标题
-        case 3 => markdownTheme.headingTheme.heading3TextFontStyle // 三级标题
-        case 4 => markdownTheme.headingTheme.heading4TextFontStyle // 四级标题
-        case 5 => markdownTheme.headingTheme.heading5TextFontStyle // 五级标题
-        case 6 => markdownTheme.headingTheme.heading6TextFontStyle // 六级标题
-        case _ => markdownTheme.headingTheme.heading6TextFontStyle // 其他
-    }
+    return paragraph // 段落
 }
 
 /**
  * 设置文本字体颜色
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param subColor 下标文本颜色
+ * @param supColor 上标文本颜色
+ * @param codeColor 内联代码文本颜色
+ * @param boldColor 加粗文本颜色
+ * @param italicColor 斜体文本颜色
+ * @param strikeColor 删除线文本颜色
+ * @param highlightColor 高亮文本颜色
+ * @param underlineColor 下划线文本颜色
+ * @param linkColor 链接文本颜色
+ * @param footnoteColor 脚注引用文本颜色
+ * @param h1 一级标题文本颜色
+ * @param h2 二级标题文本颜色
+ * @param h3 三级标题文本颜色
+ * @param h4 四级标题文本颜色
+ * @param h5 五级标题文本颜色
+ * @param h6 六级标题文本颜色
+ * @param tableTitle 表格标题文本颜色
+ * @param tableContent 表格内容文本颜色
+ * @param paragraph 段落文本颜色
  * @return 文本字体颜色
  */
-func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
-    if (nodeView.isSubNode && markdownTheme.subTheme.subTextFontColor.isSome()) {
-        return markdownTheme.subTheme.subTextFontColor() // 下标
+func spanFontColor(
+    nodeView: NodeView,
+    subColor: ?Color, supColor: ?Color, codeColor: ?Color,
+    boldColor: ?Color, italicColor: ?Color, strikeColor: ?Color,
+    highlightColor: ?Color, underlineColor: ?Color, linkColor: Color, footnoteColor: Color,
+    h1: Color, h2: Color, h3: Color, h4: Color, h5: Color, h6: Color,
+    tableTitle: Color, tableContent: Color, paragraph: Color
+): Color {
+    if (nodeView.isSubNode && subColor.isSome()) {
+        return subColor() // 下标
     }
-    if (nodeView.isSupNode && markdownTheme.supTheme.supTextFontColor.isSome()) {
-        return markdownTheme.supTheme.supTextFontColor() // 上标
+    if (nodeView.isSupNode && supColor.isSome()) {
+        return supColor() // 上标
     }
     if (nodeView.isFontNode) {
         if (let Some(v) <- nodeView.fontNodeColor) {
@@ -386,277 +481,321 @@ func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
             return v // SpanNode
         }
     }
-    if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextFontColor.isSome()) {
-        return markdownTheme.inlineCodeTheme.inlineCodeTextFontColor() // 内联代码
+    if (nodeView.isInLineCode && codeColor.isSome()) {
+        return codeColor() // 内联代码
     }
-    if (nodeView.isStrongEmphasis && markdownTheme.boldTheme.boldTextFontColor.isSome()) {
-        return markdownTheme.boldTheme.boldTextFontColor() // 加粗
+    if (nodeView.isStrongEmphasis && boldColor.isSome()) {
+        return boldColor() // 加粗
     }
-    if (nodeView.isEmphasis && markdownTheme.italicTheme.italicTextFontColor.isSome()) {
-        return markdownTheme.italicTheme.italicTextFontColor() // 斜体
+    if (nodeView.isEmphasis && italicColor.isSome()) {
+        return italicColor() // 斜体
     }
-    if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontColor.isSome()) {
-        return markdownTheme.strikethroughTheme.strikethroughTextFontColor() // 删除线
+    if (nodeView.isStrikethrough && strikeColor.isSome()) {
+        return strikeColor() // 删除线
     }
-    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontColor.isSome()) {
-        return markdownTheme.highlightTheme.highlightTextFontColor() // 高亮
+    if (nodeView.isHighlight && highlightColor.isSome()) {
+        return highlightColor() // 高亮
     }
-    if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontColor.isSome()) {
-        return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontColor() // 下划线
+    if (nodeView.isUnderlineNode && underlineColor.isSome()) {
+        return underlineColor() // 下划线
     }
     if (nodeView.isLink) {
-        return markdownTheme.linkTheme.linkTextFontColor // 链接
+        return linkColor // 链接
     }
     if (nodeView.isFootnote) {
-        return markdownTheme.footnoteRefTheme.footnoteRefTextFontColor // 脚注引用
+        return footnoteColor // 脚注引用
     }
     if (nodeView.isHeading) {
-        return headColor(nodeView.headingLevel, markdownTheme) // 标题
+        return match (nodeView.headingLevel) {
+            case 1 => h1 // 一级标题
+            case 2 => h2 // 二级标题
+            case 3 => h3 // 三级标题
+            case 4 => h4 // 四级标题
+            case 5 => h5 // 五级标题
+            case 6 => h6 // 六级标题
+            case _ => h6 // 其他
+        }
     }
     if (nodeView.isTable) {
         if (nodeView.isTableHead) {
-            return markdownTheme.tableTheme.tableTitleTextFontColor // 表格标题
+            return tableTitle // 表格标题
         }
-        return markdownTheme.tableTheme.tableContentTextFontColor // 表格内容
+        return tableContent // 表格内容
     }
-    return markdownTheme.paragraphTheme.paragraphTextFontColor // 段落和其他
-}
-
-/**
- * 设置不同等级标题文本字体颜色
- *
- * @param level 标题等级
- * @param markdownTheme markdown样式
- * @return 标题文本字体颜色
- */
-func headColor(level: Int64, markdownTheme: MarkdownTheme): Color {
-    return match (level) {
-        case 1 => markdownTheme.headingTheme.heading1TextFontColor // 一级标题
-        case 2 => markdownTheme.headingTheme.heading2TextFontColor // 二级标题
-        case 3 => markdownTheme.headingTheme.heading3TextFontColor // 三级标题
-        case 4 => markdownTheme.headingTheme.heading4TextFontColor // 四级标题
-        case 5 => markdownTheme.headingTheme.heading5TextFontColor // 五级标题
-        case 6 => markdownTheme.headingTheme.heading6TextFontColor // 六级标题
-        case _ => markdownTheme.headingTheme.heading6TextFontColor // 其他
-    }
+    return paragraph // 段落和其他
 }
 
 /**
  * 设置文本字符间距
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param subSpacing 下标文本字符间距
+ * @param supSpacing 上标文本字符间距
+ * @param codeSpacing 内联代码文本字符间距
+ * @param boldSpacing 加粗文本字符间距
+ * @param italicSpacing 斜体文本字符间距
+ * @param strikeSpacing 删除线文本字符间距
+ * @param highlightSpacing 高亮文本字符间距
+ * @param underlineSpacing 下划线文本字符间距
+ * @param linkSpacing 链接文本字符间距
+ * @param footnoteSpacing 脚注引用文本字符间距
+ * @param h1 一级标题文本字符间距
+ * @param h2 二级标题文本字符间距
+ * @param h3 三级标题文本字符间距
+ * @param h4 四级标题文本字符间距
+ * @param h5 五级标题文本字符间距
+ * @param h6 六级标题文本字符间距
+ * @param tableTitle 表格标题文本字符间距
+ * @param tableContent 表格内容文本字符间距
+ * @param paragraph 段落文本字符间距
  * @return 文本字符间距
  */
-func spanLetterSpacing(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
-    if (nodeView.isSubNode && markdownTheme.subTheme.subTextLetterSpacing.isSome()) {
-        return markdownTheme.subTheme.subTextLetterSpacing() // 下标
+func spanLetterSpacing(
+    nodeView: NodeView,
+    subSpacing: ?Float64, supSpacing: ?Float64, codeSpacing: ?Float64,
+    boldSpacing: ?Float64, italicSpacing: ?Float64, strikeSpacing: ?Float64,
+    highlightSpacing: ?Float64, underlineSpacing: ?Float64, linkSpacing: ?Float64,
+    footnoteSpacing: ?Float64,
+    h1: Float64, h2: Float64, h3: Float64, h4: Float64, h5: Float64, h6: Float64,
+    tableTitle: Float64, tableContent: Float64, paragraph: Float64
+): Float64 {
+    if (nodeView.isSubNode && subSpacing.isSome()) {
+        return subSpacing() // 下标
     }
-    if (nodeView.isSupNode && markdownTheme.supTheme.supTextLetterSpacing.isSome()) {
-        return markdownTheme.supTheme.supTextLetterSpacing() // 上标
+    if (nodeView.isSupNode && supSpacing.isSome()) {
+        return supSpacing() // 上标
     }
-    if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextLetterSpacing.isSome()) {
-        return markdownTheme.inlineCodeTheme.inlineCodeTextLetterSpacing() // 内联代码
+    if (nodeView.isInLineCode && codeSpacing.isSome()) {
+        return codeSpacing() // 内联代码
     }
-    if (nodeView.isStrongEmphasis && markdownTheme.boldTheme.boldTextLetterSpacing.isSome()) {
-        return markdownTheme.boldTheme.boldTextLetterSpacing() // 加粗
+    if (nodeView.isStrongEmphasis && boldSpacing.isSome()) {
+        return boldSpacing() // 加粗
     }
-    if (nodeView.isEmphasis && markdownTheme.italicTheme.italicTextLetterSpacing.isSome()) {
-        return markdownTheme.italicTheme.italicTextLetterSpacing() // 斜体
+    if (nodeView.isEmphasis && italicSpacing.isSome()) {
+        return italicSpacing() // 斜体
     }
-    if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextLetterSpacing.isSome()) {
-        return markdownTheme.strikethroughTheme.strikethroughTextLetterSpacing() // 删除线
+    if (nodeView.isStrikethrough && strikeSpacing.isSome()) {
+        return strikeSpacing() // 删除线
     }
-    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextLetterSpacing.isSome()) {
-        return markdownTheme.highlightTheme.highlightTextLetterSpacing() // 高亮
+    if (nodeView.isHighlight && highlightSpacing.isSome()) {
+        return highlightSpacing() // 高亮
     }
-    if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextLetterSpacing.isSome()) {
-        return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextLetterSpacing() // 下划线
+    if (nodeView.isUnderlineNode && underlineSpacing.isSome()) {
+        return underlineSpacing() // 下划线
     }
-    if (nodeView.isLink && markdownTheme.linkTheme.linkTextLetterSpacing.isSome()) {
-        return markdownTheme.linkTheme.linkTextLetterSpacing() // 链接
+    if (nodeView.isLink && linkSpacing.isSome()) {
+        return linkSpacing() // 链接
     }
-    if (nodeView.isFootnote && markdownTheme.footnoteRefTheme.footnoteRefTextLetterSpacing.isSome()) {
-        return markdownTheme.footnoteRefTheme.footnoteRefTextLetterSpacing() // 脚注引用
+    if (nodeView.isFootnote && footnoteSpacing.isSome()) {
+        return footnoteSpacing() // 脚注引用
     }
     if (nodeView.isHeading) {
-        return headLetterSpacing(nodeView.headingLevel, markdownTheme) // 标题
+        return match (nodeView.headingLevel) {
+            case 1 => h1 // 一级标题
+            case 2 => h2 // 二级标题
+            case 3 => h3 // 三级标题
+            case 4 => h4 // 四级标题
+            case 5 => h5 // 五级标题
+            case 6 => h6 // 六级标题
+            case _ => h6 // 其他
+        }
     }
     if (nodeView.isTable) {
         if (nodeView.isTableHead) {
-            return markdownTheme.tableTheme.tableTitleTextLetterSpacing // 表格标题
+            return tableTitle // 表格标题
         }
-        return markdownTheme.tableTheme.tableContentTextLetterSpacing // 表格内容
+        return tableContent // 表格内容
     }
-    return markdownTheme.paragraphTheme.paragraphTextLetterSpacing // 段落
-}
-
-/**
- * 设置不同等级标题文本字符间距
- *
- * @param level 标题等级
- * @param markdownTheme markdown样式
- * @return 文本字符间距
- */
-func headLetterSpacing(level: Int64, markdownTheme: MarkdownTheme): Float64 {
-    return match (level) {
-        case 1 => markdownTheme.headingTheme.heading1TextLetterSpacing // 一级标题
-        case 2 => markdownTheme.headingTheme.heading2TextLetterSpacing // 二级标题
-        case 3 => markdownTheme.headingTheme.heading3TextLetterSpacing // 三级标题
-        case 4 => markdownTheme.headingTheme.heading4TextLetterSpacing // 四级标题
-        case 5 => markdownTheme.headingTheme.heading5TextLetterSpacing // 五级标题
-        case 6 => markdownTheme.headingTheme.heading6TextLetterSpacing // 六级标题
-        case _ => markdownTheme.headingTheme.heading6TextLetterSpacing // 其他
-    }
+    return paragraph // 段落
 }
 
 /**
  * 设置文本装饰线样式及其颜色
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
+ * 删除线/下划线的装饰线类型在主题中未定义，沿用旧实现的硬编码值
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param strikeDecColor 删除线装饰颜色
+ * @param strikeDecStyle 删除线装饰样式
+ * @param underlineDecColor 下划线装饰颜色
+ * @param underlineDecStyle 下划线装饰样式
+ * @param linkDecType 链接装饰类型
+ * @param linkDecColor 链接装饰颜色
+ * @param linkDecStyle 链接装饰样式
+ * @param footnoteDecType 脚注引用装饰类型
+ * @param footnoteDecColor 脚注引用装饰颜色
+ * @param footnoteDecStyle 脚注引用装饰样式
  * @return 文本装饰线样式及其颜色
  */
-func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color, Int32) {
+func spanDecoration(
+    nodeView: NodeView,
+    strikeDecColor: Color, strikeDecStyle: MarkdownTextDecorationStyle,
+    underlineDecColor: Color, underlineDecStyle: MarkdownTextDecorationStyle,
+    linkDecType: TextDecorationType, linkDecColor: Color, linkDecStyle: MarkdownTextDecorationStyle,
+    footnoteDecType: TextDecorationType, footnoteDecColor: Color, footnoteDecStyle: MarkdownTextDecorationStyle
+): (TextDecorationType, Color, Int32) {
     if (nodeView.isStrikethrough) {
-        return (TextDecorationType.LineThrough, markdownTheme.strikethroughTheme.strikethroughTextDecorationColor, markdownTheme.strikethroughTheme.strikethroughTextDecorationStyle.toInt32()) // 删除线
+        return (TextDecorationType.LineThrough, strikeDecColor, strikeDecStyle.toInt32()) // 删除线
     }
     if (nodeView.isUnderlineNode) {
-        return (TextDecorationType.Underline, markdownTheme.htmlUnderlineTheme.htmlUnderlineTextDecorationColor, markdownTheme.htmlUnderlineTheme.htmlUnderlineTextDecorationStyle.toInt32()) // 下划线
+        return (TextDecorationType.Underline, underlineDecColor, underlineDecStyle.toInt32()) // 下划线
     }
     if (nodeView.isLink) {
-        return (markdownTheme.linkTheme.linkTextDecorationType, markdownTheme.linkTheme.linkTextDecorationColor, markdownTheme.linkTheme.linkTextDecorationStyle.toInt32()) // 链接
+        return (linkDecType, linkDecColor, linkDecStyle.toInt32()) // 链接
     }
     if (nodeView.isFootnote) {
-        return (markdownTheme.footnoteRefTheme.footnoteRefTextDecorationType, markdownTheme.footnoteRefTheme.footnoteRefTextDecorationColor, markdownTheme.footnoteRefTheme.footnoteRefTextDecorationStyle.toInt32()) // 脚注引用
+        return (footnoteDecType, footnoteDecColor, footnoteDecStyle.toInt32()) // 脚注引用
     }
     return (TextDecorationType.None, COLOR_TRANSPARENT, 0) // 其他
 }
 
 /**
  * 设置文本背景颜色及圆角
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param codeBg 内联代码背景颜色
+ * @param codeRtl 内联代码左上圆角
+ * @param codeRtr 内联代码右上圆角
+ * @param codeRbl 内联代码左下圆角
+ * @param codeRbr 内联代码右下圆角
+ * @param highlightBg 高亮背景颜色
+ * @param highlightRtl 高亮左上圆角
+ * @param highlightRtr 高亮右上圆角
+ * @param highlightRbl 高亮左下圆角
+ * @param highlightRbr 高亮右下圆角
+ * @param linkBg 链接背景颜色
+ * @param linkRtl 链接左上圆角
+ * @param linkRtr 链接右上圆角
+ * @param linkRbl 链接左下圆角
+ * @param linkRbr 链接右下圆角
+ * @param footnoteBg 脚注引用背景颜色
+ * @param footnoteRtl 脚注引用左上圆角
+ * @param footnoteRtr 脚注引用右上圆角
+ * @param footnoteRbl 脚注引用左下圆角
+ * @param footnoteRbr 脚注引用右下圆角
  * @return 文本背景颜色及圆角
  */
-func spanBackgroundColor18(nodeView: NodeView, markdownTheme: MarkdownTheme): (Color, Float64, Float64, Float64, Float64) {
+func spanBackgroundColor(
+    nodeView: NodeView,
+    codeBg: Color, codeRtl: Float64, codeRtr: Float64, codeRbl: Float64, codeRbr: Float64,
+    highlightBg: Color, highlightRtl: Float64, highlightRtr: Float64, highlightRbl: Float64, highlightRbr: Float64,
+    linkBg: Color, linkRtl: Float64, linkRtr: Float64, linkRbl: Float64, linkRbr: Float64,
+    footnoteBg: Color, footnoteRtl: Float64, footnoteRtr: Float64, footnoteRbl: Float64, footnoteRbr: Float64
+): TextBackgroundStyle {
     if (nodeView.isInLineCode) {
-        return (markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundColor, markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft, markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopRight, markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomLeft, markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomRight) // 内联代码
+        return TextBackgroundStyle(color: codeBg, radiusBorder: BorderRadiuses(topLeft: codeRtl.vp, topRight: codeRtr.vp, bottomLeft: codeRbl.vp, bottomRight: codeRbr.vp)) // 内联代码
     }
     if (nodeView.isHighlight) {
-        return (markdownTheme.highlightTheme.highlightTextBackgroundColor, markdownTheme.highlightTheme.highlightTextBackgroundRadiusTopLeft, markdownTheme.highlightTheme.highlightTextBackgroundRadiusTopRight, markdownTheme.highlightTheme.highlightTextBackgroundRadiusBottomLeft, markdownTheme.highlightTheme.highlightTextBackgroundRadiusBottomRight) // 高亮
+        return TextBackgroundStyle(color: highlightBg, radiusBorder: BorderRadiuses(topLeft: highlightRtl.vp, topRight: highlightRtr.vp, bottomLeft: highlightRbl.vp, bottomRight: highlightRbr.vp)) // 高亮
     }
     if (nodeView.isLink) {
-        return (markdownTheme.linkTheme.linkTextBackgroundColor, markdownTheme.linkTheme.linkTextBackgroundRadiusTopLeft, markdownTheme.linkTheme.linkTextBackgroundRadiusTopRight, markdownTheme.linkTheme.linkTextBackgroundRadiusBottomLeft, markdownTheme.linkTheme.linkTextBackgroundRadiusBottomRight) // 链接
+        return TextBackgroundStyle(color: linkBg, radiusBorder: BorderRadiuses(topLeft: linkRtl.vp, topRight: linkRtr.vp, bottomLeft: linkRbl.vp, bottomRight: linkRbr.vp)) // 链接
     }
     if (nodeView.isFootnote) {
-        return (markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundColor, markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusTopLeft, markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusTopRight, markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusBottomLeft, markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusBottomRight) // 脚注引用
-    }
-    return (COLOR_TRANSPARENT, 0.0, 0.0, 0.0, 0.0) // 其他
-}
-
-/**
- * 设置文本背景颜色及圆角
- *
- * @param nodeView NodeView
- * @param markdownTheme markdown样式
- * @return 文本背景颜色及圆角
- */
-func spanBackgroundColor(nodeView: NodeView, markdownTheme: MarkdownTheme): TextBackgroundStyle {
-    if (nodeView.isInLineCode) {
-        return TextBackgroundStyle(color: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomRight.vp)) // 内联代码
-    }
-    if (nodeView.isHighlight) {
-        return TextBackgroundStyle(color: markdownTheme.highlightTheme.highlightTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.highlightTheme.highlightTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.highlightTheme.highlightTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.highlightTheme.highlightTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.highlightTheme.highlightTextBackgroundRadiusBottomRight.vp)) // 高亮
-    }
-    if (nodeView.isLink) {
-        return TextBackgroundStyle(color: markdownTheme.linkTheme.linkTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.linkTheme.linkTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.linkTheme.linkTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.linkTheme.linkTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.linkTheme.linkTextBackgroundRadiusBottomRight.vp)) // 链接
-    }
-    if (nodeView.isFootnote) {
-        return TextBackgroundStyle(color: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusBottomRight.vp)) // 脚注引用
+        return TextBackgroundStyle(color: footnoteBg, radiusBorder: BorderRadiuses(topLeft: footnoteRtl.vp, topRight: footnoteRtr.vp, bottomLeft: footnoteRbl.vp, bottomRight: footnoteRbr.vp)) // 脚注引用
     }
     return TextBackgroundStyle(color: COLOR_TRANSPARENT, radiusBorder: BorderRadiuses(topLeft: 0.0.vp, topRight: 0.0.vp, bottomLeft: 0.0.vp, bottomRight: 0.0.vp)) // 其他
 }
 
 /**
  * 设置文本基线的偏移量
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param subOffset 下标基线偏移量
+ * @param supOffset 上标基线偏移量
  * @return 文本基线的偏移量
  */
-func spanBaselineOffset(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
+func spanBaselineOffset(nodeView: NodeView, subOffset: Float64, supOffset: Float64): Float64 {
     if (nodeView.isSubNode) {
-        return markdownTheme.subTheme.subTextBaselineOffset // 下标
+        return subOffset // 下标
     }
     if (nodeView.isSupNode) {
-        return markdownTheme.supTheme.supTextBaselineOffset // 上标
+        return supOffset // 上标
     }
     return 0.0 // 其他
 }
 
 /**
  * 设置文本行高
+ * 参考 markdown_list_component.cj 的 textColor 模式：接收原始值，不持有主题引用
+ * 由调用方在 @Builder 修饰链内直接访问 @Publish 叶子属性传入
  *
  * @param nodeView NodeView
- * @param markdownTheme markdown样式
+ * @param codeLh 内联代码行高
+ * @param boldLh 加粗行高
+ * @param italicLh 斜体行高
+ * @param strikeLh 删除线行高
+ * @param highlightLh 高亮行高
+ * @param underlineLh 下划线行高
+ * @param linkLh 链接行高
+ * @param footnoteLh 脚注引用行高
+ * @param h1 一级标题行高
+ * @param h2 二级标题行高
+ * @param h3 三级标题行高
+ * @param h4 四级标题行高
+ * @param h5 五级标题行高
+ * @param h6 六级标题行高
+ * @param tableTitle 表格标题行高
+ * @param tableContent 表格内容行高
+ * @param paragraph 段落行高
  * @return 文本行高
  */
-func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
-    if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextLineHeight.isSome()) {
-        return markdownTheme.inlineCodeTheme.inlineCodeTextLineHeight() // 内联代码
+func spanLineHeight(
+    nodeView: NodeView,
+    codeLh: ?Float64, boldLh: ?Float64, italicLh: ?Float64, strikeLh: ?Float64,
+    highlightLh: ?Float64, underlineLh: ?Float64, linkLh: ?Float64, footnoteLh: ?Float64,
+    h1: Float64, h2: Float64, h3: Float64, h4: Float64, h5: Float64, h6: Float64,
+    tableTitle: Float64, tableContent: Float64, paragraph: Float64
+): Float64 {
+    if (nodeView.isInLineCode && codeLh.isSome()) {
+        return codeLh() // 内联代码
     }
-    if (nodeView.isStrongEmphasis && markdownTheme.boldTheme.boldTextLineHeight.isSome()) {
-        return markdownTheme.boldTheme.boldTextLineHeight() // 加粗
+    if (nodeView.isStrongEmphasis && boldLh.isSome()) {
+        return boldLh() // 加粗
     }
-    if (nodeView.isEmphasis && markdownTheme.italicTheme.italicTextLineHeight.isSome()) {
-        return markdownTheme.italicTheme.italicTextLineHeight() // 斜体
+    if (nodeView.isEmphasis && italicLh.isSome()) {
+        return italicLh() // 斜体
     }
-    if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextLineHeight.isSome()) {
-        return markdownTheme.strikethroughTheme.strikethroughTextLineHeight() // 删除线
+    if (nodeView.isStrikethrough && strikeLh.isSome()) {
+        return strikeLh() // 删除线
     }
-    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextLineHeight.isSome()) {
-        return markdownTheme.highlightTheme.highlightTextLineHeight() // 高亮
+    if (nodeView.isHighlight && highlightLh.isSome()) {
+        return highlightLh() // 高亮
     }
-    if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextLineHeight.isSome()) {
-        return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextLineHeight() // 下划线
+    if (nodeView.isUnderlineNode && underlineLh.isSome()) {
+        return underlineLh() // 下划线
     }
-    if (nodeView.isLink && markdownTheme.linkTheme.linkTextLineHeight.isSome()) {
-        return markdownTheme.linkTheme.linkTextLineHeight() // 链接
+    if (nodeView.isLink && linkLh.isSome()) {
+        return linkLh() // 链接
     }
-    if (nodeView.isFootnote && markdownTheme.footnoteRefTheme.footnoteRefTextLineHeight.isSome()) {
-        return markdownTheme.footnoteRefTheme.footnoteRefTextLineHeight() // 脚注引用
+    if (nodeView.isFootnote && footnoteLh.isSome()) {
+        return footnoteLh() // 脚注引用
     }
     if (nodeView.isHeading) {
-        return headLineHeight(nodeView.headingLevel, markdownTheme) // 标题
+        return match (nodeView.headingLevel) {
+            case 1 => h1 // 一级标题
+            case 2 => h2 // 二级标题
+            case 3 => h3 // 三级标题
+            case 4 => h4 // 四级标题
+            case 5 => h5 // 五级标题
+            case 6 => h6 // 六级标题
+            case _ => h6 // 其他
+        }
     }
     if (nodeView.isTable) {
         if (nodeView.isTableHead) {
-            return markdownTheme.tableTheme.tableTitleTextLineHeight // 表格标题
+            return tableTitle // 表格标题
         }
-        return markdownTheme.tableTheme.tableContentTextLineHeight // 表格内容
+        return tableContent // 表格内容
     }
-    return markdownTheme.paragraphTheme.paragraphTextLineHeight // 段落
-}
-
-/**
- * 设置标题文本行高
- *
- * @param level 标题等级
- * @param markdownTheme markdown样式
- * @return 标题文本行高
- */
-func headLineHeight(level: Int64, markdownTheme: MarkdownTheme): Float64 {
-    return match (level) {
-        case 1 => markdownTheme.headingTheme.heading1TextLineHeight // 一级标题
-        case 2 => markdownTheme.headingTheme.heading2TextLineHeight // 二级标题
-        case 3 => markdownTheme.headingTheme.heading3TextLineHeight // 三级标题
-        case 4 => markdownTheme.headingTheme.heading4TextLineHeight // 四级标题
-        case 5 => markdownTheme.headingTheme.heading5TextLineHeight // 五级标题
-        case 6 => markdownTheme.headingTheme.heading6TextLineHeight // 六级标题
-        case _ => markdownTheme.headingTheme.heading6TextLineHeight // 其他
-    }
+    return paragraph // 段落
 }
 
 /**

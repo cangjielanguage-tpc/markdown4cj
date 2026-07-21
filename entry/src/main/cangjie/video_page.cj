@@ -36,94 +36,106 @@ class VideoPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_videoBackgroundColor: String = "undefined"
-    @State var cfg_videoBorderColor: String = "undefined"
-    @State var cfg_videoTimeTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_videoBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoBorderColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontColor: String = "undefined"
 
-    @State var cfg_videoMarginTop: String = "undefined"
-    @State var cfg_videoMarginRight: String = "undefined"
-    @State var cfg_videoMarginBottom: String = "undefined"
-    @State var cfg_videoMarginLeft: String = "undefined"
-    @State var cfg_videoPaddingTop: String = "undefined"
-    @State var cfg_videoPaddingRight: String = "undefined"
-    @State var cfg_videoPaddingBottom: String = "undefined"
-    @State var cfg_videoPaddingLeft: String = "undefined"
-    @State var cfg_videoRadiusTopLeft: String = "undefined"
-    @State var cfg_videoRadiusTopRight: String = "undefined"
-    @State var cfg_videoRadiusBottomLeft: String = "undefined"
-    @State var cfg_videoRadiusBottomRight: String = "undefined"
-    @State var cfg_videoBorderStyle: String = "Solid"
-    @State var cfg_videoBorderWidth: String = "0"
-    @State var cfg_videoImageFitType: String = "Cover"
-    @State var cfg_videoPlaceholder: String = "undefined"
-    @State var cfg_videoPlayIcon: String = "undefined"
-    @State var cfg_videoPlayIconWidth: String = "60"
-    @State var cfg_videoPlayIconHeight: String = "60"
-    @State var cfg_videoPlayIconFitType: String = "Contain"
-    @State var cfg_videoTimeTextFontSize: String = "undefined"
-    @State var cfg_videoTimeTextFontStyle: String = "undefined"
-    @State var cfg_videoTimeTextFontWeight: String = "Normal"
-    @State var cfg_videoTimeTextFontFamily: String = "undefined"
-    @State var cfg_videoTimeTextLineHeight: String = "undefined"
-    @State var cfg_videoTimeTextMarginRight: String = "10"
-    @State var cfg_videoTimeTextMarginBottom: String = "10"
-    @State var cfg_videoBottomLayoutVisible: String = "false"
-    @State var cfg_videoBottomLayoutMarginTop: String = "14"
-    @State var cfg_videoReleaseButtonVisible: String = "true"
-    @State var cfg_videoReleaseButtonBackgroundColor: String = "undefined"
-    @State var cfg_videoReleaseButtonWidth: String = "144"
-    @State var cfg_videoReleaseButtonHeight: String = "44"
-    @State var cfg_videoReleaseButtonRadiusTopLeft: String = "undefined"
-    @State var cfg_videoReleaseButtonRadiusTopRight: String = "undefined"
-    @State var cfg_videoReleaseButtonRadiusBottomLeft: String = "undefined"
-    @State var cfg_videoReleaseButtonRadiusBottomRight: String = "undefined"
-    @State var cfg_videoReleaseButtonIcon: String = "undefined"
-    @State var cfg_videoReleaseButtonIconTextGap: String = "6"
-    @State var cfg_videoReleaseButtonIconWidth: String = "18"
-    @State var cfg_videoReleaseButtonIconHeight: String = "18"
-    @State var cfg_videoReleaseButtonText: String = "发布视频"
-    @State var cfg_videoReleaseButtonTextFontColor: String = "undefined"
-    @State var cfg_videoReleaseButtonTextFontSize: String = "undefined"
-    @State var cfg_videoReleaseButtonTextFontStyle: String = "undefined"
-    @State var cfg_videoReleaseButtonTextFontWeight: String = "Normal"
-    @State var cfg_videoReleaseButtonTextFontFamily: String = "undefined"
-    @State var cfg_videoReleaseButtonTextLineHeight: String = "undefined"
-    @State var cfg_videoDownloadButtonVisible: String = "true"
-    @State var cfg_videoDownloadButtonBackgroundColor: String = "undefined"
-    @State var cfg_videoDownloadButtonWidth: String = "144"
-    @State var cfg_videoDownloadButtonHeight: String = "44"
-    @State var cfg_videoDownloadButtonRadiusTopLeft: String = "undefined"
-    @State var cfg_videoDownloadButtonRadiusTopRight: String = "undefined"
-    @State var cfg_videoDownloadButtonRadiusBottomLeft: String = "undefined"
-    @State var cfg_videoDownloadButtonRadiusBottomRight: String = "undefined"
-    @State var cfg_videoDownloadButtonIcon: String = "undefined"
-    @State var cfg_videoDownloadButtonIconTextGap: String = "6"
-    @State var cfg_videoDownloadButtonIconWidth: String = "18"
-    @State var cfg_videoDownloadButtonIconHeight: String = "18"
-    @State var cfg_videoDownloadButtonText: String = "下载视频"
-    @State var cfg_videoDownloadButtonTextFontColor: String = "undefined"
-    @State var cfg_videoDownloadButtonTextFontSize: String = "undefined"
-    @State var cfg_videoDownloadButtonTextFontStyle: String = "undefined"
-    @State var cfg_videoDownloadButtonTextFontWeight: String = "Normal"
-    @State var cfg_videoDownloadButtonTextFontFamily: String = "undefined"
-    @State var cfg_videoDownloadButtonTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoMarginTop: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoMarginRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoMarginBottom: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoMarginLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoPaddingTop: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoPaddingRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoPaddingBottom: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoPaddingLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoRadiusTopLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoRadiusTopRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoRadiusBottomLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoBorderStyle: String = "Solid"
+    @State @Watch[onConfigChanged] var cfg_videoBorderWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoImageFitType: String = "Cover"
+    @State @Watch[onConfigChanged] var cfg_videoPlaceholder: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoPlayIcon: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoPlayIconWidth: String = "60"
+    @State @Watch[onConfigChanged] var cfg_videoPlayIconHeight: String = "60"
+    @State @Watch[onConfigChanged] var cfg_videoPlayIconFitType: String = "Contain"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextMarginRight: String = "10"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextMarginBottom: String = "10"
+    @State @Watch[onConfigChanged] var cfg_videoBottomLayoutVisible: String = "false"
+    @State @Watch[onConfigChanged] var cfg_videoBottomLayoutMarginTop: String = "14"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonVisible: String = "true"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonWidth: String = "144"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonHeight: String = "44"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusTopLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusTopRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusBottomLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonIcon: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonIconTextGap: String = "6"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonIconWidth: String = "18"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonIconHeight: String = "18"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonText: String = "发布视频"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonVisible: String = "true"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonWidth: String = "144"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonHeight: String = "44"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusTopLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusTopRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusBottomLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonIcon: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonIconTextGap: String = "6"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonIconWidth: String = "18"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonIconHeight: String = "18"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonText: String = "下载视频"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextLineHeight: String = "undefined"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
+
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -171,9 +183,9 @@ class VideoPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -188,9 +200,8 @@ class VideoPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let videoTheme = VideoTheme()
+        let videoTheme = theme.getVideoTheme()
         if (cfg_videoBackgroundColor != "undefined") {
             videoTheme.setVideoBackgroundColor(parseColor(cfg_videoBackgroundColor))
         }
@@ -292,11 +303,6 @@ class VideoPage {
         videoTheme.setVideoRadius(topLeft: parseFloat64(cfg_videoRadiusTopLeft), topRight: parseFloat64(cfg_videoRadiusTopRight), bottomLeft: parseFloat64(cfg_videoRadiusBottomLeft), bottomRight: parseFloat64(cfg_videoRadiusBottomRight))
         videoTheme.setVideoDownloadButtonRadius(topLeft: parseFloat64(cfg_videoDownloadButtonRadiusTopLeft), topRight: parseFloat64(cfg_videoDownloadButtonRadiusTopRight), bottomLeft: parseFloat64(cfg_videoDownloadButtonRadiusBottomLeft), bottomRight: parseFloat64(cfg_videoDownloadButtonRadiusBottomRight))
         videoTheme.setVideoMargin(top: parseFloat64(cfg_videoMarginTop), right: parseFloat64(cfg_videoMarginRight), bottom: parseFloat64(cfg_videoMarginBottom), left: parseFloat64(cfg_videoMarginLeft))
-        themeBuilder.setVideoTheme(videoTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -639,7 +645,7 @@ class VideoPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

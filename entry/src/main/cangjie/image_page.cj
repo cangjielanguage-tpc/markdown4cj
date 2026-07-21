@@ -32,62 +32,74 @@ class ImagePage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_imageBorderColor: String = "undefined"
-    @State var cfg_imageBorderWidth: String = "undefined"
-    @State var cfg_imageFitType: String = "Contain"
-    @State var cfg_imageAutoResize: String = "true"
-    @State var cfg_imagePlaceholder: String = "undefined"
-    @State var cfg_imageMaximumWidth: String = "100"
-    @State var cfg_imageDownloadButtonVisible: String = "true"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_imageBorderColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageBorderWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageFitType: String = "Contain"
+    @State @Watch[onConfigChanged] var cfg_imageAutoResize: String = "true"
+    @State @Watch[onConfigChanged] var cfg_imagePlaceholder: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageMaximumWidth: String = "100"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonVisible: String = "true"
 
-    @State var cfg_imageMarginTop: String = "0"
-    @State var cfg_imageMarginRight: String = "0"
-    @State var cfg_imageMarginBottom: String = "0"
-    @State var cfg_imageMarginLeft: String = "0"
-    @State var cfg_imageRadiusTopLeft: String = "0"
-    @State var cfg_imageRadiusTopRight: String = "0"
-    @State var cfg_imageRadiusBottomLeft: String = "0"
-    @State var cfg_imageRadiusBottomRight: String = "0"
-    @State var cfg_imageBorderStyle: String = "Solid"
-    @State var cfg_imageMixedLayout: String = "false"
-    @State var cfg_imageFixedRatioWidth: String = "0"
-    @State var cfg_imageMaxHeight: String = "0"
-    @State var cfg_imageHeight: String = "0"
-    @State var cfg_imageMaxWidth: String = "0"
-    @State var cfg_imageWidth: String = "0"
-    @State var cfg_imageBottomLayoutMarginTop: String = "0"
-    @State var cfg_imageDownloadButtonWidth: String = "144"
-    @State var cfg_imageDownloadButtonHeight: String = "44"
-    @State var cfg_imageDownloadButtonRadius: String = "0"
-    @State var cfg_imageDownloadButtonIconTextGap: String = "6"
-    @State var cfg_imageDownloadButtonIcon: String = "undefined"
-    @State var cfg_imageDownloadButtonIconWidth: String = "18"
-    @State var cfg_imageDownloadButtonIconHeight: String = "18"
-    @State var cfg_imageDownloadButtonBackgroundColor: String = "undefined"
-    @State var cfg_imageDownloadButtonText: String = "下载"
-    @State var cfg_imageDownloadButtonTextFontColor: String = "undefined"
-    @State var cfg_imageDownloadButtonTextFontSize: String = "undefined"
-    @State var cfg_imageDownloadButtonTextFontStyle: String = "undefined"
-    @State var cfg_imageDownloadButtonTextFontWeight: String = "Normal"
-    @State var cfg_imageDownloadButtonTextFontFamily: String = "undefined"
-    @State var cfg_imageDownloadButtonTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageRadiusTopLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageRadiusTopRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageRadiusBottomLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageRadiusBottomRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageBorderStyle: String = "Solid"
+    @State @Watch[onConfigChanged] var cfg_imageMixedLayout: String = "false"
+    @State @Watch[onConfigChanged] var cfg_imageFixedRatioWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageMaxHeight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageHeight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageMaxWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageBottomLayoutMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonWidth: String = "144"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonHeight: String = "44"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonRadius: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconTextGap: String = "6"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIcon: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconWidth: String = "18"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconHeight: String = "18"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonText: String = "下载"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextLineHeight: String = "undefined"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
+
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -135,9 +147,9 @@ class ImagePage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -152,9 +164,8 @@ class ImagePage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let imageTheme = ImageTheme()
+        let imageTheme = theme.getImageTheme()
         if (cfg_imageBorderColor != "undefined") {
             imageTheme.setImageBorderColor(parseColor(cfg_imageBorderColor))
         }
@@ -222,11 +233,6 @@ class ImagePage {
         }
         imageTheme.setMargin(top: parseFloat64(cfg_imageMarginTop), right: parseFloat64(cfg_imageMarginRight), bottom: parseFloat64(cfg_imageMarginBottom), left: parseFloat64(cfg_imageMarginLeft))
         imageTheme.setRadius(topLeft: parseFloat64(cfg_imageRadiusTopLeft), topRight: parseFloat64(cfg_imageRadiusTopRight), bottomLeft: parseFloat64(cfg_imageRadiusBottomLeft), bottomRight: parseFloat64(cfg_imageRadiusBottomRight))
-        themeBuilder.setImageTheme(imageTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -467,7 +473,7 @@ class ImagePage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

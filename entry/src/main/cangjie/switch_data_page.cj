@@ -14,6 +14,12 @@ class SwitchDataPage {
     @State
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+    }
     var mdStr: String = getGlobalString("markdownContent")
 
     public func build() {
@@ -25,7 +31,7 @@ class SwitchDataPage {
                         isInputEnded: true,
                         incrementalAnalysis: false,
                         scroller: scroller,
-                        markdownConfiguration: MarkdownConfiguration.create()
+                        markdownConfiguration: markdownConfiguration
                     )
                 }
             }

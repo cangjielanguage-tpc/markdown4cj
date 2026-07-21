@@ -38,101 +38,113 @@ class CodeBlockPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_codeBlockIsDark: String = "false"
-    @State var cfg_codeBlockBackgroundColor: String = "undefined"
-    @State var cfg_codeBlockBorderColor: String = "undefined"
-    @State var cfg_codeBlockBorderWidth: String = "undefined"
-    @State var cfg_codeBlockCopyButtonIsShow: String = "true"
-    @State var cfg_codeBlockFullScreenButtonIsShow: String = "true"
-    @State var cfg_codeBlockLineNumberIsShow: String = "true"
-    @State var cfg_codeBlockTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_codeBlockIsDark: String = "false"
+    @State @Watch[onConfigChanged] var cfg_codeBlockBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockBorderColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockBorderWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyButtonIsShow: String = "true"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenButtonIsShow: String = "true"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberIsShow: String = "true"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontSize: String = "undefined"
 
-    @State var cfg_codeBlockMarginTop: String = "0"
-    @State var cfg_codeBlockMarginRight: String = "0"
-    @State var cfg_codeBlockMarginBottom: String = "0"
-    @State var cfg_codeBlockMarginLeft: String = "0"
-    @State var cfg_codeBlockPaddingTop: String = "0"
-    @State var cfg_codeBlockPaddingRight: String = "0"
-    @State var cfg_codeBlockPaddingBottom: String = "0"
-    @State var cfg_codeBlockPaddingLeft: String = "0"
-    @State var cfg_codeBlockRadiusTopLeft: String = "0"
-    @State var cfg_codeBlockRadiusTopRight: String = "0"
-    @State var cfg_codeBlockRadiusBottomLeft: String = "0"
-    @State var cfg_codeBlockRadiusBottomRight: String = "0"
-    @State var cfg_codeBlockBorderStyle: String = "Solid"
-    @State var cfg_codeBlockTitleLayoutMarginBottom: String = "undefined"
-    @State var cfg_codeBlockTypeTextMarginLeft: String = "undefined"
-    @State var cfg_codeBlockTypeText: String = ""
-    @State var cfg_codeBlockTypeTextFontColor: String = "undefined"
-    @State var cfg_codeBlockTypeTextFontSize: String = "undefined"
-    @State var cfg_codeBlockTypeTextFontStyle: String = "undefined"
-    @State var cfg_codeBlockTypeTextFontWeight: String = "Normal"
-    @State var cfg_codeBlockTypeTextFontFamily: String = "undefined"
-    @State var cfg_codeBlockTypeTextLineHeight: String = "undefined"
-    @State var cfg_codeBlockCopyFullScreenSpacing: String = "undefined"
-    @State var cfg_codeBlockCopyTextIsShow: String = "true"
-    @State var cfg_codeBlockCopyIcon: String = "undefined"
-    @State var cfg_codeBlockCopyIconWidth: String = "undefined"
-    @State var cfg_codeBlockCopyIconHeight: String = "undefined"
-    @State var cfg_codeBlockCopyIconTextSpacing: String = "undefined"
-    @State var cfg_codeBlockCopyText: String = "复制代码"
-    @State var cfg_codeBlockCopyTextFontColor: String = "undefined"
-    @State var cfg_codeBlockCopyTextFontSize: String = "undefined"
-    @State var cfg_codeBlockCopyTextFontStyle: String = "undefined"
-    @State var cfg_codeBlockCopyTextFontWeight: String = "Normal"
-    @State var cfg_codeBlockCopyTextFontFamily: String = "undefined"
-    @State var cfg_codeBlockCopyTextLineHeight: String = "undefined"
-    @State var cfg_codeBlockFullScreenTextIsShow: String = "true"
-    @State var cfg_codeBlockFullScreenIcon: String = "undefined"
-    @State var cfg_codeBlockFullScreenIconWidth: String = "undefined"
-    @State var cfg_codeBlockFullScreenIconHeight: String = "undefined"
-    @State var cfg_codeBlockFullScreenIconTextSpacing: String = "undefined"
-    @State var cfg_codeBlockFullScreenText: String = "全屏代码"
-    @State var cfg_codeBlockFullScreenTextFontColor: String = "undefined"
-    @State var cfg_codeBlockFullScreenTextFontSize: String = "undefined"
-    @State var cfg_codeBlockFullScreenTextFontStyle: String = "undefined"
-    @State var cfg_codeBlockFullScreenTextFontWeight: String = "Normal"
-    @State var cfg_codeBlockFullScreenTextFontFamily: String = "undefined"
-    @State var cfg_codeBlockFullScreenTextLineHeight: String = "undefined"
-    @State var cfg_codeBlockLineNumberTextPaddingLeft: String = "undefined"
-    @State var cfg_codeBlockLineNumberTextFontColor: String = "undefined"
-    @State var cfg_codeBlockLineNumberTextFontSize: String = "undefined"
-    @State var cfg_codeBlockLineNumberTextFontStyle: String = "undefined"
-    @State var cfg_codeBlockLineNumberTextFontWeight: String = "Normal"
-    @State var cfg_codeBlockLineNumberTextFontFamily: String = "undefined"
-    @State var cfg_codeBlockLineNumberTextLineHeight: String = "undefined"
-    @State var cfg_codeBlockDividerColor: String = "undefined"
-    @State var cfg_codeBlockDividerStrokeWidth: String = "undefined"
-    @State var cfg_codeBlockLineNumberDividerSpacing: String = "undefined"
-    @State var cfg_codeBlockIsCodeFormat: String = "false"
-    @State var cfg_codeBlockUseTab: String = "false"
-    @State var cfg_codeBlockIndentWidth: String = "4"
-    @State var cfg_codeBlockParserSync: String = "false"
-    @State var cfg_codeBlockTextFontColor: String = "undefined"
-    @State var cfg_codeBlockTextFontStyle: String = "undefined"
-    @State var cfg_codeBlockTextFontFamily: String = "undefined"
-    @State var cfg_codeBlockTextLineHeight: String = "undefined"
-    @State var cfg_codeBlockTextLetterSpacing: String = "undefined"
-    @State var cfg_codeBlockTextMarginRight: String = "undefined"
-    @State var cfg_codeBlockTextMarginLeft: String = "undefined"
-    @State var cfg_codeBlockTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockPaddingTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockPaddingRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockPaddingBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockPaddingLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusTopLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusTopRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusBottomLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusBottomRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockBorderStyle: String = "Solid"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTitleLayoutMarginBottom: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextMarginLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeText: String = ""
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyFullScreenSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextIsShow: String = "true"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIcon: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconTextSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyText: String = "复制代码"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextIsShow: String = "true"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIcon: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconTextSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenText: String = "全屏代码"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextPaddingLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockDividerColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockDividerStrokeWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberDividerSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockIsCodeFormat: String = "false"
+    @State @Watch[onConfigChanged] var cfg_codeBlockUseTab: String = "false"
+    @State @Watch[onConfigChanged] var cfg_codeBlockIndentWidth: String = "4"
+    @State @Watch[onConfigChanged] var cfg_codeBlockParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextLetterSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextMarginRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextMarginLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontWeight: String = "Normal"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
+
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -180,9 +192,9 @@ class CodeBlockPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -197,9 +209,8 @@ class CodeBlockPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let codeBlockTheme = CodeBlockTheme()
+        let codeBlockTheme = theme.getCodeBlockTheme()
         codeBlockTheme.setCodeBlockIsDark(parseBool(cfg_codeBlockIsDark))
         if (cfg_codeBlockBackgroundColor != "undefined") {
             codeBlockTheme.setCodeBlockBackgroundColor(parseColor(cfg_codeBlockBackgroundColor))
@@ -360,11 +371,6 @@ class CodeBlockPage {
         codeBlockTheme.setRadius(topLeft: parseFloat64(cfg_codeBlockRadiusTopLeft), topRight: parseFloat64(cfg_codeBlockRadiusTopRight), bottomLeft: parseFloat64(cfg_codeBlockRadiusBottomLeft), bottomRight: parseFloat64(cfg_codeBlockRadiusBottomRight))
         codeBlockTheme.setPadding(top: parseFloat64(cfg_codeBlockPaddingTop), right: parseFloat64(cfg_codeBlockPaddingRight), bottom: parseFloat64(cfg_codeBlockPaddingBottom), left: parseFloat64(cfg_codeBlockPaddingLeft))
         codeBlockTheme.setCodeBlockTextFontWeight(parseFontWeight(cfg_codeBlockTextFontWeight))
-        themeBuilder.setCodeBlockTheme(codeBlockTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -749,7 +755,7 @@ class CodeBlockPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

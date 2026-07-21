@@ -28,44 +28,55 @@ class ParagraphPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_paragraphTextFontColor: String = "undefined"
-    @State var cfg_paragraphTextFontSize: String = "undefined"
-    @State var cfg_paragraphTextFontStyle: String = "Normal"
-    @State var cfg_paragraphTextFontWeight: String = "Normal"
-    @State var cfg_paragraphTextFontFamily: String = "undefined"
-    @State var cfg_paragraphTextLineHeight: String = "undefined"
-    @State var cfg_paragraphTextLetterSpacing: String = "undefined"
-    @State var cfg_paragraphBackgroundColor: String = "undefined"
-    @State var cfg_paragraphMarginTop: String = "0"
-    @State var cfg_paragraphMarginRight: String = "0"
-    @State var cfg_paragraphMarginBottom: String = "0"
-    @State var cfg_paragraphMarginLeft: String = "0"
-    @State var cfg_paragraphPaddingTop: String = "0"
-    @State var cfg_paragraphPaddingRight: String = "0"
-    @State var cfg_paragraphPaddingBottom: String = "0"
-    @State var cfg_paragraphPaddingLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextFontStyle: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextLetterSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphPaddingTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphPaddingRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphPaddingBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphPaddingLeft: String = "0"
     @State var cfg_showHighlight: String = "true"
     @State var cfg_beforeSelectedParagraphBackgroundColor: String = "undefined"
     @State var cfg_selectedParagraphBackgroundColor: String = "undefined"
-    @State var cfg_paragraphAnimationEnabled: String = "false"
-    @State var cfg_paragraphAnimationDuration: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphAnimationEnabled: String = "false"
+    @State @Watch[onConfigChanged] var cfg_paragraphAnimationDuration: String = "0"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
 
     func getFileList(): Array<String> {
         if (fileListStr == "") {
@@ -114,9 +125,9 @@ class ParagraphPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -131,9 +142,8 @@ class ParagraphPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let paragraphTheme = ParagraphTheme()
+        let paragraphTheme = theme.getParagraphTheme()
         if (cfg_paragraphTextFontColor != "undefined") {
             paragraphTheme.setParagraphTextFontColor(parseColor(cfg_paragraphTextFontColor))
         }
@@ -158,11 +168,6 @@ class ParagraphPage {
         paragraphTheme.setParagraphPadding(top: parseFloat64(cfg_paragraphPaddingTop), right: parseFloat64(cfg_paragraphPaddingRight), bottom: parseFloat64(cfg_paragraphPaddingBottom), left: parseFloat64(cfg_paragraphPaddingLeft))
         paragraphTheme.setParagraphAnimationEnabled(parseBool(cfg_paragraphAnimationEnabled))
         paragraphTheme.setParagraphAnimationDuration(Int32(parseInt64(cfg_paragraphAnimationDuration)))
-        themeBuilder.setParagraphTheme(paragraphTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -316,7 +321,7 @@ class ParagraphPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

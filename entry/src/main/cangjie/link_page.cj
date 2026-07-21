@@ -34,66 +34,78 @@ class LinkPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_linkIsIcon: String = "false"
-    @State var cfg_linkTextFontColor: String = "undefined"
-    @State var cfg_linkTextFontSize: String = "undefined"
-    @State var cfg_linkTextDecorationColor: String = "undefined"
-    @State var cfg_linkTextBackgroundColor: String = "undefined"
-    @State var cfg_linkTextFontWeight: String = "Normal"
-    @State var cfg_linkTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_linkIsIcon: String = "false"
+    @State @Watch[onConfigChanged] var cfg_linkTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkTextDecorationColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkTextBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_linkTextFontFamily: String = "undefined"
 
-    @State var cfg_linkListIsIcon: String = "false"
-    @State var cfg_linkTextFontStyle: String = "undefined"
-    @State var cfg_linkTextLineHeight: String = "undefined"
-    @State var cfg_linkTextLetterSpacing: String = "undefined"
-    @State var cfg_linkTextDecorationType: String = "None"
-    @State var cfg_linkTextDecorationStyle: String = "Solid"
-    @State var cfg_linkTextBackgroundRadiusTopLeft: String = "0"
-    @State var cfg_linkTextBackgroundRadiusTopRight: String = "0"
-    @State var cfg_linkTextBackgroundRadiusBottomLeft: String = "0"
-    @State var cfg_linkTextBackgroundRadiusBottomRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkListIsIcon: String = "false"
+    @State @Watch[onConfigChanged] var cfg_linkTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkTextLetterSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkTextDecorationType: String = "None"
+    @State @Watch[onConfigChanged] var cfg_linkTextDecorationStyle: String = "Solid"
+    @State @Watch[onConfigChanged] var cfg_linkTextBackgroundRadiusTopLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkTextBackgroundRadiusTopRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkTextBackgroundRadiusBottomLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkTextBackgroundRadiusBottomRight: String = "0"
     @State var cfg_isLoadLinkifyPlugin: String = "true"
-    @State var cfg_linkCircleIconBackgroundColor: String = "undefined"
-    @State var cfg_linkCircleIconButtonBackgroundColor: String = "undefined"
-    @State var cfg_linkCircleIconTextSize: String = "undefined"
-    @State var cfg_linkCircleIconTextColor: String = "undefined"
-    @State var cfg_linkCircleIconRadius: String = "0"
-    @State var cfg_linkCircleIconMargin: String = "0"
-    @State var cfg_linkRectIconBackgroundColor: String = "undefined"
-    @State var cfg_linkRectIconButtonBackgroundColor: String = "undefined"
-    @State var cfg_linkRectIconTextSize: String = "undefined"
-    @State var cfg_linkRectIconTextColor: String = "undefined"
-    @State var cfg_linkRectIconHeight: String = "0"
-    @State var cfg_linkRectIconPadding: String = "0"
-    @State var cfg_linkRectIconRadius: String = "0"
-    @State var cfg_linkRectIconMargin: String = "0"
-    @State var cfg_linkRectToolIconBackgroundColor: String = "undefined"
-    @State var cfg_linkRectToolIconButtonBackgroundColor: String = "undefined"
-    @State var cfg_linkRectToolIconTextSize: String = "undefined"
-    @State var cfg_linkRectToolIconHeight: String = "0"
-    @State var cfg_linkRectToolIconPadding: String = "0"
-    @State var cfg_linkRectToolIconBorderWidth: String = "0"
-    @State var cfg_linkRectToolIconDividingLineWidth: String = "0"
-    @State var cfg_linkRectToolIconMargin: String = "0"
-    @State var cfg_linkRectToolIconLineLeftPadding: String = "0"
-    @State var cfg_linkRectToolIconLineRightPadding: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconTextSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconTextColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconRadius: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconMargin: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconTextSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconTextColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconHeight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconPadding: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconRadius: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconMargin: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconTextSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconHeight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconPadding: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconBorderWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconDividingLineWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconMargin: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconLineLeftPadding: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconLineRightPadding: String = "0"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
+
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -141,9 +153,9 @@ class LinkPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -158,9 +170,8 @@ class LinkPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let linkTheme = LinkTheme()
+        let linkTheme = theme.getLinkTheme()
         linkTheme.setLinkIsIcon(parseBool(cfg_linkIsIcon))
         if (cfg_linkTextFontColor != "undefined") {
             linkTheme.setLinkTextFontColor(parseColor(cfg_linkTextFontColor))
@@ -237,11 +248,6 @@ class LinkPage {
         linkTheme.setLinkRectToolIconMargin(parseFloat64(cfg_linkRectToolIconMargin))
         linkTheme.setLinkRectToolIconLineLeftPadding(parseFloat64(cfg_linkRectToolIconLineLeftPadding))
         linkTheme.setLinkRectToolIconLineRightPadding(parseFloat64(cfg_linkRectToolIconLineRightPadding))
-        themeBuilder.setLinkTheme(linkTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -521,7 +527,7 @@ class LinkPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)

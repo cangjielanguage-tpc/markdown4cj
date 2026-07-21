@@ -34,82 +34,94 @@ class AudioPage {
     var selectedFileName: String = ""
     @State var cfg_isFull: String = "true"
     @State var cfg_incrementalAnalysis: String = "false"
-    @State var cfg_enableParseThrottle: String = "false"
-    @State var cfg_parseThrottleMs: String = "200"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
-    @State var cfg_isMarkdownParserSync: String = "false"
-    @State var cfg_isOnCopy: String = "false"
-    @State var cfg_blockMarginTop: String = "0"
-    @State var cfg_blockMarginRight: String = "0"
-    @State var cfg_blockMarginBottom: String = "0"
-    @State var cfg_blockMarginLeft: String = "0"
-    @State var cfg_markdownBlockSpacing: String = "8"
-    @State var cfg_isLineBreak: String = "false"
-    @State var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
-    @State var cfg_openGestureSwipe: String = "false"
-    @State var cfg_audioBackgroundColor: String = "undefined"
-    @State var cfg_audioBorderColor: String = "undefined"
-    @State var cfg_audioTitleTextFontColor: String = "undefined"
-    @State var cfg_audioButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State @Watch[onConfigChanged] var cfg_audioBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioBorderColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonBackgroundColor: String = "undefined"
 
-    @State var cfg_audioMarginTop: String = "undefined"
-    @State var cfg_audioMarginRight: String = "undefined"
-    @State var cfg_audioMarginBottom: String = "undefined"
-    @State var cfg_audioMarginLeft: String = "undefined"
-    @State var cfg_audioPaddingTop: String = "undefined"
-    @State var cfg_audioPaddingRight: String = "undefined"
-    @State var cfg_audioPaddingBottom: String = "undefined"
-    @State var cfg_audioPaddingLeft: String = "undefined"
-    @State var cfg_audioRadiusTopLeft: String = "undefined"
-    @State var cfg_audioRadiusTopRight: String = "undefined"
-    @State var cfg_audioRadiusBottomLeft: String = "undefined"
-    @State var cfg_audioRadiusBottomRight: String = "undefined"
-    @State var cfg_audioBorderStyle: String = "Solid"
-    @State var cfg_audioBorderWidth: String = "0.5"
-    @State var cfg_audioShadowRadius: String = "12"
-    @State var cfg_audioShadowColor: String = "undefined"
-    @State var cfg_audioShadowOffsetX: String = "0"
-    @State var cfg_audioShadowOffsetY: String = "2"
-    @State var cfg_audioIcon: String = "undefined"
-    @State var cfg_audioIconWidth: String = "40"
-    @State var cfg_audioIconHeight: String = "40"
-    @State var cfg_audioIconRadiusTopLeft: String = "undefined"
-    @State var cfg_audioIconRadiusTopRight: String = "undefined"
-    @State var cfg_audioIconRadiusBottomLeft: String = "undefined"
-    @State var cfg_audioIconRadiusBottomRight: String = "undefined"
-    @State var cfg_audioIconFitType: String = "Contain"
-    @State var cfg_audioTitleToTypeSpacing: String = "2"
-    @State var cfg_audioTitleTextFontSize: String = "undefined"
-    @State var cfg_audioTitleTextFontStyle: String = "undefined"
-    @State var cfg_audioTitleTextFontWeight: String = "Normal"
-    @State var cfg_audioTitleTextFontFamily: String = "undefined"
-    @State var cfg_audioTitleTextLineHeight: String = "undefined"
-    @State var cfg_audioTypeTextFontColor: String = "undefined"
-    @State var cfg_audioTypeTextFontSize: String = "undefined"
-    @State var cfg_audioTypeTextFontStyle: String = "undefined"
-    @State var cfg_audioTypeTextFontWeight: String = "Normal"
-    @State var cfg_audioTypeTextFontFamily: String = "undefined"
-    @State var cfg_audioTypeTextLineHeight: String = "undefined"
-    @State var cfg_audioButtonWidth: String = "84"
-    @State var cfg_audioButtonHeight: String = "32"
-    @State var cfg_audioButtonBorderStyle: String = "Solid"
-    @State var cfg_audioButtonBorderWidth: String = "0"
-    @State var cfg_audioButtonBorderColor: String = "undefined"
-    @State var cfg_audioButtonRadiusTopLeft: String = "undefined"
-    @State var cfg_audioButtonRadiusTopRight: String = "undefined"
-    @State var cfg_audioButtonRadiusBottomLeft: String = "undefined"
-    @State var cfg_audioButtonRadiusBottomRight: String = "undefined"
-    @State var cfg_audioButtonText: String = "立即播放"
-    @State var cfg_audioButtonTextFontColor: String = "undefined"
-    @State var cfg_audioButtonTextFontSize: String = "undefined"
-    @State var cfg_audioButtonTextFontStyle: String = "undefined"
-    @State var cfg_audioButtonTextFontWeight: String = "Normal"
-    @State var cfg_audioButtonTextFontFamily: String = "undefined"
-    @State var cfg_audioButtonTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioMarginTop: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioMarginRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioMarginBottom: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioMarginLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioPaddingTop: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioPaddingRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioPaddingBottom: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioPaddingLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioRadiusTopLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioRadiusTopRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioRadiusBottomLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioBorderStyle: String = "Solid"
+    @State @Watch[onConfigChanged] var cfg_audioBorderWidth: String = "0.5"
+    @State @Watch[onConfigChanged] var cfg_audioShadowRadius: String = "12"
+    @State @Watch[onConfigChanged] var cfg_audioShadowColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioShadowOffsetX: String = "0"
+    @State @Watch[onConfigChanged] var cfg_audioShadowOffsetY: String = "2"
+    @State @Watch[onConfigChanged] var cfg_audioIcon: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioIconWidth: String = "40"
+    @State @Watch[onConfigChanged] var cfg_audioIconHeight: String = "40"
+    @State @Watch[onConfigChanged] var cfg_audioIconRadiusTopLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioIconRadiusTopRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioIconRadiusBottomLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioIconRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioIconFitType: String = "Contain"
+    @State @Watch[onConfigChanged] var cfg_audioTitleToTypeSpacing: String = "2"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonWidth: String = "84"
+    @State @Watch[onConfigChanged] var cfg_audioButtonHeight: String = "32"
+    @State @Watch[onConfigChanged] var cfg_audioButtonBorderStyle: String = "Solid"
+    @State @Watch[onConfigChanged] var cfg_audioButtonBorderWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_audioButtonBorderColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusTopLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusTopRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusBottomLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonText: String = "立即播放"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontFamily: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextLineHeight: String = "undefined"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        updateConfig()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
+
     func getFileList(): Array<String> {
         if (fileListStr == "") {
             return []
@@ -157,9 +169,9 @@ class AudioPage {
         }
     }
 
-    func buildConfig(): MarkdownConfiguration {
-        let themeBuilder = MarkdownTheme.createDefault()
-        let globalTheme = GlobalTheme()
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
         globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
         globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
@@ -174,9 +186,8 @@ class AudioPage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
-        themeBuilder.setGlobalTheme(globalTheme)
 
-        let audioTheme = AudioTheme()
+        let audioTheme = theme.getAudioTheme()
         if (cfg_audioBackgroundColor != "undefined") {
             audioTheme.setAudioBackgroundColor(parseColor(cfg_audioBackgroundColor))
         }
@@ -262,11 +273,6 @@ class AudioPage {
         audioTheme.setAudioMargin(top: parseFloat64(cfg_audioMarginTop), right: parseFloat64(cfg_audioMarginRight), bottom: parseFloat64(cfg_audioMarginBottom), left: parseFloat64(cfg_audioMarginLeft))
         audioTheme.setAudioRadius(topLeft: parseFloat64(cfg_audioRadiusTopLeft), topRight: parseFloat64(cfg_audioRadiusTopRight), bottomLeft: parseFloat64(cfg_audioRadiusBottomLeft), bottomRight: parseFloat64(cfg_audioRadiusBottomRight))
         audioTheme.setAudioButtonRadius(topLeft: parseFloat64(cfg_audioButtonRadiusTopLeft), topRight: parseFloat64(cfg_audioButtonRadiusTopRight), bottomLeft: parseFloat64(cfg_audioButtonRadiusBottomLeft), bottomRight: parseFloat64(cfg_audioButtonRadiusBottomRight))
-        themeBuilder.setAudioTheme(audioTheme)
-        let theme = themeBuilder
-        let configBuilder = MarkdownConfiguration.createEmpty()
-        configBuilder.setMarkdownTheme(theme)
-        return configBuilder
     }
 
     public func build() {
@@ -562,7 +568,7 @@ class AudioPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: buildConfig()
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
                         .width(100.percent)
