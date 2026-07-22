@@ -35,6 +35,12 @@ public class MarkdownListComponent {
     var listImageCallback: (String) -> Unit // 图片点击事件
     var listVideoCallback: (String) -> Unit // 视频点击事件
     var listDepth: Int64 // 列表深度
+    @BuilderParam
+    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局
+    @BuilderParam
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    @BuilderParam
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
     var listNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
@@ -78,7 +84,10 @@ public class MarkdownListComponent {
                                     listItemTocListOnClick: listTocListOnClick,
                                     listItemImageCallback: listImageCallback,
                                     listItemVideoCallback: listVideoCallback,
-                                    listItemDepth: listDepth
+                                    listItemDepth: listDepth,
+                                    blockImageCardComponent: blockImageCardComponent,
+                                    inlineImageCardComponent: inlineImageCardComponent,
+                                    inlineLinkCardComponent: inlineLinkCardComponent
                                 )
                             }
                             .alignItems(VerticalAlign.Top)
@@ -107,7 +116,10 @@ public class MarkdownListComponent {
                                     listItemTocListOnClick: listTocListOnClick,
                                     listItemImageCallback: listImageCallback,
                                     listItemVideoCallback: listVideoCallback,
-                                    listItemDepth: listDepth
+                                    listItemDepth: listDepth,
+                                    blockImageCardComponent: blockImageCardComponent,
+                                    inlineImageCardComponent: inlineImageCardComponent,
+                                    inlineLinkCardComponent: inlineLinkCardComponent
                                 )
                             }
                             .alignItems(VerticalAlign.Top)

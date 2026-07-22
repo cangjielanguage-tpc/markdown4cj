@@ -34,6 +34,12 @@ public class MarkdownQuoteComponent {
     var quoteImageCallback: (String) -> Unit // 图片点击事件
     var quoteVideoCallback: (String) -> Unit // 视频点击事件
     var quoteDepth: Int64 // 列表深度
+    @BuilderParam
+    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局
+    @BuilderParam
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    @BuilderParam
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
     @State
     var quoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
@@ -61,7 +67,10 @@ public class MarkdownQuoteComponent {
                                 paragraphCustomParagraphLineBuilder: quoteCustomParagraphLineBuilder,
                                 paragraphTocListOnClick: quoteTocListOnClick,
                                 paragraphImageCallback: quoteImageCallback,
-                                paragraphFootnoteCallback: quoteFootnoteCallback
+                                paragraphFootnoteCallback: quoteFootnoteCallback,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
                             // 标题/标题ID
@@ -71,7 +80,10 @@ public class MarkdownQuoteComponent {
                                 headingComponentWidth: quoteComponentWidth,
                                 headingCustomHeadingLineBuilder: quoteCustomHeadingLineBuilder,
                                 headingImageCallback: quoteImageCallback,
-                                headingFootnoteCallback: quoteFootnoteCallback
+                                headingFootnoteCallback: quoteFootnoteCallback,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         } else if (item.nodeType == "FencedCodeBlockListBlock") {
                             // 围栏代码块列表
@@ -114,7 +126,10 @@ public class MarkdownQuoteComponent {
                                 listTocListOnClick: quoteTocListOnClick,
                                 listImageCallback: quoteImageCallback,
                                 listVideoCallback: quoteVideoCallback,
-                                listDepth: quoteDepth + 1
+                                listDepth: quoteDepth + 1,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         } else if (item.nodeType == "OrderedList") {
                             // 有序列表
@@ -135,7 +150,10 @@ public class MarkdownQuoteComponent {
                                 listTocListOnClick: quoteTocListOnClick,
                                 listImageCallback: quoteImageCallback,
                                 listVideoCallback: quoteVideoCallback,
-                                listDepth: quoteDepth + 1
+                                listDepth: quoteDepth + 1,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         } else if (item.nodeType == "BlockQuote") {
                             // 块引用
@@ -155,7 +173,10 @@ public class MarkdownQuoteComponent {
                                 quoteTocListOnClick: quoteTocListOnClick,
                                 quoteImageCallback: quoteImageCallback,
                                 quoteVideoCallback: quoteVideoCallback,
-                                quoteDepth: quoteDepth + 1
+                                quoteDepth: quoteDepth + 1,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         } else if (item.nodeType == "LatexMathBlock") {
                             // 数学公式块
@@ -174,7 +195,9 @@ public class MarkdownQuoteComponent {
                                 tableBlockCustomTableLineBuilder: quoteCustomTableLineBuilder,
                                 tableBlockImageCallback: quoteImageCallback,
                                 tableBlockFootnoteCallback: quoteFootnoteCallback,
-                                tableBlockListItemIndex: Int32(-1)
+                                tableBlockListItemIndex: Int32(-1),
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         } else if (item.nodeType == "ThematicBreak") {
                             // 分割线
@@ -188,7 +211,10 @@ public class MarkdownQuoteComponent {
                                 footnoteCustomParagraphLineBuilder: quoteCustomParagraphLineBuilder,
                                 footnoteTocListOnClick: quoteTocListOnClick,
                                 footnoteImageCallback: quoteImageCallback,
-                                footnoteFootnoteCallback: quoteFootnoteCallback
+                                footnoteFootnoteCallback: quoteFootnoteCallback,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         } else if (item.nodeType == "SlideBlock") {
                             // 图片幻灯片

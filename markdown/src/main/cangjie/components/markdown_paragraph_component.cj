@@ -24,6 +24,14 @@ class MarkdownParagraphComponent {
     var isOneLink: Bool = false // 是否只有一条链接数据
     @State
     var paragraphNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
+
+    @BuilderParam
+    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局
+    @BuilderParam
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    @BuilderParam
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
+
     @State
     var paragraphHighlightColor: Color = COLOR_TRANSPARENT // 段落高亮颜色
     @State
@@ -377,7 +385,12 @@ class MarkdownParagraphComponent {
     func build() {
         Row() {
             Column() {
-                if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
+                if (paragraphNodeViewList.size == 1 && paragraphNodeViewList[0].nodeType == "Image"
+                  && paragraphMarkdownConfiguration.isBlockImageCustom.isSome() && paragraphNodeViewList[0].imageAltText.isSome()
+                  && paragraphMarkdownConfiguration.isBlockImageCustom.getOrThrow()(paragraphNodeViewList[0].imageAltText.getOrThrow())){
+                    // card图片组件
+                    blockImageCardComponent(paragraphNodeViewList[0].imageAltText,paragraphNodeViewList[0].imageUrl(),paragraphNodeViewList[0].imageTitle())
+                } else if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
                     if (paragraphMarkdownConfiguration.imageReplaceCallback.isNone()) {
                         if (paragraphNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
                             MarkdownImageRawFileComponent(
@@ -677,31 +690,42 @@ class MarkdownParagraphComponent {
                     Span("\n")
                 } else if (spanListNodeView.nodeType == "Link" || spanListNodeView.nodeType == "HeadLink") {
                     // 链接, TOC列表链接
-                    if (isOneLink) {
-                        spanLinkComponent(
-                            spanListNodeView,
-                            spanListMarkdownConfiguration,
-                            spanListTocListOnClick,
-                            spanListFootnoteCallback,
-                            true
-                        )
-                    } else {
-                        spanLinkComponent(
-                            spanListNodeView,
-                            spanListMarkdownConfiguration,
-                            spanListTocListOnClick,
-                            spanListFootnoteCallback,
-                            false
-                        )
+                    if(spanListNodeView.linkUrl.isSome() && spanListMarkdownConfiguration.isInLineLinkCustom.isSome()
+                        && spanListMarkdownConfiguration.isInLineLinkCustom.getOrThrow()(spanListNodeView.linkUrl.getOrThrow())){
+                        // 行内链接卡片组件
+                        inlineLinkCardComponent(spanListNodeView.linkUrl(), spanListNodeView.linkTitle)
+                    }else{
+                         if (isOneLink) {
+                            spanLinkComponent(
+                                spanListNodeView,
+                                spanListMarkdownConfiguration,
+                                spanListTocListOnClick,
+                                spanListFootnoteCallback,
+                                true
+                            )
+                        } else {
+                            spanLinkComponent(
+                                spanListNodeView,
+                                spanListMarkdownConfiguration,
+                                spanListTocListOnClick,
+                                spanListFootnoteCallback,
+                                false
+                            )
+                        }
                     }
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
-                    spanImageComponent(
+                    if(spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
+                        && spanListMarkdownConfiguration.isInLineImageCustom.getOrThrow()(spanListNodeView.imageAltText.getOrThrow())){
+                        inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl(), spanListNodeView.imageTitle())
+                    }else{
+                        spanImageComponent(
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
                         spanListImageCallback
-                    )
+                        )
+                    }
                 } else {
                     // 其他节点
                     paragraphCustomParagraphLineBuilder(spanListNodeView, index)

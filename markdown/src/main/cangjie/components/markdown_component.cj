@@ -53,6 +53,12 @@ public class MarkdownComponent {
     var customParagraphLineBuilder: (NodeView, Int64) -> Unit = CustomParagraphLineBuilder // 自定义行内段落布局
     @BuilderParam
     var customTableLineBuilder: (NodeView, Int64) -> Unit = CustomTableLineBuilder // 自定义行内表格布局
+    @BuilderParam
+    var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    @BuilderParam
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit = CustomInlineImageBuilder  //自定义卡片布局行内图片
+    @BuilderParam
+    var inlineLinkCardComponent: (?String, ?String) -> Unit = CustomInlineLinkBuilder  //自定义行内链接卡片布局
     let screenWidth: Int32 = getDefaultDisplaySync().width // 屏幕宽度 - 单位px
     @State
     var componentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
@@ -188,7 +194,10 @@ public class MarkdownComponent {
                             paragraphCustomParagraphLineBuilder: customParagraphLineBuilder,
                             paragraphTocListOnClick: tocListOnClick,
                             paragraphImageCallback: imageCallback,
-                            paragraphFootnoteCallback: footnoteCallback
+                            paragraphFootnoteCallback: footnoteCallback,
+                            blockImageCardComponent: blockImageCardComponent,
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
@@ -200,7 +209,10 @@ public class MarkdownComponent {
                             headingComponentWidth: componentWidth,
                             headingCustomHeadingLineBuilder: customHeadingLineBuilder,
                             headingImageCallback: imageCallback,
-                            headingFootnoteCallback: footnoteCallback
+                            headingFootnoteCallback: footnoteCallback,
+                            blockImageCardComponent: blockImageCardComponent,
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "FencedCodeBlockListBlock") {
@@ -251,7 +263,10 @@ public class MarkdownComponent {
                             listTocListOnClick: tocListOnClick,
                             listImageCallback: imageCallback,
                             listVideoCallback: videoCallback,
-                            listDepth: 0
+                            listDepth: 0,
+                            blockImageCardComponent: blockImageCardComponent,
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "OrderedList") {
@@ -274,7 +289,10 @@ public class MarkdownComponent {
                             listTocListOnClick: tocListOnClick,
                             listImageCallback: imageCallback,
                             listVideoCallback: videoCallback,
-                            listDepth: 0
+                            listDepth: 0,
+                            blockImageCardComponent: blockImageCardComponent,
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "BlockQuote") {
@@ -296,7 +314,10 @@ public class MarkdownComponent {
                             quoteTocListOnClick: tocListOnClick,
                             quoteImageCallback: imageCallback,
                             quoteVideoCallback: videoCallback,
-                            quoteDepth: 0
+                            quoteDepth: 0,
+                            blockImageCardComponent: blockImageCardComponent,
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "LatexMathBlock") {
@@ -340,7 +361,9 @@ public class MarkdownComponent {
                             tableBlockCustomTableLineBuilder: customTableLineBuilder,
                             tableBlockImageCallback: imageCallback,
                             tableBlockFootnoteCallback: footnoteCallback,
-                            tableBlockListItemIndex: Int32(idx)
+                            tableBlockListItemIndex: Int32(idx),
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "ThematicBreak") {
@@ -360,7 +383,10 @@ public class MarkdownComponent {
                             footnoteCustomParagraphLineBuilder: customParagraphLineBuilder,
                             footnoteTocListOnClick: tocListOnClick,
                             footnoteImageCallback: imageCallback,
-                            footnoteFootnoteCallback: footnoteCallback
+                            footnoteFootnoteCallback: footnoteCallback,
+                            blockImageCardComponent: blockImageCardComponent,
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "DescList") {
@@ -373,7 +399,10 @@ public class MarkdownComponent {
                             descListCustomParagraphLineBuilder: customParagraphLineBuilder,
                             descListTocListOnClick: tocListOnClick,
                             descListImageCallback: imageCallback,
-                            descListFootnoteCallback: footnoteCallback
+                            descListFootnoteCallback: footnoteCallback,
+                            blockImageCardComponent: blockImageCardComponent,
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent:inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "SlideBlock") {

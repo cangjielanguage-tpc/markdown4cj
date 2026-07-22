@@ -49,6 +49,7 @@ public class NodeView {
     var linkTitle: Option<String> = Option<String>.None // 链接标题
     var imageUrl: Option<String> = Option<String>.None // 图片URL
     var imageTitle: Option<String> = Option<String>.None // 图片标题
+    var imageAltText: Option<String> = Option<String>.None // 图片alt文本
     var imageWidth: Option<Length> = Option<Length>.None // 图片宽度
     var imageHeight: Option<Length> = Option<Length>.None // 图片高度
     var imageRadius: Option<Length> = Option<Length>.None // 图片圆角
@@ -154,7 +155,7 @@ public func nodeToNodeView(
                         let link = (commonmarkChildrenNode as CommonmarkLink)()
                         childrenNodeView.linkUrl = link.getDestination()
                         childrenNodeView.linkTitle = link.getTitle()
-                        if (isLinkStyle) {
+                        if (true) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
                         } else {
@@ -432,6 +433,18 @@ public func nodeToNodeView(
                         let image = (commonmarkChildrenNode as CommonmarkImage)()
                         childrenNodeView.imageUrl = image.getDestination()
                         childrenNodeView.imageTitle = image.getTitle()
+                          // 提取alt文本
+                        let altTextBuilder = StringClass()
+                        commonmarkChildrenNode.iterateChildren().forEach({
+                            child: CommonmarkNode =>
+                                if (child is CommonmarkText) {
+                                    altTextBuilder.addString((child as CommonmarkText)().getLiteral())
+                                }
+                        })
+                        let altText = altTextBuilder.str.trimAscii()
+                        if (!altText.isEmpty()) {
+                            childrenNodeView.imageAltText = Option<String>.Some(altText)
+                        }
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "StyleImage") {
                         // Style图片

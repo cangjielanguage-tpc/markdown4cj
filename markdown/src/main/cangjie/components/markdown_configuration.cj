@@ -38,6 +38,11 @@ public class MarkdownConfiguration {
     var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
     var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
     var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
+
+    protected var isBlockImageCustom: ?(String) -> Bool = None // 代码复制按钮的点击事件
+    protected var isInLineImageCustom: ?(String) -> Bool = None // 代码复制按钮的点击事件
+    protected var isInLineLinkCustom: ?(String) -> Bool = None // 代码复制按钮的点击事件
+
     var tableCopyCallback: ?(String) -> Unit = None // 表格复制按钮的点击事件
     var elementExposureCallback: ?(MarkdownExposureEvent) -> Unit = None // 元素曝光回调（链接显示/消失时触发）
     var exposureThreshold: Float64 = 0.5 // 曝光可见阈值（0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见）
@@ -289,6 +294,47 @@ public class MarkdownConfiguration {
         this.footnoteCallback = footnoteCallback
         return this
     }
+
+
+
+
+    /**
+     * 设置满足自定义块级图片的条件
+     *
+     * @param isBlockImageCustom 满足自定义块级图片的条件
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setIsBlockImageCustom(isBlockImageCustom: (String) -> Bool): MarkdownConfiguration {
+        this.isBlockImageCustom = isBlockImageCustom
+        return this
+    }
+
+
+
+    /**
+     * 设置满足自定义行内图片的条件
+     *
+     * @param isInLineImageCustom 满足自定义行内图片的条件
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setIsInLineImageCustom(isInLineImageCustom: (String) -> Bool): MarkdownConfiguration {
+        this.isInLineImageCustom = isInLineImageCustom
+        return this
+    }
+
+
+
+    /**
+     * 设置满足自定义行内链接的条件
+     *
+     * @param setIsInLineLinkCustom 满足自定义行内链接的条件
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setIsInLineLinkCustom(isInLineLinkCustom: (String) -> Bool): MarkdownConfiguration {
+        this.isInLineLinkCustom = isInLineLinkCustom
+        return this
+    }
+
 
     /**
      * 设置获取markdown全部文本

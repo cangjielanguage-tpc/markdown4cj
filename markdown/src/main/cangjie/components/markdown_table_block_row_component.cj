@@ -18,6 +18,10 @@ class MarkdownTableBlockRowComponent {
     var tableBlockRowCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格Cell控件
     var tableBlockRowImageCallback: (String) -> Unit // 图片点击事件
     var tableBlockRowFootnoteCallback: (String) -> Unit // 脚注点击事件
+    @BuilderParam
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    @BuilderParam
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
     var tableBlockRowRow: Int64 // 表格的第几行
     var tableBlockRowCellSize: Int64 // 表格总共有几列
     var tableBlockRowRowSize: Int64 // 表格总共有几行
@@ -49,7 +53,9 @@ class MarkdownTableBlockRowComponent {
                             tableBlockCellRow: tableBlockRowRow,
                             tableBlockCellCell: idx,
                             tableBlockCellCellSize: tableBlockRowCellSize,
-                            tableBlockCellRowSize: tableBlockRowRowSize
+                            tableBlockCellRowSize: tableBlockRowRowSize,
+                            inlineImageCardComponent: inlineImageCardComponent,
+                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     } else {
                         Text("")

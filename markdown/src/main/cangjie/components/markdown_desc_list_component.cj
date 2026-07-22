@@ -18,6 +18,12 @@ public class MarkdownDescListComponent {
     var descListTocListOnClick: (Int64) -> Unit // TOC列表点击事件
     var descListImageCallback: (String) -> Unit // 图片点击事件
     var descListFootnoteCallback: (String) -> Unit // 脚注点击事件
+    @BuilderParam
+    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局
+    @BuilderParam
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    @BuilderParam
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
     var descListNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
@@ -43,7 +49,10 @@ public class MarkdownDescListComponent {
                                 descTermCustomParagraphLineBuilder: descListCustomParagraphLineBuilder,
                                 descTermTocListOnClick: descListTocListOnClick,
                                 descTermImageCallback: descListImageCallback,
-                                descTermFootnoteCallback: descListFootnoteCallback
+                                descTermFootnoteCallback: descListFootnoteCallback,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         }
                     } else if (descListNodeView.nodeType == "DescDef") {
@@ -55,7 +64,10 @@ public class MarkdownDescListComponent {
                                 descDefCustomParagraphLineBuilder: descListCustomParagraphLineBuilder,
                                 descDefTocListOnClick: descListTocListOnClick,
                                 descDefImageCallback: descListImageCallback,
-                                descDefFootnoteCallback: descListFootnoteCallback
+                                descDefFootnoteCallback: descListFootnoteCallback,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         }
                         .margin(top: descDefItemSpacing(idx, descListMarkdownConfiguration.markdownTheme))

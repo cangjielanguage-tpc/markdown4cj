@@ -18,6 +18,12 @@ public class MarkdownDescDefComponent {
     var descDefTocListOnClick: (Int64) -> Unit // TOC列表点击事件
     var descDefImageCallback: (String) -> Unit // 图片点击事件
     var descDefFootnoteCallback: (String) -> Unit // 脚注点击事件
+    @BuilderParam
+    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局
+    @BuilderParam
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    @BuilderParam
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
     var descDefNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表解释控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
@@ -43,7 +49,10 @@ public class MarkdownDescDefComponent {
                                 paragraphCustomParagraphLineBuilder: descDefCustomParagraphLineBuilder,
                                 paragraphTocListOnClick: descDefTocListOnClick,
                                 paragraphImageCallback: descDefImageCallback,
-                                paragraphFootnoteCallback: descDefFootnoteCallback
+                                paragraphFootnoteCallback: descDefFootnoteCallback,
+                                blockImageCardComponent: blockImageCardComponent,
+                                inlineImageCardComponent: inlineImageCardComponent,
+                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         }
                     } else {

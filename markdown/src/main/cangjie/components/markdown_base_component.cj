@@ -2,6 +2,25 @@ package markdown.components
 
 import ohos.state_macro_manage.*
 
+
+
+
+@Builder
+func CustomBlockImageBuilder(description:?String,destination:?String,title:?String) { /* cjlint-ignore !G.FUN.02 */
+    Text("")
+}
+
+@Builder
+func CustomInlineImageBuilder(description:?String,destination:?String,title:?String) { /* cjlint-ignore !G.FUN.02 */
+    Span("")
+}
+
+@Builder
+func CustomInlineLinkBuilder(destination:?String,title:?String) { /* cjlint-ignore !G.FUN.02 */
+     Span("")
+}
+
+
 /**
  * 广告布局
  *
