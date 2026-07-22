@@ -17,6 +17,8 @@ let colorList: Array<String> = [
 
 let booleanList: Array<String> = ["true", "false"]
 
+let exposureThresholdList: Array<String> = ["0", "0.3", "0.5", "0.8", "1.0"]
+
 let textSizeList: Array<String> = ["10", "12", "14", "16", "20", "24", "36"]
 
 let textLineHeightList: Array<String> = ["10", "12", "14", "16", "20", "24", "36"]

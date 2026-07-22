@@ -27,14 +27,22 @@ class MarkdownHeadingComponent {
     var headingHighlightColor: Color = COLOR_TRANSPARENT // 标题高亮颜色
     @State
     var hasHeadingHighlight: Bool = false // 标题是否处于高亮状态
+    // 链接曝光：URL列表缓存 + 当前可见状态（与MarkdownParagraphComponent同款）
+    // 简化版：Text级别曝光，与屏幕 [0, screenH] 求交判定可见性
+    var headingExposureUrls: ArrayList<String> = ArrayList<String>()
+    var headingExposureVisible: Bool = false
+    var headingId: String = "" // 标题Text的唯一id（componentUtils.getRectangleById 用）
+    var viewportReady: Bool = false // onAreaChange是否触发过
+    var isAlive: Bool = true // 组件是否存活
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(headingNodeView.nodeHash, refreshHeadingData)
         refreshHeadingData(headingNodeView)
-        // 链接曝光注册
-        if (headingMarkdownConfiguration.elementExposureCallback.isSome()) {
-            let urls = MarkdownLinkExposureRegistry.extractHttpLinks(headingNodeView)
-            MarkdownLinkExposureRegistry.register(headingNodeView.nodeHash, urls)
+        // 标题Text的唯一id
+        headingId = "md-exp-${headingNodeView.nodeHash}"
+        // 链接曝光：仅提取URL列表缓存
+        if (isExposureEnabled()) {
+            headingExposureUrls = MarkdownLinkExposureRegistry.extractHttpLinks(headingNodeView)
         }
         // 段落高亮注册
         MarkdownHighlightRegistry.register(headingNodeView.nodeHash, { color: ?Color =>
@@ -61,9 +69,75 @@ class MarkdownHeadingComponent {
     }
 
     protected override func aboutToDisappear(): Unit {
+        isAlive = false
         MarkdownRefreshRegistry.unregister(headingNodeView.nodeHash)
-        MarkdownLinkExposureRegistry.unregister(headingNodeView.nodeHash)
+        if (headingExposureVisible) {
+            MarkdownLinkExposureRegistry.unregister(headingNodeView.nodeHash)
+            headingExposureVisible = false
+        }
         MarkdownHighlightRegistry.unregister(headingNodeView.nodeHash)
+    }
+
+    /**
+     * 是否启用元素曝光统计：查 registry（不依赖 @Prop 的 MarkdownConfiguration.elementExposureCallback）
+     */
+    func isExposureEnabled(): Bool {
+        return MarkdownLinkExposureRegistry.isExposureEnabled()
+    }
+
+    /**
+     * 防抖触发曝光评估
+     */
+    func scheduleExposure(): Unit {
+        if (!isAlive) {
+            return
+        }
+        if (!isExposureEnabled()) {
+            return
+        }
+        if (headingExposureUrls.size == 0) {
+            return
+        }
+        spawn {
+            sleep(Duration.millisecond * 16)
+            launch {
+                if (isAlive && viewportReady) {
+                    evaluateExposure()
+                }
+            }
+        }
+    }
+
+    /**
+     * 曝光评估：用 componentUtils 拿标题全局 rect，与屏幕 [0, screenH] 求交，判定可见性
+     * 简化版：Text级别曝光
+     */
+    func evaluateExposure(): Unit {
+        var globalTop: Float64 = 0.0
+        var globalBottom: Float64 = 0.0
+        try {
+            let info = ComponentUtils.getRectangleById(headingId)
+            globalTop = Float64(info.windowOffset.y)
+            globalBottom = globalTop + Float64(info.size.height)
+        } catch (_: Exception) {
+            return
+        }
+        let screenHeight = Float64(getDefaultDisplaySync().height)
+        let vpTop = 0.0
+        let vpBottom = screenHeight
+        let clipTop = if (vpTop > globalTop) { vpTop } else { globalTop }
+        let clipBottom = if (vpBottom < globalBottom) { vpBottom } else { globalBottom }
+        let visibleHeight = if (clipBottom > clipTop) { clipBottom - clipTop } else { 0.0 }
+        let headingHeight = if (globalBottom > globalTop) { globalBottom - globalTop } else { 0.0 }
+        let ratio = if (headingHeight > 0.0) { visibleHeight / headingHeight } else { 0.0 }
+        let threshold = MarkdownLinkExposureRegistry.getExposureThreshold()
+        if (ratio >= threshold && !headingExposureVisible) {
+            headingExposureVisible = true
+            MarkdownLinkExposureRegistry.register(headingNodeView.nodeHash, headingExposureUrls)
+        } else if (ratio < threshold && headingExposureVisible) {
+            headingExposureVisible = false
+            MarkdownLinkExposureRegistry.unregister(headingNodeView.nodeHash)
+        }
     }
 
     /**
@@ -222,6 +296,23 @@ class MarkdownHeadingComponent {
             str => if (let Some(v) <- headingMarkdownConfiguration.textCopyCallback) {
                 v(str)
             }
+        })
+        // 链接曝光：Text 的唯一 id
+        .id(headingId)
+        .onVisibleAreaChange(
+            [0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0],
+            { _: Bool, _: Float64 =>
+                if (isExposureEnabled()) {
+                    scheduleExposure()
+                }
+            }
+        )
+        .onAreaChange({
+            old, new =>
+                if (isExposureEnabled()) {
+                    viewportReady = true
+                    scheduleExposure()
+                }
         })
     }
 

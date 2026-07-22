@@ -94,6 +94,7 @@ public class MarkdownComponent {
         // 链接曝光初始化
         if (let Some(cb) <- markdownConfiguration.elementExposureCallback) {
             MarkdownLinkExposureRegistry.setExposureCallback(cb)
+            MarkdownLinkExposureRegistry.setExposureThreshold(markdownConfiguration.exposureThreshold)
         }
     }
 
@@ -102,12 +103,19 @@ public class MarkdownComponent {
         throttleTimer?.cancel()
         throttleTimer = None
         MarkdownRefreshRegistry.clear()
-        MarkdownLinkExposureRegistry.clear()
+        MarkdownLinkExposureRegistry.clearData()
         MarkdownHighlightRegistry.clear()
         stickyHolder.clearListeners()
         if (let Some(ctrl) <- markdownConfiguration.scrollController) {
             ctrl.setListener(Option<(Float64) -> Unit>.None)
         }
+    }
+
+    /**
+     * 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true
+     */
+    func isExposureEnabled(): Bool {
+        return markdownConfiguration.elementExposureCallback.isSome()
     }
 
     func build() {
@@ -121,7 +129,7 @@ public class MarkdownComponent {
             .alignListItem(ListItemAlign.Start)
             .scrollBar(BarState.Off)
             .enableScrollInteraction(markdownConfiguration.markdownTheme.globalTheme.openGestureSwipe)
-            .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
+            .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
             .onScroll({
                 offset: Float64, state: ScrollState =>
                     // 内层List滚动模式（未提供scrollController时）：用List内部scrollY驱动吸顶

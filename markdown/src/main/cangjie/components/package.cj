@@ -119,6 +119,7 @@ internal import ohos.component.fp2px
 internal import ohos.component.Axis
 internal import ohos.component.NestedScrollOptions
 internal import ohos.component.NestedScrollMode
+internal import ohos.component_utils.ComponentUtils
 internal import ohos.component.ItemAlign
 internal import ohos.component.Stack
 internal import ohos.component.Divider

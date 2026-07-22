@@ -39,14 +39,25 @@ class MarkdownParagraphComponent {
     @State
     var paragraphIsLongPressed: Bool = false // 当前是否处于长按状态
     var paragraphSelectionMenuTimer: ?Timer = None // 选区菜单自动隐藏定时器
+    // 链接曝光：URL列表缓存 + 当前可见状态
+    // 对齐 ArkUI MarkdownParagraph.ets：用 onVisibleAreaChange(触发scheduleExposure) + onAreaChange(标记ready) +
+    // componentUtils.getRectangleById(拿段落全局rect) 与屏幕高度 [0, screenH] 求交判定可见性。
+    // 简化版：不做偏移/span级别，Text级别曝光。
+    var paragraphExposureUrls: ArrayList<String> = ArrayList<String>() // 本段落的http链接URL列表（aboutToAppear时提取一次）
+    var paragraphExposureVisible: Bool = false // 本段落当前是否处于"可见"状态（避免同一组件反复触发register）
+    var paragraphId: String = "" // 段落Text的唯一id（componentUtils.getRectangleById 用，aboutToAppear赋值）
+    var viewportReady: Bool = false // onAreaChange是否触发过（尺寸已就绪）
+    var isAlive: Bool = true // 组件是否存活
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(paragraphNodeView.nodeHash, refreshParagraphData)
         refreshParagraphData(paragraphNodeView)
-        // 链接曝光注册
-        if (paragraphMarkdownConfiguration.elementExposureCallback.isSome()) {
-            let urls = MarkdownLinkExposureRegistry.extractHttpLinks(paragraphNodeView)
-            MarkdownLinkExposureRegistry.register(paragraphNodeView.nodeHash, urls)
+        // 段落Text的唯一id：用nodeHash保证流式复用同一节点时id稳定
+        paragraphId = "md-exp-${paragraphNodeView.nodeHash}"
+        // 链接曝光：仅提取URL列表缓存，不在此处register
+        // 可见性由 scheduleExposure() 用 componentUtils.getRectangleById 与屏幕 [0, screenH] 求交判定
+        if (isExposureEnabled()) {
+            paragraphExposureUrls = MarkdownLinkExposureRegistry.extractHttpLinks(paragraphNodeView)
         }
         // 段落高亮注册
         MarkdownHighlightRegistry.register(paragraphNodeView.nodeHash, { color: ?Color =>
@@ -60,13 +71,87 @@ class MarkdownParagraphComponent {
     }
 
     protected override func aboutToDisappear(): Unit {
+        isAlive = false
         MarkdownRefreshRegistry.unregister(paragraphNodeView.nodeHash)
-        MarkdownLinkExposureRegistry.unregister(paragraphNodeView.nodeHash)
+        // 组件销毁时若仍处于可见状态，补 unregister 保证显示/消失成对
+        if (paragraphExposureVisible) {
+            MarkdownLinkExposureRegistry.unregister(paragraphNodeView.nodeHash)
+            paragraphExposureVisible = false
+        }
         MarkdownHighlightRegistry.unregister(paragraphNodeView.nodeHash)
         // 组件销毁时清理选区菜单隐藏定时器
         if (paragraphSelectionMenuTimer.isSome()) {
             paragraphSelectionMenuTimer.getOrThrow().cancel()
             paragraphSelectionMenuTimer = None
+        }
+    }
+
+    /**
+     * 是否启用元素曝光统计：查 registry（不依赖 @Prop 的 MarkdownConfiguration.elementExposureCallback）
+     */
+    func isExposureEnabled(): Bool {
+        return MarkdownLinkExposureRegistry.isExposureEnabled()
+    }
+
+    /**
+     * 防抖触发曝光评估。合并连续的 onAreaChange/onVisibleAreaChange 触发。
+     * 评估后对「本次显示」的链接回调 visible=true，「本次消失」的回调 visible=false。
+     *
+     * 视口：componentUtils.getRectangleById(paragraphId) 拿段落全局 rect（px），
+     * 与屏幕 [0, screenH] 求交得段落在屏可见区。
+     */
+    func scheduleExposure(): Unit {
+        if (!isAlive) {
+            return
+        }
+        if (!isExposureEnabled()) {
+            return
+        }
+        if (paragraphExposureUrls.size == 0) {
+            return
+        }
+        // 防抖：16ms（~1帧）后执行评估，合并连续触发
+        spawn {
+            sleep(Duration.millisecond * 16)
+            launch {
+                if (isAlive && viewportReady) {
+                    evaluateExposure()
+                }
+            }
+        }
+    }
+
+    /**
+     * 曝光评估：用 componentUtils 拿段落全局 rect，与屏幕 [0, screenH] 求交，判定可见性
+     * 简化版：不做偏移/span级别，Text级别曝光。
+     */
+    func evaluateExposure(): Unit {
+        var globalTop: Float64 = 0.0
+        var globalBottom: Float64 = 0.0
+        try {
+            let info = ComponentUtils.getRectangleById(paragraphId)
+            globalTop = Float64(info.windowOffset.y)
+            globalBottom = globalTop + Float64(info.size.height)
+        } catch (_: Exception) {
+            return
+        }
+        // 简化：直接用整屏 [0, screenH] 作为可见窗口
+        let screenHeight = Float64(getDefaultDisplaySync().height)
+        let vpTop = 0.0
+        let vpBottom = screenHeight
+        // 段落 rect 与可见窗口求交
+        let clipTop = if (vpTop > globalTop) { vpTop } else { globalTop }
+        let clipBottom = if (vpBottom < globalBottom) { vpBottom } else { globalBottom }
+        let visibleHeight = if (clipBottom > clipTop) { clipBottom - clipTop } else { 0.0 }
+        let paragraphHeight = if (globalBottom > globalTop) { globalBottom - globalTop } else { 0.0 }
+        let ratio = if (paragraphHeight > 0.0) { visibleHeight / paragraphHeight } else { 0.0 }
+        let threshold = MarkdownLinkExposureRegistry.getExposureThreshold()
+        if (ratio >= threshold && !paragraphExposureVisible) {
+            paragraphExposureVisible = true
+            MarkdownLinkExposureRegistry.register(paragraphNodeView.nodeHash, paragraphExposureUrls)
+        } else if (ratio < threshold && paragraphExposureVisible) {
+            paragraphExposureVisible = false
+            MarkdownLinkExposureRegistry.unregister(paragraphNodeView.nodeHash)
         }
     }
 
@@ -518,6 +603,25 @@ class MarkdownParagraphComponent {
             str => if (let Some(v) <- paragraphMarkdownConfiguration.textCopyCallback) {
                 v(str)
             }
+        })
+        // 链接曝光：Text 的唯一 id（componentUtils.getRectangleById 用）
+        .id(paragraphId)
+        // onVisibleAreaChange：ratio 阈值变化时触发 scheduleExposure（仅作触发用，真正可见性由 rect 求交判定）
+        .onVisibleAreaChange(
+            [0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0],
+            { _: Bool, _: Float64 =>
+                if (isExposureEnabled()) {
+                    scheduleExposure()
+                }
+            }
+        )
+        // onAreaChange：标记 viewportReady，触发 scheduleExposure
+        .onAreaChange({
+            old, new =>
+                if (isExposureEnabled()) {
+                    viewportReady = true
+                    scheduleExposure()
+                }
         })
     }
 

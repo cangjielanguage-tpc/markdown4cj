@@ -1,7 +1,6 @@
 package markdown.components
 
 import ohos.state_macro_manage.*
-import ohos.component_utils.*
 
 /**
  * 表格Cell控件
@@ -32,19 +31,94 @@ class MarkdownTableBlockCellComponent {
     var isRefresh: Bool = false // 表格Cell子节点是否不为0
     @State
     var tableBlockCellNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
+    // 链接曝光：URL列表缓存 + 当前可见状态（与MarkdownParagraphComponent同款）
+    // 简化版：Text级别曝光，与屏幕 [0, screenH] 求交判定可见性
+    var tableBlockCellExposureUrls: ArrayList<String> = ArrayList<String>()
+    var tableBlockCellExposureVisible: Bool = false
+    var tableBlockCellId: String = "" // Cell Text的唯一id
+    var viewportReady: Bool = false // onAreaChange是否触发过
+    var isAlive: Bool = true // 组件是否存活
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
         refreshTableBlockCellData(tableBlockCellNodeView)
-        if (tableBlockCellMarkdownConfiguration.elementExposureCallback.isSome()) {
-            let urls = MarkdownLinkExposureRegistry.extractHttpLinks(tableBlockCellNodeView)
-            MarkdownLinkExposureRegistry.register(tableBlockCellNodeView.nodeHash, urls)
+        // Cell Text的唯一id
+        tableBlockCellId = "md-exp-${tableBlockCellNodeView.nodeHash}"
+        // 链接曝光：仅提取URL列表缓存
+        if (isExposureEnabled()) {
+            tableBlockCellExposureUrls = MarkdownLinkExposureRegistry.extractHttpLinks(tableBlockCellNodeView)
         }
     }
 
     protected override func aboutToDisappear(): Unit {
+        isAlive = false
         MarkdownRefreshRegistry.unregister(tableBlockCellNodeView.nodeHash)
-        MarkdownLinkExposureRegistry.unregister(tableBlockCellNodeView.nodeHash)
+        if (tableBlockCellExposureVisible) {
+            MarkdownLinkExposureRegistry.unregister(tableBlockCellNodeView.nodeHash)
+            tableBlockCellExposureVisible = false
+        }
+    }
+
+    /**
+     * 是否启用元素曝光统计：查 registry（不依赖 @Prop 的 MarkdownConfiguration.elementExposureCallback）
+     */
+    func isExposureEnabled(): Bool {
+        return MarkdownLinkExposureRegistry.isExposureEnabled()
+    }
+
+    /**
+     * 防抖触发曝光评估
+     */
+    func scheduleExposure(): Unit {
+        if (!isAlive) {
+            return
+        }
+        if (!isExposureEnabled()) {
+            return
+        }
+        if (tableBlockCellExposureUrls.size == 0) {
+            return
+        }
+        spawn {
+            sleep(Duration.millisecond * 16)
+            launch {
+                if (isAlive && viewportReady) {
+                    evaluateExposure()
+                }
+            }
+        }
+    }
+
+    /**
+     * 曝光评估：用 componentUtils 拿 Cell 全局 rect，与屏幕 [0, screenH] 求交，判定可见性
+     * 简化版：Text级别曝光
+     */
+    func evaluateExposure(): Unit {
+        var globalTop: Float64 = 0.0
+        var globalBottom: Float64 = 0.0
+        try {
+            let info = ComponentUtils.getRectangleById(tableBlockCellId)
+            globalTop = Float64(info.windowOffset.y)
+            globalBottom = globalTop + Float64(info.size.height)
+        } catch (_: Exception) {
+            return
+        }
+        let screenHeight = Float64(getDefaultDisplaySync().height)
+        let vpTop = 0.0
+        let vpBottom = screenHeight
+        let clipTop = if (vpTop > globalTop) { vpTop } else { globalTop }
+        let clipBottom = if (vpBottom < globalBottom) { vpBottom } else { globalBottom }
+        let visibleHeight = if (clipBottom > clipTop) { clipBottom - clipTop } else { 0.0 }
+        let cellHeight = if (globalBottom > globalTop) { globalBottom - globalTop } else { 0.0 }
+        let ratio = if (cellHeight > 0.0) { visibleHeight / cellHeight } else { 0.0 }
+        let threshold = MarkdownLinkExposureRegistry.getExposureThreshold()
+        if (ratio >= threshold && !tableBlockCellExposureVisible) {
+            tableBlockCellExposureVisible = true
+            MarkdownLinkExposureRegistry.register(tableBlockCellNodeView.nodeHash, tableBlockCellExposureUrls)
+        } else if (ratio < threshold && tableBlockCellExposureVisible) {
+            tableBlockCellExposureVisible = false
+            MarkdownLinkExposureRegistry.unregister(tableBlockCellNodeView.nodeHash)
+        }
     }
 
     func build() {
@@ -110,6 +184,23 @@ class MarkdownTableBlockCellComponent {
             str => if (let Some(v) <- tableBlockCellMarkdownConfiguration.textCopyCallback) {
                 tableBlockCellMarkdownConfiguration.textCopyCallback()(str)
             }
+        })
+        // 链接曝光：Text 的唯一 id
+        .id(tableBlockCellId)
+        .onVisibleAreaChange(
+            [0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0],
+            { _: Bool, _: Float64 =>
+                if (isExposureEnabled()) {
+                    scheduleExposure()
+                }
+            }
+        )
+        .onAreaChange({
+            old, new =>
+                if (isExposureEnabled()) {
+                    viewportReady = true
+                    scheduleExposure()
+                }
         })
     }
 

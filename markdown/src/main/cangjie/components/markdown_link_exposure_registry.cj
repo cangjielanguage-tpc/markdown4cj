@@ -17,6 +17,7 @@ import std.collection.ArrayList
  */
 public class MarkdownLinkExposureRegistry {
     static var exposureCallback: ?(MarkdownExposureEvent) -> Unit = None
+    static var exposureThreshold: Float64 = 0.5
     static var linkCounts: HashMap<String, Int64> = HashMap<String, Int64>()
     static var componentUrls: HashMap<Int64, ArrayList<String>> = HashMap<Int64, ArrayList<String>>()
 
@@ -31,14 +32,46 @@ public class MarkdownLinkExposureRegistry {
     }
 
     /**
+     * 设置曝光阈值
+     * 由MarkdownComponent在aboutToAppear时调用
+     *
+     * @param threshold 0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见
+     */
+    public static func setExposureThreshold(threshold: Float64): Unit {
+        exposureThreshold = threshold
+    }
+
+    /**
+     * 是否已设置曝光回调
+     * 子组件用此方法判断是否启用曝光，不依赖 @Prop 的 MarkdownConfiguration.elementExposureCallback
+     *（@Prop 对 @Observed 类的深拷贝可能丢失 Option<Function> 字段）
+     */
+    public static func isExposureEnabled(): Bool {
+        return exposureCallback.isSome()
+    }
+
+    /**
+     * 获取曝光阈值
+     * 子组件用此方法获取阈值，不依赖 @Prop 的 MarkdownConfiguration.exposureThreshold
+     */
+    public static func getExposureThreshold(): Float64 {
+        return exposureThreshold
+    }
+
+    /**
      * 注册组件包含的http链接
      * count从0→1的URL报visible=true
+     * 幂等：同一nodeHash重复register直接返回（用于onVisibleAreaChange多次触发场景）
      *
      * @param nodeHash 组件节点hash
      * @param urls 组件包含的http链接URL列表
      */
     public static func register(nodeHash: Int64, urls: ArrayList<String>): Unit {
         if (urls.size == 0) {
+            return
+        }
+        // 幂等：已注册过则跳过（避免ratio回调多次触发导致重复计数）
+        if (componentUrls.contains(nodeHash)) {
             return
         }
         componentUrls[nodeHash] = urls
@@ -80,11 +113,22 @@ public class MarkdownLinkExposureRegistry {
     }
 
     /**
-     * 清空所有数据
+     * 清空组件数据（linkCounts + componentUrls），但保留回调
      * 由MarkdownComponent在aboutToDisappear时调用
+     * 不清 exposureCallback：避免 MarkdownComponent 重建后 @Prop 深拷贝丢失回调导致 registry 为空
+     */
+    public static func clearData(): Unit {
+        linkCounts.clear()
+        componentUrls.clear()
+    }
+
+    /**
+     * 清空所有数据（含回调+阈值）
+     * 由页面在aboutToDisappear时调用（非 MarkdownComponent 的 aboutToDisappear）
      */
     public static func clear(): Unit {
         exposureCallback = None
+        exposureThreshold = 0.5
         linkCounts.clear()
         componentUrls.clear()
     }
