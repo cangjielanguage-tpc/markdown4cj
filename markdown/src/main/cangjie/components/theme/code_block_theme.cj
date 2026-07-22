@@ -252,7 +252,7 @@ public class CodeBlockTheme {
      * @param margin 外边距
      * @return 当前CodeBlockTheme对象
      */
-    public func setMargin(margin: Float64): CodeBlockTheme {
+    public func setCodeBlockMargin(margin: Float64): CodeBlockTheme {
         this.codeBlockMarginTop = margin
         this.codeBlockMarginRight = margin
         this.codeBlockMarginBottom = margin
@@ -269,7 +269,7 @@ public class CodeBlockTheme {
      * @param left 左外边距 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): CodeBlockTheme {
+    public func setCodeBlockMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): CodeBlockTheme {
         this.codeBlockMarginTop = top
         this.codeBlockMarginRight = right
         this.codeBlockMarginBottom = bottom
@@ -283,7 +283,7 @@ public class CodeBlockTheme {
      * @param padding 内边距
      * @return 当前CodeBlockTheme对象
      */
-    public func setPadding(padding: Float64): CodeBlockTheme {
+    public func setCodeBlockPadding(padding: Float64): CodeBlockTheme {
         this.codeBlockPaddingTop = padding
         this.codeBlockPaddingRight = padding
         this.codeBlockPaddingBottom = padding
@@ -300,7 +300,7 @@ public class CodeBlockTheme {
      * @param left 左内边距 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setPadding(top!: Float64 = 0.0, right!: Float64 = 8.0, bottom!: Float64 = 8.0, left!: Float64 = 0.0): CodeBlockTheme {
+    public func setCodeBlockPadding(top!: Float64 = 0.0, right!: Float64 = 8.0, bottom!: Float64 = 8.0, left!: Float64 = 0.0): CodeBlockTheme {
         this.codeBlockPaddingTop = top
         this.codeBlockPaddingRight = right
         this.codeBlockPaddingBottom = bottom
@@ -347,7 +347,7 @@ public class CodeBlockTheme {
      * @param radius 圆角
      * @return 当前CodeBlockTheme对象
      */
-    public func setRadius(radius: Float64): CodeBlockTheme {
+    public func setCodeBlockRadius(radius: Float64): CodeBlockTheme {
         this.codeBlockRadiusTopLeft = radius
         this.codeBlockRadiusTopRight = radius
         this.codeBlockRadiusBottomLeft = radius
@@ -364,7 +364,7 @@ public class CodeBlockTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setRadius(topLeft!: Float64 = 8.0, topRight!: Float64 = 8.0, bottomLeft!: Float64 = 8.0, bottomRight!: Float64 = 8.0): CodeBlockTheme {
+    public func setCodeBlockRadius(topLeft!: Float64 = 8.0, topRight!: Float64 = 8.0, bottomLeft!: Float64 = 8.0, bottomRight!: Float64 = 8.0): CodeBlockTheme {
         this.codeBlockRadiusTopLeft = topLeft
         this.codeBlockRadiusTopRight = topRight
         this.codeBlockRadiusBottomLeft = bottomLeft

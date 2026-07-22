@@ -534,11 +534,11 @@ public class TableTheme {
     /**
      * 设置表格头复制按钮是否显示
      *
-     * @param show 是否显示
+     * @param enable 是否显示
      * @return 当前TableTheme对象
      */
-    public func setTableHeadIsShow(show: Bool): TableTheme {
-        this.tableHeadIsShow = show
+    public func setTableHeadIsShow(enable: Bool): TableTheme {
+        this.tableHeadIsShow = enable
         return this
     }
 

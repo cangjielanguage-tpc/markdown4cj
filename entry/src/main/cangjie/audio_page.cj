@@ -271,7 +271,7 @@ class AudioPage {
         audioTheme.setAudioIconRadius(topLeft: parseFloat64(cfg_audioIconRadiusTopLeft), topRight: parseFloat64(cfg_audioIconRadiusTopRight), bottomLeft: parseFloat64(cfg_audioIconRadiusBottomLeft), bottomRight: parseFloat64(cfg_audioIconRadiusBottomRight))
         audioTheme.setAudioPadding(top: parseFloat64(cfg_audioPaddingTop), right: parseFloat64(cfg_audioPaddingRight), bottom: parseFloat64(cfg_audioPaddingBottom), left: parseFloat64(cfg_audioPaddingLeft))
         audioTheme.setAudioMargin(top: parseFloat64(cfg_audioMarginTop), right: parseFloat64(cfg_audioMarginRight), bottom: parseFloat64(cfg_audioMarginBottom), left: parseFloat64(cfg_audioMarginLeft))
-        audioTheme.setAudioRadius(topLeft: parseFloat64(cfg_audioRadiusTopLeft), topRight: parseFloat64(cfg_audioRadiusTopRight), bottomLeft: parseFloat64(cfg_audioRadiusBottomLeft), bottomRight: parseFloat64(cfg_audioRadiusBottomRight))
+        audioTheme.setAudioBorderRadius(topLeft: parseFloat64(cfg_audioRadiusTopLeft), topRight: parseFloat64(cfg_audioRadiusTopRight), bottomLeft: parseFloat64(cfg_audioRadiusBottomLeft), bottomRight: parseFloat64(cfg_audioRadiusBottomRight))
         audioTheme.setAudioButtonRadius(topLeft: parseFloat64(cfg_audioButtonRadiusTopLeft), topRight: parseFloat64(cfg_audioButtonRadiusTopRight), bottomLeft: parseFloat64(cfg_audioButtonRadiusBottomLeft), bottomRight: parseFloat64(cfg_audioButtonRadiusBottomRight))
     }
 

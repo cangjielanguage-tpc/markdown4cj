@@ -133,10 +133,10 @@ class ImageStylePage {
             imageTheme.setImageBorderWidth(parseFloat64(cfg_imageBorderWidth))
         }
         if (cfg_imageRadiusTopLeft != "undefined") {
-            imageTheme.setRadius(topLeft: parseFloat64(cfg_imageRadiusTopLeft))
+            imageTheme.setImageBorderRadius(topLeft: parseFloat64(cfg_imageRadiusTopLeft))
         }
         if (cfg_imageRadiusTopRight != "undefined") {
-            imageTheme.setRadius(topRight: parseFloat64(cfg_imageRadiusTopRight))
+            imageTheme.setImageBorderRadius(topRight: parseFloat64(cfg_imageRadiusTopRight))
         }
         imageTheme.setImageFitType(parseImageFit(cfg_imageFitType))
     }

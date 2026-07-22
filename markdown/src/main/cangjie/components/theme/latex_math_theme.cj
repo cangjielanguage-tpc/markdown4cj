@@ -113,11 +113,11 @@ public class LatexMathTheme {
     /**
      * 设置数学公式未加载状态是否显示文字
      *
-     * @param showDefaultText 是否显示文字
+     * @param defaultText 是否显示文字
      * @return 当前LatexMathTheme对象
      */
-    public func setLatexMathDefaultText(showDefaultText: Bool): LatexMathTheme {
-        this.latexMathDefaultText = showDefaultText
+    public func setLatexMathDefaultText(defaultText: Bool): LatexMathTheme {
+        this.latexMathDefaultText = defaultText
         return this
     }
 
@@ -212,11 +212,11 @@ public class LatexMathTheme {
     /**
      * 设置数学公式生成图片格式
      *
-     * @param format 生成图片格式
+     * @param colorFormat 生成图片格式
      * @return 当前LatexMathTheme对象
      */
-    public func setLatexMathColorFormat(format: LatexMathColorFormat): LatexMathTheme {
-        this.latexMathColorFormat = format
+    public func setLatexMathColorFormat(colorFormat: LatexMathColorFormat): LatexMathTheme {
+        this.latexMathColorFormat = colorFormat
         return this
     }
 

@@ -231,8 +231,8 @@ class ImagePage {
         if (cfg_imageDownloadButtonTextLineHeight != "undefined") {
             imageTheme.setImageDownloadButtonTextLineHeight(parseFloat64(cfg_imageDownloadButtonTextLineHeight))
         }
-        imageTheme.setMargin(top: parseFloat64(cfg_imageMarginTop), right: parseFloat64(cfg_imageMarginRight), bottom: parseFloat64(cfg_imageMarginBottom), left: parseFloat64(cfg_imageMarginLeft))
-        imageTheme.setRadius(topLeft: parseFloat64(cfg_imageRadiusTopLeft), topRight: parseFloat64(cfg_imageRadiusTopRight), bottomLeft: parseFloat64(cfg_imageRadiusBottomLeft), bottomRight: parseFloat64(cfg_imageRadiusBottomRight))
+        imageTheme.setImageMargin(top: parseFloat64(cfg_imageMarginTop), right: parseFloat64(cfg_imageMarginRight), bottom: parseFloat64(cfg_imageMarginBottom), left: parseFloat64(cfg_imageMarginLeft))
+        imageTheme.setImageBorderRadius(topLeft: parseFloat64(cfg_imageRadiusTopLeft), topRight: parseFloat64(cfg_imageRadiusTopRight), bottomLeft: parseFloat64(cfg_imageRadiusBottomLeft), bottomRight: parseFloat64(cfg_imageRadiusBottomRight))
     }
 
     public func build() {

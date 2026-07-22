@@ -227,7 +227,7 @@ public class VideoTheme {
      * @param radius 圆角
      * @return 当前VideoTheme对象
      */
-    public func setVideoRadius(radius: Float64): VideoTheme {
+    public func setVideoBorderRadius(radius: Float64): VideoTheme {
         this.videoRadiusTopLeft = radius
         this.videoRadiusTopRight = radius
         this.videoRadiusBottomLeft = radius
@@ -244,7 +244,7 @@ public class VideoTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前VideoTheme对象
      */
-    public func setVideoRadius(topLeft!: Float64 = 10.0, topRight!: Float64 = 10.0, bottomLeft!: Float64 = 10.0, bottomRight!: Float64 = 10.0): VideoTheme {
+    public func setVideoBorderRadius(topLeft!: Float64 = 10.0, topRight!: Float64 = 10.0, bottomLeft!: Float64 = 10.0, bottomRight!: Float64 = 10.0): VideoTheme {
         this.videoRadiusTopLeft = topLeft
         this.videoRadiusTopRight = topRight
         this.videoRadiusBottomLeft = bottomLeft

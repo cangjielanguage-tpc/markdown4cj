@@ -90,7 +90,7 @@ public class GlobalTheme {
      * @param margin 外边距
      * @return 当前GlobalTheme对象
      */
-    public func setMargin(margin: Float64): GlobalTheme {
+    public func setGlobalMargin(margin: Float64): GlobalTheme {
         this.blockMarginTop = margin
         this.blockMarginRight = margin
         this.blockMarginBottom = margin
@@ -107,7 +107,7 @@ public class GlobalTheme {
      * @param left 左外边距 命名参数
      * @return 当前GlobalTheme对象
      */
-    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): GlobalTheme {
+    public func setGlobalMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): GlobalTheme {
         this.blockMarginTop = top
         this.blockMarginRight = right
         this.blockMarginBottom = bottom
@@ -121,7 +121,7 @@ public class GlobalTheme {
      * @param space markdown子组件主轴方向的间隔
      * @return 当前GlobalTheme对象
      */
-    public func setMarkdownBlockSpacing(space: Int64): GlobalTheme {
+    public func setBlockSpacing(space: Int64): GlobalTheme {
         this.markdownBlockSpacing = space
         return this
     }

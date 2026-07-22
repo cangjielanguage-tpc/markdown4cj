@@ -236,7 +236,7 @@ public class AudioTheme {
      * @param radius 圆角
      * @return 当前AudioTheme对象
      */
-    public func setAudioRadius(radius: Float64): AudioTheme {
+    public func setAudioBorderRadius(radius: Float64): AudioTheme {
         this.audioRadiusTopLeft = radius
         this.audioRadiusTopRight = radius
         this.audioRadiusBottomLeft = radius
@@ -253,7 +253,7 @@ public class AudioTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前AudioTheme对象
      */
-    public func setAudioRadius(topLeft!: Float64 = 12.0, topRight!: Float64 = 12.0, bottomLeft!: Float64 = 12.0, bottomRight!: Float64 = 12.0): AudioTheme {
+    public func setAudioBorderRadius(topLeft!: Float64 = 12.0, topRight!: Float64 = 12.0, bottomLeft!: Float64 = 12.0, bottomRight!: Float64 = 12.0): AudioTheme {
         this.audioRadiusTopLeft = topLeft
         this.audioRadiusTopRight = topRight
         this.audioRadiusBottomLeft = bottomLeft

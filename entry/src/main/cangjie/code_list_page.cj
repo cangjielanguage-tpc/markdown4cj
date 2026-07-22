@@ -390,9 +390,9 @@ class CodeListPage {
         if (cfg_codeBlockListTitleUnselectBackgroundColor != "undefined") {
             codeBlockTheme.setCodeBlockListTitleUnselectBackgroundColor(parseColor(cfg_codeBlockListTitleUnselectBackgroundColor))
         }
-        codeBlockTheme.setMargin(top: parseFloat64(cfg_codeBlockMarginTop), right: parseFloat64(cfg_codeBlockMarginRight), bottom: parseFloat64(cfg_codeBlockMarginBottom), left: parseFloat64(cfg_codeBlockMarginLeft))
-        codeBlockTheme.setRadius(topLeft: parseFloat64(cfg_codeBlockRadiusTopLeft), topRight: parseFloat64(cfg_codeBlockRadiusTopRight), bottomLeft: parseFloat64(cfg_codeBlockRadiusBottomLeft), bottomRight: parseFloat64(cfg_codeBlockRadiusBottomRight))
-        codeBlockTheme.setPadding(top: parseFloat64(cfg_codeBlockPaddingTop), right: parseFloat64(cfg_codeBlockPaddingRight), bottom: parseFloat64(cfg_codeBlockPaddingBottom), left: parseFloat64(cfg_codeBlockPaddingLeft))
+        codeBlockTheme.setCodeBlockMargin(top: parseFloat64(cfg_codeBlockMarginTop), right: parseFloat64(cfg_codeBlockMarginRight), bottom: parseFloat64(cfg_codeBlockMarginBottom), left: parseFloat64(cfg_codeBlockMarginLeft))
+        codeBlockTheme.setCodeBlockRadius(topLeft: parseFloat64(cfg_codeBlockRadiusTopLeft), topRight: parseFloat64(cfg_codeBlockRadiusTopRight), bottomLeft: parseFloat64(cfg_codeBlockRadiusBottomLeft), bottomRight: parseFloat64(cfg_codeBlockRadiusBottomRight))
+        codeBlockTheme.setCodeBlockPadding(top: parseFloat64(cfg_codeBlockPaddingTop), right: parseFloat64(cfg_codeBlockPaddingRight), bottom: parseFloat64(cfg_codeBlockPaddingBottom), left: parseFloat64(cfg_codeBlockPaddingLeft))
     }
 
     public func build() {

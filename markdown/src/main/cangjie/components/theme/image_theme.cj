@@ -96,7 +96,7 @@ public class ImageTheme {
      * @param margin 外边距
      * @return 当前ImageTheme对象
      */
-    public func setMargin(margin: Float64): ImageTheme {
+    public func setImageMargin(margin: Float64): ImageTheme {
         this.imageMarginTop = margin
         this.imageMarginRight = margin
         this.imageMarginBottom = margin
@@ -113,7 +113,7 @@ public class ImageTheme {
      * @param left 左外边距 命名参数
      * @return 当前ImageTheme对象
      */
-    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): ImageTheme {
+    public func setImageMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): ImageTheme {
         this.imageMarginTop = top
         this.imageMarginRight = right
         this.imageMarginBottom = bottom
@@ -127,7 +127,7 @@ public class ImageTheme {
      * @param radius 圆角
      * @return 当前ImageTheme对象
      */
-    public func setRadius(radius: Float64): ImageTheme {
+    public func setImageBorderRadius(radius: Float64): ImageTheme {
         this.imageRadiusTopLeft = radius
         this.imageRadiusTopRight = radius
         this.imageRadiusBottomLeft = radius
@@ -144,7 +144,7 @@ public class ImageTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前ImageTheme对象
      */
-    public func setRadius(topLeft!: Float64 = 0.0, topRight!: Float64 = 0.0, bottomLeft!: Float64 = 0.0, bottomRight!: Float64 = 0.0): ImageTheme {
+    public func setImageBorderRadius(topLeft!: Float64 = 0.0, topRight!: Float64 = 0.0, bottomLeft!: Float64 = 0.0, bottomRight!: Float64 = 0.0): ImageTheme {
         this.imageRadiusTopLeft = topLeft
         this.imageRadiusTopRight = topRight
         this.imageRadiusBottomLeft = bottomLeft

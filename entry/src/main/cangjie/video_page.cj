@@ -300,7 +300,7 @@ class VideoPage {
         }
         videoTheme.setVideoPadding(top: parseFloat64(cfg_videoPaddingTop), right: parseFloat64(cfg_videoPaddingRight), bottom: parseFloat64(cfg_videoPaddingBottom), left: parseFloat64(cfg_videoPaddingLeft))
         videoTheme.setVideoReleaseButtonRadius(topLeft: parseFloat64(cfg_videoReleaseButtonRadiusTopLeft), topRight: parseFloat64(cfg_videoReleaseButtonRadiusTopRight), bottomLeft: parseFloat64(cfg_videoReleaseButtonRadiusBottomLeft), bottomRight: parseFloat64(cfg_videoReleaseButtonRadiusBottomRight))
-        videoTheme.setVideoRadius(topLeft: parseFloat64(cfg_videoRadiusTopLeft), topRight: parseFloat64(cfg_videoRadiusTopRight), bottomLeft: parseFloat64(cfg_videoRadiusBottomLeft), bottomRight: parseFloat64(cfg_videoRadiusBottomRight))
+        videoTheme.setVideoBorderRadius(topLeft: parseFloat64(cfg_videoRadiusTopLeft), topRight: parseFloat64(cfg_videoRadiusTopRight), bottomLeft: parseFloat64(cfg_videoRadiusBottomLeft), bottomRight: parseFloat64(cfg_videoRadiusBottomRight))
         videoTheme.setVideoDownloadButtonRadius(topLeft: parseFloat64(cfg_videoDownloadButtonRadiusTopLeft), topRight: parseFloat64(cfg_videoDownloadButtonRadiusTopRight), bottomLeft: parseFloat64(cfg_videoDownloadButtonRadiusBottomLeft), bottomRight: parseFloat64(cfg_videoDownloadButtonRadiusBottomRight))
         videoTheme.setVideoMargin(top: parseFloat64(cfg_videoMarginTop), right: parseFloat64(cfg_videoMarginRight), bottom: parseFloat64(cfg_videoMarginBottom), left: parseFloat64(cfg_videoMarginLeft))
     }
