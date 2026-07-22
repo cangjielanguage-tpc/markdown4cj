@@ -227,30 +227,35 @@ class LinkExposurePage {
                 .fontSize(14.0)
                 .margin(top: 5.0)
 
-            Flex(FlexOptions(direction: FlexDirection.Row, wrap: FlexWrap.Wrap)) {
-                ForEach(
-                    getFileList(),
-                    itemGeneratorFunc: {
-                        item: String, _: Int64 =>
-                            Text(item)
-                                .fontSize(12.0)
-                                .fontColor(0xFFFFFFFF)
-                                .backgroundColor(0xFF2196F3)
-                                .height(25.0)
-                                .padding(5.0)
-                                .borderRadius(5.0)
-                                .maxLines(1)
-                                .textOverflow(TextOverflow.Clip)
-                                .margin(2.0)
-                                .onClick {evt => loadFile(item)}
-                    }
-                )
+            Scroll {
+                Flex(FlexOptions(direction: FlexDirection.Row, wrap: FlexWrap.Wrap)) {
+                    ForEach(
+                        getFileList(),
+                        itemGeneratorFunc: {
+                            item: String, _: Int64 =>
+                                Text(item)
+                                    .fontSize(12.0)
+                                    .fontColor(0xFFFFFFFF)
+                                    .backgroundColor(0xFF2196F3)
+                                    .height(25.0)
+                                    .padding(5.0)
+                                    .borderRadius(5.0)
+                                    .maxLines(1)
+                                    .textOverflow(TextOverflow.Clip)
+                                    .margin(2.0)
+                                    .onClick {evt => loadFile(item)}
+                        }
+                    )
+                }
+                .padding(5.0)
+                .width(100.percent)
+                .backgroundColor(0xFFEAEAEA)
             }
-            .padding(5.0)
             .width(100.percent)
-            .backgroundColor(0xFFEAEAEA)
+            .constraintSize(maxHeight: 200.0)
+            .scrollable(ScrollDirection.Vertical)
+            .scrollBar(BarState.Auto)
 
-            Stack(Alignment.Bottom) {
             Scroll {
                 Column {
 
@@ -279,7 +284,6 @@ class LinkExposurePage {
                         if (isExpanded1) {
                             Column {
                                 ConfigTabSelector(title: "曝光阈值（0=露一点即报，1=完全可见才报） - ", options: exposureThresholdList, defaultValue: "0.5", configKey: "", currentValue: cfg_exposureThreshold, onSelect: { v => cfg_exposureThreshold = v })
-                                ConfigTabSelector(title: "表格标题行吸顶 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_tableStickyHeader, onSelect: { v => cfg_tableStickyHeader = v })
                                 ConfigTabSelector(title: "链接自动解析插件（纯文本URL转链接） - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isLinkifyPlugin, onSelect: { v => cfg_isLinkifyPlugin = v })
                                 Text("使用说明\n1. 选md文件加载，滚动Markdown内容\n2. 屏幕底部实时显示曝光事件（显示=绿/消失=红）\n3. 001_段落=垂直滚动验证；002_表格=横向滚动+吸顶验证；003_混合=全场景\n4. 阈值0.5=链接50%面积可见才报，水平+垂直双向裁剪\n5. hilog同步输出 ---elementExposure 行")
                                     .fontSize(12.0)
@@ -338,6 +342,7 @@ class LinkExposurePage {
                                 ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
+                                ConfigTabSelector(title: "表格标题行吸顶 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_tableStickyHeader, onSelect: { v => cfg_tableStickyHeader = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -365,7 +370,6 @@ class LinkExposurePage {
                             )
                         }
                         .width(100.percent)
-                        .height(600.0)
                         .padding(5.0)
                         .backgroundColor(0xFFFFFFFF)
                     }
@@ -374,8 +378,7 @@ class LinkExposurePage {
             }
             .scrollable(ScrollDirection.Vertical)
             .align(Alignment.Top)
-            .width(100.percent)
-            .height(100.percent)
+            .layoutWeight(1)
 
             // 底部：屏幕实时曝光事件列表
             Column {
@@ -411,10 +414,7 @@ class LinkExposurePage {
             }
             .width(100.percent)
             .height(180.0)
-            .backgroundColor(0xE6FAFAFA)
-            }
-            .width(100.percent)
-            .layoutWeight(1)
+            .backgroundColor(0xFFFAFAFA)
         }
         .width(100.percent)
         .layoutWeight(1)

@@ -256,6 +256,7 @@ class LinkPage {
                 .fontSize(14.0)
                 .margin(top: 5.0)
 
+            Scroll {
             Flex(FlexOptions(direction: FlexDirection.Row, wrap: FlexWrap.Wrap)) {
                 ForEach(
                     getFileList(),
@@ -278,6 +279,11 @@ class LinkPage {
             .padding(5.0)
             .width(100.percent)
             .backgroundColor(0xFFEAEAEA)
+            }
+            .width(100.percent)
+            .constraintSize(maxHeight: 200.0)
+            .scrollable(ScrollDirection.Vertical)
+            .scrollBar(BarState.Auto)
 
             Scroll {
                 Column {
