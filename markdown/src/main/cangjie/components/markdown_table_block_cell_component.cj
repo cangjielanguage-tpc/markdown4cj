@@ -20,9 +20,9 @@ class MarkdownTableBlockCellComponent {
     var tableBlockCellImageCallback: (String) -> Unit // 图片点击事件
     var tableBlockCellFootnoteCallback: (String) -> Unit // 脚注点击事件
     @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局行内图片
     @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
     var tableBlockCellRow: Int64 // 表格的第几行
     var tableBlockCellCell: Int64 // 表格的第几条
     var tableBlockCellCellSize: Int64 // 表格总共有几列

@@ -36,11 +36,11 @@ public class MarkdownListComponent {
     var listVideoCallback: (String) -> Unit // 视频点击事件
     var listDepth: Int64 // 列表深度
     @BuilderParam
-    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局
+    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局块级图片
     @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局行内图片
     @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
     var listNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {

@@ -27,9 +27,9 @@ class MarkdownTableBlockComponent {
     @Provide["tableColumnWidths"]
     var columnWidths: Array<Float64> = Array<Float64>(0, repeat: 0.0) // 列宽快照（@Provide让TableCell通过@Consume直接读取）
     @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义行内卡片布局
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局行内图片
     @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义行内链接卡片布局
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
     @State
     var tableBlockCellSize: Int64 = 0 // 表格总共有几列
     @State

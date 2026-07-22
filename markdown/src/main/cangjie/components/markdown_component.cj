@@ -58,7 +58,7 @@ public class MarkdownComponent {
     @BuilderParam
     var inlineImageCardComponent: (?String,?String, ?String) -> Unit = CustomInlineImageBuilder  //自定义卡片布局行内图片
     @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit = CustomInlineLinkBuilder  //自定义行内链接卡片布局
+    var inlineLinkCardComponent: (?String, ?String) -> Unit = CustomInlineLinkBuilder  //自定义卡片布局行内链接
     let screenWidth: Int32 = getDefaultDisplaySync().width // 屏幕宽度 - 单位px
     @State
     var componentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
