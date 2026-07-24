@@ -17,6 +17,7 @@
     "pages/FootnotePage",
     "pages/HeadIDPage",
     "pages/HighlightPage",
+    "pages/HighlightParagraphPage",
     "pages/HTMLPage",
     "pages/ImagePage",
     "pages/ImageStylePage",

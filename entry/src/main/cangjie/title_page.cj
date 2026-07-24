@@ -187,8 +187,7 @@ class TitlePage {
     @State @Watch[onConfigChanged] var cfg_heading6PaddingBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_heading6PaddingLeft: String = "0"
     @State var cfg_showHighlight: String = "true"
-    @State var cfg_beforeSelectedParagraphBackgroundColor: String = "undefined"
-    @State var cfg_selectedParagraphBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_selectedParagraphBackgroundColor: String = "undefined"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -469,6 +468,11 @@ class TitlePage {
         headingTheme.setMarginForDesignateHeading(4, top: parseFloat64(cfg_heading4MarginTop), right: parseFloat64(cfg_heading4MarginRight), bottom: parseFloat64(cfg_heading4MarginBottom), left: parseFloat64(cfg_heading4MarginLeft))
         headingTheme.setMarginForDesignateHeading(5, top: parseFloat64(cfg_heading5MarginTop), right: parseFloat64(cfg_heading5MarginRight), bottom: parseFloat64(cfg_heading5MarginBottom), left: parseFloat64(cfg_heading5MarginLeft))
         headingTheme.setMarginForDesignateHeading(6, top: parseFloat64(cfg_heading6MarginTop), right: parseFloat64(cfg_heading6MarginRight), bottom: parseFloat64(cfg_heading6MarginBottom), left: parseFloat64(cfg_heading6MarginLeft))
+
+        let highlightParagraph = markdownConfiguration.getMarkdownHighlightParagraph()
+        if (cfg_selectedParagraphBackgroundColor != "undefined") {
+            highlightParagraph.setSelectedParagraphBackgroundColor(parseColor(cfg_selectedParagraphBackgroundColor))
+        }
     }
 
     public func build() {
@@ -910,8 +914,7 @@ class TitlePage {
                         if (isExpanded8) {
                             Column {
                                 ConfigTabSelector(title: "是否开启标题段落高亮显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_showHighlight, onSelect: { v => cfg_showHighlight = v })
-                                ConfigTabSelector(title: "当前长按未触发弹窗时段落前的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_beforeSelectedParagraphBackgroundColor, onSelect: { v => cfg_beforeSelectedParagraphBackgroundColor = v })
-                                ConfigTabSelector(title: "当前长按放手后选中文字的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_selectedParagraphBackgroundColor, onSelect: { v => cfg_selectedParagraphBackgroundColor = v })
+                                ConfigTabSelector(title: "长按未触发弹窗时段落的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_selectedParagraphBackgroundColor, onSelect: { v => cfg_selectedParagraphBackgroundColor = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

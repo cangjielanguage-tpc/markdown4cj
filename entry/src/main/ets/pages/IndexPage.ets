@@ -505,6 +505,18 @@ struct IndexPage {
               .fontSize(16)
               .onClick(() => router.pushUrl({ url: 'pages/AllPageCopyPage' }))
           }
+
+          ListItem() {
+            Button("40、段落高亮")
+              .height(40)
+              .width('80%')
+              .type(ButtonType.Capsule)
+              .fontColor(0xFFFFFFFF)
+              .backgroundColor(0xFFFF0000)
+              .margin({ top: 5, bottom: 5 })
+              .fontSize(16)
+              .onClick(() => router.pushUrl({ url: 'pages/HighlightParagraphPage' }))
+          }
         }
         .alignListItem(ListItemAlign.Center)
       }
