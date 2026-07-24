@@ -59,19 +59,6 @@ class MarkdownHeadingComponent {
                 hasHeadingHighlight = false
             }
         })
-        // 段落加载动画回调
-        if (headingMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
-            if (let Some(cb) <- headingMarkdownConfiguration.paragraphAnimationStart) {
-                cb()
-            }
-            let duration = headingMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
-            let endCb = headingMarkdownConfiguration.paragraphAnimationEnd
-            Timer.once(Int64(duration) * Duration.millisecond, { =>
-                if (let Some(cb) <- endCb) {
-                    cb()
-                }
-            })
-        }
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -156,21 +143,11 @@ class MarkdownHeadingComponent {
         return headingBackgroundColor(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme, headingNodeView)
     }
 
-    /**
-     * 获取标题加载动画转场效果
-     * 启用时使用渐显（OPACITY），禁用时使用IDENTITY（无效果）
-     */
-    func getTransitionEffect(): TransitionEffect {
-        if (headingMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
-            return TransitionEffect.OPACITY.animation(AnimateParam(duration: headingMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration))
-        }
-        return TransitionEffect.IDENTITY
-    }
 
     func build() {
         Row() {
             Column() {
-                if (headingNodeViewList.size == 1 && headingNodeViewList[0].nodeType == "Image"
+                if (headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage")
                   && headingMarkdownConfiguration.isBlockImageCustom.isSome() && headingNodeViewList[0].imageAltText.isSome()
                   && headingMarkdownConfiguration.isBlockImageCustom.getOrThrow()(headingNodeViewList[0].imageAltText.getOrThrow())){
                     // card图片组件
@@ -275,8 +252,30 @@ class MarkdownHeadingComponent {
             right: headingMarginRight(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
             bottom: headingMarginBottom(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
             left: headingMarginLeft(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme)
-        )
-        .transition(getTransitionEffect())
+        ).transition(
+ 	       TransitionEffect.asymmetric(
+ 	         if(headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled){
+                TransitionEffect.opacity(0.0).animation(AnimateParam(duration:headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration))
+ 	         }else{ TransitionEffect.IDENTITY}
+ 	         ,
+ 	         TransitionEffect.IDENTITY
+ 	       )
+ 	     ).onAppear({ =>
+            // 段落加载动画开始回调在组件显示时触发
+            if (headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
+                if (let Some(cb) <- headingMarkdownConfiguration.paragraphAnimationStart) {
+                    cb()
+                }
+                let duration = headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
+                let endCb = headingMarkdownConfiguration.paragraphAnimationEnd
+                Timer.once(Int64(duration) * Duration.millisecond, { =>
+                    if (let Some(cb) <- endCb) {
+                        cb()
+                    }
+                })
+            }
+        })
+
     }
 
     /**
@@ -404,7 +403,7 @@ class MarkdownHeadingComponent {
                     }
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
-                    if(spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
+                    if((spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage") && spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
                         && spanListMarkdownConfiguration.isInLineImageCustom.getOrThrow()(spanListNodeView.imageAltText.getOrThrow())){
                         inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl(), spanListNodeView.imageTitle())
                     }else{

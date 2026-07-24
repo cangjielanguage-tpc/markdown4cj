@@ -37,7 +37,7 @@ let fontStyleList: Array<String> = ["Normal", "Italic"]
 
 let textTypefaceList: Array<String> = ["HarmonyOS Sans", "Hei"]
 
-let timeList: Array<String> = ["5", "10", "20", "50", "100", "200", "500"]
+let timeList: Array<String> = ["5", "10", "20", "50", "100", "200", "500","1000","2000"]
 
 let textNumberList: Array<String> = ["1", "2", "5", "10", "20", "50", "100", "150", "200"]
 

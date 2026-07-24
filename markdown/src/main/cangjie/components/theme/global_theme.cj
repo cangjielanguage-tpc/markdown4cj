@@ -36,9 +36,9 @@ public class GlobalTheme {
     @Publish
     public var backgroundColor: Color = COLOR_TRANSPARENT // 背景颜色
     @Publish
-    public var paragraphAnimationEnabled: Bool = false // 是否启用段落加载动画
+    public var paragraphHeadingAnimationEnabled: Bool = false // 是否启用标题段落加载动画
     @Publish
-    public var paragraphAnimationDuration: Int32 = 300 // 段落加载动画时长（毫秒）
+    public var paragraphHeadingAnimationDuration: Int32 = 300 // 标题段落加载动画时长（毫秒）
 
     /**
      * 设置markdown上下文 - 互操作
@@ -182,25 +182,25 @@ public class GlobalTheme {
     }
 
     /**
-     * 设置段落加载动画是否启用
+     * 设置标题段落加载动画是否启用
      * 开启后段落出现时从透明渐变为不透明（渐显），消失时从不透明渐变为透明（渐隐）
      *
      * @param enable 是否启用
      * @return 当前GlobalTheme对象
      */
-    public func setParagraphAnimationEnabled(enable: Bool): GlobalTheme {
-        this.paragraphAnimationEnabled = enable
+    public func setParagraphHeadingAnimationEnabled(enable: Bool): GlobalTheme {
+        this.paragraphHeadingAnimationEnabled = enable
         return this
     }
 
     /**
-     * 设置段落加载动画时长
+     * 设置标题段落加载动画时长
      *
      * @param duration 动画时长（毫秒）
      * @return 当前GlobalTheme对象
      */
-    public func setParagraphAnimationDuration(duration: Int32): GlobalTheme {
-        this.paragraphAnimationDuration = duration
+    public func setParagraphHeadingAnimationDuration(duration: Int32): GlobalTheme {
+        this.paragraphHeadingAnimationDuration = duration
         return this
     }
 }

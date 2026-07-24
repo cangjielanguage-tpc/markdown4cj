@@ -170,18 +170,6 @@ class MarkdownParagraphComponent {
         return paragraphBackgroundColor(paragraphMarkdownConfiguration.markdownTheme, paragraphNodeView)
     }
 
-    /**
-     * 获取段落加载动画转场效果
-     * 启用时进入渐显（OPACITY），退出无效果，保证流式输出历史UI稳定
-     */
-    func getTransitionEffect(): TransitionEffect {
-        if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
-            let duration = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
-            let appearEffect = TransitionEffect.opacity(0.0).animation(AnimateParam(duration: duration))
-            return TransitionEffect.asymmetric(appearEffect, TransitionEffect.IDENTITY)
-        }
-        return TransitionEffect.IDENTITY
-    }
 
     /**
      * 获取段落纯文本内容
@@ -380,7 +368,7 @@ class MarkdownParagraphComponent {
     func build() {
         Row() {
             Column() {
-                if (paragraphNodeViewList.size == 1 && paragraphNodeViewList[0].nodeType == "Image"
+                if (paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage")
                   && paragraphMarkdownConfiguration.isBlockImageCustom.isSome() && paragraphNodeViewList[0].imageAltText.isSome()
                   && paragraphMarkdownConfiguration.isBlockImageCustom.getOrThrow()(paragraphNodeViewList[0].imageAltText.getOrThrow())){
                     // card图片组件
@@ -473,15 +461,22 @@ class MarkdownParagraphComponent {
             right: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginRight,
             bottom: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginBottom,
             left: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginLeft
-        )
-        .transition(getTransitionEffect())
+        ).transition(
+ 	       TransitionEffect.asymmetric(
+ 	         if(paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled){
+                TransitionEffect.opacity(0.0).animation(AnimateParam(duration:paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration))
+ 	         }else{ TransitionEffect.IDENTITY}
+ 	         ,
+ 	         TransitionEffect.IDENTITY
+ 	       )
+ 	     )
         .onAppear({ =>
             // 段落加载动画开始回调在组件显示时触发
-            if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
+            if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
                 if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphAnimationStart) {
                     cb()
                 }
-                let duration = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
+                let duration = paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
                 let endCb = paragraphMarkdownConfiguration.paragraphAnimationEnd
                 Timer.once(Int64(duration) * Duration.millisecond, { =>
                     if (let Some(cb) <- endCb) {
@@ -687,7 +682,7 @@ class MarkdownParagraphComponent {
                     }
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
-                    if(spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
+                    if((spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage") && spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
                         && spanListMarkdownConfiguration.isInLineImageCustom.getOrThrow()(spanListNodeView.imageAltText.getOrThrow())){
                         inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl(), spanListNodeView.imageTitle())
                     }else{

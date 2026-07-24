@@ -517,6 +517,19 @@ struct IndexPage {
               .fontSize(16)
               .onClick(() => router.pushUrl({ url: 'pages/HighlightParagraphPage' }))
           }
+
+
+          ListItem() {
+            Button("41、自定义卡片")
+              .height(40)
+              .width('80%')
+              .type(ButtonType.Capsule)
+              .fontColor(0xFFFFFFFF)
+              .backgroundColor(0xFFFF0000)
+              .margin({ top: 5, bottom: 5 })
+              .fontSize(16)
+              .onClick(() => router.pushUrl({ url: 'pages/CustomCardPage' }))
+          }
         }
         .alignListItem(ListItemAlign.Center)
       }

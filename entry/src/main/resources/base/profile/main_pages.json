@@ -3,6 +3,7 @@
     "pages/ABCustomPage",
     "pages/AllPage",
     "pages/AllPageCopyPage",
+    "pages/CustomCardPage",
     "pages/AudioPage",
     "pages/BannerPage",
     "pages/BigDataPage",
