@@ -254,41 +254,39 @@ class HeadIDPage {
                     .borderRadius(5.0)
                     .backgroundColor(0xFF317AFF)
 
-                    Column {
-                        Row {
-                            Text("专有样式配置")
-                                .fontSize(16.0)
-                                .fontColor(0xFFF5F5F5)
-                                .fontWeight(FontWeight.Bold)
-                                .layoutWeight(1)
-                            Text(if (isExpanded2) { "▲" } else { "▼" })
-                                .fontSize(16.0)
-                                .fontColor(0xFFF5F5F5)
-                                .padding(right: 20.0)
-                                .onClick {
-                                    evt => isExpanded2 = !isExpanded2
-                                }
-                        }
-                        .width(100.percent)
-                        .padding(5.0)
-                        .margin(5.0)
-                        .onClick {
-                            evt => isExpanded2 = !isExpanded2
-                        }
-
-                        if (isExpanded2) {
-                            Column {
-                                ConfigTabSelector(title: "是否开启标题段落高亮显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_showHighlight, onSelect: { v => cfg_showHighlight = v })
-                            }
-                            .width(100.percent)
-                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
-                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
-                        }
-                    }
-                    .width(100.percent)
-                    .margin(5.0)
-                    .borderRadius(5.0)
-                    .backgroundColor(0xFF317AFF)
+//                    Column {
+//                        Row {
+//                            Text("专有样式配置")
+//                                .fontSize(16.0)
+//                                .fontColor(0xFFF5F5F5)
+//                                .fontWeight(FontWeight.Bold)
+//                                .layoutWeight(1)
+//                            Text(if (isExpanded2) { "▲" } else { "▼" })
+//                                .fontSize(16.0)
+//                                .fontColor(0xFFF5F5F5)
+//                                .padding(right: 20.0)
+//                                .onClick {
+//                                    evt => isExpanded2 = !isExpanded2
+//                                }
+//                        }
+//                        .width(100.percent)
+//                        .padding(5.0)
+//                        .margin(5.0)
+//                        .onClick {
+//                            evt => isExpanded2 = !isExpanded2
+//                        }
+//
+//                        if (isExpanded2) {
+//                            Column {}
+//                            .width(100.percent)
+//                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+//                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+//                        }
+//                    }
+//                    .width(100.percent)
+//                    .margin(5.0)
+//                    .borderRadius(5.0)
+//                    .backgroundColor(0xFF317AFF)
 
 
                     if (mdStr != "") {
