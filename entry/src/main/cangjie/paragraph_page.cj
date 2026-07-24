@@ -78,8 +78,8 @@ class ParagraphPage {
     @State var cfg_showHighlight: String = "true"
     @State var cfg_beforeSelectedParagraphBackgroundColor: String = "undefined"
     @State var cfg_selectedParagraphBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_paragraphAnimationEnabled: String = "false"
-    @State @Watch[onConfigChanged] var cfg_paragraphAnimationDuration: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphHeadingAnimationEnabled: String = "false"
+    @State @Watch[onConfigChanged] var cfg_paragraphHeadingAnimationDuration: String = "0"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
