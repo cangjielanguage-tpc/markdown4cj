@@ -1,10 +1,13 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
 
 internal import ohos.base.*
 internal import ohos.component.*
 internal import ohos.resource_manager.*
 internal import ohos.ability.UIAbilityContext
 internal import ohos.ark_interop_helper.*
+internal import ohos.state_manage.ObservedObject
+internal import ohos.state_manage.ObservedProperty
+internal import ohos.state_manage.ObservedComplexAbstract
 
 let COLOR_WHITE: Color = Color.WHITE
 let COLOR_RED: Color = Color.RED
@@ -19,3 +22,4 @@ let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
 let COLOR_33000000: Color = Color(0x33000000)
 let COLOR_1A000000: Color = Color(0x1A000000)
 let COLOR_80000000: Color = Color(0x80000000)
+let COLOR_FFFFF59D: Color = Color(0xFFFFF59D)

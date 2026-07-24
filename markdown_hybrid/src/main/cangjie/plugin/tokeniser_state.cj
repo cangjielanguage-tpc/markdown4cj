@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 abstract class TokeniserState <: ToString {
     static let nullChar: Rune = r'\u{0}'

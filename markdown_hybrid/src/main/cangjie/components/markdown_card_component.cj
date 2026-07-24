@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -10,6 +10,7 @@ public class MarkdownCardComponent {
     /**
      * markdown配置
      */
+    @Prop
     var markdownConfiguration: MarkdownConfiguration
 
     /**

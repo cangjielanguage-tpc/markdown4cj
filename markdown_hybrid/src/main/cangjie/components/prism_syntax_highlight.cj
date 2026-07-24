@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 /**
  * prism 句法高亮类

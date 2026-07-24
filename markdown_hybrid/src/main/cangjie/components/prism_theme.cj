@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 /**
  * prism 主题接口

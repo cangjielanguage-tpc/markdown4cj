@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 let nullStringReader = StringReader("")
 

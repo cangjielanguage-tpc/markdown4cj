@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownCodeIndentedBlockComponent {
+    @Prop
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     @State
     var codeText: String = "" // 代码内容
@@ -14,27 +15,18 @@ class MarkdownCodeIndentedBlockComponent {
     var info: Option<String> = Option<String>.None // 代码类型
     @State
     var nodeHash: Int64 = 0 // hash
-    var indentedCodeComponents: HashMap<Int64, MarkdownCodeIndentedBlockComponent> // 缓存的缩进代码块控件列表
     @State
     var lines: Int64 = 0 // 代码行数
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
 
     protected override func aboutToAppear(): Unit {
-        refreshData(codeText, info, nodeHash) // 初始化刷新数据
-        indentedCodeComponents.add(nodeHash, this) // 缓存当前控件
+        MarkdownRefreshRegistry.register(this.nodeHash, refreshData)
+        refreshDataInternal()
     }
 
     protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = indentedCodeComponents.get(nodeHash)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                indentedCodeComponents.remove(nodeHash)
-            }
-        } else {
-            indentedCodeComponents.remove(nodeHash)
-        }
+        MarkdownRefreshRegistry.unregister(this.nodeHash)
     }
 
     func build() {
@@ -198,10 +190,13 @@ class MarkdownCodeIndentedBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64): Unit {
-        this.info = info
-        this.codeText = codeText
-        this.nodeHash = nodeHash
+    public func refreshData(newNodeView: NodeView): Unit {
+        this.codeText = newNodeView.nodeText
+        this.nodeHash = newNodeView.nodeHash
+        refreshDataInternal()
+    }
+
+    public func refreshDataInternal(): Unit {
         let arr = this.codeText.split("\n") // 代码块数据分割
         lines = arr.size
         lineArray.set(Array<Int64>(lines, repeat: 0))

@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 /**
  * 根据节点的内容计算节点的id

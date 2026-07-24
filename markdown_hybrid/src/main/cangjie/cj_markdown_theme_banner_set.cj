@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setBannerTheme(bannerTheme: CJMarkdownBannerTheme): BannerTheme {
     let theme: BannerTheme = BannerTheme()

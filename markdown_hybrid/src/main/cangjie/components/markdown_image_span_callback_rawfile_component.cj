@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,11 +7,12 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownSpanImageCallbackRawFileComponent {
+    @Prop
     var rawFileCallbackMarkdownTheme: MarkdownTheme // markdown配置
     var rawFileCallbackDestination: String // 图片链接
     @Prop
     var rawFileCallbackComponentWidth: Float64 // 控件宽度 - 单位vp
-    var rawFileCallbackImageCallbackCallback: (String) -> ?Array<UInt8> // 图片替换事件
+    var rawFileCallbackImageReplaceCallback: (String) -> ?Array<UInt8> // 图片替换事件
     var rawFileCallbackImageCallback: (String) -> Unit // 图片点击事件
     var rawFileCallbackLinkCallback: ?(String) -> Unit // 链接点击事件
     var rawFileCallbackLink: Bool // 是否是链接
@@ -25,9 +26,9 @@ public class MarkdownSpanImageCallbackRawFileComponent {
     @State
     var rawFileCallbackImagePixelMap: Option<PixelMap> = Option<PixelMap>.None // 图片数据
     @State
-    var rawFileCallbackHeight: Float64 = 0.0 // 图片最终高度 - 单位px
+    var rawFileCallbackHeight: Option<Float64> = Option<Float64>.None // 图片最终高度 - 单位px
     @State
-    var rawFileCallbackWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
+    var rawFileCallbackWidth: Option<Float64> = Option<Float64>.None // 图片最终宽度 - 单位px
     @State
     var rawFileCallbackRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State
@@ -130,8 +131,8 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                         .borderWidth(rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle)
-                        .width(rawFileCallbackWidth.px)
-                        .height(rawFileCallbackHeight.px)
+                        .width(rawFileCallbackWidth)
+                        .height(rawFileCallbackHeight)
                         .objectFit(rawFileCallbackMarkdownTheme.imageTheme.imageFitType)
                         .verticalAlign(ImageSpanAlignment.CENTER)
                         .constraintSize(maxWidth: 100.percent)
@@ -188,7 +189,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
         }
         rawFileCallbackReplaceFut = MarkdownParseImageUtil.callbackToPixelmap(
             rawFileCallbackDestination,
-            rawFileCallbackImageCallbackCallback,
+            rawFileCallbackImageReplaceCallback,
             callback
         )
     }
@@ -212,8 +213,8 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                         rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
                         rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
                     )
-                    rawFileCallbackWidth = res[0]
-                    rawFileCallbackHeight = res[1]
+                    rawFileCallbackWidth = Some(res[0])
+                    rawFileCallbackHeight = Some(res[1])
                     rawFileCallbackImageType = 1
                 } else {
                     rawFileCallbackImageType = 2

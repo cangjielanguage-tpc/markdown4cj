@@ -1,4 +1,6 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 数学公式生成图片格式枚举

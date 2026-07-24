@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -36,15 +36,4 @@ public class StringClass {
     func addString(s: String): Unit {
         str = str + s
     }
-}
-
-/**
- * 表格宽度
- */
-@Observed
-public class CellWidthArrayIndexedClass {
-    @Publish
-    var minWidth: Float64 = 0.0 // 表格最小宽度最大值
-    @Publish
-    var index: Int64 = -1 // 第几列
 }

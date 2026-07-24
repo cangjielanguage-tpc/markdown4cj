@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 var arkImgPreprocessFunc: ?(String) -> ?Array<Byte> = None
 

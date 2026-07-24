@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 /**
  * A single key + value attribute. (Only used for presentation.)

@@ -1,17 +1,29 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 脚注定义样式
  */
-public class FootnoteDefTheme <: MarkdownBaseTheme {
-    public var footnoteDefBackgroundColor: ?Color = None // 脚注定义背景颜色
+@Observed
+public class FootnoteDefTheme {
+    @Publish
+    public var footnoteDefBackgroundColor: ?Color = Option<Color>.None // 脚注定义背景颜色
+    @Publish
     public var footnoteDefMarginTop: Float64 = 0.0 // 脚注定义上外边距
+    @Publish
     public var footnoteDefMarginRight: Float64 = 0.0 // 脚注定义右外边距
+    @Publish
     public var footnoteDefMarginBottom: Float64 = 0.0 // 脚注定义下外边距
+    @Publish
     public var footnoteDefMarginLeft: Float64 = 0.0 // 脚注定义左外边距
+    @Publish
     public var footnoteDefPaddingTop: Float64 = 0.0 // 脚注定义上内边距
+    @Publish
     public var footnoteDefPaddingRight: Float64 = 0.0 // 脚注定义右内边距
+    @Publish
     public var footnoteDefPaddingBottom: Float64 = 0.0 // 脚注定义下内边距
+    @Publish
     public var footnoteDefPaddingLeft: Float64 = 0.0 // 脚注定义左内边距
 
     /**

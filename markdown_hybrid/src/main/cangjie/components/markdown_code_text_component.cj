@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,12 +7,12 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownCodeTextComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown配置
     @State
     var codeText: String = "" // 代码内容
     @State
     var info: Option<String> = Option<String>.None // 代码类型
-    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent> // 缓存的单独代码块文本列表控件
     @State
     var index: Int64 = -1 // hash
     @State
@@ -22,20 +22,10 @@ class MarkdownCodeTextComponent {
 
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownTheme.prismTheme)
-        refreshData(codeText, info) // 初始化刷新数据
-        codeTextComponents.add(index, this) // 缓存当前控件
+        refreshData() // 初始化刷新数据
     }
 
     protected override func aboutToDisappear(): Unit {
-        // 删除缓存控件
-        let value = codeTextComponents.get(index)
-        if (let Some(v) <- value) {
-            if (refEq(v, this)) {
-                codeTextComponents.remove(index)
-            }
-        } else {
-            codeTextComponents.remove(index)
-        }
         future?.cancel()
     }
 
@@ -59,8 +49,6 @@ class MarkdownCodeTextComponent {
         .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
         .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
         .textAlign(TextAlign.Start)
-        .maxLines(1)
-        .textOverflow(TextOverflow.Ellipsis)
     }
 
     /**
@@ -69,14 +57,12 @@ class MarkdownCodeTextComponent {
      * @param codeText 代码文本
      * @param info 代码类型
      */
-    public func refreshData(codeText: String, info: Option<String>): Unit {
-        if (codeText.size == 0) {
+    public func refreshData(): Unit {
+        if (this.codeText.size == 0) {
             // 空行数据需要空格文本填充Text控件使其在布局上占位
             arrayList.append(PrismNodesParseResUI(types: "", text: " ", alias: Option<String>.None, color: Option<Color>.None))
             return
         }
-        this.codeText = codeText
-        this.info = info
         if (markdownTheme.codeBlockTheme.codeBlockParserSync) {
             stringCodeToResListSync()
         } else {
@@ -102,6 +88,7 @@ class MarkdownCodeTextComponent {
      * 异步代码高亮解析
      */
     func stringCodeToResList() {
+        future?.cancel()
         let callback: (ArrayList<PrismNodesParseResUI>) -> Unit = {
             prismNodesParseResLists => launch {
                 refreshCodeDatas(prismNodesParseResLists)

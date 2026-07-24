@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setGlobalTheme(globalTheme: CJMarkdownGlobalTheme): GlobalTheme {
     let theme: GlobalTheme = GlobalTheme()
@@ -27,10 +27,10 @@ func setGlobalTheme(globalTheme: CJMarkdownGlobalTheme): GlobalTheme {
     if (let Some(v) <- globalTheme.blockMarginLeft) {
         blockMarginLeft = v
     }
-    theme.setMargin(top: blockMarginTop, right: blockMarginRight, bottom: blockMarginBottom, left: blockMarginLeft)
+    theme.setGlobalMargin(top: blockMarginTop, right: blockMarginRight, bottom: blockMarginBottom, left: blockMarginLeft)
 
     if (let Some(v) <- globalTheme.markdownBlockSpacing) {
-        theme.setMarkdownBlockSpacing(v)
+        theme.setBlockSpacing(v)
     }
     if (let Some(v) <- globalTheme.isLineBreak) {
         theme.setIsLineBreak(v)

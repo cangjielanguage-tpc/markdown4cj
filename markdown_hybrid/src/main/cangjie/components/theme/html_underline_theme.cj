@@ -1,17 +1,29 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * HTML下划线文本样式
  */
-public class HtmlUnderlineTheme <: MarkdownBaseTheme {
-    public var htmlUnderlineTextFontColor: ?Color = None // HTML下划线文本颜色
-    public var htmlUnderlineTextFontSize: ?Float64 = None // HTML下划线文本尺寸
-    public var htmlUnderlineTextFontStyle: ?FontStyle = None // HTML下划线文本字体样式
-    public var htmlUnderlineTextFontWeight: ?FontWeight = None // HTML下划线文本字体粗细
-    public var htmlUnderlineTextFontFamily: ?String = None // HTML下划线文本字体
-    public var htmlUnderlineTextLineHeight: ?Float64 = None // HTML下划线文本行高
-    public var htmlUnderlineTextLetterSpacing: ?Float64 = None // HTML下划线文本字符间距
+@Observed
+public class HtmlUnderlineTheme {
+    @Publish
+    public var htmlUnderlineTextFontColor: ?Color = Option<Color>.None // HTML下划线文本颜色
+    @Publish
+    public var htmlUnderlineTextFontSize: ?Float64 = Option<Float64>.None // HTML下划线文本尺寸
+    @Publish
+    public var htmlUnderlineTextFontStyle: ?FontStyle = Option<FontStyle>.None // HTML下划线文本字体样式
+    @Publish
+    public var htmlUnderlineTextFontWeight: ?FontWeight = Option<FontWeight>.None // HTML下划线文本字体粗细
+    @Publish
+    public var htmlUnderlineTextFontFamily: ?String = Option<String>.None // HTML下划线文本字体
+    @Publish
+    public var htmlUnderlineTextLineHeight: ?Float64 = Option<Float64>.None // HTML下划线文本行高
+    @Publish
+    public var htmlUnderlineTextLetterSpacing: ?Float64 = Option<Float64>.None // HTML下划线文本字符间距
+    @Publish
     public var htmlUnderlineTextDecorationColor: Color = COLOR_FF191919 // HTML下划线文本装饰线颜色
+    @Publish
     public var htmlUnderlineTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID // HTML下划线文本装饰线样式
 
     /**

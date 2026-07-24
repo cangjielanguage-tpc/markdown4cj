@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 /**
  * A {@code <!DOCTYPE>} node.

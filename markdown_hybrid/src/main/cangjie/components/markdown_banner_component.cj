@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownBannerComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown配置
     var nodeView: NodeView // 图片幻灯片image
     var imageCallback: (String) -> Unit // 图片点击事件
@@ -21,21 +22,23 @@ class MarkdownBannerComponent {
     }
 
     func build() {
-        Swiper(controller) {
-            ForEach(
-                bannerNodeViewList,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.nodeType == "Image") {
-                        // 图片节点
-                        imageBannerCommonmarkComponent(item)
-                    } else {
-                        // 其他节点
+        Row(){
+            Swiper(controller) {
+                ForEach(
+                    bannerNodeViewList,
+                    itemGeneratorFunc: {
+                        item: NodeView, idx: Int64 => if (item.nodeType == "Image") {
+                            // 图片节点
+                            imageBannerCommonmarkComponent(item)
+                        } else {
+                            // 其他节点
+                        }
                     }
-                }
-            )
+                )
+            }
+            .autoPlay(false)
+            .layoutWeight(1)
         }
-        .autoPlay(false)
-        .width(100.percent)
         .padding(
             top: markdownTheme.bannerTheme.bannerPaddingTop,
             right: markdownTheme.bannerTheme.bannerPaddingRight,
@@ -56,16 +59,16 @@ class MarkdownBannerComponent {
     @Builder
     func imageBannerCommonmarkComponent(item: NodeView) {
         if (markdownTheme.bannerTheme.bannerPlaceholder.isSome()) {
-            Image(item.imageUrl())
-                .alt(markdownTheme.bannerTheme.bannerPlaceholder())
+            Image(item.imageUrl.getOrThrow())
+                .alt(markdownTheme.bannerTheme.bannerPlaceholder.getOrThrow())
                 .objectFit(ImageFit.Contain)
                 .autoResize(markdownTheme.imageTheme.imageAutoResize)
-                .onClick {evt => imageOnClick(item.imageUrl(), imageCallback)}
+                .onClick {evt => imageOnClick(item.imageUrl.getOrThrow(), imageCallback)}
         } else {
-            Image(item.imageUrl())
+            Image(item.imageUrl.getOrThrow())
                 .objectFit(ImageFit.Contain)
                 .autoResize(markdownTheme.imageTheme.imageAutoResize)
-                .onClick {evt => imageOnClick(item.imageUrl(), imageCallback)}
+                .onClick {evt => imageOnClick(item.imageUrl.getOrThrow(), imageCallback)}
         }
     }
 }

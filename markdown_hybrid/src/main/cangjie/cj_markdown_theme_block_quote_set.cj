@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setBlockQuoteTheme(blockQuoteTheme: CJMarkdownBlockQuoteTheme): BlockQuoteTheme {
     let theme: BlockQuoteTheme = BlockQuoteTheme()

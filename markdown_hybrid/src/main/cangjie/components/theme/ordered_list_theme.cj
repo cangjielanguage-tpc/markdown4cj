@@ -1,26 +1,47 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 有序列表样式
  */
-public class OrderedListTheme <: MarkdownBaseTheme {
-    public var orderedListBackgroundColor: ?Color = None // 有序列表背景颜色
+@Observed
+public class OrderedListTheme {
+    @Publish
+    public var orderedListBackgroundColor: ?Color = Option<Color>.None // 有序列表背景颜色
+    @Publish
     public var orderedListMarginTop: Float64 = 0.0 // 有序列表上外边距
+    @Publish
     public var orderedListMarginRight: Float64 = 0.0 // 有序列表右外边距
+    @Publish
     public var orderedListMarginBottom: Float64 = 0.0 // 有序列表下外边距
+    @Publish
     public var orderedListMarginLeft: Float64 = 8.0 // 有序列表左外边距
+    @Publish
     public var orderedListPaddingTop: Float64 = 0.0 // 有序列表上内边距
+    @Publish
     public var orderedListPaddingRight: Float64 = 0.0 // 有序列表右内边距
+    @Publish
     public var orderedListPaddingBottom: Float64 = 0.0 // 有序列表下内边距
+    @Publish
     public var orderedListPaddingLeft: Float64 = 0.0 // 有序列表左内边距
+    @Publish
     public var orderedListChildSpacing: Int64 = 8 // 有序列表子模块上下间距
+    @Publish
     public var orderedListChildChildSpacing: Int64 = 8 // 有序列表子模块中子模块上下间距
+    @Publish
     public var orderedListMarkerSpacing: Float64 = 8.0 // 有序列表列表编号和列表内容间距
+    @Publish
     public var orderedListMarkerTextFontColor: Color = COLOR_FF191919 // 有序列表列表编号文本颜色
+    @Publish
     public var orderedListMarkerTextFontSize: Float64 = 14.0 // 有序列表列表编号文本尺寸
+    @Publish
     public var orderedListMarkerTextFontStyle: FontStyle = FontStyle.Normal // 有序列表列表编号文本字体样式
+    @Publish
     public var orderedListMarkerTextFontWeight: FontWeight = FontWeight.W400 // 有序列表列表编号文本字体粗细
+    @Publish
     public var orderedListMarkerTextFontFamily: String = "HarmonyOS Sans" // 有序列表列表编号文本字体
+    @Publish
     public var orderedListMarkerTextLineHeight: Float64 = 22.0 // 有序列表列表编号文本行高
 
     /**

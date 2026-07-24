@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setStrikethroughTheme(strikethroughTheme: CJMarkdownStrikethroughTheme): StrikethroughTheme {
     let theme: StrikethroughTheme = StrikethroughTheme()

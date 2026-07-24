@@ -1,23 +1,41 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 脚注引用样式
  */
-public class FootnoteRefTheme <: MarkdownBaseTheme {
+@Observed
+public class FootnoteRefTheme {
+    @Publish
     public var footnoteRefTextFontColor: Color = COLOR_RED // 脚注引用文本颜色
-    public var footnoteRefTextFontSize: ?Float64 = None // 脚注引用文本尺寸
-    public var footnoteRefTextFontStyle: ?FontStyle = None // 脚注引用文本字体样式
-    public var footnoteRefTextFontWeight: ?FontWeight = None // 脚注引用文本字体粗细
-    public var footnoteRefTextFontFamily: ?String = None // 脚注引用文本字体
-    public var footnoteRefTextLineHeight: ?Float64 = None // 脚注引用文本行高
-    public var footnoteRefTextLetterSpacing: ?Float64 = None // 脚注引用文本字符间距
+    @Publish
+    public var footnoteRefTextFontSize: ?Float64 = Option<Float64>.None // 脚注引用文本尺寸
+    @Publish
+    public var footnoteRefTextFontStyle: ?FontStyle = Option<FontStyle>.None // 脚注引用文本字体样式
+    @Publish
+    public var footnoteRefTextFontWeight: ?FontWeight = Option<FontWeight>.None // 脚注引用文本字体粗细
+    @Publish
+    public var footnoteRefTextFontFamily: ?String = Option<String>.None // 脚注引用文本字体
+    @Publish
+    public var footnoteRefTextLineHeight: ?Float64 = Option<Float64>.None // 脚注引用文本行高
+    @Publish
+    public var footnoteRefTextLetterSpacing: ?Float64 = Option<Float64>.None // 脚注引用文本字符间距
+    @Publish
     public var footnoteRefTextDecorationType: TextDecorationType = TextDecorationType.Underline // 脚注引用文本装饰线类型
+    @Publish
     public var footnoteRefTextDecorationColor: Color = COLOR_RED // 脚注引用文本装饰线颜色
+    @Publish
     public var footnoteRefTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID // 脚注引用文本装饰线样式
+    @Publish
     public var footnoteRefTextBackgroundColor: Color = COLOR_TRANSPARENT // 脚注引用文本背景颜色
+    @Publish
     public var footnoteRefTextBackgroundRadiusTopLeft: Float64 = 0.0 // 脚注引用文本背景左上圆角
+    @Publish
     public var footnoteRefTextBackgroundRadiusTopRight: Float64 = 0.0 // 脚注引用文本背景右上圆角
+    @Publish
     public var footnoteRefTextBackgroundRadiusBottomLeft: Float64 = 0.0 // 脚注引用文本背景左下圆角
+    @Publish
     public var footnoteRefTextBackgroundRadiusBottomRight: Float64 = 0.0 // 脚注引用文本背景右下圆角
 
     /**

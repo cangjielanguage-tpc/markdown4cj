@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 public class BlockVideoPlugin <: AbstractMarkdownPlugin {
     public static func create(): BlockVideoPlugin {

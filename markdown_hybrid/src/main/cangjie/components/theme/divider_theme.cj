@@ -1,19 +1,33 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 分割线样式
  */
-public class DividerTheme <: MarkdownBaseTheme {
+@Observed
+public class DividerTheme {
+    @Publish
     public var dividerMarginTop: Float64 = 0.0 // 分割线上外边距
+    @Publish
     public var dividerMarginRight: Float64 = 0.0 // 分割线右外边距
+    @Publish
     public var dividerMarginBottom: Float64 = 0.0 // 分割线下外边距
+    @Publish
     public var dividerMarginLeft: Float64 = 0.0 // 分割线左外边距
+    @Publish
     public var dividerPaddingTop: Float64 = 0.0 // 分割线上内边距
+    @Publish
     public var dividerPaddingRight: Float64 = 0.0 // 分割线右内边距
+    @Publish
     public var dividerPaddingBottom: Float64 = 0.0 // 分割线下内边距
+    @Publish
     public var dividerPaddingLeft: Float64 = 0.0 // 分割线左内边距
+    @Publish
     public var dividerColor: Color = COLOR_FF191919 // 分割线颜色
+    @Publish
     public var dividerStrokeWidth: Float64 = 0.5 // 分割线宽度
+    @Publish
     public var dividerStyle: LineCapStyle = LineCapStyle.Butt // 分割线端点样式
 
     /**

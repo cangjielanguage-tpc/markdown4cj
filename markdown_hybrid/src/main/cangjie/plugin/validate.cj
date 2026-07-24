@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 /**
  * Validators to check that method arguments meet expectations.

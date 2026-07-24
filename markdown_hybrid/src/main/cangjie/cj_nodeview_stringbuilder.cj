@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 import ohos.ark_interop_macro.*
 

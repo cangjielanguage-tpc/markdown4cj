@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setHeadingTheme(headingTheme: CJMarkdownHeadingTheme): HeadingTheme {
     let theme: HeadingTheme = HeadingTheme()

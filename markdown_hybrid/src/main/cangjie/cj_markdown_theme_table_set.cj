@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setTableTheme(tableTheme: CJMarkdownTableTheme): TableTheme {
     let theme: TableTheme = TableTheme()

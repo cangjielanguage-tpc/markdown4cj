@@ -1,4 +1,4 @@
-package markdown.plugin.emoji
+package markdown_hybrid.plugin.emoji
 
 /**
  * emoji plugin

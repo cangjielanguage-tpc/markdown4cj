@@ -1,20 +1,35 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 内联代码样式
  */
-public class InlineCodeTheme <: MarkdownBaseTheme {
-    public var inlineCodeTextFontColor: ?Color = None // 内联代码文本颜色
-    public var inlineCodeTextFontSize: ?Float64 = None // 内联代码文本尺寸
-    public var inlineCodeTextFontStyle: ?FontStyle = None // 内联代码文本字体样式
-    public var inlineCodeTextFontWeight: ?FontWeight = None // 内联代码文本字体粗细
-    public var inlineCodeTextFontFamily: ?String = None // 内联代码文本字体
-    public var inlineCodeTextLineHeight: ?Float64 = None // 内联代码文本行高
-    public var inlineCodeTextLetterSpacing: ?Float64 = None // 内联代码文本字符间距
+@Observed
+public class InlineCodeTheme {
+    @Publish
+    public var inlineCodeTextFontColor: ?Color = Option<Color>.None // 内联代码文本颜色
+    @Publish
+    public var inlineCodeTextFontSize: ?Float64 = Option<Float64>.None // 内联代码文本尺寸
+    @Publish
+    public var inlineCodeTextFontStyle: ?FontStyle = Option<FontStyle>.None // 内联代码文本字体样式
+    @Publish
+    public var inlineCodeTextFontWeight: ?FontWeight = Option<FontWeight>.None // 内联代码文本字体粗细
+    @Publish
+    public var inlineCodeTextFontFamily: ?String = Option<String>.None // 内联代码文本字体
+    @Publish
+    public var inlineCodeTextLineHeight: ?Float64 = Option<Float64>.None // 内联代码文本行高
+    @Publish
+    public var inlineCodeTextLetterSpacing: ?Float64 = Option<Float64>.None // 内联代码文本字符间距
+    @Publish
     public var inlineCodeTextBackgroundColor: Color = COLOR_FFEAEAEA // 内联代码文本背景颜色
+    @Publish
     public var inlineCodeTextBackgroundRadiusTopLeft: Float64 = 0.0 // 内联代码文本背景左上圆角
+    @Publish
     public var inlineCodeTextBackgroundRadiusTopRight: Float64 = 0.0 // 内联代码文本背景右上圆角
+    @Publish
     public var inlineCodeTextBackgroundRadiusBottomLeft: Float64 = 0.0 // 内联代码文本背景左下圆角
+    @Publish
     public var inlineCodeTextBackgroundRadiusBottomRight: Float64 = 0.0 // 内联代码文本背景右下圆角
 
     /**

@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownAudioComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown样式
     var nodeView: NodeView // NodeView
     var audioCallback: ?(String) -> Unit = None // 音频的点击事件
@@ -18,7 +19,7 @@ public class MarkdownAudioComponent {
     var audioType: String = "" // 音频类型
 
     protected override func aboutToAppear(): Unit {
-        imageAudioUrl = nodeView.imageUrl() // 获取音频图片URL
+        imageAudioUrl = nodeView.imageUrl.getOrThrow() // 获取音频图片URL
         // 通过分割音频url获取音频类型和标题
         let titleList = imageAudioUrl.split("/")
         let audioName = titleList[titleList.size - 1]
@@ -31,7 +32,7 @@ public class MarkdownAudioComponent {
         Row() {
             Row(10) {
                 if (markdownTheme.audioTheme.audioIcon.isSome()) {
-                    Image(markdownTheme.audioTheme.audioIcon())
+                    Image(markdownTheme.audioTheme.audioIcon.getOrThrow())
                         .width(markdownTheme.audioTheme.audioIconWidth)
                         .height(markdownTheme.audioTheme.audioIconHeight)
                         .borderRadius(topLeft: markdownTheme.audioTheme.audioIconRadiusTopLeft, topRight: markdownTheme.audioTheme.audioIconRadiusTopRight, bottomLeft: markdownTheme.audioTheme.audioIconRadiusBottomLeft, bottomRight: markdownTheme.audioTheme.audioIconRadiusBottomRight)

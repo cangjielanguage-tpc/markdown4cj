@@ -1,7 +1,7 @@
-package markdown.core
+package markdown_hybrid.core
 
 /**
- * Class to parse and render markdown. instance specific (previously consisted
+ * Class to parse and render markdown_hybrid. instance specific (previously consisted
  * of static stateless methods). An instance of builder can be obtained via {@link #builder()}
  * method.
  *
@@ -39,16 +39,16 @@ public abstract class Markdown {
     }
 
     /**
-     * Method to parse markdown (without rendering)
+     * Method to parse markdown_hybrid (without rendering)
      *
-     * @param input markdown input to parse
+     * @param input markdown_hybrid input to parse
      * @return parsed via commonmark <code>commonmark.Node</code>
      * @see #render(Node)
      */
     public func parse(input: String): Node
 
     /**
-     * Create markdown:Spanned from parsed Node (via {@link #parse(String)} call).
+     * Create markdown_hybrid:Spanned from parsed Node (via {@link #parse(String)} call).
      * <p>
      * Please note that returned Spanned has few limitations. For example, images, tables
      * and ordered lists require TextView to be properly displayed. This is why images and tables
@@ -60,10 +60,10 @@ public abstract class Markdown {
     public func render(node: Node): Node
 
     /**
-     * This method will {@link #parse(String)} and {@link #render(Node)} supplied markdown. Returned
+     * This method will {@link #parse(String)} and {@link #render(Node)} supplied markdown_hybrid. Returned
      * Spanned has the same limitations as from {@link #render(Node)} method.
      *
-     * @param input markdown input
+     * @param input markdown_hybrid input
      * @see #parse(String)
      * @see #render(Node)
      */
@@ -71,11 +71,11 @@ public abstract class Markdown {
 
     /**
      * Requests information if certain plugin has been registered. Please note that this
-     * method will check for super classes also, so if supplied with {@code markdown.hasPlugin(MarkdownPlugin.class)}
+     * method will check for super classes also, so if supplied with {@code markdown_hybrid.hasPlugin(MarkdownPlugin.class)}
      * this method (if has at least one plugin) will return true. If for example a custom
      * (subclassed) version of a {@link CorePlugin} has been registered and given name
-     * {@code CorePlugin2}, then both {@code markdown.hasPlugin(CorePlugin2.class)} and
-     * {@code markdown.hasPlugin(CorePlugin.class)} will return true.
+     * {@code CorePlugin2}, then both {@code markdown_hybrid.hasPlugin(CorePlugin2.class)} and
+     * {@code markdown_hybrid.hasPlugin(CorePlugin.class)} will return true.
      *
      * @param plugin type to query
      * @return true if a plugin is used when configuring this {@link Markdown} instance
@@ -209,7 +209,7 @@ public interface MarkdownBuilder {
     func usePlugins(plugins: Iterable<MarkdownPlugin>): MarkdownBuilder
 
     /**
-     * Control if small chunks of non-finished markdown sentences (for example, a single `*` Rune)
+     * Control if small chunks of non-finished markdown_hybrid sentences (for example, a single `*` Rune)
      * should be displayed/rendered as raw input instead of an empty string.
      * <p>
      * {@code true} by default, versions prior - {@code false}

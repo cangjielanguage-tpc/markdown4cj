@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setLatexMathTheme(latexMathTheme: CJMarkdownLatexMathTheme): LatexMathTheme {
     let theme: LatexMathTheme = LatexMathTheme()

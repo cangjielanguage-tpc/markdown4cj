@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme {
     let theme: CodeBlockTheme = CodeBlockTheme()
@@ -31,7 +31,7 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockMarginRight) { codeBlockMarginRight = v }
     if (let Some(v) <- codeBlockTheme.codeBlockMarginBottom) { codeBlockMarginBottom = v }
     if (let Some(v) <- codeBlockTheme.codeBlockMarginLeft) { codeBlockMarginLeft = v }
-    theme.setMargin(top: codeBlockMarginTop, right: codeBlockMarginRight, bottom: codeBlockMarginBottom, left: codeBlockMarginLeft)
+    theme.setCodeBlockPadding(top: codeBlockMarginTop, right: codeBlockMarginRight, bottom: codeBlockMarginBottom, left: codeBlockMarginLeft)
 
     var codeBlockPaddingTop: Float64 = 0.0
     var codeBlockPaddingRight: Float64 = 8.0
@@ -41,7 +41,7 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingRight) { codeBlockPaddingRight = v }
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingBottom) { codeBlockPaddingBottom = v }
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingLeft) { codeBlockPaddingLeft = v }
-    theme.setPadding(top: codeBlockPaddingTop, right: codeBlockPaddingRight, bottom: codeBlockPaddingBottom, left: codeBlockPaddingLeft)
+    theme.setCodeBlockPadding(top: codeBlockPaddingTop, right: codeBlockPaddingRight, bottom: codeBlockPaddingBottom, left: codeBlockPaddingLeft)
 
     if (let Some(v) <- codeBlockTheme.codeBlockBorderStyle) {
         theme.setCodeBlockBorderStyle(v)
@@ -60,7 +60,7 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockRadiusTopRight) { codeBlockRadiusTopRight = v }
     if (let Some(v) <- codeBlockTheme.codeBlockRadiusBottomLeft) { codeBlockRadiusBottomLeft = v }
     if (let Some(v) <- codeBlockTheme.codeBlockRadiusBottomRight) { codeBlockRadiusBottomRight = v }
-    theme.setRadius(topLeft: codeBlockRadiusTopLeft, topRight: codeBlockRadiusTopRight, bottomLeft: codeBlockRadiusBottomLeft, bottomRight: codeBlockRadiusBottomRight)
+    theme.setCodeBlockRadius(topLeft: codeBlockRadiusTopLeft, topRight: codeBlockRadiusTopRight, bottomLeft: codeBlockRadiusBottomLeft, bottomRight: codeBlockRadiusBottomRight)
 
     if (let Some(v) <- codeBlockTheme.codeBlockTitleLayoutMarginBottom) {
         theme.setCodeBlockTitleLayoutMarginBottom(v)

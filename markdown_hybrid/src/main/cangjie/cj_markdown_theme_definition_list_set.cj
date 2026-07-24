@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setDefinitionListTheme(definitionListTheme: CJMarkdownDefinitionListTheme): DefinitionListTheme {
     let theme: DefinitionListTheme = DefinitionListTheme()

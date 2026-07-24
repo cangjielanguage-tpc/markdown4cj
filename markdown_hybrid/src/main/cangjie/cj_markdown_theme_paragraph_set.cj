@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setParagraphTheme(paragraphTheme: CJMarkdownParagraphTheme): ParagraphTheme {
     let theme: ParagraphTheme = ParagraphTheme()

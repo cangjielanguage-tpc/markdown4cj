@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setAudioTheme(audioTheme: CJMarkdownAudioTheme): AudioTheme {
     let theme: AudioTheme = AudioTheme()
@@ -45,7 +45,7 @@ func setAudioTheme(audioTheme: CJMarkdownAudioTheme): AudioTheme {
     if (let Some(v) <- audioTheme.audioRadiusTopRight) { audioRadiusTopRight = v }
     if (let Some(v) <- audioTheme.audioRadiusBottomLeft) { audioRadiusBottomLeft = v }
     if (let Some(v) <- audioTheme.audioRadiusBottomRight) { audioRadiusBottomRight = v }
-    theme.setAudioRadius(topLeft: audioRadiusTopLeft, topRight: audioRadiusTopRight, bottomLeft: audioRadiusBottomLeft, bottomRight: audioRadiusBottomRight)
+    theme.setAudioBorderRadius(topLeft: audioRadiusTopLeft, topRight: audioRadiusTopRight, bottomLeft: audioRadiusBottomLeft, bottomRight: audioRadiusBottomRight)
 
     if (let Some(v) <- audioTheme.audioShadowColor) {
         theme.setAudioShadowColor(v)

@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setSupTheme(supTheme: CJMarkdownSupTheme): SupTheme {
     let theme: SupTheme = SupTheme()

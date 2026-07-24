@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 foreign func napi_open_handle_scope(env: CPointer<Unit>, scope: CPointer<CPointer<Unit>>): Int32
 

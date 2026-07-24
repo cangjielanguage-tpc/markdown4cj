@@ -1,81 +1,85 @@
-package markdown.components
+package markdown_hybrid.components
+
+import ohos.state_macro_manage.*
 
 /**
  * Markdown用户可设置的样式
+ * 使用 @Observed + @Publish 实现样式实时变动，修改属性后UI自动更新
  */
+@Observed
 public class MarkdownTheme {
-    protected var globalTheme: GlobalTheme = GlobalTheme() // 全局样式
-    protected var paragraphTheme: ParagraphTheme = ParagraphTheme() // 段落样式
-    protected var headingTheme: HeadingTheme = HeadingTheme() // 标题样式
-    protected var tableTheme: TableTheme = TableTheme() // 表格样式
-    protected var dividerTheme: DividerTheme = DividerTheme() // 分割线样式
-    protected var blockQuoteTheme: BlockQuoteTheme = BlockQuoteTheme() // 块引用样式
-    protected var orderedListTheme: OrderedListTheme = OrderedListTheme() // 有序列表样式
-    protected var bulletListTheme: BulletListTheme = BulletListTheme() // 无序/任务列表样式
-    protected var definitionListTheme: DefinitionListTheme = DefinitionListTheme() // 定义列表样式
-    protected var codeBlockTheme: CodeBlockTheme = CodeBlockTheme() // 代码块样式
-    protected var audioTheme: AudioTheme = AudioTheme() // 音频样式
-    protected var videoTheme: VideoTheme = VideoTheme() // 视频样式
-    protected var bannerTheme: BannerTheme = BannerTheme() // banner样式
-    protected var footnoteDefTheme: FootnoteDefTheme = FootnoteDefTheme() // 脚注定义样式
-    protected var footnoteRefTheme: FootnoteRefTheme = FootnoteRefTheme() // 脚注引用样式
-    protected var inlineCodeTheme: InlineCodeTheme = InlineCodeTheme() // 内联代码样式
-    protected var boldTheme: BoldTheme = BoldTheme() // 加粗文本样式
-    protected var latexMathTheme: LatexMathTheme = LatexMathTheme() // 数学公式样式
-    protected var htmlUnderlineTheme: HtmlUnderlineTheme = HtmlUnderlineTheme() // HTML下划线文本样式
-    protected var imageTheme: ImageTheme = ImageTheme() // 图片样式
-    protected var italicTheme: ItalicTheme = ItalicTheme() // 斜体文本样式
-    protected var linkTheme: LinkTheme = LinkTheme() // 链接文本样式
-    protected var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
-    protected var subTheme: SubTheme = SubTheme() // 下标文本样式
-    protected var supTheme: SupTheme = SupTheme() // 上标文本样式
-    protected var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
-
-    protected init(builder: MarkdownThemeBuilder) {
-        this.globalTheme = builder.globalTheme
-        this.paragraphTheme = builder.paragraphTheme
-        this.headingTheme = builder.headingTheme
-        this.tableTheme = builder.tableTheme
-        this.dividerTheme = builder.dividerTheme
-        this.blockQuoteTheme = builder.blockQuoteTheme
-        this.orderedListTheme = builder.orderedListTheme
-        this.bulletListTheme = builder.bulletListTheme
-        this.definitionListTheme = builder.definitionListTheme
-        this.codeBlockTheme = builder.codeBlockTheme
-        this.audioTheme = builder.audioTheme
-        this.videoTheme = builder.videoTheme
-        this.bannerTheme = builder.bannerTheme
-        this.footnoteDefTheme = builder.footnoteDefTheme
-        this.footnoteRefTheme = builder.footnoteRefTheme
-        this.inlineCodeTheme = builder.inlineCodeTheme
-        this.boldTheme = builder.boldTheme
-        this.latexMathTheme = builder.latexMathTheme
-        this.htmlUnderlineTheme = builder.htmlUnderlineTheme
-        this.imageTheme = builder.imageTheme
-        this.italicTheme = builder.italicTheme
-        this.linkTheme = builder.linkTheme
-        this.strikethroughTheme = builder.strikethroughTheme
-        this.subTheme = builder.subTheme
-        this.supTheme = builder.supTheme
-        this.prismTheme = builder.prismTheme
-    }
+    @Publish
+    var globalTheme: GlobalTheme = GlobalTheme() // 全局样式
+    @Publish
+    var paragraphTheme: ParagraphTheme = ParagraphTheme() // 段落样式
+    @Publish
+    var headingTheme: HeadingTheme = HeadingTheme() // 标题样式
+    @Publish
+    var tableTheme: TableTheme = TableTheme() // 表格样式
+    @Publish
+    var dividerTheme: DividerTheme = DividerTheme() // 分割线样式
+    @Publish
+    var blockQuoteTheme: BlockQuoteTheme = BlockQuoteTheme() // 块引用样式
+    @Publish
+    var orderedListTheme: OrderedListTheme = OrderedListTheme() // 有序列表样式
+    @Publish
+    var bulletListTheme: BulletListTheme = BulletListTheme() // 无序/任务列表样式
+    @Publish
+    var definitionListTheme: DefinitionListTheme = DefinitionListTheme() // 定义列表样式
+    @Publish
+    var codeBlockTheme: CodeBlockTheme = CodeBlockTheme() // 代码块样式
+    @Publish
+    var audioTheme: AudioTheme = AudioTheme() // 音频样式
+    @Publish
+    var videoTheme: VideoTheme = VideoTheme() // 视频样式
+    @Publish
+    var bannerTheme: BannerTheme = BannerTheme() // banner样式
+    @Publish
+    var footnoteDefTheme: FootnoteDefTheme = FootnoteDefTheme() // 脚注定义样式
+    @Publish
+    var footnoteRefTheme: FootnoteRefTheme = FootnoteRefTheme() // 脚注引用样式
+    @Publish
+    var inlineCodeTheme: InlineCodeTheme = InlineCodeTheme() // 内联代码样式
+    @Publish
+    var boldTheme: BoldTheme = BoldTheme() // 加粗文本样式
+    @Publish
+    var latexMathTheme: LatexMathTheme = LatexMathTheme() // 数学公式样式
+    @Publish
+    var htmlUnderlineTheme: HtmlUnderlineTheme = HtmlUnderlineTheme() // HTML下划线文本样式
+    @Publish
+    var imageTheme: ImageTheme = ImageTheme() // 图片样式
+    @Publish
+    var italicTheme: ItalicTheme = ItalicTheme() // 斜体文本样式
+    @Publish
+    var linkTheme: LinkTheme = LinkTheme() // 链接文本样式
+    @Publish
+    var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
+    @Publish
+    var highlightTheme: HighlightTheme = HighlightTheme() // 高亮样式
+    @Publish
+    var subTheme: SubTheme = SubTheme() // 下标文本样式
+    @Publish
+    var supTheme: SupTheme = SupTheme() // 上标文本样式
+    @Publish
+    var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
 
     /**
      * 创建Theme对象
+     * @Observed 类不能定义构造函数，由宏自动生成命名参数构造函数
      *
      * @return MarkdownTheme 创建空的MarkdownTheme对象
      */
     public static func create(): MarkdownTheme {
-        return emptyBuilder().build()
+        return MarkdownTheme()
     }
 
     /**
-     * 创建一个空的builder对象
+     * 创建一个空的主题对象
      *
-     * @return MarkdownThemeBuilder 创建空的MarkdownThemeBuilder对象
+     * @return MarkdownTheme 创建空的MarkdownTheme对象
      */
-    public static func emptyBuilder(): MarkdownThemeBuilder {
-        return MarkdownThemeBuilder()
+    public static func createEmpty(): MarkdownTheme {
+        return MarkdownTheme()
     }
 
     /**
@@ -83,10 +87,10 @@ public class MarkdownTheme {
      *
      * @return MarkdownTheme 创建默认的MarkdownTheme对象
      */
-    public static func createDefaultBuilder(): MarkdownThemeBuilder {
-        let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownThemeBuilder()
-        markdownThemeBuilder.setDefaultTheme()
-        return markdownThemeBuilder
+    public static func createDefault(): MarkdownTheme {
+        let theme = MarkdownTheme()
+        theme.setDefaultTheme()
+        return theme
     }
 
     /**
@@ -94,92 +98,27 @@ public class MarkdownTheme {
      *
      * @return MarkdownTheme 创建暗色的MarkdownTheme对象
      */
-    public static func createDarculaBuilder(): MarkdownThemeBuilder {
-        let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownThemeBuilder()
-        markdownThemeBuilder.setDarculaTheme()
-        return markdownThemeBuilder
+    public static func createDarcula(): MarkdownTheme {
+        let theme = MarkdownTheme()
+        theme.setDarculaTheme()
+        return theme
     }
 
     /**
-     * 通过已有的Theme创建builder对象
+     * 通过已有的Theme创建新的主题对象
      *
      * @param copyFrom MarkdownTheme对象
-     * @return MarkdownThemeBuilder 创建MarkdownThemeBuilder对象
+     * @return MarkdownTheme 创建MarkdownTheme对象
      */
-    public static func builder(copyFrom: MarkdownTheme): MarkdownThemeBuilder {
-        return MarkdownThemeBuilder(copyFrom)
+    public static func copy(copyFrom: MarkdownTheme): MarkdownTheme {
+        return MarkdownTheme(globalTheme: copyFrom.globalTheme, paragraphTheme: copyFrom.paragraphTheme, headingTheme: copyFrom.headingTheme, tableTheme: copyFrom.tableTheme, dividerTheme: copyFrom.dividerTheme, blockQuoteTheme: copyFrom.blockQuoteTheme, orderedListTheme: copyFrom.orderedListTheme, bulletListTheme: copyFrom.bulletListTheme, definitionListTheme: copyFrom.definitionListTheme, codeBlockTheme: copyFrom.codeBlockTheme, audioTheme: copyFrom.audioTheme, videoTheme: copyFrom.videoTheme, bannerTheme: copyFrom.bannerTheme, footnoteDefTheme: copyFrom.footnoteDefTheme, footnoteRefTheme: copyFrom.footnoteRefTheme, inlineCodeTheme: copyFrom.inlineCodeTheme, boldTheme: copyFrom.boldTheme, latexMathTheme: copyFrom.latexMathTheme, htmlUnderlineTheme: copyFrom.htmlUnderlineTheme, imageTheme: copyFrom.imageTheme, italicTheme: copyFrom.italicTheme, linkTheme: copyFrom.linkTheme, strikethroughTheme: copyFrom.strikethroughTheme, highlightTheme: copyFrom.highlightTheme, subTheme: copyFrom.subTheme, supTheme: copyFrom.supTheme, prismTheme: copyFrom.prismTheme)
     }
-}
-
-/**
- * MarkdownTheme Builder
- */
-public class MarkdownThemeBuilder {
-    var globalTheme: GlobalTheme = GlobalTheme() // 全局样式
-    var paragraphTheme: ParagraphTheme = ParagraphTheme() // 段落样式
-    var headingTheme: HeadingTheme = HeadingTheme() // 标题样式
-    var tableTheme: TableTheme = TableTheme() // 表格样式
-    var dividerTheme: DividerTheme = DividerTheme() // 分割线样式
-    var blockQuoteTheme: BlockQuoteTheme = BlockQuoteTheme() // 块引用样式
-    var orderedListTheme: OrderedListTheme = OrderedListTheme() // 有序列表样式
-    var bulletListTheme: BulletListTheme = BulletListTheme() // 无序/任务列表样式
-    var definitionListTheme: DefinitionListTheme = DefinitionListTheme() // 定义列表样式
-    var codeBlockTheme: CodeBlockTheme = CodeBlockTheme() // 代码块样式
-    var audioTheme: AudioTheme = AudioTheme() // 音频样式
-    var videoTheme: VideoTheme = VideoTheme() // 视频样式
-    var bannerTheme: BannerTheme = BannerTheme() // banner样式
-    var footnoteDefTheme: FootnoteDefTheme = FootnoteDefTheme() // 脚注定义样式
-    var footnoteRefTheme: FootnoteRefTheme = FootnoteRefTheme() // 脚注引用样式
-    var inlineCodeTheme: InlineCodeTheme = InlineCodeTheme() // 内联代码样式
-    var boldTheme: BoldTheme = BoldTheme() // 加粗文本样式
-    var latexMathTheme: LatexMathTheme = LatexMathTheme() // 数学公式样式
-    var htmlUnderlineTheme: HtmlUnderlineTheme = HtmlUnderlineTheme() // HTML下划线文本样式
-    var imageTheme: ImageTheme = ImageTheme() // 图片样式
-    var italicTheme: ItalicTheme = ItalicTheme() // 斜体文本样式
-    var linkTheme: LinkTheme = LinkTheme() // 链接文本样式
-    var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
-    var subTheme: SubTheme = SubTheme() // 下标文本样式
-    var supTheme: SupTheme = SupTheme() // 上标文本样式
-    var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
-
-    init() {
-    }
-
-    init(theme: MarkdownTheme) {
-        this.globalTheme = theme.globalTheme
-        this.paragraphTheme = theme.paragraphTheme
-        this.headingTheme = theme.headingTheme
-        this.tableTheme = theme.tableTheme
-        this.dividerTheme = theme.dividerTheme
-        this.blockQuoteTheme = theme.blockQuoteTheme
-        this.orderedListTheme = theme.orderedListTheme
-        this.bulletListTheme = theme.bulletListTheme
-        this.definitionListTheme = theme.definitionListTheme
-        this.codeBlockTheme = theme.codeBlockTheme
-        this.audioTheme = theme.audioTheme
-        this.videoTheme = theme.videoTheme
-        this.bannerTheme = theme.bannerTheme
-        this.footnoteDefTheme = theme.footnoteDefTheme
-        this.footnoteRefTheme = theme.footnoteRefTheme
-        this.inlineCodeTheme = theme.inlineCodeTheme
-        this.boldTheme = theme.boldTheme
-        this.latexMathTheme = theme.latexMathTheme
-        this.htmlUnderlineTheme = theme.htmlUnderlineTheme
-        this.imageTheme = theme.imageTheme
-        this.italicTheme = theme.italicTheme
-        this.linkTheme = theme.linkTheme
-        this.strikethroughTheme = theme.strikethroughTheme
-        this.subTheme = theme.subTheme
-        this.supTheme = theme.supTheme
-        this.prismTheme = theme.prismTheme
-    }
-
     /**
      * 设置浅色主题整体样式
      *
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setDefaultTheme(): MarkdownThemeBuilder {
+    public func setDefaultTheme(): MarkdownTheme {
         // 浅色主题 - 只切换颜色属性
 
         // 全局主题
@@ -217,6 +156,7 @@ public class MarkdownThemeBuilder {
 
         // 代码块主题
         this.codeBlockTheme.setCodeBlockBorderColor(COLOR_TRANSPARENT) // 代码块边框颜色
+            .setCodeBlockIsDark(false) // 代码块暗色主题
             .setCodeBlockListTitleSelectTextColor(COLOR_RED) // 列表标题选中文本颜色
             .setCodeBlockListTitleUnselectTextColor(COLOR_BLACK) // 列表标题未选中文本颜色
             .setCodeBlockListTitleSelectBackgroundColor(COLOR_GRAY) // 列表标题选中背景颜色
@@ -278,6 +218,9 @@ public class MarkdownThemeBuilder {
         // 删除线主题
         this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF191919) // 删除线文本下划线颜色
 
+        // 高亮主题
+        this.highlightTheme.setHighlightTextBackgroundColor(COLOR_FFFFF59D) // 高亮文本背景颜色
+
         // 代码高亮主题
         this.prismTheme = PrismThemeDefault.create() // 代码高亮主题
 
@@ -287,9 +230,9 @@ public class MarkdownThemeBuilder {
     /**
      * 设置深色主题整体样式
      *
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setDarculaTheme(): MarkdownThemeBuilder {
+    public func setDarculaTheme(): MarkdownTheme {
         // 深色主题设计
 
         // 全局主题
@@ -327,6 +270,7 @@ public class MarkdownThemeBuilder {
 
         // 代码块主题
         this.codeBlockTheme.setCodeBlockBorderColor(COLOR_TRANSPARENT) // 代码块边框颜色
+            .setCodeBlockIsDark(true) // 代码块暗色主题
             .setCodeBlockListTitleSelectTextColor(COLOR_FF4A90E2) // 列表标题选中文本颜色
             .setCodeBlockListTitleUnselectTextColor(COLOR_FFE0E0E0) // 列表标题未选中文本颜色
             .setCodeBlockListTitleSelectBackgroundColor(COLOR_FF2D2D2D) // 列表标题选中背景颜色
@@ -388,6 +332,9 @@ public class MarkdownThemeBuilder {
         // 删除线主题
         this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF404040) // 删除线文本装饰线颜色
 
+        // 高亮主题
+        this.highlightTheme.setHighlightTextBackgroundColor(COLOR_FF6E6000) // 高亮文本背景颜色
+
         // 代码高亮主题
         this.prismTheme = PrismThemeDarcula.create() // 代码高亮主题
 
@@ -398,31 +345,249 @@ public class MarkdownThemeBuilder {
      * 设置全局样式
      *
      * @param globalTheme 全局样式 - 默认GlobalTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setGlobalTheme(globalTheme: GlobalTheme): MarkdownThemeBuilder {
+    public func setGlobalTheme(globalTheme: GlobalTheme): MarkdownTheme {
         this.globalTheme = globalTheme
         return this
+    }
+
+    /**
+     * 获取全局样式
+     *
+     * @return GlobalTheme 当前GlobalTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getGlobalTheme(): GlobalTheme {
+        return globalTheme
     }
 
     /**
      * 设置段落样式
      *
      * @param paragraphTheme 段落样式 - 默认ParagraphTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setParagraphTheme(paragraphTheme: ParagraphTheme): MarkdownThemeBuilder {
+    public func setParagraphTheme(paragraphTheme: ParagraphTheme): MarkdownTheme {
         this.paragraphTheme = paragraphTheme
         return this
+    }
+
+    /**
+     * 获取段落样式
+     *
+     * @return ParagraphTheme 当前ParagraphTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getParagraphTheme(): ParagraphTheme {
+        return paragraphTheme
+    }
+
+    /**
+     * 获取标题样式
+     * @return HeadingTheme 当前HeadingTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getHeadingTheme(): HeadingTheme {
+        return headingTheme
+    }
+
+    /**
+     * 获取表格样式
+     * @return TableTheme 当前TableTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getTableTheme(): TableTheme {
+        return tableTheme
+    }
+
+    /**
+     * 获取分割线样式
+     * @return DividerTheme 当前DividerTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getDividerTheme(): DividerTheme {
+        return dividerTheme
+    }
+
+    /**
+     * 获取块引用样式
+     * @return BlockQuoteTheme 当前BlockQuoteTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getBlockQuoteTheme(): BlockQuoteTheme {
+        return blockQuoteTheme
+    }
+
+    /**
+     * 获取有序列表样式
+     * @return OrderedListTheme 当前OrderedListTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getOrderedListTheme(): OrderedListTheme {
+        return orderedListTheme
+    }
+
+    /**
+     * 获取无序/任务列表样式
+     * @return BulletListTheme 当前BulletListTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getBulletListTheme(): BulletListTheme {
+        return bulletListTheme
+    }
+
+    /**
+     * 获取定义列表样式
+     * @return DefinitionListTheme 当前DefinitionListTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getDefinitionListTheme(): DefinitionListTheme {
+        return definitionListTheme
+    }
+
+    /**
+     * 获取代码块样式
+     * @return CodeBlockTheme 当前CodeBlockTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getCodeBlockTheme(): CodeBlockTheme {
+        return codeBlockTheme
+    }
+
+    /**
+     * 获取音频样式
+     * @return AudioTheme 当前AudioTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getAudioTheme(): AudioTheme {
+        return audioTheme
+    }
+
+    /**
+     * 获取视频样式
+     * @return VideoTheme 当前VideoTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getVideoTheme(): VideoTheme {
+        return videoTheme
+    }
+
+    /**
+     * 获取banner样式
+     * @return BannerTheme 当前BannerTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getBannerTheme(): BannerTheme {
+        return bannerTheme
+    }
+
+    /**
+     * 获取脚注定义样式
+     * @return FootnoteDefTheme 当前FootnoteDefTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getFootnoteDefTheme(): FootnoteDefTheme {
+        return footnoteDefTheme
+    }
+
+    /**
+     * 获取脚注引用样式
+     * @return FootnoteRefTheme 当前FootnoteRefTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getFootnoteRefTheme(): FootnoteRefTheme {
+        return footnoteRefTheme
+    }
+
+    /**
+     * 获取内联代码样式
+     * @return InlineCodeTheme 当前InlineCodeTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getInlineCodeTheme(): InlineCodeTheme {
+        return inlineCodeTheme
+    }
+
+    /**
+     * 获取加粗文本样式
+     * @return BoldTheme 当前BoldTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getBoldTheme(): BoldTheme {
+        return boldTheme
+    }
+
+    /**
+     * 获取数学公式样式
+     * @return LatexMathTheme 当前LatexMathTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getLatexMathTheme(): LatexMathTheme {
+        return latexMathTheme
+    }
+
+    /**
+     * 获取HTML下划线文本样式
+     * @return HtmlUnderlineTheme 当前HtmlUnderlineTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getHtmlUnderlineTheme(): HtmlUnderlineTheme {
+        return htmlUnderlineTheme
+    }
+
+    /**
+     * 获取图片样式
+     * @return ImageTheme 当前ImageTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getImageTheme(): ImageTheme {
+        return imageTheme
+    }
+
+    /**
+     * 获取斜体文本样式
+     * @return ItalicTheme 当前ItalicTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getItalicTheme(): ItalicTheme {
+        return italicTheme
+    }
+
+    /**
+     * 获取链接文本样式
+     * @return LinkTheme 当前LinkTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getLinkTheme(): LinkTheme {
+        return linkTheme
+    }
+
+    /**
+     * 获取删除线文本样式
+     * @return StrikethroughTheme 当前StrikethroughTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getStrikethroughTheme(): StrikethroughTheme {
+        return strikethroughTheme
+    }
+
+    /**
+     * 获取高亮样式
+     * @return HighlightTheme 当前HighlightTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getHighlightTheme(): HighlightTheme {
+        return highlightTheme
+    }
+
+    /**
+     * 获取下标文本样式
+     * @return SubTheme 当前SubTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getSubTheme(): SubTheme {
+        return subTheme
+    }
+
+    /**
+     * 获取上标文本样式
+     * @return SupTheme 当前SupTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getSupTheme(): SupTheme {
+        return supTheme
+    }
+
+    /**
+     * 获取markdown代码高亮样式
+     * @return PrismTheme 当前PrismTheme对象（引用，修改其属性会触发@Publish响应式更新）
+     */
+    public func getPrismTheme(): PrismTheme {
+        return prismTheme
     }
 
     /**
      * 设置标题样式
      *
      * @param headingTheme 标题样式 - 默认HeadingTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setHeadingTheme(headingTheme: HeadingTheme): MarkdownThemeBuilder {
+    public func setHeadingTheme(headingTheme: HeadingTheme): MarkdownTheme {
         this.headingTheme = headingTheme
         return this
     }
@@ -431,9 +596,9 @@ public class MarkdownThemeBuilder {
      * 设置表格样式
      *
      * @param tableTheme 表格样式 - 默认TableTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setTableTheme(tableTheme: TableTheme): MarkdownThemeBuilder {
+    public func setTableTheme(tableTheme: TableTheme): MarkdownTheme {
         this.tableTheme = tableTheme
         return this
     }
@@ -442,9 +607,9 @@ public class MarkdownThemeBuilder {
      * 设置分割线样式
      *
      * @param dividerTheme 分割线样式 - 默认DividerTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setDividerTheme(dividerTheme: DividerTheme): MarkdownThemeBuilder {
+    public func setDividerTheme(dividerTheme: DividerTheme): MarkdownTheme {
         this.dividerTheme = dividerTheme
         return this
     }
@@ -453,9 +618,9 @@ public class MarkdownThemeBuilder {
      * 设置块引用样式
      *
      * @param blockQuoteTheme 块引用样式 - 默认BlockQuoteTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setBlockQuoteTheme(blockQuoteTheme: BlockQuoteTheme): MarkdownThemeBuilder {
+    public func setBlockQuoteTheme(blockQuoteTheme: BlockQuoteTheme): MarkdownTheme {
         this.blockQuoteTheme = blockQuoteTheme
         return this
     }
@@ -464,9 +629,9 @@ public class MarkdownThemeBuilder {
      * 设置有序列表样式
      *
      * @param orderedListTheme 有序列表样式 - 默认OrderedListTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setOrderedListTheme(orderedListTheme: OrderedListTheme): MarkdownThemeBuilder {
+    public func setOrderedListTheme(orderedListTheme: OrderedListTheme): MarkdownTheme {
         this.orderedListTheme = orderedListTheme
         return this
     }
@@ -475,9 +640,9 @@ public class MarkdownThemeBuilder {
      * 设置无序/任务列表样式
      *
      * @param bulletListTheme 无序/任务列表样式 - 默认BulletListTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setBulletListTheme(bulletListTheme: BulletListTheme): MarkdownThemeBuilder {
+    public func setBulletListTheme(bulletListTheme: BulletListTheme): MarkdownTheme {
         this.bulletListTheme = bulletListTheme
         return this
     }
@@ -486,9 +651,9 @@ public class MarkdownThemeBuilder {
      * 设置定义列表样式
      *
      * @param definitionListTheme 定义列表样式 - 默认DefinitionListTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setDefinitionListTheme(definitionListTheme: DefinitionListTheme): MarkdownThemeBuilder {
+    public func setDefinitionListTheme(definitionListTheme: DefinitionListTheme): MarkdownTheme {
         this.definitionListTheme = definitionListTheme
         return this
     }
@@ -497,9 +662,9 @@ public class MarkdownThemeBuilder {
      * 设置代码块样式
      *
      * @param codeBlockTheme 代码块样式 - 默认CodeBlockTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setCodeBlockTheme(codeBlockTheme: CodeBlockTheme): MarkdownThemeBuilder {
+    public func setCodeBlockTheme(codeBlockTheme: CodeBlockTheme): MarkdownTheme {
         this.codeBlockTheme = codeBlockTheme
         return this
     }
@@ -508,9 +673,9 @@ public class MarkdownThemeBuilder {
      * 设置音频样式
      *
      * @param audioTheme 音频样式 - 默认AudioTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setAudioTheme(audioTheme: AudioTheme): MarkdownThemeBuilder {
+    public func setAudioTheme(audioTheme: AudioTheme): MarkdownTheme {
         this.audioTheme = audioTheme
         return this
     }
@@ -519,9 +684,9 @@ public class MarkdownThemeBuilder {
      * 设置视频样式
      *
      * @param videoTheme 视频样式 - 默认VideoTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setVideoTheme(videoTheme: VideoTheme): MarkdownThemeBuilder {
+    public func setVideoTheme(videoTheme: VideoTheme): MarkdownTheme {
         this.videoTheme = videoTheme
         return this
     }
@@ -530,9 +695,9 @@ public class MarkdownThemeBuilder {
      * 设置banner样式
      *
      * @param bannerTheme banner样式 - 默认BannerTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setBannerTheme(bannerTheme: BannerTheme): MarkdownThemeBuilder {
+    public func setBannerTheme(bannerTheme: BannerTheme): MarkdownTheme {
         this.bannerTheme = bannerTheme
         return this
     }
@@ -541,9 +706,9 @@ public class MarkdownThemeBuilder {
      * 设置脚注定义样式
      *
      * @param footnoteDefTheme 脚注定义样式 - 默认FootnoteDefTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setFootnoteDefTheme(footnoteDefTheme: FootnoteDefTheme): MarkdownThemeBuilder {
+    public func setFootnoteDefTheme(footnoteDefTheme: FootnoteDefTheme): MarkdownTheme {
         this.footnoteDefTheme = footnoteDefTheme
         return this
     }
@@ -552,9 +717,9 @@ public class MarkdownThemeBuilder {
      * 设置脚注引用样式
      *
      * @param footnoteRefTheme 脚注引用样式 - 默认FootnoteRefTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setFootnoteRefTheme(footnoteRefTheme: FootnoteRefTheme): MarkdownThemeBuilder {
+    public func setFootnoteRefTheme(footnoteRefTheme: FootnoteRefTheme): MarkdownTheme {
         this.footnoteRefTheme = footnoteRefTheme
         return this
     }
@@ -563,9 +728,9 @@ public class MarkdownThemeBuilder {
      * 设置内联代码样式
      *
      * @param inlineCodeTheme 内联代码样式 - 默认InlineCodeTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setInlineCodeTheme(inlineCodeTheme: InlineCodeTheme): MarkdownThemeBuilder {
+    public func setInlineCodeTheme(inlineCodeTheme: InlineCodeTheme): MarkdownTheme {
         this.inlineCodeTheme = inlineCodeTheme
         return this
     }
@@ -574,9 +739,9 @@ public class MarkdownThemeBuilder {
      * 设置加粗文本样式
      *
      * @param boldTheme 加粗文本样式 - 默认BoldTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setBoldTheme(boldTheme: BoldTheme): MarkdownThemeBuilder {
+    public func setBoldTheme(boldTheme: BoldTheme): MarkdownTheme {
         this.boldTheme = boldTheme
         return this
     }
@@ -585,9 +750,9 @@ public class MarkdownThemeBuilder {
      * 设置数学公式样式
      *
      * @param latexMathTheme 数学公式样式 - 默认FormulaTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setLatexMathTheme(latexMathTheme: LatexMathTheme): MarkdownThemeBuilder {
+    public func setLatexMathTheme(latexMathTheme: LatexMathTheme): MarkdownTheme {
         this.latexMathTheme = latexMathTheme
         return this
     }
@@ -596,9 +761,9 @@ public class MarkdownThemeBuilder {
      * 设置HTML下划线文本样式
      *
      * @param htmlUnderlineTheme HTML下划线文本样式 - 默认HtmlUnderlineTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setHtmlUnderlineTheme(htmlUnderlineTheme: HtmlUnderlineTheme): MarkdownThemeBuilder {
+    public func setHtmlUnderlineTheme(htmlUnderlineTheme: HtmlUnderlineTheme): MarkdownTheme {
         this.htmlUnderlineTheme = htmlUnderlineTheme
         return this
     }
@@ -607,9 +772,9 @@ public class MarkdownThemeBuilder {
      * 设置图片样式
      *
      * @param imageTheme 图片样式 - 默认ImageTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setImageTheme(imageTheme: ImageTheme): MarkdownThemeBuilder {
+    public func setImageTheme(imageTheme: ImageTheme): MarkdownTheme {
         this.imageTheme = imageTheme
         return this
     }
@@ -618,9 +783,9 @@ public class MarkdownThemeBuilder {
      * 设置斜体文本样式
      *
      * @param italicTheme 斜体文本样式 - 默认ItalicTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setItalicTheme(italicTheme: ItalicTheme): MarkdownThemeBuilder {
+    public func setItalicTheme(italicTheme: ItalicTheme): MarkdownTheme {
         this.italicTheme = italicTheme
         return this
     }
@@ -629,9 +794,9 @@ public class MarkdownThemeBuilder {
      * 设置链接文本样式
      *
      * @param linkTheme 链接文本样式 - 默认LinkTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setLinkTheme(linkTheme: LinkTheme): MarkdownThemeBuilder {
+    public func setLinkTheme(linkTheme: LinkTheme): MarkdownTheme {
         this.linkTheme = linkTheme
         return this
     }
@@ -640,10 +805,21 @@ public class MarkdownThemeBuilder {
      * 设置删除线文本样式
      *
      * @param strikethroughTheme 删除线文本样式 - 默认StrikethroughTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setStrikethroughTheme(strikethroughTheme: StrikethroughTheme): MarkdownThemeBuilder {
+    public func setStrikethroughTheme(strikethroughTheme: StrikethroughTheme): MarkdownTheme {
         this.strikethroughTheme = strikethroughTheme
+        return this
+    }
+
+    /**
+     * 设置高亮样式
+     *
+     * @param highlightTheme 高亮样式 - 默认HighlightTheme()
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    public func setHighlightTheme(highlightTheme: HighlightTheme): MarkdownTheme {
+        this.highlightTheme = highlightTheme
         return this
     }
 
@@ -651,9 +827,9 @@ public class MarkdownThemeBuilder {
      * 设置下标文本样式
      *
      * @param subTheme 下标文本样式 - 默认SubTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setSubTheme(subTheme: SubTheme): MarkdownThemeBuilder {
+    public func setSubTheme(subTheme: SubTheme): MarkdownTheme {
         this.subTheme = subTheme
         return this
     }
@@ -662,9 +838,9 @@ public class MarkdownThemeBuilder {
      * 设置上标文本样式
      *
      * @param supTheme 上标文本样式 - 默认SupTheme()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setSupTheme(supTheme: SupTheme): MarkdownThemeBuilder {
+    public func setSupTheme(supTheme: SupTheme): MarkdownTheme {
         this.supTheme = supTheme
         return this
     }
@@ -673,9 +849,9 @@ public class MarkdownThemeBuilder {
      * 设置markdown代码高亮样式
      *
      * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDefault.create()
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
-    public func setPrismTheme(prismTheme: PrismTheme): MarkdownThemeBuilder {
+    public func setPrismTheme(prismTheme: PrismTheme): MarkdownTheme {
         this.prismTheme = prismTheme
         return this
     }
@@ -684,11 +860,23 @@ public class MarkdownThemeBuilder {
      * 设置markdown上下文 - 互操作
      *
      * @param stageContext markdown上下文 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setStageContext方法代替", since: "1.4.0"]
-    public func setStageContext(stageContext: StageContext): MarkdownThemeBuilder {
+    public func setStageContext(stageContext: StageContext): MarkdownTheme {
         this.globalTheme.stageContext = stageContext
+        return this
+    }
+
+    /**
+     * 设置markdown上下文
+     *
+     * @param context markdown上下文
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用GlobalTheme.setStageContext方法代替", since: "1.4.0"]
+    public func setContext(context: StageContext): MarkdownTheme {
+        this.globalTheme.stageContext = context
         return this
     }
 
@@ -696,10 +884,10 @@ public class MarkdownThemeBuilder {
      * 设置markdown上下文 - 仓颉
      *
      * @param uiAbilityContext markdown上下文 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setUiAbilityContext方法代替", since: "1.4.0"]
-    public func setUIAbilityContext(uiAbilityContext: UIAbilityContext): MarkdownThemeBuilder {
+    public func setUIAbilityContext(uiAbilityContext: UIAbilityContext): MarkdownTheme {
         this.globalTheme.uiAbilityContext = uiAbilityContext
         return this
     }
@@ -708,11 +896,61 @@ public class MarkdownThemeBuilder {
      * 设置markdown是否同步解析
      *
      * @param isMarkdownParserSync markdown是否同步解析 - 默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setIsMarkdownParserSync方法代替", since: "1.4.0"]
-    public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): MarkdownThemeBuilder {
+    public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): MarkdownTheme {
         this.globalTheme.isMarkdownParserSync = isMarkdownParserSync
+        return this
+    }
+
+    /**
+     * 设置是否启用解析节流
+     *
+     * @param enableParseThrottle 是否启用解析节流 - 默认false
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用GlobalTheme.setEnableParseThrottle方法代替", since: "1.4.0"]
+    public func setEnableParseThrottle(enableParseThrottle: Bool): MarkdownTheme {
+        this.globalTheme.enableParseThrottle = enableParseThrottle
+        return this
+    }
+
+    /**
+     * 设置节流间隔
+     *
+     * @param parseThrottleMs 节流间隔（毫秒） - 默认200
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用GlobalTheme.setParseThrottleMs方法代替", since: "1.4.0"]
+    public func setParseThrottleMs(parseThrottleMs: Int64): MarkdownTheme {
+        this.globalTheme.parseThrottleMs = parseThrottleMs
+        return this
+    }
+
+    /**
+     * 设置是否启用段落加载动画
+     *
+     * @param enable 是否启用 - 默认false
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用GlobalTheme.setParagraphAnimationEnabled方法代替", since: "1.4.0"]
+    public func setParagraphAnimationEnabled(enable: Bool): MarkdownTheme {
+        this.globalTheme.paragraphAnimationEnabled = enable
+        this.paragraphTheme.paragraphAnimationEnabled = enable
+        return this
+    }
+
+    /**
+     * 设置段落加载动画时长
+     *
+     * @param duration 动画时长（毫秒） - 默认300
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用GlobalTheme.setParagraphAnimationDuration方法代替", since: "1.4.0"]
+    public func setParagraphAnimationDuration(duration: Int32): MarkdownTheme {
+        this.globalTheme.paragraphAnimationDuration = duration
+        this.paragraphTheme.paragraphAnimationDuration = duration
         return this
     }
 
@@ -720,10 +958,10 @@ public class MarkdownThemeBuilder {
      * 设置是否打开长按复制粘贴
      *
      * @param isOnCopy 是否打开长按复制粘贴 - 默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setIsOnCopy方法代替", since: "1.4.0"]
-    public func setIsOnCopy(isOnCopy: Bool): MarkdownThemeBuilder {
+    public func setIsOnCopy(isOnCopy: Bool): MarkdownTheme {
         this.globalTheme.isOnCopy = isOnCopy
         return this
     }
@@ -732,10 +970,10 @@ public class MarkdownThemeBuilder {
      * 设置markdown第一个模块上边距
      *
      * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setMargin方法代替", since: "1.4.0"]
-    public func setBlockFirstTopMargin(blockFirstTopMargin: Float64): MarkdownThemeBuilder {
+    public func setBlockFirstTopMargin(blockFirstTopMargin: Float64): MarkdownTheme {
         this.globalTheme.blockMarginTop = blockFirstTopMargin
         return this
     }
@@ -744,10 +982,10 @@ public class MarkdownThemeBuilder {
      * 设置markdown最后一个模块下边距
      *
      * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setMargin方法代替", since: "1.4.0"]
-    public func setBlockLastBottomMargin(blockLastBottomMargin: Float64): MarkdownThemeBuilder {
+    public func setBlockLastBottomMargin(blockLastBottomMargin: Float64): MarkdownTheme {
         this.globalTheme.blockMarginBottom = blockLastBottomMargin
         return this
     }
@@ -756,10 +994,10 @@ public class MarkdownThemeBuilder {
      * 设置模块间上下间距
      *
      * @param blockTopAndBottomMargins 模块间上下间距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setMarkdownBlockSpacing方法代替", since: "1.4.0"]
-    public func setBlockTopAndBottomMargins(blockTopAndBottomMargins: Float64): MarkdownThemeBuilder {
+    public func setBlockTopAndBottomMargins(blockTopAndBottomMargins: Float64): MarkdownTheme {
         this.globalTheme.markdownBlockSpacing = Int64(blockTopAndBottomMargins)
         return this
     }
@@ -768,10 +1006,10 @@ public class MarkdownThemeBuilder {
      * 设置软换行是否换行
      *
      * @param isLineBreak 软换行是否换行 - true：换行；false：不换行。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setIsLineBreak方法代替", since: "1.4.0"]
-    public func setIsLineBreak(isLineBreak: Bool): MarkdownThemeBuilder {
+    public func setIsLineBreak(isLineBreak: Bool): MarkdownTheme {
         this.globalTheme.isLineBreak = isLineBreak
         return this
     }
@@ -780,10 +1018,10 @@ public class MarkdownThemeBuilder {
      * 设置markdown是否支持滚动手势
      *
      * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setOpenGestureSwipe方法代替", since: "1.4.0"]
-    public func setOpenGestureSwipe(openGestureSwipe: Bool): MarkdownThemeBuilder {
+    public func setOpenGestureSwipe(openGestureSwipe: Bool): MarkdownTheme {
         this.globalTheme.openGestureSwipe = openGestureSwipe
         return this
     }
@@ -792,10 +1030,10 @@ public class MarkdownThemeBuilder {
      * 设置链接是否是图片显示
      *
      * @param isLinkStyle 链接是否是图片显示 - true：图片显示；false：文本显示。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkIsIcon方法代替", since: "1.4.0"]
-    public func setIsLinkStyle(isLinkStyle: Bool): MarkdownThemeBuilder {
+    public func setIsLinkStyle(isLinkStyle: Bool): MarkdownTheme {
         this.linkTheme.linkIsIcon = isLinkStyle
         return this
     }
@@ -804,10 +1042,10 @@ public class MarkdownThemeBuilder {
      * 设置列表中的单行链接是否是图片显示
      *
      * @param isListLinkStyle 列表中的单行链接是否是图片显示 - true:图片显示;false:文本显示。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkListIsIcon方法代替", since: "1.4.0"]
-    public func setIsListLinkStyle(isListLinkStyle: Bool): MarkdownThemeBuilder {
+    public func setIsListLinkStyle(isListLinkStyle: Bool): MarkdownTheme {
         this.linkTheme.linkListIsIcon = isListLinkStyle
         return this
     }
@@ -816,10 +1054,10 @@ public class MarkdownThemeBuilder {
      * 设置文本格式链接文本颜色
      *
      * @param linkColor 文本格式链接文本颜色 - 默认Color.RED
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkTextFontColor方法代替", since: "1.4.0"]
-    public func setLinkColor(linkColor: Color): MarkdownThemeBuilder {
+    public func setLinkColor(linkColor: Color): MarkdownTheme {
         this.linkTheme.linkTextFontColor = linkColor
         return this
     }
@@ -828,16 +1066,16 @@ public class MarkdownThemeBuilder {
      * 设置是否按照链接文本字体大小显示文本
      *
      * @param isLinkSize 是否按照链接文本字体大小显示文本 - true:显示链接字体文本大小;false:跟随标题段落大小显示。默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkTextFontSize方法代替", since: "1.4.0"]
-    public func setIsLinkSize(isLinkSize: Bool): MarkdownThemeBuilder {
+    public func setIsLinkSize(isLinkSize: Bool): MarkdownTheme {
         if (isLinkSize) {
             if (this.linkTheme.linkTextFontSize.isNone()) {
                 this.linkTheme.linkTextFontSize = 14.0
             }
         } else {
-            this.linkTheme.linkTextFontSize = None
+            this.linkTheme.linkTextFontSize = Option<Float64>.None
         }
         return this
     }
@@ -846,10 +1084,10 @@ public class MarkdownThemeBuilder {
      * 设置文本格式链接文本大小
      *
      * @param linkSize 文本格式链接文本大小 - 默认14.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkTextFontSize方法代替", since: "1.4.0"]
-    public func setLinkSize(linkSize: Float64): MarkdownThemeBuilder {
+    public func setLinkSize(linkSize: Float64): MarkdownTheme {
         this.linkTheme.linkTextFontSize = linkSize
         return this
     }
@@ -858,10 +1096,10 @@ public class MarkdownThemeBuilder {
      * 设置文本格式链接文本行高
      *
      * @param linkLineHeight 文本格式链接文本行高
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkTextLineHeight方法代替", since: "1.4.0"]
-    public func setLinkLineHeight(linkLineHeight: Float64): MarkdownThemeBuilder {
+    public func setLinkLineHeight(linkLineHeight: Float64): MarkdownTheme {
         this.linkTheme.linkTextLineHeight = linkLineHeight
         return this
     }
@@ -870,10 +1108,10 @@ public class MarkdownThemeBuilder {
      * 设置文本格式链接背景颜色
      *
      * @param linkBackgroundColor 文本格式链接背景颜色 - 默认Color.TRANSPARENT
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkTextBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkBackgroundColor(linkBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setLinkBackgroundColor(linkBackgroundColor: Color): MarkdownTheme {
         this.linkTheme.linkTextBackgroundColor = linkBackgroundColor
         return this
     }
@@ -882,10 +1120,10 @@ public class MarkdownThemeBuilder {
      * 设置文本格式是否显示链接下划线
      *
      * @param isLinkUnderlined 文本格式是否显示链接下划线 - true:显示下划线;false:不显示下划线。默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkTextDecorationType方法代替", since: "1.4.0"]
-    public func setIsLinkUnderlined(isLinkUnderlined: Bool): MarkdownThemeBuilder {
+    public func setIsLinkUnderlined(isLinkUnderlined: Bool): MarkdownTheme {
         if (!isLinkUnderlined) {
             this.linkTheme.linkTextDecorationType = TextDecorationType.None
         }
@@ -896,10 +1134,10 @@ public class MarkdownThemeBuilder {
      * 设置圆形图片格式链接主题背景颜色
      *
      * @param linkCircleImageBackgroundColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: Color): MarkdownTheme {
         this.linkTheme.linkCircleIconBackgroundColor = linkCircleImageBackgroundColor
         return this
     }
@@ -908,10 +1146,10 @@ public class MarkdownThemeBuilder {
      * 设置圆形图片格式链接控件背景颜色
      *
      * @param linkCircleImageButtonBackgroundColor 圆形图片格式链接控件背景颜色 - 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: Color): MarkdownTheme {
         this.linkTheme.linkCircleIconButtonBackgroundColor = linkCircleImageButtonBackgroundColor
         return this
     }
@@ -920,10 +1158,10 @@ public class MarkdownThemeBuilder {
      * 设置圆形图片格式链接文本大小
      *
      * @param linkCircleImageTextSize 圆形图片格式链接文本大小 - 默认14.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconTextSize方法代替", since: "1.4.0"]
-    public func setLinkCircleImageTextSize(linkCircleImageTextSize: Float64): MarkdownThemeBuilder {
+    public func setLinkCircleImageTextSize(linkCircleImageTextSize: Float64): MarkdownTheme {
         this.linkTheme.linkCircleIconTextSize = linkCircleImageTextSize
         return this
     }
@@ -932,10 +1170,10 @@ public class MarkdownThemeBuilder {
      * 设置圆形图片格式链接文本颜色
      *
      * @param linkCircleImageTextColor 圆形图片格式链接文本颜色 - 默认Color.WHITE
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconTextColor方法代替", since: "1.4.0"]
-    public func setLinkCircleImageTextColor(linkCircleImageTextColor: Color): MarkdownThemeBuilder {
+    public func setLinkCircleImageTextColor(linkCircleImageTextColor: Color): MarkdownTheme {
         this.linkTheme.linkCircleIconTextColor = linkCircleImageTextColor
         return this
     }
@@ -944,10 +1182,10 @@ public class MarkdownThemeBuilder {
      * 设置圆形图片格式链接半径
      *
      * @param linkCircleImageRadius 圆形图片格式链接半径 - 默认20.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconRadius方法代替", since: "1.4.0"]
-    public func setLinkCircleImageRadius(linkCircleImageRadius: Float64): MarkdownThemeBuilder {
+    public func setLinkCircleImageRadius(linkCircleImageRadius: Float64): MarkdownTheme {
         this.linkTheme.linkCircleIconRadius = linkCircleImageRadius
         return this
     }
@@ -956,10 +1194,10 @@ public class MarkdownThemeBuilder {
      * 设置圆形图片格式链接左右外边距
      *
      * @param linkCircleImageMargin 圆形图片格式链接左右外边距 - 默认6.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconMargin方法代替", since: "1.4.0"]
-    public func setLinkCircleImageMargin(linkCircleImageMargin: Float64): MarkdownThemeBuilder {
+    public func setLinkCircleImageMargin(linkCircleImageMargin: Float64): MarkdownTheme {
         this.linkTheme.linkCircleIconMargin = linkCircleImageMargin
         return this
     }
@@ -968,10 +1206,10 @@ public class MarkdownThemeBuilder {
      * 设置圆角矩形图片格式链接主题背景颜色
      *
      * @param linkRectImageBackgroundColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: Color): MarkdownTheme {
         this.linkTheme.linkRectIconBackgroundColor = linkRectImageBackgroundColor
         return this
     }
@@ -980,10 +1218,10 @@ public class MarkdownThemeBuilder {
      * 设置圆角矩形图片格式链接控件背景颜色
      *
      * @param linkRectImageButtonBackgroundColor 圆角矩形图片格式链接控件背景颜色 - 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: Color): MarkdownTheme {
         this.linkTheme.linkRectIconButtonBackgroundColor = linkRectImageButtonBackgroundColor
         return this
     }
@@ -992,10 +1230,10 @@ public class MarkdownThemeBuilder {
      * 圆角矩形图片格式链接文本大小
      *
      * @param linkRectImageTextSize 圆角矩形图片格式链接文本大小 - 默认14.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconTextSize方法代替", since: "1.4.0"]
-    public func setLinkRectImageTextSize(linkRectImageTextSize: Float64): MarkdownThemeBuilder {
+    public func setLinkRectImageTextSize(linkRectImageTextSize: Float64): MarkdownTheme {
         this.linkTheme.linkRectIconTextSize = linkRectImageTextSize
         return this
     }
@@ -1004,10 +1242,10 @@ public class MarkdownThemeBuilder {
      * 设置圆角矩形图片格式链接文本颜色
      *
      * @param linkRectImageTextColor 圆角矩形图片格式链接文本颜色 - 默认Color.WHITE
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconTextColor方法代替", since: "1.4.0"]
-    public func setLinkRectImageTextColor(linkRectImageTextColor: Color): MarkdownThemeBuilder {
+    public func setLinkRectImageTextColor(linkRectImageTextColor: Color): MarkdownTheme {
         this.linkTheme.linkRectIconTextColor = linkRectImageTextColor
         return this
     }
@@ -1016,10 +1254,10 @@ public class MarkdownThemeBuilder {
      * 圆角矩形图片格式链接控件高度
      *
      * @param linkRectImageHeight 圆角矩形图片格式链接控件高度 - 默认20.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconHeight方法代替", since: "1.4.0"]
-    public func setLinkRectImageHeight(linkRectImageHeight: Float64): MarkdownThemeBuilder {
+    public func setLinkRectImageHeight(linkRectImageHeight: Float64): MarkdownTheme {
         this.linkTheme.linkRectIconHeight = linkRectImageHeight
         return this
     }
@@ -1028,10 +1266,10 @@ public class MarkdownThemeBuilder {
      * 圆角矩形图片格式链接左右内边距
      *
      * @param linkRectImagePadding 圆角矩形图片格式链接左右内边距 - 默认6.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconPadding方法代替", since: "1.4.0"]
-    public func setLinkRectImagePadding(linkRectImagePadding: Float64): MarkdownThemeBuilder {
+    public func setLinkRectImagePadding(linkRectImagePadding: Float64): MarkdownTheme {
         this.linkTheme.linkRectIconPadding = linkRectImagePadding
         return this
     }
@@ -1040,10 +1278,10 @@ public class MarkdownThemeBuilder {
      * 圆角矩形图片格式链接圆角半径
      *
      * @param linkRectImageRadius 圆角矩形图片格式链接圆角半径 - 默认6.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconRadius方法代替", since: "1.4.0"]
-    public func setLinkRectImageRadius(linkRectImageRadius: Float64): MarkdownThemeBuilder {
+    public func setLinkRectImageRadius(linkRectImageRadius: Float64): MarkdownTheme {
         this.linkTheme.linkRectIconRadius = linkRectImageRadius
         return this
     }
@@ -1052,10 +1290,10 @@ public class MarkdownThemeBuilder {
      * 圆角矩形图片格式链接左右外边距
      *
      * @param linkRectImageMargin 圆角矩形图片格式链接左右外边距 - 默认6.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconMargin方法代替", since: "1.4.0"]
-    public func setLinkRectImageMargin(linkRectImageMargin: Float64): MarkdownThemeBuilder {
+    public func setLinkRectImageMargin(linkRectImageMargin: Float64): MarkdownTheme {
         this.linkTheme.linkRectIconMargin = linkRectImageMargin
         return this
     }
@@ -1064,10 +1302,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式链接主题背景颜色
      *
      * @param linkRectToolImageBackgroundColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: Color): MarkdownTheme {
         this.linkTheme.linkRectToolIconBackgroundColor = linkRectToolImageBackgroundColor
         return this
     }
@@ -1076,10 +1314,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式链接控件背景颜色
      *
      * @param linkRectToolImageButtonBackgroundColor 空心圆角矩形图片格式链接控件背景颜色 - 默认Color.WHITE
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: Color): MarkdownTheme {
         this.linkTheme.linkRectToolIconButtonBackgroundColor = linkRectToolImageButtonBackgroundColor
         return this
     }
@@ -1088,10 +1326,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式链接文本大小
      *
      * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文本大小 - 默认14.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconTextSize方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageTextSize(linkRectToolImageTextSize: Float64): MarkdownThemeBuilder {
+    public func setLinkRectToolImageTextSize(linkRectToolImageTextSize: Float64): MarkdownTheme {
         this.linkTheme.linkRectToolIconTextSize = linkRectToolImageTextSize
         return this
     }
@@ -1100,10 +1338,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式链接控件高度
      *
      * @param linkRectToolImageHeight 空心圆角矩形图片格式链接控件高度 - 默认21.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconHeight方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageHeight(linkRectToolImageHeight: Float64): MarkdownThemeBuilder {
+    public func setLinkRectToolImageHeight(linkRectToolImageHeight: Float64): MarkdownTheme {
         this.linkTheme.linkRectToolIconHeight = linkRectToolImageHeight
         return this
     }
@@ -1112,10 +1350,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式链接左右内边距
      *
      * @param linkRectToolImagePadding 空心圆角矩形图片格式链接左右内边距 - 默认6.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconPadding方法代替", since: "1.4.0"]
-    public func setLinkRectToolImagePadding(linkRectToolImagePadding: Float64): MarkdownThemeBuilder {
+    public func setLinkRectToolImagePadding(linkRectToolImagePadding: Float64): MarkdownTheme {
         this.linkTheme.linkRectToolIconPadding = linkRectToolImagePadding
         return this
     }
@@ -1124,10 +1362,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式链接边框宽度
      *
      * @param linkRectToolImageBorderWidth 空心圆角矩形图片格式链接边框宽度 - 默认1.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconBorderWidth方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: Float64): MarkdownThemeBuilder {
+    public func setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: Float64): MarkdownTheme {
         this.linkTheme.linkRectToolIconBorderWidth = linkRectToolImageBorderWidth
         return this
     }
@@ -1136,10 +1374,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式链接分割线宽度
      *
      * @param linkRectToolImageDividingLineWidth 空心圆角矩形图片格式链接分割线宽度 - 默认1.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconDividingLineWidth方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: Float64): MarkdownThemeBuilder {
+    public func setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: Float64): MarkdownTheme {
         this.linkTheme.linkRectToolIconDividingLineWidth = linkRectToolImageDividingLineWidth
         return this
     }
@@ -1148,10 +1386,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式链接左右外边距
      *
      * @param linkRectToolImageMargin 空心圆角矩形图片格式链接左右外边距 - 默认6.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconMargin方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageMargin(linkRectToolImageMargin: Float64): MarkdownThemeBuilder {
+    public func setLinkRectToolImageMargin(linkRectToolImageMargin: Float64): MarkdownTheme {
         this.linkTheme.linkRectToolIconMargin = linkRectToolImageMargin
         return this
     }
@@ -1160,10 +1398,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式分割线和文本左边距
      *
      * @param linkRectToolImageLineLeftPadding 空心圆角矩形图片格式分割线和文本左边距 - 默认3.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconLineLeftPadding方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: Float64): MarkdownThemeBuilder {
+    public func setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: Float64): MarkdownTheme {
         this.linkTheme.linkRectToolIconLineLeftPadding = linkRectToolImageLineLeftPadding
         return this
     }
@@ -1172,10 +1410,10 @@ public class MarkdownThemeBuilder {
      * 设置空心圆角矩形图片格式分割线和文本右边距
      *
      * @param linkRectToolImageLineRightPadding 空心圆角矩形图片格式分割线和文本右边距 - 默认3.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconLineRightPadding方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: Float64): MarkdownThemeBuilder {
+    public func setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: Float64): MarkdownTheme {
         this.linkTheme.linkRectToolIconLineRightPadding = linkRectToolImageLineRightPadding
         return this
     }
@@ -1184,10 +1422,10 @@ public class MarkdownThemeBuilder {
      * 设置块引用左边距
      *
      * @param blockQuoteLeftMargin 块引用左边距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteMargin方法代替", since: "1.4.0"]
-    public func setBlockQuoteLeftMargin(blockQuoteLeftMargin: Float64): MarkdownThemeBuilder {
+    public func setBlockQuoteLeftMargin(blockQuoteLeftMargin: Float64): MarkdownTheme {
         this.blockQuoteTheme.blockQuoteMarginLeft = blockQuoteLeftMargin
         return this
     }
@@ -1196,10 +1434,10 @@ public class MarkdownThemeBuilder {
      * 设置块引用右边距
      *
      * @param blockQuoteRightMargin 块引用右边距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteMargin方法代替", since: "1.4.0"]
-    public func setBlockQuoteRightMargin(blockQuoteRightMargin: Float64): MarkdownThemeBuilder {
+    public func setBlockQuoteRightMargin(blockQuoteRightMargin: Float64): MarkdownTheme {
         this.blockQuoteTheme.blockQuoteMarginRight = blockQuoteRightMargin
         return this
     }
@@ -1208,10 +1446,10 @@ public class MarkdownThemeBuilder {
      * 设置块引用左边线条宽度
      *
      * @param blockQuoteWidth 块引用左边线条宽度 - 默认1.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteLeftBorderWidth方法代替", since: "1.4.0"]
-    public func setBlockQuoteWidth(blockQuoteWidth: Float64): MarkdownThemeBuilder {
+    public func setBlockQuoteWidth(blockQuoteWidth: Float64): MarkdownTheme {
         this.blockQuoteTheme.blockQuoteLeftBorderWidth = blockQuoteWidth
         return this
     }
@@ -1220,10 +1458,10 @@ public class MarkdownThemeBuilder {
      * 设置块引用左边线条颜色
      *
      * @param blockQuoteColor 块引用左边线条颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteLeftBorderColor方法代替", since: "1.4.0"]
-    public func setBlockQuoteColor(blockQuoteColor: Color): MarkdownThemeBuilder {
+    public func setBlockQuoteColor(blockQuoteColor: Color): MarkdownTheme {
         this.blockQuoteTheme.blockQuoteLeftBorderColor = blockQuoteColor
         return this
     }
@@ -1232,10 +1470,10 @@ public class MarkdownThemeBuilder {
      * 设置块引用背景颜色
      *
      * @param blockQuoteBackgroundColor 块引用背景颜色 - 默认0xFFEAEAEA
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteBackgroundColor方法代替", since: "1.4.0"]
-    public func setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: Color): MarkdownTheme {
         this.blockQuoteTheme.blockQuoteBackgroundColor = blockQuoteBackgroundColor
         return this
     }
@@ -1244,10 +1482,10 @@ public class MarkdownThemeBuilder {
      * 设置块引用子模块上下间距
      *
      * @param blockQuoteTopAndBottomMargins 块引用子模块上下间距 - 默认0.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteChildSpacing方法代替", since: "1.4.0"]
-    public func setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: Float64): MarkdownThemeBuilder {
+    public func setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: Float64): MarkdownTheme {
         this.blockQuoteTheme.blockQuoteChildSpacing = Int64(blockQuoteTopAndBottomMargins)
         return this
     }
@@ -1256,10 +1494,10 @@ public class MarkdownThemeBuilder {
      * 设置有序列表、无序列表、任务列表子模块上下间距
      *
      * @param blockOrderedAndBulletTopAndBottomMargins 有序列表、无序列表、任务列表子模块上下间距 - 默认0.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用OrderedListTheme.setOrderedListChildSpacing和BulletListTheme.setBulletListChildSpacing方法代替", since: "1.4.0"]
-    public func setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: Float64): MarkdownThemeBuilder {
+    public func setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: Float64): MarkdownTheme {
         this.orderedListTheme.orderedListChildSpacing = Int64(blockOrderedAndBulletTopAndBottomMargins)
         this.bulletListTheme.bulletListChildSpacing = Int64(blockOrderedAndBulletTopAndBottomMargins)
         return this
@@ -1269,10 +1507,10 @@ public class MarkdownThemeBuilder {
      * 设置有序列表、无序列表、任务列表左边距
      *
      * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用OrderedListTheme.setOrderedListMargin和BulletListTheme.setBulletListMargin方法代替", since: "1.4.0"]
-    public func setBlockLeftMargin(blockLeftMargin: Float64): MarkdownThemeBuilder {
+    public func setBlockLeftMargin(blockLeftMargin: Float64): MarkdownTheme {
         this.orderedListTheme.orderedListMarginLeft = blockLeftMargin
         this.bulletListTheme.bulletListMarginLeft = blockLeftMargin
         return this
@@ -1282,10 +1520,10 @@ public class MarkdownThemeBuilder {
      * 设置有序列表、无序列表、任务列表右边距
      *
      * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用OrderedListTheme.setOrderedListMargin和BulletListTheme.setBulletListMargin方法代替", since: "1.4.0"]
-    public func setBlockRightMargin(blockRightMargin: Float64): MarkdownThemeBuilder {
+    public func setBlockRightMargin(blockRightMargin: Float64): MarkdownTheme {
         this.orderedListTheme.orderedListMarginRight = blockRightMargin
         this.bulletListTheme.bulletListMarginRight = blockRightMargin
         return this
@@ -1295,10 +1533,10 @@ public class MarkdownThemeBuilder {
      * 设置有序列表前缀文本是否加粗
      *
      * @param orderedListItemPrefixBold 有序列表前缀文本是否加粗 - true:加粗;false:不加粗。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用OrderedListTheme.setOrderedListMarkerTextFontWeight方法代替", since: "1.4.0"]
-    public func setOrderedListItemPrefixBold(orderedListItemPrefixBold: Bool): MarkdownThemeBuilder {
+    public func setOrderedListItemPrefixBold(orderedListItemPrefixBold: Bool): MarkdownTheme {
         if (orderedListItemPrefixBold) {
             this.orderedListTheme.orderedListMarkerTextFontWeight = FontWeight.W600
         }
@@ -1309,10 +1547,10 @@ public class MarkdownThemeBuilder {
      * 设置有序列表前缀文本颜色
      *
      * @param orderedListItemColor 有序列表前缀文本颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用OrderedListTheme.setOrderedListMarkerTextFontColor方法代替", since: "1.4.0"]
-    public func setOrderedListItemColor(orderedListItemColor: Color): MarkdownThemeBuilder {
+    public func setOrderedListItemColor(orderedListItemColor: Color): MarkdownTheme {
         this.orderedListTheme.orderedListMarkerTextFontColor = orderedListItemColor
         return this
     }
@@ -1321,10 +1559,10 @@ public class MarkdownThemeBuilder {
      * 设置有序列表前缀文本大小
      *
      * @param orderedListItemSize 有序列表前缀文本大小 - 默认14.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用OrderedListTheme.setOrderedListMarkerTextFontSize方法代替", since: "1.4.0"]
-    public func setOrderedListItemSize(orderedListItemSize: Float64): MarkdownThemeBuilder {
+    public func setOrderedListItemSize(orderedListItemSize: Float64): MarkdownTheme {
         this.orderedListTheme.orderedListMarkerTextFontSize = orderedListItemSize
         return this
     }
@@ -1333,10 +1571,10 @@ public class MarkdownThemeBuilder {
      * 设置有序列表前缀文本行高
      *
      * @param orderedListItemLineHeight 有序列表前缀文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用OrderedListTheme.setOrderedListMarkerTextLineHeight方法代替", since: "1.4.0"]
-    public func setOrderedListItemLineHeight(orderedListItemLineHeight: Float64): MarkdownThemeBuilder {
+    public func setOrderedListItemLineHeight(orderedListItemLineHeight: Float64): MarkdownTheme {
         this.orderedListTheme.orderedListMarkerTextLineHeight = orderedListItemLineHeight
         return this
     }
@@ -1345,10 +1583,10 @@ public class MarkdownThemeBuilder {
      * 设置无序列表前缀是否为实心圆型
      *
      * @param bulletListItemCircle 无序列表前缀是否为实心圆型 - 默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BulletListTheme.setBulletListBulletIsCircle方法代替", since: "1.4.0"]
-    public func setBulletListItemCircle(bulletListItemCircle: Bool): MarkdownThemeBuilder {
+    public func setBulletListItemCircle(bulletListItemCircle: Bool): MarkdownTheme {
         this.bulletListTheme.bulletListBulletIsCircle = bulletListItemCircle
         return this
     }
@@ -1357,10 +1595,10 @@ public class MarkdownThemeBuilder {
      * 设置无序列表前缀文本颜色
      *
      * @param bulletListItemColor 无序列表前缀文本颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BulletListTheme.setBulletListBulletTextFontColor方法代替", since: "1.4.0"]
-    public func setBulletListItemColor(bulletListItemColor: Color): MarkdownThemeBuilder {
+    public func setBulletListItemColor(bulletListItemColor: Color): MarkdownTheme {
         this.bulletListTheme.bulletListBulletTextFontColor = bulletListItemColor
         return this
     }
@@ -1369,10 +1607,10 @@ public class MarkdownThemeBuilder {
      * 设置无序列表前缀文本大小
      *
      * @param bulletListItemSize 无序列表前缀文本大小 - 默认4.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BulletListTheme.setBulletListBulletTextFontSize方法代替", since: "1.4.0"]
-    public func setBulletListItemSize(bulletListItemSize: Float64): MarkdownThemeBuilder {
+    public func setBulletListItemSize(bulletListItemSize: Float64): MarkdownTheme {
         this.bulletListTheme.bulletListBulletTextFontSize = bulletListItemSize
         return this
     }
@@ -1381,10 +1619,10 @@ public class MarkdownThemeBuilder {
      * 设置无序列表前缀文本行高
      *
      * @param bulletListItemLineHeight 无序列表前缀文本行高 - 默认18.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BulletListTheme.setBulletListBulletTextLineHeight方法代替", since: "1.4.0"]
-    public func setBulletListItemLineHeight(bulletListItemLineHeight: Float64): MarkdownThemeBuilder {
+    public func setBulletListItemLineHeight(bulletListItemLineHeight: Float64): MarkdownTheme {
         this.bulletListTheme.bulletListBulletTextLineHeight = bulletListItemLineHeight
         return this
     }
@@ -1393,10 +1631,10 @@ public class MarkdownThemeBuilder {
      * 设置任务列表选择框宽高
      *
      * @param taskListItemLength 任务列表选择框宽高 - 默认15.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BulletListTheme.setBulletListCheckboxWidth和setBulletListCheckboxHeight方法代替", since: "1.4.0"]
-    public func setTaskListItemLength(taskListItemLength: Float64): MarkdownThemeBuilder {
+    public func setTaskListItemLength(taskListItemLength: Float64): MarkdownTheme {
         this.bulletListTheme.bulletListCheckboxWidth = taskListItemLength
         this.bulletListTheme.bulletListCheckboxHeight = taskListItemLength
         return this
@@ -1406,10 +1644,10 @@ public class MarkdownThemeBuilder {
      * 设置内联代码文本颜色
      *
      * @param codeTextColor 内联代码文本颜色 - 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用InlineCodeTheme.setInlineCodeTextFontColor方法代替", since: "1.4.0"]
-    public func setCodeTextColor(codeTextColor: Color): MarkdownThemeBuilder {
+    public func setCodeTextColor(codeTextColor: Color): MarkdownTheme {
         this.inlineCodeTheme.inlineCodeTextFontColor = codeTextColor
         return this
     }
@@ -1418,10 +1656,10 @@ public class MarkdownThemeBuilder {
      * 设置内联代码背景颜色
      *
      * @param codeBackgroundColor 内联代码背景颜色 - 默认0xFFEAEAEA
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用InlineCodeTheme.setInlineCodeTextBackgroundColor方法代替", since: "1.4.0"]
-    public func setCodeBackgroundColor(codeBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setCodeBackgroundColor(codeBackgroundColor: Color): MarkdownTheme {
         this.inlineCodeTheme.inlineCodeTextBackgroundColor = codeBackgroundColor
         return this
     }
@@ -1430,10 +1668,10 @@ public class MarkdownThemeBuilder {
      * 设置内联代码文本大小
      *
      * @param codeTextSize 内联代码文本大小 - 默认13.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用InlineCodeTheme.setInlineCodeTextFontSize方法代替", since: "1.4.0"]
-    public func setCodeTextSize(codeTextSize: Float64): MarkdownThemeBuilder {
+    public func setCodeTextSize(codeTextSize: Float64): MarkdownTheme {
         this.inlineCodeTheme.inlineCodeTextFontSize = codeTextSize
         return this
     }
@@ -1442,10 +1680,10 @@ public class MarkdownThemeBuilder {
      * 设置内联代码文本字体
      *
      * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用InlineCodeTheme.setInlineCodeTextFontFamily方法代替", since: "1.4.0"]
-    public func setCodeTypeface(codeTypeface: String): MarkdownThemeBuilder {
+    public func setCodeTypeface(codeTypeface: String): MarkdownTheme {
        this.inlineCodeTheme.inlineCodeTextFontFamily = codeTypeface
         return this
     }
@@ -1454,10 +1692,10 @@ public class MarkdownThemeBuilder {
      * 设置是否格式化代码块内容
      *
      * @param isCodeFormat 是否格式化代码块内容 - true:格式化代码块;false:不格式化代码块。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockIsCodeFormat方法代替", since: "1.4.0"]
-    public func setIsCodeFormat(isCodeFormat: Bool): MarkdownThemeBuilder {
+    public func setIsCodeFormat(isCodeFormat: Bool): MarkdownTheme {
         this.codeBlockTheme.codeBlockIsCodeFormat = isCodeFormat
         return this
     }
@@ -1466,10 +1704,10 @@ public class MarkdownThemeBuilder {
      * 设置codeformat是否用制表符
      *
      * @param useTab true-使用,false-不使用,默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockUseTab方法代替", since: "1.4.0"]
-    public func setUseTab(useTab: Bool): MarkdownThemeBuilder {
+    public func setUseTab(useTab: Bool): MarkdownTheme {
         this.codeBlockTheme.codeBlockUseTab = useTab
         return this
     }
@@ -1478,10 +1716,10 @@ public class MarkdownThemeBuilder {
      * 设置codeformat空格缩进数量
      *
      * @param indentWidth 空格缩进数量,默认4空格
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockIndentWidth方法代替", since: "1.4.0"]
-    public func setIndentWidth(indentWidth: Int64): MarkdownThemeBuilder {
+    public func setIndentWidth(indentWidth: Int64): MarkdownTheme {
         this.codeBlockTheme.codeBlockIndentWidth = indentWidth
         return this
     }
@@ -1490,11 +1728,35 @@ public class MarkdownThemeBuilder {
      * 设置围栏代码块代码高亮是否同步解析
      *
      * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockParserSync方法代替", since: "1.4.0"]
-    public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): MarkdownThemeBuilder {
+    public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): MarkdownTheme {
         this.codeBlockTheme.codeBlockParserSync = isCodeBlockParserSync
+        return this
+    }
+
+    /**
+     * 设置代码块是否暗色主题
+     *
+     * @param isDark 是否暗色
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用CodeBlockTheme.setCodeBlockIsDark方法代替", since: "1.4.0"]
+    public func setCodeBlockIsDark(isDark: Bool): MarkdownTheme {
+        this.codeBlockTheme.setCodeBlockIsDark(isDark)
+        return this
+    }
+
+    /**
+     * 设置代码块是否暗色主题
+     *
+     * @param isDark 是否暗色
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用CodeBlockTheme.setCodeBlockIsDark方法代替", since: "1.4.0"]
+    public func setIsDark(isDark: Bool): MarkdownTheme {
+        this.codeBlockTheme.setCodeBlockIsDark(isDark)
         return this
     }
 
@@ -1502,10 +1764,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码类型文本颜色
      *
      * @param codeBlockTypeTextColor 代码块代码类型文本颜色 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockTypeTextFontColor方法代替", since: "1.4.0"]
-    public func setCodeBlockTypeTextColor(codeBlockTypeTextColor: Color): MarkdownThemeBuilder {
+    public func setCodeBlockTypeTextColor(codeBlockTypeTextColor: Color): MarkdownTheme {
         this.codeBlockTheme.codeBlockTypeTextFontColor = codeBlockTypeTextColor
         return this
     }
@@ -1514,10 +1776,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码类型文本
      *
      * @param codeBlockTypeTextStr 代码块代码类型文本 - 默认""
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockTypeText方法代替", since: "1.4.0"]
-    public func setCodeBlockTypeTextStr(codeBlockTypeTextStr: String): MarkdownThemeBuilder {
+    public func setCodeBlockTypeTextStr(codeBlockTypeTextStr: String): MarkdownTheme {
         this.codeBlockTheme.codeBlockTypeText = codeBlockTypeTextStr
         return this
     }
@@ -1526,10 +1788,10 @@ public class MarkdownThemeBuilder {
      * 设置代码类型和代码块距离
      *
      * @param codeBlockTypeTextPadding 代码类型和代码块距离 - 默认0.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockTitleLayoutMarginBottom方法代替", since: "1.4.0"]
-    public func setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: Float64): MarkdownThemeBuilder {
+    public func setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockTitleLayoutMarginBottom = codeBlockTypeTextPadding
         return this
     }
@@ -1538,10 +1800,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块复制、全屏图片文本是否显示
      *
      * @param codeBlockIconTextHide 代码块复制、全屏图片文本是否显示 - true:显示;false:不显示。默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockCopyTextIsShow和setCodeBlockFullScreenTextIsShow方法代替", since: "1.4.0"]
-    public func setCodeBlockIconTextHide(codeBlockIconTextHide: Bool): MarkdownThemeBuilder {
+    public func setCodeBlockIconTextHide(codeBlockIconTextHide: Bool): MarkdownTheme {
         this.codeBlockTheme.codeBlockCopyTextIsShow = codeBlockIconTextHide
         this.codeBlockTheme.codeBlockFullScreenTextIsShow = codeBlockIconTextHide
         return this
@@ -1551,10 +1813,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码行号是否显示
      *
      * @param codeBlockLineNumberHide 代码块代码行号是否显示 - true:显示;false:不显示。默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockLineNumberIsShow方法代替", since: "1.4.0"]
-    public func setCodeBlockLineNumberHide(codeBlockLineNumberHide: Bool): MarkdownThemeBuilder {
+    public func setCodeBlockLineNumberHide(codeBlockLineNumberHide: Bool): MarkdownTheme {
         this.codeBlockTheme.codeBlockLineNumberIsShow = codeBlockLineNumberHide
         return this
     }
@@ -1563,10 +1825,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块背景颜色
      *
      * @param codeBlockBackgroundColor 代码块背景颜色 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockBackgroundColor方法代替", since: "1.4.0"]
-    public func setCodeBlockBackgroundColor(codeBlockBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setCodeBlockBackgroundColor(codeBlockBackgroundColor: Color): MarkdownTheme {
         this.codeBlockTheme.codeBlockBackgroundColor = codeBlockBackgroundColor
         return this
     }
@@ -1575,10 +1837,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块左边距
      *
      * @param codeMultilineMargin 代码块左边距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setPadding方法代替", since: "1.4.0"]
-    public func setCodeMultilineMargin(codeMultilineMargin: Float64): MarkdownThemeBuilder {
+    public func setCodeMultilineMargin(codeMultilineMargin: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockPaddingLeft = codeMultilineMargin
         return this
     }
@@ -1587,10 +1849,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块右边距
      *
      * @param codeMultilineRightMargin 代码块右边距 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setPadding方法代替", since: "1.4.0"]
-    public func setCodeMultilineRightMargin(codeMultilineRightMargin: Float64): MarkdownThemeBuilder {
+    public func setCodeMultilineRightMargin(codeMultilineRightMargin: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockPaddingRight = codeMultilineRightMargin
         return this
     }
@@ -1599,10 +1861,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码文本颜色
      *
      * @param codeBlockTextColor 代码块代码文本颜色 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockTextFontColor方法代替", since: "1.4.0"]
-    public func setCodeBlockTextColor(codeBlockTextColor: Color): MarkdownThemeBuilder {
+    public func setCodeBlockTextColor(codeBlockTextColor: Color): MarkdownTheme {
         this.codeBlockTheme.codeBlockTextFontColor = codeBlockTextColor
         return this
     }
@@ -1611,10 +1873,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块字体
      *
      * @param codeBlockTypeface 代码块字体 - 默认"HarmonyOS Sans"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockTextFontFamily方法代替", since: "1.4.0"]
-    public func setCodeBlockTypeface(codeBlockTypeface: String): MarkdownThemeBuilder {
+    public func setCodeBlockTypeface(codeBlockTypeface: String): MarkdownTheme {
         this.codeBlockTheme.codeBlockTextFontFamily = codeBlockTypeface
         return this
     }
@@ -1623,10 +1885,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码文本大小
      *
      * @param codeBlockTextSize 代码块代码文本大小 -  默认13.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockTextFontSize方法代替", since: "1.4.0"]
-    public func setCodeBlockTextSize(codeBlockTextSize: Float64): MarkdownThemeBuilder {
+    public func setCodeBlockTextSize(codeBlockTextSize: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockTextFontSize = codeBlockTextSize
         return this
     }
@@ -1635,10 +1897,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码文本行高
      *
      * @param codeBlockLineHeight 代码块代码文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockTextLineHeight方法代替", since: "1.4.0"]
-    public func setCodeBlockLineHeight(codeBlockLineHeight: Float64): MarkdownThemeBuilder {
+    public func setCodeBlockLineHeight(codeBlockLineHeight: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockTextLineHeight = codeBlockLineHeight
         return this
     }
@@ -1647,10 +1909,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块控件圆角大小
      *
      * @param codeBlockRadius 代码块控件圆角大小 - 默认8.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockRadius方法代替", since: "1.4.0"]
-    public func setCodeBlockRadius(codeBlockRadius: Float64): MarkdownThemeBuilder {
+    public func setCodeBlockRadius(codeBlockRadius: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockRadiusTopLeft = codeBlockRadius
         this.codeBlockTheme.codeBlockRadiusTopRight = codeBlockRadius
         this.codeBlockTheme.codeBlockRadiusBottomLeft = codeBlockRadius
@@ -1662,10 +1924,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码全屏按钮是否显示
      *
      * @param isCodeFullScreen 代码块代码全屏按钮是否显示 - true:显示;false:不显示。默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockFullScreenButtonIsShow方法代替", since: "1.4.0"]
-    public func setIsCodeFullScreen(isCodeFullScreen: Bool): MarkdownThemeBuilder {
+    public func setIsCodeFullScreen(isCodeFullScreen: Bool): MarkdownTheme {
         this.codeBlockTheme.codeBlockFullScreenButtonIsShow = isCodeFullScreen
         return this
     }
@@ -1674,10 +1936,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码全屏、代码复制按钮宽高
      *
      * @param iconWidthAndHeight 代码块代码全屏、代码复制按钮宽高 - 默认24.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme相关set方法代替", since: "1.4.0"]
-    public func setIconWidthAndHeight(iconWidthAndHeight: Float64): MarkdownThemeBuilder {
+    public func setIconWidthAndHeight(iconWidthAndHeight: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockCopyIconWidth = iconWidthAndHeight
         this.codeBlockTheme.codeBlockCopyIconHeight = iconWidthAndHeight
         this.codeBlockTheme.codeBlockFullScreenIconWidth = iconWidthAndHeight
@@ -1689,10 +1951,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码全屏按钮默认图标
      *
      * @param codeFullScreenIcon 代码块代码全屏按钮默认图标 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockFullScreenIcon方法代替", since: "1.4.0"]
-    public func setCodeFullScreenIcon(codeFullScreenIcon: AppResource): MarkdownThemeBuilder {
+    public func setCodeFullScreenIcon(codeFullScreenIcon: AppResource): MarkdownTheme {
         this.codeBlockTheme.codeBlockFullScreenIcon = codeFullScreenIcon
         return this
     }
@@ -1701,10 +1963,10 @@ public class MarkdownThemeBuilder {
      * 设置代码块代码复制按钮默认图标
      *
      * @param codeCopyIcon 代码块代码复制按钮默认图标 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockCopyIcon方法代替", since: "1.4.0"]
-    public func setCodeCopyIcon(codeCopyIcon: AppResource): MarkdownThemeBuilder {
+    public func setCodeCopyIcon(codeCopyIcon: AppResource): MarkdownTheme {
         this.codeBlockTheme.codeBlockCopyIcon = codeCopyIcon
         return this
     }
@@ -1713,10 +1975,10 @@ public class MarkdownThemeBuilder {
      * 设置组合代码未选中标题字体大小
      *
      * @param codeListTitleTextSize 组合代码未选中标题字体大小 - 默认13.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockListTitleTextSize方法代替", since: "1.4.0"]
-    public func setCodeListTitleTextSize(codeListTitleTextSize: Float64): MarkdownThemeBuilder {
+    public func setCodeListTitleTextSize(codeListTitleTextSize: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockListTitleTextSize = codeListTitleTextSize
         return this
     }
@@ -1725,10 +1987,10 @@ public class MarkdownThemeBuilder {
      * 设置组合代码选中标题字体大小
      *
      * @param codeListTitleSelectTextSize 组合代码选中标题字体大小 - 默认13.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockListTitleSelectTextSize方法代替", since: "1.4.0"]
-    public func setCodeListTitleSelectTextSize(codeListTitleSelectTextSize: Float64): MarkdownThemeBuilder {
+    public func setCodeListTitleSelectTextSize(codeListTitleSelectTextSize: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockListTitleSelectTextSize = codeListTitleSelectTextSize
         return this
     }
@@ -1737,10 +1999,10 @@ public class MarkdownThemeBuilder {
      * 设置组合代码选中标题文本颜色
      *
      * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认Color.RED
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockListTitleSelectTextColor方法代替", since: "1.4.0"]
-    public func setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: Color): MarkdownThemeBuilder {
+    public func setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: Color): MarkdownTheme {
         this.codeBlockTheme.codeBlockListTitleSelectTextColor = codeListTitleSelectTextColor
         return this
     }
@@ -1749,10 +2011,10 @@ public class MarkdownThemeBuilder {
      * 设置组合代码未选中标题文本颜色
      *
      * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockListTitleUnselectTextColor方法代替", since: "1.4.0"]
-    public func setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: Color): MarkdownThemeBuilder {
+    public func setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: Color): MarkdownTheme {
         this.codeBlockTheme.codeBlockListTitleUnselectTextColor = codeListTitleUnSelectTextColor
         return this
     }
@@ -1761,10 +2023,10 @@ public class MarkdownThemeBuilder {
      * 设置组合代码选中标题背景颜色
      *
      * @param codeListTitleSelectBackgroundColor 组合代码选中标题背景颜色 - 默认Color.GRAY
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockListTitleSelectBackgroundColor方法代替", since: "1.4.0"]
-    public func setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: Color): MarkdownTheme {
         this.codeBlockTheme.codeBlockListTitleSelectBackgroundColor = codeListTitleSelectBackgroundColor
         return this
     }
@@ -1773,10 +2035,10 @@ public class MarkdownThemeBuilder {
      * 设置组合代码未选中标题背景颜色
      *
      * @param codeListTitleUnSelectBackgroundColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockListTitleUnselectBackgroundColor方法代替", since: "1.4.0"]
-    public func setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: Color): MarkdownTheme {
         this.codeBlockTheme.codeBlockListTitleUnselectBackgroundColor = codeListTitleUnSelectBackgroundColor
         return this
     }
@@ -1785,10 +2047,10 @@ public class MarkdownThemeBuilder {
      * 设置是否单独代码块显示
      *
      * @param isSeparateCodeBlock 是否单独代码块显示 - true:显示;false:不显示。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockIsSeparate方法代替", since: "1.4.0"]
-    public func setIsSeparateCodeBlock(isSeparateCodeBlock: Bool): MarkdownThemeBuilder {
+    public func setIsSeparateCodeBlock(isSeparateCodeBlock: Bool): MarkdownTheme {
         this.codeBlockTheme.codeBlockIsSeparate = isSeparateCodeBlock
         return this
     }
@@ -1797,10 +2059,10 @@ public class MarkdownThemeBuilder {
      * 设置单独代码块行号宽度
      *
      * @param separateCodeBlockWidth 单独代码块行号宽度 - 默认50.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockSeparateWidth方法代替", since: "1.4.0"]
-    public func setSeparateCodeBlockWidth(separateCodeBlockWidth: Float64): MarkdownThemeBuilder {
+    public func setSeparateCodeBlockWidth(separateCodeBlockWidth: Float64): MarkdownTheme {
         this.codeBlockTheme.codeBlockSeparateWidth = separateCodeBlockWidth
         return this
     }
@@ -1809,10 +2071,10 @@ public class MarkdownThemeBuilder {
      * 设置单独代码块是否居底显示
      *
      * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockSeparateIsBottom方法代替", since: "1.4.0"]
-    public func setSeparateCodeIsBottom(separateCodeIsBottom: Bool): MarkdownThemeBuilder {
+    public func setSeparateCodeIsBottom(separateCodeIsBottom: Bool): MarkdownTheme {
         this.codeBlockTheme.codeBlockSeparateIsBottom = separateCodeIsBottom
         return this
     }
@@ -1821,10 +2083,10 @@ public class MarkdownThemeBuilder {
      * 设置H1、H2标题下分割线高度
      *
      * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setUnderlineHeightForAllHeading方法代替", since: "1.4.0"]
-    public func setHeadingBreakHeight(headingBreakHeight: Float64): MarkdownThemeBuilder {
+    public func setHeadingBreakHeight(headingBreakHeight: Float64): MarkdownTheme {
         this.headingTheme.heading1UnderlineHeight = headingBreakHeight
         this.headingTheme.heading2UnderlineHeight = headingBreakHeight
         return this
@@ -1834,10 +2096,10 @@ public class MarkdownThemeBuilder {
      * 设置标题文本字体
      *
      * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontFamilyForAllHeading方法代替", since: "1.4.0"]
-    public func setHeadingTypeface(headingTypeface: String): MarkdownThemeBuilder {
+    public func setHeadingTypeface(headingTypeface: String): MarkdownTheme {
         this.headingTheme.heading1TextFontFamily = headingTypeface
         this.headingTheme.heading2TextFontFamily = headingTypeface
         this.headingTheme.heading3TextFontFamily = headingTypeface
@@ -1851,10 +2113,10 @@ public class MarkdownThemeBuilder {
      * 设置标题模块上间距
      *
      * @param headingTopMargins 标题模块上间距 - 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setMarginForAllHeading或setMarginForEachHeading方法代替", since: "1.4.0"]
-    public func setHeadingTopMargins(headingTopMargins: Float64): MarkdownThemeBuilder {
+    public func setHeadingTopMargins(headingTopMargins: Float64): MarkdownTheme {
         this.headingTheme.heading1MarginTop = headingTopMargins
         this.headingTheme.heading2MarginTop = headingTopMargins
         this.headingTheme.heading3MarginTop = headingTopMargins
@@ -1868,10 +2130,10 @@ public class MarkdownThemeBuilder {
      * 设置标题模块下间距
      *
      * @param headingBottomMargins 标题模块下间距 - 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setMarginForAllHeading或setMarginForEachHeading方法代替", since: "1.4.0"]
-    public func setHeadingBottomMargins(headingBottomMargins: Float64): MarkdownThemeBuilder {
+    public func setHeadingBottomMargins(headingBottomMargins: Float64): MarkdownTheme {
         this.headingTheme.heading1MarginBottom = headingBottomMargins
         this.headingTheme.heading2MarginBottom = headingBottomMargins
         this.headingTheme.heading3MarginBottom = headingBottomMargins
@@ -1885,10 +2147,10 @@ public class MarkdownThemeBuilder {
      * 设置标题文本大小数组
      *
      * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontSizeForEachHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<Float64>): MarkdownThemeBuilder {
+    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<Float64>): MarkdownTheme {
         this.headingTheme.heading1TextFontSize = headingTextSizeMultipliers[0]
         this.headingTheme.heading2TextFontSize = headingTextSizeMultipliers[1]
         this.headingTheme.heading3TextFontSize = headingTextSizeMultipliers[2]
@@ -1902,10 +2164,10 @@ public class MarkdownThemeBuilder {
      * 设置一级标题文本大小
      *
      * @param headingTextSize1 一级标题文本大小 - 默认20.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontSizeForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextSize1(headingTextSize1: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextSize1(headingTextSize1: Float64): MarkdownTheme {
         this.headingTheme.heading1TextFontSize = headingTextSize1
         return this
     }
@@ -1914,10 +2176,10 @@ public class MarkdownThemeBuilder {
      * 设置二级标题文本大小
      *
      * @param headingTextSize2 二级标题文本大小 - 默认17.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontSizeForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextSize2(headingTextSize2: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextSize2(headingTextSize2: Float64): MarkdownTheme {
         this.headingTheme.heading2TextFontSize = headingTextSize2
         return this
     }
@@ -1926,10 +2188,10 @@ public class MarkdownThemeBuilder {
      * 设置三级标题文本大小
      *
      * @param headingTextSize3 三级标题文本大小 - 默认16.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontSizeForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextSize3(headingTextSize3: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextSize3(headingTextSize3: Float64): MarkdownTheme {
         this.headingTheme.heading3TextFontSize = headingTextSize3
         return this
     }
@@ -1938,10 +2200,10 @@ public class MarkdownThemeBuilder {
      * 设置四级标题文本大小
      *
      * @param headingTextSize4 四级标题文本大小 - 默认15.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontSizeForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextSize4(headingTextSize4: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextSize4(headingTextSize4: Float64): MarkdownTheme {
         this.headingTheme.heading4TextFontSize = headingTextSize4
         return this
     }
@@ -1950,10 +2212,10 @@ public class MarkdownThemeBuilder {
      * 设置五级标题文本大小
      *
      * @param headingTextSize5 五级标题文本大小 - 默认15.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontSizeForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextSize5(headingTextSize5: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextSize5(headingTextSize5: Float64): MarkdownTheme {
         this.headingTheme.heading5TextFontSize = headingTextSize5
         return this
     }
@@ -1962,10 +2224,10 @@ public class MarkdownThemeBuilder {
      * 设置六级标题文本大小
      *
      * @param headingTextSize6 六级标题文本大小 - 默认13.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontSizeForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextSize6(headingTextSize6: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextSize6(headingTextSize6: Float64): MarkdownTheme {
         this.headingTheme.heading6TextFontSize = headingTextSize6
         return this
     }
@@ -1974,10 +2236,10 @@ public class MarkdownThemeBuilder {
      * 设置标题文本颜色
      *
      * @param headingTextColor 标题文本颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextFontColorForAllHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextColor(headingTextColor: Color): MarkdownThemeBuilder {
+    public func setHeadingTextColor(headingTextColor: Color): MarkdownTheme {
         this.headingTheme.heading1TextFontColor = headingTextColor
         this.headingTheme.heading2TextFontColor = headingTextColor
         this.headingTheme.heading3TextFontColor = headingTextColor
@@ -1991,10 +2253,10 @@ public class MarkdownThemeBuilder {
      * 设置H1、H2标题下分割线颜色
      *
      * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setUnderlineColorForAllHeading方法代替", since: "1.4.0"]
-    public func setHeadingBreakColor(headingBreakColor: Color): MarkdownThemeBuilder {
+    public func setHeadingBreakColor(headingBreakColor: Color): MarkdownTheme {
         this.headingTheme.heading1UnderlineColor = headingBreakColor
         this.headingTheme.heading2UnderlineColor = headingBreakColor
         return this
@@ -2006,7 +2268,7 @@ public class MarkdownThemeBuilder {
      * @param headingTextColor1 一级标题文本颜色
      */
     @Deprecated["用HeadingTheme.setTextFontColorForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextColor1(headingTextColor1: Color): MarkdownThemeBuilder {
+    public func setHeadingTextColor1(headingTextColor1: Color): MarkdownTheme {
         this.headingTheme.heading1TextFontColor = headingTextColor1
         return this
     }
@@ -2015,10 +2277,10 @@ public class MarkdownThemeBuilder {
      * 设置H1标题下分割线颜色
      *
      * @param headingBreakColor H1标题下分割线颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setUnderlineColorForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingBreakColor1(headingBreakColor1: Color): MarkdownThemeBuilder {
+    public func setHeadingBreakColor1(headingBreakColor1: Color): MarkdownTheme {
         this.headingTheme.heading1UnderlineColor = headingBreakColor1
         return this
     }
@@ -2029,7 +2291,7 @@ public class MarkdownThemeBuilder {
      * @param headingTextColor2 二级标题文本颜色
      */
     @Deprecated["用HeadingTheme.setTextFontColorForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextColor2(headingTextColor2: Color): MarkdownThemeBuilder {
+    public func setHeadingTextColor2(headingTextColor2: Color): MarkdownTheme {
         this.headingTheme.heading2TextFontColor = headingTextColor2
         return this
     }
@@ -2038,10 +2300,10 @@ public class MarkdownThemeBuilder {
      * 设置H2标题下分割线颜色
      *
      * @param headingBreakColor2 H2标题下分割线颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setUnderlineColorForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingBreakColor2(headingBreakColor2: Color): MarkdownThemeBuilder {
+    public func setHeadingBreakColor2(headingBreakColor2: Color): MarkdownTheme {
         this.headingTheme.heading2UnderlineColor = headingBreakColor2
         return this
     }
@@ -2052,7 +2314,7 @@ public class MarkdownThemeBuilder {
      * @param headingTextColor3 三级标题文本颜色
      */
     @Deprecated["用HeadingTheme.setTextFontColorForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextColor3(headingTextColor3: Color): MarkdownThemeBuilder {
+    public func setHeadingTextColor3(headingTextColor3: Color): MarkdownTheme {
         this.headingTheme.heading3TextFontColor = headingTextColor3
         return this
     }
@@ -2063,7 +2325,7 @@ public class MarkdownThemeBuilder {
      * @param headingTextColor4 四级标题文本颜色
      */
     @Deprecated["用HeadingTheme.setTextFontColorForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextColor4(headingTextColor4: Color): MarkdownThemeBuilder {
+    public func setHeadingTextColor4(headingTextColor4: Color): MarkdownTheme {
         this.headingTheme.heading4TextFontColor = headingTextColor4
         return this
     }
@@ -2074,7 +2336,7 @@ public class MarkdownThemeBuilder {
      * @param headingTextColor5 五级标题文本颜色
      */
     @Deprecated["用HeadingTheme.setTextFontColorForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextColor5(headingTextColor5: Color): MarkdownThemeBuilder {
+    public func setHeadingTextColor5(headingTextColor5: Color): MarkdownTheme {
         this.headingTheme.heading5TextFontColor = headingTextColor5
         return this
     }
@@ -2085,7 +2347,7 @@ public class MarkdownThemeBuilder {
      * @param headingTextColor6 六级标题文本颜色
      */
     @Deprecated["用HeadingTheme.setTextFontColorForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextColor6(headingTextColor6: Color): MarkdownThemeBuilder {
+    public func setHeadingTextColor6(headingTextColor6: Color): MarkdownTheme {
         this.headingTheme.heading6TextFontColor = headingTextColor6
         return this
     }
@@ -2094,10 +2356,10 @@ public class MarkdownThemeBuilder {
      * 设置标题文本字间距
      *
      * @param headingTextWordSpace 标题文本字间距 - 默认0.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextLetterSpacingForAllHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextWordSpace(headingTextWordSpace: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextWordSpace(headingTextWordSpace: Float64): MarkdownTheme {
         this.headingTheme.heading1TextLetterSpacing = headingTextWordSpace
         this.headingTheme.heading2TextLetterSpacing = headingTextWordSpace
         this.headingTheme.heading3TextLetterSpacing = headingTextWordSpace
@@ -2111,10 +2373,10 @@ public class MarkdownThemeBuilder {
      * 设置一级标题文本行高
      *
      * @param headingTextLineHeight1 一级标题文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextLineHeightForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextLineHeight1(headingTextLineHeight1: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextLineHeight1(headingTextLineHeight1: Float64): MarkdownTheme {
         this.headingTheme.heading1TextLineHeight = headingTextLineHeight1
         return this
     }
@@ -2123,10 +2385,10 @@ public class MarkdownThemeBuilder {
      * 设置二级标题文本行高
      *
      * @param headingTextLineHeight2 二级标题文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextLineHeightForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextLineHeight2(headingTextLineHeight2: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextLineHeight2(headingTextLineHeight2: Float64): MarkdownTheme {
         this.headingTheme.heading2TextLineHeight = headingTextLineHeight2
         return this
     }
@@ -2135,10 +2397,10 @@ public class MarkdownThemeBuilder {
      * 设置三级标题文本行高
      *
      * @param headingTextLineHeight3 三级标题文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextLineHeightForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextLineHeight3(headingTextLineHeight3: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextLineHeight3(headingTextLineHeight3: Float64): MarkdownTheme {
         this.headingTheme.heading3TextLineHeight = headingTextLineHeight3
         return this
     }
@@ -2147,10 +2409,10 @@ public class MarkdownThemeBuilder {
      * 设置四级标题文本行高
      *
      * @param headingTextLineHeight4 四级标题文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextLineHeightForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextLineHeight4(headingTextLineHeight4: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextLineHeight4(headingTextLineHeight4: Float64): MarkdownTheme {
         this.headingTheme.heading4TextLineHeight = headingTextLineHeight4
         return this
     }
@@ -2159,10 +2421,10 @@ public class MarkdownThemeBuilder {
      * 设置五级标题文本行高
      *
      * @param headingTextLineHeight5 五级标题文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextLineHeightForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextLineHeight5(headingTextLineHeight5: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextLineHeight5(headingTextLineHeight5: Float64): MarkdownTheme {
         this.headingTheme.heading5TextLineHeight = headingTextLineHeight5
         return this
     }
@@ -2171,10 +2433,10 @@ public class MarkdownThemeBuilder {
      * 设置六级标题文本行高
      *
      * @param headingTextLineHeight1 六级标题文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextLineHeightForDesignateHeading方法代替", since: "1.4.0"]
-    public func setHeadingTextLineHeight6(headingTextLineHeight6: Float64): MarkdownThemeBuilder {
+    public func setHeadingTextLineHeight6(headingTextLineHeight6: Float64): MarkdownTheme {
         this.headingTheme.heading6TextLineHeight = headingTextLineHeight6
         return this
     }
@@ -2183,10 +2445,10 @@ public class MarkdownThemeBuilder {
      * 设置段落模块上间距
      *
      * @param paragraphTopMargins 段落模块上间距 - 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ParagraphTheme.setParagraphMargin方法代替", since: "1.4.0"]
-    public func setParagraphTopMargins(paragraphTopMargins: Float64): MarkdownThemeBuilder {
+    public func setParagraphTopMargins(paragraphTopMargins: Float64): MarkdownTheme {
         this.paragraphTheme.paragraphMarginTop = paragraphTopMargins
         return this
     }
@@ -2195,10 +2457,10 @@ public class MarkdownThemeBuilder {
      * 设置段落模块下间距
      *
      * @param paragraphBottomMargins 段落模块下间距 - 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ParagraphTheme.setParagraphMargin方法代替", since: "1.4.0"]
-    public func setParagraphBottomMargins(paragraphBottomMargins: Float64): MarkdownThemeBuilder {
+    public func setParagraphBottomMargins(paragraphBottomMargins: Float64): MarkdownTheme {
         this.paragraphTheme.paragraphMarginBottom = paragraphBottomMargins
         return this
     }
@@ -2207,10 +2469,10 @@ public class MarkdownThemeBuilder {
      * 设置段落文本大小
      *
      * @param paragraphTextSize 段落文本大小 - 默认14.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ParagraphTheme.setParagraphTextFontSize方法代替", since: "1.4.0"]
-    public func setParagraphTextSize(paragraphTextSize: Float64): MarkdownThemeBuilder {
+    public func setParagraphTextSize(paragraphTextSize: Float64): MarkdownTheme {
         this.paragraphTheme.paragraphTextFontSize = paragraphTextSize
         return this
     }
@@ -2219,10 +2481,10 @@ public class MarkdownThemeBuilder {
      * 设置段落文本颜色
      *
      * @param paragraphTextColor 段落文本颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ParagraphTheme.setParagraphTextFontColor方法代替", since: "1.4.0"]
-    public func setParagraphTextColor(paragraphTextColor: Color): MarkdownThemeBuilder {
+    public func setParagraphTextColor(paragraphTextColor: Color): MarkdownTheme {
         this.paragraphTheme.paragraphTextFontColor = paragraphTextColor
         return this
     }
@@ -2231,10 +2493,10 @@ public class MarkdownThemeBuilder {
      * 设置段落文本字间距
      *
      * @param paragraphTextWordSpace 段落文本字间距 - 默认0.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ParagraphTheme.setParagraphTextLetterSpacing方法代替", since: "1.4.0"]
-    public func setParagraphTextWordSpace(paragraphTextWordSpace: Float64): MarkdownThemeBuilder {
+    public func setParagraphTextWordSpace(paragraphTextWordSpace: Float64): MarkdownTheme {
         this.paragraphTheme.paragraphTextLetterSpacing = paragraphTextWordSpace
         return this
     }
@@ -2243,10 +2505,10 @@ public class MarkdownThemeBuilder {
      * 设置段落文本行高
      *
      * @param paragraphTextLineHeight 段落文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ParagraphTheme.setParagraphTextLineHeight方法代替", since: "1.4.0"]
-    public func setParagraphTextLineHeight(paragraphTextLineHeight: Float64): MarkdownThemeBuilder {
+    public func setParagraphTextLineHeight(paragraphTextLineHeight: Float64): MarkdownTheme {
         this.paragraphTheme.paragraphTextLineHeight = paragraphTextLineHeight
         return this
     }
@@ -2255,10 +2517,10 @@ public class MarkdownThemeBuilder {
      * 设置段落文本字体
      *
      * @param paragraphTypeface 段落文本字体 - 默认"HarmonyOS Sans"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ParagraphTheme.setParagraphTextFontFamily方法代替", since: "1.4.0"]
-    public func setParagraphTypeface(paragraphTypeface: String): MarkdownThemeBuilder {
+    public func setParagraphTypeface(paragraphTypeface: String): MarkdownTheme {
         this.paragraphTheme.paragraphTextFontFamily = paragraphTypeface
         return this
     }
@@ -2267,10 +2529,10 @@ public class MarkdownThemeBuilder {
      * 设置分割线颜色
      *
      * @param thematicBreakColor 分割线颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用DividerTheme.setDividerColor方法代替", since: "1.4.0"]
-    public func setThematicBreakColor(thematicBreakColor: Color): MarkdownThemeBuilder {
+    public func setThematicBreakColor(thematicBreakColor: Color): MarkdownTheme {
         this.dividerTheme.dividerColor = thematicBreakColor
         return this
     }
@@ -2279,10 +2541,10 @@ public class MarkdownThemeBuilder {
      * 设置分割线高度
      *
      * @param thematicBreakHeight 分割线高度 - 默认0.5vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用DividerTheme.setDividerStrokeWidth方法代替", since: "1.4.0"]
-    public func setThematicBreakHeight(thematicBreakHeight: Float64): MarkdownThemeBuilder {
+    public func setThematicBreakHeight(thematicBreakHeight: Float64): MarkdownTheme {
         this.dividerTheme.dividerStrokeWidth = thematicBreakHeight
         return this
     }
@@ -2291,10 +2553,10 @@ public class MarkdownThemeBuilder {
      * 设置分割线上部外边距
      *
      * @param thematicBreakTopMargin 分割线上部外边距 - 默认0.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用DividerTheme.setDividerMargin方法代替", since: "1.4.0"]
-    public func setThematicBreakTopMargin(thematicBreakTopMargin: Float64): MarkdownThemeBuilder {
+    public func setThematicBreakTopMargin(thematicBreakTopMargin: Float64): MarkdownTheme {
         this.dividerTheme.dividerMarginTop = thematicBreakTopMargin
         return this
     }
@@ -2303,10 +2565,10 @@ public class MarkdownThemeBuilder {
      * 设置分割线下部外边距
      *
      * @param thematicBreakBottomMargin 分割线下部外边距 - 默认0.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用DividerTheme.setDividerMargin方法代替", since: "1.4.0"]
-    public func setThematicBreakBottomMargin(thematicBreakBottomMargin: Float64): MarkdownThemeBuilder {
+    public func setThematicBreakBottomMargin(thematicBreakBottomMargin: Float64): MarkdownTheme {
         this.dividerTheme.dividerMarginBottom = thematicBreakBottomMargin
         return this
     }
@@ -2315,10 +2577,10 @@ public class MarkdownThemeBuilder {
      * 设置数学公式未加载状态是否显示文本
      *
      * @param latexDefaultText 数学公式未加载状态是否显示文本 - 默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathDefaultText方法代替", since: "1.4.0"]
-    public func setLatexDefaultText(latexDefaultText: Bool): MarkdownThemeBuilder {
+    public func setLatexDefaultText(latexDefaultText: Bool): MarkdownTheme {
         this.latexMathTheme.latexMathDefaultText = latexDefaultText
         return this
     }
@@ -2327,10 +2589,10 @@ public class MarkdownThemeBuilder {
      * 设置数学公式文本大小
      *
      * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathTextSize方法代替", since: "1.4.0"]
-    public func setLatexMathTextSize(latexMathTextSize: Float64): MarkdownThemeBuilder {
+    public func setLatexMathTextSize(latexMathTextSize: Float64): MarkdownTheme {
         this.latexMathTheme.latexMathTextSize = latexMathTextSize
         return this
     }
@@ -2339,10 +2601,10 @@ public class MarkdownThemeBuilder {
      * 设置数学公式背景色
      *
      * @param latexMathBackgroundColor 数学公式背景色 - 默认Color.TRANSPARENT
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathBackgroundColor方法代替", since: "1.4.0"]
-    public func setLatexMathBackgroundColor(latexMathBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setLatexMathBackgroundColor(latexMathBackgroundColor: Color): MarkdownTheme {
         this.latexMathTheme.latexMathBackgroundColor = latexMathBackgroundColor
         return this
     }
@@ -2351,10 +2613,10 @@ public class MarkdownThemeBuilder {
      * 设置数学公式文本颜色
      *
      * @param latexMathTextColor 数学公式文本颜色 - 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathTextColor方法代替", since: "1.4.0"]
-    public func setLatexMathTextColor(latexMathTextColor: Color): MarkdownThemeBuilder {
+    public func setLatexMathTextColor(latexMathTextColor: Color): MarkdownTheme {
         this.latexMathTheme.latexMathTextColor = latexMathTextColor
         return this
     }
@@ -2363,10 +2625,10 @@ public class MarkdownThemeBuilder {
      * 设置数学公式生成图片格式
      *
      * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathColorFormat方法代替", since: "1.4.0"]
-    public func setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): MarkdownThemeBuilder {
+    public func setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): MarkdownTheme {
         this.latexMathTheme.latexMathColorFormat = latexMathColorFormat
         return this
     }
@@ -2375,10 +2637,10 @@ public class MarkdownThemeBuilder {
      * 设置块结构的数学公式是否居中
      *
      * @param latexMathBlockCenter 块结构的数学公式是否居中 - true:居中;false:不居中。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathBlockCenter方法代替", since: "1.4.0"]
-    public func setLatexMathBlockCenter(latexMathBlockCenter: Bool): MarkdownThemeBuilder {
+    public func setLatexMathBlockCenter(latexMathBlockCenter: Bool): MarkdownTheme {
         this.latexMathTheme.latexMathBlockCenter = latexMathBlockCenter
         return this
     }
@@ -2387,10 +2649,10 @@ public class MarkdownThemeBuilder {
      * 设置数学公式字体路径
      *
      * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathResPath方法代替", since: "1.4.0"]
-    public func setLatexMathResStr(latexMathResStr: String): MarkdownThemeBuilder {
+    public func setLatexMathResStr(latexMathResStr: String): MarkdownTheme {
         this.latexMathTheme.latexMathResPath = latexMathResStr
         return this
     }
@@ -2399,10 +2661,10 @@ public class MarkdownThemeBuilder {
      * 设置音频图标
      *
      * @param audioIcon 音频图标 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioIcon方法代替", since: "1.4.0"]
-    public func setAudioIcon(audioIcon: AppResource): MarkdownThemeBuilder {
+    public func setAudioIcon(audioIcon: AppResource): MarkdownTheme {
         this.audioTheme.audioIcon = audioIcon
         return this
     }
@@ -2411,10 +2673,10 @@ public class MarkdownThemeBuilder {
      * 设置音频阴影颜色值
      *
      * @param audioShadowColor 音频阴影颜色值 - 默认0x1A000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioShadowColor方法代替", since: "1.4.0"]
-    public func setAudioShadowColor(audioShadowColor: Color): MarkdownThemeBuilder {
+    public func setAudioShadowColor(audioShadowColor: Color): MarkdownTheme {
         this.audioTheme.audioShadowColor = audioShadowColor
         return this
     }
@@ -2423,10 +2685,10 @@ public class MarkdownThemeBuilder {
      * 设置音频边框颜色
      *
      * @param audioBorderColor 音频边框颜色 - 默认0x33000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioBorderColor方法代替", since: "1.4.0"]
-    public func setAudioBorderColor(audioBorderColor: Color): MarkdownThemeBuilder {
+    public func setAudioBorderColor(audioBorderColor: Color): MarkdownTheme {
         this.audioTheme.audioBorderColor = audioBorderColor
         return this
     }
@@ -2435,10 +2697,10 @@ public class MarkdownThemeBuilder {
      * 设置音频边框粗细
      *
      * @param audioBorderWidth 音频边框粗细 - 默认0.5vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioBorderWidth方法代替", since: "1.4.0"]
-    public func setAudioBorderWidth(audioBorderWidth: Float64): MarkdownThemeBuilder {
+    public func setAudioBorderWidth(audioBorderWidth: Float64): MarkdownTheme {
         this.audioTheme.audioBorderWidth = audioBorderWidth
         return this
     }
@@ -2447,10 +2709,10 @@ public class MarkdownThemeBuilder {
      * 设置音频边框圆角
      *
      * @param audioBorderRadius 音频边框圆角 - 默认12.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioRadius方法代替", since: "1.4.0"]
-    public func setAudioBorderRadius(audioBorderRadius: Float64): MarkdownThemeBuilder {
+    public func setAudioBorderRadius(audioBorderRadius: Float64): MarkdownTheme {
         this.audioTheme.audioRadiusTopLeft = audioBorderRadius
         this.audioTheme.audioRadiusTopRight = audioBorderRadius
         this.audioTheme.audioRadiusBottomLeft = audioBorderRadius
@@ -2462,10 +2724,10 @@ public class MarkdownThemeBuilder {
      * 设置音频按钮背景颜色
      *
      * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setAudioButtonBackgroundColor(audioButtonBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setAudioButtonBackgroundColor(audioButtonBackgroundColor: Color): MarkdownTheme {
         this.audioTheme.audioButtonBackgroundColor = audioButtonBackgroundColor
         return this
     }
@@ -2474,10 +2736,10 @@ public class MarkdownThemeBuilder {
      * 设置音频按钮文本颜色
      *
      * @param audioButtonTextColor 音频按钮文本颜色 - 默认Color.WHITE
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioButtonTextFontColor方法代替", since: "1.4.0"]
-    public func setAudioButtonTextColor(audioButtonTextColor: Color): MarkdownThemeBuilder {
+    public func setAudioButtonTextColor(audioButtonTextColor: Color): MarkdownTheme {
         this.audioTheme.audioButtonTextFontColor = audioButtonTextColor
         return this
     }
@@ -2486,10 +2748,10 @@ public class MarkdownThemeBuilder {
      * 设置音频按钮文本大小
      *
      * @param audioButtonTextSize 音频按钮文本大小 - 默认14.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioButtonTextFontSize方法代替", since: "1.4.0"]
-    public func setAudioButtonTextSize(audioButtonTextSize: Float64): MarkdownThemeBuilder {
+    public func setAudioButtonTextSize(audioButtonTextSize: Float64): MarkdownTheme {
         this.audioTheme.audioButtonTextFontSize = audioButtonTextSize
         return this
     }
@@ -2498,10 +2760,10 @@ public class MarkdownThemeBuilder {
      * 设置音频按钮文本内容
      *
      * @param audioButtonText 音频按钮文本内容 - 默认"立即播放"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioButtonText方法代替", since: "1.4.0"]
-    public func setAudioButtonText(audioButtonText: String): MarkdownThemeBuilder {
+    public func setAudioButtonText(audioButtonText: String): MarkdownTheme {
         this.audioTheme.audioButtonText = audioButtonText
         return this
     }
@@ -2510,10 +2772,10 @@ public class MarkdownThemeBuilder {
      * 设置音频按钮圆角
      *
      * @param audioButtonBorderRadius 音频按钮圆角 - 默认16.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioButtonRadius方法代替", since: "1.4.0"]
-    public func setAudioButtonBorderRadius(audioButtonBorderRadius: Float64): MarkdownThemeBuilder {
+    public func setAudioButtonBorderRadius(audioButtonBorderRadius: Float64): MarkdownTheme {
         this.audioTheme.audioButtonRadiusTopLeft = audioButtonBorderRadius
         this.audioTheme.audioButtonRadiusTopRight = audioButtonBorderRadius
         this.audioTheme.audioButtonRadiusBottomLeft = audioButtonBorderRadius
@@ -2525,10 +2787,10 @@ public class MarkdownThemeBuilder {
      * 设置音频标题文本大小
      *
      * @param audioTitleTextSize 音频标题文本大小 - 默认15.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioTitleTextFontSize方法代替", since: "1.4.0"]
-    public func setAudioTitleTextSize(audioTitleTextSize: Float64): MarkdownThemeBuilder {
+    public func setAudioTitleTextSize(audioTitleTextSize: Float64): MarkdownTheme {
         this.audioTheme.audioTitleTextFontSize = audioTitleTextSize
         return this
     }
@@ -2537,10 +2799,10 @@ public class MarkdownThemeBuilder {
      * 设置音频标题文本颜色
      *
      * @param audioTitleTextColor 音频标题文本颜色 - 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioTitleTextFontColor方法代替", since: "1.4.0"]
-    public func setAudioTitleTextColor(audioTitleTextColor: Color): MarkdownThemeBuilder {
+    public func setAudioTitleTextColor(audioTitleTextColor: Color): MarkdownTheme {
         this.audioTheme.audioTitleTextFontColor = audioTitleTextColor
         return this
     }
@@ -2549,10 +2811,10 @@ public class MarkdownThemeBuilder {
      * 设置音频标题文本行高
      *
      * @param audioTitleTextLineHeight 音频标题文本行高 - 默认20.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioTitleTextLineHeight方法代替", since: "1.4.0"]
-    public func setAudioTitleTextLineHeight(audioTitleTextLineHeight: Float64): MarkdownThemeBuilder {
+    public func setAudioTitleTextLineHeight(audioTitleTextLineHeight: Float64): MarkdownTheme {
         this.audioTheme.audioTitleTextLineHeight = audioTitleTextLineHeight
         return this
     }
@@ -2561,10 +2823,10 @@ public class MarkdownThemeBuilder {
      * 设置音频类型文本大小
      *
      * @param audioTypeTextSize 音频类型文本大小 - 默认11.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioTypeTextFontSize方法代替", since: "1.4.0"]
-    public func setAudioTypeTextSize(audioTypeTextSize: Float64): MarkdownThemeBuilder {
+    public func setAudioTypeTextSize(audioTypeTextSize: Float64): MarkdownTheme {
         this.audioTheme.audioTypeTextFontSize = audioTypeTextSize
         return this
     }
@@ -2573,10 +2835,10 @@ public class MarkdownThemeBuilder {
      * 设置音频类型文本颜色
      *
      * @param audioTypeTextColor 音频类型文本颜色 - 默认0x80000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioTypeTextFontColor方法代替", since: "1.4.0"]
-    public func setAudioTypeTextColor(audioTypeTextColor: Color): MarkdownThemeBuilder {
+    public func setAudioTypeTextColor(audioTypeTextColor: Color): MarkdownTheme {
         this.audioTheme.audioTypeTextFontColor = audioTypeTextColor
         return this
     }
@@ -2585,10 +2847,10 @@ public class MarkdownThemeBuilder {
      * 设置音频类型文本行高
      *
      * @param audioTypeTextLineHeight 音频类型文本行高 - 默认15.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioTypeTextLineHeight方法代替", since: "1.4.0"]
-    public func setAudioTypeTextLineHeight(audioTypeTextLineHeight: Float64): MarkdownThemeBuilder {
+    public func setAudioTypeTextLineHeight(audioTypeTextLineHeight: Float64): MarkdownTheme {
         this.audioTheme.audioTypeTextLineHeight = audioTypeTextLineHeight
         return this
     }
@@ -2597,10 +2859,10 @@ public class MarkdownThemeBuilder {
      * 设置音频上边距
      *
      * @param audioMarginTop 音频上边距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioMargin方法代替", since: "1.4.0"]
-    public func setAudioMarginTop(audioMarginTop: Float64): MarkdownThemeBuilder {
+    public func setAudioMarginTop(audioMarginTop: Float64): MarkdownTheme {
         this.audioTheme.audioMarginTop = audioMarginTop
         return this
     }
@@ -2609,10 +2871,10 @@ public class MarkdownThemeBuilder {
      * 设置音频下边距
      *
      * @param audioMarginBottom 音频下边距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用AudioTheme.setAudioMargin方法代替", since: "1.4.0"]
-    public func setAudioMarginBottom(audioMarginBottom: Float64): MarkdownThemeBuilder {
+    public func setAudioMarginBottom(audioMarginBottom: Float64): MarkdownTheme {
         this.audioTheme.audioMarginBottom = audioMarginBottom
         return this
     }
@@ -2621,10 +2883,10 @@ public class MarkdownThemeBuilder {
      * 设置视频默认占位图
      *
      * @param videoImage 视频默认占位图 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoPlaceholder方法代替", since: "1.4.0"]
-    public func setVideoImage(videoImage: AppResource): MarkdownThemeBuilder {
+    public func setVideoImage(videoImage: AppResource): MarkdownTheme {
         this.videoTheme.videoPlaceholder = videoImage
         return this
     }
@@ -2633,10 +2895,10 @@ public class MarkdownThemeBuilder {
      * 设置视频播放按钮默认图标
      *
      * @param playCircleFillIcon 视频播放按钮默认图标 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoPlayIcon方法代替", since: "1.4.0"]
-    public func setPlayCircleFillIcon(playCircleFillIcon: AppResource): MarkdownThemeBuilder {
+    public func setPlayCircleFillIcon(playCircleFillIcon: AppResource): MarkdownTheme {
         this.videoTheme.videoPlayIcon = playCircleFillIcon
         return this
     }
@@ -2645,10 +2907,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布默认图标
      *
      * @param videoReleaseImage 视频发布默认图标 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonIcon方法代替", since: "1.4.0"]
-    public func setVideoReleaseImage(videoReleaseImage: AppResource): MarkdownThemeBuilder {
+    public func setVideoReleaseImage(videoReleaseImage: AppResource): MarkdownTheme {
         this.videoTheme.videoReleaseButtonIcon = videoReleaseImage
         return this
     }
@@ -2657,10 +2919,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载默认图标
      *
      * @param videoDownloadImage 视频下载默认图标 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonIcon方法代替", since: "1.4.0"]
-    public func setVideoDownloadImage(videoDownloadImage: AppResource): MarkdownThemeBuilder {
+    public func setVideoDownloadImage(videoDownloadImage: AppResource): MarkdownTheme {
         this.videoTheme.videoDownloadButtonIcon = videoDownloadImage
         return this
     }
@@ -2669,10 +2931,10 @@ public class MarkdownThemeBuilder {
      * 设置视频圆角
      *
      * @param videoBorderRadius 视频圆角 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoRadius方法代替", since: "1.4.0"]
-    public func setVideoBorderRadius(videoBorderRadius: Float64): MarkdownThemeBuilder {
+    public func setVideoBorderRadius(videoBorderRadius: Float64): MarkdownTheme {
         this.videoTheme.videoRadiusTopLeft = videoBorderRadius
         this.videoTheme.videoRadiusTopRight = videoBorderRadius
         this.videoTheme.videoRadiusBottomLeft = videoBorderRadius
@@ -2684,10 +2946,10 @@ public class MarkdownThemeBuilder {
      * 设置视频时间文本颜色
      *
      * @param videoTimeTextColor 视频时间文本颜色 - 默认Color.WHITE
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoTimeTextFontColor方法代替", since: "1.4.0"]
-    public func setVideoTimeTextColor(videoTimeTextColor: Color): MarkdownThemeBuilder {
+    public func setVideoTimeTextColor(videoTimeTextColor: Color): MarkdownTheme {
         this.videoTheme.videoTimeTextFontColor = videoTimeTextColor
         return this
     }
@@ -2696,10 +2958,10 @@ public class MarkdownThemeBuilder {
      * 设置视频时间文本大小
      *
      * @param videoTimeTextSize 视频时间文本大小 - 默认14.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoTimeTextFontSize方法代替", since: "1.4.0"]
-    public func setVideoTimeTextSize(videoTimeTextSize: Float64): MarkdownThemeBuilder {
+    public func setVideoTimeTextSize(videoTimeTextSize: Float64): MarkdownTheme {
         this.videoTheme.videoTimeTextFontSize = videoTimeTextSize
         return this
     }
@@ -2708,10 +2970,10 @@ public class MarkdownThemeBuilder {
      * 设置视频时间文本居右边距
      *
      * @param videoTimeTextMarginRight 视频时间文本居右边距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoTimeTextMarginRight方法代替", since: "1.4.0"]
-    public func setVideoTimeTextMarginRight(videoTimeTextMarginRight: Float64): MarkdownThemeBuilder {
+    public func setVideoTimeTextMarginRight(videoTimeTextMarginRight: Float64): MarkdownTheme {
         this.videoTheme.videoTimeTextMarginRight = videoTimeTextMarginRight
         return this
     }
@@ -2720,10 +2982,10 @@ public class MarkdownThemeBuilder {
      * 设置视频时间文本居底边距
      *
      * @param videoTimeTextMarginBottom 视频时间文本居底边距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoTimeTextMarginBottom方法代替", since: "1.4.0"]
-    public func setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: Float64): MarkdownThemeBuilder {
+    public func setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: Float64): MarkdownTheme {
         this.videoTheme.videoTimeTextMarginBottom = videoTimeTextMarginBottom
         return this
     }
@@ -2732,10 +2994,10 @@ public class MarkdownThemeBuilder {
      * 设置视频上边距
      *
      * @param videoMarginTop 视频上边距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoMargin方法代替", since: "1.4.0"]
-    public func setVideoMarginTop(videoMarginTop: Float64): MarkdownThemeBuilder {
+    public func setVideoMarginTop(videoMarginTop: Float64): MarkdownTheme {
         this.videoTheme.videoMarginTop = videoMarginTop
         return this
     }
@@ -2744,10 +3006,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下边距
      *
      * @param videoMarginBottom 视频下边距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoMargin方法代替", since: "1.4.0"]
-    public func setVideoMarginBottom(videoMarginBottom: Float64): MarkdownThemeBuilder {
+    public func setVideoMarginBottom(videoMarginBottom: Float64): MarkdownTheme {
         this.videoTheme.videoMarginBottom = videoMarginBottom
         return this
     }
@@ -2756,10 +3018,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布/下载按钮布局是否显示
      *
      * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默false不显示
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoBottomLayoutVisible方法代替", since: "1.4.0"]
-    public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): MarkdownThemeBuilder {
+    public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): MarkdownTheme {
         this.videoTheme.videoBottomLayoutVisible = isVideoBottomLayout
         return this
     }
@@ -2768,10 +3030,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布按钮图片宽度和高度
      *
      * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme相关set方法代替", since: "1.4.0"]
-    public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): MarkdownThemeBuilder {
+    public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): MarkdownTheme {
         this.videoTheme.videoReleaseButtonIconWidth = videoReleaseImageWidthHeight
         this.videoTheme.videoReleaseButtonIconHeight = videoReleaseImageWidthHeight
         return this
@@ -2781,10 +3043,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布按钮宽度
      *
      * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonWidth方法代替", since: "1.4.0"]
-    public func setVideoReleaseWidth(videoReleaseWidth: Float64): MarkdownThemeBuilder {
+    public func setVideoReleaseWidth(videoReleaseWidth: Float64): MarkdownTheme {
         this.videoTheme.videoReleaseButtonWidth = videoReleaseWidth
         return this
     }
@@ -2793,10 +3055,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布按钮高度
      *
      * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonHeight方法代替", since: "1.4.0"]
-    public func setVideoReleaseHeight(videoReleaseHeight: Float64): MarkdownThemeBuilder {
+    public func setVideoReleaseHeight(videoReleaseHeight: Float64): MarkdownTheme {
         this.videoTheme.videoReleaseButtonHeight = videoReleaseHeight
         return this
     }
@@ -2805,10 +3067,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布按钮圆角
      *
      * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonRadius方法代替", since: "1.4.0"]
-    public func setVideoReleaseRadius(videoReleaseRadius: Float64): MarkdownThemeBuilder {
+    public func setVideoReleaseRadius(videoReleaseRadius: Float64): MarkdownTheme {
         this.videoTheme.videoReleaseButtonRadiusTopLeft = videoReleaseRadius
         this.videoTheme.videoReleaseButtonRadiusTopRight = videoReleaseRadius
         this.videoTheme.videoReleaseButtonRadiusBottomLeft = videoReleaseRadius
@@ -2820,10 +3082,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布按钮文本内容
      *
      * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonText方法代替", since: "1.4.0"]
-    public func setVideoReleaseText(videoReleaseText: String): MarkdownThemeBuilder {
+    public func setVideoReleaseText(videoReleaseText: String): MarkdownTheme {
         this.videoTheme.videoReleaseButtonText = videoReleaseText
         return this
     }
@@ -2832,10 +3094,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布按钮文本大小
      *
      * @param videoReleaseTextSize 视频发布按钮文本大小 - 默认16.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonTextFontSize方法代替", since: "1.4.0"]
-    public func setVideoReleaseTextSize(videoReleaseTextSize: Float64): MarkdownThemeBuilder {
+    public func setVideoReleaseTextSize(videoReleaseTextSize: Float64): MarkdownTheme {
         this.videoTheme.videoReleaseButtonTextFontSize = videoReleaseTextSize
         return this
     }
@@ -2844,10 +3106,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布按钮文本颜色
      *
      * @param videoReleaseTextColor 视频发布按钮文本颜色 - 默认0xE6000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonTextFontColor方法代替", since: "1.4.0"]
-    public func setVideoReleaseTextColor(videoReleaseTextColor: Color): MarkdownThemeBuilder {
+    public func setVideoReleaseTextColor(videoReleaseTextColor: Color): MarkdownTheme {
         this.videoTheme.videoReleaseButtonTextFontColor = videoReleaseTextColor
         return this
     }
@@ -2856,10 +3118,10 @@ public class MarkdownThemeBuilder {
      * 设置视频发布按钮背景颜色
      *
      * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: Color): MarkdownTheme {
         this.videoTheme.videoReleaseButtonBackgroundColor = videoReleaseBackgroundColor
         return this
     }
@@ -2868,10 +3130,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载按钮图片宽度和高度
      *
      * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme相关set方法代替", since: "1.4.0"]
-    public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): MarkdownThemeBuilder {
+    public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): MarkdownTheme {
         this.videoTheme.videoDownloadButtonIconWidth = videoDownloadImageWidthHeight
         this.videoTheme.videoDownloadButtonIconHeight = videoDownloadImageWidthHeight
         return this
@@ -2881,10 +3143,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载按钮宽度
      *
      * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonWidth方法代替", since: "1.4.0"]
-    public func setVideoDownloadWidth(videoDownloadWidth: Float64): MarkdownThemeBuilder {
+    public func setVideoDownloadWidth(videoDownloadWidth: Float64): MarkdownTheme {
         this.videoTheme.videoDownloadButtonWidth = videoDownloadWidth
         return this
     }
@@ -2893,10 +3155,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载按钮高度
      *
      * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonHeight方法代替", since: "1.4.0"]
-    public func setVideoDownloadHeight(videoDownloadHeight: Float64): MarkdownThemeBuilder {
+    public func setVideoDownloadHeight(videoDownloadHeight: Float64): MarkdownTheme {
         this.videoTheme.videoDownloadButtonHeight = videoDownloadHeight
         return this
     }
@@ -2905,10 +3167,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载按钮圆角
      *
      * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonRadius方法代替", since: "1.4.0"]
-    public func setVideoDownloadRadius(videoDownloadRadius: Float64): MarkdownThemeBuilder {
+    public func setVideoDownloadRadius(videoDownloadRadius: Float64): MarkdownTheme {
         this.videoTheme.videoDownloadButtonRadiusTopLeft = videoDownloadRadius
         this.videoTheme.videoDownloadButtonRadiusTopRight = videoDownloadRadius
         this.videoTheme.videoDownloadButtonRadiusBottomLeft = videoDownloadRadius
@@ -2920,10 +3182,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载按钮文本内容
      *
      * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonText方法代替", since: "1.4.0"]
-    public func setVideoDownloadText(videoDownloadText: String): MarkdownThemeBuilder {
+    public func setVideoDownloadText(videoDownloadText: String): MarkdownTheme {
         this.videoTheme.videoDownloadButtonText = videoDownloadText
         return this
     }
@@ -2932,10 +3194,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载按钮文本大小
      *
      * @param videoDownloadTextSize 视频下载按钮文本大小 - 默认16.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonTextFontSize方法代替", since: "1.4.0"]
-    public func setVideoDownloadTextSize(videoDownloadTextSize: Float64): MarkdownThemeBuilder {
+    public func setVideoDownloadTextSize(videoDownloadTextSize: Float64): MarkdownTheme {
         this.videoTheme.videoDownloadButtonTextFontSize = videoDownloadTextSize
         return this
     }
@@ -2944,10 +3206,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载按钮文本颜色
      *
      * @param videoDownloadTextColor 视频下载按钮文本颜色 - 默认0xE6000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonTextFontColor方法代替", since: "1.4.0"]
-    public func setVideoDownloadTextColor(videoDownloadTextColor: Color): MarkdownThemeBuilder {
+    public func setVideoDownloadTextColor(videoDownloadTextColor: Color): MarkdownTheme {
         this.videoTheme.videoDownloadButtonTextFontColor = videoDownloadTextColor
         return this
     }
@@ -2956,10 +3218,10 @@ public class MarkdownThemeBuilder {
      * 设置视频下载按钮背景颜色
      *
      * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: Color): MarkdownTheme {
         this.videoTheme.videoDownloadButtonBackgroundColor = videoDownloadBackgroundColor
         return this
     }
@@ -2968,10 +3230,10 @@ public class MarkdownThemeBuilder {
      * 设置图片banner默认占位图
      *
      * @param bannerImage 图片banner占位图 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用BannerTheme.setBannerPlaceholder方法代替", since: "1.4.0"]
-    public func setBannerImage(bannerImage: AppResource): MarkdownThemeBuilder {
+    public func setBannerImage(bannerImage: AppResource): MarkdownTheme {
         this.bannerTheme.bannerPlaceholder = bannerImage
         return this
     }
@@ -2980,10 +3242,10 @@ public class MarkdownThemeBuilder {
      * 设置图片基于自身宽度缩放百分比
      *
      * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageMaximumWidth方法代替", since: "1.4.0"]
-    public func setImageMaximumWidth(imageMaximumWidth: Float64): MarkdownThemeBuilder {
+    public func setImageMaximumWidth(imageMaximumWidth: Float64): MarkdownTheme {
         this.imageTheme.imageMaximumWidth = imageMaximumWidth
         return this
     }
@@ -2992,10 +3254,10 @@ public class MarkdownThemeBuilder {
      * 设置图片基于父布局宽度缩放百分比
      *
      * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageFixedRatioWidth方法代替", since: "1.4.0"]
-    public func setImageFixedRatioWidth(imageFixedRatioWidth: Float64): MarkdownThemeBuilder {
+    public func setImageFixedRatioWidth(imageFixedRatioWidth: Float64): MarkdownTheme {
         this.imageTheme.imageFixedRatioWidth = imageFixedRatioWidth
         return this
     }
@@ -3004,10 +3266,10 @@ public class MarkdownThemeBuilder {
      * 设置图片最大高度
      *
      * @param imageMaxHeight 图片最大高度 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageMaxHeight方法代替", since: "1.4.0"]
-    public func setImageMaxHeight(imageMaxHeight: Float64): MarkdownThemeBuilder {
+    public func setImageMaxHeight(imageMaxHeight: Float64): MarkdownTheme {
         this.imageTheme.imageMaxHeight = imageMaxHeight
         return this
     }
@@ -3016,10 +3278,10 @@ public class MarkdownThemeBuilder {
      * 设置图片最大宽度
      *
      * @param imageMaxWidth 图片最大宽度 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageMaxWidth方法代替", since: "1.4.0"]
-    public func setImageMaxWidth(imageMaxWidth: Float64): MarkdownThemeBuilder {
+    public func setImageMaxWidth(imageMaxWidth: Float64): MarkdownTheme {
         this.imageTheme.imageMaxWidth = imageMaxWidth
         return this
     }
@@ -3028,10 +3290,10 @@ public class MarkdownThemeBuilder {
      * 设置图片圆角
      *
      * @param imageBorderRadius 图片圆角 - 默认0.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setRadius方法代替", since: "1.4.0"]
-    public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownThemeBuilder {
+    public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownTheme {
         this.imageTheme.imageRadiusTopLeft = imageBorderRadius
         this.imageTheme.imageRadiusTopRight = imageBorderRadius
         this.imageTheme.imageRadiusBottomLeft = imageBorderRadius
@@ -3043,10 +3305,10 @@ public class MarkdownThemeBuilder {
      * 设置图片边框宽度
      *
      * @param imageBorderWidth 图片边框宽度 - 默认0.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageBorderWidth方法代替", since: "1.4.0"]
-    public func setImageBorderWidth(imageBorderWidth: Float64): MarkdownThemeBuilder {
+    public func setImageBorderWidth(imageBorderWidth: Float64): MarkdownTheme {
         this.imageTheme.imageBorderWidth = imageBorderWidth
         return this
     }
@@ -3055,10 +3317,10 @@ public class MarkdownThemeBuilder {
      * 设置图片边框颜色
      *
      * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageBorderColor方法代替", since: "1.4.0"]
-    public func setImageBorderColor(imageBorderColor: Color): MarkdownThemeBuilder {
+    public func setImageBorderColor(imageBorderColor: Color): MarkdownTheme {
         this.imageTheme.imageBorderColor = imageBorderColor
         return this
     }
@@ -3067,10 +3329,10 @@ public class MarkdownThemeBuilder {
      * 设置图片缩放类型
      *
      * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageFitType方法代替", since: "1.4.0"]
-    public func setImageFitType(imageFitType: ImageFit): MarkdownThemeBuilder {
+    public func setImageFitType(imageFitType: ImageFit): MarkdownTheme {
         this.imageTheme.imageFitType = imageFitType
         return this
     }
@@ -3079,10 +3341,10 @@ public class MarkdownThemeBuilder {
      * 设置图片默认占位图
      *
      * @param imageResource 图片默认占位图 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImagePlaceholder方法代替", since: "1.4.0"]
-    public func setImageResource(imageResource: AppResource): MarkdownThemeBuilder {
+    public func setImageResource(imageResource: AppResource): MarkdownTheme {
         this.imageTheme.imagePlaceholder = imageResource
         return this
     }
@@ -3091,10 +3353,10 @@ public class MarkdownThemeBuilder {
      * 设置网络图片是否压缩
      *
      * @param isAutoResize 网络图片是否压缩 - true:压缩;false:不压缩。默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageAutoResize方法代替", since: "1.4.0"]
-    public func setIsAutoResize(isAutoResize: Bool): MarkdownThemeBuilder {
+    public func setIsAutoResize(isAutoResize: Bool): MarkdownTheme {
         this.imageTheme.imageAutoResize = isAutoResize
         return this
     }
@@ -3103,10 +3365,10 @@ public class MarkdownThemeBuilder {
      * 设置图片上边距
      *
      * @param imageMarginTop 图片上边距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setMargin方法代替", since: "1.4.0"]
-    public func setImageMarginTop(imageMarginTop: Float64): MarkdownThemeBuilder {
+    public func setImageMarginTop(imageMarginTop: Float64): MarkdownTheme {
         this.imageTheme.imageMarginTop = imageMarginTop
         return this
     }
@@ -3115,10 +3377,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下边距
      *
      * @param imageMarginBottom 图片下边距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setMargin方法代替", since: "1.4.0"]
-    public func setImageMarginBottom(imageMarginBottom: Float64): MarkdownThemeBuilder {
+    public func setImageMarginBottom(imageMarginBottom: Float64): MarkdownTheme {
         this.imageTheme.imageMarginBottom = imageMarginBottom
         return this
     }
@@ -3127,10 +3389,10 @@ public class MarkdownThemeBuilder {
      * 设置图片是否有下载按钮
      *
      * @param isImageDownload 图片是否有下载按钮 - 默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonVisible方法代替", since: "1.4.0"]
-    public func setIsImageDownload(isImageDownload: Bool): MarkdownThemeBuilder {
+    public func setIsImageDownload(isImageDownload: Bool): MarkdownTheme {
         this.imageTheme.imageDownloadButtonVisible = isImageDownload
         return this
     }
@@ -3139,10 +3401,10 @@ public class MarkdownThemeBuilder {
      * 设置是否图文混排
      *
      * @param isImageMixedLayout 是否图文混排 - 默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setIsImageMixedLayout方法代替", since: "1.4.0"]
-    public func setIsImageMixedLayout(isImageMixedLayout: Bool): MarkdownThemeBuilder {
+    public func setIsImageMixedLayout(isImageMixedLayout: Bool): MarkdownTheme {
         this.imageTheme.isImageMixedLayout = isImageMixedLayout
         return this
     }
@@ -3151,10 +3413,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载默认图标
      *
      * @param imageDownloadImage 图片下载默认图标 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonIcon方法代替", since: "1.4.0"]
-    public func setImageDownloadImage(imageDownloadImage: AppResource): MarkdownThemeBuilder {
+    public func setImageDownloadImage(imageDownloadImage: AppResource): MarkdownTheme {
         this.imageTheme.imageDownloadButtonIcon = imageDownloadImage
         return this
     }
@@ -3163,10 +3425,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载按钮图片宽度和高度
      *
      * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme相关set方法代替", since: "1.4.0"]
-    public func setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: Float64): MarkdownThemeBuilder {
+    public func setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: Float64): MarkdownTheme {
         this.imageTheme.imageDownloadButtonIconWidth = imageDownloadImageWidthHeight
         this.imageTheme.imageDownloadButtonIconHeight = imageDownloadImageWidthHeight
         return this
@@ -3176,10 +3438,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载按钮宽度
      *
      * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonWidth方法代替", since: "1.4.0"]
-    public func setImageDownloadWidth(imageDownloadWidth: Float64): MarkdownThemeBuilder {
+    public func setImageDownloadWidth(imageDownloadWidth: Float64): MarkdownTheme {
         this.imageTheme.imageDownloadButtonWidth = imageDownloadWidth
         return this
     }
@@ -3188,10 +3450,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载按钮高度
      *
      * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonHeight方法代替", since: "1.4.0"]
-    public func setImageDownloadHeight(imageDownloadHeight: Float64): MarkdownThemeBuilder {
+    public func setImageDownloadHeight(imageDownloadHeight: Float64): MarkdownTheme {
         this.imageTheme.imageDownloadButtonHeight = imageDownloadHeight
         return this
     }
@@ -3200,10 +3462,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载按钮圆角
      *
      * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonRadius方法代替", since: "1.4.0"]
-    public func setImageDownloadRadius(imageDownloadRadius: Float64): MarkdownThemeBuilder {
+    public func setImageDownloadRadius(imageDownloadRadius: Float64): MarkdownTheme {
         this.imageTheme.imageDownloadButtonRadiusTopLeft = imageDownloadRadius
         this.imageTheme.imageDownloadButtonRadiusTopRight = imageDownloadRadius
         this.imageTheme.imageDownloadButtonRadiusBottomLeft = imageDownloadRadius
@@ -3215,10 +3477,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载按钮文本内容
      *
      * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonText方法代替", since: "1.4.0"]
-    public func setImageDownloadText(imageDownloadText: String): MarkdownThemeBuilder {
+    public func setImageDownloadText(imageDownloadText: String): MarkdownTheme {
         this.imageTheme.imageDownloadButtonText = imageDownloadText
         return this
     }
@@ -3227,10 +3489,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载按钮文本大小
      *
      * @param imageDownloadTextSize 图片下载按钮文本大小 - 默认16.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonTextFontSize方法代替", since: "1.4.0"]
-    public func setImageDownloadTextSize(imageDownloadTextSize: Float64): MarkdownThemeBuilder {
+    public func setImageDownloadTextSize(imageDownloadTextSize: Float64): MarkdownTheme {
         this.imageTheme.imageDownloadButtonTextFontSize = imageDownloadTextSize
         return this
     }
@@ -3239,10 +3501,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载按钮文本颜色
      *
      * @param imageDownloadTextColor 图片下载按钮文本颜色 - 默认0xE6000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonTextFontColor方法代替", since: "1.4.0"]
-    public func setImageDownloadTextColor(imageDownloadTextColor: Color): MarkdownThemeBuilder {
+    public func setImageDownloadTextColor(imageDownloadTextColor: Color): MarkdownTheme {
         this.imageTheme.imageDownloadButtonTextFontColor = imageDownloadTextColor
         return this
     }
@@ -3251,10 +3513,10 @@ public class MarkdownThemeBuilder {
      * 设置图片下载按钮背景颜色
      *
      * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0xFFF5F5F5
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setImageDownloadBackgroundColor(imageDownloadBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setImageDownloadBackgroundColor(imageDownloadBackgroundColor: Color): MarkdownTheme {
         this.imageTheme.imageDownloadButtonBackgroundColor = imageDownloadBackgroundColor
         return this
     }
@@ -3263,10 +3525,10 @@ public class MarkdownThemeBuilder {
      * 设置表格内容内边距
      *
      * @param tableCellPadding 表格内容内边距 - 默认4.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableCellPadding方法代替", since: "1.4.0"]
-    public func setTableCellPadding(tableCellPadding: Float64): MarkdownThemeBuilder {
+    public func setTableCellPadding(tableCellPadding: Float64): MarkdownTheme {
         this.tableTheme.tableCellPaddingTop = tableCellPadding
         this.tableTheme.tableCellPaddingRight = tableCellPadding
         this.tableTheme.tableCellPaddingBottom = tableCellPadding
@@ -3278,10 +3540,10 @@ public class MarkdownThemeBuilder {
      * 设置表格边框颜色
      *
      * @param tableBorderColor 表格边框颜色 - 默认Color.BLACK
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableBorderColor方法代替", since: "1.4.0"]
-    public func setTableBorderColor(tableBorderColor: Color): MarkdownThemeBuilder {
+    public func setTableBorderColor(tableBorderColor: Color): MarkdownTheme {
         this.tableTheme.tableBorderColor = tableBorderColor
         return this
     }
@@ -3290,10 +3552,10 @@ public class MarkdownThemeBuilder {
      * 设置表格边框宽度
      *
      * @param tableBorderWidth 表格边框宽度 - 默认1.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableBorderWidth方法代替", since: "1.4.0"]
-    public func setTableBorderWidth(tableBorderWidth: Float64): MarkdownThemeBuilder {
+    public func setTableBorderWidth(tableBorderWidth: Float64): MarkdownTheme {
         this.tableTheme.tableBorderWidth = tableBorderWidth
         return this
     }
@@ -3302,10 +3564,10 @@ public class MarkdownThemeBuilder {
      * 设置表格奇数行背景色
      *
      * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认Color.WHITE
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableContentOddRowBackgroundColor方法代替", since: "1.4.0"]
-    public func setTableOddRowBackgroundColor(tableOddRowBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setTableOddRowBackgroundColor(tableOddRowBackgroundColor: Color): MarkdownTheme {
         this.tableTheme.tableContentOddRowBackgroundColor = tableOddRowBackgroundColor
         return this
     }
@@ -3314,10 +3576,10 @@ public class MarkdownThemeBuilder {
      * 设置表格偶数行背景色
      *
      * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0xFFE0E0E0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableContentEvenRowBackgroundColor方法代替", since: "1.4.0"]
-    public func setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: Color): MarkdownTheme {
         this.tableTheme.tableContentEvenRowBackgroundColor = tableEvenRowBackgroundColor
         return this
     }
@@ -3326,10 +3588,10 @@ public class MarkdownThemeBuilder {
      * 设置表格标题背景色
      *
      * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认Color.WHITE
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableTitleBackgroundColor方法代替", since: "1.4.0"]
-    public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: Color): MarkdownThemeBuilder {
+    public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: Color): MarkdownTheme {
         this.tableTheme.tableTitleBackgroundColor = tableHeaderRowBackgroundColor
         return this
     }
@@ -3338,10 +3600,10 @@ public class MarkdownThemeBuilder {
      * 设置表格标题文本颜色
      *
      * @param tableTitleTextColor 表格标题文本颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableTitleTextFontColor方法代替", since: "1.4.0"]
-    public func setTableTitleTextColor(tableTitleTextColor: Color): MarkdownThemeBuilder {
+    public func setTableTitleTextColor(tableTitleTextColor: Color): MarkdownTheme {
         this.tableTheme.tableTitleTextFontColor = tableTitleTextColor
         return this
     }
@@ -3350,10 +3612,10 @@ public class MarkdownThemeBuilder {
      * 设置表格标题文本大小
      *
      * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableTitleTextFontSize方法代替", since: "1.4.0"]
-    public func setTableTitleTextSize(tableTitleTextSize: Float64): MarkdownThemeBuilder {
+    public func setTableTitleTextSize(tableTitleTextSize: Float64): MarkdownTheme {
         this.tableTheme.tableTitleTextFontSize = tableTitleTextSize
         return this
     }
@@ -3362,10 +3624,10 @@ public class MarkdownThemeBuilder {
      * 设置表格文本行高
      *
      * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableTitleTextLineHeight和setTableContentTextLineHeight方法代替", since: "1.4.0"]
-    public func setTableTextLineHeight(tableTextLineHeight: Float64): MarkdownThemeBuilder {
+    public func setTableTextLineHeight(tableTextLineHeight: Float64): MarkdownTheme {
         this.tableTheme.tableTitleTextLineHeight = tableTextLineHeight
         this.tableTheme.tableContentTextLineHeight = tableTextLineHeight
         return this
@@ -3375,10 +3637,10 @@ public class MarkdownThemeBuilder {
      * 设置表格标题文本行高
      *
      * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableTitleTextLineHeight方法代替", since: "1.4.0"]
-    public func setTableTitleLineHeight(tableTitleLineHeight: Float64): MarkdownThemeBuilder {
+    public func setTableTitleLineHeight(tableTitleLineHeight: Float64): MarkdownTheme {
         this.tableTheme.tableTitleTextLineHeight = tableTitleLineHeight
         return this
     }
@@ -3387,10 +3649,10 @@ public class MarkdownThemeBuilder {
      * 设置表格内容文本颜色
      *
      * @param tableContentTextColor 表格内容文本颜色 - 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableContentTextFontColor方法代替", since: "1.4.0"]
-    public func setTableContentTextColor(tableContentTextColor: Color): MarkdownThemeBuilder {
+    public func setTableContentTextColor(tableContentTextColor: Color): MarkdownTheme {
         this.tableTheme.tableContentTextFontColor = tableContentTextColor
         return this
     }
@@ -3399,10 +3661,10 @@ public class MarkdownThemeBuilder {
      * 设置表格内容文本大小
      *
      * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableContentTextFontSize方法代替", since: "1.4.0"]
-    public func setTableContentTextSize(tableContentTextSize: Float64): MarkdownThemeBuilder {
+    public func setTableContentTextSize(tableContentTextSize: Float64): MarkdownTheme {
         this.tableTheme.tableContentTextFontSize = tableContentTextSize
         return this
     }
@@ -3411,10 +3673,10 @@ public class MarkdownThemeBuilder {
      * 设置表格内容文本行高
      *
      * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableContentTextLineHeight方法代替", since: "1.4.0"]
-    public func setTableContentTextLineHeight(tableTextLineHeight: Float64): MarkdownThemeBuilder {
+    public func setTableContentTextLineHeight(tableTextLineHeight: Float64): MarkdownTheme {
         this.tableTheme.tableContentTextLineHeight = tableTextLineHeight
         return this
     }
@@ -3423,10 +3685,10 @@ public class MarkdownThemeBuilder {
      * 设置表格圆角
      *
      * @param tableRadius 表格圆角 - 默认5.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableRadius方法代替", since: "1.4.0"]
-    public func setTableRadius(tableRadius: Float64): MarkdownThemeBuilder {
+    public func setTableRadius(tableRadius: Float64): MarkdownTheme {
         this.tableTheme.tableRadiusTopLeft = tableRadius
         this.tableTheme.tableRadiusTopRight = tableRadius
         this.tableTheme.tableRadiusBottomLeft = tableRadius
@@ -3438,10 +3700,10 @@ public class MarkdownThemeBuilder {
      * 设置表格最小宽度
      *
      * @param tableMinTextWidth 表格最小宽度 - 默认50.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableMinCellWidth方法代替", since: "1.4.0"]
-    public func setTableMinTextWidth(tableMinTextWidth: Float64): MarkdownThemeBuilder {
+    public func setTableMinTextWidth(tableMinTextWidth: Float64): MarkdownTheme {
         this.tableTheme.tableMinCellWidth = tableMinTextWidth
         return this
     }
@@ -3450,10 +3712,10 @@ public class MarkdownThemeBuilder {
      * 设置表格最大宽度
      *
      * @param tableMaxTextWidth 表格最大宽度- 默认300.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableMaxCellWidth方法代替", since: "1.4.0"]
-    public func setTableMaxTextWidth(tableMaxTextWidth: Float64): MarkdownThemeBuilder {
+    public func setTableMaxTextWidth(tableMaxTextWidth: Float64): MarkdownTheme {
         this.tableTheme.tableMaxCellWidth = tableMaxTextWidth
         return this
     }
@@ -3462,10 +3724,10 @@ public class MarkdownThemeBuilder {
      * 设置表格第一列是否加粗
      *
      * @param tableFirstColumnBold 表格第一列是否加粗 - true：加粗；false：不加粗。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableFirstColumnIsBold方法代替", since: "1.4.0"]
-    public func setTableFirstColumnBold(tableFirstColumnBold: Bool): MarkdownThemeBuilder {
+    public func setTableFirstColumnBold(tableFirstColumnBold: Bool): MarkdownTheme {
         this.tableTheme.tableFirstColumnIsBold = tableFirstColumnBold
         return this
     }
@@ -3474,10 +3736,10 @@ public class MarkdownThemeBuilder {
      * 设置表格是否显示滚动条
      *
      * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableScrollBarState方法代替", since: "1.4.0"]
-    public func setTableScrollBarShow(tableScrollBarShow: Bool): MarkdownThemeBuilder {
+    public func setTableScrollBarShow(tableScrollBarShow: Bool): MarkdownTheme {
         if (tableScrollBarShow) {
             this.tableTheme.tableScrollBarState = BarState.On
         } else {
@@ -3490,11 +3752,59 @@ public class MarkdownThemeBuilder {
      * 设置表格滚动条颜色
      *
      * @param tableFirstColumnBold 表格滚动条颜色
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableScrollBarColor方法代替", since: "1.4.0"]
-    public func setTableScrollBarColor(tableScrollBarColor: Color): MarkdownThemeBuilder {
+    public func setTableScrollBarColor(tableScrollBarColor: Color): MarkdownTheme {
         this.tableTheme.tableScrollBarColor = tableScrollBarColor
+        return this
+    }
+
+    /**
+     * 设置表格标题行是否吸顶
+     *
+     * @param tableStickyHeader 是否吸顶 - 默认false
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用TableTheme.setTableStickyHeader方法代替", since: "1.4.0"]
+    public func setTableStickyHeader(tableStickyHeader: Bool): MarkdownTheme {
+        this.tableTheme.tableStickyHeader = tableStickyHeader
+        return this
+    }
+
+    /**
+     * 设置表格头复制按钮是否显示
+     *
+     * @param tableHeadIsShow 是否显示
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用TableTheme.setTableHeadIsShow方法代替", since: "1.4.0"]
+    public func setTableHeadIsShow(tableHeadIsShow: Bool): MarkdownTheme {
+        this.tableTheme.tableHeadIsShow = tableHeadIsShow
+        return this
+    }
+
+    /**
+     * 设置表格头标题文字
+     *
+     * @param tableHeadTitleText 标题文字
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用TableTheme.setTableHeadTitleText方法代替", since: "1.4.0"]
+    public func setTableHeadTitleText(tableHeadTitleText: String): MarkdownTheme {
+        this.tableTheme.tableHeadTitleText = tableHeadTitleText
+        return this
+    }
+
+    /**
+     * 设置表格头复制图标
+     *
+     * @param tableHeadCopyIcon 复制图标资源
+     * @return MarkdownTheme MarkdownTheme对象
+     */
+    @Deprecated["用TableTheme.setTableHeadCopyIcon方法代替", since: "1.4.0"]
+    public func setTableHeadCopyIcon(tableHeadCopyIcon: AppResource): MarkdownTheme {
+        this.tableTheme.tableHeadCopyIcon = tableHeadCopyIcon
         return this
     }
 
@@ -3502,10 +3812,10 @@ public class MarkdownThemeBuilder {
      * 设置删除线颜色
      *
      * @param strikethroughColor 删除线颜色 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用StrikethroughTheme.setStrikethroughTextDecorationColor方法代替", since: "1.4.0"]
-    public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder {
+    public func setStrikethroughColor(strikethroughColor: Color): MarkdownTheme {
         this.strikethroughTheme.strikethroughTextDecorationColor = strikethroughColor
         return this
     }
@@ -3514,10 +3824,10 @@ public class MarkdownThemeBuilder {
      * 设置删除线样式
      *
      * @param strikethroughStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用StrikethroughTheme.setStrikethroughTextDecorationStyle方法代替", since: "1.4.0"]
-    public func setStrikethroughStyle(strikethroughStyle: Int32): MarkdownThemeBuilder {
+    public func setStrikethroughStyle(strikethroughStyle: Int32): MarkdownTheme {
         match (strikethroughStyle) {
             case 0 => this.strikethroughTheme.strikethroughTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
             case 1 => this.strikethroughTheme.strikethroughTextDecorationStyle = MarkdownTextDecorationStyle.DOUBLE
@@ -3533,10 +3843,10 @@ public class MarkdownThemeBuilder {
      * 设置定义列表术语和定义行之间间距
      *
      * @param descListTermAndDefMargins 定义列表术语和定义行之间间距 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用DefinitionListTheme.setDefinitionListTermToDescriptionSpacing方法代替", since: "1.4.0"]
-    public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): MarkdownThemeBuilder {
+    public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): MarkdownTheme {
         this.definitionListTheme.definitionListTermToDescriptionSpacing = descListTermAndDefMargins
         return this
     }
@@ -3545,10 +3855,10 @@ public class MarkdownThemeBuilder {
      * 设置定义列表定义行缩进
      *
      * @param descListDefIndentation 定义列表定义行缩进 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用DefinitionListTheme.setDefinitionListDescriptionIndent方法代替", since: "1.4.0"]
-    public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownThemeBuilder {
+    public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownTheme {
         this.definitionListTheme.definitionListDescriptionIndent = descListDefIndentation
         return this
     }
@@ -3557,10 +3867,10 @@ public class MarkdownThemeBuilder {
      * 设置定义列表定义行间距
      *
      * @param descListDefMargins 定义列表定义行间距 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用DefinitionListTheme.setDefinitionListDescriptionItemSpacing方法代替", since: "1.4.0"]
-    public func setDescListDefMargins(descListDefMargins: Float64): MarkdownThemeBuilder {
+    public func setDescListDefMargins(descListDefMargins: Float64): MarkdownTheme {
         this.definitionListTheme.definitionListDescriptionItemSpacing = descListDefMargins
         return this
     }
@@ -3569,10 +3879,10 @@ public class MarkdownThemeBuilder {
      * 设置下标字体颜色
      *
      * @param subTextColor 下标字体颜色 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用SubTheme.setSubTextFontColor方法代替", since: "1.4.0"]
-    public func setSubTextColor(subTextColor: Color): MarkdownThemeBuilder {
+    public func setSubTextColor(subTextColor: Color): MarkdownTheme {
         this.subTheme.subTextFontColor = subTextColor
         return this
     }
@@ -3581,10 +3891,10 @@ public class MarkdownThemeBuilder {
      * 设置下标字体大小
      *
      * @param subTextSize 下标字体大小 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用SubTheme.setSubTextFontSize方法代替", since: "1.4.0"]
-    public func setSubTextSize(subTextSize: Float64): MarkdownThemeBuilder {
+    public func setSubTextSize(subTextSize: Float64): MarkdownTheme {
         this.subTheme.subTextFontSize = subTextSize
         return this
     }
@@ -3593,10 +3903,10 @@ public class MarkdownThemeBuilder {
      * 设置下标偏移距离
      *
      * @param subOffsetDist 下标偏移距离 默认0.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用SubTheme.setSubTextBaselineOffset方法代替", since: "1.4.0"]
-    public func setSubOffsetDist(subOffsetDist: Float64): MarkdownThemeBuilder {
+    public func setSubOffsetDist(subOffsetDist: Float64): MarkdownTheme {
         this.subTheme.subTextBaselineOffset = subOffsetDist
         return this
     }
@@ -3605,10 +3915,10 @@ public class MarkdownThemeBuilder {
      * 设置上标字体颜色
      *
      * @param supTextColor 上标字体颜色 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用SupTheme.setSupTextFontColor方法代替", since: "1.4.0"]
-    public func setSupTextColor(supTextColor: Color): MarkdownThemeBuilder {
+    public func setSupTextColor(supTextColor: Color): MarkdownTheme {
         this.supTheme.supTextFontColor = supTextColor
         return this
     }
@@ -3617,10 +3927,10 @@ public class MarkdownThemeBuilder {
      * 设置上标字体大小
      *
      * @param supTextSize 上标字体大小 默认8.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用SupTheme.setSupTextFontSize方法代替", since: "1.4.0"]
-    public func setSupTextSize(supTextSize: Float64): MarkdownThemeBuilder {
+    public func setSupTextSize(supTextSize: Float64): MarkdownTheme {
         this.supTheme.supTextFontSize = supTextSize
         return this
     }
@@ -3629,10 +3939,10 @@ public class MarkdownThemeBuilder {
      * 设置上标偏移距离
      *
      * @param supOffsetDist 上标偏移距离 默认6.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用SupTheme.setSupTextBaselineOffset方法代替", since: "1.4.0"]
-    public func setSupOffsetDist(supOffsetDist: Float64): MarkdownThemeBuilder {
+    public func setSupOffsetDist(supOffsetDist: Float64): MarkdownTheme {
         this.supTheme.supTextBaselineOffset = supOffsetDist
         return this
     }
@@ -3641,10 +3951,10 @@ public class MarkdownThemeBuilder {
      * 设置下划线颜色
      *
      * @param underlineColor 下划线颜色 默认0xFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HtmlUnderlineTheme.setHtmlUnderlineTextDecorationColor方法代替", since: "1.4.0"]
-    public func setUnderlineColor(underlineColor: Color): MarkdownThemeBuilder {
+    public func setUnderlineColor(underlineColor: Color): MarkdownTheme {
         this.htmlUnderlineTheme.htmlUnderlineTextDecorationColor = underlineColor
         return this
     }
@@ -3653,10 +3963,10 @@ public class MarkdownThemeBuilder {
      * 设置下划线样式
      *
      * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HtmlUnderlineTheme.setHtmlUnderlineTextDecorationStyle方法代替", since: "1.4.0"]
-    public func setUnderlineStyle(underlineStyle: Int32): MarkdownThemeBuilder {
+    public func setUnderlineStyle(underlineStyle: Int32): MarkdownTheme {
         match (underlineStyle) {
             case 0 => this.htmlUnderlineTheme.htmlUnderlineTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
             case 1 => this.htmlUnderlineTheme.htmlUnderlineTextDecorationStyle = MarkdownTextDecorationStyle.DOUBLE
@@ -3668,12 +3978,5 @@ public class MarkdownThemeBuilder {
         return this
     }
 
-    /**
-     * 返回Theme对象
-     *
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    public func build(): MarkdownTheme {
-        return MarkdownTheme(this)
-    }
+
 }

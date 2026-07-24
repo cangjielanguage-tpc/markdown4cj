@@ -1,7 +1,7 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 /**
- * Plugin to add strikethrough markdown feature.
+ * Plugin to add strikethrough markdown_hybrid feature.
  * This plugin will extend commonmark.Parser with strikethrough extension,
  * add SpanFactory and register commonmark.Strikethrough node visitor
  */

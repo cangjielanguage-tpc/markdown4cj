@@ -1,8 +1,8 @@
-package markdown.core
+package markdown_hybrid.core
 
 /**
  * Class represents a plugin (extension) to Markdown to configure how parsing and rendering
- * of markdown is carried on.
+ * of markdown_hybrid is carried on.
  *
  * @see AbstractMarkdownPlugin
  * @see CorePlugin
@@ -30,13 +30,13 @@ public interface MarkdownPlugin <: Hashable & Equatable<MarkdownPlugin> & ToStri
     func configureVisitor(builder: MarkdownVisitorBuilder): Unit
 
     /**
-     * Process input markdown and return string to be used in parsing stage further.
-     * Can be described as <code>pre-processing</code> of markdown String.
+     * Process input markdown_hybrid and return string to be used in parsing stage further.
+     * Can be described as <code>pre-processing</code> of markdown_hybrid String.
      *
-     * @param markdown String to process
-     * @return processed markdown String
+     * @param markdown_hybrid String to process
+     * @return processed markdown_hybrid String
      */
-    func processMarkdown(markdown: String): String
+    func processMarkdown(markdown_hybrid: String): String
 
     /**
      * This method will be called <strong>before</strong> rendering will occur thus making possible
@@ -47,13 +47,13 @@ public interface MarkdownPlugin <: Hashable & Equatable<MarkdownPlugin> & ToStri
     func beforeRender(node: Node): Unit
 
     /**
-     * This method will be called <strong>after</strong> rendering (but before applying markdown to a
+     * This method will be called <strong>after</strong> rendering (but before applying markdown_hybrid to a
      * TextView, if such action will happen). It can be used to clean some
      * internal state, or trigger certain action. Please note that modifying <code>node</code> won\'t
      * have any effect as it has been already <i>visited</i> at this stage.
      *
      * @param node    root parsed commonmark.Node
-     * @param visitor {@link MarkdownVisitor} instance used to render markdown
+     * @param visitor {@link MarkdownVisitor} instance used to render markdown_hybrid
      */
     func afterRender(node: Node, visitor: MarkdownVisitor): Unit
 }
@@ -79,8 +79,8 @@ public abstract class AbstractMarkdownPlugin <: MarkdownPlugin {
     public open override func configureVisitor(_: MarkdownVisitorBuilder): Unit {
     }
 
-    public open override func processMarkdown(markdown: String): String {
-        return markdown
+    public open override func processMarkdown(markdown_hybrid: String): String {
+        return markdown_hybrid
     }
 
     public open override func beforeRender(_: Node): Unit {

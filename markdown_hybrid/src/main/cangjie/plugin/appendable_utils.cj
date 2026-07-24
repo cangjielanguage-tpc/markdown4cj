@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 abstract class AppendableUtils {
     static func appendQuietly(appendable: Appendable, c: Rune): Unit {

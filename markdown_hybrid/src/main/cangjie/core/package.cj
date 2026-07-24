@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_hybrid.core
 
 internal import commonmark4cj.commonmark.*
 internal import std.collection.ArrayList

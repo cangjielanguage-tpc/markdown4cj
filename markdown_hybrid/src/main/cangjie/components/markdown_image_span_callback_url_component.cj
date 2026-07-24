@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,10 +7,11 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownSpanImageCallbackUrlComponent {
+    @Prop
     var urlCallbackMarkdownTheme: MarkdownTheme // markdown配置
     var urlCallbackDestination: String // 图片链接
     @Prop var urlCallbackComponentWidth: Float64 // 控件宽度 - 单位vp
-    var urlCallbackImageCallbackCallback: (String) -> ?Array<UInt8> // 图片替换事件
+    var urlCallbackImageReplaceCallback: (String) -> ?Array<UInt8> // 图片替换事件
     var urlCallbackImageCallback: (String) -> Unit // 图片点击事件
     var urlCallbackLinkCallback: ?(String) -> Unit // 链接点击事件
     var urlCallbackLink: Bool // 是否是链接
@@ -275,7 +276,7 @@ public class MarkdownSpanImageCallbackUrlComponent {
         }
         urlCallbackReplaceFut = MarkdownParseImageUtil.callbackToPixelmap(
             urlCallbackDestination,
-            urlCallbackImageCallbackCallback,
+            urlCallbackImageReplaceCallback,
             callback
         )
     }

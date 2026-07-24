@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -14,7 +14,7 @@ import ohos.state_macro_manage.*
 func imageSpanOnClick(isLink: Bool, imageCallback: (String) -> Unit, linkCallback: ?(String) -> Unit, linkUrl: ?String, destination: String): Unit {
     if (isLink) {
         if (linkCallback.isSome() && linkUrl.isSome()) {
-            linkCallback()(linkUrl())
+            linkCallback.getOrThrow()(linkUrl.getOrThrow())
         }
     } else {
         imageCallback(destination)
@@ -29,7 +29,7 @@ func imageSpanOnClick(isLink: Bool, imageCallback: (String) -> Unit, linkCallbac
  */
 func imageOnClick(commonmarkImageStr: String, imageCallback: ?(String) -> Unit): Unit {
     if (imageCallback.isSome()) {
-        imageCallback()(commonmarkImageStr)
+        imageCallback.getOrThrow()(commonmarkImageStr)
     }
 }
 
@@ -41,7 +41,7 @@ func imageOnClick(commonmarkImageStr: String, imageCallback: ?(String) -> Unit):
  */
 func videoOnClick(imgVideoStr: String, videoCallback: ?(String) -> Unit): Unit {
     if (videoCallback.isSome()) {
-        videoCallback()(imgVideoStr)
+        videoCallback.getOrThrow()(imgVideoStr)
     }
 }
 
@@ -53,7 +53,7 @@ func videoOnClick(imgVideoStr: String, videoCallback: ?(String) -> Unit): Unit {
  */
 func codeCopyOnClick(codeText: String, codeCopyCallback: ?(String) -> Unit): Unit {
     if (codeCopyCallback.isSome()) {
-        codeCopyCallback()(codeText)
+        codeCopyCallback.getOrThrow()(codeText)
     }
 }
 
@@ -69,11 +69,11 @@ func codeFullScreenOnClick(codeText: String, info: ?String, codeFullScreenCallba
         match (info) {
             case Some(v) =>
                 if (v == "") {
-                    codeFullScreenCallback()(codeText, Option<String>.None)
+                    codeFullScreenCallback.getOrThrow()(codeText, Option<String>.None)
                 } else {
-                    codeFullScreenCallback()(codeText, v)
+                    codeFullScreenCallback.getOrThrow()(codeText, v)
                 }
-            case None => codeFullScreenCallback()(codeText, Option<String>.None)
+            case None => codeFullScreenCallback.getOrThrow()(codeText, Option<String>.None)
         }
     }
 }
@@ -88,6 +88,6 @@ func codeFullScreenOnClick(codeText: String, info: ?String, codeFullScreenCallba
  */
 func latexImageOnClick(lists: Array<UInt8>, height: Length, width: Length, latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit): Unit {
     if (latexImageCallback.isSome()) {
-        latexImageCallback()(lists, height, width)
+        latexImageCallback.getOrThrow()(lists, height, width)
     }
 }

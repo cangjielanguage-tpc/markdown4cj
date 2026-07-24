@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 public abstract class CommonMarkEntities {
     public static func isNamedEntity(name: String): Bool {

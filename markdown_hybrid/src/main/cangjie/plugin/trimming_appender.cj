@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 abstract class TrimmingAppender {
     public func append(output: Appendable, data: String): Unit

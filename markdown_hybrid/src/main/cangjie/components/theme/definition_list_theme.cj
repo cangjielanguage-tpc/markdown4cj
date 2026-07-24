@@ -1,22 +1,39 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 定义列表样式
  */
-public class DefinitionListTheme <: MarkdownBaseTheme {
-    public var definitionListBackgroundColor: ?Color = None // 定义列表背景颜色
+@Observed
+public class DefinitionListTheme {
+    @Publish
+    public var definitionListBackgroundColor: ?Color = Option<Color>.None // 定义列表背景颜色
+    @Publish
     public var definitionListMarginTop: Float64 = 0.0 // 定义列表上外边距
+    @Publish
     public var definitionListMarginRight: Float64 = 0.0 // 定义列表右外边距
+    @Publish
     public var definitionListMarginBottom: Float64 = 0.0 // 定义列表下外边距
+    @Publish
     public var definitionListMarginLeft: Float64 = 0.0 // 定义列表左外边距
+    @Publish
     public var definitionListPaddingTop: Float64 = 0.0 // 定义列表上内边距
+    @Publish
     public var definitionListPaddingRight: Float64 = 0.0 // 定义列表右内边距
+    @Publish
     public var definitionListPaddingBottom: Float64 = 0.0 // 定义列表下内边距
+    @Publish
     public var definitionListPaddingLeft: Float64 = 0.0 // 定义列表左内边距
+    @Publish
     public var definitionListTermToDescriptionSpacing: Float64 = 8.0 // 定义列表术语和定义行之间间距
+    @Publish
     public var definitionListTermTextFontWeight: FontWeight = FontWeight.W600 // 定义列表术语文本字体粗细
+    @Publish
     public var definitionListTermTextFontStyle: FontStyle = FontStyle.Italic // 定义列表术语文本字体样式
+    @Publish
     public var definitionListDescriptionItemSpacing: Float64 = 8.0 // 定义列表定义行之间间距
+    @Publish
     public var definitionListDescriptionIndent: Float64 = 8.0 // 定义列表定义行左缩进距离
 
     /**

@@ -1,6 +1,6 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
-internal import markdown.core.*
+internal import markdown_hybrid.core.*
 internal import commonmark4cj.commonmark.*
 internal import commonmark4cj.strikethrough.*
 internal import commonmark4cj.table.*

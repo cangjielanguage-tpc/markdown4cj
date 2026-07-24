@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 /**
  * JSContext

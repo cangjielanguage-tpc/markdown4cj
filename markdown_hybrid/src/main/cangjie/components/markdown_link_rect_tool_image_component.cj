@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownLinkRectToolImageComponent {
+    @Prop
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     var strUrl: String // 链接
     var strText: String // 链接内容
@@ -35,7 +36,7 @@ public class MarkdownLinkRectToolImageComponent {
         linkRectToolIconDividingLineWidth = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconDividingLineWidth.vp)().value
         linkRectToolIconLineLeftPadding = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconLineLeftPadding.vp)().value
         linkRectToolIconLineRightPadding = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconLineRightPadding.vp)().value
-        latexMathImagePixelmap() // 链接解析
+        linkRectToolImagePixelmap() // 链接解析
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -47,9 +48,9 @@ public class MarkdownLinkRectToolImageComponent {
 
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
-            ImageSpan(imagePixelMap())
-                .width(imageWidth().px)
-                .height(imageHeight().px)
+            ImageSpan(imagePixelMap.getOrThrow())
+                .width(imageWidth.getOrThrow().px)
+                .height(imageHeight.getOrThrow().px)
                 .objectFit(ImageFit.Contain)
                 .constraintSize(maxWidth: maxWidth)
                 .verticalAlign(ImageSpanAlignment.CENTER)
@@ -57,7 +58,7 @@ public class MarkdownLinkRectToolImageComponent {
                 .margin(right: markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconMargin, left: markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconMargin)
                 .onClick {
                     evt => if (markdownConfiguration.linkCallback.isSome()) {
-                        markdownConfiguration.linkCallback()(strUrl)
+                        markdownConfiguration.linkCallback.getOrThrow()(strUrl)
                     }
                 }
         }
@@ -66,7 +67,7 @@ public class MarkdownLinkRectToolImageComponent {
     /**
      * 链接数据处理 - 行内链接
      */
-    func latexMathImagePixelmap(): Unit {
+    func linkRectToolImagePixelmap(): Unit {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
             pixelMap, height, width => launch {
                 imageHeight = height

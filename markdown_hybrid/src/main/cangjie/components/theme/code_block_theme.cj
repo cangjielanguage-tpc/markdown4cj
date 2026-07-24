@@ -1,93 +1,183 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 代码块样式
  */
-public class CodeBlockTheme <: MarkdownBaseTheme {
+@Observed
+public class CodeBlockTheme {
+    @Publish
     public var codeBlockIsCodeFormat: Bool = false // 是否格式化围栏代码块内容
+    @Publish
+    public var codeBlockIsDark: Bool = false // 代码块是否暗色主题
+    @Publish
     public var codeBlockUseTab: Bool = false // codeformat是否用制表符
+    @Publish
     public var codeBlockIndentWidth: Int64 = 4 // codeformat空格缩进数量
+    @Publish
     public var codeBlockParserSync: Bool = false // 围栏代码块代码高亮是否同步解析
-    public var codeBlockBackgroundColor: ?Color = None // 代码块背景颜色
+    @Publish
+    public var codeBlockBackgroundColor: ?Color = Option<Color>.None // 代码块背景颜色
+    @Publish
     public var codeBlockMarginTop: Float64 = 0.0 // 代码块上外边距
+    @Publish
     public var codeBlockMarginRight: Float64 = 0.0 // 代码块右外边距
+    @Publish
     public var codeBlockMarginBottom: Float64 = 0.0 // 代码块下外边距
+    @Publish
     public var codeBlockMarginLeft: Float64 = 0.0 // 代码块左外边距
+    @Publish
     public var codeBlockPaddingTop: Float64 = 0.0 // 代码块上内边距
+    @Publish
     public var codeBlockPaddingRight: Float64 = 8.0 // 代码块右内边距
+    @Publish
     public var codeBlockPaddingBottom: Float64 = 8.0 // 代码块下内边距
+    @Publish
     public var codeBlockPaddingLeft: Float64 = 0.0 // 代码块左内边距
+    @Publish
     public var codeBlockBorderStyle: BorderStyle = BorderStyle.Solid // 代码块边框样式
+    @Publish
     public var codeBlockBorderWidth: Float64 = 0.0 // 代码块边框宽度
+    @Publish
     public var codeBlockBorderColor: Color = COLOR_TRANSPARENT // 代码块边框颜色
+    @Publish
     public var codeBlockRadiusTopLeft: Float64 = 8.0 // 代码块边框左上圆角
+    @Publish
     public var codeBlockRadiusTopRight: Float64 = 8.0 // 代码块边框右上圆角
+    @Publish
     public var codeBlockRadiusBottomLeft: Float64 = 8.0 // 代码块边框左下圆角
+    @Publish
     public var codeBlockRadiusBottomRight: Float64 = 8.0 // 代码块边框右下圆角
+    @Publish
     public var codeBlockTitleLayoutMarginBottom: Float64 = 0.0 // 代码块类型和代码块内容间距
+    @Publish
     public var codeBlockTypeTextMarginLeft: Float64 = 8.0 // 代码块类型左边距
+    @Publish
     public var codeBlockTypeText: String = "" // 代码块没有代码类型时默认显示文本
-    public var codeBlockTypeTextFontColor: ?Color = None // 代码块类型文本颜色
-    public var codeBlockTypeTextFontSize: ?Float64 = None // 代码块类型文本尺寸
-    public var codeBlockTypeTextFontStyle: ?FontStyle = None // 代码块类型文本字体样式
-    public var codeBlockTypeTextFontWeight: ?FontWeight = None // 代码块类型文本字体粗细
-    public var codeBlockTypeTextFontFamily: ?String = None // 代码块类型文本字体
-    public var codeBlockTypeTextLineHeight: ?Float64 = None // 代码块类型文本行高
+    @Publish
+    public var codeBlockTypeTextFontColor: ?Color = Option<Color>.None // 代码块类型文本颜色
+    @Publish
+    public var codeBlockTypeTextFontSize: ?Float64 = Option<Float64>.None // 代码块类型文本尺寸
+    @Publish
+    public var codeBlockTypeTextFontStyle: ?FontStyle = Option<FontStyle>.None // 代码块类型文本字体样式
+    @Publish
+    public var codeBlockTypeTextFontWeight: ?FontWeight = Option<FontWeight>.None // 代码块类型文本字体粗细
+    @Publish
+    public var codeBlockTypeTextFontFamily: ?String = Option<String>.None // 代码块类型文本字体
+    @Publish
+    public var codeBlockTypeTextLineHeight: ?Float64 = Option<Float64>.None // 代码块类型文本行高
+    @Publish
     public var codeBlockCopyFullScreenSpacing: Float64 = 5.0 // 代码块代码复制和代码全屏间距
+    @Publish
     public var codeBlockCopyButtonIsShow: Bool = true // 代码块代码复制按钮是否显示
+    @Publish
     public var codeBlockCopyTextIsShow: Bool = true // 代码块代码复制文本是否显示
-    public var codeBlockCopyIcon: ?AppResource = None // 代码块代码复制按钮默认图标
+    @Publish
+    public var codeBlockCopyIcon: ?AppResource = Option<AppResource>.None // 代码块代码复制按钮默认图标
+    @Publish
     public var codeBlockCopyIconWidth: Float64 = 24.0 // 代码块代码复制图标宽度
+    @Publish
     public var codeBlockCopyIconHeight: Float64 = 24.0 // 代码块代码复制图标高度
+    @Publish
     public var codeBlockCopyIconTextSpacing: Float64 = 5.0 // 代码块代码复制图标和文本间距
+    @Publish
     public var codeBlockCopyText: String = "复制代码" // 代码块代码复制默认文本内容
-    public var codeBlockCopyTextFontColor: ?Color = None // 代码块代码复制文本颜色
-    public var codeBlockCopyTextFontSize: ?Float64 = None // 代码块代码复制文本尺寸
-    public var codeBlockCopyTextFontStyle: ?FontStyle = None // 代码块代码复制文本字体样式
-    public var codeBlockCopyTextFontWeight: ?FontWeight = None // 代码块代码复制文本字体粗细
-    public var codeBlockCopyTextFontFamily: ?String = None // 代码块代码复制文本字体
-    public var codeBlockCopyTextLineHeight: ?Float64 = None // 代码块代码复制文本行高
+    @Publish
+    public var codeBlockCopyTextFontColor: ?Color = Option<Color>.None // 代码块代码复制文本颜色
+    @Publish
+    public var codeBlockCopyTextFontSize: ?Float64 = Option<Float64>.None // 代码块代码复制文本尺寸
+    @Publish
+    public var codeBlockCopyTextFontStyle: ?FontStyle = Option<FontStyle>.None // 代码块代码复制文本字体样式
+    @Publish
+    public var codeBlockCopyTextFontWeight: ?FontWeight = Option<FontWeight>.None // 代码块代码复制文本字体粗细
+    @Publish
+    public var codeBlockCopyTextFontFamily: ?String = Option<String>.None // 代码块代码复制文本字体
+    @Publish
+    public var codeBlockCopyTextLineHeight: ?Float64 = Option<Float64>.None // 代码块代码复制文本行高
+    @Publish
     public var codeBlockFullScreenButtonIsShow: Bool = true // 代码块代码全屏按钮是否显示
+    @Publish
     public var codeBlockFullScreenTextIsShow: Bool = true // 代码块代码全屏文本是否显示
-    public var codeBlockFullScreenIcon: ?AppResource = None // 代码块代码全屏按钮默认图标
+    @Publish
+    public var codeBlockFullScreenIcon: ?AppResource = Option<AppResource>.None // 代码块代码全屏按钮默认图标
+    @Publish
     public var codeBlockFullScreenIconWidth: Float64 = 24.0 // 代码块代码全屏图标宽度
+    @Publish
     public var codeBlockFullScreenIconHeight: Float64 = 24.0 // 代码块代码全屏图标高度
+    @Publish
     public var codeBlockFullScreenIconTextSpacing: Float64 = 5.0 // 代码块代码全屏图标和文本间距
+    @Publish
     public var codeBlockFullScreenText: String = "全屏代码" // 代码块代码全屏默认文本内容
-    public var codeBlockFullScreenTextFontColor: ?Color = None // 代码块代码全屏文本颜色
-    public var codeBlockFullScreenTextFontSize: ?Float64 = None // 代码块代码全屏文本尺寸
-    public var codeBlockFullScreenTextFontStyle: ?FontStyle = None // 代码块代码全屏文本字体样式
-    public var codeBlockFullScreenTextFontWeight: ?FontWeight = None // 代码块代码全屏文本字体粗细
-    public var codeBlockFullScreenTextFontFamily: ?String = None // 代码块代码全屏文本字体
-    public var codeBlockFullScreenTextLineHeight: ?Float64 = None // 代码块代码全屏文本行高
+    @Publish
+    public var codeBlockFullScreenTextFontColor: ?Color = Option<Color>.None // 代码块代码全屏文本颜色
+    @Publish
+    public var codeBlockFullScreenTextFontSize: ?Float64 = Option<Float64>.None // 代码块代码全屏文本尺寸
+    @Publish
+    public var codeBlockFullScreenTextFontStyle: ?FontStyle = Option<FontStyle>.None // 代码块代码全屏文本字体样式
+    @Publish
+    public var codeBlockFullScreenTextFontWeight: ?FontWeight = Option<FontWeight>.None // 代码块代码全屏文本字体粗细
+    @Publish
+    public var codeBlockFullScreenTextFontFamily: ?String = Option<String>.None // 代码块代码全屏文本字体
+    @Publish
+    public var codeBlockFullScreenTextLineHeight: ?Float64 = Option<Float64>.None // 代码块代码全屏文本行高
+    @Publish
     public var codeBlockLineNumberIsShow: Bool = true // 代码块代码行号是否显示
+    @Publish
     public var codeBlockLineNumberTextPaddingLeft: Float64 = 8.0 // 代码块代码行号左内边距
-    public var codeBlockLineNumberTextFontColor: ?Color = None // 代码块代码行号文本颜色
-    public var codeBlockLineNumberTextFontSize: ?Float64 = None // 代码块代码行号文本尺寸
-    public var codeBlockLineNumberTextFontStyle: ?FontStyle = None // 代码块代码行号文本字体样式
-    public var codeBlockLineNumberTextFontWeight: ?FontWeight = None // 代码块代码行号文本字体粗细
-    public var codeBlockLineNumberTextFontFamily: ?String = None // 代码块代码行号文本字体
-    public var codeBlockLineNumberTextLineHeight: ?Float64 = None // 代码块代码行号文本行高
-    public var codeBlockDividerColor: ?Color = None // 代码块代码行号和代码块中间分割线颜色
+    @Publish
+    public var codeBlockLineNumberTextFontColor: ?Color = Option<Color>.None // 代码块代码行号文本颜色
+    @Publish
+    public var codeBlockLineNumberTextFontSize: ?Float64 = Option<Float64>.None // 代码块代码行号文本尺寸
+    @Publish
+    public var codeBlockLineNumberTextFontStyle: ?FontStyle = Option<FontStyle>.None // 代码块代码行号文本字体样式
+    @Publish
+    public var codeBlockLineNumberTextFontWeight: ?FontWeight = Option<FontWeight>.None // 代码块代码行号文本字体粗细
+    @Publish
+    public var codeBlockLineNumberTextFontFamily: ?String = Option<String>.None // 代码块代码行号文本字体
+    @Publish
+    public var codeBlockLineNumberTextLineHeight: ?Float64 = Option<Float64>.None // 代码块代码行号文本行高
+    @Publish
+    public var codeBlockDividerColor: ?Color = Option<Color>.None // 代码块代码行号和代码块中间分割线颜色
+    @Publish
     public var codeBlockDividerStrokeWidth: Float64 = 0.5 // 代码块代码行号和代码块中间分割线宽度
+    @Publish
     public var codeBlockLineNumberDividerSpacing: Float64 = 8.0 // 代码块代码行号和分割线间距
+    @Publish
     public var codeBlockTextMarginRight: Float64 = 8.0 // 代码块代码文本右外边距
+    @Publish
     public var codeBlockTextMarginLeft: Float64 = 8.0 // 代码块代码文本左外边距
-    public var codeBlockTextFontColor: ?Color = None // 代码块代码文本颜色
+    @Publish
+    public var codeBlockTextFontColor: ?Color = Option<Color>.None // 代码块代码文本颜色
+    @Publish
     public var codeBlockTextFontSize: Float64 = 13.0 // 代码块代码文本尺寸
+    @Publish
     public var codeBlockTextFontStyle: FontStyle = FontStyle.Normal // 代码块代码文本字体样式
+    @Publish
     public var codeBlockTextFontWeight: FontWeight = FontWeight.W400 // 代码块代码文本字体粗细
+    @Publish
     public var codeBlockTextFontFamily: String = "HarmonyOS Sans" // 代码块代码文本字体
+    @Publish
     public var codeBlockTextLineHeight: Float64 = 22.0 // 代码块代码文本行高
+    @Publish
     public var codeBlockTextLetterSpacing: Float64 = 0.0 // 代码块代码文本字符间距
+    @Publish
     public var codeBlockListTitleTextSize: Float64 = 13.0 // 组合代码块未选中标题字体大小
+    @Publish
     public var codeBlockListTitleSelectTextSize: Float64 = 13.0 // 组合代码块选中标题字体大小
+    @Publish
     public var codeBlockListTitleSelectTextColor: Color = COLOR_RED // 组合代码块选中标题文本颜色
+    @Publish
     public var codeBlockListTitleUnselectTextColor: Color = COLOR_BLACK // 组合代码块未选中标题文本颜色
+    @Publish
     public var codeBlockListTitleSelectBackgroundColor: Color = COLOR_GRAY // 组合代码块选中标题背景颜色
+    @Publish
     public var codeBlockListTitleUnselectBackgroundColor: Color = COLOR_TRANSPARENT // 组合代码块未选中标题背景颜色
+    @Publish
     public var codeBlockIsSeparate: Bool = false // 是否单独代码块显示
+    @Publish
     public var codeBlockSeparateWidth: Float64 = 50.0 // 单独代码块行号宽度
+    @Publish
     public var codeBlockSeparateIsBottom: Bool = false // 单独代码块是否居底显示
 
     /**
@@ -98,6 +188,17 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      */
     public func setCodeBlockIsCodeFormat(isCodeFormat: Bool): CodeBlockTheme {
         this.codeBlockIsCodeFormat = isCodeFormat
+        return this
+    }
+
+    /**
+     * 设置代码块是否暗色主题
+     *
+     * @param isDark 是否暗色
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockIsDark(isDark: Bool): CodeBlockTheme {
+        this.codeBlockIsDark = isDark
         return this
     }
 
@@ -151,7 +252,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param margin 外边距
      * @return 当前CodeBlockTheme对象
      */
-    public func setMargin(margin: Float64): CodeBlockTheme {
+    public func setCodeBlockMargin(margin: Float64): CodeBlockTheme {
         this.codeBlockMarginTop = margin
         this.codeBlockMarginRight = margin
         this.codeBlockMarginBottom = margin
@@ -168,7 +269,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param left 左外边距 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): CodeBlockTheme {
+    public func setCodeBlockMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): CodeBlockTheme {
         this.codeBlockMarginTop = top
         this.codeBlockMarginRight = right
         this.codeBlockMarginBottom = bottom
@@ -182,7 +283,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param padding 内边距
      * @return 当前CodeBlockTheme对象
      */
-    public func setPadding(padding: Float64): CodeBlockTheme {
+    public func setCodeBlockPadding(padding: Float64): CodeBlockTheme {
         this.codeBlockPaddingTop = padding
         this.codeBlockPaddingRight = padding
         this.codeBlockPaddingBottom = padding
@@ -199,7 +300,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param left 左内边距 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setPadding(top!: Float64 = 0.0, right!: Float64 = 8.0, bottom!: Float64 = 8.0, left!: Float64 = 0.0): CodeBlockTheme {
+    public func setCodeBlockPadding(top!: Float64 = 0.0, right!: Float64 = 8.0, bottom!: Float64 = 8.0, left!: Float64 = 0.0): CodeBlockTheme {
         this.codeBlockPaddingTop = top
         this.codeBlockPaddingRight = right
         this.codeBlockPaddingBottom = bottom
@@ -246,7 +347,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param radius 圆角
      * @return 当前CodeBlockTheme对象
      */
-    public func setRadius(radius: Float64): CodeBlockTheme {
+    public func setCodeBlockRadius(radius: Float64): CodeBlockTheme {
         this.codeBlockRadiusTopLeft = radius
         this.codeBlockRadiusTopRight = radius
         this.codeBlockRadiusBottomLeft = radius
@@ -263,7 +364,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setRadius(topLeft!: Float64 = 8.0, topRight!: Float64 = 8.0, bottomLeft!: Float64 = 8.0, bottomRight!: Float64 = 8.0): CodeBlockTheme {
+    public func setCodeBlockRadius(topLeft!: Float64 = 8.0, topRight!: Float64 = 8.0, bottomLeft!: Float64 = 8.0, bottomRight!: Float64 = 8.0): CodeBlockTheme {
         this.codeBlockRadiusTopLeft = topLeft
         this.codeBlockRadiusTopRight = topRight
         this.codeBlockRadiusBottomLeft = bottomLeft

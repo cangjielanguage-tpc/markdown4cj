@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,7 +7,9 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownCodeBlockListComponent {
+    @Prop
     var markdownConfiguration: MarkdownConfiguration // markdown配置
+    @Prop
     var nodeView: NodeView // Node
     var strInfos: ArrayList<String> // 代码类型列表标题
     var strText: ArrayList<String> // 代码内容列表
@@ -25,19 +27,35 @@ class MarkdownCodeBlockListComponent {
 
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
-        stringCodeToResLists()
+        MarkdownRefreshRegistry.register(nodeView.nodeHash, refreshData)
+        refreshData(nodeView)
     }
 
     protected override func aboutToDisappear(): Unit {
         future?.cancel()
+        MarkdownRefreshRegistry.unregister(nodeView.nodeHash)
     }
 
     func build() {
-        Column() {
-            codeBlockTitleComponent()
-            codeBlockComponent()
+        Row() {
+            Column() {
+                codeBlockTitleComponent()
+                codeBlockComponent()
+            }
+            .layoutWeight(1)
         }
-        .width(100.percent)
+        .padding(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingLeft
+        )
+        .margin(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
+        )
     }
 
     /**
@@ -112,18 +130,6 @@ class MarkdownCodeBlockListComponent {
         .borderWidth(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderWidth)
         .borderStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderStyle)
         .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-        .padding(
-            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingTop,
-            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingRight,
-            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingBottom,
-            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingLeft
-        )
-        .margin(
-            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
-            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
-            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
-            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
-        )
     }
 
     /**
@@ -267,7 +273,12 @@ class MarkdownCodeBlockListComponent {
     /**
      * 代码数据高亮解析
      */
-    func stringCodeToResLists() {
+    public func refreshData(newNodeView: NodeView) {
+        this.nodeView = newNodeView
+        let res = toCodeList(newNodeView)
+        this.strInfos = res[0]
+        this.strText = res[1]
+        this.strInfoText = res[2]
         let callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit = {
             prismNodesParseResLists => launch {
                 arrayLists = prismNodesParseResLists
@@ -275,6 +286,7 @@ class MarkdownCodeBlockListComponent {
         }
         lines = strText[idxSelect].lines().count()
         lineArray.set(Array<Int64>(lines, repeat: 0))
+        future?.cancel()
         future = MarkdownParseCodeUtil.stringToResLists(nodeView, markdownConfiguration, strText, psh, callback)
     }
 }

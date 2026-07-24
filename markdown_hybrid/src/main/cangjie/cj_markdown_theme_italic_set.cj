@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setItalicTheme(italicTheme: CJMarkdownItalicTheme): ItalicTheme {
     let theme: ItalicTheme = ItalicTheme()

@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setBoldTheme(boldTheme: CJMarkdownBoldTheme): BoldTheme {
     let theme: BoldTheme = BoldTheme()

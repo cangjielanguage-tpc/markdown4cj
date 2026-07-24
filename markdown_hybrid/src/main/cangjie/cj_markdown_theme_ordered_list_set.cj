@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setOrderedListTheme(orderedListTheme: CJMarkdownOrderedListTheme): OrderedListTheme {
     let theme: OrderedListTheme = OrderedListTheme()

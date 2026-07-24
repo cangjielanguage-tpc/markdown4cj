@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 /**
  * 基础DataSource
@@ -352,11 +352,87 @@ public open class MarkdownBaseListDataSource<T> <: IDataSource<T> {
 
 
 /**
+ * 组件刷新注册表
+ * @Watch在LazyForEach的updateWithValueParams中不触发，
+ * 通过此注册表直接调用组件的refreshXxxData(newNodeView)就地更新，
+ * 避免组件重建导致的UI闪屏。
+ * 每个组件在aboutToAppear中注册，aboutToDisappear中注销。
+ */
+public class MarkdownRefreshRegistry {
+    private static let map: HashMap<Int64, (NodeView) -> Unit> = HashMap<Int64, (NodeView) -> Unit>()
+
+    public static func register(hash: Int64, callback: (NodeView) -> Unit): Unit {
+        map[hash] = callback
+    }
+
+    public static func unregister(hash: Int64): Unit {
+        map.remove(hash)
+    }
+
+    public static func refresh(hash: Int64, nodeView: NodeView): Unit {
+        match(map.get(hash)) {
+            case Some(cb) => cb(nodeView)
+            case _ => ()
+        }
+    }
+
+    public static func clear(): Unit {
+        map.clear()
+    }
+}
+
+
+/**
  * NodeView DataSource
  */
 public class NodeViewDataSource <: MarkdownBaseDataSource<NodeView> {
     public NodeViewDataSource(let data: ArrayList<NodeView>) {
         super(data)
+    }
+
+    /**
+     * 流式增量更新：逐个对比新旧数据的nodeHash/contentHash
+     * - nodeHash变化：replaceData→notifyDataChange→框架重建组件
+     * - contentHash变化（nodeHash不变）：通过MarkdownRefreshRegistry直接调用
+     *   组件refreshXxxData(newNodeView)就地更新，不触发框架重建（避免闪屏）
+     * - 新增节点：addData→框架创建新组件
+     * - 删除节点：deleteData→框架销毁组件
+     *
+     * @param newData 解析后的新数据列表
+     */
+    public func smartUpdateDataArray(newData: ArrayList<NodeView>): Unit {
+        let existingLen = data_.size
+        if (existingLen == 0) {
+            for (item in newData) {
+                addData(item)
+            }
+            return
+        }
+        let newLen = newData.size
+        let minLen = if (existingLen < newLen) { existingLen } else { newLen }
+        for (i in 0..minLen) {
+            let oldNode = data_[i]
+            let newNode = newData[i]
+            if (oldNode.nodeHash != newNode.nodeHash) {
+                // nodeHash变化 → 框架重建组件
+                replaceData(i, newNode)
+            } else if (oldNode.contentHash != newNode.contentHash) {
+                // contentHash变化（nodeHash不变）→ 就地更新，不触发框架重建
+                data_[i] = newNode
+                MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)
+            }
+        }
+        // 新增部分
+        if (newLen > existingLen) {
+            for (i in existingLen..newLen) {
+                addData(newData[i])
+            }
+        } else if (existingLen > newLen) {
+            // 删除多余部分（从后往前删，避免索引移位）
+            for (i in existingLen - 1..=newLen : -1) {
+                deleteData(i)
+            }
+        }
     }
 }
 

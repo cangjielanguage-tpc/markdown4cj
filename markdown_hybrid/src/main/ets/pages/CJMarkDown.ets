@@ -111,7 +111,7 @@ export class MarkdownNodeViewString {
    */
   constructor() {
     if (global_customLib === undefined) {
-      global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+      global_customLib = requireCJLib("libmarkdown_hybrid.so") as CustomLib
     }
     this.cjNodeViewStringBuilder = new global_customLib.CJNodeViewStringBuilder()
   }
@@ -150,7 +150,7 @@ export class MarkdownScroller {
    */
   constructor() {
     if (global_customLib === undefined) {
-      global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+      global_customLib = requireCJLib("libmarkdown_hybrid.so") as CustomLib
     }
     this.scroller = new global_customLib.CJMarkdownScroller()
   }
@@ -297,7 +297,7 @@ export struct CJMarkdown {
   aboutToAppear(): void {
     if (this.useCangjieComponent === true) {
       if (global_customLib === undefined) {
-        global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+        global_customLib = requireCJLib("libmarkdown_hybrid.so") as CustomLib
       }
       this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
     } else {

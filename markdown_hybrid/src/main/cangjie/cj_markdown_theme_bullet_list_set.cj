@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setBulletListTheme(bulletListTheme: CJMarkdownBulletListTheme): BulletListTheme {
     let theme: BulletListTheme = BulletListTheme()

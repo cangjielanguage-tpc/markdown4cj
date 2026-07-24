@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setVideoTheme(videoTheme: CJMarkdownVideoTheme): VideoTheme {
     let theme: VideoTheme = VideoTheme()
@@ -69,7 +69,7 @@ func setVideoTheme(videoTheme: CJMarkdownVideoTheme): VideoTheme {
     if (let Some(v) <- videoTheme.videoRadiusBottomRight) {
         videoRadiusBottomRight = v
     }
-    theme.setVideoRadius(topLeft: videoRadiusTopLeft, topRight: videoRadiusTopRight, bottomLeft: videoRadiusBottomLeft, bottomRight: videoRadiusBottomRight)
+    theme.setVideoBorderRadius(topLeft: videoRadiusTopLeft, topRight: videoRadiusTopRight, bottomLeft: videoRadiusBottomLeft, bottomRight: videoRadiusBottomRight)
 
     if (let Some(v) <- videoTheme.videoBorderStyle) {
         theme.setVideoBorderStyle(v)

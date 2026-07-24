@@ -1,7 +1,7 @@
-package markdown.core
+package markdown_hybrid.core
 
 /**
- * Configurable visitor of parsed markdown. Allows visiting certain (registered) nodes without
+ * Configurable visitor of parsed markdown_hybrid. Allows visiting certain (registered) nodes without
  * need to create own instance of this class.
  *
  * @see Builder#on(Class, NodeVisitor)
@@ -9,6 +9,8 @@ package markdown.core
  */
 public interface MarkdownVisitor <: Visitor {
     func renderProps(): RenderProps
+
+    func visitNode(node: Node): Unit
 
     /**
      * Visits all children of supplied node.
@@ -152,7 +154,7 @@ class MarkdownVisitorImpl <: MarkdownVisitor {
         visitNode(customNode)
     }
 
-    private func visitNode(node: Node): Unit {
+    public func visitNode(node: Node): Unit {
         let nodeVisitor: ?NodeVisitor = nodes.get(node.getNodeType())
         if (let Some(f) <- nodeVisitor) {
             f(this, node)

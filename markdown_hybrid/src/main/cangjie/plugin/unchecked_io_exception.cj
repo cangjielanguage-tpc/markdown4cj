@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 public class UncheckedIOException <: Exception {
     init(cause: IOException) {

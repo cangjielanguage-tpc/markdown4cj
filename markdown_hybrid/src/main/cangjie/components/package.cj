@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 // 标准库
 internal import std.collection.ArrayList
@@ -12,30 +12,41 @@ internal import std.sync.AtomicBool
 internal import std.sync.Mutex
 internal import std.sync.Semaphore
 internal import std.sync.SyncCounter
+internal import std.sync.Timer
 
 // stdx
 internal import stdx.encoding.base64.fromBase64String
 internal import stdx.encoding.url.URL
 
 // 内部其他包
-internal import markdown.core.*
-internal import markdown.plugin.*
-internal import markdown.texttoimg4cj.*
-internal import markdown.components.theme.*
+internal import markdown_hybrid.core.*
+internal import markdown_hybrid.plugin.*
+internal import markdown_hybrid.texttoimg4cj.*
+internal import markdown_hybrid.components.theme.*
 
 // codeformat
 internal import codeformat.codeFormat
 internal import codeformat.FormatConfig
 
 // commonmark
+internal import commonmark4cj.commonmark.Document
 internal import commonmark4cj.commonmark.IndentedCodeBlock
 internal import commonmark4cj.commonmark.FencedCodeBlock
 internal import commonmark4cj.commonmark.Heading
+internal import commonmark4cj.commonmark.Paragraph
+internal import commonmark4cj.commonmark.BlockQuote
+internal import commonmark4cj.commonmark.BulletList
+internal import commonmark4cj.commonmark.OrderedList
+internal import commonmark4cj.commonmark.ListItem as CommonmarkListItem
+internal import commonmark4cj.commonmark.ThematicBreak
+internal import commonmark4cj.commonmark.SoftLineBreak
+internal import commonmark4cj.commonmark.HardLineBreak
 internal import commonmark4cj.commonmark.Code
 internal import commonmark4cj.commonmark.Text as CommonmarkText
 internal import commonmark4cj.commonmark.Image as CommonmarkImage
 internal import commonmark4cj.commonmark.Link as CommonmarkLink
 internal import commonmark4cj.commonmark.Node as CommonmarkNode
+internal import commonmark4cj.table.TableBlock
 internal import commonmark4cj.table.TableRow
 internal import commonmark4cj.table.TableHead
 internal import commonmark4cj.table.TableCell
@@ -68,6 +79,7 @@ internal import ohos.component.ReuseParams
 internal import ohos.component.DataChangeListener
 internal import ohos.component.Scroller
 internal import ohos.component.TouchEvent
+internal import ohos.component.ClickEvent
 internal import ohos.component.HorizontalAlign
 internal import ohos.component.Text
 internal import ohos.component.Span
@@ -77,6 +89,10 @@ internal import ohos.component.TextDecorationType
 internal import ohos.component.ImageFit
 internal import ohos.component.ListItem
 internal import ohos.component.List
+internal import ohos.component.StickyStyle
+internal import ohos.component.ListItemGroup
+internal import ohos.component.ListItemGroupParams
+internal import ohos.component.ScrollState
 internal import ohos.component.Alignment
 internal import ohos.component.FontWeight
 internal import ohos.component.TextAlign
@@ -113,13 +129,26 @@ internal import ohos.component.fp2px
 internal import ohos.component.Axis
 internal import ohos.component.NestedScrollOptions
 internal import ohos.component.NestedScrollMode
+internal import ohos.component_utils.ComponentUtils
 internal import ohos.component.ItemAlign
 internal import ohos.component.Stack
 internal import ohos.component.Divider
 internal import ohos.component.CopyOptions
 internal import ohos.component.TextBackgroundStyle
 internal import ohos.component.BorderRadiuses
+internal import ohos.component.TransitionEffect
+internal import ohos.component.AnimateParam
+internal import ohos.component.Curve
+internal import ohos.component.bind
+internal import ohos.component.TextSpanType
+internal import ohos.component.TextResponseType
+internal import ohos.component.GestureEvent
+internal import kit.UIKit.LongPressGesture
 internal import ohos.concurrency.launch
+internal import ohos.prompt_action.PromptAction
+internal import ohos.pasteboard.createData
+internal import ohos.pasteboard.getSystemPasteboard
+internal import ohos.pasteboard.MIMETYPE_TEXT_PLAIN
 internal import ohos.device_info.DeviceInfo
 internal import ohos.display.getDefaultDisplaySync
 internal import ohos.image.ImageSource

@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setSubTheme(subTheme: CJMarkdownSubTheme): SubTheme {
     let theme: SubTheme = SubTheme()

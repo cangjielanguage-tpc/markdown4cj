@@ -1,4 +1,4 @@
-package markdown.plugin.emoji
+package markdown_hybrid.plugin.emoji
 
 // Emoticons -> Emoji mapping.
 //
@@ -18,7 +18,7 @@ public let EMOJI_DATA_SHORTCUTS: HashMap<String,Array<String>> = HashMap(
   ("angry",            ['>:(', '>:-(']),
   ("blush",            [':")', ':-")']),
   ("broken_heart",     ['</3', '<\\3']),
-  // :\ and :-\ not used because of conflict with markdown escaping
+  // :\ and :-\ not used because of conflict with markdown_hybrid escaping
   ("confused",         [':/', ':-/']), // twemoji shows question
   ("cry",              [":'(", ":'-(", ':,(', ':,-(']),
   ("frowning",         [':(', ':-(']),

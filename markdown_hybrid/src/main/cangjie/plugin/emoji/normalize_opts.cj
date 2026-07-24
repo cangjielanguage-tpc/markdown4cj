@@ -1,10 +1,10 @@
-package markdown.plugin.emoji
+package markdown_hybrid.plugin.emoji
 
 internal import std.collection.*
 internal import std.regex.*
 internal import std.sort.*
 internal import commonmark4cj.commonmark.*
-internal import markdown.core.*
+internal import markdown_hybrid.core.*
 
 // Convert input options to more useable format
 // and compile search regexp

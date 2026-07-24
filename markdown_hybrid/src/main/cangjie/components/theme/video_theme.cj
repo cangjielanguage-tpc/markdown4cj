@@ -1,78 +1,151 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 视频样式
  */
-public class VideoTheme <: MarkdownBaseTheme {
+@Observed
+public class VideoTheme {
+    @Publish
     public var videoBackgroundColor: Color = COLOR_TRANSPARENT // 视频背景颜色
+    @Publish
     public var videoMarginTop: Float64 = 0.0 // 视频上外边距
+    @Publish
     public var videoMarginRight: Float64 = 0.0 // 视频右外边距
+    @Publish
     public var videoMarginBottom: Float64 = 0.0 // 视频下外边距
+    @Publish
     public var videoMarginLeft: Float64 = 0.0 // 视频左外边距
+    @Publish
     public var videoPaddingTop: Float64 = 0.0 // 视频上内边距
+    @Publish
     public var videoPaddingRight: Float64 = 0.0 // 视频右内边距
+    @Publish
     public var videoPaddingBottom: Float64 = 0.0 // 视频下内边距
+    @Publish
     public var videoPaddingLeft: Float64 = 0.0 // 视频左内边距
+    @Publish
     public var videoRadiusTopLeft: Float64 = 10.0 // 视频边框左上圆角
+    @Publish
     public var videoRadiusTopRight: Float64 = 10.0 // 视频边框右上圆角
+    @Publish
     public var videoRadiusBottomLeft: Float64 = 10.0 // 视频边框左下圆角
+    @Publish
     public var videoRadiusBottomRight: Float64 = 10.0 // 视频边框右下圆角
+    @Publish
     public var videoBorderStyle: BorderStyle = BorderStyle.Solid // 视频边框样式
+    @Publish
     public var videoBorderWidth: Float64 = 0.0 // 视频边框宽度
+    @Publish
     public var videoBorderColor: Color = COLOR_TRANSPARENT // 视频边框颜色
-    public var videoPlaceholder: ?AppResource = None // 视频占位图
+    @Publish
+    public var videoPlaceholder: ?AppResource = Option<AppResource>.None // 视频占位图
+    @Publish
     public var videoImageFitType: ImageFit = ImageFit.Cover // 视频图片缩放类型
-    public var videoPlayIcon: ?AppResource = None // 播放按钮默认图片
+    @Publish
+    public var videoPlayIcon: ?AppResource = Option<AppResource>.None // 播放按钮默认图片
+    @Publish
     public var videoPlayIconWidth: Float64 = 60.0 // 播放按钮图标宽度
+    @Publish
     public var videoPlayIconHeight: Float64 = 60.0 // 播放按钮图标高度
+    @Publish
     public var videoPlayIconFitType: ImageFit = ImageFit.Contain // 播放按钮图标缩放类型
+    @Publish
     public var videoTimeTextFontColor: Color = COLOR_WHITE // 视频时间文本颜色
+    @Publish
     public var videoTimeTextFontSize: Float64 = 14.0 // 视频时间文本尺寸
+    @Publish
     public var videoTimeTextFontStyle: FontStyle = FontStyle.Normal // 视频时间文本字体样式
+    @Publish
     public var videoTimeTextFontWeight: FontWeight = FontWeight.W400 // 视频时间文本字体粗细
+    @Publish
     public var videoTimeTextFontFamily: String = "HarmonyOS Sans" // 视频时间文本字体
+    @Publish
     public var videoTimeTextLineHeight: Float64 = 22.0 // 视频时间文本行高
+    @Publish
     public var videoTimeTextMarginRight: Float64 = 10.0 // 视频时间文本居右边距
+    @Publish
     public var videoTimeTextMarginBottom: Float64 = 10.0 // 视频时间文本居底边距
+    @Publish
     public var videoBottomLayoutVisible: Bool = false // 底部布局是否显示（视频发布/下载按钮）
+    @Publish
     public var videoBottomLayoutMarginTop: Float64 = 14.0 // 底部布局距离视频上边距
+    @Publish
     public var videoReleaseButtonVisible: Bool = true // 视频发布按钮是否显示
+    @Publish
     public var videoReleaseButtonBackgroundColor: Color = COLOR_FFF5F5F5 // 视频发布按钮背景颜色
+    @Publish
     public var videoReleaseButtonWidth: Float64 = 144.0 // 视频发布按钮宽度
+    @Publish
     public var videoReleaseButtonHeight: Float64 = 44.0 // 视频发布按钮高度
+    @Publish
     public var videoReleaseButtonRadiusTopLeft: Float64 = 22.0 // 视频发布按钮左上圆角
+    @Publish
     public var videoReleaseButtonRadiusTopRight: Float64 = 22.0 // 视频发布按钮右上圆角
+    @Publish
     public var videoReleaseButtonRadiusBottomLeft: Float64 = 22.0 // 视频发布按钮左下圆角
+    @Publish
     public var videoReleaseButtonRadiusBottomRight: Float64 = 22.0 // 视频发布按钮右下圆角
+    @Publish
     public var videoReleaseButtonIconTextGap: Float64 = 6.0 // 视频发布按钮图标和文本间距
-    public var videoReleaseButtonIcon: ?AppResource = None // 视频发布按钮图标
+    @Publish
+    public var videoReleaseButtonIcon: ?AppResource = Option<AppResource>.None // 视频发布按钮图标
+    @Publish
     public var videoReleaseButtonIconWidth: Float64 = 18.0 // 视频发布按钮图标宽度
+    @Publish
     public var videoReleaseButtonIconHeight: Float64 = 18.0 // 视频发布按钮图标高度
+    @Publish
     public var videoReleaseButtonText: String = "发布视频" // 视频发布按钮默认文本内容
+    @Publish
     public var videoReleaseButtonTextFontColor: Color = COLOR_E6000000 // 视频发布按钮文本颜色
+    @Publish
     public var videoReleaseButtonTextFontSize: Float64 = 16.0 // 视频发布按钮文本尺寸
+    @Publish
     public var videoReleaseButtonTextFontStyle: FontStyle = FontStyle.Normal // 视频发布按钮文本字体样式
+    @Publish
     public var videoReleaseButtonTextFontWeight: FontWeight = FontWeight.W500 // 视频发布按钮文本字体粗细
+    @Publish
     public var videoReleaseButtonTextFontFamily: String = "HarmonyOS Sans" // 视频发布按钮文本字体
+    @Publish
     public var videoReleaseButtonTextLineHeight: Float64 = 22.0 // 视频发布按钮文本行高
+    @Publish
     public var videoDownloadButtonVisible: Bool = true // 视频下载按钮是否显示
+    @Publish
     public var videoDownloadButtonBackgroundColor: Color = COLOR_FFF5F5F5 // 视频下载按钮背景颜色
+    @Publish
     public var videoDownloadButtonWidth: Float64 = 144.0 // 视频下载按钮宽度
+    @Publish
     public var videoDownloadButtonHeight: Float64 = 44.0 // 视频下载按钮高度
+    @Publish
     public var videoDownloadButtonRadiusTopLeft: Float64 = 22.0 // 视频下载按钮左上圆角
+    @Publish
     public var videoDownloadButtonRadiusTopRight: Float64 = 22.0 // 视频下载按钮右上圆角
+    @Publish
     public var videoDownloadButtonRadiusBottomLeft: Float64 = 22.0 // 视频下载按钮左下圆角
+    @Publish
     public var videoDownloadButtonRadiusBottomRight: Float64 = 22.0 // 视频下载按钮右下圆角
+    @Publish
     public var videoDownloadButtonIconTextGap: Float64 = 6.0 // 视频下载按钮图标和文本间距
-    public var videoDownloadButtonIcon: ?AppResource = None // 视频下载按钮图标
+    @Publish
+    public var videoDownloadButtonIcon: ?AppResource = Option<AppResource>.None // 视频下载按钮图标
+    @Publish
     public var videoDownloadButtonIconWidth: Float64 = 18.0 // 视频下载按钮图标宽度
+    @Publish
     public var videoDownloadButtonIconHeight: Float64 = 18.0 // 视频下载按钮图标高度
+    @Publish
     public var videoDownloadButtonText: String = "下载视频" // 视频下载按钮默认文本内容
+    @Publish
     public var videoDownloadButtonTextFontColor: Color = COLOR_E6000000 // 视频下载按钮文本颜色
+    @Publish
     public var videoDownloadButtonTextFontSize: Float64 = 16.0 // 视频下载按钮文本尺寸
+    @Publish
     public var videoDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal // 视频下载按钮文本字体样式
+    @Publish
     public var videoDownloadButtonTextFontWeight: FontWeight = FontWeight.W500 // 视频下载按钮文本字体粗细
+    @Publish
     public var videoDownloadButtonTextFontFamily: String = "HarmonyOS Sans" // 视频下载按钮文本字体
+    @Publish
     public var videoDownloadButtonTextLineHeight: Float64 = 22.0 // 视频下载按钮文本行高
 
     /**
@@ -154,7 +227,7 @@ public class VideoTheme <: MarkdownBaseTheme {
      * @param radius 圆角
      * @return 当前VideoTheme对象
      */
-    public func setVideoRadius(radius: Float64): VideoTheme {
+    public func setVideoBorderRadius(radius: Float64): VideoTheme {
         this.videoRadiusTopLeft = radius
         this.videoRadiusTopRight = radius
         this.videoRadiusBottomLeft = radius
@@ -171,7 +244,7 @@ public class VideoTheme <: MarkdownBaseTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前VideoTheme对象
      */
-    public func setVideoRadius(topLeft!: Float64 = 10.0, topRight!: Float64 = 10.0, bottomLeft!: Float64 = 10.0, bottomRight!: Float64 = 10.0): VideoTheme {
+    public func setVideoBorderRadius(topLeft!: Float64 = 10.0, topRight!: Float64 = 10.0, bottomLeft!: Float64 = 10.0, bottomRight!: Float64 = 10.0): VideoTheme {
         this.videoRadiusTopLeft = topLeft
         this.videoRadiusTopRight = topRight
         this.videoRadiusBottomLeft = bottomLeft

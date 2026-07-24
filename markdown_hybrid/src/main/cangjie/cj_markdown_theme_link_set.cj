@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setLinkTheme(linkTheme: CJMarkdownLinkTheme): LinkTheme {
     let theme: LinkTheme = LinkTheme()

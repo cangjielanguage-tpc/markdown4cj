@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setFootnoteDefTheme(footnoteDefTheme: CJMarkdownFootnoteDefTheme): FootnoteDefTheme {
     let theme: FootnoteDefTheme = FootnoteDefTheme()

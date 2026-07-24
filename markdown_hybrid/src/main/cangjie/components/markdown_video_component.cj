@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownVideoComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown样式
     var nodeView: NodeView // NodeView
     var videoCallback: (String) -> Unit // 视频点击事件
@@ -23,7 +24,7 @@ public class MarkdownVideoComponent {
     var time: String = "" // 视频时长
 
     protected override func aboutToAppear(): Unit {
-        imageVideoUrl = nodeView.imageUrl()
+        imageVideoUrl = nodeView.imageUrl.getOrThrow()
         // 视频的图片替换回调
         videoImageCallback(
             imageVideoUrl,

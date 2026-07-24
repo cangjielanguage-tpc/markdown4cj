@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownThematicBreakComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown样式
 
     func build() {

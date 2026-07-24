@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setInlineCodeTheme(inlineCodeTheme: CJMarkdownInlineCodeTheme): InlineCodeTheme {
     let theme: InlineCodeTheme = InlineCodeTheme()

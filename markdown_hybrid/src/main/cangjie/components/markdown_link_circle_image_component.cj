@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownLinkCircleImageComponent {
+    @Prop
     var markdownConfiguration: MarkdownConfiguration // markdown配置
     var strUrl: String // 链接
     var strText: String // 链接内容
@@ -36,16 +37,16 @@ public class MarkdownLinkCircleImageComponent {
 
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
-            ImageSpan(imagePixelMap())
-                .width(imageWidth().px)
-                .height(imageHeight().px)
+            ImageSpan(imagePixelMap.getOrThrow())
+                .width(imageWidth.getOrThrow().px)
+                .height(imageHeight.getOrThrow().px)
                 .objectFit(ImageFit.Contain)
                 .constraintSize(maxWidth: maxWidth)
                 .verticalAlign(ImageSpanAlignment.CENTER)
                 .margin(right: markdownConfiguration.markdownTheme.linkTheme.linkCircleIconMargin, left: markdownConfiguration.markdownTheme.linkTheme.linkCircleIconMargin)
                 .onClick {
                     evt => if (markdownConfiguration.linkCallback.isSome()) {
-                        markdownConfiguration.linkCallback()(strUrl)
+                        markdownConfiguration.linkCallback.getOrThrow()(strUrl)
                     }
                 }
         }

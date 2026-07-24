@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 public class CardWrapper <: CustomView {
     private var cardName: String = ""

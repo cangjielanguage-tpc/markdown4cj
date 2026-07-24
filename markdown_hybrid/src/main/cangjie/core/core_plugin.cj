@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_hybrid.core
 
 /**
  * @see CoreProps

@@ -1,4 +1,4 @@
-package markdown.texttoimg4cj
+package markdown_hybrid.texttoimg4cj
 
 foreign {
     func drawCircleImage(str: CString, fontSize: Float32, fontColor: UInt32, fontBackgroundColor: UInt32,

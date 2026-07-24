@@ -1,21 +1,44 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 全局样式
  */
-public class GlobalTheme <: MarkdownBaseTheme {
-    public var stageContext: ?StageContext = None // markdown上下文 - 互操作
-    public var uiAbilityContext: ?UIAbilityContext = None // markdown上下文 - 仓颉
+@Observed
+public class GlobalTheme {
+    @Publish
+    public var stageContext: ?StageContext = Option<StageContext>.None // markdown上下文 - 互操作
+    @Publish
+    public var uiAbilityContext: ?UIAbilityContext = Option<UIAbilityContext>.None // markdown上下文 - 仓颉
+    @Publish
     public var isMarkdownParserSync: Bool = false // markdown是否同步解析
+    @Publish
+    public var enableParseThrottle: Bool = false // 是否启用解析节流（流式输出时控制解析频率）
+    @Publish
+    public var parseThrottleMs: Int64 = 200 // 节流间隔（毫秒）
+    @Publish
     public var isOnCopy: Bool = true // 是否打开长按复制粘贴
+    @Publish
     public var blockMarginTop: Float64 = 0.0 // markdown全局上外边距
+    @Publish
     public var blockMarginRight: Float64 = 0.0 // markdown全局右外边距
+    @Publish
     public var blockMarginBottom: Float64 = 0.0 // markdown全局下外边距
+    @Publish
     public var blockMarginLeft: Float64 = 0.0 // markdown全局左外边距
+    @Publish
     public var markdownBlockSpacing: Int64 = 8 // markdown子组件主轴方向的间隔
+    @Publish
     public var isLineBreak: Bool = false // 软换行是否换行
+    @Publish
     public var openGestureSwipe: Bool = false // markdown是否支持滚动手势
+    @Publish
     public var backgroundColor: Color = COLOR_TRANSPARENT // 背景颜色
+    @Publish
+    public var paragraphAnimationEnabled: Bool = false // 是否启用段落加载动画
+    @Publish
+    public var paragraphAnimationDuration: Int32 = 300 // 段落加载动画时长（毫秒）
 
     /**
      * 设置markdown上下文 - 互操作
@@ -67,7 +90,7 @@ public class GlobalTheme <: MarkdownBaseTheme {
      * @param margin 外边距
      * @return 当前GlobalTheme对象
      */
-    public func setMargin(margin: Float64): GlobalTheme {
+    public func setGlobalMargin(margin: Float64): GlobalTheme {
         this.blockMarginTop = margin
         this.blockMarginRight = margin
         this.blockMarginBottom = margin
@@ -84,7 +107,7 @@ public class GlobalTheme <: MarkdownBaseTheme {
      * @param left 左外边距 命名参数
      * @return 当前GlobalTheme对象
      */
-    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): GlobalTheme {
+    public func setGlobalMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): GlobalTheme {
         this.blockMarginTop = top
         this.blockMarginRight = right
         this.blockMarginBottom = bottom
@@ -98,7 +121,7 @@ public class GlobalTheme <: MarkdownBaseTheme {
      * @param space markdown子组件主轴方向的间隔
      * @return 当前GlobalTheme对象
      */
-    public func setMarkdownBlockSpacing(space: Int64): GlobalTheme {
+    public func setBlockSpacing(space: Int64): GlobalTheme {
         this.markdownBlockSpacing = space
         return this
     }
@@ -133,6 +156,51 @@ public class GlobalTheme <: MarkdownBaseTheme {
      */
     public func setBackgroundColor(color: Color): GlobalTheme {
         this.backgroundColor = color
+        return this
+    }
+
+    /**
+     * 设置是否启用解析节流
+     *
+     * @param enable 是否启用
+     * @return 当前GlobalTheme对象
+     */
+    public func setEnableParseThrottle(enable: Bool): GlobalTheme {
+        this.enableParseThrottle = enable
+        return this
+    }
+
+    /**
+     * 设置节流间隔
+     *
+     * @param throttleMs 节流间隔（毫秒）
+     * @return 当前GlobalTheme对象
+     */
+    public func setParseThrottleMs(throttleMs: Int64): GlobalTheme {
+        this.parseThrottleMs = throttleMs
+        return this
+    }
+
+    /**
+     * 设置段落加载动画是否启用
+     * 开启后段落出现时从透明渐变为不透明（渐显），消失时从不透明渐变为透明（渐隐）
+     *
+     * @param enable 是否启用
+     * @return 当前GlobalTheme对象
+     */
+    public func setParagraphAnimationEnabled(enable: Bool): GlobalTheme {
+        this.paragraphAnimationEnabled = enable
+        return this
+    }
+
+    /**
+     * 设置段落加载动画时长
+     *
+     * @param duration 动画时长（毫秒）
+     * @return 当前GlobalTheme对象
+     */
+    public func setParagraphAnimationDuration(duration: Int32): GlobalTheme {
+        this.paragraphAnimationDuration = duration
         return this
     }
 }

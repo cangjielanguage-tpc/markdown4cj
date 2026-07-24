@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 import ohos.state_macro_manage.*
 
@@ -7,6 +7,7 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownLatexMathBlockComponent {
+    @Prop
     var markdownTheme: MarkdownTheme // markdown样式
     var latexMathBlockStr: String // 数学公式文本
     var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit // 数学公式图片点击事件

@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setHtmlUnderlineTheme(htmlUnderlineTheme: CJMarkdownHtmlUnderlineTheme): HtmlUnderlineTheme {
     let theme: HtmlUnderlineTheme = HtmlUnderlineTheme()

@@ -1,4 +1,4 @@
-package markdown
+package markdown_hybrid
 
 func setDividerTheme(dividerTheme: CJMarkdownDividerTheme): DividerTheme {
     let theme: DividerTheme = DividerTheme()

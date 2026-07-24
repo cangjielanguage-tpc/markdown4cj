@@ -1,8 +1,8 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 import commonmark4cj.commonmark.*
 import commonmark4cj.table.*
-import markdown.core.*
+import markdown_hybrid.core.*
 import std.collection.*
 
 /**
@@ -23,7 +23,7 @@ public class IncreaseParserV2 {
     var continueDoc: Node // 解析粘连文本得到的document
     var newmd: String = "" // 新全量文本
 
-    public IncreaseParserV2(let markdown: Markdown) {
+    public IncreaseParserV2(let markdown_hybrid: Markdown) {
         this.currentDocument = Document() // 初始化为空 Document
         this.firstDirtyBlock = currentDocument // firstDirtyBlock一定会被重新计算
         this.continueDoc = currentDocument // continueDoc一定会被重新计算
@@ -120,7 +120,7 @@ public class IncreaseParserV2 {
      */
     func parseFullText(): Unit {
         this.fullContent = newmd
-        this.currentDocument = markdown.toMarkdown(fullContent)
+        this.currentDocument = markdown_hybrid.toMarkdown(fullContent)
     }
 
     /**
@@ -133,7 +133,7 @@ public class IncreaseParserV2 {
 
         // 步骤3: 解析(firstDirtyBlock.文本 + 增量文本)
         this.continueText = newmd[startIndex..]
-        this.continueDoc = markdown.toMarkdown(continueText)
+        this.continueDoc = markdown_hybrid.toMarkdown(continueText)
     }
 
     /**

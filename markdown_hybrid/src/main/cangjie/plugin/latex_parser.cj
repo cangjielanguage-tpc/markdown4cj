@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_hybrid.plugin
 
 class LatexBlockParser <: AbstractBlockParser {
     let block: LatexMathBlock = LatexMathBlock()

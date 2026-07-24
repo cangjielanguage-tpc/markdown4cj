@@ -1,4 +1,4 @@
-package markdown.components
+package markdown_hybrid.components
 
 class MarkdownParseLatexUtil {
     private static let latexReentrantMutex: Mutex = Mutex() // 全局锁

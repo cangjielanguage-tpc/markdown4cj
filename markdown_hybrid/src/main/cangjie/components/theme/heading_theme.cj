@@ -1,110 +1,215 @@
-package markdown.components.theme
+package markdown_hybrid.components.theme
+
+import ohos.state_macro_manage.*
 
 /**
  * 标题样式
  */
-public class HeadingTheme <: MarkdownBaseTheme {
-    public var heading1BackgroundColor: ?Color = None // 一级标题背景颜色
+@Observed
+public class HeadingTheme {
+    @Publish
+    public var heading1BackgroundColor: ?Color = Option<Color>.None // 一级标题背景颜色
+    @Publish
     public var heading1MarginTop: Float64 = 0.0 // 一级标题上外边距
+    @Publish
     public var heading1MarginRight: Float64 = 0.0 // 一级标题右外边距
+    @Publish
     public var heading1MarginBottom: Float64 = 0.0 // 一级标题下外边距
+    @Publish
     public var heading1MarginLeft: Float64 = 0.0 // 一级标题左外边距
+    @Publish
     public var heading1PaddingTop: Float64 = 0.0 // 一级标题上内边距
+    @Publish
     public var heading1PaddingRight: Float64 = 0.0 // 一级标题右内边距
+    @Publish
     public var heading1PaddingBottom: Float64 = 0.0 // 一级标题下内边距
+    @Publish
     public var heading1PaddingLeft: Float64 = 0.0 // 一级标题左内边距
+    @Publish
     public var heading1TextFontColor: Color = COLOR_FF191919 // 一级标题文本颜色
+    @Publish
     public var heading1TextFontSize: Float64 = 20.0 // 一级标题文本尺寸
+    @Publish
     public var heading1TextFontStyle: FontStyle = FontStyle.Normal // 一级标题文本字体样式
+    @Publish
     public var heading1TextFontWeight: FontWeight = FontWeight.W600 // 一级标题文本字体粗细
+    @Publish
     public var heading1TextFontFamily: String = "HarmonyOS Sans" // 一级标题文本字体
+    @Publish
     public var heading1TextLineHeight: Float64 = 22.0 // 一级标题文本行高
+    @Publish
     public var heading1TextLetterSpacing: Float64 = 0.0 // 一级标题文本字符间距
+    @Publish
     public var heading1UnderlineHeight: Float64 = 0.5 // 一级标题下划线高度
+    @Publish
     public var heading1UnderlineColor: Color = COLOR_FF191919 // 一级标题下划线颜色
+    @Publish
     public var heading1UnderlineSpacing: Float64 = 0.0 // 一级标题距离标题文本间距
-    public var heading2BackgroundColor: ?Color = None // 二级标题背景颜色
+    @Publish
+    public var heading2BackgroundColor: ?Color = Option<Color>.None // 二级标题背景颜色
+    @Publish
     public var heading2MarginTop: Float64 = 0.0 // 二级标题上外边距
+    @Publish
     public var heading2MarginRight: Float64 = 0.0 // 二级标题右外边距
+    @Publish
     public var heading2MarginBottom: Float64 = 0.0 // 二级标题下外边距
+    @Publish
     public var heading2MarginLeft: Float64 = 0.0 // 二级标题左外边距
+    @Publish
     public var heading2PaddingTop: Float64 = 0.0 // 二级标题上内边距
+    @Publish
     public var heading2PaddingRight: Float64 = 0.0 // 二级标题右内边距
+    @Publish
     public var heading2PaddingBottom: Float64 = 0.0 // 二级标题下内边距
+    @Publish
     public var heading2PaddingLeft: Float64 = 0.0 // 二级标题左内边距
+    @Publish
     public var heading2TextFontColor: Color = COLOR_FF191919 // 二级标题文本颜色
+    @Publish
     public var heading2TextFontSize: Float64 = 17.0 // 二级标题文本尺寸
+    @Publish
     public var heading2TextFontStyle: FontStyle = FontStyle.Normal // 二级标题文本字体样式
+    @Publish
     public var heading2TextFontWeight: FontWeight = FontWeight.W600 // 二级标题文本字体粗细
+    @Publish
     public var heading2TextFontFamily: String = "HarmonyOS Sans" // 二级标题文本字体
+    @Publish
     public var heading2TextLineHeight: Float64 = 22.0 // 二级标题文本行高
+    @Publish
     public var heading2TextLetterSpacing: Float64 = 0.0 // 二级标题文本字符间距
+    @Publish
     public var heading2UnderlineHeight: Float64 = 0.5 // 二级标题下划线高度
+    @Publish
     public var heading2UnderlineColor: Color = COLOR_FF191919 // 二级标题下划线颜色
+    @Publish
     public var heading2UnderlineSpacing: Float64 = 0.0 // 二级标题距离标题文本间距
-    public var heading3BackgroundColor: ?Color = None // 三级标题背景颜色
+    @Publish
+    public var heading3BackgroundColor: ?Color = Option<Color>.None // 三级标题背景颜色
+    @Publish
     public var heading3MarginTop: Float64 = 0.0 // 三级标题上外边距
+    @Publish
     public var heading3MarginRight: Float64 = 0.0 // 三级标题右外边距
+    @Publish
     public var heading3MarginBottom: Float64 = 0.0 // 三级标题下外边距
+    @Publish
     public var heading3MarginLeft: Float64 = 0.0 // 三级标题左外边距
+    @Publish
     public var heading3PaddingTop: Float64 = 0.0 // 三级标题上内边距
+    @Publish
     public var heading3PaddingRight: Float64 = 0.0 // 三级标题右内边距
+    @Publish
     public var heading3PaddingBottom: Float64 = 0.0 // 三级标题下内边距
+    @Publish
     public var heading3PaddingLeft: Float64 = 0.0 // 三级标题左内边距
+    @Publish
     public var heading3TextFontColor: Color = COLOR_FF191919 // 三级标题文本颜色
+    @Publish
     public var heading3TextFontSize: Float64 = 16.0 // 三级标题文本尺寸
+    @Publish
     public var heading3TextFontStyle: FontStyle = FontStyle.Normal // 三级标题文本字体样式
+    @Publish
     public var heading3TextFontWeight: FontWeight = FontWeight.W600 // 三级标题文本字体粗细
+    @Publish
     public var heading3TextFontFamily: String = "HarmonyOS Sans" // 三级标题文本字体
+    @Publish
     public var heading3TextLineHeight: Float64 = 22.0 // 三级标题文本行高
+    @Publish
     public var heading3TextLetterSpacing: Float64 = 0.0 // 三级标题文本字符间距
-    public var heading4BackgroundColor: ?Color = None // 四级标题背景颜色
+    @Publish
+    public var heading4BackgroundColor: ?Color = Option<Color>.None // 四级标题背景颜色
+    @Publish
     public var heading4MarginTop: Float64 = 0.0 // 四级标题上外边距
+    @Publish
     public var heading4MarginRight: Float64 = 0.0 // 四级标题右外边距
+    @Publish
     public var heading4MarginBottom: Float64 = 0.0 // 四级标题下外边距
+    @Publish
     public var heading4MarginLeft: Float64 = 0.0 // 四级标题左外边距
+    @Publish
     public var heading4PaddingTop: Float64 = 0.0 // 四级标题上内边距
+    @Publish
     public var heading4PaddingRight: Float64 = 0.0 // 四级标题右内边距
+    @Publish
     public var heading4PaddingBottom: Float64 = 0.0 // 四级标题下内边距
+    @Publish
     public var heading4PaddingLeft: Float64 = 0.0 // 四级标题左内边距
+    @Publish
     public var heading4TextFontColor: Color = COLOR_FF191919 // 四级标题文本颜色
+    @Publish
     public var heading4TextFontSize: Float64 = 15.0 // 四级标题文本尺寸
+    @Publish
     public var heading4TextFontStyle: FontStyle = FontStyle.Normal // 四级标题文本字体样式
+    @Publish
     public var heading4TextFontWeight: FontWeight = FontWeight.W600 // 四级标题文本字体粗细
+    @Publish
     public var heading4TextFontFamily: String = "HarmonyOS Sans" // 四级标题文本字体
+    @Publish
     public var heading4TextLineHeight: Float64 = 22.0 // 四级标题文本行高
+    @Publish
     public var heading4TextLetterSpacing: Float64 = 0.0 // 四级标题文本字符间距
-    public var heading5BackgroundColor: ?Color = None // 五级标题背景颜色
+    @Publish
+    public var heading5BackgroundColor: ?Color = Option<Color>.None // 五级标题背景颜色
+    @Publish
     public var heading5MarginTop: Float64 = 0.0 // 五级标题上外边距
+    @Publish
     public var heading5MarginRight: Float64 = 0.0 // 五级标题右外边距
+    @Publish
     public var heading5MarginBottom: Float64 = 0.0 // 五级标题下外边距
+    @Publish
     public var heading5MarginLeft: Float64 = 0.0 // 五级标题左外边距
+    @Publish
     public var heading5PaddingTop: Float64 = 0.0 // 五级标题上内边距
+    @Publish
     public var heading5PaddingRight: Float64 = 0.0 // 五级标题右内边距
+    @Publish
     public var heading5PaddingBottom: Float64 = 0.0 // 五级标题下内边距
+    @Publish
     public var heading5PaddingLeft: Float64 = 0.0 // 五级标题左内边距
+    @Publish
     public var heading5TextFontColor: Color = COLOR_FF191919 // 五级标题文本颜色
+    @Publish
     public var heading5TextFontSize: Float64 = 15.0 // 五级标题文本尺寸
+    @Publish
     public var heading5TextFontStyle: FontStyle = FontStyle.Normal // 五级标题文本字体样式
+    @Publish
     public var heading5TextFontWeight: FontWeight = FontWeight.W600 // 五级标题文本字体粗细
+    @Publish
     public var heading5TextFontFamily: String = "HarmonyOS Sans" // 五级标题文本字体
+    @Publish
     public var heading5TextLineHeight: Float64 = 22.0 // 五级标题文本行高
+    @Publish
     public var heading5TextLetterSpacing: Float64 = 0.0 // 五级标题文本字符间距
-    public var heading6BackgroundColor: ?Color = None // 六级标题背景颜色
+    @Publish
+    public var heading6BackgroundColor: ?Color = Option<Color>.None // 六级标题背景颜色
+    @Publish
     public var heading6MarginTop: Float64 = 0.0 // 六级标题上外边距
+    @Publish
     public var heading6MarginRight: Float64 = 0.0 // 六级标题右外边距
+    @Publish
     public var heading6MarginBottom: Float64 = 0.0 // 六级标题下外边距
+    @Publish
     public var heading6MarginLeft: Float64 = 0.0 // 六级标题左外边距
+    @Publish
     public var heading6PaddingTop: Float64 = 0.0 // 六级标题上内边距
+    @Publish
     public var heading6PaddingRight: Float64 = 0.0 // 六级标题右内边距
+    @Publish
     public var heading6PaddingBottom: Float64 = 0.0 // 六级标题下内边距
+    @Publish
     public var heading6PaddingLeft: Float64 = 0.0 // 六级标题左内边距
+    @Publish
     public var heading6TextFontColor: Color = COLOR_FF191919 // 六级标题文本颜色
+    @Publish
     public var heading6TextFontSize: Float64 = 13.0 // 六级标题文本尺寸
+    @Publish
     public var heading6TextFontStyle: FontStyle = FontStyle.Normal // 六级标题文本字体样式
+    @Publish
     public var heading6TextFontWeight: FontWeight = FontWeight.W600 // 六级标题文本字体粗细
+    @Publish
     public var heading6TextFontFamily: String = "HarmonyOS Sans" // 六级标题文本字体
+    @Publish
     public var heading6TextLineHeight: Float64 = 22.0 // 六级标题文本行高
+    @Publish
     public var heading6TextLetterSpacing: Float64 = 0.0 // 六级标题文本字符间距
 
     /**
