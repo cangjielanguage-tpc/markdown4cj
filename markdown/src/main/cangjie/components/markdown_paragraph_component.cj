@@ -45,6 +45,8 @@ class MarkdownParagraphComponent {
     @State
     var paragraphLongPressBackgroundColor: Color = COLOR_TRANSPARENT // 当前长按背景色
     @State
+    var paragraphSelectedBackgroundColor: Color = COLOR_FF4A90E2 // 当前选中文本背景色
+    @State
     var paragraphIsLongPressed: Bool = false // 当前是否处于长按状态
     // 链接曝光：URL列表缓存 + 当前可见状态
     // 对齐 ArkUI MarkdownParagraph.ets：用 onVisibleAreaChange(触发scheduleExposure) + onAreaChange(标记ready) +
@@ -296,16 +298,21 @@ class MarkdownParagraphComponent {
     }
 
     /**
-     * 获取长按选中段落的背景色
+     * 获取长按但未触发选中弹窗时的段落的背景色
      * 优先使用 MarkdownHighlightParagraph 中的配置，其次使用 ParagraphTheme 配置，最后使用默认浅灰色
      *
-     * @return 长按选中段落的背景色
+     * @return 段落的背景色
      */
-    func getLongPressSelectedBackgroundColor(): Color {
+    func getLongPressBeforeSelectedBackgroundColor(): Color {
         let theme = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme
         let highlightParagraph = paragraphMarkdownConfiguration.markdownHighlightParagraph
-        if (highlightParagraph.selectedParagraphBackgroundColor.isSome()) {
-            return highlightParagraph.selectedParagraphBackgroundColor.getOrThrow()
+        if (highlightParagraph.selectedParagraphBackgroundColor.isSome()) { // 设置选中的背景色
+            paragraphSelectedBackgroundColor = highlightParagraph.selectedParagraphBackgroundColor.getOrThrow()
+        } else {
+            paragraphSelectedBackgroundColor = COLOR_FF4A90E2 // 默认选中背景色
+        }
+        if (highlightParagraph.beforeSelectedParagraphBackgroundColor.isSome()) {
+            return highlightParagraph.beforeSelectedParagraphBackgroundColor.getOrThrow()
         }
         if (theme.paragraphSelectedBackgroundColor.isSome()) {
             return theme.paragraphSelectedBackgroundColor.getOrThrow()
@@ -333,7 +340,7 @@ class MarkdownParagraphComponent {
      * 按下时设置为长按背景色
      */
     func handleParagraphLongPressStart(): Unit {
-        paragraphLongPressBackgroundColor = getLongPressSelectedBackgroundColor()
+        paragraphLongPressBackgroundColor = getLongPressBeforeSelectedBackgroundColor()
         paragraphIsLongPressed = true
     }
 
@@ -517,7 +524,14 @@ class MarkdownParagraphComponent {
         } else {
             CopyOptions.None
         })
+        .focusable(paragraphMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy)
+        .focusOnTouch(true)
+        .onBlur({ =>
+            paragraphSelectionStart = -1
+            paragraphSelectionEnd = -1
+        })
         .selection(paragraphSelectionStart, paragraphSelectionEnd)
+        .interopSelectedBackgroundColor(paragraphSelectedBackgroundColor)
         .onTextSelectionChange({ start: Int32, end: Int32 =>
             paragraphSelectionStart = start
             paragraphSelectionEnd = end
