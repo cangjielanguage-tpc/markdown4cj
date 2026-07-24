@@ -138,7 +138,7 @@ class MarkdownTableBlockCellComponent {
         .borderStyle(tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
         .borderColor(tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
         .constraintSize(minWidth: currentColumnWidth().vp, maxWidth: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth.vp)
-        .onAreaChange({
+        .interopOnSizeChange({
             old, new =>
                 if (old.width == new.width) {
                     return

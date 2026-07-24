@@ -140,7 +140,9 @@ class TablePage {
     let mdScrollController = MarkdownScrollController() // 外层滚动控制器（非固定高度模式下传递滚动Y给MarkdownComponent）
     var contentHeight: Float64 = 0.0 // Scroll内容高度（Column高度，用于clamp scrollY）
     var viewportHeight: Float64 = 0.0 // Scroll视口高度（用于clamp scrollY）
-    var markdownStartY: Float64 = 0.0 // markdown容器在Scroll内容Column中的Y（layout-time常量，onAreaChange获取）
+    var markdownStartY: Float64 = 0.0 // MarkdownComponent顶部在Scroll内容中的绝对Y（layout-time常量，= markdownContainerY + markdownOffsetY）
+    var markdownContainerY: Float64 = 0.0 // 外层Column在Scroll内容中的Y（onAreaChange获取，layout-time常量）
+    var markdownOffsetY: Float64 = 0.0 // MarkdownComponent包装Column相对外层Column的Y（含padding+预计算高度Text块，onAreaChange获取）
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
     var markdownPlugin: Markdown = Markdown
@@ -861,13 +863,23 @@ class TablePage {
                                     .fontSize(12.0)
                                     .fontColor(0xFF666666)
                                     .margin(top: 3.0, left: 5.0)
-                                MarkdownComponent(
-                                    output: mdStr,
-                                    isInputEnded: isInputEnded,
-                                    incrementalAnalysis: incrementalAnalysis,
-                                    scroller: scroller,
-                                    markdownConfiguration: markdownConfiguration
-                                )
+                                Column {
+                                    MarkdownComponent(
+                                        output: mdStr,
+                                        isInputEnded: isInputEnded,
+                                        incrementalAnalysis: incrementalAnalysis,
+                                        scroller: scroller,
+                                        markdownConfiguration: markdownConfiguration
+                                    )
+                                }
+                                .width(100.percent)
+                                .onAreaChange({
+                                    old, new =>
+                                        // wrapper相对外层Column的Y（已含padding+预计算高度Text块）
+                                        markdownOffsetY = new.position.y
+                                        markdownStartY = markdownContainerY + markdownOffsetY
+                                        println("[STICKY-AREA] fixed-height wrapper position.y=${new.position.y} markdownStartY=${markdownStartY}")
+                                })
                             }
                             .width(100.percent)
                             .height(600.0)
@@ -875,10 +887,10 @@ class TablePage {
                             .backgroundColor(0xFFFFFFFF)
                             .onAreaChange({
                                 old, new =>
-                                    // 加padding(5.0)：MarkdownComponent在容器padding内侧，
-                                    // markdownStartY应为MarkdownComponent的顶部位置
-                                    markdownStartY = new.position.y + 5.0
-                                    println("[STICKY-AREA] fixed-height branch position.y=${new.position.y} height=${new.height} markdownStartY=${markdownStartY}")
+                                    // 外层Column在Scroll内容中的绝对Y
+                                    markdownContainerY = new.position.y
+                                    markdownStartY = markdownContainerY + markdownOffsetY
+                                    println("[STICKY-AREA] fixed-height outer position.y=${new.position.y} markdownStartY=${markdownStartY}")
                             })
                         } else {
                             Column {
@@ -886,21 +898,31 @@ class TablePage {
                                     .fontSize(12.0)
                                     .fontColor(0xFF666666)
                                     .margin(top: 3.0, left: 5.0)
-                                MarkdownComponent(
-                                    output: mdStr,
-                                    isInputEnded: isInputEnded,
-                                    incrementalAnalysis: incrementalAnalysis,
-                                    scroller: scroller,
-                                    markdownConfiguration: markdownConfiguration
-                                )
+                                Column {
+                                    MarkdownComponent(
+                                        output: mdStr,
+                                        isInputEnded: isInputEnded,
+                                        incrementalAnalysis: incrementalAnalysis,
+                                        scroller: scroller,
+                                        markdownConfiguration: markdownConfiguration
+                                    )
+                                }
+                                .width(100.percent)
+                                .onAreaChange({
+                                    old, new =>
+                                        markdownOffsetY = new.position.y
+                                        markdownStartY = markdownContainerY + markdownOffsetY
+                                        println("[STICKY-AREA] non-fixed-height wrapper position.y=${new.position.y} markdownStartY=${markdownStartY}")
+                                })
                             }
                             .width(100.percent)
                             .padding(5.0)
                             .backgroundColor(0xFFFFFFFF)
                             .onAreaChange({
                                 old, new =>
-                                    markdownStartY = new.position.y + 5.0
-                                    println("[STICKY-AREA] non-fixed-height branch position.y=${new.position.y} height=${new.height} markdownStartY=${markdownStartY}")
+                                    markdownContainerY = new.position.y
+                                    markdownStartY = markdownContainerY + markdownOffsetY
+                                    println("[STICKY-AREA] non-fixed-height outer position.y=${new.position.y} markdownStartY=${markdownStartY}")
                             })
                         }
                     }

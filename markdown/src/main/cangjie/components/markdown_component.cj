@@ -143,7 +143,7 @@ public class MarkdownComponent {
                         stickyHolder.setY(scroller.currentOffset().yOffset)
                     }
             })
-            .onAreaChange({
+            .interopOnSizeChange({
                 old, new =>
                     if (componentWidth != new.width) {
                         componentWidth = new.width

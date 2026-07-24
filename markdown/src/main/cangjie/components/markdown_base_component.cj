@@ -241,7 +241,7 @@ func spanLinkComponent(
     spanListFootnoteCallback: (String) -> Unit,
     isOneLink: Bool
 ) {
-    if ((spanListNodeView.isBulletList || spanListNodeView.isOrderedList || spanListNodeView.isQuote || spanListNodeView.isDescList) && isOneLink && !spanListMarkdownConfiguration.markdownTheme.linkTheme.linkListIsIcon) {
+    if ((spanListNodeView.isBulletList || spanListNodeView.isOrderedList || spanListNodeView.isQuote || spanListNodeView.isDescList) && isOneLink && !spanListMarkdownConfiguration.markdownTheme.linkTheme.linkIsIcon) {
         markdownSpanComponent(
             spanListMarkdownConfiguration,
             spanListNodeView,

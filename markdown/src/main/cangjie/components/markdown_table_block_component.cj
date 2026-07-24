@@ -123,7 +123,7 @@ class MarkdownTableBlockComponent {
                         .backgroundColor(tableBlockMarkdownConfiguration.markdownTheme.globalTheme.backgroundColor)
                         .offset(x: 0.0, y: stickyOffset)
                         .zIndex(1)
-                        .onAreaChange({
+                        .interopOnSizeChange({
                             old, new =>
                                 stickyContentHeight = new.height
                                 onTableAreaChanged()
