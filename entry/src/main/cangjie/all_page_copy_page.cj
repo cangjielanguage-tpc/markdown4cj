@@ -9,6 +9,22 @@ import markdown.components.*
 import markdown.components.theme.*
 import markdown.plugin.NodeViewStringBuilder
 import ohos.concurrency.launch
+import markdown.core.Markdown
+import markdown.plugin.HtmlPlugin
+import markdown.plugin.TaskListPlugin
+import markdown.plugin.StrikethroughPlugin
+import markdown.plugin.TablePlugin
+import markdown.plugin.LatexMathPluginV2
+import markdown.plugin.BlockAudioPlugin
+import markdown.plugin.BlockVideoPlugin
+import markdown.plugin.LinkifyPlugin
+import markdown.plugin.ImageSlidePlugin
+import markdown.plugin.ImageStylePlugin
+import markdown.plugin.CodeListPlugin
+import markdown.plugin.FootnotePlugin
+import markdown.plugin.TocPlugin
+import markdown.plugin.ImageCollectPlugin
+import markdown.plugin.NodeIdPlugin
 
 @HybridComponentEntry
 @Component
@@ -52,6 +68,28 @@ class AllPageCopyPage {
     var scroller: Scroller = Scroller()
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+    var markdownPlugin: Markdown = Markdown
+        .builder()
+        .usePlugin(HtmlPlugin.create())
+        .usePlugin(TaskListPlugin.create())
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(TablePlugin.create())
+        .usePlugin(LatexMathPluginV2.create())
+        .usePlugin(BlockAudioPlugin.create())
+        .usePlugin(BlockVideoPlugin.create())
+        .usePlugin(LinkifyPlugin.create([]))
+        .usePlugin(ImageSlidePlugin.create())
+        .usePlugin(ImageStylePlugin.create())
+        .usePlugin(CodeListPlugin.create())
+        .usePlugin(FootnotePlugin.create())
+        .usePlugin(TocPlugin.create())
+        .usePlugin(ImageCollectPlugin.create())
+        .usePlugin(NodeIdPlugin.create())
+        .build()
+    @State
+    var estimatedHeight: Float64 = 0.0
+    @State
+    var estimatedHeightByNode: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
         markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
@@ -95,6 +133,8 @@ class AllPageCopyPage {
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
+            estimatedHeight = preMarkwonHeight(fullContent, markdownConfiguration, markdownPlugin)
+            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin)
         } else {
             let number = textNumber
             let time = timeMs
@@ -286,6 +326,10 @@ class AllPageCopyPage {
                             .fontColor(0xFF333333)
                             .margin(top: 10.0, left: 5.0)
                         Column {
+                            Text("preMarkwonHeight 估算: " + estimatedHeight.toString() + " vp | preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
+                                .fontSize(12.0)
+                                .fontColor(0xFF666666)
+                                .margin(top: 3.0, left: 5.0)
                             MarkdownComponent(
                                 output: mdStr,
                                 isInputEnded: isInputEnded,

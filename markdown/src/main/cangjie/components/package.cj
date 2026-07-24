@@ -29,14 +29,24 @@ internal import codeformat.codeFormat
 internal import codeformat.FormatConfig
 
 // commonmark
+internal import commonmark4cj.commonmark.Document
 internal import commonmark4cj.commonmark.IndentedCodeBlock
 internal import commonmark4cj.commonmark.FencedCodeBlock
 internal import commonmark4cj.commonmark.Heading
+internal import commonmark4cj.commonmark.Paragraph
+internal import commonmark4cj.commonmark.BlockQuote
+internal import commonmark4cj.commonmark.BulletList
+internal import commonmark4cj.commonmark.OrderedList
+internal import commonmark4cj.commonmark.ListItem as CommonmarkListItem
+internal import commonmark4cj.commonmark.ThematicBreak
+internal import commonmark4cj.commonmark.SoftLineBreak
+internal import commonmark4cj.commonmark.HardLineBreak
 internal import commonmark4cj.commonmark.Code
 internal import commonmark4cj.commonmark.Text as CommonmarkText
 internal import commonmark4cj.commonmark.Image as CommonmarkImage
 internal import commonmark4cj.commonmark.Link as CommonmarkLink
 internal import commonmark4cj.commonmark.Node as CommonmarkNode
+internal import commonmark4cj.table.TableBlock
 internal import commonmark4cj.table.TableRow
 internal import commonmark4cj.table.TableHead
 internal import commonmark4cj.table.TableCell
