@@ -1,0 +1,7 @@
+### HTML链接
+
+<a href="目标地址">链接文本内容</a>
+
+<a href="目标地址">目标地址</a>
+
+<a href="myscheme://jump?target=aireportmini">最小化</a>

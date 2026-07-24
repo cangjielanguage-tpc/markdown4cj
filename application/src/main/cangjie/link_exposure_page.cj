@@ -1,0 +1,468 @@
+package ohos_app_cangjie_entry
+
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_manage.ObservedArrayList
+import ohos.state_macro_manage.*
+import ohos.hybrid_base.*
+import markdown.components.*
+import markdown.components.theme.*
+import ohos.concurrency.launch
+import markdown.core.Markdown
+import markdown.plugin.HtmlPlugin
+import markdown.plugin.TaskListPlugin
+import markdown.plugin.StrikethroughPlugin
+import markdown.plugin.TablePlugin
+import markdown.plugin.LatexMathPluginV2
+import markdown.plugin.BlockAudioPlugin
+import markdown.plugin.BlockVideoPlugin
+import markdown.plugin.LinkifyPlugin
+import markdown.plugin.ImageSlidePlugin
+import markdown.plugin.ImageStylePlugin
+import markdown.plugin.CodeListPlugin
+import markdown.plugin.FootnotePlugin
+import markdown.plugin.TocPlugin
+import markdown.plugin.ImageCollectPlugin
+import markdown.plugin.NodeIdPlugin
+import ohos.hilog.*
+
+/**
+ * 屏幕曝光事件列表项
+ * 对齐 ArkTS ExposureLogItem：seq/visible/url
+ */
+public class ExposureLogItem {
+    public let seq: Int64
+    public let visible: Bool
+    public let url: String
+    public init(seq!: Int64, visible!: Bool, url!: String) {
+        this.seq = seq
+        this.visible = visible
+        this.url = url
+    }
+}
+
+/**
+ * 链接曝光测试用例（对齐 ArkTS LinkExposurePage + LinkExposureDetailsPage）
+ * 选 md 文件 + 曝光阈值/表格吸顶/链接自动解析 三开关 → 滚动 Markdown 触发曝光事件
+ * 屏幕底部实时显示曝光事件（显示=绿/消失=红），同时同步 hilog 输出
+ */
+@HybridComponentEntry
+@Component
+class LinkExposurePage {
+    @State
+    var fileListStr: String = getGlobalString("fileList")
+    @State
+    var isExpanded1: Bool = false
+    @State
+    var isExpanded2: Bool = false
+    @State
+    var mdStr: String = ""
+    @State
+    var isInputEnded: Bool = true
+    @State
+    var incrementalAnalysis: Bool = false
+    @State
+    var selectedFileName: String = ""
+    @State var cfg_isFull: String = "true"
+    @State var cfg_incrementalAnalysis: String = "false"
+    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
+    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
+    @State var cfg_time: String = "50"
+    @State var cfg_textNumber: String = "10"
+    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State var cfg_openGestureSwipeTest: String = "false"
+    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    // 曝光测试开关
+    @State @Watch[onConfigChanged] var cfg_exposureThreshold: String = "0.5"
+    @State @Watch[onConfigChanged] var cfg_tableStickyHeader: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isLinkifyPlugin: String = "true"
+    // 屏幕事件列表（最近50条）— 用 ObservedArrayList 触发 ForEach 响应式更新
+    @State
+    var exposureEvents: ObservedArrayList<ExposureLogItem> = ObservedArrayList<ExposureLogItem>()
+    @State
+    var debugEventCount: Int64 = 0
+    var eventSeq: Int64 = 0
+    var arr: Array<Rune> = Array<Rune>()
+    var scroller: Scroller = Scroller()
+    var eventScroller: Scroller = Scroller()
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+    var markdownPlugin: Markdown = Markdown
+        .builder()
+        .usePlugin(HtmlPlugin.create())
+        .usePlugin(TaskListPlugin.create())
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(TablePlugin.create())
+        .usePlugin(LatexMathPluginV2.create())
+        .usePlugin(BlockAudioPlugin.create())
+        .usePlugin(BlockVideoPlugin.create())
+        .usePlugin(LinkifyPlugin.create([]))
+        .usePlugin(ImageSlidePlugin.create())
+        .usePlugin(ImageStylePlugin.create())
+        .usePlugin(CodeListPlugin.create())
+        .usePlugin(FootnotePlugin.create())
+        .usePlugin(TocPlugin.create())
+        .usePlugin(ImageCollectPlugin.create())
+        .usePlugin(NodeIdPlugin.create())
+        .build()
+    @State
+    var estimatedHeight: Float64 = 0.0
+    @State
+    var estimatedHeightByNode: Float64 = 0.0
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        markdownConfiguration.setLinkCallback(linkClickCallback)
+        markdownConfiguration.setElementExposureCallback(elementExposureCallback)
+        // 直接写入 Registry，绕过 @Prop 对 @Observed 类深拷贝可能丢失 Option<Function> 的问题
+        MarkdownLinkExposureRegistry.setExposureCallback(elementExposureCallback)
+        updateConfig()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        MarkdownLinkExposureRegistry.clear()
+    }
+
+    func onConfigChanged(): Unit {
+        updateConfig()
+    }
+
+    func getFileList(): Array<String> {
+        if (fileListStr == "") {
+            return []
+        }
+        return fileListStr.split(",")
+    }
+
+    func loadFile(item: String) {
+        let rawFilePath = getGlobalString("rawFilePath")
+        let fullPath = rawFilePath + "/" + item
+        callGlobalFunc("loadContent", fullPath)
+        let fullContent = getGlobalString("markdownContent")
+        selectedFileName = item
+        let isFull = parseBool(cfg_isFull)
+        let textNumber = parseInt64(cfg_textNumber)
+        let timeMs = parseInt64(cfg_time)
+        let incremental = parseBool(cfg_incrementalAnalysis)
+        incrementalAnalysis = incremental
+        arr = fullContent.toRuneArray()
+        mdStr = ""
+        isInputEnded = isFull
+        if (isFull) {
+            mdStr = fullContent
+            estimatedHeight = preMarkwonHeight(fullContent, markdownConfiguration, markdownPlugin)
+            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin)
+        } else {
+            let number = textNumber
+            let time = timeMs
+            let total = arr.size
+            spawn {
+                for (i in 0..total : number) {
+                    sleep(Duration.millisecond * time)
+                    launch {
+                        let size = if (total > i + number) {
+                            i + number
+                        } else {
+                            total
+                        }
+                        mdStr += String(arr[i..size])
+                        scroller.scrollEdge(Edge.Bottom)
+                        if (size >= total) {
+                            isInputEnded = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func updateConfig() {
+        let theme = markdownConfiguration.getMarkdownTheme()
+        let globalTheme = theme.getGlobalTheme()
+        globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
+        globalTheme.blockMarginRight = parseFloat64(cfg_blockMarginRight)
+        globalTheme.blockMarginBottom = parseFloat64(cfg_blockMarginBottom)
+        globalTheme.blockMarginLeft = parseFloat64(cfg_blockMarginLeft)
+        globalTheme.markdownBlockSpacing = parseInt64(cfg_markdownBlockSpacing)
+        globalTheme.isLineBreak = parseBool(cfg_isLineBreak)
+        globalTheme.isOnCopy = parseBool(cfg_isOnCopy)
+        globalTheme.isMarkdownParserSync = parseBool(cfg_isMarkdownParserSync)
+        globalTheme.openGestureSwipe = parseBool(cfg_openGestureSwipe)
+        globalTheme.enableParseThrottle = parseBool(cfg_enableParseThrottle)
+        globalTheme.parseThrottleMs = parseInt64(cfg_parseThrottleMs)
+        if (cfg_backgroundColor != "undefined") {
+            globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
+        }
+        // 表格标题行吸顶（曝光测试关键开关：表格内链接曝光验证必备）
+        theme.getTableTheme().setTableStickyHeader(parseBool(cfg_tableStickyHeader))
+        // 曝光阈值（0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见）
+        // 同时写入 MarkdownConfiguration 和 Registry，确保 @Prop 深拷贝丢失时阈值仍可用
+        let threshold = parseFloat64(cfg_exposureThreshold)
+        markdownConfiguration.setExposureThreshold(threshold)
+        MarkdownLinkExposureRegistry.setExposureThreshold(threshold)
+        // 注：cangjie 的 MarkdownComponent 已默认加载 LinkifyPlugin（纯文本URL转链接）
+        // cfg_isLinkifyPlugin 在 cangjie 中为说明性配置（始终为 true），不影响实际行为
+    }
+
+    /**
+     * 链接点击回调
+     */
+    func linkClickCallback(url: String): Unit {
+        Hilog.error(1, "1", "---url:${url}")
+    }
+
+    /**
+     * 元素曝光回调：链接显示/消失时触发
+     * 同时打hilog + push到屏幕事件列表（限最近50条）
+     */
+    func elementExposureCallback(event: MarkdownExposureEvent): Unit {
+        let eventType = event.`type`
+        let eventVisible = event.visible
+        let eventData = event.data
+        Hilog.error(1, "EXPOSURE-DEBUG", "elementExposureCallback type=${eventType} visible=${eventVisible} data=${eventData}")
+        try {
+            eventSeq = eventSeq + 1
+            let item = ExposureLogItem(seq: eventSeq, visible: eventVisible, url: eventData)
+            // 重新赋值确保 @State 触发更新（对齐 ArkTS reference: this.exposureEvents = next）
+            let next = ObservedArrayList<ExposureLogItem>()
+            let currentSize = exposureEvents.size
+            for (i in 0..currentSize) {
+                next.append(exposureEvents[i])
+            }
+            next.append(item)
+            // 保留最近50条（删头部多余的）
+            while (next.size > 50) {
+                next.remove(0)
+            }
+            exposureEvents = next
+            debugEventCount = debugEventCount + 1
+            Hilog.error(1, "EXPOSURE-DEBUG", "elementExposureCallback reassigned seq=${eventSeq} totalEvents=${exposureEvents.size} debugCount=${debugEventCount}")
+            // 刷新后下一帧滚到底（spawn + sleep + launch 模式：sleep 在后台线程，launch 调度到 UI 线程）
+            spawn {
+                sleep(Duration.millisecond * 16)
+                launch {
+                    try {
+                        eventScroller.scrollEdge(Edge.Bottom)
+                    } catch (e: Exception) {
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Hilog.error(1, "EXPOSURE-DEBUG", "elementExposureCallback EXCEPTION ${e.message}")
+        }
+    }
+
+    public func build() {
+        Column {
+            Text("点击文件名加载:")
+                .fontSize(14.0)
+                .margin(top: 5.0)
+
+            Scroll {
+                Flex(FlexOptions(direction: FlexDirection.Row, wrap: FlexWrap.Wrap)) {
+                    ForEach(
+                        getFileList(),
+                        itemGeneratorFunc: {
+                            item: String, _: Int64 =>
+                                Text(item)
+                                    .fontSize(12.0)
+                                    .fontColor(0xFFFFFFFF)
+                                    .backgroundColor(0xFF2196F3)
+                                    .height(25.0)
+                                    .padding(5.0)
+                                    .borderRadius(5.0)
+                                    .maxLines(1)
+                                    .textOverflow(TextOverflow.Clip)
+                                    .margin(2.0)
+                                    .onClick {evt => loadFile(item)}
+                        }
+                    )
+                }
+                .padding(5.0)
+                .width(100.percent)
+                .backgroundColor(0xFFEAEAEA)
+            }
+            .width(100.percent)
+            .constraintSize(maxHeight: 200.0)
+            .scrollable(ScrollDirection.Vertical)
+            .scrollBar(BarState.Auto)
+
+            Scroll {
+                Column {
+
+                    Column {
+                Row {
+                    Text("曝光测试配置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded1) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded1 = !isExpanded1
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded1 = !isExpanded1
+                        }
+
+                        if (isExpanded1) {
+                            Column {
+                                ConfigTabSelector(title: "曝光阈值（0=露一点即报，1=完全可见才报） - ", options: exposureThresholdList, defaultValue: "0.5", configKey: "", currentValue: cfg_exposureThreshold, onSelect: { v => cfg_exposureThreshold = v })
+                                ConfigTabSelector(title: "链接自动解析插件（纯文本URL转链接） - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isLinkifyPlugin, onSelect: { v => cfg_isLinkifyPlugin = v })
+                                Text("使用说明\n1. 选md文件加载，滚动Markdown内容\n2. 屏幕底部实时显示曝光事件（显示=绿/消失=红）\n3. 001_段落=垂直滚动验证；002_表格=横向滚动+吸顶验证；003_混合=全场景\n4. 阈值0.5=链接50%面积可见才报，水平+垂直双向裁剪\n5. hilog同步输出 ---elementExposure 行")
+                                    .fontSize(12.0)
+                                    .fontColor(0xFFEEEEEE)
+                                    .width(100.percent)
+                                    .padding(top: 4.0, bottom: 4.0, left: 2.0)
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+                    Column {
+                        Row {
+                            Text("通用样式配置")
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .fontWeight(FontWeight.Bold)
+                                .layoutWeight(1)
+                            Text(if (isExpanded2) { "▲" } else { "▼" })
+                                .fontSize(16.0)
+                                .fontColor(0xFFF5F5F5)
+                                .padding(right: 20.0)
+                                .onClick {
+                                    evt => isExpanded2 = !isExpanded2
+                                }
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .margin(5.0)
+                        .onClick {
+                            evt => isExpanded2 = !isExpanded2
+                        }
+
+                        if (isExpanded2) {
+                            Column {
+                                ConfigTabSelector(title: "是否全量加载 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isFull, onSelect: { v => cfg_isFull = v })
+                                ConfigTabSelector(title: "是否增量解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_incrementalAnalysis, onSelect: { v => cfg_incrementalAnalysis = v })
+                                ConfigTabSelector(title: "是否启用解析节流 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_enableParseThrottle, onSelect: { v => cfg_enableParseThrottle = v })
+                                ConfigTabSelector(title: "解析节流间隔(ms) - ", options: timeList, defaultValue: "200", configKey: "", currentValue: cfg_parseThrottleMs, onSelect: { v => cfg_parseThrottleMs = v })
+                                ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
+                                ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
+                                ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
+                                ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
+                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
+                                ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
+                                ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
+                                ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
+                                ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
+                                ConfigTabSelector(title: "表格标题行吸顶 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_tableStickyHeader, onSelect: { v => cfg_tableStickyHeader = v })
+                            }
+                            .width(100.percent)
+                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+                        }
+                    }
+                    .width(100.percent)
+                    .margin(5.0)
+                    .borderRadius(5.0)
+                    .backgroundColor(0xFF317AFF)
+
+
+                    if (mdStr != "") {
+                        Text("预览: " + selectedFileName)
+                            .fontSize(14.0)
+                            .fontColor(0xFF333333)
+                            .margin(top: 10.0, left: 5.0)
+                        Column {
+                            Text("preMarkwonHeight 估算: " + estimatedHeight.toString() + " vp | preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
+                                .fontSize(12.0)
+                                .fontColor(0xFF666666)
+                                .margin(top: 3.0, left: 5.0)
+                            MarkdownComponent(
+                                output: mdStr,
+                                isInputEnded: isInputEnded,
+                                incrementalAnalysis: incrementalAnalysis,
+                                scroller: scroller,
+                                markdownConfiguration: markdownConfiguration
+                            )
+                        }
+                        .width(100.percent)
+                        .padding(5.0)
+                        .backgroundColor(0xFFFFFFFF)
+                    }
+                }
+                .justifyContent(FlexAlign.Start)
+            }
+            .scrollable(ScrollDirection.Vertical)
+            .align(Alignment.Top)
+            .layoutWeight(1)
+
+            // 底部：屏幕实时曝光事件列表
+            Column {
+                Text("曝光事件（count=" + debugEventCount.toString() + " 最近" + exposureEvents.size.toString() + "条 阈值" + cfg_exposureThreshold + "）")
+                    .fontSize(12.0)
+                    .fontColor(0xFF333333)
+                    .width(100.percent)
+                    .padding(top: 4.0, bottom: 4.0, left: 8.0)
+                    .backgroundColor(0xFFEEEEEE)
+                Scroll(eventScroller) {
+                    Column {
+                        ForEach(
+                            exposureEvents,
+                            itemGeneratorFunc: {
+                                item: ExposureLogItem, _: Int64 =>
+                                    Text("[" + item.seq.toString() + "] " + (if (item.visible) { "显示" } else { "消失" }) + " " + item.url)
+                                        .fontSize(11.0)
+                                        .fontColor(if (item.visible) { 0xFF2E7D32 } else { 0xFFC62828 })
+                                        .width(100.percent)
+                                        .padding(top: 2.0, bottom: 2.0, left: 8.0)
+                                        .maxLines(1)
+                                        .textOverflow(TextOverflow.Ellipsis)
+                            },
+                            keyGeneratorFunc: {
+                                item: ExposureLogItem, _: Int64 => "${item.seq}-${item.visible}-${item.url}"
+                            }
+                        )
+                    }
+                }
+                .width(100.percent)
+                .layoutWeight(1)
+                .scrollable(ScrollDirection.Vertical)
+            }
+            .width(100.percent)
+            .height(180.0)
+            .backgroundColor(0xFFFAFAFA)
+        }
+        .width(100.percent)
+        .layoutWeight(1)
+        .backgroundColor(0xFFEAEAEA)
+        .justifyContent(FlexAlign.Start)
+    }
+}

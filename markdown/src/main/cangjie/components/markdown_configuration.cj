@@ -46,6 +46,7 @@ public class MarkdownConfiguration {
     var tableCopyCallback: ?(String) -> Unit = None // 表格复制按钮的点击事件
     var elementExposureCallback: ?(MarkdownExposureEvent) -> Unit = None // 元素曝光回调（链接显示/消失时触发）
     var exposureThreshold: Float64 = 0.5 // 曝光可见阈值（0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见）
+    @Publish
     var markdownHighlightParagraph: MarkdownHighlightParagraph = MarkdownHighlightParagraph() // 高亮段落设置
     var scrollController: ?MarkdownScrollController = None // 外层滚动控制器（用于不固定高度模式下吸顶）
     var paragraphAnimationStart: ?() -> Unit = None // 段落动画开始回调
@@ -392,6 +393,15 @@ public class MarkdownConfiguration {
     public func setMarkdownHighlightParagraph(markdownHighlightParagraph: MarkdownHighlightParagraph): MarkdownConfiguration {
         this.markdownHighlightParagraph = markdownHighlightParagraph
         return this
+    }
+
+    /**
+     * 获取高亮段落配置
+     *
+     * @return MarkdownHighlightParagraph 高亮段落配置对象
+     */
+    public func getMarkdownHighlightParagraph(): MarkdownHighlightParagraph {
+        return markdownHighlightParagraph
     }
 
     /**

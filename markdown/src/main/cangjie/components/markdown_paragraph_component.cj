@@ -46,7 +46,6 @@ class MarkdownParagraphComponent {
     var paragraphLongPressBackgroundColor: Color = COLOR_TRANSPARENT // 当前长按背景色
     @State
     var paragraphIsLongPressed: Bool = false // 当前是否处于长按状态
-    var paragraphSelectionMenuTimer: ?Timer = None // 选区菜单自动隐藏定时器
     // 链接曝光：URL列表缓存 + 当前可见状态
     // 对齐 ArkUI MarkdownParagraph.ets：用 onVisibleAreaChange(触发scheduleExposure) + onAreaChange(标记ready) +
     // componentUtils.getRectangleById(拿段落全局rect) 与屏幕高度 [0, screenH] 求交判定可见性。
@@ -87,11 +86,6 @@ class MarkdownParagraphComponent {
             paragraphExposureVisible = false
         }
         MarkdownHighlightRegistry.unregister(paragraphNodeView.nodeHash)
-        // 组件销毁时清理选区菜单隐藏定时器
-        if (paragraphSelectionMenuTimer.isSome()) {
-            paragraphSelectionMenuTimer.getOrThrow().cancel()
-            paragraphSelectionMenuTimer = None
-        }
     }
 
     /**
@@ -271,7 +265,8 @@ class MarkdownParagraphComponent {
             return ""
         }
         let safeEnd = if (end > contentLength) { contentLength } else { end }
-        return paragraphTextContent[start..safeEnd]
+        let tmpText = paragraphTextContent.toRuneArray()
+        return String(tmpText[start..safeEnd])
     }
 
     /**
@@ -280,22 +275,25 @@ class MarkdownParagraphComponent {
      */
     @Builder
     func customSelectionMenu(): Unit {
-        Column() {
+        Row() {
             Text("复制")
-                .fontSize(14.0)
-                .fontColor(COLOR_WHITE)
-                .padding(12.0)
-                .backgroundColor(COLOR_FF4A90E2)
-                .borderRadius(8.0)
+                .fontSize(12.0)
+                .fontColor(COLOR_FF1E1E1E)
                 .onClick({ event: ClickEvent =>
                     copySelectedTextToClipboard(getSelectedTextContent())
                     paragraphSelectionStart = -1
                     paragraphSelectionEnd = -1
                 })
+
+            Divider().color(COLOR_FF1E1E1E).width(1.0).height(10.0).vertical(true).padding(left: 10.0, right: 10.0)
+
+            Text("粘贴")
+                .fontSize(12.0)
+                .fontColor(COLOR_FFE0E0E0)
         }
-        .padding(8.0)
-        .backgroundColor(COLOR_FFF5F2F0)
-        .borderRadius(12.0)
+        .padding(10.0)
+        .backgroundColor(COLOR_FFF5F5F5)
+        .border(width: 1.0, color: COLOR_GRAY, radius: 5.0)
     }
 
     /**
@@ -336,9 +334,6 @@ class MarkdownParagraphComponent {
     func getLongPressBeforeBackgroundColor(): Color {
         let theme = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme
         let highlightParagraph = paragraphMarkdownConfiguration.markdownHighlightParagraph
-        if (highlightParagraph.beforeSelectedParagraphBackgroundColor.isSome()) {
-            return highlightParagraph.beforeSelectedParagraphBackgroundColor.getOrThrow()
-        }
         if (theme.paragraphBeforeSelectedBackgroundColor.isSome()) {
             return theme.paragraphBeforeSelectedBackgroundColor.getOrThrow()
         }
@@ -540,26 +535,12 @@ class MarkdownParagraphComponent {
         .bindSelectionMenu(
             TextSpanType.TEXT,
             bind(customSelectionMenu, this),
-            TextResponseType.RIGHT_CLICK,
+            TextResponseType.LONG_PRESS,
             onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
                 paragraphSelectionStart = selectionStart
                 paragraphSelectionEnd = selectionEnd
-                // 选区菜单3秒后自动隐藏
-                if (paragraphSelectionMenuTimer.isSome()) {
-                    paragraphSelectionMenuTimer.getOrThrow().cancel()
-                }
-                paragraphSelectionMenuTimer = Timer.once(Int64(3000) * Duration.millisecond, { =>
-                    paragraphSelectionStart = -1
-                    paragraphSelectionEnd = -1
-                    paragraphSelectionMenuTimer = None
-                })
             },
             onDisappear: { =>
-                // 菜单隐藏时清理定时器与选区状态
-                if (paragraphSelectionMenuTimer.isSome()) {
-                    paragraphSelectionMenuTimer.getOrThrow().cancel()
-                    paragraphSelectionMenuTimer = None
-                }
                 paragraphSelectionStart = -1
                 paragraphSelectionEnd = -1
             }
@@ -567,7 +548,7 @@ class MarkdownParagraphComponent {
         .bindSelectionMenu(
             TextSpanType.IMAGE,
             bind(nullSelectionMenu, this),
-            TextResponseType.RIGHT_CLICK,
+            TextResponseType.LONG_PRESS,
             onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
                 paragraphSelectionStart = selectionStart
                 paragraphSelectionEnd = selectionEnd
@@ -580,19 +561,10 @@ class MarkdownParagraphComponent {
         .bindSelectionMenu(
             TextSpanType.MIXED,
             bind(customSelectionMenu, this),
-            TextResponseType.RIGHT_CLICK,
+            TextResponseType.LONG_PRESS,
             onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
                 paragraphSelectionStart = selectionStart
                 paragraphSelectionEnd = selectionEnd
-                // 选区菜单3秒后自动隐藏
-                if (paragraphSelectionMenuTimer.isSome()) {
-                    paragraphSelectionMenuTimer.getOrThrow().cancel()
-                }
-                paragraphSelectionMenuTimer = Timer.once(Int64(3000) * Duration.millisecond, { =>
-                    paragraphSelectionStart = -1
-                    paragraphSelectionEnd = -1
-                    paragraphSelectionMenuTimer = None
-                })
             },
             onDisappear: { =>
                 paragraphSelectionStart = -1
@@ -600,7 +572,7 @@ class MarkdownParagraphComponent {
             }
         )
         .parallelGesture(
-            LongPressGesture()
+            LongPressGesture(duration: 400)
                 .onAction({ event: GestureEvent =>
                     handleParagraphLongPressStart()
                 })
