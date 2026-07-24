@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "libark_interop_loader.so": "file:./src/main/cangjie/loader",
-    "libark_interop_api_markdown.so": "file:./src/main/cangjie/libmarkdown"
+    "libark_interop_api_markdown_hybrid.so": "file:./src/main/cangjie/libmarkdown_hybrid",
+    "@cangjie-tpc/markdown": "file:../markdown"
   }
 }

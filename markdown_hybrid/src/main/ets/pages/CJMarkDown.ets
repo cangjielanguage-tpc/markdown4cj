@@ -32,7 +32,7 @@ import {
   CJMarkdownLinkTheme,
   CJMarkdownLatexMathTheme,
   CJNodeViewStringBuilder
-} from 'libark_interop_api_markdown.so'
+} from 'libark_interop_api_markdown_hybrid.so'
 import { MarkdownRectResult } from '../configs/MarkdownRectResult'
 import { MarkdownPlugin } from '../configs/MarkdownPlugin'
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'

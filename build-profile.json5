@@ -55,6 +55,10 @@
     {
       "name": "markdown_hybrid",
       "srcPath": "./markdown_hybrid"
+    },
+    {
+      "name": "markdown",
+      "srcPath": "./markdown"
     }
   ]
 }

@@ -13,10 +13,10 @@ internal import ohos.device_info.DeviceInfo
 internal import std.collection.*
 internal import std.sync.*
 
-// markdown_hybrid
-internal import markdown_hybrid.components.*
-internal import markdown_hybrid.components.theme.*
-internal import markdown_hybrid.core.*
-internal import markdown_hybrid.plugin.*
-internal import markdown_hybrid.texttoimg4cj.*
-internal import markdown_hybrid.plugin.emoji.*
+// markdown
+internal import markdown.components.*
+internal import markdown.components.theme.*
+internal import markdown.core.*
+internal import markdown.plugin.*
+internal import markdown.texttoimg4cj.*
+internal import markdown.plugin.emoji.*

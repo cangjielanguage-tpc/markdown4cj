@@ -1,0 +1,106 @@
+package markdown.plugin
+
+class LatexBlockParser <: AbstractBlockParser {
+    let block: LatexMathBlock = LatexMathBlock()
+    let builder: StringBuilder = StringBuilder()
+    var isSingleLineLatex = false // 处理单行的情况 ^\[latex\]$
+
+    public func getBlock(): Block {
+        block
+    }
+
+    public func tryContinue(parserState: ParserState): ?BlockContinue {
+        let line = parserState.getLine().getContent()[parserState.getIndex()..]
+        if (isSingleLineLatex) {
+            block.isClosed = true
+            return BlockContinue.none()
+        }
+        if (isLatexEnd(line)) {
+            block.isClosed = true
+        }
+        return if (block.isClosed) {
+            BlockContinue.finished()
+        } else {
+            BlockContinue.atIndex(parserState.getIndex())
+        }
+    }
+
+    public func addLine(line: SourceLine): Unit {
+        if (isSingleLineLatex) {
+            return
+        }
+        if (builder.size > 0) {
+            builder.append('\n')
+        }
+        if (block.isClosed) {
+            let str = line.getContent().trimAsciiEnd()
+            builder.append(str[..str.size - 2])
+        } else {
+            builder.append(line.getContent())
+        }
+    }
+
+    public func closeBlock(): Unit {
+        block.latex = builder.toString()
+    }
+}
+
+class LatexBlockParserFactory <: AbstractBlockParserFactory {
+    public func tryStart(state: ParserState, _: MatchedBlockParser): ?BlockStart {
+        var indent: Int64 = state.getIndent()
+        if (indent >= Parsing.CODE_BLOCK_INDENT) {
+            return BlockStart.none()
+        }
+        var nextNonSpace: Int64 = state.getNextNonSpaceIndex()
+        var line: String = state.getLine().getContent()[nextNonSpace..].trimAscii()
+        if (line == "$$" || line == "\\[") {
+            return BlockStart.of(LatexBlockParser()).atIndex(nextNonSpace + 2)
+        }
+        if (line.startsWith(#"\["#) && line.endsWith(#"\]"#) || (line.startsWith(#"$$"#) && line.size > 3 &&
+            line.endsWith(#"$$"#))) {
+            let parser = LatexBlockParser()
+            parser.builder.append(line[2..line.size - 2])
+            parser.isSingleLineLatex = true
+            parser.block.isClosed = true
+            return BlockStart.of(parser).atIndex(state.getIndex() + 2)
+        }
+        return BlockStart.none()
+    }
+}
+
+func isLatexLine(line: String): Bool {
+    let str = line.replace(#"\$"#, "")
+    if (let Some(i) <- str.indexOf("$")) {
+        if (i != str.size - 2) {
+            return false
+        }
+    }
+    if (let Some(i) <- str.indexOf("$$")) {
+        if (i != str.size - 2) {
+            return false
+        }
+    }
+    return true
+}
+
+func isLatexEnd(lineStr: String): Bool {
+    let line = lineStr.trimAscii()
+    let size = line.size
+    return match {
+        case size < 2 => false
+        case size == 2 && line == "$$" || line == "\\]" => true
+        case size > 2 && line[size - 1] == b'$' && line[size - 2] == b'$' && line[size - 3] != b'\\' => true
+        case size > 2 && line[size - 1] == b']' && line[size - 2] == b'\\' && line[size - 3] != b'\\' => true
+        case _ => false
+    }
+}
+
+let LATEX_IN_LIST = Regex(#"\s{0,3}(\$\$|\\\[)"#)
+
+func isLatexInList(line: String): ?Int {
+    return LATEX_IN_LIST.find(line)?.matchPosition().end
+}
+
+type CharSequence = String
+
+type CharSeqCell = Byte

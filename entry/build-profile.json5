@@ -1,6 +1,13 @@
 {
   "apiType": "stageMode",
   "buildOption": {
+    "nativeLib": {
+      "filter": {
+        "pickFirsts": [
+          "**/libcodeformat.so"
+        ]
+      }
+    }
   },
   "buildOptionSet": [
     {

@@ -1,0 +1,30 @@
+package markdown.plugin
+
+public class LatexMathBlock <: CustomBlock {
+    private var _latex: String = ""
+    public mut prop latex: String {
+        get() {
+            _latex
+        }
+        set(v) {
+            _latex = v
+        }
+    }
+    public var isClosed: Bool = false
+    protected func toStringAttributes(): String {
+        return "latex=${latex},isClosed=${isClosed}"
+    }
+    public func getNodeType(): String {
+        "LatexMathBlock"
+    }
+}
+
+public class LatexMathNode <: CustomNode {
+    public LatexMathNode(public var latex: String) {}
+    protected func toStringAttributes(): String {
+        return "latex=${latex}"
+    }
+    public func getNodeType(): String {
+        "LatexMathNode"
+    }
+}
