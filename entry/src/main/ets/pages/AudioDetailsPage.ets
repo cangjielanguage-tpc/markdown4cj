@@ -1,10 +1,11 @@
-import { CJMarkdown,
+import {
+  AudioTheme,
+  CJMarkdown,
+  GlobalTheme,
   ImageFitType,
   MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeAudio,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -398,30 +399,30 @@ struct AudioDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Audio
-    let audioTheme = new MarkdownThemeAudio()
+    let audioTheme = new AudioTheme()
     if (this.audioBackgroundColor !== undefined) {
       audioTheme.setAudioBackgroundColor(this.audioBackgroundColor)
     }
-    audioTheme.setAudioMargin(this.audioMarginTop, this.audioMarginRight, this.audioMarginBottom, this.audioMarginLeft)
-    audioTheme.setAudioPadding(this.audioPaddingTop, this.audioPaddingRight, this.audioPaddingBottom, this.audioPaddingLeft)
+    audioTheme.setAudioMargin({top: this.audioMarginTop, right: this.audioMarginRight, bottom: this.audioMarginBottom, left: this.audioMarginLeft})
+    audioTheme.setAudioPadding({top: this.audioPaddingTop, right: this.audioPaddingRight, bottom: this.audioPaddingBottom, left: this.audioPaddingLeft})
     audioTheme.setAudioBorderStyle(this.audioBorderStyle)
     audioTheme.setAudioBorderWidth(this.audioBorderWidth)
     if (this.audioBorderColor !== undefined) {
       audioTheme.setAudioBorderColor(this.audioBorderColor)
     }
-    audioTheme.setAudioBorderRadius(this.audioRadiusTopLeft, this.audioRadiusTopRight, this.audioRadiusBottomLeft, this.audioRadiusBottomRight)
+    audioTheme.setAudioBorderRadius({topLeft: this.audioRadiusTopLeft, topRight: this.audioRadiusTopRight, bottomLeft: this.audioRadiusBottomLeft, bottomRight: this.audioRadiusBottomRight})
     audioTheme.setAudioShadowRadius(this.audioShadowRadius)
     audioTheme.setAudioShadowOffsetX(this.audioShadowOffsetX)
     audioTheme.setAudioShadowOffsetY(this.audioShadowOffsetY)
@@ -433,7 +434,7 @@ struct AudioDetailsPage {
     }
     audioTheme.setAudioIconWidth(this.audioIconWidth)
     audioTheme.setAudioIconHeight(this.audioIconHeight)
-    audioTheme.setAudioIconRadius(this.audioIconRadiusTopLeft, this.audioIconRadiusTopRight, this.audioIconRadiusBottomLeft, this.audioIconRadiusBottomRight)
+    audioTheme.setAudioIconRadius({topLeft: this.audioIconRadiusTopLeft, topRight: this.audioIconRadiusTopRight, bottomLeft: this.audioIconRadiusBottomLeft, bottomRight: this.audioIconRadiusBottomRight})
     if (this.audioIconFitType !== undefined) {
       audioTheme.setAudioIconFitType(this.audioIconFitType)
     }
@@ -448,7 +449,7 @@ struct AudioDetailsPage {
     if (this.audioButtonBorderColor !== undefined) {
       audioTheme.setAudioButtonBorderColor(this.audioButtonBorderColor)
     }
-    audioTheme.setAudioButtonRadius(this.audioButtonRadiusTopLeft, this.audioButtonRadiusTopRight, this.audioButtonRadiusBottomLeft, this.audioButtonRadiusBottomRight)
+    audioTheme.setAudioButtonRadius({topLeft: this.audioButtonRadiusTopLeft, topRight: this.audioButtonRadiusTopRight, bottomLeft: this.audioButtonRadiusBottomLeft, bottomRight: this.audioButtonRadiusBottomRight})
     audioTheme.setAudioButtonText(this.audioButtonText)
     if (this.audioButtonTextFontColor !== undefined) {
       audioTheme.setAudioButtonTextFontColor(this.audioButtonTextFontColor)
@@ -474,7 +475,7 @@ struct AudioDetailsPage {
     audioTheme.setAudioTypeTextFontWeight(this.audioTypeTextFontWeight)
     audioTheme.setAudioTypeTextFontFamily(this.audioTypeTextFontFamily)
     audioTheme.setAudioTypeTextLineHeight(this.audioTypeTextLineHeight)
-    theme.setMarkdownThemeAudio(audioTheme)
+    theme.setAudioTheme(audioTheme)
     
     return theme
   }

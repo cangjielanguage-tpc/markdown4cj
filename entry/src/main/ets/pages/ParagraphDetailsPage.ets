@@ -1,10 +1,11 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme,
-  MarkdownThemeParagraph,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  ParagraphTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ParagraphData } from '../model/ParagraphData'
@@ -273,25 +274,25 @@ struct ParagraphDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Paragraph
-    let paragraphTheme = new MarkdownThemeParagraph()
+    let paragraphTheme = new ParagraphTheme()
     if (this.paragraphBackgroundColor !== undefined) {
       paragraphTheme.setParagraphBackgroundColor(this.paragraphBackgroundColor)
     }
-    paragraphTheme.setParagraphMargin(this.paragraphMarginTop, this.paragraphMarginRight, this.paragraphMarginBottom, this.paragraphMarginLeft)
-    paragraphTheme.setParagraphPadding(this.paragraphPaddingTop, this.paragraphPaddingRight, this.paragraphPaddingBottom, this.paragraphPaddingLeft)
+    paragraphTheme.setParagraphMargin({top: this.paragraphMarginTop, right: this.paragraphMarginRight, bottom: this.paragraphMarginBottom, left: this.paragraphMarginLeft})
+    paragraphTheme.setParagraphPadding({top: this.paragraphPaddingTop, right: this.paragraphPaddingRight, bottom: this.paragraphPaddingBottom, left: this.paragraphPaddingLeft})
     if (this.paragraphTextFontColor !== undefined) {
       paragraphTheme.setParagraphTextFontColor(this.paragraphTextFontColor)
     }
@@ -301,7 +302,7 @@ struct ParagraphDetailsPage {
     paragraphTheme.setParagraphTextFontFamily(this.paragraphTextFontFamily)
     paragraphTheme.setParagraphTextLineHeight(this.paragraphTextLineHeight)
     paragraphTheme.setParagraphTextLetterSpacing(this.paragraphTextLetterSpacing)
-    theme.setMarkdownThemeParagraph(paragraphTheme)
+    theme.setParagraphTheme(paragraphTheme)
     
     return theme
   }

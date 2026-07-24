@@ -706,11 +706,11 @@ export class CodeBlockData {
     this._isFull = value
   }
 
-  public set codeBlockTextColor(value: number | undefined) {
+  public set codeBlockTextColor(value: ResourceColor | undefined) {
     this._codeBlockTextColor = value
   }
 
-  public set codeBlockTypeTextColor(value: number | undefined) {
+  public set codeBlockTypeTextColor(value: ResourceColor | undefined) {
     this._codeBlockTypeTextColor = value
   }
 
@@ -722,7 +722,7 @@ export class CodeBlockData {
     this._codeBlockLineNumberHide = value
   }
 
-  public set codeBlockBackgroundColor(value: number | undefined) {
+  public set codeBlockBackgroundColor(value: ResourceColor | undefined) {
     this._codeBlockBackgroundColor = value
   }
 

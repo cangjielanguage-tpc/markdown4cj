@@ -1,6 +1,6 @@
-import { BaseMDData } from "./BaseMDData"
+import { CodeBlockData } from "./CodeBlockData"
 
-export class CodeListData extends BaseMDData {
+export class CodeListData extends CodeBlockData {
   _codeListTitleTextSize: number = 13
   _codeListTitleSelectTextSize: number = 13
   _codeListTitleSelectTextColor: number | undefined = undefined

@@ -669,7 +669,7 @@ export class CodeBlockData {
     this._isFull = value
   }
 
-  public set codeBlockTextColor(value: number | undefined) {
+  public set codeBlockTextColor(value: ResourceColor | undefined) {
     this._codeBlockTextColor = value
   }
 

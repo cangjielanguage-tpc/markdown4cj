@@ -48,7 +48,7 @@
        * 代码块代码文本颜色
        */
       @State
-      codeBlockTextColor: number | undefined = undefined
+      codeBlockTextColor: ResourceColor | undefined = undefined
       /**
        * 代码块代码类型文本颜色
        */

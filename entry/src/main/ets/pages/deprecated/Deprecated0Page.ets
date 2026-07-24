@@ -11,7 +11,6 @@ import {
   timeListGeneralData
 } from '../../model/GeneralData'
 import { DeprecatedData } from '../../model/DeprecatedData'
-import { ImageFitType, LatexMathColorFormat, MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -74,8 +73,8 @@ struct Deprecated0Page {
   strikethroughColorList: Array<number | undefined> = colorListGeneralData
   @State strikethroughColor: number = 0xFF191919 // 删除线颜色
   // 删除线样式列表
-  strikethroughStyleList: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.WAVY]
-  @State strikethroughStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID // 删除线样式
+  strikethroughStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DASHED, TextDecorationStyle.DOTTED, TextDecorationStyle.WAVY]
+  @State strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID // 删除线样式
   // 定义列表定义行缩进列表
   descListTermAndDefMarginsList: Array<number> = marginListGeneralData
   @State descListTermAndDefMargins: number = 8 // 定义列表定义行缩进

@@ -1,4 +1,3 @@
-import { MarkdownTextDecorationStyle } from "@cangjie-tpc/markdown_hybrid"
 import { BaseMDData } from "./BaseMDData"
 
 export class FootnoteData extends BaseMDData {
@@ -23,7 +22,7 @@ export class FootnoteData extends BaseMDData {
   _footnoteRefTextLetterSpacing: number = 0 // 脚注引用文本字符间距
   _footnoteRefTextDecorationType: TextDecorationType = TextDecorationType.None // 脚注引用文本装饰线类型
   _footnoteRefTextDecorationColor: number | undefined = undefined // 脚注引用文本装饰线颜色
-  _footnoteRefTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID // 脚注引用文本装饰线样式
+  _footnoteRefTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID // 脚注引用文本装饰线样式
   _footnoteRefTextBackgroundColor: number | undefined = undefined // 脚注引用文本背景颜色
   _footnoteRefTextBackgroundRadiusTopLeft: number = 0 // 脚注引用文本背景左上圆角
   _footnoteRefTextBackgroundRadiusTopRight: number = 0 // 脚注引用文本背景右上圆角
@@ -104,7 +103,7 @@ export class FootnoteData extends BaseMDData {
     this._footnoteRefTextDecorationColor = value
   }
 
-  public set footnoteRefTextDecorationStyle(value: MarkdownTextDecorationStyle) {
+  public set footnoteRefTextDecorationStyle(value: TextDecorationStyle) {
     this._footnoteRefTextDecorationStyle = value
   }
 

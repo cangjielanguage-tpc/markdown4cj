@@ -3,9 +3,9 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme,
-  MarkdownThemeVideo,
-  MarkdownThemeGlobal,
-  ImageFitType} from '@cangjie-tpc/markdown_hybrid'
+  ImageFitType,
+  GlobalTheme,
+  VideoTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { VideoData } from '../model/VideoData'
@@ -431,26 +431,26 @@ struct VideoDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Video
-    let videoTheme = new MarkdownThemeVideo()
+    let videoTheme = new VideoTheme()
     if (this.videoBackgroundColor !== undefined) {
       videoTheme.setVideoBackgroundColor(this.videoBackgroundColor)
     }
-    videoTheme.setVideoMargin(this.videoMarginTop, this.videoMarginRight, this.videoMarginBottom, this.videoMarginLeft)
-    videoTheme.setVideoPadding(this.videoPaddingTop, this.videoPaddingRight, this.videoPaddingBottom, this.videoPaddingLeft)
-    videoTheme.setVideoBorderRadius(this.videoRadiusTopLeft, this.videoRadiusTopRight, this.videoRadiusBottomLeft, this.videoRadiusBottomRight)
+    videoTheme.setVideoMargin({top: this.videoMarginTop, right: this.videoMarginRight, bottom: this.videoMarginBottom, left: this.videoMarginLeft})
+    videoTheme.setVideoPadding({top: this.videoPaddingTop, right: this.videoPaddingRight, bottom: this.videoPaddingBottom, left: this.videoPaddingLeft})
+    videoTheme.setVideoBorderRadius({topLeft: this.videoRadiusTopLeft, topRight: this.videoRadiusTopRight, bottomLeft: this.videoRadiusBottomLeft, bottomRight: this.videoRadiusBottomRight})
     videoTheme.setVideoBorderStyle(this.videoBorderStyle)
     videoTheme.setVideoBorderWidth(this.videoBorderWidth)
     if (this.videoBorderColor !== undefined) {
@@ -488,7 +488,7 @@ struct VideoDetailsPage {
     }
     videoTheme.setVideoReleaseButtonWidth(this.videoReleaseButtonWidth)
     videoTheme.setVideoReleaseButtonHeight(this.videoReleaseButtonHeight)
-    videoTheme.setVideoReleaseButtonRadius(this.videoReleaseButtonRadiusTopLeft, this.videoReleaseButtonRadiusTopRight, this.videoReleaseButtonRadiusBottomLeft, this.videoReleaseButtonRadiusBottomRight)
+    videoTheme.setVideoReleaseButtonRadius({topLeft: this.videoReleaseButtonRadiusTopLeft, topRight: this.videoReleaseButtonRadiusTopRight, bottomLeft: this.videoReleaseButtonRadiusBottomLeft, bottomRight: this.videoReleaseButtonRadiusBottomRight})
     videoTheme.setVideoReleaseButtonIconTextGap(this.videoReleaseButtonIconTextGap)
     if (this.videoReleaseButtonIcon !== undefined) {
       videoTheme.setVideoReleaseButtonIcon(this.videoReleaseButtonIcon)
@@ -510,7 +510,7 @@ struct VideoDetailsPage {
     }
     videoTheme.setVideoDownloadButtonWidth(this.videoDownloadButtonWidth)
     videoTheme.setVideoDownloadButtonHeight(this.videoDownloadButtonHeight)
-    videoTheme.setVideoDownloadButtonRadius(this.videoDownloadButtonRadiusTopLeft, this.videoDownloadButtonRadiusTopRight, this.videoDownloadButtonRadiusBottomLeft, this.videoDownloadButtonRadiusBottomRight)
+    videoTheme.setVideoDownloadButtonRadius({topLeft: this.videoDownloadButtonRadiusTopLeft, topRight: this.videoDownloadButtonRadiusTopRight, bottomLeft: this.videoDownloadButtonRadiusBottomLeft, bottomRight: this.videoDownloadButtonRadiusBottomRight})
     videoTheme.setVideoDownloadButtonIconTextGap(this.videoDownloadButtonIconTextGap)
     if (this.videoDownloadButtonIcon !== undefined) {
       videoTheme.setVideoDownloadButtonIcon(this.videoDownloadButtonIcon)
@@ -526,7 +526,7 @@ struct VideoDetailsPage {
     videoTheme.setVideoDownloadButtonTextFontWeight(this.videoDownloadButtonTextFontWeight)
     videoTheme.setVideoDownloadButtonTextFontFamily(this.videoDownloadButtonTextFontFamily)
     videoTheme.setVideoDownloadButtonTextLineHeight(this.videoDownloadButtonTextLineHeight)
-    theme.setMarkdownThemeVideo(videoTheme)
+    theme.setVideoTheme(videoTheme)
     
     return theme
   }

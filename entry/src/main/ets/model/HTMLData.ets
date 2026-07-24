@@ -1,4 +1,3 @@
-import { MarkdownTextDecorationStyle } from "@cangjie-tpc/markdown_hybrid"
 import { BaseMDData } from "./BaseMDData"
 
 export class HTMLData extends BaseMDData {
@@ -10,7 +9,7 @@ export class HTMLData extends BaseMDData {
   _htmlUnderlineTextLineHeight: number | undefined = undefined // HTML下划线文本行高
   _htmlUnderlineTextLetterSpacing: number | undefined = undefined // HTML下划线文本字符间距
   _htmlUnderlineTextDecorationColor: number | undefined = undefined // HTML下划线文本装饰线颜色
-  _htmlUnderlineTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID // HTML下划线文本装饰线样式
+  _htmlUnderlineTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID // HTML下划线文本装饰线样式
 
   public set htmlUnderlineTextFontColor(value: number | undefined) {
     this._htmlUnderlineTextFontColor = value
@@ -44,7 +43,7 @@ export class HTMLData extends BaseMDData {
     this._htmlUnderlineTextDecorationColor = value
   }
 
-  public set htmlUnderlineTextDecorationStyle(value: MarkdownTextDecorationStyle) {
+  public set htmlUnderlineTextDecorationStyle(value: TextDecorationStyle) {
     this._htmlUnderlineTextDecorationStyle = value
   }
 

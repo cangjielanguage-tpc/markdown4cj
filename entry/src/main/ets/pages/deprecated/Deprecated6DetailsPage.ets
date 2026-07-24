@@ -1,6 +1,8 @@
 import { titleComponent } from '../../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownScroller, MarkdownTheme, MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin, MarkdownScroller, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { DeprecatedData } from '../../model/DeprecatedData'
@@ -204,13 +206,13 @@ struct Deprecated6DetailsPage {
     } else {
       theme.setDarculaTheme()
     }
-    let globalTheme = new MarkdownThemeGlobal()
-    globalTheme.setGlobalMargin(this.blockFirstTopMargin, 8, this.blockLastBottomMargin, 8)
+    let globalTheme: GlobalTheme = new GlobalTheme()
+    globalTheme.setGlobalMargin({top: this.blockTopAndBottomMargins, bottom: this.blockTopAndBottomMargins})
     globalTheme.setBlockSpacing(this.blockTopAndBottomMargins)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     theme.setTableCellPadding(this.tableCellPadding)
     theme.setTableBorderColor(this.tableBorderColor)
@@ -253,7 +255,7 @@ struct Deprecated6DetailsPage {
     plugin.setIsLatexMathPlugin(true)
     plugin.setIsStrikethroughPlugin(true)
     plugin.setIsTaskListPlugin(true)
-    plugin.setIsLinkifyPlugin(true, [])
+    plugin.setIsLinkifyPlugin(true)
     plugin.setIsBlockAudioPlugin(true)
     plugin.setIsBlockVideoPlugin(true)
     plugin.setIsImageCollectPlugin(true)

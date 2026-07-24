@@ -1,4 +1,4 @@
-import { ImageFitType, LatexMathColorFormat, MarkdownTextDecorationStyle } from "@cangjie-tpc/markdown_hybrid"
+import { ImageFitType, LatexMathColorFormat } from "@cangjie-tpc/markdown_hybrid"
 
 export class DeprecatedData {
   // 是否全量加载Markdown文本
@@ -459,7 +459,7 @@ export class DeprecatedData {
   // 删除线颜色
   _strikethroughColor: number = 0xFF191919
   // 删除线样式
-  _strikethroughStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  _strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   // 定义列表定义行缩进
   _descListTermAndDefMargins: number = 8
   // 定义列表定义行缩进
@@ -481,7 +481,7 @@ export class DeprecatedData {
   // 下划线颜色
   _underlineColor: number = 0xFF191919
   // 下划线样式
-  _underlineStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  _underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   // codeformat是否用制表符
   _useTab: boolean = false
@@ -1396,7 +1396,7 @@ export class DeprecatedData {
     this._strikethroughColor = value
   }
 
-  public set strikethroughStyle(value: MarkdownTextDecorationStyle) {
+  public set strikethroughStyle(value: TextDecorationStyle) {
     this._strikethroughStyle = value
   }
 
@@ -1440,7 +1440,7 @@ export class DeprecatedData {
     this._underlineColor = value
   }
 
-  public set underlineStyle(value: MarkdownTextDecorationStyle) {
+  public set underlineStyle(value: TextDecorationStyle) {
     this._underlineStyle = value
   }
 

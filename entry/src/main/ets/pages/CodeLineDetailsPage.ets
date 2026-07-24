@@ -1,8 +1,9 @@
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  InlineCodeTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeInlineCode,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -296,20 +297,20 @@ struct CodeLineDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - InlineCode
-    let inlineCodeTheme = new MarkdownThemeInlineCode()
+    let inlineCodeTheme = new InlineCodeTheme()
     if (this.inlineCodeTextFontColor !== undefined) {
       inlineCodeTheme.setInlineCodeTextFontColor(this.inlineCodeTextFontColor)
     }
@@ -334,13 +335,13 @@ struct CodeLineDetailsPage {
     if (this.inlineCodeTextBackgroundColor !== undefined) {
       inlineCodeTheme.setInlineCodeTextBackgroundColor(this.inlineCodeTextBackgroundColor)
     }
-    inlineCodeTheme.setInlineCodeTextBackgroundRadius(
-      this.inlineCodeTextBackgroundRadiusTopLeft,
-      this.inlineCodeTextBackgroundRadiusTopRight,
-      this.inlineCodeTextBackgroundRadiusBottomLeft,
-      this.inlineCodeTextBackgroundRadiusBottomRight
-    )
-    theme.setMarkdownThemeInlineCode(inlineCodeTheme)
+    inlineCodeTheme.setInlineCodeTextBackgroundRadius({
+      topLeft: this.inlineCodeTextBackgroundRadiusTopLeft,
+      topRight: this.inlineCodeTextBackgroundRadiusTopRight,
+      bottomLeft: this.inlineCodeTextBackgroundRadiusBottomLeft,
+      bottomRight: this.inlineCodeTextBackgroundRadiusBottomRight
+    })
+    theme.setInlineCodeTheme(inlineCodeTheme)
     
     return theme
   }

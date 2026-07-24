@@ -145,6 +145,12 @@ class CJMarkdownComponent {
             if (v.isEmojiPlugin) {
                 markdownBuilder.usePlugin(EmojiPlugin.create(v.isEmojiLight))
             }
+            if (v.isHighlightPlugin) {
+                markdownBuilder.usePlugin(HighlightDelimeterPlugin.create())
+            }
+            if (v.isWhitelistPlugin) {
+                markdownBuilder.usePlugin(WhitelistLooseDelimiterPlugin.create(v.mode))
+            }
         }
         markdownBuilder.usePlugin(NodeIdPlugin.create()) // 唯一ID标识插件
         if (incrementalAnalysis) {

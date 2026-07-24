@@ -1,10 +1,10 @@
 import { titleComponent } from '../../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTextDecorationStyle,
-  MarkdownTheme,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { DeprecatedData } from '../../model/DeprecatedData'
@@ -54,7 +54,7 @@ struct Deprecated0DetailsPage {
   @State // 删除线颜色
   strikethroughColor: number = 0xFF191919
   @State // 删除线样式
-  strikethroughStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   @State // 定义列表定义行缩进
   descListTermAndDefMargins: number = 8
   @State // 定义列表定义行缩进
@@ -272,13 +272,13 @@ struct Deprecated0DetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
-    globalTheme.setGlobalMargin(this.blockFirstTopMargin, 8, this.blockLastBottomMargin, 8)
+    let globalTheme: GlobalTheme = new GlobalTheme()
+    globalTheme.setGlobalMargin({top: this.blockTopAndBottomMargins, bottom: this.blockTopAndBottomMargins})
     globalTheme.setBlockSpacing(this.blockTopAndBottomMargins)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 其他配置
     theme.setStrikethroughColor(this.strikethroughColor)
@@ -310,7 +310,7 @@ struct Deprecated0DetailsPage {
     plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
+    plugin.setIsLinkifyPlugin(true) // 自动链接插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件

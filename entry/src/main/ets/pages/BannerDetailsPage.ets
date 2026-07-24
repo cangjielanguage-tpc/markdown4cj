@@ -1,10 +1,12 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import {
+  BannerTheme,
+  CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeBanner,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { BannerData } from '../model/BannerData'
@@ -49,6 +51,8 @@ struct BannerDetailsPage {
   markdownBlockSpacing: number = 8
   @State // 软换行是否换行
   isLineBreak: boolean = false
+  @State // 背景颜色
+  globalBackgroundColor: number | undefined = undefined
   @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
   @State // 是否开启响应滑动测试
@@ -118,6 +122,7 @@ struct BannerDetailsPage {
       this.blockMarginLeft = bannerData._blockMarginLeft
       this.markdownBlockSpacing = bannerData._markdownBlockSpacing
       this.isLineBreak = bannerData._isLineBreak
+      this.globalBackgroundColor = bannerData._backgroundColor
       this.openGestureSwipe = bannerData._openGestureSwipe
       this.openGestureSwipeTest = bannerData._openGestureSwipeTest
       // ---------- Banner专有配置
@@ -254,23 +259,26 @@ struct BannerDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    let globalTheme: GlobalTheme = new GlobalTheme()
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    if (this.globalBackgroundColor !== undefined) {
+      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+    }
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- Banner专有配置
-    let bannerTheme = new MarkdownThemeBanner()
-    bannerTheme.setBannerMargin(this.bannerMarginTop, this.bannerMarginRight, this.bannerMarginBottom, this.bannerMarginLeft)
-    bannerTheme.setBannerPadding(this.bannerPaddingTop, this.bannerPaddingRight, this.bannerPaddingBottom, this.bannerPaddingLeft)
+    let bannerTheme = new BannerTheme()
+    bannerTheme.setBannerMargin({top: this.bannerMarginTop, right: this.bannerMarginRight, bottom: this.bannerMarginBottom, left: this.bannerMarginLeft})
+    bannerTheme.setBannerPadding({top: this.bannerPaddingTop, right: this.bannerPaddingRight, bottom: this.bannerPaddingBottom, left: this.bannerPaddingLeft})
     if (this.bannerPlaceholder !== undefined) {
       bannerTheme.setBannerPlaceholder(this.bannerPlaceholder)
     }
-    theme.setMarkdownThemeBanner(bannerTheme)
+    theme.setBannerTheme(bannerTheme)
     return theme
   }
 
@@ -280,7 +288,7 @@ struct BannerDetailsPage {
     plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
+    plugin.setIsLinkifyPlugin(true) // 自动链接插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件

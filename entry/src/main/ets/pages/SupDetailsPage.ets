@@ -1,10 +1,11 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme,
-  MarkdownThemeSup,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  SupTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { SupData } from '../model/SupData'
@@ -242,20 +243,20 @@ struct SupDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Sup
-    let supTheme = new MarkdownThemeSup()
+    let supTheme = new SupTheme()
     if (this.supTextFontColor !== undefined) {
       supTheme.setSupTextFontColor(this.supTextFontColor)
     }
@@ -265,7 +266,7 @@ struct SupDetailsPage {
     supTheme.setSupTextFontFamily(this.supTextFontFamily)
     supTheme.setSupTextLetterSpacing(this.supTextLetterSpacing)
     supTheme.setSupTextBaselineOffset(this.supTextBaselineOffset)
-    theme.setMarkdownThemeSup(supTheme)
+    theme.setSupTheme(supTheme)
     
     return theme
   }

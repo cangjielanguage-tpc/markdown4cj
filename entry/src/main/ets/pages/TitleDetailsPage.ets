@@ -1,10 +1,11 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  HeadingTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeHeading,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { TitleData } from '../model/TitleData'
@@ -536,26 +537,26 @@ struct TitleDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Heading
-    let headingTheme = new MarkdownThemeHeading()
+    let headingTheme = new HeadingTheme()
     // 一级标题
     if (this.heading1BackgroundColor !== undefined) {
       headingTheme.setBackgroundColorForDesignateHeading(1, this.heading1BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(1, this.heading1MarginTop, this.heading1MarginRight, this.heading1MarginBottom, this.heading1MarginLeft)
-    headingTheme.setPaddingForDesignateHeading(1, this.heading1PaddingTop, this.heading1PaddingRight, this.heading1PaddingBottom, this.heading1PaddingLeft)
+    headingTheme.setMarginForDesignateHeading(1, {top: this.heading1MarginTop, right: this.heading1MarginRight, bottom: this.heading1MarginBottom, left: this.heading1MarginLeft})
+    headingTheme.setPaddingForDesignateHeading(1, {top: this.heading1PaddingTop, right: this.heading1PaddingRight, bottom: this.heading1PaddingBottom, left: this.heading1PaddingLeft})
     if (this.heading1TextFontColor !== undefined) {
       headingTheme.setTextFontColorForDesignateHeading(1, this.heading1TextFontColor)
     }
@@ -574,8 +575,8 @@ struct TitleDetailsPage {
     if (this.heading2BackgroundColor !== undefined) {
       headingTheme.setBackgroundColorForDesignateHeading(2, this.heading2BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(2, this.heading2MarginTop, this.heading2MarginRight, this.heading2MarginBottom, this.heading2MarginLeft)
-    headingTheme.setPaddingForDesignateHeading(2, this.heading2PaddingTop, this.heading2PaddingRight, this.heading2PaddingBottom, this.heading2PaddingLeft)
+    headingTheme.setMarginForDesignateHeading(2, {top: this.heading2MarginTop, right: this.heading2MarginRight, bottom: this.heading2MarginBottom, left: this.heading2MarginLeft})
+    headingTheme.setPaddingForDesignateHeading(2, {top: this.heading2PaddingTop, right: this.heading2PaddingRight, bottom: this.heading2PaddingBottom, left: this.heading2PaddingLeft})
     if (this.heading2TextFontColor !== undefined) {
       headingTheme.setTextFontColorForDesignateHeading(2, this.heading2TextFontColor)
     }
@@ -594,8 +595,8 @@ struct TitleDetailsPage {
     if (this.heading3BackgroundColor !== undefined) {
       headingTheme.setBackgroundColorForDesignateHeading(3, this.heading3BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(3, this.heading3MarginTop, this.heading3MarginRight, this.heading3MarginBottom, this.heading3MarginLeft)
-    headingTheme.setPaddingForDesignateHeading(3, this.heading3PaddingTop, this.heading3PaddingRight, this.heading3PaddingBottom, this.heading3PaddingLeft)
+    headingTheme.setMarginForDesignateHeading(3, {top: this.heading3MarginTop, right: this.heading3MarginRight, bottom: this.heading3MarginBottom, left: this.heading3MarginLeft})
+    headingTheme.setPaddingForDesignateHeading(3, {top: this.heading3PaddingTop, right: this.heading3PaddingRight, bottom: this.heading3PaddingBottom, left: this.heading3PaddingLeft})
     if (this.heading3TextFontColor !== undefined) {
       headingTheme.setTextFontColorForDesignateHeading(3, this.heading3TextFontColor)
     }
@@ -609,8 +610,8 @@ struct TitleDetailsPage {
     if (this.heading4BackgroundColor !== undefined) {
       headingTheme.setBackgroundColorForDesignateHeading(4, this.heading4BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(4, this.heading4MarginTop, this.heading4MarginRight, this.heading4MarginBottom, this.heading4MarginLeft)
-    headingTheme.setPaddingForDesignateHeading(4, this.heading4PaddingTop, this.heading4PaddingRight, this.heading4PaddingBottom, this.heading4PaddingLeft)
+    headingTheme.setMarginForDesignateHeading(4, {top: this.heading4MarginTop, right: this.heading4MarginRight, bottom: this.heading4MarginBottom, left: this.heading4MarginLeft})
+    headingTheme.setPaddingForDesignateHeading(4, {top: this.heading4PaddingTop, right: this.heading4PaddingRight, bottom: this.heading4PaddingBottom, left: this.heading4PaddingLeft})
     if (this.heading4TextFontColor !== undefined) {
       headingTheme.setTextFontColorForDesignateHeading(4, this.heading4TextFontColor)
     }
@@ -624,8 +625,8 @@ struct TitleDetailsPage {
     if (this.heading5BackgroundColor !== undefined) {
       headingTheme.setBackgroundColorForDesignateHeading(5, this.heading5BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(5, this.heading5MarginTop, this.heading5MarginRight, this.heading5MarginBottom, this.heading5MarginLeft)
-    headingTheme.setPaddingForDesignateHeading(5, this.heading5PaddingTop, this.heading5PaddingRight, this.heading5PaddingBottom, this.heading5PaddingLeft)
+    headingTheme.setMarginForDesignateHeading(5, {top: this.heading5MarginTop, right: this.heading5MarginRight, bottom: this.heading5MarginBottom, left: this.heading5MarginLeft})
+    headingTheme.setPaddingForDesignateHeading(5, {top: this.heading5PaddingTop, right: this.heading5PaddingRight, bottom: this.heading5PaddingBottom, left: this.heading5PaddingLeft})
     if (this.heading5TextFontColor !== undefined) {
       headingTheme.setTextFontColorForDesignateHeading(5, this.heading5TextFontColor)
     }
@@ -639,8 +640,8 @@ struct TitleDetailsPage {
     if (this.heading6BackgroundColor !== undefined) {
       headingTheme.setBackgroundColorForDesignateHeading(6, this.heading6BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(6, this.heading6MarginTop, this.heading6MarginRight, this.heading6MarginBottom, this.heading6MarginLeft)
-    headingTheme.setPaddingForDesignateHeading(6, this.heading6PaddingTop, this.heading6PaddingRight, this.heading6PaddingBottom, this.heading6PaddingLeft)
+    headingTheme.setMarginForDesignateHeading(6, {top: this.heading6MarginTop, right: this.heading6MarginRight, bottom: this.heading6MarginBottom, left: this.heading6MarginLeft})
+    headingTheme.setPaddingForDesignateHeading(6, {top: this.heading6PaddingTop, right: this.heading6PaddingRight, bottom: this.heading6PaddingBottom, left: this.heading6PaddingLeft})
     if (this.heading6TextFontColor !== undefined) {
       headingTheme.setTextFontColorForDesignateHeading(6, this.heading6TextFontColor)
     }
@@ -650,7 +651,7 @@ struct TitleDetailsPage {
     headingTheme.setTextFontFamilyForDesignateHeading(6, this.heading6TextFontFamily)
     headingTheme.setTextLineHeightForDesignateHeading(6, this.heading6TextLineHeight)
     headingTheme.setTextLetterSpacingForDesignateHeading(6, this.heading6TextLetterSpacing)
-    theme.setMarkdownThemeHeading(headingTheme)
+    theme.setHeadingTheme(headingTheme)
     
     return theme
   }

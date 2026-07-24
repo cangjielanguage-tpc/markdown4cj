@@ -1,10 +1,12 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import {
+  BlockQuoteTheme,
+  CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeBlockQuote,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { QuoteData } from '../model/QuoteData'
@@ -273,32 +275,32 @@ struct QuoteDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - BlockQuote
-    let blockQuoteTheme = new MarkdownThemeBlockQuote()
+    let blockQuoteTheme = new BlockQuoteTheme()
     if (this.blockQuoteBackgroundColor !== undefined) {
       blockQuoteTheme.setBlockQuoteBackgroundColor(this.blockQuoteBackgroundColor)
     }
-    blockQuoteTheme.setBlockQuoteMargin(this.blockQuoteMarginTop, this.blockQuoteMarginRight, this.blockQuoteMarginBottom, this.blockQuoteMarginLeft)
-    blockQuoteTheme.setBlockQuotePadding(this.blockQuotePaddingTop, this.blockQuotePaddingRight, this.blockQuotePaddingBottom, this.blockQuotePaddingLeft)
-    blockQuoteTheme.setBlockQuoteRadius(this.blockQuoteRadiusTopLeft, this.blockQuoteRadiusTopRight, this.blockQuoteRadiusBottomLeft, this.blockQuoteRadiusBottomRight)
+    blockQuoteTheme.setBlockQuoteMargin({top: this.blockQuoteMarginTop, right: this.blockQuoteMarginRight, bottom: this.blockQuoteMarginBottom, left: this.blockQuoteMarginLeft})
+    blockQuoteTheme.setBlockQuotePadding({top: this.blockQuotePaddingTop, right: this.blockQuotePaddingRight, bottom: this.blockQuotePaddingBottom, left: this.blockQuotePaddingLeft})
+    blockQuoteTheme.setBlockQuoteRadius({topLeft: this.blockQuoteRadiusTopLeft, topRight: this.blockQuoteRadiusTopRight, bottomLeft: this.blockQuoteRadiusBottomLeft, bottomRight: this.blockQuoteRadiusBottomRight})
     blockQuoteTheme.setBlockQuoteLeftBorderWidth(this.blockQuoteLeftBorderWidth)
     if (this.blockQuoteLeftBorderColor !== undefined) {
       blockQuoteTheme.setBlockQuoteLeftBorderColor(this.blockQuoteLeftBorderColor)
     }
     blockQuoteTheme.setBlockQuoteChildSpacing(this.blockQuoteChildSpacing)
-    theme.setMarkdownThemeBlockQuote(blockQuoteTheme)
+    theme.setBlockQuoteTheme(blockQuoteTheme)
     
     return theme
   }

@@ -119,6 +119,21 @@ public class CJMarkdownPlugin {
      */
     var isEmojiLight: Bool = true
 
+    /**
+     * 是否加载高亮解析插件
+     */
+    var isHighlightPlugin: Bool = false
+
+    /**
+     * 是否加载白名单宽松分隔符插件
+     */
+    var isWhitelistPlugin: Bool = false
+
+    /**
+     * 分隔符过滤模式
+     */
+    var mode: DelimiterFilterMode = DelimiterFilterMode.Selective([])
+
     public init() {}
 
     /**
@@ -312,5 +327,26 @@ public class CJMarkdownPlugin {
     public func setIsEmojiPlugin(isEmojiPlugin: Bool, isEmojiLight: Bool): Unit {
         this.isEmojiPlugin = isEmojiPlugin
         this.isEmojiLight = isEmojiLight
+    }
+
+    /**
+     * 设置是否加载高亮解析插件
+     *
+     * @param isHighlightPlugin
+     */
+    public func setIsHighlightPlugin(isHighlightPlugin: Bool): Unit {
+        this.isHighlightPlugin = isHighlightPlugin
+    }
+
+    /**
+     * 设置是否加载白名单宽松分隔符插件
+     *
+     * @param IsWhitelistPlugin
+     * @param mode
+     * @param whitelist
+     */
+    public func setIsWhitelistPlugin(isWhitelistPlugin: Bool, mode: Int64, whitelist: JSArrayEx<String>): Unit {
+        this.isWhitelistPlugin = isWhitelistPlugin
+        this.mode = DelimiterFilterMode.fromInt64(mode, whitelist.toArray())
     }
 }

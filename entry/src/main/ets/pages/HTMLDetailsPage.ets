@@ -1,9 +1,9 @@
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  HtmlUnderlineTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTextDecorationStyle,
-  MarkdownTheme,
-  MarkdownThemeHtmlUnderline,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -106,7 +106,7 @@ struct HTMLDetailsPage {
   htmlUnderlineTextDecorationColor: number | undefined = undefined
   // HTML下划线文本装饰线样式
   @State
-  htmlUnderlineTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  htmlUnderlineTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -276,20 +276,20 @@ struct HTMLDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - HtmlUnderline
-    let htmlUnderlineTheme = new MarkdownThemeHtmlUnderline()
+    let htmlUnderlineTheme = new HtmlUnderlineTheme()
     if (this.htmlUnderlineTextFontColor !== undefined) {
       htmlUnderlineTheme.setHtmlUnderlineTextFontColor(this.htmlUnderlineTextFontColor)
     }
@@ -315,7 +315,7 @@ struct HTMLDetailsPage {
       htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(this.htmlUnderlineTextDecorationColor)
     }
     htmlUnderlineTheme.setHtmlUnderlineTextDecorationStyle(this.htmlUnderlineTextDecorationStyle)
-    theme.setMarkdownThemeHtmlUnderline(htmlUnderlineTheme)
+    theme.setHtmlUnderlineTheme(htmlUnderlineTheme)
     
     return theme
   }

@@ -11,5 +11,6 @@ export enum TypeEnum {
   IS_FONT_STYLE, // 字体样式类型
   IS_FONT_WEIGHT, // 字体粗细类型
   IS_IMAGE_FIT, // 图片缩放类型
-  IS_BAR_STATE // 滚动条状态类型
+  IS_BAR_STATE, // 滚动条状态类型
+  IS_LINE_CAP_STYLE // 分割线端点样式
 }

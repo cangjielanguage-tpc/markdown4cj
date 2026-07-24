@@ -1,4 +1,3 @@
-import { MarkdownTextDecorationStyle } from "@cangjie-tpc/markdown_hybrid"
 import { BaseMDData } from "./BaseMDData"
 
 export class StrikethroughData extends BaseMDData {
@@ -10,7 +9,7 @@ export class StrikethroughData extends BaseMDData {
   _strikethroughTextLineHeight: number | undefined = undefined // 删除线文本行高
   _strikethroughTextLetterSpacing: number | undefined = undefined // 删除线文本字符间距
   _strikethroughTextDecorationColor: number | undefined = undefined // 删除线文本装饰线颜色
-  _strikethroughTextDecorationStyle: MarkdownTextDecorationStyle | undefined = undefined // 删除线文本装饰线样式
+  _strikethroughTextDecorationStyle: TextDecorationStyle | undefined = undefined // 删除线文本装饰线样式
 
   public set strikethroughTextFontColor(value: number | undefined) {
     this._strikethroughTextFontColor = value
@@ -44,7 +43,7 @@ export class StrikethroughData extends BaseMDData {
     this._strikethroughTextDecorationColor = value
   }
 
-  public set strikethroughTextDecorationStyle(value: MarkdownTextDecorationStyle | undefined) {
+  public set strikethroughTextDecorationStyle(value: TextDecorationStyle | undefined) {
     this._strikethroughTextDecorationStyle = value
   }
 
