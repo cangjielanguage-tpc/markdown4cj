@@ -218,8 +218,9 @@ func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWi
     let fontWeight: FontWeight = pt.paragraphTextFontWeight
     let text: String = collectInlineText(p, theme.globalTheme.isLineBreak)
     let contentHeight: Float64 = estimateTextContentHeight(text, fontSize, lineHeight, componentWidth, letterSpacing, fontWeight)
-    return pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
+    let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
         pt.paragraphPaddingBottom + pt.paragraphMarginBottom
+    return result
 }
 
 /**
@@ -460,36 +461,70 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
  */
 func estimateTableNodeHeight(tb: TableBlock, theme: MarkdownTheme): Float64 {
     let tt: TableTheme = theme.tableTheme
-    var headerRowCount: Int64 = 0
-    var bodyRowCount: Int64 = 0
+    let cellPaddingTop: Float64 = tt.tableCellPaddingTop
+    let cellPaddingBottom: Float64 = tt.tableCellPaddingBottom
+    let cellPaddingLeft: Float64 = tt.tableCellPaddingLeft
+    let cellPaddingRight: Float64 = tt.tableCellPaddingRight
+    let borderWidth: Float64 = tt.tableBorderWidth
+    let cellContentWidth: Float64 = if (tt.tableMaxCellWidth > cellPaddingLeft + cellPaddingRight) {
+        tt.tableMaxCellWidth - cellPaddingLeft - cellPaddingRight
+    } else {
+        1.0
+    }
+    let isLineBreak: Bool = theme.globalTheme.isLineBreak
+    let titleHeight: Float64 = if (tt.tableHeadIsShow) {
+        cellPaddingTop + tt.tableTitleTextLineHeight + cellPaddingBottom + borderWidth
+    } else {
+        0.0
+    }
+    var totalRows: Int64 = 0
+    var contentHeight: Float64 = 0.0
     for (child in tb.iterateChildren()) {
         match (child) {
             case _: TableHead =>
                 for (row in child.iterateChildren()) {
                     if (row is TableRow) {
-                        headerRowCount++
+                        totalRows++
+                        contentHeight += estimateTableRowContentHeight(row, tt, true, cellContentWidth, cellPaddingTop, cellPaddingBottom, isLineBreak)
                     }
                 }
             case _: TableBody =>
                 for (row in child.iterateChildren()) {
                     if (row is TableRow) {
-                        bodyRowCount++
+                        totalRows++
+                        contentHeight += estimateTableRowContentHeight(row, tt, false, cellContentWidth, cellPaddingTop, cellPaddingBottom, isLineBreak)
                     }
                 }
             case _ => ()
         }
     }
-    if (headerRowCount == 0 && bodyRowCount == 0) {
-        headerRowCount = 1
+    if (totalRows == 0) {
+        totalRows = 1
+        contentHeight = tt.tableTitleTextLineHeight + cellPaddingTop + cellPaddingBottom
     }
-    let cellPaddingTop: Float64 = tt.tableCellPaddingTop
-    let cellPaddingBottom: Float64 = tt.tableCellPaddingBottom
-    let borderWidth: Float64 = tt.tableBorderWidth
-    let headerRowHeight: Float64 = cellPaddingTop + tt.tableTitleTextLineHeight + cellPaddingBottom + borderWidth
-    let bodyRowHeight: Float64 = cellPaddingTop + tt.tableContentTextLineHeight + cellPaddingBottom + borderWidth
-    let contentHeight: Float64 = Float64(headerRowCount) * headerRowHeight + Float64(bodyRowCount) * bodyRowHeight
-    return tt.tableMarginTop + tt.tablePaddingTop + contentHeight +
+    let rowBorders: Float64 = if (totalRows > 1) { Float64(totalRows - 1) * borderWidth } else { 0.0 }
+    let outerBorderHeight: Float64 = borderWidth * 2.0
+    return tt.tableMarginTop + tt.tablePaddingTop + titleHeight + contentHeight + rowBorders + outerBorderHeight +
         tt.tablePaddingBottom + tt.tableMarginBottom
+}
+
+func estimateTableRowContentHeight(row: CommonmarkNode, tt: TableTheme, isHeader: Bool, cellContentWidth: Float64, cellPaddingTop: Float64, cellPaddingBottom: Float64, isLineBreak: Bool): Float64 {
+    let fontSize: Float64 = if (isHeader) { tt.tableTitleTextFontSize } else { tt.tableContentTextFontSize }
+    let lineHeight: Float64 = if (isHeader) { tt.tableTitleTextLineHeight } else { tt.tableContentTextLineHeight }
+    let fontWeight: FontWeight = if (isHeader) { tt.tableTitleTextFontWeight } else { tt.tableContentTextFontWeight }
+    let letterSpacing: Float64 = if (isHeader) { tt.tableTitleTextLetterSpacing } else { tt.tableContentTextLetterSpacing }
+    var maxLines: Float64 = 1.0
+    for (cell in row.iterateChildren()) {
+        if (cell is TableCell) {
+            let text: String = collectInlineText(cell, isLineBreak)
+            let textHeight: Float64 = estimateTextContentHeight(text, fontSize, lineHeight, cellContentWidth, letterSpacing, fontWeight)
+            let lines: Float64 = textHeight / lineHeight
+            if (lines > maxLines) {
+                maxLines = lines
+            }
+        }
+    }
+    return maxLines * lineHeight + cellPaddingTop + cellPaddingBottom
 }
 
 /**
