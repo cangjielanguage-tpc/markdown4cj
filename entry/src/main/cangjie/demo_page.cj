@@ -51,13 +51,10 @@ class Demo_page {
         .usePlugin(NodeIdPlugin.create())
         .build()
     @State
-    var estimatedHeight: Float64 = 0.0
-    @State
     var estimatedHeightByNode: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
         markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
-        estimatedHeight = preMarkwonHeight(mdStr, markdownConfiguration, markdownPlugin)
         estimatedHeightByNode = preMarkwonHeightByNode(mdStr, markdownConfiguration, markdownPlugin)
     }
     var mdStr: String = """
@@ -114,7 +111,7 @@ Heading level 2
     public func build() {
         Scroll() {
             Column {
-                Text("preMarkwonHeight 估算: " + estimatedHeight.toString() + " vp | preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
+                Text("preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
                     .fontSize(12.0)
                     .fontColor(0xFF666666)
                     .margin(top: 3.0, left: 5.0)

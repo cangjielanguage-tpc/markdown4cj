@@ -161,8 +161,6 @@ class VideoPage {
         .usePlugin(NodeIdPlugin.create())
         .build()
     @State
-    var estimatedHeight: Float64 = 0.0
-    @State
     var estimatedHeightByNode: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
@@ -197,7 +195,6 @@ class VideoPage {
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
-            estimatedHeight = preMarkwonHeight(fullContent, markdownConfiguration, markdownPlugin)
             estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin)
         } else {
             let number = textNumber
@@ -686,7 +683,7 @@ class VideoPage {
                             .fontColor(0xFF333333)
                             .margin(top: 10.0, left: 5.0)
                         Column {
-                            Text("preMarkwonHeight 估算: " + estimatedHeight.toString() + " vp | preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
+                            Text("preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
                                 .fontSize(12.0)
                                 .fontColor(0xFF666666)
                                 .margin(top: 3.0, left: 5.0)

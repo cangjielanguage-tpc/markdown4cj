@@ -9,8 +9,7 @@ import std.math.floor
  * 直接调用调用方传入的 Markdown 解析器将文本解析为节点树，然后遍历节点树，
  * 根据每个节点的类型和主题样式中的 margin/padding/lineHeight 计算高度。
  *
- * 与 ArkTS preMarkwonHeight/preMarkwonHeightByNode 的区别：
- * - 不再使用正则解析，而是直接使用 commonmark4cj 解析出的节点树
+ * - 直接使用 commonmark4cj 解析出的节点树（不走正则）
  * - setext 标题、ATX 标题都由解析器统一识别为 Heading 节点
  * - markdownPlugin 由调用方传入，确保与渲染时使用的插件链一致
  * - 所有块类型均计算 margin + padding + borderWidth + 内容高度
@@ -26,7 +25,7 @@ import std.math.floor
  * @param componentWidth 控件宽度（vp），默认360，用于估算文本行数
  * @return 估算高度（vp）
  */
-public func preMarkwonHeight(content: String, config: MarkdownConfiguration, markdownPlugin: Markdown, componentWidth!: Float64 = 360.0): Float64 {
+public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguration, markdownPlugin: Markdown, componentWidth!: Float64 = 360.0): Float64 {
     let theme: MarkdownTheme = config.markdownTheme
     let global: GlobalTheme = theme.globalTheme
     let blockSpacing: Float64 = Float64(global.markdownBlockSpacing)
@@ -45,22 +44,6 @@ public func preMarkwonHeight(content: String, config: MarkdownConfiguration, mar
     totalHeight += global.blockMarginTop
     totalHeight += global.blockMarginBottom
     return totalHeight
-}
-
-/**
- * 预计算 Markdown 渲染高度（与 preMarkwonHeight 相同实现）
- *
- * 解析器已将 setext/ATX 标题统一识别为 Heading 节点，
- * 故此函数与 preMarkwonHeight 行为一致。
- *
- * @param content Markdown文本内容
- * @param config Markdown配置（含主题样式）
- * @param markdownPlugin Markdown解析器实例（需与渲染组件使用的插件链一致）
- * @param componentWidth 控件宽度（vp），默认360
- * @return 预计算高度（vp）
- */
-public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguration, markdownPlugin: Markdown, componentWidth!: Float64 = 360.0): Float64 {
-    return preMarkwonHeight(content, config, markdownPlugin, componentWidth: componentWidth)
 }
 
 /**
