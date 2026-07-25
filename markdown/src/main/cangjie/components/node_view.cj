@@ -155,7 +155,8 @@ public func nodeToNodeView(
                         let link = (commonmarkChildrenNode as CommonmarkLink)()
                         childrenNodeView.linkUrl = link.getDestination()
                         childrenNodeView.linkTitle = link.getTitle()
-                        if (true) {
+                        let nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
+                        if (isLinkStyle || nodeText.size == 0) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
                         } else {
@@ -168,7 +169,8 @@ public func nodeToNodeView(
                         childrenNodeView.linkUrl = link.getDestination()
                         childrenNodeView.linkTitle = link.getTitle()
                         childrenNodeView.headLinkIndex = link.headIndex
-                        if (isLinkStyle) {
+                        let nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
+                        if (isLinkStyle || nodeText.size == 0) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
                         } else {
@@ -451,6 +453,17 @@ public func nodeToNodeView(
                         let imageStyle = (commonmarkChildrenNode as StyleImage)()
                         childrenNodeView.imageUrl = imageStyle.getDestination()
                         childrenNodeView.imageTitle = imageStyle.getTitle()
+                        let altTextBuilder = StringClass()
+                        commonmarkChildrenNode.iterateChildren().forEach({
+                            child: CommonmarkNode =>
+                                if (child is CommonmarkText) {
+                                    altTextBuilder.addString((child as CommonmarkText)().getLiteral())
+                                }
+                        })
+                        let altText = altTextBuilder.str.trimAscii()
+                        if (!altText.isEmpty()) {
+                            childrenNodeView.imageAltText = Option<String>.Some(altText)
+                        }
                         let picStyle = parsePicStyle(imageStyle.styles)
                         childrenNodeView.imageWidth = picStyle.width
                         childrenNodeView.imageHeight = picStyle.height

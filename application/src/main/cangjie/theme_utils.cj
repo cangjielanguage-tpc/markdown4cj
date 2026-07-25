@@ -75,6 +75,8 @@ func parseInt64(s: String): Int64 {
         case "100" => 100
         case "200" => 200
         case "500" => 500
+        case "1000" => 1000
+        case "2000" => 2000
         case _ => 0
     }
 }

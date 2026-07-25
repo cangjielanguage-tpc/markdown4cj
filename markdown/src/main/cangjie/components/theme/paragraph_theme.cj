@@ -40,10 +40,6 @@ public class ParagraphTheme {
     @Publish
     public var paragraphTextLetterSpacing: Float64 = 0.0 // 段落文本字符间距
     @Publish
-    public var paragraphAnimationEnabled: Bool = false // 段落加载动画是否启用
-    @Publish
-    public var paragraphAnimationDuration: Int32 = 0 // 段落加载动画时长（毫秒）
-    @Publish
     public var paragraphBeforeSelectedBackgroundColor: ?Color = Option<Color>.None // 长按前段落默认背景色（用于长按后恢复）
     @Publish
     public var paragraphSelectedBackgroundColor: ?Color = Option<Color>.None // 长按选中段落的背景色
@@ -198,27 +194,6 @@ public class ParagraphTheme {
         return this
     }
 
-    /**
-     * 设置段落加载动画是否启用
-     *
-     * @param enabled 是否启用
-     * @return 当前ParagraphTheme对象
-     */
-    public func setParagraphAnimationEnabled(enabled: Bool): ParagraphTheme {
-        this.paragraphAnimationEnabled = enabled
-        return this
-    }
-
-    /**
-     * 设置段落加载动画时长
-     *
-     * @param duration 动画时长（毫秒）
-     * @return 当前ParagraphTheme对象
-     */
-    public func setParagraphAnimationDuration(duration: Int32): ParagraphTheme {
-        this.paragraphAnimationDuration = duration
-        return this
-    }
 
     /**
      * 设置长按前段落默认背景色

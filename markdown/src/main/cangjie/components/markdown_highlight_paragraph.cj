@@ -21,6 +21,8 @@ public class MarkdownHighlightParagraph {
     var selectedParagraphItemColor: ?Color = Option<Color>.None // 当前高亮显示的段落的背景色
 
     @Publish
+    var beforeSelectedParagraphBackgroundColor: ?Color = Option<Color>.None // 长按前段落默认背景色（用于长按后恢复）
+    @Publish
     var selectedParagraphBackgroundColor: ?Color = Option<Color>.None // 长按选中段落的背景色
 
     public static func create(): MarkdownHighlightParagraph {
@@ -28,11 +30,29 @@ public class MarkdownHighlightParagraph {
     }
 
     /**
+      * 设置长按前段落默认背景色
+      *
+      * @param color 长按前段落默认背景色
+      */
+     public func setBeforeSelectedParagraphBackgroundColor(color: ?Color): Unit {
+         this.beforeSelectedParagraphBackgroundColor = color
+     }
+
+     /**
+      * 获取长按前段落默认背景色
+      *
+      * @return 长按前段落默认背景色
+      */
+     public func getBeforeSelectedParagraphBackgroundColor(): ?Color {
+         return this.beforeSelectedParagraphBackgroundColor
+     }
+
+    /**
      * 设置长按选中段落的背景色
      *
      * @param color 长按选中段落的背景色
      */
-    public func setSelectedParagraphBackgroundColor(color: Color): Unit {
+    public func setSelectedParagraphBackgroundColor(color: ?Color): Unit {
         this.selectedParagraphBackgroundColor = color
     }
 

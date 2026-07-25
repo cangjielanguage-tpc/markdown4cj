@@ -45,6 +45,8 @@ class MarkdownParagraphComponent {
     @State
     var paragraphLongPressBackgroundColor: Color = COLOR_TRANSPARENT // 当前长按背景色
     @State
+    var paragraphSelectedBackgroundColor: Color = COLOR_FF4A90E2 // 当前选中文本背景色
+    @State
     var paragraphIsLongPressed: Bool = false // 当前是否处于长按状态
     // 链接曝光：URL列表缓存 + 当前可见状态
     // 对齐 ArkUI MarkdownParagraph.ets：用 onVisibleAreaChange(触发scheduleExposure) + onAreaChange(标记ready) +
@@ -170,18 +172,6 @@ class MarkdownParagraphComponent {
         return paragraphBackgroundColor(paragraphMarkdownConfiguration.markdownTheme, paragraphNodeView)
     }
 
-    /**
-     * 获取段落加载动画转场效果
-     * 启用时进入渐显（OPACITY），退出无效果，保证流式输出历史UI稳定
-     */
-    func getTransitionEffect(): TransitionEffect {
-        if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
-            let duration = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
-            let appearEffect = TransitionEffect.opacity(0.0).animation(AnimateParam(duration: duration))
-            return TransitionEffect.asymmetric(appearEffect, TransitionEffect.IDENTITY)
-        }
-        return TransitionEffect.IDENTITY
-    }
 
     /**
      * 获取段落纯文本内容
@@ -308,16 +298,21 @@ class MarkdownParagraphComponent {
     }
 
     /**
-     * 获取长按选中段落的背景色
+     * 获取长按但未触发选中弹窗时的段落的背景色
      * 优先使用 MarkdownHighlightParagraph 中的配置，其次使用 ParagraphTheme 配置，最后使用默认浅灰色
      *
-     * @return 长按选中段落的背景色
+     * @return 段落的背景色
      */
-    func getLongPressSelectedBackgroundColor(): Color {
+    func getLongPressBeforeSelectedBackgroundColor(): Color {
         let theme = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme
         let highlightParagraph = paragraphMarkdownConfiguration.markdownHighlightParagraph
-        if (highlightParagraph.selectedParagraphBackgroundColor.isSome()) {
-            return highlightParagraph.selectedParagraphBackgroundColor.getOrThrow()
+        if (highlightParagraph.selectedParagraphBackgroundColor.isSome()) { // 设置选中的背景色
+            paragraphSelectedBackgroundColor = highlightParagraph.selectedParagraphBackgroundColor.getOrThrow()
+        } else {
+            paragraphSelectedBackgroundColor = COLOR_FF4A90E2 // 默认选中背景色
+        }
+        if (highlightParagraph.beforeSelectedParagraphBackgroundColor.isSome()) {
+            return highlightParagraph.beforeSelectedParagraphBackgroundColor.getOrThrow()
         }
         if (theme.paragraphSelectedBackgroundColor.isSome()) {
             return theme.paragraphSelectedBackgroundColor.getOrThrow()
@@ -345,7 +340,7 @@ class MarkdownParagraphComponent {
      * 按下时设置为长按背景色
      */
     func handleParagraphLongPressStart(): Unit {
-        paragraphLongPressBackgroundColor = getLongPressSelectedBackgroundColor()
+        paragraphLongPressBackgroundColor = getLongPressBeforeSelectedBackgroundColor()
         paragraphIsLongPressed = true
     }
 
@@ -380,7 +375,7 @@ class MarkdownParagraphComponent {
     func build() {
         Row() {
             Column() {
-                if (paragraphNodeViewList.size == 1 && paragraphNodeViewList[0].nodeType == "Image"
+                if (paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage")
                   && paragraphMarkdownConfiguration.isBlockImageCustom.isSome() && paragraphNodeViewList[0].imageAltText.isSome()
                   && paragraphMarkdownConfiguration.isBlockImageCustom.getOrThrow()(paragraphNodeViewList[0].imageAltText.getOrThrow())){
                     // card图片组件
@@ -473,15 +468,22 @@ class MarkdownParagraphComponent {
             right: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginRight,
             bottom: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginBottom,
             left: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginLeft
-        )
-        .transition(getTransitionEffect())
+        ).transition(
+ 	       TransitionEffect.asymmetric(
+ 	         if(paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled){
+                TransitionEffect.opacity(0.0).animation(AnimateParam(duration:paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration))
+ 	         }else{ TransitionEffect.IDENTITY}
+ 	         ,
+ 	         TransitionEffect.IDENTITY
+ 	       )
+ 	     )
         .onAppear({ =>
             // 段落加载动画开始回调在组件显示时触发
-            if (paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationEnabled) {
+            if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
                 if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphAnimationStart) {
                     cb()
                 }
-                let duration = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphAnimationDuration
+                let duration = paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
                 let endCb = paragraphMarkdownConfiguration.paragraphAnimationEnd
                 Timer.once(Int64(duration) * Duration.millisecond, { =>
                     if (let Some(cb) <- endCb) {
@@ -522,7 +524,14 @@ class MarkdownParagraphComponent {
         } else {
             CopyOptions.None
         })
+        .focusable(paragraphMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy)
+        .focusOnTouch(true)
+        .onBlur({ =>
+            paragraphSelectionStart = -1
+            paragraphSelectionEnd = -1
+        })
         .selection(paragraphSelectionStart, paragraphSelectionEnd)
+        .interopSelectedBackgroundColor(paragraphSelectedBackgroundColor)
         .onTextSelectionChange({ start: Int32, end: Int32 =>
             paragraphSelectionStart = start
             paragraphSelectionEnd = end
@@ -687,7 +696,7 @@ class MarkdownParagraphComponent {
                     }
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
-                    if(spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
+                    if((spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage") && spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
                         && spanListMarkdownConfiguration.isInLineImageCustom.getOrThrow()(spanListNodeView.imageAltText.getOrThrow())){
                         inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl(), spanListNodeView.imageTitle())
                     }else{

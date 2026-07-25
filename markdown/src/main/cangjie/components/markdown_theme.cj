@@ -928,29 +928,27 @@ public class MarkdownTheme {
         return this
     }
 
-    /**
-     * 设置是否启用段落加载动画
+      /**
+     * 设置是否启用标题段落加载动画
      *
      * @param enable 是否启用 - 默认false
      * @return MarkdownTheme MarkdownTheme对象
      */
-    @Deprecated["用GlobalTheme.setParagraphAnimationEnabled方法代替", since: "1.4.0"]
-    public func setParagraphAnimationEnabled(enable: Bool): MarkdownTheme {
-        this.globalTheme.paragraphAnimationEnabled = enable
-        this.paragraphTheme.paragraphAnimationEnabled = enable
+    @Deprecated["用GlobalTheme.setParagraphHeadingAnimationEnabled方法代替", since: "1.4.0"]
+    public func setParagraphHeadingAnimationEnabled(enable: Bool): MarkdownTheme {
+        this.globalTheme.paragraphHeadingAnimationEnabled = enable
         return this
     }
 
     /**
-     * 设置段落加载动画时长
+     * 设置标题段落加载动画时长
      *
      * @param duration 动画时长（毫秒） - 默认300
      * @return MarkdownTheme MarkdownTheme对象
      */
-    @Deprecated["用GlobalTheme.setParagraphAnimationDuration方法代替", since: "1.4.0"]
-    public func setParagraphAnimationDuration(duration: Int32): MarkdownTheme {
-        this.globalTheme.paragraphAnimationDuration = duration
-        this.paragraphTheme.paragraphAnimationDuration = duration
+    @Deprecated["用GlobalTheme.setParagraphHeadingAnimationDuration方法代替", since: "1.4.0"]
+    public func setParagraphHeadingAnimationDuration(duration: Int32): MarkdownTheme {
+        this.globalTheme.paragraphHeadingAnimationDuration = duration
         return this
     }
 

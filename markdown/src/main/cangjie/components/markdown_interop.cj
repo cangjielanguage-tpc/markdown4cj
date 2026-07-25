@@ -191,6 +191,22 @@ extend List {
     }
 }
 
+extend Text {
+    func interopSelectedBackgroundColor(color: Color): Text {
+        try {
+            let dColor: UInt32 = color.toUInt32()
+            let colorString: String = dColor.format("08X")
+
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let text = global["Text"].asObject(ctx)
+            text.callMethod("selectedBackgroundColor", [ctx.string("#${colorString}").toJSValue()])
+        } catch (e: Exception) {
+        }
+        return this
+    }
+}
+
 public func getGlobalString(key: String): String {
     try {
         let ctx = getCtx()

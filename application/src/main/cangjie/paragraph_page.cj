@@ -76,9 +76,10 @@ class ParagraphPage {
     @State @Watch[onConfigChanged] var cfg_paragraphPaddingBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_paragraphPaddingLeft: String = "0"
     @State var cfg_showHighlight: String = "true"
-    @State @Watch[onConfigChanged] var cfg_selectedParagraphBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_paragraphAnimationEnabled: String = "false"
-    @State @Watch[onConfigChanged] var cfg_paragraphAnimationDuration: String = "0"
+    @State var cfg_beforeSelectedParagraphBackgroundColor: String = "undefined"
+    @State var cfg_selectedParagraphBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphHeadingAnimationEnabled: String = "false"
+    @State @Watch[onConfigChanged] var cfg_paragraphHeadingAnimationDuration: String = "0"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -205,12 +206,19 @@ class ParagraphPage {
         }
         paragraphTheme.setParagraphMargin(top: parseFloat64(cfg_paragraphMarginTop), right: parseFloat64(cfg_paragraphMarginRight), bottom: parseFloat64(cfg_paragraphMarginBottom), left: parseFloat64(cfg_paragraphMarginLeft))
         paragraphTheme.setParagraphPadding(top: parseFloat64(cfg_paragraphPaddingTop), right: parseFloat64(cfg_paragraphPaddingRight), bottom: parseFloat64(cfg_paragraphPaddingBottom), left: parseFloat64(cfg_paragraphPaddingLeft))
-        paragraphTheme.setParagraphAnimationEnabled(parseBool(cfg_paragraphAnimationEnabled))
-        paragraphTheme.setParagraphAnimationDuration(Int32(parseInt64(cfg_paragraphAnimationDuration)))
+        globalTheme.setParagraphHeadingAnimationEnabled(parseBool(cfg_paragraphHeadingAnimationEnabled))
+        globalTheme.setParagraphHeadingAnimationDuration(Int32(parseInt64(cfg_paragraphHeadingAnimationDuration)))
 
         let highlightParagraph = markdownConfiguration.getMarkdownHighlightParagraph()
+        if (cfg_beforeSelectedParagraphBackgroundColor != "undefined") {
+            highlightParagraph.setBeforeSelectedParagraphBackgroundColor(parseColor(cfg_beforeSelectedParagraphBackgroundColor))
+        } else {
+            highlightParagraph.setBeforeSelectedParagraphBackgroundColor(Option<Color>.None)
+        }
         if (cfg_selectedParagraphBackgroundColor != "undefined") {
             highlightParagraph.setSelectedParagraphBackgroundColor(parseColor(cfg_selectedParagraphBackgroundColor))
+        } else {
+            highlightParagraph.setSelectedParagraphBackgroundColor(Option<Color>.None)
         }
     }
 
@@ -344,10 +352,10 @@ class ParagraphPage {
                                 ConfigTabSelector(title: "段落右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphPaddingRight, onSelect: { v => cfg_paragraphPaddingRight = v })
                                 ConfigTabSelector(title: "段落下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphPaddingBottom, onSelect: { v => cfg_paragraphPaddingBottom = v })
                                 ConfigTabSelector(title: "段落左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphPaddingLeft, onSelect: { v => cfg_paragraphPaddingLeft = v })
-                                ConfigTabSelector(title: "是否开启标题段落高亮显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_showHighlight, onSelect: { v => cfg_showHighlight = v })
-                                ConfigTabSelector(title: "长按未触发弹窗时段落的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_selectedParagraphBackgroundColor, onSelect: { v => cfg_selectedParagraphBackgroundColor = v })
-                                ConfigTabSelector(title: "段落加载动画启用 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_paragraphAnimationEnabled, onSelect: { v => cfg_paragraphAnimationEnabled = v })
-                                ConfigTabSelector(title: "段落加载动画时长(ms) - ", options: timeList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphAnimationDuration, onSelect: { v => cfg_paragraphAnimationDuration = v })
+                                ConfigTabSelector(title: "长按未触发弹窗时段落的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_beforeSelectedParagraphBackgroundColor, onSelect: { v => cfg_beforeSelectedParagraphBackgroundColor = v })
+                                ConfigTabSelector(title: "长按放手后选中文字的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_selectedParagraphBackgroundColor, onSelect: { v => cfg_selectedParagraphBackgroundColor = v })
+                                ConfigTabSelector(title: "标题段落加载动画启用 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_paragraphHeadingAnimationEnabled, onSelect: { v => cfg_paragraphHeadingAnimationEnabled = v })
+                                ConfigTabSelector(title: "标题段落加载动画时长(ms) - ", options: timeList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphHeadingAnimationDuration, onSelect: { v => cfg_paragraphHeadingAnimationDuration = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

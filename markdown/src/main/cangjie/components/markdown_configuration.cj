@@ -303,7 +303,7 @@ public class MarkdownConfiguration {
      * 设置满足自定义块级图片的条件
      *
      * @param isBlockImageCustom 满足自定义块级图片的条件
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownConfiguration MarkdownConfiguration对象
      */
     public func setIsBlockImageCustom(isBlockImageCustom: (String) -> Bool): MarkdownConfiguration {
         this.isBlockImageCustom = isBlockImageCustom
@@ -316,7 +316,7 @@ public class MarkdownConfiguration {
      * 设置满足自定义行内图片的条件
      *
      * @param isInLineImageCustom 满足自定义行内图片的条件
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownConfiguration MarkdownConfiguration对象
      */
     public func setIsInLineImageCustom(isInLineImageCustom: (String) -> Bool): MarkdownConfiguration {
         this.isInLineImageCustom = isInLineImageCustom
@@ -329,7 +329,7 @@ public class MarkdownConfiguration {
      * 设置满足自定义行内链接的条件
      *
      * @param setIsInLineLinkCustom 满足自定义行内链接的条件
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownConfiguration MarkdownConfiguration对象
      */
     public func setIsInLineLinkCustom(isInLineLinkCustom: (String) -> Bool): MarkdownConfiguration {
         this.isInLineLinkCustom = isInLineLinkCustom
