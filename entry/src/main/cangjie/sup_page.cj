@@ -1,4 +1,4 @@
-package ohos_app_cangjie_entry
+﻿package ohos_app_cangjie_entry
 
 import ohos.base.*
 import ohos.component.*
@@ -123,7 +123,7 @@ class SupPage {
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
-            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin)
+            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
         } else {
             let number = textNumber
             let time = timeMs
