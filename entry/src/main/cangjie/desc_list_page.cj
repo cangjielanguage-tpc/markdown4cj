@@ -21,6 +21,7 @@ import markdown.plugin.ImageSlidePlugin
 import markdown.plugin.ImageStylePlugin
 import markdown.plugin.CodeListPlugin
 import markdown.plugin.FootnotePlugin
+import markdown.plugin.DescListPlugin
 import markdown.plugin.TocPlugin
 import markdown.plugin.ImageCollectPlugin
 import markdown.plugin.NodeIdPlugin
@@ -91,6 +92,7 @@ class DescListPage {
         .usePlugin(ImageStylePlugin.create())
         .usePlugin(CodeListPlugin.create())
         .usePlugin(FootnotePlugin.create())
+        .usePlugin(DescListPlugin.create())
         .usePlugin(TocPlugin.create())
         .usePlugin(ImageCollectPlugin.create())
         .usePlugin(NodeIdPlugin.create())
@@ -337,7 +339,8 @@ class DescListPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: markdownConfiguration
+                                markdownConfiguration: markdownConfiguration,
+                                markdownPlugin: markdownPlugin
                             )
                         }
                         .width(100.percent)

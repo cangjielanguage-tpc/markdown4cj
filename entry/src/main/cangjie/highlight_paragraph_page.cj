@@ -13,6 +13,22 @@ import markdown.components.theme.*
 import ohos.concurrency.launch
 import std.collection.ArrayList
 import ohos.hilog.*
+import markdown.core.Markdown
+import markdown.plugin.HtmlPlugin
+import markdown.plugin.TaskListPlugin
+import markdown.plugin.StrikethroughPlugin
+import markdown.plugin.TablePlugin
+import markdown.plugin.LatexMathPluginV2
+import markdown.plugin.BlockAudioPlugin
+import markdown.plugin.BlockVideoPlugin
+import markdown.plugin.LinkifyPlugin
+import markdown.plugin.ImageSlidePlugin
+import markdown.plugin.ImageStylePlugin
+import markdown.plugin.CodeListPlugin
+import markdown.plugin.FootnotePlugin
+import markdown.plugin.TocPlugin
+import markdown.plugin.ImageCollectPlugin
+import markdown.plugin.NodeIdPlugin
 
 @HybridComponentEntry
 @Component
@@ -53,6 +69,24 @@ class HighlightParagraphPage {
     var scroller: Scroller = Scroller()
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+    var markdownPlugin: Markdown = Markdown
+        .builder()
+        .usePlugin(HtmlPlugin.create())
+        .usePlugin(TaskListPlugin.create())
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(TablePlugin.create())
+        .usePlugin(LatexMathPluginV2.create())
+        .usePlugin(BlockAudioPlugin.create())
+        .usePlugin(BlockVideoPlugin.create())
+        .usePlugin(LinkifyPlugin.create([]))
+        .usePlugin(ImageSlidePlugin.create())
+        .usePlugin(ImageStylePlugin.create())
+        .usePlugin(CodeListPlugin.create())
+        .usePlugin(FootnotePlugin.create())
+        .usePlugin(TocPlugin.create())
+        .usePlugin(ImageCollectPlugin.create())
+        .usePlugin(NodeIdPlugin.create())
+        .build()
     var markdownHighlightParagraph: MarkdownHighlightParagraph = MarkdownHighlightParagraph.create()
     var allParagraphNodeHashList: ArrayList<String> = ArrayList<String>() // 存放所有段落的nodehash
     var nodeHashIndex: Int64 = -1
@@ -294,7 +328,8 @@ class HighlightParagraphPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: markdownConfiguration
+                                markdownConfiguration: markdownConfiguration,
+                                markdownPlugin: markdownPlugin
                             )
                         }
                         .width(100.percent)

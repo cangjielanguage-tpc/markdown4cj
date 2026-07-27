@@ -21,13 +21,14 @@ import markdown.plugin.ImageSlidePlugin
 import markdown.plugin.ImageStylePlugin
 import markdown.plugin.CodeListPlugin
 import markdown.plugin.FootnotePlugin
+import markdown.plugin.IdHeadingPlugin
 import markdown.plugin.TocPlugin
 import markdown.plugin.ImageCollectPlugin
 import markdown.plugin.NodeIdPlugin
 
 @HybridComponentEntry
 @Component
-class ABCustomPage {
+class HeadIDPage {
     @State
     var fileListStr: String = getGlobalString("fileList")
     @State
@@ -59,6 +60,7 @@ class ABCustomPage {
     @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
+    @State var cfg_showHighlight: String = "true"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -77,6 +79,7 @@ class ABCustomPage {
         .usePlugin(ImageStylePlugin.create())
         .usePlugin(CodeListPlugin.create())
         .usePlugin(FootnotePlugin.create())
+        .usePlugin(IdHeadingPlugin.create())
         .usePlugin(TocPlugin.create())
         .usePlugin(ImageCollectPlugin.create())
         .usePlugin(NodeIdPlugin.create())
@@ -250,6 +253,40 @@ class ABCustomPage {
                     .borderRadius(5.0)
                     .backgroundColor(0xFF317AFF)
 
+//                    Column {
+//                        Row {
+//                            Text("专有样式配置")
+//                                .fontSize(16.0)
+//                                .fontColor(0xFFF5F5F5)
+//                                .fontWeight(FontWeight.Bold)
+//                                .layoutWeight(1)
+//                            Text(if (isExpanded2) { "▲" } else { "▼" })
+//                                .fontSize(16.0)
+//                                .fontColor(0xFFF5F5F5)
+//                                .padding(right: 20.0)
+//                                .onClick {
+//                                    evt => isExpanded2 = !isExpanded2
+//                                }
+//                        }
+//                        .width(100.percent)
+//                        .padding(5.0)
+//                        .margin(5.0)
+//                        .onClick {
+//                            evt => isExpanded2 = !isExpanded2
+//                        }
+//
+//                        if (isExpanded2) {
+//                            Column {}
+//                            .width(100.percent)
+//                            .padding(bottom: 5.0, left: 5.0, right: 5.0)
+//                            .margin(bottom: 5.0, left: 5.0, right: 5.0)
+//                        }
+//                    }
+//                    .width(100.percent)
+//                    .margin(5.0)
+//                    .borderRadius(5.0)
+//                    .backgroundColor(0xFF317AFF)
+
 
                     if (mdStr != "") {
                         Text("预览: " + selectedFileName)
@@ -266,7 +303,8 @@ class ABCustomPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: markdownConfiguration
+                                markdownConfiguration: markdownConfiguration,
+                                markdownPlugin: markdownPlugin
                             )
                         }
                         .width(100.percent)

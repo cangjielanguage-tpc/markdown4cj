@@ -120,7 +120,8 @@ Heading level 2
                     isInputEnded: true,
                     incrementalAnalysis: false,
                     scroller: scroller,
-                    markdownConfiguration: markdownConfiguration
+                    markdownConfiguration: markdownConfiguration,
+                    markdownPlugin: markdownPlugin
                 )
             }
         }
