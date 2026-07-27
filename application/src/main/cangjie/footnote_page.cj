@@ -423,7 +423,8 @@ class FootnotePage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: markdownConfiguration
+                                markdownConfiguration: markdownConfiguration,
+                                markdownPlugin: markdownPlugin
                             )
                         }
                         .width(100.percent)

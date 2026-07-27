@@ -8,6 +8,22 @@ import ohos.hybrid_base.*
 import markdown.components.*
 import markdown.components.theme.*
 import ohos.concurrency.launch
+import markdown.core.Markdown
+import markdown.plugin.HtmlPlugin
+import markdown.plugin.TaskListPlugin
+import markdown.plugin.StrikethroughPlugin
+import markdown.plugin.TablePlugin
+import markdown.plugin.LatexMathPluginV2
+import markdown.plugin.BlockAudioPlugin
+import markdown.plugin.BlockVideoPlugin
+import markdown.plugin.LinkifyPlugin
+import markdown.plugin.ImageSlidePlugin
+import markdown.plugin.ImageStylePlugin
+import markdown.plugin.CodeListPlugin
+import markdown.plugin.FootnotePlugin
+import markdown.plugin.TocPlugin
+import markdown.plugin.ImageCollectPlugin
+import markdown.plugin.NodeIdPlugin
 
 @HybridComponentEntry
 @Component
@@ -48,6 +64,24 @@ class CustomCardPage {
     var scroller: Scroller = Scroller()
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+    var markdownPlugin: Markdown = Markdown
+        .builder()
+        .usePlugin(HtmlPlugin.create())
+        .usePlugin(TaskListPlugin.create())
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(TablePlugin.create())
+        .usePlugin(LatexMathPluginV2.create())
+        .usePlugin(BlockAudioPlugin.create())
+        .usePlugin(BlockVideoPlugin.create())
+        .usePlugin(LinkifyPlugin.create([]))
+        .usePlugin(ImageSlidePlugin.create())
+        .usePlugin(ImageStylePlugin.create())
+        .usePlugin(CodeListPlugin.create())
+        .usePlugin(FootnotePlugin.create())
+        .usePlugin(TocPlugin.create())
+        .usePlugin(ImageCollectPlugin.create())
+        .usePlugin(NodeIdPlugin.create())
+        .build()
     @State
     var isCustomCardContent:Bool = false
 
@@ -271,7 +305,8 @@ class CustomCardPage {
                                 markdownConfiguration: markdownConfiguration,
                                 blockImageCardComponent:CustomBlockImageBuilder,
                                 inlineImageCardComponent:CustomInlineImageBuilder,
-                                inlineLinkCardComponent:CustomInlineLinkBuilder
+                                inlineLinkCardComponent:CustomInlineLinkBuilder,
+                                markdownPlugin: markdownPlugin
                                 )
                             }else{
                                 MarkdownComponent(
@@ -279,7 +314,8 @@ class CustomCardPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: markdownConfiguration
+                                markdownConfiguration: markdownConfiguration,
+                                markdownPlugin: markdownPlugin
                                 )
                             }
                         }

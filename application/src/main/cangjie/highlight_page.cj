@@ -21,6 +21,7 @@ import markdown.plugin.ImageSlidePlugin
 import markdown.plugin.ImageStylePlugin
 import markdown.plugin.CodeListPlugin
 import markdown.plugin.FootnotePlugin
+import markdown.plugin.HighlightDelimeterPlugin
 import markdown.plugin.TocPlugin
 import markdown.plugin.ImageCollectPlugin
 import markdown.plugin.NodeIdPlugin
@@ -90,6 +91,7 @@ class HighlightPage {
         .usePlugin(ImageStylePlugin.create())
         .usePlugin(CodeListPlugin.create())
         .usePlugin(FootnotePlugin.create())
+        .usePlugin(HighlightDelimeterPlugin.create())
         .usePlugin(TocPlugin.create())
         .usePlugin(ImageCollectPlugin.create())
         .usePlugin(NodeIdPlugin.create())
@@ -350,7 +352,8 @@ class HighlightPage {
                                 isInputEnded: isInputEnded,
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
-                                markdownConfiguration: markdownConfiguration
+                                markdownConfiguration: markdownConfiguration,
+                                markdownPlugin: markdownPlugin
                             )
                         }
                         .width(100.percent)
