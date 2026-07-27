@@ -9,8 +9,7 @@ import std.math.floor
  * 直接调用调用方传入的 Markdown 解析器将文本解析为节点树，然后遍历节点树，
  * 根据每个节点的类型和主题样式中的 margin/padding/lineHeight 计算高度。
  *
- * 与 ArkTS preMarkwonHeight/preMarkwonHeightByNode 的区别：
- * - 不再使用正则解析，而是直接使用 commonmark4cj 解析出的节点树
+ * - 直接使用 commonmark4cj 解析出的节点树（不走正则）
  * - setext 标题、ATX 标题都由解析器统一识别为 Heading 节点
  * - markdownPlugin 由调用方传入，确保与渲染时使用的插件链一致
  * - 所有块类型均计算 margin + padding + borderWidth + 内容高度
@@ -23,10 +22,17 @@ import std.math.floor
  * @param content Markdown文本
  * @param config Markdown配置（含主题样式）
  * @param markdownPlugin Markdown解析器实例（需与渲染组件使用的插件链一致）
- * @param componentWidth 控件宽度（vp），默认360，用于估算文本行数
+ * @param componentWidth 控件宽度（vp），<=0 时自动取屏幕宽度（与 MarkdownComponent 初始化一致）
  * @return 估算高度（vp）
  */
-public func preMarkwonHeight(content: String, config: MarkdownConfiguration, markdownPlugin: Markdown, componentWidth!: Float64 = 360.0): Float64 {
+public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguration, markdownPlugin: Markdown, componentWidth!: Float64 = -1.0): Float64 {
+    // 未显式传入宽度时，使用屏幕宽度（与 MarkdownComponent.aboutToAppear 中 componentWidth 初值一致）
+    let actualWidth: Float64 = if (componentWidth > 0.0) {
+        componentWidth
+    } else {
+        let sw: Int32 = getDefaultDisplaySync().width
+        px2vp(Float64(sw).px).getOrThrow().value
+    }
     let theme: MarkdownTheme = config.markdownTheme
     let global: GlobalTheme = theme.globalTheme
     let blockSpacing: Float64 = Float64(global.markdownBlockSpacing)
@@ -39,28 +45,12 @@ public func preMarkwonHeight(content: String, config: MarkdownConfiguration, mar
             totalHeight += blockSpacing
         }
         first = false
-        totalHeight += estimateBlockNodeHeight(block, theme, componentWidth, blockSpacing)
+        totalHeight += estimateBlockNodeHeight(block, theme, actualWidth, blockSpacing)
     }
 
     totalHeight += global.blockMarginTop
     totalHeight += global.blockMarginBottom
     return totalHeight
-}
-
-/**
- * 预计算 Markdown 渲染高度（与 preMarkwonHeight 相同实现）
- *
- * 解析器已将 setext/ATX 标题统一识别为 Heading 节点，
- * 故此函数与 preMarkwonHeight 行为一致。
- *
- * @param content Markdown文本内容
- * @param config Markdown配置（含主题样式）
- * @param markdownPlugin Markdown解析器实例（需与渲染组件使用的插件链一致）
- * @param componentWidth 控件宽度（vp），默认360
- * @return 预计算高度（vp）
- */
-public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguration, markdownPlugin: Markdown, componentWidth!: Float64 = 360.0): Float64 {
-    return preMarkwonHeight(content, config, markdownPlugin, componentWidth: componentWidth)
 }
 
 /**
@@ -193,7 +183,27 @@ func calcHeadingHeight(level: Int64, ht: HeadingTheme): Float64 {
 }
 
 /**
+ * 获取 MarkdownComponent 实际渲染宽度（屏幕宽度 - 左右父容器 padding）
+ *
+ * 调用方应在父容器有 padding 时传入对应值（左右 padding 之和），让预计算宽度
+ * 与 MarkdownComponent 实际渲染宽度一致。例如 paragraph_page 中 Column.padding(5.0)
+ * 左右共 10 vp，调用方应传 paddingH: 5.0。
+ *
+ * @param paddingH 父容器左右单边 padding（vp），默认0
+ * @return MarkdownComponent 实际宽度（vp）
+ */
+public func getMarkdownComponentWidth(paddingH!: Float64 = 0.0): Float64 {
+    let sw: Int32 = getDefaultDisplaySync().width
+    let screenWidthVp: Float64 = px2vp(Float64(sw).px).getOrThrow().value
+    return screenWidthVp - paddingH * 2.0
+}
+
+/**
  * 估算段落节点高度
+ *
+ * 按字符类型分别计算宽度：CJK/全角字符宽度 ≈ fontSize，ASCII 字符宽度 ≈ 0.55×fontSize。
+ * 修正原统一 0.8 系数对全中文段落的行数低估（中文每字符实际宽度近似等于字号）。
+ * 综合考虑 letterSpacing（每两字符间增加一个间距）与 fontWeight（粗体加宽）对宽度的影响。
  *
  * @param p Paragraph节点
  * @param theme MarkdownTheme
@@ -204,36 +214,143 @@ func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWi
     let pt: ParagraphTheme = theme.paragraphTheme
     let fontSize: Float64 = pt.paragraphTextFontSize
     let lineHeight: Float64 = pt.paragraphTextLineHeight
+    let letterSpacing: Float64 = pt.paragraphTextLetterSpacing
+    let fontWeight: FontWeight = pt.paragraphTextFontWeight
     let text: String = collectInlineText(p, theme.globalTheme.isLineBreak)
-    let avgCharWidth: Float64 = if (fontSize * 0.8 > 1.0) { fontSize * 0.8 } else { 1.0 }
-    let charsPerLine: Float64 = if (floor(componentWidth / avgCharWidth) > 1.0) { floor(componentWidth / avgCharWidth) } else { 1.0 }
-    let lineCount: Float64 = estimateTextLineCount(text, charsPerLine)
-    let contentHeight: Float64 = lineCount * lineHeight
-    return pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
+    let contentHeight: Float64 = estimateTextContentHeight(text, fontSize, lineHeight, componentWidth, letterSpacing, fontWeight)
+    let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
         pt.paragraphPaddingBottom + pt.paragraphMarginBottom
+    return result
 }
 
 /**
- * 估算文本换行后的行数（按字符宽度估算）
+ * 估算文本内容高度（按字符宽度累加换行）
  *
- * @param text 文本
- * @param charsPerLine 每行字符数
- * @return 总行数
+ * 文本中的 \n 视为强制换行；每段非空子串按累计宽度 / componentWidth 向上取整为行数，
+ * 至少 1 行。空串视为 1 行（避免 0 高度导致排版塌陷）。
+ *
+ * @param text 段落纯文本（可能含 \n）
+ * @param fontSize 字号
+ * @param lineHeight 行高
+ * @param componentWidth 控件宽度
+ * @param letterSpacing 字符间距（vp），每两字符间增加一个间距
+ * @param fontWeight 字体粗细，影响字符实际宽度
+ * @return 内容高度（vp）
  */
-func estimateTextLineCount(text: String, charsPerLine: Float64): Float64 {
+func estimateTextContentHeight(text: String, fontSize: Float64, lineHeight: Float64, componentWidth: Float64, letterSpacing: Float64, fontWeight: FontWeight): Float64 {
     let lines: Array<String> = text.split("\n")
     var totalLines: Float64 = 0.0
     for (line in lines) {
-        let charCount: Int64 = line.toRuneArray().size
-        let cnt: Float64 = if (charCount == 0) {
+        let width: Float64 = estimateTextWidth(line, fontSize, letterSpacing, fontWeight)
+        let cnt: Float64 = if (width <= 0.0) {
             1.0
         } else {
-            let raw: Float64 = ceil(Float64(charCount) / charsPerLine)
+            let raw: Float64 = ceil(width / componentWidth)
             if (raw > 1.0) { raw } else { 1.0 }
         }
         totalLines += cnt
     }
-    return totalLines
+    return totalLines * lineHeight
+}
+
+/**
+ * 估算文本宽度（按字符类型累加 + letterSpacing + fontWeight）
+ *
+ * 宽字符：CJK 表意文字、平假名/片假名、韩文兼容字母、CJK 标点、全角形式 —— 宽度 ≈ fontSize
+ * 窄字符：ASCII、半角标点 —— 宽度 ≈ 0.55 × fontSize
+ * 字符间距：N 个字符增加 (N-1) 个 letterSpacing
+ * 字体粗细：粗体加宽，由 fontWeightWidthFactor 提供
+ *
+ * @param text 文本
+ * @param fontSize 字号
+ * @param letterSpacing 字符间距（vp）
+ * @param fontWeight 字体粗细
+ * @return 文本宽度（vp）
+ */
+func estimateTextWidth(text: String, fontSize: Float64, letterSpacing: Float64, fontWeight: FontWeight): Float64 {
+    var width: Float64 = 0.0
+    let arr: Array<Rune> = text.toRuneArray()
+    let charCount: Int64 = arr.size
+    for (r in arr) {
+        if (isWideRune(r)) {
+            width += fontSize
+        } else {
+            width += fontSize * 0.55
+        }
+    }
+    if (charCount > 1) {
+        width += letterSpacing * Float64(charCount - 1)
+    }
+    width *= fontWeightWidthFactor(fontWeight)
+    return width
+}
+
+/**
+ * 字体粗细对字符宽度的修正系数
+ *
+ * 经验值，参考常见字体度量：粗体字符比正常字符宽约 5-12%。
+ *
+ * @param weight 字体粗细
+ * @return 宽度修正系数（1.0 = 不变）
+ */
+func fontWeightWidthFactor(weight: FontWeight): Float64 {
+    match (weight) {
+        case FontWeight.W100 => 0.95
+        case FontWeight.W200 => 0.96
+        case FontWeight.W300 => 0.97
+        case FontWeight.W400 => 1.0
+        case FontWeight.W500 => 1.02
+        case FontWeight.W600 => 1.05
+        case FontWeight.W700 => 1.08
+        case FontWeight.W800 => 1.10
+        case FontWeight.W900 => 1.12
+        case _ => 1.0
+    }
+}
+
+/**
+ * 判定字符是否为宽字符（CJK 表意文字、全角符号等）
+ *
+ * 覆盖 Unicode 区段：
+ * - U+3000..U+303F  CJK 标点和符号
+ * - U+3040..U+309F  平假名
+ * - U+30A0..U+30FF  片假名
+ * - U+3130..U+318F  韩文兼容字母
+ * - U+3400..U+4DBF  CJK 统一表意文字扩展A
+ * - U+4E00..U+9FFF  CJK 统一表意文字
+ * - U+F900..U+FAFF  CJK 兼容表意文字
+ * - U+FF00..U+FFEF  全角形式（含全角标点、全角ASCII）
+ *
+ * @param r 字符
+ * @return true 表示宽度近似等于字号
+ */
+func isWideRune(r: Rune): Bool {
+    let v: UInt32 = UInt32(r)
+    if (v >= UInt32(0x3000) && v <= UInt32(0x303F)) {
+        return true
+    }
+    if (v >= UInt32(0x3040) && v <= UInt32(0x309F)) {
+        return true
+    }
+    if (v >= UInt32(0x30A0) && v <= UInt32(0x30FF)) {
+        return true
+    }
+    if (v >= UInt32(0x3130) && v <= UInt32(0x318F)) {
+        return true
+    }
+    if (v >= UInt32(0x3400) && v <= UInt32(0x4DBF)) {
+        return true
+    }
+    if (v >= UInt32(0x4E00) && v <= UInt32(0x9FFF)) {
+        return true
+    }
+    if (v >= UInt32(0xF900) && v <= UInt32(0xFAFF)) {
+        return true
+    }
+    if (v >= UInt32(0xFF00) && v <= UInt32(0xFFEF)) {
+        return true
+    }
+    return false
 }
 
 /**
@@ -344,36 +461,70 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
  */
 func estimateTableNodeHeight(tb: TableBlock, theme: MarkdownTheme): Float64 {
     let tt: TableTheme = theme.tableTheme
-    var headerRowCount: Int64 = 0
-    var bodyRowCount: Int64 = 0
+    let cellPaddingTop: Float64 = tt.tableCellPaddingTop
+    let cellPaddingBottom: Float64 = tt.tableCellPaddingBottom
+    let cellPaddingLeft: Float64 = tt.tableCellPaddingLeft
+    let cellPaddingRight: Float64 = tt.tableCellPaddingRight
+    let borderWidth: Float64 = tt.tableBorderWidth
+    let cellContentWidth: Float64 = if (tt.tableMaxCellWidth > cellPaddingLeft + cellPaddingRight) {
+        tt.tableMaxCellWidth - cellPaddingLeft - cellPaddingRight
+    } else {
+        1.0
+    }
+    let isLineBreak: Bool = theme.globalTheme.isLineBreak
+    let titleHeight: Float64 = if (tt.tableHeadIsShow) {
+        cellPaddingTop + tt.tableTitleTextLineHeight + cellPaddingBottom + borderWidth
+    } else {
+        0.0
+    }
+    var totalRows: Int64 = 0
+    var contentHeight: Float64 = 0.0
     for (child in tb.iterateChildren()) {
         match (child) {
             case _: TableHead =>
                 for (row in child.iterateChildren()) {
                     if (row is TableRow) {
-                        headerRowCount++
+                        totalRows++
+                        contentHeight += estimateTableRowContentHeight(row, tt, true, cellContentWidth, cellPaddingTop, cellPaddingBottom, isLineBreak)
                     }
                 }
             case _: TableBody =>
                 for (row in child.iterateChildren()) {
                     if (row is TableRow) {
-                        bodyRowCount++
+                        totalRows++
+                        contentHeight += estimateTableRowContentHeight(row, tt, false, cellContentWidth, cellPaddingTop, cellPaddingBottom, isLineBreak)
                     }
                 }
             case _ => ()
         }
     }
-    if (headerRowCount == 0 && bodyRowCount == 0) {
-        headerRowCount = 1
+    if (totalRows == 0) {
+        totalRows = 1
+        contentHeight = tt.tableTitleTextLineHeight + cellPaddingTop + cellPaddingBottom
     }
-    let cellPaddingTop: Float64 = tt.tableCellPaddingTop
-    let cellPaddingBottom: Float64 = tt.tableCellPaddingBottom
-    let borderWidth: Float64 = tt.tableBorderWidth
-    let headerRowHeight: Float64 = cellPaddingTop + tt.tableTitleTextLineHeight + cellPaddingBottom + borderWidth
-    let bodyRowHeight: Float64 = cellPaddingTop + tt.tableContentTextLineHeight + cellPaddingBottom + borderWidth
-    let contentHeight: Float64 = Float64(headerRowCount) * headerRowHeight + Float64(bodyRowCount) * bodyRowHeight
-    return tt.tableMarginTop + tt.tablePaddingTop + contentHeight +
+    let rowBorders: Float64 = if (totalRows > 1) { Float64(totalRows - 1) * borderWidth } else { 0.0 }
+    let outerBorderHeight: Float64 = borderWidth * 2.0
+    return tt.tableMarginTop + tt.tablePaddingTop + titleHeight + contentHeight + rowBorders + outerBorderHeight +
         tt.tablePaddingBottom + tt.tableMarginBottom
+}
+
+func estimateTableRowContentHeight(row: CommonmarkNode, tt: TableTheme, isHeader: Bool, cellContentWidth: Float64, cellPaddingTop: Float64, cellPaddingBottom: Float64, isLineBreak: Bool): Float64 {
+    let fontSize: Float64 = if (isHeader) { tt.tableTitleTextFontSize } else { tt.tableContentTextFontSize }
+    let lineHeight: Float64 = if (isHeader) { tt.tableTitleTextLineHeight } else { tt.tableContentTextLineHeight }
+    let fontWeight: FontWeight = if (isHeader) { tt.tableTitleTextFontWeight } else { tt.tableContentTextFontWeight }
+    let letterSpacing: Float64 = if (isHeader) { tt.tableTitleTextLetterSpacing } else { tt.tableContentTextLetterSpacing }
+    var maxLines: Float64 = 1.0
+    for (cell in row.iterateChildren()) {
+        if (cell is TableCell) {
+            let text: String = collectInlineText(cell, isLineBreak)
+            let textHeight: Float64 = estimateTextContentHeight(text, fontSize, lineHeight, cellContentWidth, letterSpacing, fontWeight)
+            let lines: Float64 = textHeight / lineHeight
+            if (lines > maxLines) {
+                maxLines = lines
+            }
+        }
+    }
+    return maxLines * lineHeight + cellPaddingTop + cellPaddingBottom
 }
 
 /**
