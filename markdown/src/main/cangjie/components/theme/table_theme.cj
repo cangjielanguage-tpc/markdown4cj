@@ -92,9 +92,9 @@ public class TableTheme {
     @Publish
     public var tableStickyHeader: Bool = false // 表格标题行是否吸顶（仅当外层List可滚动时生效）
     @Publish
-    public var tableHeadIsShow: Bool = true // 表格头复制按钮是否显示
+    public var tableHeadIsShow: Bool = false // 表格头复制按钮是否显示
     @Publish
-    public var tableHeadTitleText: String = "比较" // 表格头标题
+    public var tableHeadTitleText: String = "" // 表格头标题
     @Publish
     public var tableHeadTitleTextFontFamily: ?String = Option<String>.None // 表格头标题类型文本字体族
     @Publish
@@ -110,7 +110,7 @@ public class TableTheme {
     @Publish
     public var tableHeadTitleTextMarginLeft: Float64 = 0.0 // 表格头标题类型文本左边距
     @Publish
-    public var tableHeadCopyIcon: ?AppResource = Option<AppResource>.None // 表格头复制图标
+    public var tableHeadCopyIcon: ?AppResource = @r(app.media.startIcon) // 表格头复制图标
     @Publish
     public var tableHeadCopyIconWidth: Float64 = 24.0 // 表格头复制图标宽度
     @Publish

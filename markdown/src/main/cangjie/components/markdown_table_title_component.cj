@@ -1,6 +1,7 @@
 package markdown.components
 
 import ohos.state_macro_manage.*
+import ohos.resource_manager.{AppResource, __GenerateResource__}
 
 /**
  * 表格头复制按钮组件
@@ -15,7 +16,6 @@ class MarkdownTableTitleComponent {
 
     func build() {
         Row {
-            if (tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadTitleText.size > 0) {
                 Text(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadTitleText)
                     .fontColor(getHeadTitleFontColor())
                     .fontSize(getHeadTitleFontSize())
@@ -29,7 +29,8 @@ class MarkdownTableTitleComponent {
                     .textOverflow(TextOverflow.Ellipsis)
                     .constraintSize(minWidth: 30.percent)
                     .layoutWeight(1)
-            }
+                    .visibility(if (tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadTitleText.size > 0) { Visibility.Visible } else { Visibility.Hidden})
+
             if (tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadCopyIcon.isSome()) {
                 Image(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadCopyIcon())
                     .width(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableHeadCopyIconWidth)

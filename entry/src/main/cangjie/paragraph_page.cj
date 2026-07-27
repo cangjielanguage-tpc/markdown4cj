@@ -134,6 +134,7 @@ class ParagraphPage {
         incrementalAnalysis = incremental
         arr = fullContent.toRuneArray()
         mdStr = ""
+        sleep(Duration.millisecond *500)
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
