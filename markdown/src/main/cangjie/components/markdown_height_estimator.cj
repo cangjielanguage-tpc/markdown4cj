@@ -65,7 +65,7 @@ public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguratio
 func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     match (node) {
         case h: Heading =>
-            return calcHeadingHeight(Int64(h.getLevel()), theme.headingTheme)
+            return calcHeadingHeight(h, theme.headingTheme, componentWidth, theme.globalTheme.isLineBreak)
         case p: Paragraph =>
             return estimateParagraphNodeHeight(p, theme, componentWidth)
         case fcb: FencedCodeBlock =>
@@ -151,31 +151,44 @@ func collectInlineText(node: CommonmarkNode, isLineBreak: Bool): String {
 /**
  * 计算标题块高度（含 margin/padding/underline）
  *
- * @param level 标题等级 1-6
+ * 标题渲染为 Text 组件，长文本会自动换行。原实现固定取一行 headingNTextLineHeight，
+ * 对长标题（如含超长内联代码的标题）严重低估。现按各等级字号/行高/字间距/字重
+ * 估算文本换行行数，与 estimateParagraphNodeHeight 一致。
+ *
+ * @param node Heading节点（含 IdHeading）
  * @param ht HeadingTheme
+ * @param componentWidth 控件宽度
+ * @param isLineBreak 软换行是否渲染为换行
  * @return 块高度（vp）
  */
-func calcHeadingHeight(level: Int64, ht: HeadingTheme): Float64 {
+func calcHeadingHeight(node: Heading, ht: HeadingTheme, componentWidth: Float64, isLineBreak: Bool): Float64 {
+    let level: Int64 = Int64(node.getLevel())
     match (level) {
         case 1 =>
-            return ht.heading1MarginTop + ht.heading1PaddingTop + ht.heading1TextLineHeight +
+            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading1TextFontSize, ht.heading1TextLineHeight, componentWidth, ht.heading1TextLetterSpacing, ht.heading1TextFontWeight)
+            return ht.heading1MarginTop + ht.heading1PaddingTop + contentHeight +
                 ht.heading1UnderlineHeight + ht.heading1UnderlineSpacing +
                 ht.heading1PaddingBottom + ht.heading1MarginBottom
         case 2 =>
-            return ht.heading2MarginTop + ht.heading2PaddingTop + ht.heading2TextLineHeight +
+            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading2TextFontSize, ht.heading2TextLineHeight, componentWidth, ht.heading2TextLetterSpacing, ht.heading2TextFontWeight)
+            return ht.heading2MarginTop + ht.heading2PaddingTop + contentHeight +
                 ht.heading2UnderlineHeight + ht.heading2UnderlineSpacing +
                 ht.heading2PaddingBottom + ht.heading2MarginBottom
         case 3 =>
-            return ht.heading3MarginTop + ht.heading3PaddingTop + ht.heading3TextLineHeight +
+            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading3TextFontSize, ht.heading3TextLineHeight, componentWidth, ht.heading3TextLetterSpacing, ht.heading3TextFontWeight)
+            return ht.heading3MarginTop + ht.heading3PaddingTop + contentHeight +
                 ht.heading3PaddingBottom + ht.heading3MarginBottom
         case 4 =>
-            return ht.heading4MarginTop + ht.heading4PaddingTop + ht.heading4TextLineHeight +
+            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading4TextFontSize, ht.heading4TextLineHeight, componentWidth, ht.heading4TextLetterSpacing, ht.heading4TextFontWeight)
+            return ht.heading4MarginTop + ht.heading4PaddingTop + contentHeight +
                 ht.heading4PaddingBottom + ht.heading4MarginBottom
         case 5 =>
-            return ht.heading5MarginTop + ht.heading5PaddingTop + ht.heading5TextLineHeight +
+            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading5TextFontSize, ht.heading5TextLineHeight, componentWidth, ht.heading5TextLetterSpacing, ht.heading5TextFontWeight)
+            return ht.heading5MarginTop + ht.heading5PaddingTop + contentHeight +
                 ht.heading5PaddingBottom + ht.heading5MarginBottom
         case 6 =>
-            return ht.heading6MarginTop + ht.heading6PaddingTop + ht.heading6TextLineHeight +
+            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading6TextFontSize, ht.heading6TextLineHeight, componentWidth, ht.heading6TextLetterSpacing, ht.heading6TextFontWeight)
+            return ht.heading6MarginTop + ht.heading6PaddingTop + contentHeight +
                 ht.heading6PaddingBottom + ht.heading6MarginBottom
         case _ =>
             return 0.0
@@ -399,12 +412,21 @@ func estimateBlockquoteNodeHeight(bq: BlockQuote, theme: MarkdownTheme, componen
 }
 
 /**
- * 估算列表节点高度
+ * 估算列表节点高度（递归处理嵌套列表）
+ *
+ * 渲染时 MarkdownListComponent 为 List(space: childSpacing)，每个 ListItem 节点渲染为
+ * 一行 Row(前缀 + MarkdownListItemComponent)。MarkdownListItemComponent 又是
+ * List(space: childChildSpacing)，遍历 ListItem 子节点逐项渲染：Paragraph 直接渲染，
+ * BulletList/OrderedList 递归进入 MarkdownListComponent。
+ *
+ * 因此估算时需对每个 ListItem 递归计算其子节点高度（含嵌套子列表），
+ * 行高取前缀高度与内容高度的最大值。原实现仅按顶层条目数 × 行高估算，
+ * 无法处理嵌套列表，导致嵌套用例严重低估（如 35 行嵌套用例估算 88 实际 770）。
  *
  * @param node 列表节点（BulletList/OrderedList）
  * @param theme MarkdownTheme
  * @param componentWidth 控件宽度
- * @param blockSpacing 块间距
+ * @param blockSpacing 块间距（未使用，列表内部使用 childSpacing/childChildSpacing）
  * @param isOrdered 是否有序列表
  * @return 块高度（vp）
  */
@@ -416,7 +438,18 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
     } else {
         Float64(bulletTheme.bulletListChildSpacing)
     }
-    let lineHeight: Float64 = theme.paragraphTheme.paragraphTextLineHeight
+    let childChildSpacing: Float64 = if (isOrdered) {
+        Float64(orderedTheme.orderedListChildChildSpacing)
+    } else {
+        Float64(bulletTheme.bulletListChildChildSpacing)
+    }
+    let paragraphLineHeight: Float64 = theme.paragraphTheme.paragraphTextLineHeight
+    // 前缀（列表符号/序号文本）高度，与内容高度取最大值；任务列表复选框高度通常更小，由内容主导
+    let prefixHeight: Float64 = if (isOrdered) {
+        orderedTheme.orderedListMarkerTextLineHeight
+    } else {
+        bulletTheme.bulletListBulletTextLineHeight
+    }
     let marginTop: Float64 = if (isOrdered) {
         orderedTheme.orderedListMarginTop
     } else {
@@ -438,18 +471,50 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         bulletTheme.bulletListPaddingBottom
     }
 
-    var itemCount: Int64 = 0
+    var innerHeight: Float64 = 0.0
+    var first: Bool = true
     for (child in node.iterateChildren()) {
         if (child is CommonmarkListItem) {
-            itemCount++
+            if (!first) {
+                innerHeight += childSpacing
+            }
+            first = false
+            innerHeight += estimateListItemContentHeight(child, theme, componentWidth, childChildSpacing, paragraphLineHeight, prefixHeight)
         }
     }
-    if (itemCount < 1) {
-        itemCount = 1
-    }
-    let extraSpacing: Float64 = if (itemCount > 1) { Float64(itemCount - 1) * childSpacing } else { 0.0 }
-    let innerHeight: Float64 = Float64(itemCount) * lineHeight + extraSpacing
     return marginTop + paddingTop + innerHeight + paddingBottom + marginBottom
+}
+
+/**
+ * 估算单个列表项的内容高度
+ *
+ * 列表项渲染为 Row(前缀 + MarkdownListItemComponent)，行高取前缀高度与内容高度最大值。
+ * MarkdownListItemComponent 为 List(space: childChildSpacing)，遍历 ListItem 子节点逐项渲染：
+ * - Paragraph 子节点 → 段落高度（含其 margin/padding，与渲染一致）
+ * - BulletList/OrderedList 子节点 → 递归 estimateListNodeHeight
+ * - 其他块子节点 → estimateBlockNodeHeight
+ * 内容为空时至少计入前缀高度（避免空列表项高度为 0）。
+ *
+ * @param item ListItem节点
+ * @param theme MarkdownTheme
+ * @param componentWidth 控件宽度
+ * @param childChildSpacing 列表项子模块上下间距
+ * @param paragraphLineHeight 段落文本行高（未使用，保留以明确语义）
+ * @param prefixHeight 前缀（列表符号/序号）高度
+ * @return 列表项高度（vp）
+ */
+func estimateListItemContentHeight(item: CommonmarkNode, theme: MarkdownTheme, componentWidth: Float64, childChildSpacing: Float64, paragraphLineHeight: Float64, prefixHeight: Float64): Float64 {
+    var contentHeight: Float64 = 0.0
+    var first: Bool = true
+    for (child in item.iterateChildren()) {
+        if (!first) {
+            contentHeight += childChildSpacing
+        }
+        first = false
+        contentHeight += estimateBlockNodeHeight(child, theme, componentWidth, childChildSpacing)
+    }
+    let rowHeight: Float64 = if (contentHeight > prefixHeight) { contentHeight } else { prefixHeight }
+    return rowHeight
 }
 
 /**

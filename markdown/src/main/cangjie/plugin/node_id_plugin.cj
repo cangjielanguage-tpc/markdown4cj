@@ -20,9 +20,8 @@ public class NodeIdPlugin <: AbstractMarkdownPlugin {
         "NodeIdPlugin"
     }
 
-    let stack = ArrayList<NodeHashCalculator>()
-
     func calcNodeId(rootNode: Node): Unit {
+        let stack = ArrayList<NodeHashCalculator>()
         stack.add(NodeHashCalculator(rootNode, None, 0, needNodeHash, needContentHash))
         calcNodeIdWithStack(stack, needNodeHash, needContentHash)
     }
