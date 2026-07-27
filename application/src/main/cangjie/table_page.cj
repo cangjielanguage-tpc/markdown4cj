@@ -122,11 +122,11 @@ class TablePage {
     @State @Watch[onConfigChanged] var cfg_tableContentTextLineHeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_tableContentTextLetterSpacing: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_tableHeadIsShow: String = "false"
-    @State @Watch[onConfigChanged] var cfg_tableHeadTitleText: String = "比较"
+    @State @Watch[onConfigChanged] var cfg_tableHeadTitleText: String = ""
     @State @Watch[onConfigChanged] var cfg_tableHeadTitleTextMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_tableHeadCopyIcon: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_tableHeadCopyIconWidth: String = "0"
-    @State @Watch[onConfigChanged] var cfg_tableHeadCopyIconHeight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_tableHeadCopyIconWidth: String = "20"
+    @State @Watch[onConfigChanged] var cfg_tableHeadCopyIconHeight: String = "20"
     @State @Watch[onConfigChanged] var cfg_tableHeadCopyIconMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_tableHeadTitleTextFontColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_tableHeadTitleTextFontSize: String = "undefined"
@@ -753,7 +753,7 @@ class TablePage {
 
                         if (isExpanded9) {
                             Column {
-                                ConfigTabSelector(title: "表格头部标题文本 - ", options: tableHeadTitleTextList, defaultValue: "比较", configKey: "", currentValue: cfg_tableHeadTitleText, onSelect: { v => cfg_tableHeadTitleText = v })
+                                ConfigTabSelector(title: "表格头部标题文本 - ", options: tableHeadTitleTextList, defaultValue: "", configKey: "", currentValue: cfg_tableHeadTitleText, onSelect: { v => cfg_tableHeadTitleText = v })
                                 ConfigTabSelector(title: "表格头部标题文本左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_tableHeadTitleTextMarginLeft, onSelect: { v => cfg_tableHeadTitleTextMarginLeft = v })
                                 ConfigTabSelector(title: "表头标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableHeadTitleTextFontColor, onSelect: { v => cfg_tableHeadTitleTextFontColor = v })
                                 ConfigTabSelector(title: "表头标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_tableHeadTitleTextFontSize, onSelect: { v => cfg_tableHeadTitleTextFontSize = v })
