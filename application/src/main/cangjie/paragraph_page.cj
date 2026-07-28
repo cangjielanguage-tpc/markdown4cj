@@ -133,13 +133,12 @@ class ParagraphPage {
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
         arr = fullContent.toRuneArray()
-        mdStr = ""
-        sleep(Duration.millisecond *500)
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
             estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
         } else {
+            mdStr = ""
             let number = textNumber
             let time = timeMs
             let total = arr.size
