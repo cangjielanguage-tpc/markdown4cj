@@ -119,11 +119,11 @@ class HighlightParagraphPage {
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
         arr = fullContent.toRuneArray()
-        mdStr = ""
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
         } else {
+            mdStr = ""
             let number = textNumber
             let time = timeMs
             let total = arr.size

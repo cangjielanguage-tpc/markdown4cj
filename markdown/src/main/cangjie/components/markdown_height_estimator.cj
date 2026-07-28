@@ -62,7 +62,7 @@ public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguratio
 func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     match (node) {
         case h: Heading =>
-            return calcHeadingHeight(h, theme.headingTheme, componentWidth, theme.globalTheme.isLineBreak)
+            return calcHeadingHeight(h, theme.headingTheme, componentWidth, theme.globalTheme.isLineBreak, theme.boldTheme.boldTextFontWeight)
         case p: Paragraph =>
             return estimateParagraphNodeHeight(p, theme, componentWidth)
         case fcb: FencedCodeBlock =>
@@ -120,29 +120,176 @@ func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, compone
 }
 
 /**
- * 递归收集节点树中的可见文本（Text/Code 字面量）
+ * 文本片段（带字体粗细）
  *
- * SoftLineBreak 根据 isLineBreak 区分：
- * - true  → '\n'（软换行渲染为换行）
- * - false → ' ' （软换行渲染为空格，不换行）
- * HardLineBreak 始终为 '\n'
+ * 用于精确测量含加粗/斜体内联节点的文本高度。每段文本保留对应的 FontWeight，
+ * 使测量时能对加粗段使用真实粗细（如 W700），而非统一用基础字重。
+ */
+struct TextSegment {
+    public let text: String
+    public let weight: FontWeight
+    public init(text: String, weight: FontWeight) {
+        this.text = text
+        this.weight = weight
+    }
+}
+
+/**
+ * 递归收集节点树中的文本片段（含字体粗细信息）
+ *
+ * StrongEmphasis（**加粗**）的子节点使用 boldWeight；
+ * Emphasis（*斜体*）保持 currentWeight（斜体宽度与常规相近）。
  *
  * @param node 节点
+ * @param baseWeight 基础字体粗细（段落/标题/表格单元格的 fontWeight）
+ * @param boldWeight 加粗字体粗细（boldTheme.boldTextFontWeight）
  * @param isLineBreak 软换行是否渲染为换行
- * @return 纯文本
+ * @return 文本片段列表
  */
-func collectInlineText(node: CommonmarkNode, isLineBreak: Bool): String {
-    let sb = StringBuilder()
+func collectInlineSegments(node: CommonmarkNode, baseWeight: FontWeight, boldWeight: FontWeight, isLineBreak: Bool): ArrayList<TextSegment> {
+    let segments = ArrayList<TextSegment>()
+    collectSegmentsRecursive(node, baseWeight, boldWeight, isLineBreak, segments)
+    if (segments.size == 0) {
+        segments.add(TextSegment("", baseWeight))
+    }
+    return segments
+}
+
+func collectSegmentsRecursive(node: CommonmarkNode, currentWeight: FontWeight, boldWeight: FontWeight, isLineBreak: Bool, segments: ArrayList<TextSegment>): Unit {
     for (child in node.iterateChildren()) {
         match (child) {
-            case t: CommonmarkText => sb.append(t.getLiteral())
-            case c: Code => sb.append(c.getLiteral())
-            case _: SoftLineBreak => sb.append(if (isLineBreak) { '\n' } else { ' ' })
-            case _: HardLineBreak => sb.append('\n')
-            case _ => sb.append(collectInlineText(child, isLineBreak))
+            case t: CommonmarkText =>
+                segments.add(TextSegment(t.getLiteral(), currentWeight))
+            case c: Code =>
+                segments.add(TextSegment(c.getLiteral(), currentWeight))
+            case _: SoftLineBreak =>
+                segments.add(TextSegment(if (isLineBreak) { "\n" } else { " " }, currentWeight))
+            case _: HardLineBreak =>
+                segments.add(TextSegment("\n", currentWeight))
+            case _: StrongEmphasis =>
+                collectSegmentsRecursive(child, boldWeight, boldWeight, isLineBreak, segments)
+            case _: Emphasis =>
+                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, segments)
+            case _ =>
+                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, segments)
         }
     }
-    return sb.toString()
+}
+
+/**
+ * 将 FontWeight 枚举转为数值（用于 == / != 比较）
+ *
+ * Cangjie 枚举不支持 != 运算符，需转为可比较类型。
+ */
+func fontWeightValue(w: FontWeight): Int64 {
+    match (w) {
+        case FontWeight.W100 => 100
+        case FontWeight.W200 => 200
+        case FontWeight.W300 => 300
+        case FontWeight.W400 => 400
+        case FontWeight.W500 => 500
+        case FontWeight.W600 => 600
+        case FontWeight.W700 => 700
+        case FontWeight.W800 => 800
+        case FontWeight.W900 => 900
+        case _ => 400
+    }
+}
+
+/**
+ * 使用系统字体度量（ohos.measure）精确计算文本高度
+ *
+ * 对每行（\n 分隔）文本：
+ * - 单一粗细行：调用 Measure.MeasureTextSize(constraintWidth) 获取精确换行高度
+ * - 混合粗细行：逐段调用 Measure.MeasureText 获取宽度，按 componentWidth 计算换行行数
+ *
+ * 替代原固定系数方案（CJK≈fontSize, ASCII≈0.55×fontSize），使用系统真实字体度量，
+ * 消除字符宽度系数误差与加粗宽度低估（原方案对加粗文本统一用 W400 系数 1.0，
+ * 实际 W700 宽约 8%），提升含加粗文本的高度估算精度。
+ *
+ * @param segments 文本片段列表（含粗细信息）
+ * @param fontSize 字号
+ * @param lineHeight 行高
+ * @param componentWidth 控件宽度
+ * @param letterSpacing 字符间距
+ * @return 内容高度（vp）
+ */
+func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Float64, lineHeight: Float64, componentWidth: Float64, letterSpacing: Float64): Float64 {
+    if (componentWidth <= 0.0) {
+        return lineHeight
+    }
+    // 按 \n 将 segments 拆分为独立行
+    let lines = ArrayList<ArrayList<TextSegment>>()
+    var currentLine = ArrayList<TextSegment>()
+    for (seg in segments) {
+        let parts = seg.text.split("\n")
+        for (i in 0..parts.size) {
+            if (i > 0) {
+                lines.add(currentLine)
+                currentLine = ArrayList<TextSegment>()
+            }
+            if (parts[i].size > 0) {
+                currentLine.add(TextSegment(parts[i], seg.weight))
+            }
+        }
+    }
+    lines.add(currentLine)
+
+    var totalHeight: Float64 = 0.0
+    for (lineSegs in lines) {
+        if (lineSegs.size == 0) {
+            totalHeight += lineHeight
+            continue
+        }
+        // 检查是否所有片段粗细相同（FontWeight 枚举不支持 !=，用 Int64 比较）
+        var sameWeight = true
+        let firstWeight = lineSegs[0].weight
+        let firstWeightValue = fontWeightValue(firstWeight)
+        for (seg in lineSegs) {
+            if (fontWeightValue(seg.weight) != firstWeightValue) {
+                sameWeight = false
+                break
+            }
+        }
+        if (sameWeight) {
+            // 单一粗细：用 MeasureTextSize + constraintWidth 获取精确换行高度
+            var lineText = StringBuilder()
+            for (seg in lineSegs) {
+                lineText.append(seg.text)
+            }
+            let size = Measure.MeasureTextSize(MeasureOptions(
+                textContent: lineText.toString(),
+                fontWeight: firstWeight,
+                fontSize: Some(fontSize.fp),
+                lineHeight: Some(lineHeight.vp),
+                constraintWidth: Some(componentWidth.vp),
+                letterSpacing: Some(letterSpacing.vp)
+            ))
+            let heightVp = px2vp(size.height.px).getOrThrow().value
+            totalHeight += if (heightVp > 0.0) { heightVp } else { lineHeight }
+        } else {
+            // 混合粗细：逐段测宽度，按 componentWidth 计算换行行数
+            var totalWidth: Float64 = 0.0
+            for (seg in lineSegs) {
+                let widthPx = Measure.MeasureText(MeasureOptions(
+                    textContent: seg.text,
+                    fontWeight: seg.weight,
+                    fontSize: Some(fontSize.fp),
+                    letterSpacing: Some(letterSpacing.vp)
+                ))
+                let widthVp = px2vp(widthPx.px).getOrThrow().value
+                totalWidth += widthVp
+            }
+            let lineCount: Float64 = if (totalWidth <= 0.0) {
+                1.0
+            } else {
+                let raw = ceil(totalWidth / componentWidth)
+                if (raw > 1.0) { raw } else { 1.0 }
+            }
+            totalHeight += lineCount * lineHeight
+        }
+    }
+    return totalHeight
 }
 
 /**
@@ -156,35 +303,36 @@ func collectInlineText(node: CommonmarkNode, isLineBreak: Bool): String {
  * @param ht HeadingTheme
  * @param componentWidth 控件宽度
  * @param isLineBreak 软换行是否渲染为换行
+ * @param boldWeight 加粗文本字体粗细（用于 StrongEmphasis 段）
  * @return 块高度（vp）
  */
-func calcHeadingHeight(node: Heading, ht: HeadingTheme, componentWidth: Float64, isLineBreak: Bool): Float64 {
+func calcHeadingHeight(node: Heading, ht: HeadingTheme, componentWidth: Float64, isLineBreak: Bool, boldWeight: FontWeight): Float64 {
     let level: Int64 = Int64(node.getLevel())
     match (level) {
         case 1 =>
-            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading1TextFontSize, ht.heading1TextLineHeight, componentWidth, ht.heading1TextLetterSpacing, ht.heading1TextFontWeight)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading1TextFontWeight, boldWeight, isLineBreak), ht.heading1TextFontSize, ht.heading1TextLineHeight, componentWidth, ht.heading1TextLetterSpacing)
             return ht.heading1MarginTop + ht.heading1PaddingTop + contentHeight +
                 ht.heading1UnderlineHeight + ht.heading1UnderlineSpacing +
                 ht.heading1PaddingBottom + ht.heading1MarginBottom
         case 2 =>
-            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading2TextFontSize, ht.heading2TextLineHeight, componentWidth, ht.heading2TextLetterSpacing, ht.heading2TextFontWeight)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading2TextFontWeight, boldWeight, isLineBreak), ht.heading2TextFontSize, ht.heading2TextLineHeight, componentWidth, ht.heading2TextLetterSpacing)
             return ht.heading2MarginTop + ht.heading2PaddingTop + contentHeight +
                 ht.heading2UnderlineHeight + ht.heading2UnderlineSpacing +
                 ht.heading2PaddingBottom + ht.heading2MarginBottom
         case 3 =>
-            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading3TextFontSize, ht.heading3TextLineHeight, componentWidth, ht.heading3TextLetterSpacing, ht.heading3TextFontWeight)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading3TextFontWeight, boldWeight, isLineBreak), ht.heading3TextFontSize, ht.heading3TextLineHeight, componentWidth, ht.heading3TextLetterSpacing)
             return ht.heading3MarginTop + ht.heading3PaddingTop + contentHeight +
                 ht.heading3PaddingBottom + ht.heading3MarginBottom
         case 4 =>
-            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading4TextFontSize, ht.heading4TextLineHeight, componentWidth, ht.heading4TextLetterSpacing, ht.heading4TextFontWeight)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading4TextFontWeight, boldWeight, isLineBreak), ht.heading4TextFontSize, ht.heading4TextLineHeight, componentWidth, ht.heading4TextLetterSpacing)
             return ht.heading4MarginTop + ht.heading4PaddingTop + contentHeight +
                 ht.heading4PaddingBottom + ht.heading4MarginBottom
         case 5 =>
-            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading5TextFontSize, ht.heading5TextLineHeight, componentWidth, ht.heading5TextLetterSpacing, ht.heading5TextFontWeight)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading5TextFontWeight, boldWeight, isLineBreak), ht.heading5TextFontSize, ht.heading5TextLineHeight, componentWidth, ht.heading5TextLetterSpacing)
             return ht.heading5MarginTop + ht.heading5PaddingTop + contentHeight +
                 ht.heading5PaddingBottom + ht.heading5MarginBottom
         case 6 =>
-            let contentHeight = estimateTextContentHeight(collectInlineText(node, isLineBreak), ht.heading6TextFontSize, ht.heading6TextLineHeight, componentWidth, ht.heading6TextLetterSpacing, ht.heading6TextFontWeight)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading6TextFontWeight, boldWeight, isLineBreak), ht.heading6TextFontSize, ht.heading6TextLineHeight, componentWidth, ht.heading6TextLetterSpacing)
             return ht.heading6MarginTop + ht.heading6PaddingTop + contentHeight +
                 ht.heading6PaddingBottom + ht.heading6MarginBottom
         case _ =>
@@ -211,9 +359,9 @@ public func getMarkdownComponentWidth(paddingH!: Float64 = 0.0): Float64 {
 /**
  * 估算段落节点高度
  *
- * 按字符类型分别计算宽度：CJK/全角字符宽度 ≈ fontSize，ASCII 字符宽度 ≈ 0.55×fontSize。
- * 修正原统一 0.8 系数对全中文段落的行数低估（中文每字符实际宽度近似等于字号）。
- * 综合考虑 letterSpacing（每两字符间增加一个间距）与 fontWeight（粗体加宽）对宽度的影响。
+ * 使用系统字体度量（ohos.measure）精确计算文本换行高度，支持含加粗/斜体
+ * 内联节点的段落。单一粗细行用 MeasureTextSize(constraintWidth) 获取精确
+ * 换行高度；混合粗细行逐段 MeasureText 求宽度再按 componentWidth 计算行数。
  *
  * @param p Paragraph节点
  * @param theme MarkdownTheme
@@ -225,142 +373,11 @@ func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWi
     let fontSize: Float64 = pt.paragraphTextFontSize
     let lineHeight: Float64 = pt.paragraphTextLineHeight
     let letterSpacing: Float64 = pt.paragraphTextLetterSpacing
-    let fontWeight: FontWeight = pt.paragraphTextFontWeight
-    let text: String = collectInlineText(p, theme.globalTheme.isLineBreak)
-    let contentHeight: Float64 = estimateTextContentHeight(text, fontSize, lineHeight, componentWidth, letterSpacing, fontWeight)
+    let segments = collectInlineSegments(p, pt.paragraphTextFontWeight, theme.boldTheme.boldTextFontWeight, theme.globalTheme.isLineBreak)
+    let contentHeight: Float64 = measureTextHeightBySegments(segments, fontSize, lineHeight, componentWidth, letterSpacing)
     let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
         pt.paragraphPaddingBottom + pt.paragraphMarginBottom
     return result
-}
-
-/**
- * 估算文本内容高度（按字符宽度累加换行）
- *
- * 文本中的 \n 视为强制换行；每段非空子串按累计宽度 / componentWidth 向上取整为行数，
- * 至少 1 行。空串视为 1 行（避免 0 高度导致排版塌陷）。
- *
- * @param text 段落纯文本（可能含 \n）
- * @param fontSize 字号
- * @param lineHeight 行高
- * @param componentWidth 控件宽度
- * @param letterSpacing 字符间距（vp），每两字符间增加一个间距
- * @param fontWeight 字体粗细，影响字符实际宽度
- * @return 内容高度（vp）
- */
-func estimateTextContentHeight(text: String, fontSize: Float64, lineHeight: Float64, componentWidth: Float64, letterSpacing: Float64, fontWeight: FontWeight): Float64 {
-    let lines: Array<String> = text.split("\n")
-    var totalLines: Float64 = 0.0
-    for (line in lines) {
-        let width: Float64 = estimateTextWidth(line, fontSize, letterSpacing, fontWeight)
-        let cnt: Float64 = if (width <= 0.0) {
-            1.0
-        } else {
-            let raw: Float64 = ceil(width / componentWidth)
-            if (raw > 1.0) { raw } else { 1.0 }
-        }
-        totalLines += cnt
-    }
-    return totalLines * lineHeight
-}
-
-/**
- * 估算文本宽度（按字符类型累加 + letterSpacing + fontWeight）
- *
- * 宽字符：CJK 表意文字、平假名/片假名、韩文兼容字母、CJK 标点、全角形式 —— 宽度 ≈ fontSize
- * 窄字符：ASCII、半角标点 —— 宽度 ≈ 0.55 × fontSize
- * 字符间距：N 个字符增加 (N-1) 个 letterSpacing
- * 字体粗细：粗体加宽，由 fontWeightWidthFactor 提供
- *
- * @param text 文本
- * @param fontSize 字号
- * @param letterSpacing 字符间距（vp）
- * @param fontWeight 字体粗细
- * @return 文本宽度（vp）
- */
-func estimateTextWidth(text: String, fontSize: Float64, letterSpacing: Float64, fontWeight: FontWeight): Float64 {
-    var width: Float64 = 0.0
-    let arr: Array<Rune> = text.toRuneArray()
-    let charCount: Int64 = arr.size
-    for (r in arr) {
-        if (isWideRune(r)) {
-            width += fontSize
-        } else {
-            width += fontSize * 0.55
-        }
-    }
-    if (charCount > 1) {
-        width += letterSpacing * Float64(charCount - 1)
-    }
-    width *= fontWeightWidthFactor(fontWeight)
-    return width
-}
-
-/**
- * 字体粗细对字符宽度的修正系数
- *
- * 经验值，参考常见字体度量：粗体字符比正常字符宽约 5-12%。
- *
- * @param weight 字体粗细
- * @return 宽度修正系数（1.0 = 不变）
- */
-func fontWeightWidthFactor(weight: FontWeight): Float64 {
-    match (weight) {
-        case FontWeight.W100 => 0.95
-        case FontWeight.W200 => 0.96
-        case FontWeight.W300 => 0.97
-        case FontWeight.W400 => 1.0
-        case FontWeight.W500 => 1.02
-        case FontWeight.W600 => 1.05
-        case FontWeight.W700 => 1.08
-        case FontWeight.W800 => 1.10
-        case FontWeight.W900 => 1.12
-        case _ => 1.0
-    }
-}
-
-/**
- * 判定字符是否为宽字符（CJK 表意文字、全角符号等）
- *
- * 覆盖 Unicode 区段：
- * - U+3000..U+303F  CJK 标点和符号
- * - U+3040..U+309F  平假名
- * - U+30A0..U+30FF  片假名
- * - U+3130..U+318F  韩文兼容字母
- * - U+3400..U+4DBF  CJK 统一表意文字扩展A
- * - U+4E00..U+9FFF  CJK 统一表意文字
- * - U+F900..U+FAFF  CJK 兼容表意文字
- * - U+FF00..U+FFEF  全角形式（含全角标点、全角ASCII）
- *
- * @param r 字符
- * @return true 表示宽度近似等于字号
- */
-func isWideRune(r: Rune): Bool {
-    let v: UInt32 = UInt32(r)
-    if (v >= UInt32(0x3000) && v <= UInt32(0x303F)) {
-        return true
-    }
-    if (v >= UInt32(0x3040) && v <= UInt32(0x309F)) {
-        return true
-    }
-    if (v >= UInt32(0x30A0) && v <= UInt32(0x30FF)) {
-        return true
-    }
-    if (v >= UInt32(0x3130) && v <= UInt32(0x318F)) {
-        return true
-    }
-    if (v >= UInt32(0x3400) && v <= UInt32(0x4DBF)) {
-        return true
-    }
-    if (v >= UInt32(0x4E00) && v <= UInt32(0x9FFF)) {
-        return true
-    }
-    if (v >= UInt32(0xF900) && v <= UInt32(0xFAFF)) {
-        return true
-    }
-    if (v >= UInt32(0xFF00) && v <= UInt32(0xFFEF)) {
-        return true
-    }
-    return false
 }
 
 /**
@@ -398,6 +415,8 @@ func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme): Float64
 func estimateBlockquoteNodeHeight(bq: BlockQuote, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     let bqt: BlockQuoteTheme = theme.blockQuoteTheme
     let innerBlockSpacing: Float64 = Float64(bqt.blockQuoteChildSpacing)
+    // 块引用内容宽度 = 控件宽度 - 左右内边距 - 左侧边框宽度
+    let innerWidth: Float64 = componentWidth - bqt.blockQuotePaddingLeft - bqt.blockQuotePaddingRight - bqt.blockQuoteLeftBorderWidth
     var innerHeight: Float64 = 0.0
     var first: Bool = true
     for (child in bq.iterateChildren()) {
@@ -405,7 +424,7 @@ func estimateBlockquoteNodeHeight(bq: BlockQuote, theme: MarkdownTheme, componen
             innerHeight += innerBlockSpacing
         }
         first = false
-        innerHeight += estimateBlockNodeHeight(child, theme, componentWidth, innerBlockSpacing)
+        innerHeight += estimateBlockNodeHeight(child, theme, innerWidth, innerBlockSpacing)
     }
     return bqt.blockQuoteMarginTop + bqt.blockQuotePaddingTop + innerHeight +
         bqt.blockQuotePaddingBottom + bqt.blockQuoteMarginBottom
@@ -450,6 +469,30 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
     } else {
         bulletTheme.bulletListBulletTextLineHeight
     }
+    // 前缀宽度：列表符号/序号文本宽度 + 间距，需从内容宽度中扣除
+    let prefixWidth: Float64 = if (isOrdered) {
+        let markerWidthPx = Measure.MeasureText(MeasureOptions(
+            textContent: "1.",
+            fontSize: Some(orderedTheme.orderedListMarkerTextFontSize.fp),
+            fontWeight: orderedTheme.orderedListMarkerTextFontWeight
+        ))
+        px2vp(markerWidthPx.px).getOrThrow().value + orderedTheme.orderedListMarkerSpacing
+    } else {
+        let bulletWidthPx = Measure.MeasureText(MeasureOptions(
+            textContent: "\u{25CF}",
+            fontSize: Some(bulletTheme.bulletListBulletTextFontSize.fp),
+            fontWeight: bulletTheme.bulletListBulletTextFontWeight
+        ))
+        px2vp(bulletWidthPx.px).getOrThrow().value + bulletTheme.bulletListBulletSpacing
+    }
+    // 内容宽度 = 控件宽度 - 前缀宽度 - 列表左右内边距
+    let listPaddingH: Float64 = if (isOrdered) {
+        orderedTheme.orderedListPaddingLeft + orderedTheme.orderedListPaddingRight
+    } else {
+        bulletTheme.bulletListPaddingLeft + bulletTheme.bulletListPaddingRight
+    }
+    let contentWidth: Float64 = componentWidth - prefixWidth - listPaddingH
+    let effectiveContentWidth: Float64 = if (contentWidth > 1.0) { contentWidth } else { 1.0 }
     let marginTop: Float64 = if (isOrdered) {
         orderedTheme.orderedListMarginTop
     } else {
@@ -479,7 +522,7 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
                 innerHeight += childSpacing
             }
             first = false
-            innerHeight += estimateListItemContentHeight(child, theme, componentWidth, childChildSpacing, paragraphLineHeight, prefixHeight)
+            innerHeight += estimateListItemContentHeight(child, theme, effectiveContentWidth, childChildSpacing, paragraphLineHeight, prefixHeight)
         }
     }
     return marginTop + paddingTop + innerHeight + paddingBottom + marginBottom
@@ -550,14 +593,14 @@ func estimateTableNodeHeight(tb: TableBlock, theme: MarkdownTheme): Float64 {
                 for (row in child.iterateChildren()) {
                     if (row is TableRow) {
                         totalRows++
-                        contentHeight += estimateTableRowContentHeight(row, tt, true, cellContentWidth, cellPaddingTop, cellPaddingBottom, isLineBreak)
+                        contentHeight += estimateTableRowContentHeight(row, tt, true, cellContentWidth, cellPaddingTop, cellPaddingBottom, isLineBreak, theme.boldTheme.boldTextFontWeight)
                     }
                 }
             case _: TableBody =>
                 for (row in child.iterateChildren()) {
                     if (row is TableRow) {
                         totalRows++
-                        contentHeight += estimateTableRowContentHeight(row, tt, false, cellContentWidth, cellPaddingTop, cellPaddingBottom, isLineBreak)
+                        contentHeight += estimateTableRowContentHeight(row, tt, false, cellContentWidth, cellPaddingTop, cellPaddingBottom, isLineBreak, theme.boldTheme.boldTextFontWeight)
                     }
                 }
             case _ => ()
@@ -573,7 +616,7 @@ func estimateTableNodeHeight(tb: TableBlock, theme: MarkdownTheme): Float64 {
         tt.tablePaddingBottom + tt.tableMarginBottom
 }
 
-func estimateTableRowContentHeight(row: CommonmarkNode, tt: TableTheme, isHeader: Bool, cellContentWidth: Float64, cellPaddingTop: Float64, cellPaddingBottom: Float64, isLineBreak: Bool): Float64 {
+func estimateTableRowContentHeight(row: CommonmarkNode, tt: TableTheme, isHeader: Bool, cellContentWidth: Float64, cellPaddingTop: Float64, cellPaddingBottom: Float64, isLineBreak: Bool, boldWeight: FontWeight): Float64 {
     let fontSize: Float64 = if (isHeader) { tt.tableTitleTextFontSize } else { tt.tableContentTextFontSize }
     let lineHeight: Float64 = if (isHeader) { tt.tableTitleTextLineHeight } else { tt.tableContentTextLineHeight }
     let fontWeight: FontWeight = if (isHeader) { tt.tableTitleTextFontWeight } else { tt.tableContentTextFontWeight }
@@ -581,8 +624,8 @@ func estimateTableRowContentHeight(row: CommonmarkNode, tt: TableTheme, isHeader
     var maxLines: Float64 = 1.0
     for (cell in row.iterateChildren()) {
         if (cell is TableCell) {
-            let text: String = collectInlineText(cell, isLineBreak)
-            let textHeight: Float64 = estimateTextContentHeight(text, fontSize, lineHeight, cellContentWidth, letterSpacing, fontWeight)
+            let segments = collectInlineSegments(cell, fontWeight, boldWeight, isLineBreak)
+            let textHeight: Float64 = measureTextHeightBySegments(segments, fontSize, lineHeight, cellContentWidth, letterSpacing)
             let lines: Float64 = textHeight / lineHeight
             if (lines > maxLines) {
                 maxLines = lines

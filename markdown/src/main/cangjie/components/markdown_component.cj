@@ -1,7 +1,6 @@
 package markdown.components
 
 import ohos.state_macro_manage.*
-import ohos.hilog.*
 
 protected let prism: Prism = Prism(GrammarLocatorGrammarUtils())
 
@@ -146,7 +145,6 @@ public class MarkdownComponent {
             })
             .interopOnSizeChange({
                 old, new =>
-                    Hilog.error(1, "1", 'interopOnSizeChange: ${new.height}vp')
                     if (componentWidth != new.width) {
                         componentWidth = new.width
                         tableBlockComponentWidth = new.width

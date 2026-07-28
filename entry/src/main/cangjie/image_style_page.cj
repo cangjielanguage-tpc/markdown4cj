@@ -117,12 +117,12 @@ class ImageStylePage {
         let incremental = parseBool(cfg_incrementalAnalysis)
         incrementalAnalysis = incremental
         arr = fullContent.toRuneArray()
-        mdStr = ""
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
             estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
         } else {
+            mdStr = ""
             let number = textNumber
             let time = timeMs
             let total = arr.size

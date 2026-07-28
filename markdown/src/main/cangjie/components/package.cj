@@ -48,6 +48,8 @@ internal import commonmark4cj.commonmark.Text as CommonmarkText
 internal import commonmark4cj.commonmark.Image as CommonmarkImage
 internal import commonmark4cj.commonmark.Link as CommonmarkLink
 internal import commonmark4cj.commonmark.Node as CommonmarkNode
+internal import commonmark4cj.commonmark.StrongEmphasis
+internal import commonmark4cj.commonmark.Emphasis
 internal import commonmark4cj.table.TableBlock
 internal import commonmark4cj.table.TableRow
 internal import commonmark4cj.table.TableHead
@@ -146,6 +148,8 @@ internal import ohos.component.TextSpanType
 internal import ohos.component.TextResponseType
 internal import ohos.component.GestureEvent
 internal import kit.UIKit.LongPressGesture
+internal import kit.UIKit.Measure
+internal import kit.UIKit.MeasureOptions
 internal import ohos.concurrency.launch
 internal import ohos.prompt_action.PromptAction
 internal import ohos.pasteboard.createData
