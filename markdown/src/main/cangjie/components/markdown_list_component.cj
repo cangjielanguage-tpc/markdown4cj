@@ -170,6 +170,30 @@ public class MarkdownListComponent {
             .margin(right: listPrefixSpacing(isBullet, markdownConfiguration.markdownTheme))
             .halfLeading(true)
             .textAlign(TextAlign.Center)
+            .transition(
+               TransitionEffect.asymmetric(
+                 if(listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled){
+                    TransitionEffect.opacity(0.0).animation(AnimateParam(duration:listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration))
+                 }else{ TransitionEffect.IDENTITY}
+                 ,
+                 TransitionEffect.IDENTITY
+               )
+             )
+             .onAppear({ =>
+                // 段落加载动画开始回调在组件显示时触发
+                if (listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
+                    if (let Some(cb) <- listMarkdownConfiguration.paragraphAnimationStart) {
+                        cb()
+                    }
+                    let duration = listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
+                    let endCb = listMarkdownConfiguration.paragraphAnimationEnd
+                    Timer.once(Int64(duration) * Duration.millisecond, { =>
+                        if (let Some(cb) <- endCb) {
+                            cb()
+                        }
+                    })
+                }
+            })
     }
 
     /**
@@ -185,6 +209,30 @@ public class MarkdownListComponent {
             .selectedColor(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSelectedColor)
             .select(item.isTaskListSelected)
             .enabled(false)
+            .transition(
+               TransitionEffect.asymmetric(
+                 if(listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled){
+                    TransitionEffect.opacity(0.0).animation(AnimateParam(duration:listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration))
+                 }else{ TransitionEffect.IDENTITY}
+                 ,
+                 TransitionEffect.IDENTITY
+               )
+             )
+             .onAppear({ =>
+                // 段落加载动画开始回调在组件显示时触发
+                if (listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
+                    if (let Some(cb) <- listMarkdownConfiguration.paragraphAnimationStart) {
+                        cb()
+                    }
+                    let duration = listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
+                    let endCb = listMarkdownConfiguration.paragraphAnimationEnd
+                    Timer.once(Int64(duration) * Duration.millisecond, { =>
+                        if (let Some(cb) <- endCb) {
+                            cb()
+                        }
+                    })
+                }
+            })
     }
 
     /**

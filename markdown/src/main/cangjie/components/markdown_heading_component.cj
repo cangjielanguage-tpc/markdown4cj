@@ -151,7 +151,7 @@ class MarkdownHeadingComponent {
                   && headingMarkdownConfiguration.isBlockImageCustom.isSome() && headingNodeViewList[0].imageAltText.isSome()
                   && headingMarkdownConfiguration.isBlockImageCustom.getOrThrow()(headingNodeViewList[0].imageAltText.getOrThrow())){
                     // card图片组件
-                    blockImageCardComponent(headingNodeViewList[0].imageAltText,headingNodeViewList[0].imageUrl(),headingNodeViewList[0].imageTitle())
+                    blockImageCardComponent(headingNodeViewList[0].imageAltText,headingNodeViewList[0].imageUrl,headingNodeViewList[0].imageTitle)
                 } else if (!headingMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
                     if (headingMarkdownConfiguration.imageReplaceCallback.isNone()) {
                         if (headingNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
@@ -381,7 +381,7 @@ class MarkdownHeadingComponent {
                     if(spanListNodeView.linkUrl.isSome() && spanListMarkdownConfiguration.isInLineLinkCustom.isSome()
                         && spanListMarkdownConfiguration.isInLineLinkCustom.getOrThrow()(spanListNodeView.linkUrl.getOrThrow())){
                         // 行内链接卡片组件
-                        inlineLinkCardComponent(spanListNodeView.linkUrl(), spanListNodeView.linkTitle)
+                        inlineLinkCardComponent(spanListNodeView.linkUrl, spanListNodeView.linkTitle)
                     }else{
                         if (isOneLink) {
                             spanLinkComponent(
@@ -405,7 +405,7 @@ class MarkdownHeadingComponent {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
                     if((spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage") && spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
                         && spanListMarkdownConfiguration.isInLineImageCustom.getOrThrow()(spanListNodeView.imageAltText.getOrThrow())){
-                        inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl(), spanListNodeView.imageTitle())
+                        inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl, spanListNodeView.imageTitle)
                     }else{
                         spanImageComponent(
                         spanListNodeView,

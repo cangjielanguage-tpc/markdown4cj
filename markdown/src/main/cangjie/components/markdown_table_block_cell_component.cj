@@ -251,7 +251,7 @@ class MarkdownTableBlockCellComponent {
                     if(spanListNodeView.linkUrl.isSome() && spanListMarkdownConfiguration.isInLineLinkCustom.isSome()
                         && spanListMarkdownConfiguration.isInLineLinkCustom.getOrThrow()(spanListNodeView.linkUrl.getOrThrow())){
                         // 行内链接卡片组件
-                        inlineLinkCardComponent(spanListNodeView.linkUrl(), spanListNodeView.linkTitle)
+                        inlineLinkCardComponent(spanListNodeView.linkUrl, spanListNodeView.linkTitle)
                     }else{
                         // 链接, TOC列表链接
                         spanLinkComponent(
@@ -265,7 +265,7 @@ class MarkdownTableBlockCellComponent {
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     if((spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage") && spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
                         && spanListMarkdownConfiguration.isInLineImageCustom.getOrThrow()(spanListNodeView.imageAltText.getOrThrow())){
-                        inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl(), spanListNodeView.imageTitle())
+                        inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl, spanListNodeView.imageTitle)
                     }else{
                         spanImageComponent(
                         spanListNodeView,
