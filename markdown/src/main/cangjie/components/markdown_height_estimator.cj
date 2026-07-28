@@ -96,7 +96,7 @@ func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, compone
             }
             return h
         case lmb: LatexMathBlock =>
-            return estimateLatexMathBlockNodeHeight(lmb, theme)
+            return estimateLatexMathBlockNodeHeight(lmb, theme, componentWidth)
         case clb: FencedCodeBlockListBlock =>
             return estimateCodeListBlockNodeHeight(clb, theme)
         case _: BlockAudio =>
@@ -381,6 +381,57 @@ func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWi
 }
 
 /**
+ * 估算代码块按钮栏高度（代码类型文本 + 复制按钮 + 全屏按钮）
+ *
+ * 渲染端 codeBlockButtonComponent 为 Row(alignItems=Center)，外层 margin:
+ * top=8.0, bottom=codeBlockTitleLayoutMarginBottom。内容高度取各子元素最大值：
+ * - 代码类型文本（codeTypeTextLineHeight，仅当代码非空时显示）
+ * - 复制按钮（codeBlockCopyIconHeight 或 codeCopyTextLineHeight）
+ * - 全屏按钮（codeBlockFullScreenIconHeight 或 codeFullScreenTextLineHeight）
+ *
+ * @param theme MarkdownTheme
+ * @return 按钮栏总高度（vp，含 margin）
+ */
+func estimateCodeButtonBarHeight(theme: MarkdownTheme): Float64 {
+    let ct: CodeBlockTheme = theme.codeBlockTheme
+    // 代码类型文本行高（始终显示，当 isCodeNone=true）
+    var contentHeight: Float64 = codeTypeTextLineHeight(theme)
+    // 复制按钮高度
+    if (ct.codeBlockCopyButtonIsShow) {
+        var copyBtnHeight: Float64 = 0.0
+        if (ct.codeBlockCopyIcon.isSome()) {
+            copyBtnHeight = ct.codeBlockCopyIconHeight
+        }
+        if (ct.codeBlockCopyTextIsShow) {
+            let h: Float64 = codeCopyTextLineHeight(theme)
+            if (h > copyBtnHeight) {
+                copyBtnHeight = h
+            }
+        }
+        if (copyBtnHeight > contentHeight) {
+            contentHeight = copyBtnHeight
+        }
+    }
+    // 全屏按钮高度
+    if (ct.codeBlockFullScreenButtonIsShow) {
+        var fsBtnHeight: Float64 = 0.0
+        if (ct.codeBlockFullScreenIcon.isSome()) {
+            fsBtnHeight = ct.codeBlockFullScreenIconHeight
+        }
+        if (ct.codeBlockFullScreenTextIsShow) {
+            let h: Float64 = codeFullScreenTextLineHeight(theme)
+            if (h > fsBtnHeight) {
+                fsBtnHeight = h
+            }
+        }
+        if (fsBtnHeight > contentHeight) {
+            contentHeight = fsBtnHeight
+        }
+    }
+    return 8.0 + contentHeight + ct.codeBlockTitleLayoutMarginBottom
+}
+
+/**
  * 估算代码块节点高度
  *
  * @param literal 代码内容
@@ -399,7 +450,13 @@ func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme): Float64
     }
     let lineHeight: Float64 = ct.codeBlockTextLineHeight
     let codeContentHeight: Float64 = Float64(lines) * lineHeight
-    return ct.codeBlockMarginTop + ct.codeBlockPaddingTop + ct.codeBlockBorderWidth * 2.0 + codeContentHeight +
+    // 按钮栏高度（与渲染端 codeBlockButtonComponent 一致：仅当代码非空时显示）
+    let buttonBarHeight: Float64 = if (normalized.trimAscii().size > 0) {
+        estimateCodeButtonBarHeight(theme)
+    } else {
+        0.0
+    }
+    return ct.codeBlockMarginTop + ct.codeBlockPaddingTop + ct.codeBlockBorderWidth * 2.0 + buttonBarHeight + codeContentHeight +
         ct.codeBlockPaddingBottom + ct.codeBlockMarginBottom
 }
 
@@ -721,27 +778,47 @@ func estimateDescListNodeHeight(dl: DescList, theme: MarkdownTheme, componentWid
 /**
  * 估算块级数学公式节点高度
  *
- * 若 latexMathDefaultText 为 true，则未加载时显示原始 latex 文本，
- * 按文本行数 × 字号估算；否则高度依赖运行时渲染的图片尺寸，返回 0。
+ * 渲染端有两种状态：
+ * 1. isLatexMathBlockClose=false 且 latexMathDefaultText=true：直接显示原始 latex 文本（Text 组件）
+ * 2. isLatexMathBlockClose=true：使用 MarkdownLatexMathBlockComponent，初始也显示文本，
+ *    解析完成后替换为图片（图片高度运行时确定，无法预计算）
+ *
+ * 两种状态下初始显示的都是文本，因此按文本高度估算。
+ * 原实现用 lineCount × fontSize 估算，未考虑实际行高（通常为 fontSize × 1.2+）
+ * 和文本换行。现改用 Measure.MeasureTextSize 获取精确高度。
  *
  * @param lmb LatexMathBlock节点
  * @param theme MarkdownTheme
+ * @param componentWidth 控件宽度
  * @return 块高度（vp）
  */
-func estimateLatexMathBlockNodeHeight(lmb: LatexMathBlock, theme: MarkdownTheme): Float64 {
+func estimateLatexMathBlockNodeHeight(lmb: LatexMathBlock, theme: MarkdownTheme, componentWidth: Float64): Float64 {
     let lmt: LatexMathTheme = theme.latexMathTheme
     if (!lmt.latexMathDefaultText) {
         return 0.0
     }
     let latex: String = lmb.latex
-    let fontSize: Float64 = lmt.latexMathDefaultTextFontSize
-    let lines: Array<String> = latex.split("\n")
-    var lineCount: Int64 = Int64(lines.size)
-    if (lineCount < 1) {
-        lineCount = 1
+    // 约束宽度 = 控件宽度 - 左右内边距 - 左右外边距
+    let constraintWidth: Float64 = componentWidth - lmt.latexMathPaddingLeft - lmt.latexMathPaddingRight -
+        lmt.latexMathMarginLeft - lmt.latexMathMarginRight
+    let effectiveConstraint: Float64 = if (constraintWidth > 0.0) { constraintWidth } else { componentWidth }
+    let size = Measure.MeasureTextSize(MeasureOptions(
+        textContent: latex,
+        fontSize: Some(lmt.latexMathDefaultTextFontSize.fp),
+        fontWeight: lmt.latexMathDefaultTextFontWeight,
+        constraintWidth: Some(effectiveConstraint.vp)
+    ))
+    let contentHeight: Float64 = px2vp(size.height.px).getOrThrow().value
+    let effectiveContentHeight: Float64 = if (contentHeight > 0.0) { contentHeight } else {
+        // 回退：按行数 × fontSize 估算
+        let lines: Array<String> = latex.split("\n")
+        var lineCount: Int64 = Int64(lines.size)
+        if (lineCount < 1) {
+            lineCount = 1
+        }
+        Float64(lineCount) * lmt.latexMathDefaultTextFontSize
     }
-    let contentHeight: Float64 = Float64(lineCount) * fontSize
-    return lmt.latexMathMarginTop + lmt.latexMathPaddingTop + contentHeight +
+    return lmt.latexMathMarginTop + lmt.latexMathPaddingTop + effectiveContentHeight +
         lmt.latexMathPaddingBottom + lmt.latexMathMarginBottom
 }
 
@@ -749,8 +826,17 @@ func estimateLatexMathBlockNodeHeight(lmb: LatexMathBlock, theme: MarkdownTheme)
  * 估算组合代码块节点高度
  *
  * FencedCodeBlockListBlock 是多个 FencedCodeBlock 组合而成的标签页式代码块。
- * 内容区高度取所有子代码块中最大者（标签页容器需容纳最大内容），
- * 标签栏高度按 codeBlockListTitleTextSize 近似估算。
+ * 渲染端 MarkdownCodeBlockListComponent 结构为：
+ *   Row > Column(margin, padding) {
+ *     codeBlockTitleComponent (标签栏, margin(bottom: codeBlockTitleLayoutMarginBottom))
+ *     codeBlockComponent: Column(border) {
+ *       codeBlockButtonComponent (按钮栏, margin(top:8, bottom: codeBlockTitleLayoutMarginBottom))
+ *       Row(行号 + 代码文本)
+ *     }
+ *   }
+ * 内容区高度取所有子代码块中最大者（标签页容器需容纳最大内容）。
+ * 注意：组合代码块有自己的标签栏 + 按钮栏，不再复用 estimateCodeBlockNodeHeight
+ * （后者包含 margin/padding/border，会导致重复计入）。
  *
  * @param clb FencedCodeBlockListBlock节点
  * @param theme MarkdownTheme
@@ -758,33 +844,53 @@ func estimateLatexMathBlockNodeHeight(lmb: LatexMathBlock, theme: MarkdownTheme)
  */
 func estimateCodeListBlockNodeHeight(clb: FencedCodeBlockListBlock, theme: MarkdownTheme): Float64 {
     let ct: CodeBlockTheme = theme.codeBlockTheme
-    var maxCodeHeight: Float64 = 0.0
+    let lineHeight: Float64 = ct.codeBlockTextLineHeight
+    var maxCodeContentHeight: Float64 = 0.0
+    var hasNonEmptyCode: Bool = false
     for (child in clb.iterateChildren()) {
         match (child) {
             case fcb: FencedCodeBlock =>
-                let h: Float64 = estimateCodeBlockNodeHeight(fcb.getLiteral(), theme)
-                if (h > maxCodeHeight) {
-                    maxCodeHeight = h
+                // 与渲染端一致移除末尾换行
+                let normalized: String = fcb.getLiteral().removeSuffix("\n")
+                if (normalized.trimAscii().size > 0) {
+                    hasNonEmptyCode = true
+                }
+                let codeLines: Array<String> = normalized.split("\n")
+                var lines: Int64 = Int64(codeLines.size)
+                if (lines < 1) {
+                    lines = 1
+                }
+                let h: Float64 = Float64(lines) * lineHeight
+                if (h > maxCodeContentHeight) {
+                    maxCodeContentHeight = h
                 }
             case _ => ()
         }
     }
-    if (maxCodeHeight == 0.0) {
-        maxCodeHeight = ct.codeBlockTextLineHeight
+    if (maxCodeContentHeight == 0.0) {
+        maxCodeContentHeight = lineHeight
     }
-    // 标签栏近似高度（按标题字号 + 内外边距近似），不重复计入代码块自身的外部 margin
-    let tabBarHeight: Float64 = ct.codeBlockListTitleSelectTextSize
-    // 减去单个代码块已计入的 codeBlockMarginTop/Bottom，避免叠加
-    let innerCodeHeight: Float64 = maxCodeHeight - ct.codeBlockMarginTop - ct.codeBlockMarginBottom
-    let innerHeight: Float64 = if (innerCodeHeight > 0.0) { innerCodeHeight } else { maxCodeHeight }
-    return ct.codeBlockMarginTop + ct.codeBlockPaddingTop + ct.codeBlockBorderWidth * 2.0 + tabBarHeight + innerHeight +
+    // 标签栏高度（标题字号近似 + 内边距 top/bottom 各 5）+ 底部 margin
+    let tabBarHeight: Float64 = ct.codeBlockListTitleSelectTextSize + 10.0 + ct.codeBlockTitleLayoutMarginBottom
+    // 按钮栏高度（仅当代码非空时显示）
+    let buttonBarHeight: Float64 = if (hasNonEmptyCode) { estimateCodeButtonBarHeight(theme) } else { 0.0 }
+    return ct.codeBlockMarginTop + ct.codeBlockPaddingTop + ct.codeBlockBorderWidth * 2.0 + tabBarHeight + buttonBarHeight + maxCodeContentHeight +
         ct.codeBlockPaddingBottom + ct.codeBlockMarginBottom
 }
 
 /**
  * 估算音频块节点高度
  *
- * 音频组件为 Row(图标 + 标题/类型文本列 + 播放按钮)，内容高度取三者最大值。
+ * 渲染端 MarkdownAudioComponent 结构为：
+ *   Row(borderWidth, padding, margin, shadow, borderRadius) > Row(10) {
+ *     图标(iconWidth × iconHeight) / Blank(占位)
+ *     Column(titleToTypeSpacing) { Text(title, maxLines=1) + Text(type, maxLines=1) }
+ *     Text(button, width × height, maxLines=1)
+ *   }.width(100%)
+ *
+ * 内容高度 = max(iconHeight, titleTextLineHeight + titleToTypeSpacing + typeTextLineHeight, buttonHeight)
+ * 所有文本设 maxLines=1 不会换行，高度固定。
+ * shadow 不影响布局高度。
  *
  * @param theme MarkdownTheme
  * @return 块高度（vp）
@@ -804,8 +910,16 @@ func estimateAudioBlockNodeHeight(theme: MarkdownTheme): Float64 {
 /**
  * 估算视频块节点高度
  *
+ * 渲染端 MarkdownVideoComponent 结构为：
+ *   Row(padding, margin) > Column(layoutWeight=1) {
+ *     Stack { Image(width=100%, aspectRatio=16:9, borderWidth) + Text(time) }
+ *     if (videoBottomLayoutVisible) { Row(margin top) { 发布/下载按钮 } }
+ *   }
+ *
  * 视频图片宽度撑满父布局（100.percent），按默认 16:9 宽高比估算图片高度。
- * 若 videoBottomLayoutVisible，另加底部按钮行高度。
+ * 注意：videoBorderWidth 在 Image 上（非外层容器），border-box 模型下已包含在
+ * aspectRatio 计算的高度内，不应额外添加。
+ * 若 videoBottomLayoutVisible，另加底部按钮行高度（考虑各按钮独立可见性）。
  *
  * @param theme MarkdownTheme
  * @param componentWidth 控件宽度
@@ -817,22 +931,34 @@ func estimateVideoBlockNodeHeight(theme: MarkdownTheme, componentWidth: Float64)
     let imageHeight: Float64 = effectiveWidth * (9.0 / 16.0)
     var bottomLayoutHeight: Float64 = 0.0
     if (vt.videoBottomLayoutVisible) {
-        let btnHeight: Float64 = if (vt.videoReleaseButtonHeight > vt.videoDownloadButtonHeight) {
-            vt.videoReleaseButtonHeight
-        } else {
-            vt.videoDownloadButtonHeight
+        // 按各按钮独立可见性计算高度（取可见按钮中最大者）
+        var btnHeight: Float64 = 0.0
+        if (vt.videoReleaseButtonVisible) {
+            btnHeight = vt.videoReleaseButtonHeight
+        }
+        if (vt.videoDownloadButtonVisible) {
+            if (vt.videoDownloadButtonHeight > btnHeight) {
+                btnHeight = vt.videoDownloadButtonHeight
+            }
         }
         bottomLayoutHeight = vt.videoBottomLayoutMarginTop + btnHeight
     }
-    return vt.videoMarginTop + vt.videoPaddingTop + vt.videoBorderWidth * 2.0 + imageHeight + bottomLayoutHeight +
+    // videoBorderWidth 在 Image 上（border-box），不额外添加
+    return vt.videoMarginTop + vt.videoPaddingTop + imageHeight + bottomLayoutHeight +
         vt.videoPaddingBottom + vt.videoMarginBottom
 }
 
 /**
  * 估算幻灯片（Banner）块节点高度
  *
- * SlideBlock 是图片轮播容器，图片高度依赖运行时资源尺寸。
- * 若 imageTheme.imageHeight 已设置则使用，否则内容高度按 0 处理。
+ * 渲染端 MarkdownBannerComponent 结构为：
+ *   Row(padding, margin) > Swiper(layoutWeight=1) {
+ *     ForEach { Image(objectFit=Contain, autoResize) }
+ *   }
+ *
+ * 图片无显式 width/height，高度依赖运行时图片资源尺寸，无法预计算。
+ * 若 imageTheme.imageHeight 已设置则使用，否则内容高度按 0 处理
+ * （实际渲染后高度会随图片加载变化，可能触发重新布局）。
  *
  * @param theme MarkdownTheme
  * @return 块高度（vp）
@@ -848,14 +974,13 @@ func estimateBannerNodeHeight(theme: MarkdownTheme): Float64 {
 /**
  * 估算单图块节点高度
  *
- * ImageSingleBlock 是整块图片，图片高度依赖运行时资源尺寸。
- * 若 imageTheme.imageHeight 已设置则使用，否则内容高度按 0 处理。
+ * ImageSingleBlock 由 ImageSinglePlugin 将仅含单张图片的段落提升为块级。
+ * 渲染端 node_view.cj 中 ImageSingleBlock 标记为 "无需处理"（未创建 NodeView），
+ * 因此该块不参与渲染，高度返回 0。
  *
  * @param theme MarkdownTheme
  * @return 块高度（vp）
  */
 func estimateImageSingleBlockNodeHeight(theme: MarkdownTheme): Float64 {
-    let it: ImageTheme = theme.imageTheme
-    let contentHeight: Float64 = if (it.imageHeight.isSome()) { it.imageHeight.getOrThrow() } else { 0.0 }
-    return it.imageMarginTop + it.imageBorderWidth * 2.0 + contentHeight + it.imageMarginBottom
+    return 0.0
 }

@@ -1,31 +1,7 @@
 ﻿package ohos_app_cangjie_entry
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_manage.ObservedArrayList
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
-import markdown.components.*
-import markdown.components.theme.*
-import ohos.concurrency.launch
-import markdown.core.Markdown
-import markdown.plugin.HtmlPlugin
-import markdown.plugin.TaskListPlugin
-import markdown.plugin.StrikethroughPlugin
-import markdown.plugin.TablePlugin
-import markdown.plugin.LatexMathPluginV2
-import markdown.plugin.BlockAudioPlugin
-import markdown.plugin.BlockVideoPlugin
-import markdown.plugin.LinkifyPlugin
-import markdown.plugin.ImageSlidePlugin
-import markdown.plugin.ImageStylePlugin
-import markdown.plugin.CodeListPlugin
-import markdown.plugin.FootnotePlugin
-import markdown.plugin.TocPlugin
-import markdown.plugin.ImageCollectPlugin
-import markdown.plugin.NodeIdPlugin
-import ohos.hilog.*
 
 /**
  * 屏幕曝光事件列表项

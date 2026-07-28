@@ -1,11 +1,6 @@
-package ohos_app_cangjie_entry
+﻿package ohos_app_cangjie_entry
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.hybrid_base.*
-import markdown.components.*
 
 @Builder
 func titleComponent(title: String, titleColor: UInt32, isBack: Bool, safeTop: Float64) {
