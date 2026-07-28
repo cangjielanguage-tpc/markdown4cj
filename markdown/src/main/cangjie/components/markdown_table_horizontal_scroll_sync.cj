@@ -1,7 +1,5 @@
 package markdown.components
 
-import ohos.component.Scroller
-
 /**
  * 表格横向滚动同步器
  *

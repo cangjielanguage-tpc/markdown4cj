@@ -1,7 +1,5 @@
 package markdown.components
 
-import std.collection.HashMap
-
 /**
  * 可见矩形快照（窗口坐标系 px，不可变）
  * 对齐 ArkUI MarkdownVisibleRectHolder.ets 的 MarkdownVisibleRectSnapshot 接口

@@ -13,6 +13,8 @@ internal import std.sync.Mutex
 internal import std.sync.Semaphore
 internal import std.sync.SyncCounter
 internal import std.sync.Timer
+internal import std.math.ceil
+internal import std.math.floor
 
 // stdx
 internal import stdx.encoding.base64.fromBase64String
@@ -156,6 +158,8 @@ internal import ohos.image.PixelMap
 internal import ohos.image.Size
 internal import ohos.image.createImageSource
 internal import ohos.resource_manager.ResourceManager
+internal import ohos.resource_manager.AppResource
+internal import ohos.resource_manager.__GenerateResource__
 internal import ohos.state_manage.ObservedObject
 internal import ohos.state_manage.ObservedProperty
 internal import ohos.state_manage.LocalStorage

@@ -1,8 +1,5 @@
 package markdown.components
 
-import std.collection.HashMap
-import std.collection.ArrayList
-
 /**
  * 链接曝光注册表（静态）
  * 消费方（MarkdownParagraphComponent / MarkdownHeadingComponent）在aboutToAppear时
