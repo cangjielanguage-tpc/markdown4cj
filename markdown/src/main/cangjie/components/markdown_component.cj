@@ -590,7 +590,7 @@ public class MarkdownComponent {
             imageAndVideoList.clear()
             imageAndVideoList.add(all: getProp<HashSet<String>>(doc, "links", HashSet<String>()).toArray())
             let nodeView: NodeView = NodeView()
-            nodeToNodeView(doc, nodeView, nodeView, markdownConfiguration.markdownTheme.linkTheme.linkIsIcon)
+            nodeToNodeView(doc, nodeView, nodeView, markdownConfiguration, markdownConfiguration.markdownTheme.linkTheme.linkIsIcon)
             return nodeView
         } catch (e: Exception) {
             return Option<NodeView>.None

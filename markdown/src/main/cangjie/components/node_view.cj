@@ -65,6 +65,7 @@ public func nodeToNodeView(
     parentCommonmarkNode: CommonmarkNode,
     parentNewNodeView: NodeView,
     childrenNewNodeView: NodeView,
+    config:MarkdownConfiguration,
     isLinkStyle: Bool
 ): Unit {
     parentCommonmarkNode.iterateChildren().forEach(
@@ -156,11 +157,11 @@ public func nodeToNodeView(
                         childrenNodeView.linkUrl = link.getDestination()
                         childrenNodeView.linkTitle = link.getTitle()
                         let nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
-                        if (isLinkStyle || nodeText.size == 0) {
+                        if (isLinkStyle || (config.isInLineLinkCustom.isSome() && childrenNodeView.linkUrl.isSome() && config.isInLineLinkCustom()(childrenNodeView.linkUrl()))) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
                         } else {
-                            nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                            nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                         }
                     } else if (nodeType == "HeadLink") {
                         // TOC链接/标题ID链接
@@ -170,32 +171,32 @@ public func nodeToNodeView(
                         childrenNodeView.linkTitle = link.getTitle()
                         childrenNodeView.headLinkIndex = link.headIndex
                         let nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
-                        if (isLinkStyle || nodeText.size == 0) {
+                        if (isLinkStyle || (config.isInLineLinkCustom.isSome() && childrenNodeView.linkUrl.isSome() && config.isInLineLinkCustom()(childrenNodeView.linkUrl()))) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
                         } else {
-                            nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                            nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                         }
                     } else if (nodeType == "SubNode") {
                         // 下标
                         childrenNodeView.isSubNode = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "SubHtmlNode") {
                         // Html下标
                         childrenNodeView.isSubNode = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "SupNode") {
                         // 上标
                         childrenNodeView.isSupNode = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "SupHtmlNode") {
                         // Html上标
                         childrenNodeView.isSupNode = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "UnderlineNode") {
                         // 下划线
                         childrenNodeView.isUnderlineNode = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "FontNode") {
                         // FontNode
                         childrenNodeView.isFontNode = true
@@ -216,7 +217,7 @@ public func nodeToNodeView(
                             }
                         } catch (_: Exception) {
                         }
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "SpanNode") {
                         // SpanNode
                         childrenNodeView.isSpanNode = true
@@ -257,37 +258,37 @@ public func nodeToNodeView(
                             } catch (_: Exception) {
                             }
                         }
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "Emphasis") {
                         // 斜体
                         childrenNodeView.isEmphasis = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "StrongEmphasis") {
                         // 加粗
                         childrenNodeView.isStrongEmphasis = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "Strikethrough") {
                         // 删除线
                         childrenNodeView.isStrikethrough = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "HighlightNode") {
                         // 高亮文本
                         childrenNodeView.isHighlight = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "Paragraph") {
                         // 段落
                         if (childrenNodeView.isParagraph == true) {
-                            nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                            nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                         } else {
                             childrenNodeView.isParagraph = true
-                            nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                            nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                             parentNewNodeView.children.add(childrenNodeView)
                         }
                     } else if (nodeType == "Heading") {
                         // 标题
                         childrenNodeView.isHeading = true
                         childrenNodeView.headingLevel = (commonmarkChildrenNode as Heading)().getLevel()
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "IdHeading") {
                         // 标题ID
@@ -295,12 +296,12 @@ public func nodeToNodeView(
                         let idHeading = (commonmarkChildrenNode as IdHeading)()
                         childrenNodeView.headingLevel = idHeading.getLevel()
                         childrenNodeView.headingID = idHeading.id
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "FencedCodeBlockListBlock") {
                         // 围栏代码块列表
                         childrenNodeView.codeListTab = (commonmarkChildrenNode as FencedCodeBlockListBlock)().tabs
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "FencedCodeBlock") {
                         // 围栏代码块
@@ -315,28 +316,28 @@ public func nodeToNodeView(
                     } else if (nodeType == "BulletList") {
                         // 无序列表
                         childrenNodeView.isBulletList = true
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "OrderedList") {
                         // 有序列表
                         childrenNodeView.isOrderedList = true
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "ListItem") {
                         // 无序/有序列表子节点
                         childrenNodeView.orderedListNumber = commonmarkChildrenNode.listItemIndex()
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "TaskListItem") {
                         // 任务列表子节点
                         childrenNodeView.isTaskList = true
                         childrenNodeView.isTaskListSelected = (commonmarkChildrenNode as TaskListItem)().isDone()
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "BlockQuote") {
                         // 块引用
                         childrenNodeView.isQuote = true
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "LatexMathBlock") {
                         // 数学公式块
@@ -352,20 +353,20 @@ public func nodeToNodeView(
                     } else if (nodeType == "TableBlock") {
                         // 表格
                         childrenNodeView.isTable = true
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "TableHead") {
                         // 表格标题
                         childrenNodeView.isTableHead = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "TableBody") {
                         // 表格内容
                         childrenNodeView.isTableBody = true
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "TableRow") {
                         // 表格行
                         childrenNodeView.isTableRow = true
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "TableCell") {
                         // 表格格子
@@ -373,7 +374,7 @@ public func nodeToNodeView(
                         let tableCell = (commonmarkChildrenNode as TableCell)()
                         childrenNodeView.tableAlignment = renderTableCellColumnAlign(tableCell.getAlignment())
                         childrenNodeView.isTableHead = tableCell.isHeader()
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "ThematicBreak") {
                         // 分割线
@@ -381,7 +382,7 @@ public func nodeToNodeView(
                     } else if (nodeType == "FootnoteBlock") {
                         // 脚注文末内容定义
                         childrenNodeView.footnoteID = (commonmarkChildrenNode as FootnoteBlock)().noteid
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "Footnote") {
                         // 脚注行内引用标记
@@ -393,16 +394,16 @@ public func nodeToNodeView(
                     } else if (nodeType == "DescList") {
                         // 定义列表
                         childrenNodeView.isDescList = true
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "DescTerm") {
                         // 定义列表术语
                         childrenNodeView.isDescTerm = true
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "DescDef") {
                         // 定义列表释义
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "HtmlBlock") {
                         // TODO HTML块
@@ -412,10 +413,10 @@ public func nodeToNodeView(
                         // 无需处理
                     } else if (nodeType == "IgnoreBlockNode") {
                         // HTML块级别无用节点
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "IgnoreInlineNode") {
                         // Html行内无用节点
-                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, config, isLinkStyle)
                     } else if (nodeType == "ImageHtmlNode") {
                         // HTML图片
                         let imageHtmlNode = (commonmarkChildrenNode as ImageHtmlNode)()
@@ -425,7 +426,7 @@ public func nodeToNodeView(
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "SlideBlock") {
                         // 幻灯片
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "ImageSingleBlock") {
                         // TODO 图片Block
