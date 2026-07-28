@@ -1,8 +1,5 @@
 package markdown.components
 
-import std.math.ceil
-import std.math.floor
-
 /**
  * 预计算 Markdown 渲染高度
  *
@@ -375,7 +372,10 @@ func isWideRune(r: Rune): Bool {
  */
 func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme): Float64 {
     let ct: CodeBlockTheme = theme.codeBlockTheme
-    let codeLines: Array<String> = literal.split("\n")
+    // 与渲染端一致（node_view.cj: getLiteral().removeSuffix("\n")），
+    // 围栏/缩进代码块 literal 末尾会多一个换行符，需移除避免 split 后多计一行空行
+    let normalized: String = literal.removeSuffix("\n")
+    let codeLines: Array<String> = normalized.split("\n")
     var lines: Int64 = Int64(codeLines.size)
     if (lines < 1) {
         lines = 1

@@ -1,8 +1,5 @@
 package markdown.components
 
-import std.collection.HashMap
-import std.collection.ArrayList
-
 /**
  * 表格列宽度跟踪器（非@Observed，不触发重渲染）
  * 按单元格(row,col)跟踪最新宽度，列宽=该列所有行的最大值

@@ -1,7 +1,5 @@
 package markdown.components
 
-import std.collection.HashMap
-
 /**
  * 段落高亮注册表（静态）
  * 用户通过 highlight(nodeHash, color) 高亮指定段落，clearHighlight(nodeHash) 取消高亮，

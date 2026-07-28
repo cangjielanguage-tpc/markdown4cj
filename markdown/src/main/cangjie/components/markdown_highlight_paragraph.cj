@@ -1,8 +1,6 @@
 package markdown.components
 
 import ohos.state_macro_manage.*
-import std.collection.ArrayList
-import std.collection.HashSet
 
 /**
  * markdown XC需求相关配置 — 段落高亮

@@ -1,7 +1,6 @@
 package markdown.components
 
 import ohos.state_macro_manage.*
-import ohos.resource_manager.{AppResource, __GenerateResource__}
 
 /**
  * 表格头复制按钮组件
