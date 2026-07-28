@@ -1,12 +1,5 @@
-package ohos_app_cangjie_entry
+﻿package ohos_app_cangjie_entry
 
-import ohos.base.*
-import ohos.component.*
-import ohos.ark_interop.*
-import ohos.ark_interop_helper.*
-import kit.LocalizationKit.AppResource
-import markdown.components.*
-import markdown.components.theme.*
 
 func parseColor(s: String): Color {
     match (s) {

@@ -1,10 +1,6 @@
-package ohos_app_cangjie_entry
+﻿package ohos_app_cangjie_entry
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import markdown.components.*
 
 func isColorValue(s: String): Bool {
     return s == "#FF000000" || s == "#FFFFFFFF" || s == "#FFFF0000" ||

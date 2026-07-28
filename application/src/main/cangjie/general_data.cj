@@ -1,4 +1,4 @@
-package ohos_app_cangjie_entry
+﻿package ohos_app_cangjie_entry
 
 let colorList: Array<String> = [
     "undefined",
