@@ -46,7 +46,7 @@ class ImagePage {
     @State @Watch[onConfigChanged] var cfg_imageFitType: String = "Contain"
     @State @Watch[onConfigChanged] var cfg_imageAutoResize: String = "true"
     @State @Watch[onConfigChanged] var cfg_imagePlaceholder: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageMaximumWidth: String = "100"
+    @State @Watch[onConfigChanged] var cfg_imageMaximumWidth: String = "100%"
     @State @Watch[onConfigChanged] var cfg_imageDownloadButtonVisible: String = "true"
 
     @State @Watch[onConfigChanged] var cfg_imageMarginTop: String = "0"
@@ -59,7 +59,7 @@ class ImagePage {
     @State @Watch[onConfigChanged] var cfg_imageRadiusBottomRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_imageBorderStyle: String = "Solid"
     @State @Watch[onConfigChanged] var cfg_imageMixedLayout: String = "false"
-    @State @Watch[onConfigChanged] var cfg_imageFixedRatioWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageFixedRatioWidth: String = "0%"
     @State @Watch[onConfigChanged] var cfg_imageMaxHeight: String = "0"
     @State @Watch[onConfigChanged] var cfg_imageHeight: String = "0"
     @State @Watch[onConfigChanged] var cfg_imageMaxWidth: String = "0"
@@ -195,11 +195,11 @@ class ImagePage {
         if (let Some(v) <- parseAppResource(cfg_imagePlaceholder)) {
             imageTheme.setImagePlaceholder(v)
         }
-        imageTheme.setImageMaximumWidth(parseFloat64(cfg_imageMaximumWidth) / 100.0)
+        imageTheme.setImageMaximumWidth(parsePercent(cfg_imageMaximumWidth))
         imageTheme.setImageDownloadButtonVisible(parseBool(cfg_imageDownloadButtonVisible))
         imageTheme.setImageBorderStyle(parseBorderStyle(cfg_imageBorderStyle))
         imageTheme.setIsImageMixedLayout(parseBool(cfg_imageMixedLayout))
-        let imageFixedRatioWidth = parseFloat64(cfg_imageFixedRatioWidth) / 100.0
+        let imageFixedRatioWidth = parsePercent(cfg_imageFixedRatioWidth)
         if (imageFixedRatioWidth > 0.0) {
             imageTheme.setImageFixedRatioWidth(imageFixedRatioWidth)
         }
@@ -416,9 +416,9 @@ class ImagePage {
                                 ConfigTabSelector(title: "图片适应方式 - ", options: imageFitList, defaultValue: "Contain", configKey: "", currentValue: cfg_imageFitType, onSelect: { v => cfg_imageFitType = v })
                                 ConfigTabSelector(title: "图片自动调整 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_imageAutoResize, onSelect: { v => cfg_imageAutoResize = v })
                                 ConfigTabSelector(title: "图片默认占位图 - ", options: iconShortList, defaultValue: "undefined", configKey: "", currentValue: cfg_imagePlaceholder, onSelect: { v => cfg_imagePlaceholder = v })
-                                ConfigTabSelector(title: "图片最大宽度 - ", options: widthOrHeightList, defaultValue: "100", configKey: "", currentValue: cfg_imageMaximumWidth, onSelect: { v => cfg_imageMaximumWidth = v })
+                                ConfigTabSelector(title: "图片基于自身宽度缩放百分比 - ", options: percentList, defaultValue: "100%", configKey: "", currentValue: cfg_imageMaximumWidth, onSelect: { v => cfg_imageMaximumWidth = v })
                                 ConfigTabSelector(title: "图片是否混合布局 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_imageMixedLayout, onSelect: { v => cfg_imageMixedLayout = v })
-                                ConfigTabSelector(title: "图片固定比例宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_imageFixedRatioWidth, onSelect: { v => cfg_imageFixedRatioWidth = v })
+                                ConfigTabSelector(title: "图片基于父布局宽度缩放百分比 - ", options: percentList, defaultValue: "0%", configKey: "", currentValue: cfg_imageFixedRatioWidth, onSelect: { v => cfg_imageFixedRatioWidth = v })
                                 ConfigTabSelector(title: "图片最大高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_imageMaxHeight, onSelect: { v => cfg_imageMaxHeight = v })
                                 ConfigTabSelector(title: "图片高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_imageHeight, onSelect: { v => cfg_imageHeight = v })
                                 ConfigTabSelector(title: "图片最大宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_imageMaxWidth, onSelect: { v => cfg_imageMaxWidth = v })

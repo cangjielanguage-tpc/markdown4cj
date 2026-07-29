@@ -51,6 +51,8 @@ let spaceList: Array<String> = ["0", "0.5", "1", "2", "5", "10"]
 
 let widthOrHeightList: Array<String> = ["0", "5", "10", "20", "50", "80", "100"]
 
+let percentList: Array<String> = ["0%", "5%", "10%", "20%", "50%", "80%", "100%"]
+
 let offsetList: Array<String> = ["-6", "-4", "-2", "0", "2", "4", "6"]
 
 let smallTextSizeList: Array<String> = ["2", "4", "6", "8", "10", "12", "14"]
