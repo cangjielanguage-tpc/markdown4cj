@@ -256,7 +256,7 @@ public class LinkTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前LinkTheme对象
      */
-    public func setLinkTextBackgroundRadius(topLeft!: Float64, topRight!: Float64, bottomLeft!: Float64, bottomRight!: Float64): LinkTheme {
+    public func setLinkTextBackgroundRadius(topLeft!: Float64 = 0.0, topRight!: Float64 = 0.0, bottomLeft!: Float64 = 0.0, bottomRight!: Float64 = 0.0): LinkTheme {
         this.linkTextBackgroundRadiusTopLeft = topLeft
         this.linkTextBackgroundRadiusTopRight = topRight
         this.linkTextBackgroundRadiusBottomLeft = bottomLeft
