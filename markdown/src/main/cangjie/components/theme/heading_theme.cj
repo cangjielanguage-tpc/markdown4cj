@@ -266,10 +266,47 @@ public class HeadingTheme {
     /**
      * 设置标题的4个外边距：设置H1-H6级标题所有4个外边距为统一值
      *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前HeadingTheme对象
+     */
+    public func setMarginForAllHeadingEachLevel(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): HeadingTheme {
+        this.heading1MarginTop = top
+        this.heading1MarginRight = right
+        this.heading1MarginBottom = bottom
+        this.heading1MarginLeft = left
+        this.heading2MarginTop = top
+        this.heading2MarginRight = right
+        this.heading2MarginBottom = bottom
+        this.heading2MarginLeft = left
+        this.heading3MarginTop = top
+        this.heading3MarginRight = right
+        this.heading3MarginBottom = bottom
+        this.heading3MarginLeft = left
+        this.heading4MarginTop = top
+        this.heading4MarginRight = right
+        this.heading4MarginBottom = bottom
+        this.heading4MarginLeft = left
+        this.heading5MarginTop = top
+        this.heading5MarginRight = right
+        this.heading5MarginBottom = bottom
+        this.heading5MarginLeft = left
+        this.heading6MarginTop = top
+        this.heading6MarginRight = right
+        this.heading6MarginBottom = bottom
+        this.heading6MarginLeft = left
+        return this
+    }
+
+    /**
+     * 设置标题的4个外边距：设置H1-H6级标题所有4个外边距为统一值
+     *
      * @param margin 外边距
      * @return 当前HeadingTheme对象
      */
-    public func setMarginForAllHeading(margin: Float64): HeadingTheme {
+    public func setMarginForAllHeadingEachLevel(margin: Float64): HeadingTheme {
         this.heading1MarginTop = margin
         this.heading1MarginRight = margin
         this.heading1MarginBottom = margin
@@ -333,7 +370,7 @@ public class HeadingTheme {
      * @param left 左外边距 命名参数
      * @return 当前HeadingTheme对象
      */
-    public func setMarginForEachHeading(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme {
+    public func setMarginForEachHeadingDetail(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme {
         for (index in 0..top.size) {
             setMarginForDesignateHeading((index + 1), top: top[index])
         }
@@ -399,10 +436,47 @@ public class HeadingTheme {
     /**
      * 设置标题的4个内边距：设置H1-H6级标题所有4个内边距为统一值
      *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前HeadingTheme对象
+     */
+    public func setPaddingForAllHeadingEachLevel(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): HeadingTheme {
+        this.heading1PaddingTop = top
+        this.heading1PaddingRight = right
+        this.heading1PaddingBottom = bottom
+        this.heading1PaddingLeft = left
+        this.heading2PaddingTop = top
+        this.heading2PaddingRight = right
+        this.heading2PaddingBottom = bottom
+        this.heading2PaddingLeft = left
+        this.heading3PaddingTop = top
+        this.heading3PaddingRight = right
+        this.heading3PaddingBottom = bottom
+        this.heading3PaddingLeft = left
+        this.heading4PaddingTop = top
+        this.heading4PaddingRight = right
+        this.heading4PaddingBottom = bottom
+        this.heading4PaddingLeft = left
+        this.heading5PaddingTop = top
+        this.heading5PaddingRight = right
+        this.heading5PaddingBottom = bottom
+        this.heading5PaddingLeft = left
+        this.heading6PaddingTop = top
+        this.heading6PaddingRight = right
+        this.heading6PaddingBottom = bottom
+        this.heading6PaddingLeft = left
+        return this
+    }
+
+    /**
+     * 设置标题的4个内边距：设置H1-H6级标题所有4个内边距为统一值
+     *
      * @param padding 内边距
      * @return 当前HeadingTheme对象
      */
-    public func setPaddingForAllHeading(padding: Float64): HeadingTheme {
+    public func setPaddingForAllHeadingEachLevel(padding: Float64): HeadingTheme {
         this.heading1PaddingTop = padding
         this.heading1PaddingRight = padding
         this.heading1PaddingBottom = padding
@@ -466,7 +540,7 @@ public class HeadingTheme {
      * @param left 左内边距 命名参数
      * @return 当前HeadingTheme对象
      */
-    public func setPaddingForEachHeading(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme {
+    public func setPaddingForEachHeadingDetail(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme {
         for (index in 0..top.size) {
             setPaddingForDesignateHeading((index + 1), top: top[index])
         }
