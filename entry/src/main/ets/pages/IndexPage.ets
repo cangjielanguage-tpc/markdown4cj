@@ -1,5 +1,6 @@
 import { router } from '@kit.ArkUI'
 import { font } from '@kit.ArkUI'
+import { setGlobalContext } from 'libohos_app_cangjie_entry.so'
 import { getFileContextStr } from '../utils/FileUtils'
 
 /**
@@ -37,6 +38,10 @@ struct IndexPage {
       "app_icon": $r('app.media.app_icon'),
       "background": $r('app.media.background'),
       "you": $r('app.media.you'),
+    }
+    const hostContext = this.getUIContext().getHostContext()
+    if (hostContext != undefined) {
+      setGlobalContext(hostContext)
     }
   }
 

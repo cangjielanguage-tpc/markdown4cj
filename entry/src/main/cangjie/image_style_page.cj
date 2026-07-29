@@ -141,6 +141,9 @@ class ImageStylePage {
         if (cfg_backgroundColor != "undefined") {
             globalTheme.backgroundColor = parseColor(cfg_backgroundColor)
         }
+        if (let Some(v) <- GlobalContext.getContext()) {
+            globalTheme.setStageContext(v)
+        }
 
         let imageTheme = theme.getImageTheme()
         imageTheme.setImageBorderStyle(parseBorderStyle(cfg_imageBorderStyle))
