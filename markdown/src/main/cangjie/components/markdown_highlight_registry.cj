@@ -48,10 +48,13 @@ public class MarkdownHighlightRegistry {
      * @param nodeHash 段落节点hash
      * @param color 高亮颜色
      */
-    public static func highlight(nodeHash: Int64, color: Color): Unit {
+    public static func highlight(nodeHash: Int64, color: Color): Bool {
         highlightColors[nodeHash] = color
         if (let Some(listener) <- listeners.get(nodeHash)) {
             listener(Some(color))
+            return true
+        } else {
+            return false
         }
     }
 
@@ -60,10 +63,13 @@ public class MarkdownHighlightRegistry {
      *
      * @param nodeHash 段落节点hash
      */
-    public static func clearHighlight(nodeHash: Int64): Unit {
+    public static func clearHighlight(nodeHash: Int64): Bool {
         highlightColors.remove(nodeHash)
         if (let Some(listener) <- listeners.get(nodeHash)) {
             listener(Option<Color>.None)
+            return true
+        } else {
+            return false
         }
     }
 

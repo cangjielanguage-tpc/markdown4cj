@@ -117,17 +117,20 @@ public class MarkdownHighlightParagraph {
      * @param nodeHash 段落nodeHash
      * @param color 段落高亮颜色
      *
-     * @return 是否设置成功 false表示已经设置过
+     * @return 是否设置成功 false表示已经设置过或者未找到nodeHash
      */
-    public func highlightParagraph(nodeHash: String, color: Color): Bool {
+    public func setParagraphHighlight(nodeHash: String, color: Color): Bool {
         selectedParagraphItem = nodeHash
         selectedParagraphItemColor = color
         if (selectedParagraphItemList.contains(nodeHash)) {
             return false
         }
         selectedParagraphItemList.add(nodeHash)
-        MarkdownHighlightRegistry.highlight(Int64.parse(nodeHash), color)
-        return true
+        try {
+            return MarkdownHighlightRegistry.highlight(Int64.parse(nodeHash), color)
+        } catch (e: Exception) {
+            return false
+        }
     }
 
     /**
@@ -136,7 +139,7 @@ public class MarkdownHighlightParagraph {
      *
      * @param nodeHash 段落nodeHash
      *
-     * @return 是否取消成功 false表示该段落没有高亮
+     * @return 是否取消成功 false表示该段落没有高亮或者未找到nodeHash
      */
     public func clearParagraphHighlight(nodeHash: String): Bool {
         selectedParagraphItem = ""
@@ -144,8 +147,11 @@ public class MarkdownHighlightParagraph {
         if (existed) {
             selectedParagraphItemList.remove(nodeHash)
         }
-        MarkdownHighlightRegistry.clearHighlight(Int64.parse(nodeHash))
-        return existed
+        try {
+            return MarkdownHighlightRegistry.clearHighlight(Int64.parse(nodeHash))
+        } catch (e: Exception) {
+            return false
+        }
     }
 
     /**

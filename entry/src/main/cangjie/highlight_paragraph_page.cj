@@ -252,10 +252,10 @@ class HighlightParagraphPage {
                                     nodeHashIndex++
                                     if ((nodeHashIndex < allParagraphNodeHashList.size-1) && nodeHashIndex > 0) {
                                         markdownHighlightParagraph.clearParagraphHighlight(allParagraphNodeHashList[nodeHashIndex-1])
-                                        var tmp = markdownHighlightParagraph.highlightParagraph(allParagraphNodeHashList[nodeHashIndex], Color(0xFFFA8072))
+                                        var tmp = markdownHighlightParagraph.setParagraphHighlight(allParagraphNodeHashList[nodeHashIndex], Color(0xFFFA8072))
                                     } else {
                                         if (nodeHashIndex == 0) {
-                                            var tmp = markdownHighlightParagraph.highlightParagraph(allParagraphNodeHashList[nodeHashIndex], Color(0xFFFA8072))
+                                            var tmp = markdownHighlightParagraph.setParagraphHighlight(allParagraphNodeHashList[nodeHashIndex], Color(0xFFFA8072))
                                         } else {
                                             nodeHashIndex = -1
                                         }
@@ -273,7 +273,7 @@ class HighlightParagraphPage {
                                     nodeHashIndex--
                                     if ((nodeHashIndex < allParagraphNodeHashList.size-1) && nodeHashIndex >= 0) {
                                         markdownHighlightParagraph.clearParagraphHighlight(allParagraphNodeHashList[nodeHashIndex+1])
-                                        var tmp = markdownHighlightParagraph.highlightParagraph(allParagraphNodeHashList[nodeHashIndex], Color(0xFFFFD700))
+                                        var tmp = markdownHighlightParagraph.setParagraphHighlight(allParagraphNodeHashList[nodeHashIndex], Color(0xFFFFD700))
                                     } else {
                                         nodeHashIndex = -1
                                     }
