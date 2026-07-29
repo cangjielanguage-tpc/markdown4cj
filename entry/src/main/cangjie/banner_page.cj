@@ -46,6 +46,7 @@ class BannerPage {
     @State @Watch[onConfigChanged] var cfg_bannerPaddingRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_bannerPaddingBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_bannerPaddingLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_bannerPlaceholder: String = "undefined"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -154,6 +155,9 @@ class BannerPage {
         }
         bannerTheme.setBannerMargin(right: parseFloat64(cfg_bannerMarginRight), bottom: parseFloat64(cfg_bannerMarginBottom), left: parseFloat64(cfg_bannerMarginLeft))
         bannerTheme.setBannerPadding(right: parseFloat64(cfg_bannerPaddingRight), bottom: parseFloat64(cfg_bannerPaddingBottom), left: parseFloat64(cfg_bannerPaddingLeft))
+        if (let Some(v) <- parseAppResource(cfg_bannerPlaceholder)) {
+            bannerTheme.setBannerPlaceholder(v)
+        }
     }
 
     public func build() {
@@ -278,6 +282,7 @@ class BannerPage {
                                 ConfigTabSelector(title: "banner右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_bannerPaddingRight, onSelect: { v => cfg_bannerPaddingRight = v })
                                 ConfigTabSelector(title: "banner下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_bannerPaddingBottom, onSelect: { v => cfg_bannerPaddingBottom = v })
                                 ConfigTabSelector(title: "banner左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_bannerPaddingLeft, onSelect: { v => cfg_bannerPaddingLeft = v })
+                                ConfigTabSelector(title: "banner占位图 - ", options: bannerPlaceholderList, defaultValue: "undefined", configKey: "", currentValue: cfg_bannerPlaceholder, onSelect: { v => cfg_bannerPlaceholder = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

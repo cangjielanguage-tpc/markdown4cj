@@ -92,3 +92,5 @@ let iconList: Array<String> = ["undefined", "startIcon", "app_icon"]
 let iconShortList: Array<String> = ["undefined", "startIcon"]
 
 let videoPlaceholderList: Array<String> = ["undefined", "background", "you"]
+
+let bannerPlaceholderList: Array<String> = ["undefined", "background", "you"]
