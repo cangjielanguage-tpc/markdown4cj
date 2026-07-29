@@ -78,6 +78,19 @@ func parseBool(s: String): Bool {
     s == "true"
 }
 
+func parsePercent(s: String): Float64 {
+    match (s) {
+        case "0%" => 0.0
+        case "5%" => 0.05
+        case "10%" => 0.1
+        case "20%" => 0.2
+        case "50%" => 0.5
+        case "80%" => 0.8
+        case "100%" => 1.0
+        case _ => 0.0
+    }
+}
+
 func parseFontWeight(s: String): FontWeight {
     match (s) {
         case "Lighter" => FontWeight.W100
