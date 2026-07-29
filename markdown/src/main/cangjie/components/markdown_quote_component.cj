@@ -254,7 +254,7 @@ public class MarkdownQuoteComponent {
                     .layoutWeight(1)
                 },
                 keyGeneratorFunc: {
-                    quoteNodeView: NodeView, idx: Int64 => return "${idx}-${quoteNodeView.nodeHash}-${quoteNodeView.contentHash}"
+                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                 }
             )
         }

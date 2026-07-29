@@ -19,11 +19,11 @@ public class MarkdownDescDefComponent {
     var descDefImageCallback: (String) -> Unit // 图片点击事件
     var descDefFootnoteCallback: (String) -> Unit // 脚注点击事件
     @BuilderParam
-    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局块级图片
+    var blockImageCardComponent: (?String,?String, ?String) -> Unit  // 自定义卡片布局块级图片
     @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局行内图片
+    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  // 自定义卡片布局行内图片
     @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
+    var inlineLinkCardComponent: (?String, ?String) -> Unit  // 自定义卡片布局行内链接
     var descDefNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表解释控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
@@ -40,11 +40,11 @@ public class MarkdownDescDefComponent {
             LazyForEach(
                 descDefNodeViewDataSource,
                 itemGeneratorFunc: {
-                    descDefNodeView: NodeView, idx: Int64 => if (descDefNodeView.nodeType == "Paragraph") {
+                    nodeView: NodeView, idx: Int64 => if (nodeView.nodeType == "Paragraph") {
                         ListItem() {
                             MarkdownParagraphComponent(
                                 paragraphMarkdownConfiguration: descDefMarkdownConfiguration,
-                                paragraphNodeView: descDefNodeView,
+                                paragraphNodeView: nodeView,
                                 paragraphComponentWidth: descDefComponentWidth,
                                 paragraphCustomParagraphLineBuilder: descDefCustomParagraphLineBuilder,
                                 paragraphTocListOnClick: descDefTocListOnClick,
@@ -62,7 +62,7 @@ public class MarkdownDescDefComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    descDefNodeView: NodeView, idx: Int64 => return "${idx}-${descDefNodeView.nodeHash}-${descDefNodeView.contentHash}"
+                    nodeView: NodeView, idx: Int64 => return "${idx}-${nodeView.nodeHash}-${nodeView.contentHash}"
                 }
             )
         }

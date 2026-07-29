@@ -40,11 +40,11 @@ public class MarkdownDescTermComponent {
             LazyForEach(
                 descTermNodeViewDataSource,
                 itemGeneratorFunc: {
-                    descTermNodeView: NodeView, idx: Int64 => if (descTermNodeView.nodeType == "Paragraph") {
+                    nodeView: NodeView, idx: Int64 => if (nodeView.nodeType == "Paragraph") {
                         ListItem() {
                             MarkdownParagraphComponent(
                                 paragraphMarkdownConfiguration: descTermMarkdownConfiguration,
-                                paragraphNodeView: descTermNodeView,
+                                paragraphNodeView: nodeView,
                                 paragraphComponentWidth: descTermComponentWidth,
                                 paragraphCustomParagraphLineBuilder: descTermCustomParagraphLineBuilder,
                                 paragraphTocListOnClick: descTermTocListOnClick,
@@ -62,7 +62,7 @@ public class MarkdownDescTermComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    descTermNodeView: NodeView, idx: Int64 => return "${idx}-${descTermNodeView.nodeHash}-${descTermNodeView.contentHash}"
+                    nodeView: NodeView, idx: Int64 => return "${idx}-${nodeView.nodeHash}-${nodeView.contentHash}"
                 }
             )
         }

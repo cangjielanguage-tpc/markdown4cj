@@ -40,11 +40,11 @@ public class MarkdownDescListComponent {
             LazyForEach(
                 descListNodeViewDataSource,
                 itemGeneratorFunc: {
-                    descListNodeView: NodeView, idx: Int64 => if (descListNodeView.nodeType == "DescTerm") {
+                    nodeView: NodeView, idx: Int64 => if (nodeView.nodeType == "DescTerm") {
                         ListItem() {
                             MarkdownDescTermComponent(
                                 descTermMarkdownConfiguration: descListMarkdownConfiguration,
-                                descTermNodeView: descListNodeView,
+                                descTermNodeView: nodeView,
                                 descTermComponentWidth: descListComponentWidth,
                                 descTermCustomParagraphLineBuilder: descListCustomParagraphLineBuilder,
                                 descTermTocListOnClick: descListTocListOnClick,
@@ -55,11 +55,11 @@ public class MarkdownDescListComponent {
                                 inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         }
-                    } else if (descListNodeView.nodeType == "DescDef") {
+                    } else if (nodeView.nodeType == "DescDef") {
                         ListItem() {
                             MarkdownDescDefComponent(
                                 descDefMarkdownConfiguration: descListMarkdownConfiguration,
-                                descDefNodeView: descListNodeView,
+                                descDefNodeView: nodeView,
                                 descDefComponentWidth: descListComponentWidth,
                                 descDefCustomParagraphLineBuilder: descListCustomParagraphLineBuilder,
                                 descDefTocListOnClick: descListTocListOnClick,
@@ -78,7 +78,7 @@ public class MarkdownDescListComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    descListNodeView: NodeView, idx: Int64 => return "${idx}-${descListNodeView.nodeHash}-${descListNodeView.contentHash}"
+                    nodeView: NodeView, idx: Int64 => return "${idx}-${nodeView.nodeHash}-${nodeView.contentHash}"
                 }
             )
         }
