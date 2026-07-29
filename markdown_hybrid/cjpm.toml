@@ -31,6 +31,8 @@
     incremental = true
     lto = ""
     performance_analysis = true
+    enable-heuristic-parallelism = true
+    compile-pipeline-parallel = true
   [profile.customized-option]
     debug = "-g -Woff all -Won apilevel-check"
     release = "--fast-math -O2 -s -Woff all -Won apilevel-check"
