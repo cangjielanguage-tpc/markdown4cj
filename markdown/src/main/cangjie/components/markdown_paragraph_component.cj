@@ -282,15 +282,9 @@ class MarkdownParagraphComponent {
                     paragraphSelectionStart = -1
                     paragraphSelectionEnd = -1
                 })
-
-            Divider().color(COLOR_FF1E1E1E).width(1.0).height(10.0).vertical(true).padding(left: 10.0, right: 10.0)
-
-            Text("粘贴")
-                .fontSize(12.0)
-                .fontColor(COLOR_FFE0E0E0)
         }
         .padding(10.0)
-        .backgroundColor(COLOR_FFF5F5F5)
+        .backgroundColor(COLOR_WHITE)
         .border(width: 1.0, color: COLOR_GRAY, radius: 5.0)
     }
 
@@ -592,17 +586,14 @@ class MarkdownParagraphComponent {
                 })
                 .onActionEnd({ event: GestureEvent =>
                     handleParagraphLongPressEnd()
-                    triggerParagraphLongPressCallback()
+                    if (!paragraphMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
+                        triggerParagraphLongPressCallback()
+                    }
                 })
                 .onActionCancel({ =>
                     handleParagraphLongPressCancel()
                 })
         )
-        .onCopy({
-            str => if (let Some(v) <- paragraphMarkdownConfiguration.textCopyCallback) {
-                v(str)
-            }
-        })
         // 链接曝光：Text 的唯一 id（componentUtils.getRectangleById 用）
         .id(paragraphId)
         // onVisibleAreaChange：ratio 阈值变化时触发 scheduleExposure（仅作触发用，真正可见性由 rect 求交判定）
