@@ -62,7 +62,7 @@ public class MarkdownFootnoteComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    footnoteNodeView: NodeView, idx: Int64 => return "${idx}-${footnoteNodeView.nodeHash}-${footnoteNodeView.contentHash}"
+                    nodeView: NodeView, idx: Int64 => return "${idx}-${nodeView.nodeHash}-${nodeView.contentHash}"
                 }
             )
         }

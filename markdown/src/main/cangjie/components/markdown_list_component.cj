@@ -134,7 +134,7 @@ public class MarkdownListComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    listNodeView: NodeView, idx: Int64 => return "${idx}-${listNodeView.nodeHash}-${listNodeView.contentHash}"
+                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                 }
             )
         }

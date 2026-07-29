@@ -252,7 +252,7 @@ class MarkdownListItemComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    listItemNodeView: NodeView, idx: Int64 => return "${idx}-${listItemNodeView.nodeHash}-${listItemNodeView.contentHash}"
+                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                 }
             )
         }
