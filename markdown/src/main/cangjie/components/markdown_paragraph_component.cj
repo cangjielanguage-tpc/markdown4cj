@@ -48,6 +48,9 @@ class MarkdownParagraphComponent {
     var paragraphSelectedBackgroundColor: Color = COLOR_FF4A90E2 // 当前选中文本背景色
     @State
     var paragraphIsLongPressed: Bool = false // 当前是否处于长按状态
+    @State
+    var needHideMenu: Bool = false // 是否需要隐藏菜单，同时关闭划选文字效果
+    var paragraphSelectionMenuTimer: ?Timer = None // 选区菜单自动隐藏定时器
     // 链接曝光：URL列表缓存 + 当前可见状态
     // 对齐 ArkUI MarkdownParagraph.ets：用 onVisibleAreaChange(触发scheduleExposure) + onAreaChange(标记ready) +
     // componentUtils.getRectangleById(拿段落全局rect) 与屏幕高度 [0, screenH] 求交判定可见性。
@@ -88,6 +91,11 @@ class MarkdownParagraphComponent {
             paragraphExposureVisible = false
         }
         MarkdownHighlightRegistry.unregister(paragraphNodeView.nodeHash)
+        // 组件销毁时清理选区菜单隐藏定时器
+        if (paragraphSelectionMenuTimer.isSome()) {
+            paragraphSelectionMenuTimer.getOrThrow().cancel()
+            paragraphSelectionMenuTimer = None
+        }
     }
 
     /**
@@ -524,12 +532,6 @@ class MarkdownParagraphComponent {
         } else {
             CopyOptions.None
         })
-        .focusable(paragraphMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy)
-        .focusOnTouch(true)
-        .onBlur({ =>
-            paragraphSelectionStart = -1
-            paragraphSelectionEnd = -1
-        })
         .selection(paragraphSelectionStart, paragraphSelectionEnd)
         .interopSelectedBackgroundColor(paragraphSelectedBackgroundColor)
         .onTextSelectionChange({ start: Int32, end: Int32 =>
@@ -541,44 +543,47 @@ class MarkdownParagraphComponent {
                 paragraphLongPressBackgroundColor = getParagraphBackground()
             }
         })
-        .bindSelectionMenu(
+        .interopBindSelectionMenu(
             TextSpanType.TEXT,
             bind(customSelectionMenu, this),
             TextResponseType.LONG_PRESS,
-            onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
-                paragraphSelectionStart = selectionStart
-                paragraphSelectionEnd = selectionEnd
-            },
-            onDisappear: { =>
-                paragraphSelectionStart = -1
-                paragraphSelectionEnd = -1
-            }
+            options: SelectionMenuOptions(
+                onMenuShow: { selectionStart: Int64, selectionEnd: Int64 =>
+                    needHideMenu = false
+                },
+                onMenuHide: { =>
+                    needHideMenu = true
+                    startDelay()
+                }
+            )
         )
-        .bindSelectionMenu(
+        .interopBindSelectionMenu(
             TextSpanType.IMAGE,
             bind(nullSelectionMenu, this),
             TextResponseType.LONG_PRESS,
-            onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
-                paragraphSelectionStart = selectionStart
-                paragraphSelectionEnd = selectionEnd
-            },
-            onDisappear: { =>
-                paragraphSelectionStart = -1
-                paragraphSelectionEnd = -1
-            }
+            options: SelectionMenuOptions(
+                onMenuShow: { selectionStart: Int64, selectionEnd: Int64 =>
+                    needHideMenu = false
+                },
+                onMenuHide: { =>
+                    needHideMenu = true
+                    startDelay()
+                }
+            )
         )
-        .bindSelectionMenu(
+        .interopBindSelectionMenu(
             TextSpanType.MIXED,
             bind(customSelectionMenu, this),
             TextResponseType.LONG_PRESS,
-            onAppear: { selectionStart: Int32, selectionEnd: Int32 =>
-                paragraphSelectionStart = selectionStart
-                paragraphSelectionEnd = selectionEnd
-            },
-            onDisappear: { =>
-                paragraphSelectionStart = -1
-                paragraphSelectionEnd = -1
-            }
+            options: SelectionMenuOptions(
+                onMenuShow: { selectionStart: Int64, selectionEnd: Int64 =>
+                    needHideMenu = false
+                },
+                onMenuHide: { =>
+                    needHideMenu = true
+                    startDelay()
+                }
+            )
         )
         .parallelGesture(
             LongPressGesture(duration: 400)
@@ -768,5 +773,22 @@ class MarkdownParagraphComponent {
         }
         // 更新段落纯文本内容，供长按回调与划选复制使用
         paragraphTextContent = getParagraphTextContent(paragraphNodeView)
+    }
+
+    // 启动弹窗关闭判断延时
+    func startDelay(): Unit {
+        // 选区菜单3秒后自动隐藏
+        if (paragraphSelectionMenuTimer.isSome()) {
+            paragraphSelectionMenuTimer.getOrThrow().cancel()
+        }
+        paragraphSelectionMenuTimer = Timer.once(300 * Duration.millisecond, { =>
+            if (needHideMenu) {
+                launch {
+                    paragraphSelectionStart = -1
+                    paragraphSelectionEnd = -1
+                    paragraphSelectionMenuTimer = None
+                }
+            }
+        })
     }
 }

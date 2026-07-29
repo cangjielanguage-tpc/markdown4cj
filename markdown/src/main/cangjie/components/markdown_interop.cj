@@ -124,6 +124,75 @@ public class CJSizeOptions <: InteropObjectBase {
     }
 }
 
+public class SelectionMenuOptions {
+    public SelectionMenuOptions(
+        public let onAppear!: Option<(Int64, Int64) -> Unit> = Option.None,
+        public let onDisappear!: Option<() -> Unit> = Option.None,
+        public let onMenuShow!: Option<(Int64, Int64) -> Unit> = Option.None,
+        public let onMenuHide!: Option<() -> Unit> = Option.None
+    ) {}
+
+    func toJSValue(context: JSContext): JSValue {
+        let obj = context.object()
+        match (onAppear) {
+            case Some(callback) =>
+                let argFunc = getCtx().function(
+                    {
+                        context: JSContext, callInfo: JSCallInfo =>
+                        let arg0 = Int64.fromJSValue(getCtx(), callInfo[0])
+                        let arg1 = Int64.fromJSValue(getCtx(), callInfo[1])
+                        let ret = callback(arg0, arg1)
+                        ret.toJSValue(context)
+                    }
+                ).toJSValue()
+                obj.setProperty("onAppear", argFunc)
+            case None => ()
+        }
+
+        match (onDisappear) {
+            case Some(callback) =>
+                let argFunc = getCtx().function(
+                    {
+                        context: JSContext, callInfo: JSCallInfo =>
+                        let ret = callback()
+                        ret.toJSValue(context)
+                    }
+                ).toJSValue()
+                obj.setProperty("onDisappear", argFunc)
+            case None => ()
+        }
+
+        match (onMenuShow) {
+            case Some(callback) =>
+                let argFunc = getCtx().function(
+                    {
+                        context: JSContext, callInfo: JSCallInfo =>
+                        let arg0 = Int64.fromJSValue(getCtx(), callInfo[0])
+                        let arg1 = Int64.fromJSValue(getCtx(), callInfo[1])
+                        let ret = callback(arg0, arg1)
+                        ret.toJSValue(context)
+                    }
+                ).toJSValue()
+                obj.setProperty("onMenuShow", argFunc)
+            case None => ()
+        }
+
+        match (onMenuHide) {
+            case Some(callback) =>
+                let argFunc = getCtx().function(
+                    {
+                        context: JSContext, callInfo: JSCallInfo =>
+                        let ret = callback()
+                        ret.toJSValue(context)
+                    }
+                ).toJSValue()
+                obj.setProperty("onMenuHide", argFunc)
+            case None => ()
+        }
+        return obj.toJSValue()
+    }
+}
+
 extend Span {
     func interopDecorationStyle(decorationStyle: (TextDecorationType, Color, Int32)): Span {
         try {
@@ -203,6 +272,43 @@ extend Text {
             text.callMethod("selectedBackgroundColor", [ctx.string("#${colorString}").toJSValue()])
         } catch (e: Exception) {
         }
+        return this
+    }
+
+    func interopBindSelectionMenu(
+        spanType: TextSpanType,
+        content: () -> Unit,
+        responseType: TextResponseType,
+        options!: SelectionMenuOptions = SelectionMenuOptions()
+    ): Text {
+        try {
+            let argFunc1 = getCtx().function({ context: JSContext, callInfo: JSCallInfo =>
+                content()
+                getCtx().undefined().toJSValue()
+            }).toJSValue()
+            let argObject1: JSObject = getCtx().object()
+            argObject1["builder"] = argFunc1
+
+            let global = context.getOrThrow().global
+            let contextTmp = context.getOrThrow()
+            let sType = match (spanType) {
+                case TextSpanType.TEXT => 0.toJSValue(contextTmp)
+                case TextSpanType.IMAGE => 1.toJSValue(contextTmp)
+                case TextSpanType.MIXED => 2.toJSValue(contextTmp)
+                case _ => 3.toJSValue(contextTmp)
+            }
+            let rType = match (responseType) {
+                case TextResponseType.RIGHT_CLICK => 0.toJSValue(contextTmp)
+                case TextResponseType.LONG_PRESS => 1.toJSValue(contextTmp)
+                case TextResponseType.SELECT => 2.toJSValue(contextTmp)
+                case _ => 3.toJSValue(contextTmp)
+            }
+
+            let textTmp = global["Text"].asObject(contextTmp)
+            jsObjApiCall(textTmp, "bindSelectionMenu", { ctx =>
+                [sType, argObject1.toJSValue(), rType, options.toJSValue(ctx)]
+            })
+        } catch (e: Exception) {}
         return this
     }
 }
