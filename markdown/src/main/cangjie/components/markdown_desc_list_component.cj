@@ -18,12 +18,6 @@ public class MarkdownDescListComponent {
     var descListTocListOnClick: (Int64) -> Unit // TOC列表点击事件
     var descListImageCallback: (String) -> Unit // 图片点击事件
     var descListFootnoteCallback: (String) -> Unit // 脚注点击事件
-    @BuilderParam
-    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局块级图片
-    @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局行内图片
-    @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
     var descListNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
@@ -50,9 +44,6 @@ public class MarkdownDescListComponent {
                                 descTermTocListOnClick: descListTocListOnClick,
                                 descTermImageCallback: descListImageCallback,
                                 descTermFootnoteCallback: descListFootnoteCallback,
-                                blockImageCardComponent: blockImageCardComponent,
-                                inlineImageCardComponent: inlineImageCardComponent,
-                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         }
                     } else if (nodeView.nodeType == "DescDef") {
@@ -65,9 +56,6 @@ public class MarkdownDescListComponent {
                                 descDefTocListOnClick: descListTocListOnClick,
                                 descDefImageCallback: descListImageCallback,
                                 descDefFootnoteCallback: descListFootnoteCallback,
-                                blockImageCardComponent: blockImageCardComponent,
-                                inlineImageCardComponent: inlineImageCardComponent,
-                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         }
                         .margin(top: descDefItemSpacing(idx, descListMarkdownConfiguration.markdownTheme))

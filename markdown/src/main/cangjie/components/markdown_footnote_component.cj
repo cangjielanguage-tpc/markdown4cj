@@ -18,12 +18,6 @@ public class MarkdownFootnoteComponent {
     var footnoteTocListOnClick: (Int64) -> Unit // TOC列表点击事件
     var footnoteImageCallback: (String) -> Unit // 图片点击事件
     var footnoteFootnoteCallback: (String) -> Unit // 脚注点击事件
-    @BuilderParam
-    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局块级图片
-    @BuilderParam
-    var inlineImageCardComponent: (?String, ?String, ?String) -> Unit  //自定义卡片布局行内图片
-    @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
     var footnoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 脚注控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
@@ -50,9 +44,6 @@ public class MarkdownFootnoteComponent {
                                 paragraphTocListOnClick: footnoteTocListOnClick,
                                 paragraphImageCallback: footnoteImageCallback,
                                 paragraphFootnoteCallback: footnoteFootnoteCallback,
-                                blockImageCardComponent: blockImageCardComponent,
-                                inlineImageCardComponent: inlineImageCardComponent,
-                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         }
                     } else {

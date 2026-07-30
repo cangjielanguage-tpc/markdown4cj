@@ -157,7 +157,7 @@ public func nodeToNodeView(
                         childrenNodeView.linkUrl = link.getDestination()
                         childrenNodeView.linkTitle = link.getTitle()
                         let nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
-                        if (isLinkStyle || (config.isInLineLinkCustom.isSome() && childrenNodeView.linkUrl.isSome() && config.isInLineLinkCustom()(childrenNodeView.linkUrl()))) {
+                        if (isLinkStyle) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
                         } else {
@@ -171,7 +171,7 @@ public func nodeToNodeView(
                         childrenNodeView.linkTitle = link.getTitle()
                         childrenNodeView.headLinkIndex = link.headIndex
                         let nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
-                        if (isLinkStyle || (config.isInLineLinkCustom.isSome() && childrenNodeView.linkUrl.isSome() && config.isInLineLinkCustom()(childrenNodeView.linkUrl()))) {
+                        if (isLinkStyle) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
                         } else {
@@ -480,7 +480,36 @@ public func nodeToNodeView(
                         childrenNodeView.cardName = cardNode.getName()
                         childrenNodeView.cardData = cardNode.getData()
                         parentNewNodeView.children.add(childrenNodeView)
-                    } else if (nodeType == "BlockVideo") {
+                    } else if (nodeType == "CustomCardImage") {
+                        // xc自定义卡片
+                        commonmarkChildrenNode.iterateChildren().forEach({
+                                commonmarkNode: CommonmarkNode => if (commonmarkNode is CommonmarkImage) {
+                                    childrenNodeView.imageUrl = (commonmarkNode as CommonmarkImage)().getDestination()
+                                    childrenNodeView.imageTitle = (commonmarkNode as CommonmarkImage)().getTitle()
+                                    let altTextBuilder = StringClass()
+                                    commonmarkNode.iterateChildren().forEach({
+                                        child: CommonmarkNode =>
+                                            if (child is CommonmarkText) {
+                                                altTextBuilder.addString((child as CommonmarkText)().getLiteral())
+                                            }
+                                    })
+                                    let altText = altTextBuilder.str.trimAscii()
+                                    if (!altText.isEmpty()) {
+                                        childrenNodeView.imageAltText = Option<String>.Some(altText)
+                                    }
+                                }
+                            })
+                        parentNewNodeView.children.add(childrenNodeView)
+                    }else if (nodeType == "CustomCardLink") {
+                        // xc自定义卡片
+                        commonmarkChildrenNode.iterateChildren().forEach({
+                                commonmarkNode: CommonmarkNode => if (commonmarkNode is CommonmarkImage) {
+                                    childrenNodeView.linkUrl = (commonmarkNode as CommonmarkImage)().getDestination()
+                                    childrenNodeView.linkTitle = (commonmarkNode as CommonmarkImage)().getTitle()
+                                }
+                            })
+                        parentNewNodeView.children.add(childrenNodeView)
+                    }else if (nodeType == "BlockVideo") {
                         // 视频
                         commonmarkChildrenNode.iterateChildren().forEach({
                                 commonmarkNode: CommonmarkNode => if (commonmarkNode is CommonmarkImage) {
