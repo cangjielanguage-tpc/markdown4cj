@@ -10,7 +10,7 @@ public class CodeBlockTheme {
     @Publish
     public var codeBlockIsCodeFormat: Bool = false // 是否格式化围栏代码块内容
     @Publish
-    public var codeBlockIsDark: Bool = false // 代码块是否暗色主题
+    public var codeBlockIsDark: ?Bool = Option<Bool>.None // 代码块是否暗色主题
     @Publish
     public var codeBlockUseTab: Bool = false // codeformat是否用制表符
     @Publish

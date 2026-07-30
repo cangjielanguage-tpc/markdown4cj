@@ -121,6 +121,9 @@ class MarkdownTableBlockComponent {
                             })
                         }
                         .backgroundColor(tableBlockMarkdownConfiguration.markdownTheme.globalTheme.backgroundColor)
+                        .borderStyle(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
+                        .borderWidth(EdgeWidths(top: stickyHeaderTopBorderWidth()))
+                        .borderColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
                         .offset(x: 0.0, y: stickyOffset)
                         .zIndex(1)
                         .interopOnSizeChange({
@@ -262,6 +265,19 @@ class MarkdownTableBlockComponent {
                 left: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginLeft
             )
             .clip(true)
+        }
+    }
+
+    /**
+     * 吸顶header顶部边框宽度
+     * 当 stickyOffset > 0（表格顶部已滚出视口）时返回表格边框宽度，使吸顶header顶部呈现表格上边框；
+     * 否则返回0，避免与表格自身上边框叠加。
+     */
+    func stickyHeaderTopBorderWidth(): Float64 {
+        return if (stickyOffset > 0.0) {
+            tableBorderTopNum
+        } else {
+            0.0
         }
     }
 
