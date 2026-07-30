@@ -371,17 +371,13 @@ public class HeadingTheme {
      * @return 当前HeadingTheme对象
      */
     public func setMarginForEachHeadingDetail(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme {
-        for (index in 0..top.size) {
-            setMarginForDesignateHeading((index + 1), top: top[index])
-        }
-        for (index in 0..right.size) {
-            setMarginForDesignateHeading((index + 1), right: right[index])
-        }
-        for (index in 0..bottom.size) {
-            setMarginForDesignateHeading((index + 1), bottom: bottom[index])
-        }
-        for (index in 0..left.size) {
-            setMarginForDesignateHeading((index + 1), left: left[index])
+        let maxLevel = 6
+        for (index in 0..maxLevel) {
+            let topVal = if (index < top.size) { top[index] } else { 0.0 }
+            let rightVal = if (index < right.size) { right[index] } else { 0.0 }
+            let bottomVal = if (index < bottom.size) { bottom[index] } else { 0.0 }
+            let leftVal = if (index < left.size) { left[index] } else { 0.0 }
+            setMarginForDesignateHeading(Int64(index + 1), top: topVal, right: rightVal, bottom: bottomVal, left: leftVal)
         }
         return this
     }
@@ -541,17 +537,13 @@ public class HeadingTheme {
      * @return 当前HeadingTheme对象
      */
     public func setPaddingForEachHeadingDetail(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme {
-        for (index in 0..top.size) {
-            setPaddingForDesignateHeading((index + 1), top: top[index])
-        }
-        for (index in 0..right.size) {
-            setPaddingForDesignateHeading((index + 1), right: right[index])
-        }
-        for (index in 0..bottom.size) {
-            setPaddingForDesignateHeading((index + 1), bottom: bottom[index])
-        }
-        for (index in 0..left.size) {
-            setPaddingForDesignateHeading((index + 1), left: left[index])
+        let maxLevel = 6
+        for (index in 0..maxLevel) {
+            let topVal = if (index < top.size) { top[index] } else { 0.0 }
+            let rightVal = if (index < right.size) { right[index] } else { 0.0 }
+            let bottomVal = if (index < bottom.size) { bottom[index] } else { 0.0 }
+            let leftVal = if (index < left.size) { left[index] } else { 0.0 }
+            setPaddingForDesignateHeading(Int64(index + 1), top: topVal, right: rightVal, bottom: bottomVal, left: leftVal)
         }
         return this
     }

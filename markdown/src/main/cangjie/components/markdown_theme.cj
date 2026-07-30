@@ -2149,12 +2149,14 @@ public class MarkdownTheme {
      */
     @Deprecated["用HeadingTheme.setTextFontSizeForEachHeading方法代替", since: "1.4.0"]
     public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<Float64>): MarkdownTheme {
-        this.headingTheme.heading1TextFontSize = headingTextSizeMultipliers[0]
-        this.headingTheme.heading2TextFontSize = headingTextSizeMultipliers[1]
-        this.headingTheme.heading3TextFontSize = headingTextSizeMultipliers[2]
-        this.headingTheme.heading4TextFontSize = headingTextSizeMultipliers[3]
-        this.headingTheme.heading5TextFontSize = headingTextSizeMultipliers[4]
-        this.headingTheme.heading6TextFontSize = headingTextSizeMultipliers[5]
+        var level = 1
+        for (size in headingTextSizeMultipliers) {
+            this.headingTheme.setTextFontSizeForDesignateHeading(level, size)
+            level += 1
+            if (level > 6) {
+                break
+            }
+        }
         return this
     }
 
