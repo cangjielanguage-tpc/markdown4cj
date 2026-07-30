@@ -1,10 +1,9 @@
 {
   "module": {
-    "name": "entry",
-    "type": "entry",
+    "name": "application",
+    "type": "feature",
     "description": "$string:module_desc",
-    "mainElement": "EntryAbility",
-    "compressNativeLibs": true,
+    "mainElement": "ApplicationAbility",
     "deviceTypes": [
       "phone"
     ],
@@ -18,38 +17,14 @@
     "pages": "$profile:main_pages",
     "abilities": [
       {
-        "name": "EntryAbility",
+        "name": "ApplicationAbility",
         "srcEntry": "./ets/entryability/EntryAbility.ets",
-        "description": "$string:EntryAbility_desc",
-        "icon": "$media:app_icon",
+        "description": "$string:EntryAbility_label",
+        "icon": "$media:layered_image",
         "label": "$string:EntryAbility_label",
         "startWindowIcon": "$media:startIcon",
         "startWindowBackground": "$color:start_window_background",
-        "exported": true,
-        "skills": [
-          {
-            "entities": [
-              "entity.system.home"
-            ],
-            "actions": [
-              "ohos.want.action.home"
-            ]
-          }
-        ]
-      }
-    ],
-    "extensionAbilities": [
-      {
-        "name": "EntryBackupAbility",
-        "srcEntry": "./ets/entrybackupability/EntryBackupAbility.ets",
-        "type": "backup",
-        "exported": false,
-        "metadata": [
-          {
-            "name": "ohos.extension.backup",
-            "resource": "$profile:backup_config"
-          }
-        ],
+        "exported": true
       }
     ]
   }
