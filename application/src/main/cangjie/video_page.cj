@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -35,32 +35,32 @@ class VideoPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
-    @State @Watch[onConfigChanged] var cfg_videoBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoBorderColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoBackgroundColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_videoBorderColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontColor: String = "#FFFFFFFF"
 
-    @State @Watch[onConfigChanged] var cfg_videoMarginTop: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoMarginRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoMarginBottom: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoMarginLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoPaddingTop: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoPaddingRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoPaddingBottom: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoPaddingLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoRadiusTopLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoRadiusTopRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoRadiusBottomLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoPaddingTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoPaddingRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoPaddingBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoPaddingLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_videoRadiusTopLeft: String = "10"
+    @State @Watch[onConfigChanged] var cfg_videoRadiusTopRight: String = "10"
+    @State @Watch[onConfigChanged] var cfg_videoRadiusBottomLeft: String = "10"
+    @State @Watch[onConfigChanged] var cfg_videoRadiusBottomRight: String = "10"
     @State @Watch[onConfigChanged] var cfg_videoBorderStyle: String = "Solid"
     @State @Watch[onConfigChanged] var cfg_videoBorderWidth: String = "0"
     @State @Watch[onConfigChanged] var cfg_videoImageFitType: String = "Cover"
@@ -69,53 +69,53 @@ class VideoPage {
     @State @Watch[onConfigChanged] var cfg_videoPlayIconWidth: String = "60"
     @State @Watch[onConfigChanged] var cfg_videoPlayIconHeight: String = "60"
     @State @Watch[onConfigChanged] var cfg_videoPlayIconFitType: String = "Contain"
-    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontSize: String = "14"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontStyle: String = "Normal"
     @State @Watch[onConfigChanged] var cfg_videoTimeTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoTimeTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_videoTimeTextLineHeight: String = "22"
     @State @Watch[onConfigChanged] var cfg_videoTimeTextMarginRight: String = "10"
     @State @Watch[onConfigChanged] var cfg_videoTimeTextMarginBottom: String = "10"
     @State @Watch[onConfigChanged] var cfg_videoBottomLayoutVisible: String = "false"
     @State @Watch[onConfigChanged] var cfg_videoBottomLayoutMarginTop: String = "14"
     @State @Watch[onConfigChanged] var cfg_videoReleaseButtonVisible: String = "true"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonBackgroundColor: String = "#FFF5F5F5"
     @State @Watch[onConfigChanged] var cfg_videoReleaseButtonWidth: String = "144"
     @State @Watch[onConfigChanged] var cfg_videoReleaseButtonHeight: String = "44"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusTopLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusTopRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusBottomLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusTopLeft: String = "22"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusTopRight: String = "22"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusBottomLeft: String = "22"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonRadiusBottomRight: String = "22"
     @State @Watch[onConfigChanged] var cfg_videoReleaseButtonIcon: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_videoReleaseButtonIconTextGap: String = "6"
     @State @Watch[onConfigChanged] var cfg_videoReleaseButtonIconWidth: String = "18"
     @State @Watch[onConfigChanged] var cfg_videoReleaseButtonIconHeight: String = "18"
     @State @Watch[onConfigChanged] var cfg_videoReleaseButtonText: String = "发布视频"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontColor: String = "#E6000000"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontSize: String = "16"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontStyle: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontWeight: String = "Medium"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_videoReleaseButtonTextLineHeight: String = "22"
     @State @Watch[onConfigChanged] var cfg_videoDownloadButtonVisible: String = "true"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonBackgroundColor: String = "#FFF5F5F5"
     @State @Watch[onConfigChanged] var cfg_videoDownloadButtonWidth: String = "144"
     @State @Watch[onConfigChanged] var cfg_videoDownloadButtonHeight: String = "44"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusTopLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusTopRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusBottomLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusTopLeft: String = "22"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusTopRight: String = "22"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusBottomLeft: String = "22"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonRadiusBottomRight: String = "22"
     @State @Watch[onConfigChanged] var cfg_videoDownloadButtonIcon: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_videoDownloadButtonIconTextGap: String = "6"
     @State @Watch[onConfigChanged] var cfg_videoDownloadButtonIconWidth: String = "18"
     @State @Watch[onConfigChanged] var cfg_videoDownloadButtonIconHeight: String = "18"
     @State @Watch[onConfigChanged] var cfg_videoDownloadButtonText: String = "下载视频"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontColor: String = "#E6000000"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontSize: String = "16"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontStyle: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontWeight: String = "Medium"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_videoDownloadButtonTextLineHeight: String = "22"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -389,14 +389,14 @@ class VideoPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -435,20 +435,20 @@ class VideoPage {
                         if (isExpanded2) {
                             Column {
                                 ConfigTabSelector(title: "视频占位图 - ", options: videoPlaceholderList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoPlaceholder, onSelect: { v => cfg_videoPlaceholder = v })
-                                ConfigTabSelector(title: "视频背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoBackgroundColor, onSelect: { v => cfg_videoBackgroundColor = v })
-                                ConfigTabSelector(title: "视频边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoBorderColor, onSelect: { v => cfg_videoBorderColor = v })
-                                ConfigTabSelector(title: "视频上外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoMarginTop, onSelect: { v => cfg_videoMarginTop = v })
-                                ConfigTabSelector(title: "视频右外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoMarginRight, onSelect: { v => cfg_videoMarginRight = v })
-                                ConfigTabSelector(title: "视频下外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoMarginBottom, onSelect: { v => cfg_videoMarginBottom = v })
-                                ConfigTabSelector(title: "视频左外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoMarginLeft, onSelect: { v => cfg_videoMarginLeft = v })
-                                ConfigTabSelector(title: "视频上内边距 - ", options: paddingList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoPaddingTop, onSelect: { v => cfg_videoPaddingTop = v })
-                                ConfigTabSelector(title: "视频右内边距 - ", options: paddingList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoPaddingRight, onSelect: { v => cfg_videoPaddingRight = v })
-                                ConfigTabSelector(title: "视频下内边距 - ", options: paddingList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoPaddingBottom, onSelect: { v => cfg_videoPaddingBottom = v })
-                                ConfigTabSelector(title: "视频左内边距 - ", options: paddingList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoPaddingLeft, onSelect: { v => cfg_videoPaddingLeft = v })
-                                ConfigTabSelector(title: "视频边框左上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoRadiusTopLeft, onSelect: { v => cfg_videoRadiusTopLeft = v })
-                                ConfigTabSelector(title: "视频边框右上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoRadiusTopRight, onSelect: { v => cfg_videoRadiusTopRight = v })
-                                ConfigTabSelector(title: "视频边框左下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoRadiusBottomLeft, onSelect: { v => cfg_videoRadiusBottomLeft = v })
-                                ConfigTabSelector(title: "视频边框右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoRadiusBottomRight, onSelect: { v => cfg_videoRadiusBottomRight = v })
+                                ConfigTabSelector(title: "视频背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_videoBackgroundColor, onSelect: { v => cfg_videoBackgroundColor = v })
+                                ConfigTabSelector(title: "视频边框颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_videoBorderColor, onSelect: { v => cfg_videoBorderColor = v })
+                                ConfigTabSelector(title: "视频上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_videoMarginTop, onSelect: { v => cfg_videoMarginTop = v })
+                                ConfigTabSelector(title: "视频右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_videoMarginRight, onSelect: { v => cfg_videoMarginRight = v })
+                                ConfigTabSelector(title: "视频下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_videoMarginBottom, onSelect: { v => cfg_videoMarginBottom = v })
+                                ConfigTabSelector(title: "视频左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_videoMarginLeft, onSelect: { v => cfg_videoMarginLeft = v })
+                                ConfigTabSelector(title: "视频上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_videoPaddingTop, onSelect: { v => cfg_videoPaddingTop = v })
+                                ConfigTabSelector(title: "视频右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_videoPaddingRight, onSelect: { v => cfg_videoPaddingRight = v })
+                                ConfigTabSelector(title: "视频下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_videoPaddingBottom, onSelect: { v => cfg_videoPaddingBottom = v })
+                                ConfigTabSelector(title: "视频左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_videoPaddingLeft, onSelect: { v => cfg_videoPaddingLeft = v })
+                                ConfigTabSelector(title: "视频边框左上圆角 - ", options: radiusList, defaultValue: "10", configKey: "", currentValue: cfg_videoRadiusTopLeft, onSelect: { v => cfg_videoRadiusTopLeft = v })
+                                ConfigTabSelector(title: "视频边框右上圆角 - ", options: radiusList, defaultValue: "10", configKey: "", currentValue: cfg_videoRadiusTopRight, onSelect: { v => cfg_videoRadiusTopRight = v })
+                                ConfigTabSelector(title: "视频边框左下圆角 - ", options: radiusList, defaultValue: "10", configKey: "", currentValue: cfg_videoRadiusBottomLeft, onSelect: { v => cfg_videoRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "视频边框右下圆角 - ", options: radiusList, defaultValue: "10", configKey: "", currentValue: cfg_videoRadiusBottomRight, onSelect: { v => cfg_videoRadiusBottomRight = v })
                                 ConfigTabSelector(title: "视频边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", currentValue: cfg_videoBorderStyle, onSelect: { v => cfg_videoBorderStyle = v })
                                 ConfigTabSelector(title: "视频边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", currentValue: cfg_videoBorderWidth, onSelect: { v => cfg_videoBorderWidth = v })
                                 ConfigTabSelector(title: "视频图片缩放类型 - ", options: imageFitList, defaultValue: "Cover", configKey: "", currentValue: cfg_videoImageFitType, onSelect: { v => cfg_videoImageFitType = v })
@@ -526,12 +526,12 @@ class VideoPage {
 
                         if (isExpanded4) {
                             Column {
-                                ConfigTabSelector(title: "视频时间文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoTimeTextFontColor, onSelect: { v => cfg_videoTimeTextFontColor = v })
-                                ConfigTabSelector(title: "视频时间文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoTimeTextFontSize, onSelect: { v => cfg_videoTimeTextFontSize = v })
-                                ConfigTabSelector(title: "视频时间文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoTimeTextFontStyle, onSelect: { v => cfg_videoTimeTextFontStyle = v })
+                                ConfigTabSelector(title: "视频时间文本颜色 - ", options: colorList, defaultValue: "#FFFFFFFF", configKey: "", currentValue: cfg_videoTimeTextFontColor, onSelect: { v => cfg_videoTimeTextFontColor = v })
+                                ConfigTabSelector(title: "视频时间文本尺寸 - ", options: textSizeList, defaultValue: "14", configKey: "", currentValue: cfg_videoTimeTextFontSize, onSelect: { v => cfg_videoTimeTextFontSize = v })
+                                ConfigTabSelector(title: "视频时间文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_videoTimeTextFontStyle, onSelect: { v => cfg_videoTimeTextFontStyle = v })
                                 ConfigTabSelector(title: "视频时间文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_videoTimeTextFontWeight, onSelect: { v => cfg_videoTimeTextFontWeight = v })
-                                ConfigTabSelector(title: "视频时间文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoTimeTextFontFamily, onSelect: { v => cfg_videoTimeTextFontFamily = v })
-                                ConfigTabSelector(title: "视频时间文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoTimeTextLineHeight, onSelect: { v => cfg_videoTimeTextLineHeight = v })
+                                ConfigTabSelector(title: "视频时间文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_videoTimeTextFontFamily, onSelect: { v => cfg_videoTimeTextFontFamily = v })
+                                ConfigTabSelector(title: "视频时间文本行高 - ", options: textLineHeightList, defaultValue: "22", configKey: "", currentValue: cfg_videoTimeTextLineHeight, onSelect: { v => cfg_videoTimeTextLineHeight = v })
                                 ConfigTabSelector(title: "视频时间文本居右边距 - ", options: marginList, defaultValue: "10", configKey: "", currentValue: cfg_videoTimeTextMarginRight, onSelect: { v => cfg_videoTimeTextMarginRight = v })
                                 ConfigTabSelector(title: "视频时间文本居底边距 - ", options: marginList, defaultValue: "10", configKey: "", currentValue: cfg_videoTimeTextMarginBottom, onSelect: { v => cfg_videoTimeTextMarginBottom = v })
                                 ConfigTabSelector(title: "底部布局是否显示 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_videoBottomLayoutVisible, onSelect: { v => cfg_videoBottomLayoutVisible = v })
@@ -572,24 +572,24 @@ class VideoPage {
                         if (isExpanded5) {
                             Column {
                                 ConfigTabSelector(title: "视频发布按钮是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_videoReleaseButtonVisible, onSelect: { v => cfg_videoReleaseButtonVisible = v })
-                                ConfigTabSelector(title: "视频发布按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonBackgroundColor, onSelect: { v => cfg_videoReleaseButtonBackgroundColor = v })
+                                ConfigTabSelector(title: "视频发布按钮背景颜色 - ", options: colorList, defaultValue: "#FFF5F5F5", configKey: "", currentValue: cfg_videoReleaseButtonBackgroundColor, onSelect: { v => cfg_videoReleaseButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "视频发布按钮宽度 - ", options: widthOrHeightList, defaultValue: "144", configKey: "", currentValue: cfg_videoReleaseButtonWidth, onSelect: { v => cfg_videoReleaseButtonWidth = v })
                                 ConfigTabSelector(title: "视频发布按钮高度 - ", options: widthOrHeightList, defaultValue: "44", configKey: "", currentValue: cfg_videoReleaseButtonHeight, onSelect: { v => cfg_videoReleaseButtonHeight = v })
-                                ConfigTabSelector(title: "视频发布按钮左上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonRadiusTopLeft, onSelect: { v => cfg_videoReleaseButtonRadiusTopLeft = v })
-                                ConfigTabSelector(title: "视频发布按钮右上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonRadiusTopRight, onSelect: { v => cfg_videoReleaseButtonRadiusTopRight = v })
-                                ConfigTabSelector(title: "视频发布按钮左下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonRadiusBottomLeft, onSelect: { v => cfg_videoReleaseButtonRadiusBottomLeft = v })
-                                ConfigTabSelector(title: "视频发布按钮右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonRadiusBottomRight, onSelect: { v => cfg_videoReleaseButtonRadiusBottomRight = v })
+                                ConfigTabSelector(title: "视频发布按钮左上圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_videoReleaseButtonRadiusTopLeft, onSelect: { v => cfg_videoReleaseButtonRadiusTopLeft = v })
+                                ConfigTabSelector(title: "视频发布按钮右上圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_videoReleaseButtonRadiusTopRight, onSelect: { v => cfg_videoReleaseButtonRadiusTopRight = v })
+                                ConfigTabSelector(title: "视频发布按钮左下圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_videoReleaseButtonRadiusBottomLeft, onSelect: { v => cfg_videoReleaseButtonRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "视频发布按钮右下圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_videoReleaseButtonRadiusBottomRight, onSelect: { v => cfg_videoReleaseButtonRadiusBottomRight = v })
                                 ConfigTabSelector(title: "视频发布按钮图标 - ", options: iconList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonIcon, onSelect: { v => cfg_videoReleaseButtonIcon = v })
                                 ConfigTabSelector(title: "视频发布按钮图标和文本间距 - ", options: spaceList, defaultValue: "6", configKey: "", currentValue: cfg_videoReleaseButtonIconTextGap, onSelect: { v => cfg_videoReleaseButtonIconTextGap = v })
                                 ConfigTabSelector(title: "视频发布按钮图标宽度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", currentValue: cfg_videoReleaseButtonIconWidth, onSelect: { v => cfg_videoReleaseButtonIconWidth = v })
                                 ConfigTabSelector(title: "视频发布按钮图标高度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", currentValue: cfg_videoReleaseButtonIconHeight, onSelect: { v => cfg_videoReleaseButtonIconHeight = v })
                                 ConfigTabSelector(title: "视频发布按钮默认文本内容 - ", options: videoReleaseButtonTextList, defaultValue: "发布视频", configKey: "", currentValue: cfg_videoReleaseButtonText, onSelect: { v => cfg_videoReleaseButtonText = v })
-                                ConfigTabSelector(title: "视频发布按钮文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonTextFontColor, onSelect: { v => cfg_videoReleaseButtonTextFontColor = v })
-                                ConfigTabSelector(title: "视频发布按钮文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonTextFontSize, onSelect: { v => cfg_videoReleaseButtonTextFontSize = v })
-                                ConfigTabSelector(title: "视频发布按钮文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonTextFontStyle, onSelect: { v => cfg_videoReleaseButtonTextFontStyle = v })
-                                ConfigTabSelector(title: "视频发布按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_videoReleaseButtonTextFontWeight, onSelect: { v => cfg_videoReleaseButtonTextFontWeight = v })
-                                ConfigTabSelector(title: "视频发布按钮文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonTextFontFamily, onSelect: { v => cfg_videoReleaseButtonTextFontFamily = v })
-                                ConfigTabSelector(title: "视频发布按钮文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoReleaseButtonTextLineHeight, onSelect: { v => cfg_videoReleaseButtonTextLineHeight = v })
+                                ConfigTabSelector(title: "视频发布按钮文本颜色 - ", options: colorList, defaultValue: "#E6000000", configKey: "", currentValue: cfg_videoReleaseButtonTextFontColor, onSelect: { v => cfg_videoReleaseButtonTextFontColor = v })
+                                ConfigTabSelector(title: "视频发布按钮文本尺寸 - ", options: textSizeList, defaultValue: "16", configKey: "", currentValue: cfg_videoReleaseButtonTextFontSize, onSelect: { v => cfg_videoReleaseButtonTextFontSize = v })
+                                ConfigTabSelector(title: "视频发布按钮文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_videoReleaseButtonTextFontStyle, onSelect: { v => cfg_videoReleaseButtonTextFontStyle = v })
+                                ConfigTabSelector(title: "视频发布按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Medium", configKey: "", currentValue: cfg_videoReleaseButtonTextFontWeight, onSelect: { v => cfg_videoReleaseButtonTextFontWeight = v })
+                                ConfigTabSelector(title: "视频发布按钮文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_videoReleaseButtonTextFontFamily, onSelect: { v => cfg_videoReleaseButtonTextFontFamily = v })
+                                ConfigTabSelector(title: "视频发布按钮文本行高 - ", options: textLineHeightList, defaultValue: "22", configKey: "", currentValue: cfg_videoReleaseButtonTextLineHeight, onSelect: { v => cfg_videoReleaseButtonTextLineHeight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -626,24 +626,24 @@ class VideoPage {
                         if (isExpanded6) {
                             Column {
                                 ConfigTabSelector(title: "视频下载按钮是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_videoDownloadButtonVisible, onSelect: { v => cfg_videoDownloadButtonVisible = v })
-                                ConfigTabSelector(title: "视频下载按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonBackgroundColor, onSelect: { v => cfg_videoDownloadButtonBackgroundColor = v })
+                                ConfigTabSelector(title: "视频下载按钮背景颜色 - ", options: colorList, defaultValue: "#FFF5F5F5", configKey: "", currentValue: cfg_videoDownloadButtonBackgroundColor, onSelect: { v => cfg_videoDownloadButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "视频下载按钮宽度 - ", options: widthOrHeightList, defaultValue: "144", configKey: "", currentValue: cfg_videoDownloadButtonWidth, onSelect: { v => cfg_videoDownloadButtonWidth = v })
                                 ConfigTabSelector(title: "视频下载按钮高度 - ", options: widthOrHeightList, defaultValue: "44", configKey: "", currentValue: cfg_videoDownloadButtonHeight, onSelect: { v => cfg_videoDownloadButtonHeight = v })
-                                ConfigTabSelector(title: "视频下载按钮左上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonRadiusTopLeft, onSelect: { v => cfg_videoDownloadButtonRadiusTopLeft = v })
-                                ConfigTabSelector(title: "视频下载按钮右上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonRadiusTopRight, onSelect: { v => cfg_videoDownloadButtonRadiusTopRight = v })
-                                ConfigTabSelector(title: "视频下载按钮左下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonRadiusBottomLeft, onSelect: { v => cfg_videoDownloadButtonRadiusBottomLeft = v })
-                                ConfigTabSelector(title: "视频下载按钮右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonRadiusBottomRight, onSelect: { v => cfg_videoDownloadButtonRadiusBottomRight = v })
+                                ConfigTabSelector(title: "视频下载按钮左上圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_videoDownloadButtonRadiusTopLeft, onSelect: { v => cfg_videoDownloadButtonRadiusTopLeft = v })
+                                ConfigTabSelector(title: "视频下载按钮右上圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_videoDownloadButtonRadiusTopRight, onSelect: { v => cfg_videoDownloadButtonRadiusTopRight = v })
+                                ConfigTabSelector(title: "视频下载按钮左下圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_videoDownloadButtonRadiusBottomLeft, onSelect: { v => cfg_videoDownloadButtonRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "视频下载按钮右下圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_videoDownloadButtonRadiusBottomRight, onSelect: { v => cfg_videoDownloadButtonRadiusBottomRight = v })
                                 ConfigTabSelector(title: "视频下载按钮图标 - ", options: iconList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonIcon, onSelect: { v => cfg_videoDownloadButtonIcon = v })
                                 ConfigTabSelector(title: "视频下载按钮图标和文本间距 - ", options: spaceList, defaultValue: "6", configKey: "", currentValue: cfg_videoDownloadButtonIconTextGap, onSelect: { v => cfg_videoDownloadButtonIconTextGap = v })
                                 ConfigTabSelector(title: "视频下载按钮图标宽度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", currentValue: cfg_videoDownloadButtonIconWidth, onSelect: { v => cfg_videoDownloadButtonIconWidth = v })
                                 ConfigTabSelector(title: "视频下载按钮图标高度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", currentValue: cfg_videoDownloadButtonIconHeight, onSelect: { v => cfg_videoDownloadButtonIconHeight = v })
                                 ConfigTabSelector(title: "视频下载按钮默认文本内容 - ", options: videoDownloadButtonTextList, defaultValue: "下载视频", configKey: "", currentValue: cfg_videoDownloadButtonText, onSelect: { v => cfg_videoDownloadButtonText = v })
-                                ConfigTabSelector(title: "视频下载按钮文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonTextFontColor, onSelect: { v => cfg_videoDownloadButtonTextFontColor = v })
-                                ConfigTabSelector(title: "视频下载按钮文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonTextFontSize, onSelect: { v => cfg_videoDownloadButtonTextFontSize = v })
-                                ConfigTabSelector(title: "视频下载按钮文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonTextFontStyle, onSelect: { v => cfg_videoDownloadButtonTextFontStyle = v })
-                                ConfigTabSelector(title: "视频下载按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_videoDownloadButtonTextFontWeight, onSelect: { v => cfg_videoDownloadButtonTextFontWeight = v })
-                                ConfigTabSelector(title: "视频下载按钮文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonTextFontFamily, onSelect: { v => cfg_videoDownloadButtonTextFontFamily = v })
-                                ConfigTabSelector(title: "视频下载按钮文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_videoDownloadButtonTextLineHeight, onSelect: { v => cfg_videoDownloadButtonTextLineHeight = v })
+                                ConfigTabSelector(title: "视频下载按钮文本颜色 - ", options: colorList, defaultValue: "#E6000000", configKey: "", currentValue: cfg_videoDownloadButtonTextFontColor, onSelect: { v => cfg_videoDownloadButtonTextFontColor = v })
+                                ConfigTabSelector(title: "视频下载按钮文本尺寸 - ", options: textSizeList, defaultValue: "16", configKey: "", currentValue: cfg_videoDownloadButtonTextFontSize, onSelect: { v => cfg_videoDownloadButtonTextFontSize = v })
+                                ConfigTabSelector(title: "视频下载按钮文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_videoDownloadButtonTextFontStyle, onSelect: { v => cfg_videoDownloadButtonTextFontStyle = v })
+                                ConfigTabSelector(title: "视频下载按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Medium", configKey: "", currentValue: cfg_videoDownloadButtonTextFontWeight, onSelect: { v => cfg_videoDownloadButtonTextFontWeight = v })
+                                ConfigTabSelector(title: "视频下载按钮文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_videoDownloadButtonTextFontFamily, onSelect: { v => cfg_videoDownloadButtonTextFontFamily = v })
+                                ConfigTabSelector(title: "视频下载按钮文本行高 - ", options: textLineHeightList, defaultValue: "22", configKey: "", currentValue: cfg_videoDownloadButtonTextLineHeight, onSelect: { v => cfg_videoDownloadButtonTextLineHeight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -29,19 +29,19 @@ class LatexMathPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
-    @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_latexMathBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_latexMathTextColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontColor: String = "#FFFF0000"
+    @State @Watch[onConfigChanged] var cfg_latexMathBackgroundColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_latexMathTextColor: String = "#FF000000"
 
     @State @Watch[onConfigChanged] var cfg_latexMathMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_latexMathMarginRight: String = "0"
@@ -51,12 +51,12 @@ class LatexMathPage {
     @State @Watch[onConfigChanged] var cfg_latexMathPaddingRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_latexMathPaddingBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_latexMathPaddingLeft: String = "0"
-    @State var cfg_latexMathDefaultText: String = "false"
-    @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_latexMathDefaultText: String = "true"
+    @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontSize: String = "16"
+    @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontStyle: String = "Normal"
     @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_latexMathTextSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_latexMathDefaultTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_latexMathTextSize: String = "16"
     @State @Watch[onConfigChanged] var cfg_latexMathColorFormat: String = "COLOR_FORMAT_BGRA_8888"
     @State @Watch[onConfigChanged] var cfg_latexMathBlockCenter: String = "false"
     var arr: Array<Rune> = Array<Rune>()
@@ -182,6 +182,7 @@ class LatexMathPage {
         if (cfg_latexMathTextSize != "undefined") {
             latexMathTheme.setLatexMathTextSize(parseFloat64(cfg_latexMathTextSize))
         }
+        latexMathTheme.setLatexMathDefaultText(parseBool(cfg_latexMathDefaultText))
         latexMathTheme.setLatexMathColorFormat(parseLatexMathColorFormat(cfg_latexMathColorFormat))
         latexMathTheme.setLatexMathBlockCenter(parseBool(cfg_latexMathBlockCenter))
         latexMathTheme.setLatexMathMargin(top: parseFloat64(cfg_latexMathMarginTop), right: parseFloat64(cfg_latexMathMarginRight), bottom: parseFloat64(cfg_latexMathMarginBottom), left: parseFloat64(cfg_latexMathMarginLeft))
@@ -257,14 +258,14 @@ class LatexMathPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -347,15 +348,15 @@ class LatexMathPage {
 
                         if (isExpanded3) {
                             Column {
-                                ConfigTabSelector(title: "公式未加载文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathDefaultTextFontColor, onSelect: { v => cfg_latexMathDefaultTextFontColor = v })
-                                ConfigTabSelector(title: "公式背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathBackgroundColor, onSelect: { v => cfg_latexMathBackgroundColor = v })
-                                ConfigTabSelector(title: "公式文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathTextColor, onSelect: { v => cfg_latexMathTextColor = v })
-                                ConfigTabSelector(title: "数学公式是否显示默认文本 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_latexMathDefaultText, onSelect: { v => cfg_latexMathDefaultText = v })
-                                ConfigTabSelector(title: "数学公式默认文本文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathDefaultTextFontSize, onSelect: { v => cfg_latexMathDefaultTextFontSize = v })
-                                ConfigTabSelector(title: "数学公式默认文本文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathDefaultTextFontStyle, onSelect: { v => cfg_latexMathDefaultTextFontStyle = v })
+                                ConfigTabSelector(title: "公式未加载文本颜色 - ", options: colorList, defaultValue: "#FFFF0000", configKey: "", currentValue: cfg_latexMathDefaultTextFontColor, onSelect: { v => cfg_latexMathDefaultTextFontColor = v })
+                                ConfigTabSelector(title: "公式背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_latexMathBackgroundColor, onSelect: { v => cfg_latexMathBackgroundColor = v })
+                                ConfigTabSelector(title: "公式文本颜色 - ", options: colorList, defaultValue: "#FF000000", configKey: "", currentValue: cfg_latexMathTextColor, onSelect: { v => cfg_latexMathTextColor = v })
+                                ConfigTabSelector(title: "数学公式是否显示默认文本 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_latexMathDefaultText, onSelect: { v => cfg_latexMathDefaultText = v })
+                                ConfigTabSelector(title: "数学公式默认文本文本尺寸 - ", options: textSizeList, defaultValue: "16", configKey: "", currentValue: cfg_latexMathDefaultTextFontSize, onSelect: { v => cfg_latexMathDefaultTextFontSize = v })
+                                ConfigTabSelector(title: "数学公式默认文本文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_latexMathDefaultTextFontStyle, onSelect: { v => cfg_latexMathDefaultTextFontStyle = v })
                                 ConfigTabSelector(title: "数学公式默认文本文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_latexMathDefaultTextFontWeight, onSelect: { v => cfg_latexMathDefaultTextFontWeight = v })
-                                ConfigTabSelector(title: "数学公式默认文本文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathDefaultTextFontFamily, onSelect: { v => cfg_latexMathDefaultTextFontFamily = v })
-                                ConfigTabSelector(title: "数学公式文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_latexMathTextSize, onSelect: { v => cfg_latexMathTextSize = v })
+                                ConfigTabSelector(title: "数学公式默认文本文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_latexMathDefaultTextFontFamily, onSelect: { v => cfg_latexMathDefaultTextFontFamily = v })
+                                ConfigTabSelector(title: "数学公式文本大小 - ", options: textSizeList, defaultValue: "16", configKey: "", currentValue: cfg_latexMathTextSize, onSelect: { v => cfg_latexMathTextSize = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

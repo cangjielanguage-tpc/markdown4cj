@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -27,24 +27,24 @@ class StrikethroughPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
     @State @Watch[onConfigChanged] var cfg_strikethroughTextFontColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_strikethroughTextFontSize: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_strikethroughTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_strikethroughTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextFontWeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_strikethroughTextFontFamily: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_strikethroughTextLineHeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_strikethroughTextLetterSpacing: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_strikethroughTextDecorationColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_strikethroughTextDecorationColor: String = "#FF191919"
 
     @State @Watch[onConfigChanged] var cfg_strikethroughTextDecorationStyle: String = "SOLID"
     var arr: Array<Rune> = Array<Rune>()
@@ -156,7 +156,9 @@ class StrikethroughPage {
         if (cfg_strikethroughTextFontStyle != "undefined") {
             strikethroughTheme.setStrikethroughTextFontStyle(parseFontStyle(cfg_strikethroughTextFontStyle))
         }
-        strikethroughTheme.setStrikethroughTextFontWeight(parseFontWeight(cfg_strikethroughTextFontWeight))
+        if (cfg_strikethroughTextFontWeight != "undefined") {
+            strikethroughTheme.setStrikethroughTextFontWeight(parseFontWeight(cfg_strikethroughTextFontWeight))
+        }
         if (cfg_strikethroughTextFontFamily != "undefined") {
             strikethroughTheme.setStrikethroughTextFontFamily(cfg_strikethroughTextFontFamily)
         }
@@ -241,14 +243,14 @@ class StrikethroughPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -289,11 +291,11 @@ class StrikethroughPage {
                                 ConfigTabSelector(title: "删除线文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_strikethroughTextFontColor, onSelect: { v => cfg_strikethroughTextFontColor = v })
                                 ConfigTabSelector(title: "删除线文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_strikethroughTextFontSize, onSelect: { v => cfg_strikethroughTextFontSize = v })
                                 ConfigTabSelector(title: "删除线文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_strikethroughTextFontStyle, onSelect: { v => cfg_strikethroughTextFontStyle = v })
-                                ConfigTabSelector(title: "删除线文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_strikethroughTextFontWeight, onSelect: { v => cfg_strikethroughTextFontWeight = v })
+                                ConfigTabSelector(title: "删除线文本字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_strikethroughTextFontWeight, onSelect: { v => cfg_strikethroughTextFontWeight = v })
                                 ConfigTabSelector(title: "删除线文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_strikethroughTextFontFamily, onSelect: { v => cfg_strikethroughTextFontFamily = v })
                                 ConfigTabSelector(title: "删除线文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_strikethroughTextLineHeight, onSelect: { v => cfg_strikethroughTextLineHeight = v })
                                 ConfigTabSelector(title: "删除线文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_strikethroughTextLetterSpacing, onSelect: { v => cfg_strikethroughTextLetterSpacing = v })
-                                ConfigTabSelector(title: "删除线文本装饰颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_strikethroughTextDecorationColor, onSelect: { v => cfg_strikethroughTextDecorationColor = v })
+                                ConfigTabSelector(title: "删除线文本装饰颜色 - ", options: colorList, defaultValue: "#FF191919", configKey: "", currentValue: cfg_strikethroughTextDecorationColor, onSelect: { v => cfg_strikethroughTextDecorationColor = v })
                                 ConfigTabSelector(title: "删除线文本装饰线样式 - ", options: textDecorationStyleList, defaultValue: "SOLID", configKey: "", currentValue: cfg_strikethroughTextDecorationStyle, onSelect: { v => cfg_strikethroughTextDecorationStyle = v })
                             }
                             .width(100.percent)

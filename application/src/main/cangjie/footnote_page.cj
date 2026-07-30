@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -29,28 +29,28 @@ class FootnotePage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
-    @State @Watch[onConfigChanged] var cfg_footnoteRefTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_footnoteRefTextDecorationColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_footnoteRefTextBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_footnoteRefTextFontColor: String = "#FFFF0000"
+    @State @Watch[onConfigChanged] var cfg_footnoteRefTextDecorationColor: String = "#FFFF0000"
+    @State @Watch[onConfigChanged] var cfg_footnoteRefTextBackgroundColor: String = "#00000000"
 
     @State @Watch[onConfigChanged] var cfg_footnoteRefTextFontSize: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_footnoteRefTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_footnoteRefTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_footnoteRefTextFontWeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_footnoteRefTextFontFamily: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_footnoteRefTextLineHeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_footnoteRefTextLetterSpacing: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_footnoteRefTextDecorationType: String = "None"
-    @State @Watch[onConfigChanged] var cfg_footnoteRefTextDecorationStyle: String = "Solid"
+    @State @Watch[onConfigChanged] var cfg_footnoteRefTextDecorationType: String = "Underline"
+    @State @Watch[onConfigChanged] var cfg_footnoteRefTextDecorationStyle: String = "SOLID"
     @State @Watch[onConfigChanged] var cfg_footnoteRefTextBackgroundRadiusTopLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_footnoteRefTextBackgroundRadiusTopRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_footnoteRefTextBackgroundRadiusBottomLeft: String = "0"
@@ -180,7 +180,9 @@ class FootnotePage {
         if (cfg_footnoteRefTextFontStyle != "undefined") {
             footnoteRefTheme.setFootnoteRefTextFontStyle(parseFontStyle(cfg_footnoteRefTextFontStyle))
         }
-        footnoteRefTheme.setFootnoteRefTextFontWeight(parseFontWeight(cfg_footnoteRefTextFontWeight))
+        if (cfg_footnoteRefTextFontWeight != "undefined") {
+            footnoteRefTheme.setFootnoteRefTextFontWeight(parseFontWeight(cfg_footnoteRefTextFontWeight))
+        }
         if (cfg_footnoteRefTextFontFamily != "undefined") {
             footnoteRefTheme.setFootnoteRefTextFontFamily(cfg_footnoteRefTextFontFamily)
         }
@@ -271,14 +273,14 @@ class FootnotePage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -360,17 +362,17 @@ class FootnotePage {
 
                         if (isExpanded3) {
                             Column {
-                                ConfigTabSelector(title: "脚注引用文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextFontColor, onSelect: { v => cfg_footnoteRefTextFontColor = v })
-                                ConfigTabSelector(title: "脚注引用下划线颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextDecorationColor, onSelect: { v => cfg_footnoteRefTextDecorationColor = v })
-                                ConfigTabSelector(title: "脚注引用背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextBackgroundColor, onSelect: { v => cfg_footnoteRefTextBackgroundColor = v })
+                                ConfigTabSelector(title: "脚注引用文本颜色 - ", options: colorList, defaultValue: "#FFFF0000", configKey: "", currentValue: cfg_footnoteRefTextFontColor, onSelect: { v => cfg_footnoteRefTextFontColor = v })
+                                ConfigTabSelector(title: "脚注引用下划线颜色 - ", options: colorList, defaultValue: "#FFFF0000", configKey: "", currentValue: cfg_footnoteRefTextDecorationColor, onSelect: { v => cfg_footnoteRefTextDecorationColor = v })
+                                ConfigTabSelector(title: "脚注引用背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_footnoteRefTextBackgroundColor, onSelect: { v => cfg_footnoteRefTextBackgroundColor = v })
                                 ConfigTabSelector(title: "脚注引用文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextFontSize, onSelect: { v => cfg_footnoteRefTextFontSize = v })
                                 ConfigTabSelector(title: "脚注引用文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextFontStyle, onSelect: { v => cfg_footnoteRefTextFontStyle = v })
-                                ConfigTabSelector(title: "脚注引用文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_footnoteRefTextFontWeight, onSelect: { v => cfg_footnoteRefTextFontWeight = v })
+                                ConfigTabSelector(title: "脚注引用文本字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextFontWeight, onSelect: { v => cfg_footnoteRefTextFontWeight = v })
                                 ConfigTabSelector(title: "脚注引用文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextFontFamily, onSelect: { v => cfg_footnoteRefTextFontFamily = v })
                                 ConfigTabSelector(title: "脚注引用文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextLineHeight, onSelect: { v => cfg_footnoteRefTextLineHeight = v })
                                 ConfigTabSelector(title: "脚注引用文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_footnoteRefTextLetterSpacing, onSelect: { v => cfg_footnoteRefTextLetterSpacing = v })
-                                ConfigTabSelector(title: "脚注引用文本装饰类型 - ", options: textDecorationTypeList, defaultValue: "None", configKey: "", currentValue: cfg_footnoteRefTextDecorationType, onSelect: { v => cfg_footnoteRefTextDecorationType = v })
-                                ConfigTabSelector(title: "脚注引用文本装饰样式 - ", options: textDecorationStyleList, defaultValue: "Solid", configKey: "", currentValue: cfg_footnoteRefTextDecorationStyle, onSelect: { v => cfg_footnoteRefTextDecorationStyle = v })
+                                ConfigTabSelector(title: "脚注引用文本装饰类型 - ", options: textDecorationTypeList, defaultValue: "Underline", configKey: "", currentValue: cfg_footnoteRefTextDecorationType, onSelect: { v => cfg_footnoteRefTextDecorationType = v })
+                                ConfigTabSelector(title: "脚注引用文本装饰样式 - ", options: textDecorationStyleList, defaultValue: "SOLID", configKey: "", currentValue: cfg_footnoteRefTextDecorationStyle, onSelect: { v => cfg_footnoteRefTextDecorationStyle = v })
                                 ConfigTabSelector(title: "脚注引用文本背景左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_footnoteRefTextBackgroundRadiusTopLeft, onSelect: { v => cfg_footnoteRefTextBackgroundRadiusTopLeft = v })
                                 ConfigTabSelector(title: "脚注引用文本背景右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_footnoteRefTextBackgroundRadiusTopRight, onSelect: { v => cfg_footnoteRefTextBackgroundRadiusTopRight = v })
                                 ConfigTabSelector(title: "脚注引用文本背景左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_footnoteRefTextBackgroundRadiusBottomLeft, onSelect: { v => cfg_footnoteRefTextBackgroundRadiusBottomLeft = v })

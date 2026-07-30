@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -27,23 +27,23 @@ class ParagraphPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
-    @State @Watch[onConfigChanged] var cfg_paragraphTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_paragraphTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextFontColor: String = "#FF191919"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextFontSize: String = "14"
     @State @Watch[onConfigChanged] var cfg_paragraphTextFontStyle: String = "Normal"
     @State @Watch[onConfigChanged] var cfg_paragraphTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_paragraphTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_paragraphTextLineHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_paragraphTextLetterSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextLineHeight: String = "22"
+    @State @Watch[onConfigChanged] var cfg_paragraphTextLetterSpacing: String = "0"
     @State @Watch[onConfigChanged] var cfg_paragraphBackgroundColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_paragraphMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_paragraphMarginRight: String = "0"
@@ -57,7 +57,7 @@ class ParagraphPage {
     @State @Watch[onConfigChanged] var cfg_beforeSelectedParagraphBackgroundColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_selectedParagraphBackgroundColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_paragraphHeadingAnimationEnabled: String = "false"
-    @State @Watch[onConfigChanged] var cfg_paragraphHeadingAnimationDuration: String = "0"
+    @State @Watch[onConfigChanged] var cfg_paragraphHeadingAnimationDuration: String = "300"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -266,14 +266,14 @@ class ParagraphPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -311,13 +311,13 @@ class ParagraphPage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "段落文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_paragraphTextFontColor, onSelect: { v => cfg_paragraphTextFontColor = v })
-                                ConfigTabSelector(title: "段落文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_paragraphTextFontSize, onSelect: { v => cfg_paragraphTextFontSize = v })
+                                ConfigTabSelector(title: "段落文本颜色 - ", options: colorList, defaultValue: "#FF191919", configKey: "", currentValue: cfg_paragraphTextFontColor, onSelect: { v => cfg_paragraphTextFontColor = v })
+                                ConfigTabSelector(title: "段落文本尺寸 - ", options: textSizeList, defaultValue: "14", configKey: "", currentValue: cfg_paragraphTextFontSize, onSelect: { v => cfg_paragraphTextFontSize = v })
                                 ConfigTabSelector(title: "段落文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_paragraphTextFontStyle, onSelect: { v => cfg_paragraphTextFontStyle = v })
                                 ConfigTabSelector(title: "段落文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_paragraphTextFontWeight, onSelect: { v => cfg_paragraphTextFontWeight = v })
-                                ConfigTabSelector(title: "段落文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_paragraphTextFontFamily, onSelect: { v => cfg_paragraphTextFontFamily = v })
-                                ConfigTabSelector(title: "段落文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_paragraphTextLineHeight, onSelect: { v => cfg_paragraphTextLineHeight = v })
-                                ConfigTabSelector(title: "段落文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_paragraphTextLetterSpacing, onSelect: { v => cfg_paragraphTextLetterSpacing = v })
+                                ConfigTabSelector(title: "段落文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_paragraphTextFontFamily, onSelect: { v => cfg_paragraphTextFontFamily = v })
+                                ConfigTabSelector(title: "段落文本行高 - ", options: textLineHeightList, defaultValue: "22", configKey: "", currentValue: cfg_paragraphTextLineHeight, onSelect: { v => cfg_paragraphTextLineHeight = v })
+                                ConfigTabSelector(title: "段落文本字符间距 - ", options: textWordSpaceList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphTextLetterSpacing, onSelect: { v => cfg_paragraphTextLetterSpacing = v })
                                 ConfigTabSelector(title: "段落背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_paragraphBackgroundColor, onSelect: { v => cfg_paragraphBackgroundColor = v })
                                 ConfigTabSelector(title: "段落上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphMarginTop, onSelect: { v => cfg_paragraphMarginTop = v })
                                 ConfigTabSelector(title: "段落右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphMarginRight, onSelect: { v => cfg_paragraphMarginRight = v })
@@ -330,7 +330,7 @@ class ParagraphPage {
                                 ConfigTabSelector(title: "长按未触发弹窗时段落的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_beforeSelectedParagraphBackgroundColor, onSelect: { v => cfg_beforeSelectedParagraphBackgroundColor = v })
                                 ConfigTabSelector(title: "长按放手后选中文字的背景色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_selectedParagraphBackgroundColor, onSelect: { v => cfg_selectedParagraphBackgroundColor = v })
                                 ConfigTabSelector(title: "标题段落加载动画启用 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_paragraphHeadingAnimationEnabled, onSelect: { v => cfg_paragraphHeadingAnimationEnabled = v })
-                                ConfigTabSelector(title: "标题段落加载动画时长(ms) - ", options: timeList, defaultValue: "0", configKey: "", currentValue: cfg_paragraphHeadingAnimationDuration, onSelect: { v => cfg_paragraphHeadingAnimationDuration = v })
+                                ConfigTabSelector(title: "标题段落加载动画时长(ms) - ", options: timeList, defaultValue: "300", configKey: "", currentValue: cfg_paragraphHeadingAnimationDuration, onSelect: { v => cfg_paragraphHeadingAnimationDuration = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -31,23 +31,23 @@ class ImagePage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
-    @State @Watch[onConfigChanged] var cfg_imageBorderColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageBorderWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageBorderColor: String = "#FF000000"
+    @State @Watch[onConfigChanged] var cfg_imageBorderWidth: String = "0"
     @State @Watch[onConfigChanged] var cfg_imageFitType: String = "Contain"
     @State @Watch[onConfigChanged] var cfg_imageAutoResize: String = "true"
     @State @Watch[onConfigChanged] var cfg_imagePlaceholder: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_imageMaximumWidth: String = "100%"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonVisible: String = "true"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonVisible: String = "false"
 
     @State @Watch[onConfigChanged] var cfg_imageMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_imageMarginRight: String = "0"
@@ -58,28 +58,28 @@ class ImagePage {
     @State @Watch[onConfigChanged] var cfg_imageRadiusBottomLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_imageRadiusBottomRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_imageBorderStyle: String = "Solid"
-    @State @Watch[onConfigChanged] var cfg_imageMixedLayout: String = "false"
-    @State @Watch[onConfigChanged] var cfg_imageFixedRatioWidth: String = "0%"
-    @State @Watch[onConfigChanged] var cfg_imageMaxHeight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageHeight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageMaxWidth: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageWidth: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageBottomLayoutMarginTop: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonWidth: String = "144"
+    @State @Watch[onConfigChanged] var cfg_imageMixedLayout: String = "true"
+    @State @Watch[onConfigChanged] var cfg_imageFixedRatioWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageMaxHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageMaxWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageBottomLayoutMarginTop: String = "14"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonWidth: String = "296"
     @State @Watch[onConfigChanged] var cfg_imageDownloadButtonHeight: String = "44"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonRadius: String = "0"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonRadius: String = "22"
     @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconTextGap: String = "6"
     @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIcon: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconWidth: String = "18"
     @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconHeight: String = "18"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonText: String = "下载"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonBackgroundColor: String = "#FFF5F5F5"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonText: String = "下载图片"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontColor: String = "#E6000000"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontSize: String = "16"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontStyle: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontWeight: String = "Medium"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextLineHeight: String = "22"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -98,6 +98,7 @@ class ImagePage {
         .usePlugin(ImageStylePlugin.create())
         .usePlugin(CodeListPlugin.create())
         .usePlugin(FootnotePlugin.create())
+        .usePlugin(ImageTextMixPlugin.create())
         .usePlugin(TocPlugin.create())
         .usePlugin(ImageCollectPlugin.create())
         .usePlugin(NodeIdPlugin.create())
@@ -199,25 +200,20 @@ class ImagePage {
         imageTheme.setImageDownloadButtonVisible(parseBool(cfg_imageDownloadButtonVisible))
         imageTheme.setImageBorderStyle(parseBorderStyle(cfg_imageBorderStyle))
         imageTheme.setIsImageMixedLayout(parseBool(cfg_imageMixedLayout))
-        let imageFixedRatioWidth = parsePercent(cfg_imageFixedRatioWidth)
-        if (imageFixedRatioWidth > 0.0) {
-            imageTheme.setImageFixedRatioWidth(imageFixedRatioWidth)
+        if (cfg_imageFixedRatioWidth != "undefined") {
+            imageTheme.setImageFixedRatioWidth(parsePercent(cfg_imageFixedRatioWidth))
         }
-        let imageMaxHeight = parseFloat64(cfg_imageMaxHeight)
-        if (imageMaxHeight > 0.0) {
-            imageTheme.setImageMaxHeight(imageMaxHeight)
+        if (cfg_imageMaxHeight != "undefined") {
+            imageTheme.setImageMaxHeight(parseFloat64(cfg_imageMaxHeight))
         }
-        let imageHeight = parseFloat64(cfg_imageHeight)
-        if (imageHeight > 0.0) {
-            imageTheme.setImageHeight(imageHeight)
+        if (cfg_imageHeight != "undefined") {
+            imageTheme.setImageHeight(parseFloat64(cfg_imageHeight))
         }
-        let imageMaxWidth = parseFloat64(cfg_imageMaxWidth)
-        if (imageMaxWidth > 0.0) {
-            imageTheme.setImageMaxWidth(imageMaxWidth)
+        if (cfg_imageMaxWidth != "undefined") {
+            imageTheme.setImageMaxWidth(parseFloat64(cfg_imageMaxWidth))
         }
-        let imageWidth = parseFloat64(cfg_imageWidth)
-        if (imageWidth > 0.0) {
-            imageTheme.setImageWidth(imageWidth)
+        if (cfg_imageWidth != "undefined") {
+            imageTheme.setImageWidth(parseFloat64(cfg_imageWidth))
         }
         imageTheme.setImageBottomLayoutMarginTop(parseFloat64(cfg_imageBottomLayoutMarginTop))
         imageTheme.setImageDownloadButtonWidth(parseFloat64(cfg_imageDownloadButtonWidth))
@@ -322,14 +318,14 @@ class ImagePage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -367,8 +363,8 @@ class ImagePage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "图片边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageBorderColor, onSelect: { v => cfg_imageBorderColor = v })
-                                ConfigTabSelector(title: "图片边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageBorderWidth, onSelect: { v => cfg_imageBorderWidth = v })
+                                ConfigTabSelector(title: "图片边框颜色 - ", options: colorList, defaultValue: "#FF000000", configKey: "", currentValue: cfg_imageBorderColor, onSelect: { v => cfg_imageBorderColor = v })
+                                ConfigTabSelector(title: "图片边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", currentValue: cfg_imageBorderWidth, onSelect: { v => cfg_imageBorderWidth = v })
                                 ConfigTabSelector(title: "图片上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_imageMarginTop, onSelect: { v => cfg_imageMarginTop = v })
                                 ConfigTabSelector(title: "图片右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_imageMarginRight, onSelect: { v => cfg_imageMarginRight = v })
                                 ConfigTabSelector(title: "图片下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_imageMarginBottom, onSelect: { v => cfg_imageMarginBottom = v })
@@ -417,13 +413,13 @@ class ImagePage {
                                 ConfigTabSelector(title: "图片自动调整 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_imageAutoResize, onSelect: { v => cfg_imageAutoResize = v })
                                 ConfigTabSelector(title: "图片默认占位图 - ", options: iconShortList, defaultValue: "undefined", configKey: "", currentValue: cfg_imagePlaceholder, onSelect: { v => cfg_imagePlaceholder = v })
                                 ConfigTabSelector(title: "图片基于自身宽度缩放百分比 - ", options: percentList, defaultValue: "100%", configKey: "", currentValue: cfg_imageMaximumWidth, onSelect: { v => cfg_imageMaximumWidth = v })
-                                ConfigTabSelector(title: "图片是否混合布局 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_imageMixedLayout, onSelect: { v => cfg_imageMixedLayout = v })
-                                ConfigTabSelector(title: "图片基于父布局宽度缩放百分比 - ", options: percentList, defaultValue: "0%", configKey: "", currentValue: cfg_imageFixedRatioWidth, onSelect: { v => cfg_imageFixedRatioWidth = v })
-                                ConfigTabSelector(title: "图片最大高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_imageMaxHeight, onSelect: { v => cfg_imageMaxHeight = v })
-                                ConfigTabSelector(title: "图片高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_imageHeight, onSelect: { v => cfg_imageHeight = v })
-                                ConfigTabSelector(title: "图片最大宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_imageMaxWidth, onSelect: { v => cfg_imageMaxWidth = v })
-                                ConfigTabSelector(title: "图片宽度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_imageWidth, onSelect: { v => cfg_imageWidth = v })
-                                ConfigTabSelector(title: "图片底部布局距图片上边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_imageBottomLayoutMarginTop, onSelect: { v => cfg_imageBottomLayoutMarginTop = v })
+                                ConfigTabSelector(title: "图片是否混合布局 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_imageMixedLayout, onSelect: { v => cfg_imageMixedLayout = v })
+                                ConfigTabSelector(title: "图片基于父布局宽度缩放百分比 - ", options: percentList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageFixedRatioWidth, onSelect: { v => cfg_imageFixedRatioWidth = v })
+                                ConfigTabSelector(title: "图片最大高度 - ", options: imageWidthOrHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageMaxHeight, onSelect: { v => cfg_imageMaxHeight = v })
+                                ConfigTabSelector(title: "图片高度 - ", options: imageWidthOrHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageHeight, onSelect: { v => cfg_imageHeight = v })
+                                ConfigTabSelector(title: "图片最大宽度 - ", options: imageWidthOrHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageMaxWidth, onSelect: { v => cfg_imageMaxWidth = v })
+                                ConfigTabSelector(title: "图片宽度 - ", options: imageWidthOrHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageWidth, onSelect: { v => cfg_imageWidth = v })
+                                ConfigTabSelector(title: "图片底部布局距图片上边距 - ", options: marginList, defaultValue: "14", configKey: "", currentValue: cfg_imageBottomLayoutMarginTop, onSelect: { v => cfg_imageBottomLayoutMarginTop = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -459,22 +455,22 @@ class ImagePage {
 
                         if (isExpanded4) {
                             Column {
-                                ConfigTabSelector(title: "图片下载按钮可见 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_imageDownloadButtonVisible, onSelect: { v => cfg_imageDownloadButtonVisible = v })
-                                ConfigTabSelector(title: "图片下载按钮宽度 - ", options: widthOrHeightList, defaultValue: "144", configKey: "", currentValue: cfg_imageDownloadButtonWidth, onSelect: { v => cfg_imageDownloadButtonWidth = v })
+                                ConfigTabSelector(title: "图片下载按钮可见 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_imageDownloadButtonVisible, onSelect: { v => cfg_imageDownloadButtonVisible = v })
+                                ConfigTabSelector(title: "图片下载按钮宽度 - ", options: widthOrHeightList, defaultValue: "296", configKey: "", currentValue: cfg_imageDownloadButtonWidth, onSelect: { v => cfg_imageDownloadButtonWidth = v })
                                 ConfigTabSelector(title: "图片下载按钮高度 - ", options: widthOrHeightList, defaultValue: "44", configKey: "", currentValue: cfg_imageDownloadButtonHeight, onSelect: { v => cfg_imageDownloadButtonHeight = v })
-                                ConfigTabSelector(title: "图片下载按钮圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_imageDownloadButtonRadius, onSelect: { v => cfg_imageDownloadButtonRadius = v })
+                                ConfigTabSelector(title: "图片下载按钮圆角 - ", options: radiusList, defaultValue: "22", configKey: "", currentValue: cfg_imageDownloadButtonRadius, onSelect: { v => cfg_imageDownloadButtonRadius = v })
                                 ConfigTabSelector(title: "图片下载按钮图标 - ", options: iconShortList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageDownloadButtonIcon, onSelect: { v => cfg_imageDownloadButtonIcon = v })
                                 ConfigTabSelector(title: "图片下载按钮图标和文本间距 - ", options: spaceList, defaultValue: "6", configKey: "", currentValue: cfg_imageDownloadButtonIconTextGap, onSelect: { v => cfg_imageDownloadButtonIconTextGap = v })
                                 ConfigTabSelector(title: "图片下载按钮图标宽度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", currentValue: cfg_imageDownloadButtonIconWidth, onSelect: { v => cfg_imageDownloadButtonIconWidth = v })
                                 ConfigTabSelector(title: "图片下载按钮图标高度 - ", options: widthOrHeightList, defaultValue: "18", configKey: "", currentValue: cfg_imageDownloadButtonIconHeight, onSelect: { v => cfg_imageDownloadButtonIconHeight = v })
-                                ConfigTabSelector(title: "图片下载按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageDownloadButtonBackgroundColor, onSelect: { v => cfg_imageDownloadButtonBackgroundColor = v })
-                                ConfigTabSelector(title: "图片下载按钮默认文本 - ", options: imageDownloadButtonTextList, defaultValue: "下载", configKey: "", currentValue: cfg_imageDownloadButtonText, onSelect: { v => cfg_imageDownloadButtonText = v })
-                                ConfigTabSelector(title: "图片下载按钮文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageDownloadButtonTextFontColor, onSelect: { v => cfg_imageDownloadButtonTextFontColor = v })
-                                ConfigTabSelector(title: "图片下载按钮文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageDownloadButtonTextFontSize, onSelect: { v => cfg_imageDownloadButtonTextFontSize = v })
-                                ConfigTabSelector(title: "图片下载按钮文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageDownloadButtonTextFontStyle, onSelect: { v => cfg_imageDownloadButtonTextFontStyle = v })
-                                ConfigTabSelector(title: "图片下载按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_imageDownloadButtonTextFontWeight, onSelect: { v => cfg_imageDownloadButtonTextFontWeight = v })
-                                ConfigTabSelector(title: "图片下载按钮文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageDownloadButtonTextFontFamily, onSelect: { v => cfg_imageDownloadButtonTextFontFamily = v })
-                                ConfigTabSelector(title: "图片下载按钮文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_imageDownloadButtonTextLineHeight, onSelect: { v => cfg_imageDownloadButtonTextLineHeight = v })
+                                ConfigTabSelector(title: "图片下载按钮背景颜色 - ", options: colorList, defaultValue: "#FFF5F5F5", configKey: "", currentValue: cfg_imageDownloadButtonBackgroundColor, onSelect: { v => cfg_imageDownloadButtonBackgroundColor = v })
+                                ConfigTabSelector(title: "图片下载按钮默认文本 - ", options: imageDownloadButtonTextList, defaultValue: "下载图片", configKey: "", currentValue: cfg_imageDownloadButtonText, onSelect: { v => cfg_imageDownloadButtonText = v })
+                                ConfigTabSelector(title: "图片下载按钮文本颜色 - ", options: colorList, defaultValue: "#E6000000", configKey: "", currentValue: cfg_imageDownloadButtonTextFontColor, onSelect: { v => cfg_imageDownloadButtonTextFontColor = v })
+                                ConfigTabSelector(title: "图片下载按钮文本尺寸 - ", options: textSizeList, defaultValue: "16", configKey: "", currentValue: cfg_imageDownloadButtonTextFontSize, onSelect: { v => cfg_imageDownloadButtonTextFontSize = v })
+                                ConfigTabSelector(title: "图片下载按钮文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_imageDownloadButtonTextFontStyle, onSelect: { v => cfg_imageDownloadButtonTextFontStyle = v })
+                                ConfigTabSelector(title: "图片下载按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Medium", configKey: "", currentValue: cfg_imageDownloadButtonTextFontWeight, onSelect: { v => cfg_imageDownloadButtonTextFontWeight = v })
+                                ConfigTabSelector(title: "图片下载按钮文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_imageDownloadButtonTextFontFamily, onSelect: { v => cfg_imageDownloadButtonTextFontFamily = v })
+                                ConfigTabSelector(title: "图片下载按钮文本行高 - ", options: textLineHeightList, defaultValue: "22", configKey: "", currentValue: cfg_imageDownloadButtonTextLineHeight, onSelect: { v => cfg_imageDownloadButtonTextLineHeight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

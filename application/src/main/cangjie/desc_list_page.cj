@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -27,17 +27,18 @@ class DescListPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
 
+    @State @Watch[onConfigChanged] var cfg_definitionListBackgroundColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_definitionListMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_definitionListMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_definitionListMarginBottom: String = "0"
@@ -46,11 +47,11 @@ class DescListPage {
     @State @Watch[onConfigChanged] var cfg_definitionListPaddingRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_definitionListPaddingBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_definitionListPaddingLeft: String = "0"
-    @State @Watch[onConfigChanged] var cfg_definitionListTermToDescriptionSpacing: String = "0"
-    @State @Watch[onConfigChanged] var cfg_definitionListTermTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_definitionListTermTextFontStyle: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_definitionListDescriptionItemSpacing: String = "0"
-    @State @Watch[onConfigChanged] var cfg_definitionListDescriptionIndent: String = "0"
+    @State @Watch[onConfigChanged] var cfg_definitionListTermToDescriptionSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_definitionListTermTextFontWeight: String = "Semibold"
+    @State @Watch[onConfigChanged] var cfg_definitionListTermTextFontStyle: String = "Italic"
+    @State @Watch[onConfigChanged] var cfg_definitionListDescriptionItemSpacing: String = "8"
+    @State @Watch[onConfigChanged] var cfg_definitionListDescriptionIndent: String = "8"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -153,6 +154,9 @@ class DescListPage {
         }
 
         let definitionListTheme = theme.getDefinitionListTheme()
+        if (cfg_definitionListBackgroundColor != "undefined") {
+            definitionListTheme.setDefinitionListBackgroundColor(parseColor(cfg_definitionListBackgroundColor))
+        }
         definitionListTheme.setDefinitionListTermToDescriptionSpacing(parseFloat64(cfg_definitionListTermToDescriptionSpacing))
         definitionListTheme.setDefinitionListTermTextFontWeight(parseFontWeight(cfg_definitionListTermTextFontWeight))
         definitionListTheme.setDefinitionListTermTextFontStyle(parseFontStyle(cfg_definitionListTermTextFontStyle))
@@ -231,14 +235,14 @@ class DescListPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -276,6 +280,7 @@ class DescListPage {
 
                         if (isExpanded2) {
                             Column {
+                                ConfigTabSelector(title: "定义列表背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_definitionListBackgroundColor, onSelect: { v => cfg_definitionListBackgroundColor = v })
                                 ConfigTabSelector(title: "定义列表上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListMarginTop, onSelect: { v => cfg_definitionListMarginTop = v })
                                 ConfigTabSelector(title: "定义列表右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListMarginRight, onSelect: { v => cfg_definitionListMarginRight = v })
                                 ConfigTabSelector(title: "定义列表下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListMarginBottom, onSelect: { v => cfg_definitionListMarginBottom = v })
@@ -284,11 +289,11 @@ class DescListPage {
                                 ConfigTabSelector(title: "定义列表右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListPaddingRight, onSelect: { v => cfg_definitionListPaddingRight = v })
                                 ConfigTabSelector(title: "定义列表下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListPaddingBottom, onSelect: { v => cfg_definitionListPaddingBottom = v })
                                 ConfigTabSelector(title: "定义列表左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListPaddingLeft, onSelect: { v => cfg_definitionListPaddingLeft = v })
-                                ConfigTabSelector(title: "定义列表术语和定义行之间间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListTermToDescriptionSpacing, onSelect: { v => cfg_definitionListTermToDescriptionSpacing = v })
-                                ConfigTabSelector(title: "定义列表术语文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_definitionListTermTextFontWeight, onSelect: { v => cfg_definitionListTermTextFontWeight = v })
-                                ConfigTabSelector(title: "定义列表术语文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_definitionListTermTextFontStyle, onSelect: { v => cfg_definitionListTermTextFontStyle = v })
-                                ConfigTabSelector(title: "定义列表定义行之间间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListDescriptionItemSpacing, onSelect: { v => cfg_definitionListDescriptionItemSpacing = v })
-                                ConfigTabSelector(title: "定义列表定义行左缩进距离 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_definitionListDescriptionIndent, onSelect: { v => cfg_definitionListDescriptionIndent = v })
+                                ConfigTabSelector(title: "定义列表术语和定义行之间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_definitionListTermToDescriptionSpacing, onSelect: { v => cfg_definitionListTermToDescriptionSpacing = v })
+                                ConfigTabSelector(title: "定义列表术语文本字体粗细 - ", options: fontWeightList, defaultValue: "Semibold", configKey: "", currentValue: cfg_definitionListTermTextFontWeight, onSelect: { v => cfg_definitionListTermTextFontWeight = v })
+                                ConfigTabSelector(title: "定义列表术语文本字体样式 - ", options: fontStyleList, defaultValue: "Italic", configKey: "", currentValue: cfg_definitionListTermTextFontStyle, onSelect: { v => cfg_definitionListTermTextFontStyle = v })
+                                ConfigTabSelector(title: "定义列表定义行之间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_definitionListDescriptionItemSpacing, onSelect: { v => cfg_definitionListDescriptionItemSpacing = v })
+                                ConfigTabSelector(title: "定义列表定义行左缩进距离 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_definitionListDescriptionIndent, onSelect: { v => cfg_definitionListDescriptionIndent = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
