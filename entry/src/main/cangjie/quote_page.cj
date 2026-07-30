@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -27,33 +27,33 @@ class QuotePage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
-    @State @Watch[onConfigChanged] var cfg_blockQuoteBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_blockQuoteLeftBorderColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_blockQuoteLeftBorderWidth: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_blockQuoteBackgroundColor: String = "#FFEAEAEA"
+    @State @Watch[onConfigChanged] var cfg_blockQuoteLeftBorderColor: String = "#FF191919"
+    @State @Watch[onConfigChanged] var cfg_blockQuoteLeftBorderWidth: String = "1"
 
     @State @Watch[onConfigChanged] var cfg_blockQuoteMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockQuoteMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockQuoteMarginBottom: String = "0"
-    @State @Watch[onConfigChanged] var cfg_blockQuoteMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockQuoteMarginLeft: String = "8"
     @State @Watch[onConfigChanged] var cfg_blockQuotePaddingTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockQuotePaddingRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockQuotePaddingBottom: String = "0"
-    @State @Watch[onConfigChanged] var cfg_blockQuotePaddingLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockQuotePaddingLeft: String = "8"
     @State @Watch[onConfigChanged] var cfg_blockQuoteRadiusTopLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockQuoteRadiusTopRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockQuoteRadiusBottomLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockQuoteRadiusBottomRight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_blockQuoteChildSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_blockQuoteChildSpacing: String = "8"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -239,14 +239,14 @@ class QuotePage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -284,22 +284,22 @@ class QuotePage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "引用块背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_blockQuoteBackgroundColor, onSelect: { v => cfg_blockQuoteBackgroundColor = v })
-                                ConfigTabSelector(title: "引用块左边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_blockQuoteLeftBorderColor, onSelect: { v => cfg_blockQuoteLeftBorderColor = v })
-                                ConfigTabSelector(title: "引用块左边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "undefined", configKey: "", currentValue: cfg_blockQuoteLeftBorderWidth, onSelect: { v => cfg_blockQuoteLeftBorderWidth = v })
+                                ConfigTabSelector(title: "引用块背景颜色 - ", options: colorList, defaultValue: "#FFEAEAEA", configKey: "", currentValue: cfg_blockQuoteBackgroundColor, onSelect: { v => cfg_blockQuoteBackgroundColor = v })
+                                ConfigTabSelector(title: "引用块左边框颜色 - ", options: colorList, defaultValue: "#FF191919", configKey: "", currentValue: cfg_blockQuoteLeftBorderColor, onSelect: { v => cfg_blockQuoteLeftBorderColor = v })
+                                ConfigTabSelector(title: "引用块左边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "1", configKey: "", currentValue: cfg_blockQuoteLeftBorderWidth, onSelect: { v => cfg_blockQuoteLeftBorderWidth = v })
                                 ConfigTabSelector(title: "引用块上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteMarginTop, onSelect: { v => cfg_blockQuoteMarginTop = v })
                                 ConfigTabSelector(title: "引用块右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteMarginRight, onSelect: { v => cfg_blockQuoteMarginRight = v })
                                 ConfigTabSelector(title: "引用块下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteMarginBottom, onSelect: { v => cfg_blockQuoteMarginBottom = v })
-                                ConfigTabSelector(title: "引用块左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteMarginLeft, onSelect: { v => cfg_blockQuoteMarginLeft = v })
+                                ConfigTabSelector(title: "引用块左外边距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_blockQuoteMarginLeft, onSelect: { v => cfg_blockQuoteMarginLeft = v })
                                 ConfigTabSelector(title: "引用块上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuotePaddingTop, onSelect: { v => cfg_blockQuotePaddingTop = v })
                                 ConfigTabSelector(title: "引用块右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuotePaddingRight, onSelect: { v => cfg_blockQuotePaddingRight = v })
                                 ConfigTabSelector(title: "引用块下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuotePaddingBottom, onSelect: { v => cfg_blockQuotePaddingBottom = v })
-                                ConfigTabSelector(title: "引用块左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuotePaddingLeft, onSelect: { v => cfg_blockQuotePaddingLeft = v })
+                                ConfigTabSelector(title: "引用块左内边距 - ", options: paddingList, defaultValue: "8", configKey: "", currentValue: cfg_blockQuotePaddingLeft, onSelect: { v => cfg_blockQuotePaddingLeft = v })
                                 ConfigTabSelector(title: "引用块左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteRadiusTopLeft, onSelect: { v => cfg_blockQuoteRadiusTopLeft = v })
                                 ConfigTabSelector(title: "引用块右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteRadiusTopRight, onSelect: { v => cfg_blockQuoteRadiusTopRight = v })
                                 ConfigTabSelector(title: "引用块左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteRadiusBottomLeft, onSelect: { v => cfg_blockQuoteRadiusBottomLeft = v })
                                 ConfigTabSelector(title: "引用块右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteRadiusBottomRight, onSelect: { v => cfg_blockQuoteRadiusBottomRight = v })
-                                ConfigTabSelector(title: "引用块子项间距 - ", options: spaceList, defaultValue: "0", configKey: "", currentValue: cfg_blockQuoteChildSpacing, onSelect: { v => cfg_blockQuoteChildSpacing = v })
+                                ConfigTabSelector(title: "引用块子项间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_blockQuoteChildSpacing, onSelect: { v => cfg_blockQuoteChildSpacing = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -33,75 +33,75 @@ class AudioPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
-    @State @Watch[onConfigChanged] var cfg_audioBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioBorderColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioBackgroundColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_audioBorderColor: String = "#33000000"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontColor: String = "#FF000000"
+    @State @Watch[onConfigChanged] var cfg_audioButtonBackgroundColor: String = "#FF000000"
 
-    @State @Watch[onConfigChanged] var cfg_audioMarginTop: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioMarginRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioMarginBottom: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioMarginLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioPaddingTop: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioPaddingRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioPaddingBottom: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioPaddingLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioRadiusTopLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioRadiusTopRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioRadiusBottomLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioMarginTop: String = "0"
+    @State @Watch[onConfigChanged] var cfg_audioMarginRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_audioMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_audioMarginLeft: String = "0"
+    @State @Watch[onConfigChanged] var cfg_audioPaddingTop: String = "12"
+    @State @Watch[onConfigChanged] var cfg_audioPaddingRight: String = "16"
+    @State @Watch[onConfigChanged] var cfg_audioPaddingBottom: String = "12"
+    @State @Watch[onConfigChanged] var cfg_audioPaddingLeft: String = "12"
+    @State @Watch[onConfigChanged] var cfg_audioRadiusTopLeft: String = "12"
+    @State @Watch[onConfigChanged] var cfg_audioRadiusTopRight: String = "12"
+    @State @Watch[onConfigChanged] var cfg_audioRadiusBottomLeft: String = "12"
+    @State @Watch[onConfigChanged] var cfg_audioRadiusBottomRight: String = "12"
     @State @Watch[onConfigChanged] var cfg_audioBorderStyle: String = "Solid"
     @State @Watch[onConfigChanged] var cfg_audioBorderWidth: String = "0.5"
     @State @Watch[onConfigChanged] var cfg_audioShadowRadius: String = "12"
-    @State @Watch[onConfigChanged] var cfg_audioShadowColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioShadowColor: String = "#1A000000"
     @State @Watch[onConfigChanged] var cfg_audioShadowOffsetX: String = "0"
     @State @Watch[onConfigChanged] var cfg_audioShadowOffsetY: String = "2"
     @State @Watch[onConfigChanged] var cfg_audioIcon: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_audioIconWidth: String = "40"
     @State @Watch[onConfigChanged] var cfg_audioIconHeight: String = "40"
-    @State @Watch[onConfigChanged] var cfg_audioIconRadiusTopLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioIconRadiusTopRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioIconRadiusBottomLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioIconRadiusBottomRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioIconFitType: String = "Contain"
+    @State @Watch[onConfigChanged] var cfg_audioIconRadiusTopLeft: String = "8"
+    @State @Watch[onConfigChanged] var cfg_audioIconRadiusTopRight: String = "8"
+    @State @Watch[onConfigChanged] var cfg_audioIconRadiusBottomLeft: String = "8"
+    @State @Watch[onConfigChanged] var cfg_audioIconRadiusBottomRight: String = "8"
+    @State @Watch[onConfigChanged] var cfg_audioIconFitType: String = "Cover"
     @State @Watch[onConfigChanged] var cfg_audioTitleToTypeSpacing: String = "2"
-    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioTitleTextLineHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontSize: String = "15"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontStyle: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontWeight: String = "Bold"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_audioTitleTextLineHeight: String = "20"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontColor: String = "#80000000"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontSize: String = "11"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontStyle: String = "Normal"
     @State @Watch[onConfigChanged] var cfg_audioTypeTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioTypeTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_audioTypeTextLineHeight: String = "15"
     @State @Watch[onConfigChanged] var cfg_audioButtonWidth: String = "84"
     @State @Watch[onConfigChanged] var cfg_audioButtonHeight: String = "32"
     @State @Watch[onConfigChanged] var cfg_audioButtonBorderStyle: String = "Solid"
     @State @Watch[onConfigChanged] var cfg_audioButtonBorderWidth: String = "0"
-    @State @Watch[onConfigChanged] var cfg_audioButtonBorderColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusTopLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusTopRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusBottomLeft: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusBottomRight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonBorderColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusTopLeft: String = "16"
+    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusTopRight: String = "16"
+    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusBottomLeft: String = "16"
+    @State @Watch[onConfigChanged] var cfg_audioButtonRadiusBottomRight: String = "16"
     @State @Watch[onConfigChanged] var cfg_audioButtonText: String = "立即播放"
-    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_audioButtonTextLineHeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontColor: String = "#FFFFFFFF"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontSize: String = "14"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontStyle: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontWeight: String = "Medium"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_audioButtonTextLineHeight: String = "22"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -359,14 +359,14 @@ class AudioPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -404,24 +404,24 @@ class AudioPage {
 
                         if (isExpanded2) {
                             Column {
-                                ConfigTabSelector(title: "音频背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioBackgroundColor, onSelect: { v => cfg_audioBackgroundColor = v })
-                                ConfigTabSelector(title: "音频边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioBorderColor, onSelect: { v => cfg_audioBorderColor = v })
-                                ConfigTabSelector(title: "音频上外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioMarginTop, onSelect: { v => cfg_audioMarginTop = v })
-                                ConfigTabSelector(title: "音频右外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioMarginRight, onSelect: { v => cfg_audioMarginRight = v })
-                                ConfigTabSelector(title: "音频下外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioMarginBottom, onSelect: { v => cfg_audioMarginBottom = v })
-                                ConfigTabSelector(title: "音频左外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioMarginLeft, onSelect: { v => cfg_audioMarginLeft = v })
-                                ConfigTabSelector(title: "音频上内边距 - ", options: paddingList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioPaddingTop, onSelect: { v => cfg_audioPaddingTop = v })
-                                ConfigTabSelector(title: "音频右内边距 - ", options: paddingList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioPaddingRight, onSelect: { v => cfg_audioPaddingRight = v })
-                                ConfigTabSelector(title: "音频下内边距 - ", options: paddingList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioPaddingBottom, onSelect: { v => cfg_audioPaddingBottom = v })
-                                ConfigTabSelector(title: "音频左内边距 - ", options: paddingList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioPaddingLeft, onSelect: { v => cfg_audioPaddingLeft = v })
-                                ConfigTabSelector(title: "音频边框左上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioRadiusTopLeft, onSelect: { v => cfg_audioRadiusTopLeft = v })
-                                ConfigTabSelector(title: "音频边框右上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioRadiusTopRight, onSelect: { v => cfg_audioRadiusTopRight = v })
-                                ConfigTabSelector(title: "音频边框左下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioRadiusBottomLeft, onSelect: { v => cfg_audioRadiusBottomLeft = v })
-                                ConfigTabSelector(title: "音频边框右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioRadiusBottomRight, onSelect: { v => cfg_audioRadiusBottomRight = v })
+                                ConfigTabSelector(title: "音频背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_audioBackgroundColor, onSelect: { v => cfg_audioBackgroundColor = v })
+                                ConfigTabSelector(title: "音频边框颜色 - ", options: colorList, defaultValue: "#33000000", configKey: "", currentValue: cfg_audioBorderColor, onSelect: { v => cfg_audioBorderColor = v })
+                                ConfigTabSelector(title: "音频上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_audioMarginTop, onSelect: { v => cfg_audioMarginTop = v })
+                                ConfigTabSelector(title: "音频右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_audioMarginRight, onSelect: { v => cfg_audioMarginRight = v })
+                                ConfigTabSelector(title: "音频下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_audioMarginBottom, onSelect: { v => cfg_audioMarginBottom = v })
+                                ConfigTabSelector(title: "音频左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_audioMarginLeft, onSelect: { v => cfg_audioMarginLeft = v })
+                                ConfigTabSelector(title: "音频上内边距 - ", options: paddingList, defaultValue: "12", configKey: "", currentValue: cfg_audioPaddingTop, onSelect: { v => cfg_audioPaddingTop = v })
+                                ConfigTabSelector(title: "音频右内边距 - ", options: paddingList, defaultValue: "16", configKey: "", currentValue: cfg_audioPaddingRight, onSelect: { v => cfg_audioPaddingRight = v })
+                                ConfigTabSelector(title: "音频下内边距 - ", options: paddingList, defaultValue: "12", configKey: "", currentValue: cfg_audioPaddingBottom, onSelect: { v => cfg_audioPaddingBottom = v })
+                                ConfigTabSelector(title: "音频左内边距 - ", options: paddingList, defaultValue: "12", configKey: "", currentValue: cfg_audioPaddingLeft, onSelect: { v => cfg_audioPaddingLeft = v })
+                                ConfigTabSelector(title: "音频边框左上圆角 - ", options: radiusList, defaultValue: "12", configKey: "", currentValue: cfg_audioRadiusTopLeft, onSelect: { v => cfg_audioRadiusTopLeft = v })
+                                ConfigTabSelector(title: "音频边框右上圆角 - ", options: radiusList, defaultValue: "12", configKey: "", currentValue: cfg_audioRadiusTopRight, onSelect: { v => cfg_audioRadiusTopRight = v })
+                                ConfigTabSelector(title: "音频边框左下圆角 - ", options: radiusList, defaultValue: "12", configKey: "", currentValue: cfg_audioRadiusBottomLeft, onSelect: { v => cfg_audioRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "音频边框右下圆角 - ", options: radiusList, defaultValue: "12", configKey: "", currentValue: cfg_audioRadiusBottomRight, onSelect: { v => cfg_audioRadiusBottomRight = v })
                                 ConfigTabSelector(title: "音频边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", currentValue: cfg_audioBorderStyle, onSelect: { v => cfg_audioBorderStyle = v })
                                 ConfigTabSelector(title: "音频边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0.5", configKey: "", currentValue: cfg_audioBorderWidth, onSelect: { v => cfg_audioBorderWidth = v })
                                 ConfigTabSelector(title: "音频阴影模糊半径 - ", options: radiusList, defaultValue: "12", configKey: "", currentValue: cfg_audioShadowRadius, onSelect: { v => cfg_audioShadowRadius = v })
-                                ConfigTabSelector(title: "音频阴影颜色值 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioShadowColor, onSelect: { v => cfg_audioShadowColor = v })
+                                ConfigTabSelector(title: "音频阴影颜色值 - ", options: colorList, defaultValue: "#1A000000", configKey: "", currentValue: cfg_audioShadowColor, onSelect: { v => cfg_audioShadowColor = v })
                                 ConfigTabSelector(title: "音频阴影X轴偏移量 - ", options: offsetList, defaultValue: "0", configKey: "", currentValue: cfg_audioShadowOffsetX, onSelect: { v => cfg_audioShadowOffsetX = v })
                                 ConfigTabSelector(title: "音频阴影Y轴偏移量 - ", options: offsetList, defaultValue: "2", configKey: "", currentValue: cfg_audioShadowOffsetY, onSelect: { v => cfg_audioShadowOffsetY = v })
                             }
@@ -462,11 +462,11 @@ class AudioPage {
                                 ConfigTabSelector(title: "音频图标 - ", options: iconList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioIcon, onSelect: { v => cfg_audioIcon = v })
                                 ConfigTabSelector(title: "音频图标宽度 - ", options: widthOrHeightList, defaultValue: "40", configKey: "", currentValue: cfg_audioIconWidth, onSelect: { v => cfg_audioIconWidth = v })
                                 ConfigTabSelector(title: "音频图标高度 - ", options: widthOrHeightList, defaultValue: "40", configKey: "", currentValue: cfg_audioIconHeight, onSelect: { v => cfg_audioIconHeight = v })
-                                ConfigTabSelector(title: "音频图标左上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioIconRadiusTopLeft, onSelect: { v => cfg_audioIconRadiusTopLeft = v })
-                                ConfigTabSelector(title: "音频图标右上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioIconRadiusTopRight, onSelect: { v => cfg_audioIconRadiusTopRight = v })
-                                ConfigTabSelector(title: "音频图标左下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioIconRadiusBottomLeft, onSelect: { v => cfg_audioIconRadiusBottomLeft = v })
-                                ConfigTabSelector(title: "音频图标右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioIconRadiusBottomRight, onSelect: { v => cfg_audioIconRadiusBottomRight = v })
-                                ConfigTabSelector(title: "音频图标缩放类型 - ", options: imageFitList, defaultValue: "Contain", configKey: "", currentValue: cfg_audioIconFitType, onSelect: { v => cfg_audioIconFitType = v })
+                                ConfigTabSelector(title: "音频图标左上圆角 - ", options: radiusList, defaultValue: "8", configKey: "", currentValue: cfg_audioIconRadiusTopLeft, onSelect: { v => cfg_audioIconRadiusTopLeft = v })
+                                ConfigTabSelector(title: "音频图标右上圆角 - ", options: radiusList, defaultValue: "8", configKey: "", currentValue: cfg_audioIconRadiusTopRight, onSelect: { v => cfg_audioIconRadiusTopRight = v })
+                                ConfigTabSelector(title: "音频图标左下圆角 - ", options: radiusList, defaultValue: "8", configKey: "", currentValue: cfg_audioIconRadiusBottomLeft, onSelect: { v => cfg_audioIconRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "音频图标右下圆角 - ", options: radiusList, defaultValue: "8", configKey: "", currentValue: cfg_audioIconRadiusBottomRight, onSelect: { v => cfg_audioIconRadiusBottomRight = v })
+                                ConfigTabSelector(title: "音频图标缩放类型 - ", options: imageFitList, defaultValue: "Cover", configKey: "", currentValue: cfg_audioIconFitType, onSelect: { v => cfg_audioIconFitType = v })
                                 ConfigTabSelector(title: "音频标题文本和类型文本间距 - ", options: spaceList, defaultValue: "2", configKey: "", currentValue: cfg_audioTitleToTypeSpacing, onSelect: { v => cfg_audioTitleToTypeSpacing = v })
                             }
                             .width(100.percent)
@@ -503,23 +503,23 @@ class AudioPage {
 
                         if (isExpanded4) {
                             Column {
-                                ConfigTabSelector(title: "音频按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonBackgroundColor, onSelect: { v => cfg_audioButtonBackgroundColor = v })
+                                ConfigTabSelector(title: "音频按钮背景颜色 - ", options: colorList, defaultValue: "#FF000000", configKey: "", currentValue: cfg_audioButtonBackgroundColor, onSelect: { v => cfg_audioButtonBackgroundColor = v })
                                 ConfigTabSelector(title: "音频按钮宽度 - ", options: widthOrHeightList, defaultValue: "84", configKey: "", currentValue: cfg_audioButtonWidth, onSelect: { v => cfg_audioButtonWidth = v })
                                 ConfigTabSelector(title: "音频按钮高度 - ", options: widthOrHeightList, defaultValue: "32", configKey: "", currentValue: cfg_audioButtonHeight, onSelect: { v => cfg_audioButtonHeight = v })
                                 ConfigTabSelector(title: "音频按钮边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", currentValue: cfg_audioButtonBorderStyle, onSelect: { v => cfg_audioButtonBorderStyle = v })
                                 ConfigTabSelector(title: "音频按钮边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", currentValue: cfg_audioButtonBorderWidth, onSelect: { v => cfg_audioButtonBorderWidth = v })
-                                ConfigTabSelector(title: "音频按钮边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonBorderColor, onSelect: { v => cfg_audioButtonBorderColor = v })
-                                ConfigTabSelector(title: "音频按钮边框左上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonRadiusTopLeft, onSelect: { v => cfg_audioButtonRadiusTopLeft = v })
-                                ConfigTabSelector(title: "音频按钮边框右上圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonRadiusTopRight, onSelect: { v => cfg_audioButtonRadiusTopRight = v })
-                                ConfigTabSelector(title: "音频按钮边框左下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonRadiusBottomLeft, onSelect: { v => cfg_audioButtonRadiusBottomLeft = v })
-                                ConfigTabSelector(title: "音频按钮边框右下圆角 - ", options: radiusList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonRadiusBottomRight, onSelect: { v => cfg_audioButtonRadiusBottomRight = v })
+                                ConfigTabSelector(title: "音频按钮边框颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_audioButtonBorderColor, onSelect: { v => cfg_audioButtonBorderColor = v })
+                                ConfigTabSelector(title: "音频按钮边框左上圆角 - ", options: radiusList, defaultValue: "16", configKey: "", currentValue: cfg_audioButtonRadiusTopLeft, onSelect: { v => cfg_audioButtonRadiusTopLeft = v })
+                                ConfigTabSelector(title: "音频按钮边框右上圆角 - ", options: radiusList, defaultValue: "16", configKey: "", currentValue: cfg_audioButtonRadiusTopRight, onSelect: { v => cfg_audioButtonRadiusTopRight = v })
+                                ConfigTabSelector(title: "音频按钮边框左下圆角 - ", options: radiusList, defaultValue: "16", configKey: "", currentValue: cfg_audioButtonRadiusBottomLeft, onSelect: { v => cfg_audioButtonRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "音频按钮边框右下圆角 - ", options: radiusList, defaultValue: "16", configKey: "", currentValue: cfg_audioButtonRadiusBottomRight, onSelect: { v => cfg_audioButtonRadiusBottomRight = v })
                                 ConfigTabSelector(title: "音频按钮默认文本内容 - ", options: audioButtonTextList, defaultValue: "立即播放", configKey: "", currentValue: cfg_audioButtonText, onSelect: { v => cfg_audioButtonText = v })
-                                ConfigTabSelector(title: "音频按钮文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonTextFontColor, onSelect: { v => cfg_audioButtonTextFontColor = v })
-                                ConfigTabSelector(title: "音频按钮文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonTextFontSize, onSelect: { v => cfg_audioButtonTextFontSize = v })
-                                ConfigTabSelector(title: "音频按钮文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonTextFontStyle, onSelect: { v => cfg_audioButtonTextFontStyle = v })
-                                ConfigTabSelector(title: "音频按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_audioButtonTextFontWeight, onSelect: { v => cfg_audioButtonTextFontWeight = v })
-                                ConfigTabSelector(title: "音频按钮文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonTextFontFamily, onSelect: { v => cfg_audioButtonTextFontFamily = v })
-                                ConfigTabSelector(title: "音频按钮文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioButtonTextLineHeight, onSelect: { v => cfg_audioButtonTextLineHeight = v })
+                                ConfigTabSelector(title: "音频按钮文本颜色 - ", options: colorList, defaultValue: "#FFFFFFFF", configKey: "", currentValue: cfg_audioButtonTextFontColor, onSelect: { v => cfg_audioButtonTextFontColor = v })
+                                ConfigTabSelector(title: "音频按钮文本尺寸 - ", options: textSizeList, defaultValue: "14", configKey: "", currentValue: cfg_audioButtonTextFontSize, onSelect: { v => cfg_audioButtonTextFontSize = v })
+                                ConfigTabSelector(title: "音频按钮文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_audioButtonTextFontStyle, onSelect: { v => cfg_audioButtonTextFontStyle = v })
+                                ConfigTabSelector(title: "音频按钮文本字体粗细 - ", options: fontWeightList, defaultValue: "Medium", configKey: "", currentValue: cfg_audioButtonTextFontWeight, onSelect: { v => cfg_audioButtonTextFontWeight = v })
+                                ConfigTabSelector(title: "音频按钮文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_audioButtonTextFontFamily, onSelect: { v => cfg_audioButtonTextFontFamily = v })
+                                ConfigTabSelector(title: "音频按钮文本行高 - ", options: textLineHeightList, defaultValue: "22", configKey: "", currentValue: cfg_audioButtonTextLineHeight, onSelect: { v => cfg_audioButtonTextLineHeight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -555,18 +555,18 @@ class AudioPage {
 
                         if (isExpanded5) {
                             Column {
-                                ConfigTabSelector(title: "音频标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTitleTextFontColor, onSelect: { v => cfg_audioTitleTextFontColor = v })
-                                ConfigTabSelector(title: "音频标题文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTitleTextFontSize, onSelect: { v => cfg_audioTitleTextFontSize = v })
-                                ConfigTabSelector(title: "音频标题文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTitleTextFontStyle, onSelect: { v => cfg_audioTitleTextFontStyle = v })
-                                ConfigTabSelector(title: "音频标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_audioTitleTextFontWeight, onSelect: { v => cfg_audioTitleTextFontWeight = v })
-                                ConfigTabSelector(title: "音频标题文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTitleTextFontFamily, onSelect: { v => cfg_audioTitleTextFontFamily = v })
-                                ConfigTabSelector(title: "音频标题文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTitleTextLineHeight, onSelect: { v => cfg_audioTitleTextLineHeight = v })
-                                ConfigTabSelector(title: "音频类型文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTypeTextFontColor, onSelect: { v => cfg_audioTypeTextFontColor = v })
-                                ConfigTabSelector(title: "音频类型文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTypeTextFontSize, onSelect: { v => cfg_audioTypeTextFontSize = v })
-                                ConfigTabSelector(title: "音频类型文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTypeTextFontStyle, onSelect: { v => cfg_audioTypeTextFontStyle = v })
+                                ConfigTabSelector(title: "音频标题文本颜色 - ", options: colorList, defaultValue: "#FF000000", configKey: "", currentValue: cfg_audioTitleTextFontColor, onSelect: { v => cfg_audioTitleTextFontColor = v })
+                                ConfigTabSelector(title: "音频标题文本尺寸 - ", options: textSizeList, defaultValue: "15", configKey: "", currentValue: cfg_audioTitleTextFontSize, onSelect: { v => cfg_audioTitleTextFontSize = v })
+                                ConfigTabSelector(title: "音频标题文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_audioTitleTextFontStyle, onSelect: { v => cfg_audioTitleTextFontStyle = v })
+                                ConfigTabSelector(title: "音频标题文本字体粗细 - ", options: fontWeightList, defaultValue: "Bold", configKey: "", currentValue: cfg_audioTitleTextFontWeight, onSelect: { v => cfg_audioTitleTextFontWeight = v })
+                                ConfigTabSelector(title: "音频标题文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_audioTitleTextFontFamily, onSelect: { v => cfg_audioTitleTextFontFamily = v })
+                                ConfigTabSelector(title: "音频标题文本行高 - ", options: textLineHeightList, defaultValue: "20", configKey: "", currentValue: cfg_audioTitleTextLineHeight, onSelect: { v => cfg_audioTitleTextLineHeight = v })
+                                ConfigTabSelector(title: "音频类型文本颜色 - ", options: colorList, defaultValue: "#80000000", configKey: "", currentValue: cfg_audioTypeTextFontColor, onSelect: { v => cfg_audioTypeTextFontColor = v })
+                                ConfigTabSelector(title: "音频类型文本尺寸 - ", options: textSizeList, defaultValue: "11", configKey: "", currentValue: cfg_audioTypeTextFontSize, onSelect: { v => cfg_audioTypeTextFontSize = v })
+                                ConfigTabSelector(title: "音频类型文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_audioTypeTextFontStyle, onSelect: { v => cfg_audioTypeTextFontStyle = v })
                                 ConfigTabSelector(title: "音频类型文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_audioTypeTextFontWeight, onSelect: { v => cfg_audioTypeTextFontWeight = v })
-                                ConfigTabSelector(title: "音频类型文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTypeTextFontFamily, onSelect: { v => cfg_audioTypeTextFontFamily = v })
-                                ConfigTabSelector(title: "音频类型文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_audioTypeTextLineHeight, onSelect: { v => cfg_audioTypeTextLineHeight = v })
+                                ConfigTabSelector(title: "音频类型文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_audioTypeTextFontFamily, onSelect: { v => cfg_audioTypeTextFontFamily = v })
+                                ConfigTabSelector(title: "音频类型文本行高 - ", options: textLineHeightList, defaultValue: "15", configKey: "", currentValue: cfg_audioTypeTextLineHeight, onSelect: { v => cfg_audioTypeTextLineHeight = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

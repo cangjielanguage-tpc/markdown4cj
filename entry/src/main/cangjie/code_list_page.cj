@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -39,14 +39,14 @@ class CodeListPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
 
@@ -55,84 +55,84 @@ class CodeListPage {
     @State @Watch[onConfigChanged] var cfg_codeBlockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_codeBlockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_codeBlockPaddingTop: String = "0"
-    @State @Watch[onConfigChanged] var cfg_codeBlockPaddingRight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_codeBlockPaddingBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockPaddingRight: String = "8"
+    @State @Watch[onConfigChanged] var cfg_codeBlockPaddingBottom: String = "8"
     @State @Watch[onConfigChanged] var cfg_codeBlockPaddingLeft: String = "0"
-    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusTopLeft: String = "0"
-    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusTopRight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusBottomLeft: String = "0"
-    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusBottomRight: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusTopLeft: String = "8"
+    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusTopRight: String = "8"
+    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusBottomLeft: String = "8"
+    @State @Watch[onConfigChanged] var cfg_codeBlockRadiusBottomRight: String = "8"
     @State @Watch[onConfigChanged] var cfg_codeBlockBorderStyle: String = "Solid"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTitleLayoutMarginBottom: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextMarginLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTitleLayoutMarginBottom: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextMarginLeft: String = "8"
     @State @Watch[onConfigChanged] var cfg_codeBlockTypeText: String = ""
     @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontSize: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontWeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextFontFamily: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockTypeTextLineHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockCopyFullScreenSpacing: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockIsDark: String = "false"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyFullScreenSpacing: String = "5"
+    @State @Watch[onConfigChanged] var cfg_codeBlockIsDark: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyButtonIsShow: String = "true"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextIsShow: String = "true"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenButtonIsShow: String = "true"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextIsShow: String = "true"
     @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberIsShow: String = "true"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyIcon: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconWidth: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconTextSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconWidth: String = "24"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconHeight: String = "24"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyIconTextSpacing: String = "5"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyText: String = "复制代码"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontSize: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontWeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextFontFamily: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockCopyTextLineHeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIcon: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconWidth: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconTextSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconWidth: String = "24"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconHeight: String = "24"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenIconTextSpacing: String = "5"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenText: String = "全屏代码"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontSize: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontWeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextFontFamily: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockFullScreenTextLineHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextPaddingLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextPaddingLeft: String = "8"
     @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontSize: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontStyle: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontWeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextFontFamily: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberTextLineHeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_codeBlockDividerColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockDividerStrokeWidth: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberDividerSpacing: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockDividerStrokeWidth: String = "0.5"
+    @State @Watch[onConfigChanged] var cfg_codeBlockLineNumberDividerSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_codeBlockIsCodeFormat: String = "false"
     @State @Watch[onConfigChanged] var cfg_codeBlockUseTab: String = "false"
     @State @Watch[onConfigChanged] var cfg_codeBlockIndentWidth: String = "4"
     @State @Watch[onConfigChanged] var cfg_codeBlockParserSync: String = "false"
     @State @Watch[onConfigChanged] var cfg_codeBlockBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockBorderColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockBorderWidth: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockBorderColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_codeBlockBorderWidth: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontSize: String = "13"
     @State @Watch[onConfigChanged] var cfg_codeBlockTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontStyle: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontStyle: String = "Normal"
     @State @Watch[onConfigChanged] var cfg_codeBlockTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontFamily: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTextLineHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTextLetterSpacing: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTextMarginRight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockTextMarginLeft: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextFontFamily: String = "HarmonyOS Sans"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextLineHeight: String = "22"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextLetterSpacing: String = "0"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextMarginRight: String = "8"
+    @State @Watch[onConfigChanged] var cfg_codeBlockTextMarginLeft: String = "8"
     @State @Watch[onConfigChanged] var cfg_codeBlockListTitleTextSize: String = "13"
     @State @Watch[onConfigChanged] var cfg_codeBlockListTitleSelectTextSize: String = "13"
-    @State @Watch[onConfigChanged] var cfg_codeBlockListTitleSelectTextColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockListTitleUnselectTextColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockListTitleSelectBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_codeBlockListTitleUnselectBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_codeBlockListTitleSelectTextColor: String = "#FFFF0000"
+    @State @Watch[onConfigChanged] var cfg_codeBlockListTitleUnselectTextColor: String = "#FF000000"
+    @State @Watch[onConfigChanged] var cfg_codeBlockListTitleSelectBackgroundColor: String = "#FF808080"
+    @State @Watch[onConfigChanged] var cfg_codeBlockListTitleUnselectBackgroundColor: String = "#00000000"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -251,7 +251,9 @@ class CodeListPage {
         if (cfg_codeBlockTypeTextFontStyle != "undefined") {
             codeBlockTheme.setCodeBlockTypeTextFontStyle(parseFontStyle(cfg_codeBlockTypeTextFontStyle))
         }
-        codeBlockTheme.setCodeBlockTypeTextFontWeight(parseFontWeight(cfg_codeBlockTypeTextFontWeight))
+        if (cfg_codeBlockTypeTextFontWeight != "undefined") {
+            codeBlockTheme.setCodeBlockTypeTextFontWeight(parseFontWeight(cfg_codeBlockTypeTextFontWeight))
+        }
         if (cfg_codeBlockTypeTextFontFamily != "undefined") {
             codeBlockTheme.setCodeBlockTypeTextFontFamily(cfg_codeBlockTypeTextFontFamily)
         }
@@ -261,7 +263,9 @@ class CodeListPage {
         if (cfg_codeBlockCopyFullScreenSpacing != "undefined") {
             codeBlockTheme.setCodeBlockCopyFullScreenSpacing(parseFloat64(cfg_codeBlockCopyFullScreenSpacing))
         }
-        codeBlockTheme.setCodeBlockIsDark(parseBool(cfg_codeBlockIsDark))
+        if (cfg_codeBlockIsDark != "undefined") {
+            codeBlockTheme.setCodeBlockIsDark(parseBool(cfg_codeBlockIsDark))
+        }
         codeBlockTheme.setCodeBlockCopyButtonIsShow(parseBool(cfg_codeBlockCopyButtonIsShow))
         codeBlockTheme.setCodeBlockCopyTextIsShow(parseBool(cfg_codeBlockCopyTextIsShow))
         if (let Some(v) <- parseAppResource(cfg_codeBlockCopyIcon)) {
@@ -292,7 +296,9 @@ class CodeListPage {
         if (cfg_codeBlockCopyTextFontStyle != "undefined") {
             codeBlockTheme.setCodeBlockCopyTextFontStyle(parseFontStyle(cfg_codeBlockCopyTextFontStyle))
         }
-        codeBlockTheme.setCodeBlockCopyTextFontWeight(parseFontWeight(cfg_codeBlockCopyTextFontWeight))
+        if (cfg_codeBlockCopyTextFontWeight != "undefined") {
+            codeBlockTheme.setCodeBlockCopyTextFontWeight(parseFontWeight(cfg_codeBlockCopyTextFontWeight))
+        }
         if (cfg_codeBlockCopyTextFontFamily != "undefined") {
             codeBlockTheme.setCodeBlockCopyTextFontFamily(cfg_codeBlockCopyTextFontFamily)
         }
@@ -318,7 +324,9 @@ class CodeListPage {
         if (cfg_codeBlockFullScreenTextFontStyle != "undefined") {
             codeBlockTheme.setCodeBlockFullScreenTextFontStyle(parseFontStyle(cfg_codeBlockFullScreenTextFontStyle))
         }
-        codeBlockTheme.setCodeBlockFullScreenTextFontWeight(parseFontWeight(cfg_codeBlockFullScreenTextFontWeight))
+        if (cfg_codeBlockFullScreenTextFontWeight != "undefined") {
+            codeBlockTheme.setCodeBlockFullScreenTextFontWeight(parseFontWeight(cfg_codeBlockFullScreenTextFontWeight))
+        }
         if (cfg_codeBlockFullScreenTextFontFamily != "undefined") {
             codeBlockTheme.setCodeBlockFullScreenTextFontFamily(cfg_codeBlockFullScreenTextFontFamily)
         }
@@ -337,7 +345,9 @@ class CodeListPage {
         if (cfg_codeBlockLineNumberTextFontStyle != "undefined") {
             codeBlockTheme.setCodeBlockLineNumberTextFontStyle(parseFontStyle(cfg_codeBlockLineNumberTextFontStyle))
         }
-        codeBlockTheme.setCodeBlockLineNumberTextFontWeight(parseFontWeight(cfg_codeBlockLineNumberTextFontWeight))
+        if (cfg_codeBlockLineNumberTextFontWeight != "undefined") {
+            codeBlockTheme.setCodeBlockLineNumberTextFontWeight(parseFontWeight(cfg_codeBlockLineNumberTextFontWeight))
+        }
         if (cfg_codeBlockLineNumberTextFontFamily != "undefined") {
             codeBlockTheme.setCodeBlockLineNumberTextFontFamily(cfg_codeBlockLineNumberTextFontFamily)
         }
@@ -479,14 +489,14 @@ class CodeListPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -529,17 +539,17 @@ class CodeListPage {
                                 ConfigTabSelector(title: "代码块下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockMarginBottom, onSelect: { v => cfg_codeBlockMarginBottom = v })
                                 ConfigTabSelector(title: "代码块左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockMarginLeft, onSelect: { v => cfg_codeBlockMarginLeft = v })
                                 ConfigTabSelector(title: "代码块上内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockPaddingTop, onSelect: { v => cfg_codeBlockPaddingTop = v })
-                                ConfigTabSelector(title: "代码块右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockPaddingRight, onSelect: { v => cfg_codeBlockPaddingRight = v })
-                                ConfigTabSelector(title: "代码块下内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockPaddingBottom, onSelect: { v => cfg_codeBlockPaddingBottom = v })
+                                ConfigTabSelector(title: "代码块右内边距 - ", options: paddingList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockPaddingRight, onSelect: { v => cfg_codeBlockPaddingRight = v })
+                                ConfigTabSelector(title: "代码块下内边距 - ", options: paddingList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockPaddingBottom, onSelect: { v => cfg_codeBlockPaddingBottom = v })
                                 ConfigTabSelector(title: "代码块左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockPaddingLeft, onSelect: { v => cfg_codeBlockPaddingLeft = v })
-                                ConfigTabSelector(title: "代码块边框左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockRadiusTopLeft, onSelect: { v => cfg_codeBlockRadiusTopLeft = v })
-                                ConfigTabSelector(title: "代码块边框右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockRadiusTopRight, onSelect: { v => cfg_codeBlockRadiusTopRight = v })
-                                ConfigTabSelector(title: "代码块边框左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockRadiusBottomLeft, onSelect: { v => cfg_codeBlockRadiusBottomLeft = v })
-                                ConfigTabSelector(title: "代码块边框右下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockRadiusBottomRight, onSelect: { v => cfg_codeBlockRadiusBottomRight = v })
+                                ConfigTabSelector(title: "代码块边框左上圆角 - ", options: radiusList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockRadiusTopLeft, onSelect: { v => cfg_codeBlockRadiusTopLeft = v })
+                                ConfigTabSelector(title: "代码块边框右上圆角 - ", options: radiusList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockRadiusTopRight, onSelect: { v => cfg_codeBlockRadiusTopRight = v })
+                                ConfigTabSelector(title: "代码块边框左下圆角 - ", options: radiusList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockRadiusBottomLeft, onSelect: { v => cfg_codeBlockRadiusBottomLeft = v })
+                                ConfigTabSelector(title: "代码块边框右下圆角 - ", options: radiusList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockRadiusBottomRight, onSelect: { v => cfg_codeBlockRadiusBottomRight = v })
                                 ConfigTabSelector(title: "代码块边框样式 - ", options: borderStyleList, defaultValue: "Solid", configKey: "", currentValue: cfg_codeBlockBorderStyle, onSelect: { v => cfg_codeBlockBorderStyle = v })
                                 ConfigTabSelector(title: "代码块背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockBackgroundColor, onSelect: { v => cfg_codeBlockBackgroundColor = v })
-                                ConfigTabSelector(title: "代码块边框颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockBorderColor, onSelect: { v => cfg_codeBlockBorderColor = v })
-                                ConfigTabSelector(title: "代码块边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockBorderWidth, onSelect: { v => cfg_codeBlockBorderWidth = v })
+                                ConfigTabSelector(title: "代码块边框颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_codeBlockBorderColor, onSelect: { v => cfg_codeBlockBorderColor = v })
+                                ConfigTabSelector(title: "代码块边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockBorderWidth, onSelect: { v => cfg_codeBlockBorderWidth = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -575,13 +585,13 @@ class CodeListPage {
 
                         if (isExpanded3) {
                             Column {
-                                ConfigTabSelector(title: "代码块类型和代码块内容间距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTitleLayoutMarginBottom, onSelect: { v => cfg_codeBlockTitleLayoutMarginBottom = v })
-                                ConfigTabSelector(title: "代码块类型左边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTypeTextMarginLeft, onSelect: { v => cfg_codeBlockTypeTextMarginLeft = v })
+                                ConfigTabSelector(title: "代码块类型和代码块内容间距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockTitleLayoutMarginBottom, onSelect: { v => cfg_codeBlockTitleLayoutMarginBottom = v })
+                                ConfigTabSelector(title: "代码块类型左边距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockTypeTextMarginLeft, onSelect: { v => cfg_codeBlockTypeTextMarginLeft = v })
                                 ConfigTabSelector(title: "代码块没有代码类型时默认显示文本 - ", options: codeBlockTypeTextList, defaultValue: "", configKey: "", currentValue: cfg_codeBlockTypeText, onSelect: { v => cfg_codeBlockTypeText = v })
                                 ConfigTabSelector(title: "代码块类型文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTypeTextFontColor, onSelect: { v => cfg_codeBlockTypeTextFontColor = v })
                                 ConfigTabSelector(title: "代码块类型文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTypeTextFontSize, onSelect: { v => cfg_codeBlockTypeTextFontSize = v })
                                 ConfigTabSelector(title: "代码块类型文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTypeTextFontStyle, onSelect: { v => cfg_codeBlockTypeTextFontStyle = v })
-                                ConfigTabSelector(title: "代码块类型文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_codeBlockTypeTextFontWeight, onSelect: { v => cfg_codeBlockTypeTextFontWeight = v })
+                                ConfigTabSelector(title: "代码块类型文本字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTypeTextFontWeight, onSelect: { v => cfg_codeBlockTypeTextFontWeight = v })
                                 ConfigTabSelector(title: "代码块类型文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTypeTextFontFamily, onSelect: { v => cfg_codeBlockTypeTextFontFamily = v })
                                 ConfigTabSelector(title: "代码块类型文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTypeTextLineHeight, onSelect: { v => cfg_codeBlockTypeTextLineHeight = v })
                             }
@@ -619,18 +629,18 @@ class CodeListPage {
 
                         if (isExpanded4) {
                             Column {
-                                ConfigTabSelector(title: "代码块代码复制和代码全屏间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyFullScreenSpacing, onSelect: { v => cfg_codeBlockCopyFullScreenSpacing = v })
+                                ConfigTabSelector(title: "代码块代码复制和代码全屏间距 - ", options: spaceList, defaultValue: "5", configKey: "", currentValue: cfg_codeBlockCopyFullScreenSpacing, onSelect: { v => cfg_codeBlockCopyFullScreenSpacing = v })
                                 ConfigTabSelector(title: "代码块代码复制按钮是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_codeBlockCopyButtonIsShow, onSelect: { v => cfg_codeBlockCopyButtonIsShow = v })
                                 ConfigTabSelector(title: "代码块代码复制文本是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_codeBlockCopyTextIsShow, onSelect: { v => cfg_codeBlockCopyTextIsShow = v })
                                 ConfigTabSelector(title: "代码块代码复制按钮默认图标 - ", options: iconShortList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyIcon, onSelect: { v => cfg_codeBlockCopyIcon = v })
-                                ConfigTabSelector(title: "代码块代码复制图标宽度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyIconWidth, onSelect: { v => cfg_codeBlockCopyIconWidth = v })
-                                ConfigTabSelector(title: "代码块代码复制图标高度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyIconHeight, onSelect: { v => cfg_codeBlockCopyIconHeight = v })
-                                ConfigTabSelector(title: "代码块代码复制图标和文本间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyIconTextSpacing, onSelect: { v => cfg_codeBlockCopyIconTextSpacing = v })
+                                ConfigTabSelector(title: "代码块代码复制图标宽度 - ", options: widthOrHeightList, defaultValue: "24", configKey: "", currentValue: cfg_codeBlockCopyIconWidth, onSelect: { v => cfg_codeBlockCopyIconWidth = v })
+                                ConfigTabSelector(title: "代码块代码复制图标高度 - ", options: widthOrHeightList, defaultValue: "24", configKey: "", currentValue: cfg_codeBlockCopyIconHeight, onSelect: { v => cfg_codeBlockCopyIconHeight = v })
+                                ConfigTabSelector(title: "代码块代码复制图标和文本间距 - ", options: spaceList, defaultValue: "5", configKey: "", currentValue: cfg_codeBlockCopyIconTextSpacing, onSelect: { v => cfg_codeBlockCopyIconTextSpacing = v })
                                 ConfigTabSelector(title: "代码块代码复制默认文本内容 - ", options: codeBlockCopyTextList, defaultValue: "复制代码", configKey: "", currentValue: cfg_codeBlockCopyText, onSelect: { v => cfg_codeBlockCopyText = v })
                                 ConfigTabSelector(title: "代码块代码复制文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyTextFontColor, onSelect: { v => cfg_codeBlockCopyTextFontColor = v })
                                 ConfigTabSelector(title: "代码块代码复制文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyTextFontSize, onSelect: { v => cfg_codeBlockCopyTextFontSize = v })
                                 ConfigTabSelector(title: "代码块代码复制文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyTextFontStyle, onSelect: { v => cfg_codeBlockCopyTextFontStyle = v })
-                                ConfigTabSelector(title: "代码块代码复制文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_codeBlockCopyTextFontWeight, onSelect: { v => cfg_codeBlockCopyTextFontWeight = v })
+                                ConfigTabSelector(title: "代码块代码复制文本字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyTextFontWeight, onSelect: { v => cfg_codeBlockCopyTextFontWeight = v })
                                 ConfigTabSelector(title: "代码块代码复制文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyTextFontFamily, onSelect: { v => cfg_codeBlockCopyTextFontFamily = v })
                                 ConfigTabSelector(title: "代码块代码复制文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockCopyTextLineHeight, onSelect: { v => cfg_codeBlockCopyTextLineHeight = v })
                             }
@@ -671,14 +681,14 @@ class CodeListPage {
                                 ConfigTabSelector(title: "代码块代码全屏按钮是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_codeBlockFullScreenButtonIsShow, onSelect: { v => cfg_codeBlockFullScreenButtonIsShow = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_codeBlockFullScreenTextIsShow, onSelect: { v => cfg_codeBlockFullScreenTextIsShow = v })
                                 ConfigTabSelector(title: "代码块代码全屏按钮默认图标 - ", options: iconShortList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenIcon, onSelect: { v => cfg_codeBlockFullScreenIcon = v })
-                                ConfigTabSelector(title: "代码块代码全屏图标宽度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenIconWidth, onSelect: { v => cfg_codeBlockFullScreenIconWidth = v })
-                                ConfigTabSelector(title: "代码块代码全屏图标高度 - ", options: widthOrHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenIconHeight, onSelect: { v => cfg_codeBlockFullScreenIconHeight = v })
-                                ConfigTabSelector(title: "代码块代码全屏图标和文本间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenIconTextSpacing, onSelect: { v => cfg_codeBlockFullScreenIconTextSpacing = v })
+                                ConfigTabSelector(title: "代码块代码全屏图标宽度 - ", options: widthOrHeightList, defaultValue: "24", configKey: "", currentValue: cfg_codeBlockFullScreenIconWidth, onSelect: { v => cfg_codeBlockFullScreenIconWidth = v })
+                                ConfigTabSelector(title: "代码块代码全屏图标高度 - ", options: widthOrHeightList, defaultValue: "24", configKey: "", currentValue: cfg_codeBlockFullScreenIconHeight, onSelect: { v => cfg_codeBlockFullScreenIconHeight = v })
+                                ConfigTabSelector(title: "代码块代码全屏图标和文本间距 - ", options: spaceList, defaultValue: "5", configKey: "", currentValue: cfg_codeBlockFullScreenIconTextSpacing, onSelect: { v => cfg_codeBlockFullScreenIconTextSpacing = v })
                                 ConfigTabSelector(title: "代码块代码全屏默认文本内容 - ", options: codeBlockFullScreenTextList, defaultValue: "全屏代码", configKey: "", currentValue: cfg_codeBlockFullScreenText, onSelect: { v => cfg_codeBlockFullScreenText = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenTextFontColor, onSelect: { v => cfg_codeBlockFullScreenTextFontColor = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenTextFontSize, onSelect: { v => cfg_codeBlockFullScreenTextFontSize = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenTextFontStyle, onSelect: { v => cfg_codeBlockFullScreenTextFontStyle = v })
-                                ConfigTabSelector(title: "代码块代码全屏文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_codeBlockFullScreenTextFontWeight, onSelect: { v => cfg_codeBlockFullScreenTextFontWeight = v })
+                                ConfigTabSelector(title: "代码块代码全屏文本字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenTextFontWeight, onSelect: { v => cfg_codeBlockFullScreenTextFontWeight = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenTextFontFamily, onSelect: { v => cfg_codeBlockFullScreenTextFontFamily = v })
                                 ConfigTabSelector(title: "代码块代码全屏文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockFullScreenTextLineHeight, onSelect: { v => cfg_codeBlockFullScreenTextLineHeight = v })
                             }
@@ -717,16 +727,16 @@ class CodeListPage {
                         if (isExpanded6) {
                             Column {
                                 ConfigTabSelector(title: "代码块代码行号是否显示 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_codeBlockLineNumberIsShow, onSelect: { v => cfg_codeBlockLineNumberIsShow = v })
-                                ConfigTabSelector(title: "代码块代码行号左内边距 - ", options: spaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockLineNumberTextPaddingLeft, onSelect: { v => cfg_codeBlockLineNumberTextPaddingLeft = v })
+                                ConfigTabSelector(title: "代码块代码行号左内边距 - ", options: spaceList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockLineNumberTextPaddingLeft, onSelect: { v => cfg_codeBlockLineNumberTextPaddingLeft = v })
                                 ConfigTabSelector(title: "代码块代码行号文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockLineNumberTextFontColor, onSelect: { v => cfg_codeBlockLineNumberTextFontColor = v })
                                 ConfigTabSelector(title: "代码块代码行号文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockLineNumberTextFontSize, onSelect: { v => cfg_codeBlockLineNumberTextFontSize = v })
                                 ConfigTabSelector(title: "代码块代码行号文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockLineNumberTextFontStyle, onSelect: { v => cfg_codeBlockLineNumberTextFontStyle = v })
-                                ConfigTabSelector(title: "代码块代码行号文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_codeBlockLineNumberTextFontWeight, onSelect: { v => cfg_codeBlockLineNumberTextFontWeight = v })
+                                ConfigTabSelector(title: "代码块代码行号文本字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockLineNumberTextFontWeight, onSelect: { v => cfg_codeBlockLineNumberTextFontWeight = v })
                                 ConfigTabSelector(title: "代码块代码行号文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockLineNumberTextFontFamily, onSelect: { v => cfg_codeBlockLineNumberTextFontFamily = v })
                                 ConfigTabSelector(title: "代码块代码行号文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockLineNumberTextLineHeight, onSelect: { v => cfg_codeBlockLineNumberTextLineHeight = v })
                                 ConfigTabSelector(title: "代码块代码行号和代码块中间分割线颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockDividerColor, onSelect: { v => cfg_codeBlockDividerColor = v })
-                                ConfigTabSelector(title: "代码块代码行号和代码块中间分割线宽度 - ", options: lineOrBorderWidthList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockDividerStrokeWidth, onSelect: { v => cfg_codeBlockDividerStrokeWidth = v })
-                                ConfigTabSelector(title: "代码块代码行号和分割线间距 - ", options: spaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockLineNumberDividerSpacing, onSelect: { v => cfg_codeBlockLineNumberDividerSpacing = v })
+                                ConfigTabSelector(title: "代码块代码行号和代码块中间分割线宽度 - ", options: lineOrBorderWidthList, defaultValue: "0.5", configKey: "", currentValue: cfg_codeBlockDividerStrokeWidth, onSelect: { v => cfg_codeBlockDividerStrokeWidth = v })
+                                ConfigTabSelector(title: "代码块代码行号和分割线间距 - ", options: spaceList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockLineNumberDividerSpacing, onSelect: { v => cfg_codeBlockLineNumberDividerSpacing = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -762,20 +772,20 @@ class CodeListPage {
 
                         if (isExpanded7) {
                             Column {
-                                ConfigTabSelector(title: "代码块暗色主题 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_codeBlockIsDark, onSelect: { v => cfg_codeBlockIsDark = v })
+                                ConfigTabSelector(title: "代码块暗色主题 - ", options: booleanList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockIsDark, onSelect: { v => cfg_codeBlockIsDark = v })
                                 ConfigTabSelector(title: "是否格式化围栏代码块内容 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_codeBlockIsCodeFormat, onSelect: { v => cfg_codeBlockIsCodeFormat = v })
                                 ConfigTabSelector(title: "codeformat是否用制表符 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_codeBlockUseTab, onSelect: { v => cfg_codeBlockUseTab = v })
                                 ConfigTabSelector(title: "codeformat空格缩进数量 - ", options: codeBlockIndentWidthList, defaultValue: "4", configKey: "", currentValue: cfg_codeBlockIndentWidth, onSelect: { v => cfg_codeBlockIndentWidth = v })
                                 ConfigTabSelector(title: "围栏代码块代码高亮是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_codeBlockParserSync, onSelect: { v => cfg_codeBlockParserSync = v })
-                                ConfigTabSelector(title: "代码块文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTextFontSize, onSelect: { v => cfg_codeBlockTextFontSize = v })
+                                ConfigTabSelector(title: "代码块文本尺寸 - ", options: textSizeList, defaultValue: "13", configKey: "", currentValue: cfg_codeBlockTextFontSize, onSelect: { v => cfg_codeBlockTextFontSize = v })
                                 ConfigTabSelector(title: "代码块文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTextFontColor, onSelect: { v => cfg_codeBlockTextFontColor = v })
-                                ConfigTabSelector(title: "代码块文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTextFontStyle, onSelect: { v => cfg_codeBlockTextFontStyle = v })
+                                ConfigTabSelector(title: "代码块文本字体样式 - ", options: fontStyleList, defaultValue: "Normal", configKey: "", currentValue: cfg_codeBlockTextFontStyle, onSelect: { v => cfg_codeBlockTextFontStyle = v })
                                 ConfigTabSelector(title: "代码块文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_codeBlockTextFontWeight, onSelect: { v => cfg_codeBlockTextFontWeight = v })
-                                ConfigTabSelector(title: "代码块文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTextFontFamily, onSelect: { v => cfg_codeBlockTextFontFamily = v })
-                                ConfigTabSelector(title: "代码块文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTextLineHeight, onSelect: { v => cfg_codeBlockTextLineHeight = v })
-                                ConfigTabSelector(title: "代码块文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTextLetterSpacing, onSelect: { v => cfg_codeBlockTextLetterSpacing = v })
-                                ConfigTabSelector(title: "代码块代码文本右外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTextMarginRight, onSelect: { v => cfg_codeBlockTextMarginRight = v })
-                                ConfigTabSelector(title: "代码块代码文本左外边距 - ", options: marginList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockTextMarginLeft, onSelect: { v => cfg_codeBlockTextMarginLeft = v })
+                                ConfigTabSelector(title: "代码块文本字体 - ", options: textTypefaceList, defaultValue: "HarmonyOS Sans", configKey: "", currentValue: cfg_codeBlockTextFontFamily, onSelect: { v => cfg_codeBlockTextFontFamily = v })
+                                ConfigTabSelector(title: "代码块文本行高 - ", options: textLineHeightList, defaultValue: "22", configKey: "", currentValue: cfg_codeBlockTextLineHeight, onSelect: { v => cfg_codeBlockTextLineHeight = v })
+                                ConfigTabSelector(title: "代码块文本字符间距 - ", options: textWordSpaceList, defaultValue: "0", configKey: "", currentValue: cfg_codeBlockTextLetterSpacing, onSelect: { v => cfg_codeBlockTextLetterSpacing = v })
+                                ConfigTabSelector(title: "代码块代码文本右外边距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockTextMarginRight, onSelect: { v => cfg_codeBlockTextMarginRight = v })
+                                ConfigTabSelector(title: "代码块代码文本左外边距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_codeBlockTextMarginLeft, onSelect: { v => cfg_codeBlockTextMarginLeft = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -813,10 +823,10 @@ class CodeListPage {
                             Column {
                                 ConfigTabSelector(title: "组合代码未选中标题字体大小 - ", options: textSizeList, defaultValue: "13", configKey: "", currentValue: cfg_codeBlockListTitleTextSize, onSelect: { v => cfg_codeBlockListTitleTextSize = v })
                                 ConfigTabSelector(title: "组合代码选中标题字体大小 - ", options: textSizeList, defaultValue: "13", configKey: "", currentValue: cfg_codeBlockListTitleSelectTextSize, onSelect: { v => cfg_codeBlockListTitleSelectTextSize = v })
-                                ConfigTabSelector(title: "组合代码选中标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockListTitleSelectTextColor, onSelect: { v => cfg_codeBlockListTitleSelectTextColor = v })
-                                ConfigTabSelector(title: "组合代码未选中标题文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockListTitleUnselectTextColor, onSelect: { v => cfg_codeBlockListTitleUnselectTextColor = v })
-                                ConfigTabSelector(title: "组合代码选中标题背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockListTitleSelectBackgroundColor, onSelect: { v => cfg_codeBlockListTitleSelectBackgroundColor = v })
-                                ConfigTabSelector(title: "组合代码未选中标题背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_codeBlockListTitleUnselectBackgroundColor, onSelect: { v => cfg_codeBlockListTitleUnselectBackgroundColor = v })
+                                ConfigTabSelector(title: "组合代码选中标题文本颜色 - ", options: colorList, defaultValue: "#FFFF0000", configKey: "", currentValue: cfg_codeBlockListTitleSelectTextColor, onSelect: { v => cfg_codeBlockListTitleSelectTextColor = v })
+                                ConfigTabSelector(title: "组合代码未选中标题文本颜色 - ", options: colorList, defaultValue: "#FF000000", configKey: "", currentValue: cfg_codeBlockListTitleUnselectTextColor, onSelect: { v => cfg_codeBlockListTitleUnselectTextColor = v })
+                                ConfigTabSelector(title: "组合代码选中标题背景颜色 - ", options: colorList, defaultValue: "#FF808080", configKey: "", currentValue: cfg_codeBlockListTitleSelectBackgroundColor, onSelect: { v => cfg_codeBlockListTitleSelectBackgroundColor = v })
+                                ConfigTabSelector(title: "组合代码未选中标题背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_codeBlockListTitleUnselectBackgroundColor, onSelect: { v => cfg_codeBlockListTitleUnselectBackgroundColor = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)

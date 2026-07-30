@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -27,24 +27,24 @@ class SubPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
     @State @Watch[onConfigChanged] var cfg_subTextFontColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_subTextFontSize: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_subTextFontSize: String = "8"
     @State @Watch[onConfigChanged] var cfg_subTextBaselineOffset: String = "0"
 
     @State @Watch[onConfigChanged] var cfg_subTextFontStyle: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_subTextFontFamily: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_subTextLetterSpacing: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_subTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_subTextFontWeight: String = "undefined"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -149,14 +149,14 @@ class SubPage {
         if (cfg_subTextFontColor != "undefined") {
             subTheme.setSubTextFontColor(parseColor(cfg_subTextFontColor))
         }
-        if (cfg_subTextFontSize != "undefined") {
-            subTheme.setSubTextFontSize(parseFloat64(cfg_subTextFontSize))
-        }
+        subTheme.setSubTextFontSize(parseFloat64(cfg_subTextFontSize))
         subTheme.setSubTextBaselineOffset(parseFloat64(cfg_subTextBaselineOffset))
         if (cfg_subTextFontStyle != "undefined") {
             subTheme.setSubTextFontStyle(parseFontStyle(cfg_subTextFontStyle))
         }
-        subTheme.setSubTextFontWeight(parseFontWeight(cfg_subTextFontWeight))
+        if (cfg_subTextFontWeight != "undefined") {
+            subTheme.setSubTextFontWeight(parseFontWeight(cfg_subTextFontWeight))
+        }
         if (cfg_subTextFontFamily != "undefined") {
             subTheme.setSubTextFontFamily(cfg_subTextFontFamily)
         }
@@ -234,14 +234,14 @@ class SubPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -280,10 +280,10 @@ class SubPage {
                         if (isExpanded2) {
                             Column {
                                 ConfigTabSelector(title: "下标文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_subTextFontColor, onSelect: { v => cfg_subTextFontColor = v })
-                                ConfigTabSelector(title: "下标文本尺寸 - ", options: smallTextSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_subTextFontSize, onSelect: { v => cfg_subTextFontSize = v })
+                                ConfigTabSelector(title: "下标文本尺寸 - ", options: smallTextSizeList, defaultValue: "8", configKey: "", currentValue: cfg_subTextFontSize, onSelect: { v => cfg_subTextFontSize = v })
                                 ConfigTabSelector(title: "下标基线偏移 - ", options: offsetList, defaultValue: "0", configKey: "", currentValue: cfg_subTextBaselineOffset, onSelect: { v => cfg_subTextBaselineOffset = v })
                                 ConfigTabSelector(title: "下标文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_subTextFontStyle, onSelect: { v => cfg_subTextFontStyle = v })
-                                ConfigTabSelector(title: "下标文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_subTextFontWeight, onSelect: { v => cfg_subTextFontWeight = v })
+                                ConfigTabSelector(title: "下标文本字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_subTextFontWeight, onSelect: { v => cfg_subTextFontWeight = v })
                                 ConfigTabSelector(title: "下标文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_subTextFontFamily, onSelect: { v => cfg_subTextFontFamily = v })
                                 ConfigTabSelector(title: "下标文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_subTextLetterSpacing, onSelect: { v => cfg_subTextLetterSpacing = v })
                             }

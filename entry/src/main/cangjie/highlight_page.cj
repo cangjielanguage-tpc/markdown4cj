@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -27,20 +27,20 @@ class HighlightPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
     @State @Watch[onConfigChanged] var cfg_highlightTextFontColor: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_highlightTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_highlightTextFontWeight: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_highlightTextBackgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_highlightTextFontWeight: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_highlightTextBackgroundColor: String = "#FFFFF59D"
 
     @State @Watch[onConfigChanged] var cfg_highlightTextFontStyle: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_highlightTextFontFamily: String = "undefined"
@@ -158,7 +158,9 @@ class HighlightPage {
         if (cfg_highlightTextFontSize != "undefined") {
             highlightTheme.setHighlightTextFontSize(parseFloat64(cfg_highlightTextFontSize))
         }
-        highlightTheme.setHighlightTextFontWeight(parseFontWeight(cfg_highlightTextFontWeight))
+        if (cfg_highlightTextFontWeight != "undefined") {
+            highlightTheme.setHighlightTextFontWeight(parseFontWeight(cfg_highlightTextFontWeight))
+        }
         if (cfg_highlightTextBackgroundColor != "undefined") {
             highlightTheme.setHighlightTextBackgroundColor(parseColor(cfg_highlightTextBackgroundColor))
         }
@@ -246,14 +248,14 @@ class HighlightPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -293,8 +295,8 @@ class HighlightPage {
                             Column {
                                 ConfigTabSelector(title: "高亮文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontColor, onSelect: { v => cfg_highlightTextFontColor = v })
                                 ConfigTabSelector(title: "高亮文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontSize, onSelect: { v => cfg_highlightTextFontSize = v })
-                                ConfigTabSelector(title: "高亮文本字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_highlightTextFontWeight, onSelect: { v => cfg_highlightTextFontWeight = v })
-                                ConfigTabSelector(title: "高亮文本背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextBackgroundColor, onSelect: { v => cfg_highlightTextBackgroundColor = v })
+                                ConfigTabSelector(title: "高亮文本字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontWeight, onSelect: { v => cfg_highlightTextFontWeight = v })
+                                ConfigTabSelector(title: "高亮文本背景颜色 - ", options: colorList, defaultValue: "#FFFFF59D", configKey: "", currentValue: cfg_highlightTextBackgroundColor, onSelect: { v => cfg_highlightTextBackgroundColor = v })
                                 ConfigTabSelector(title: "高亮文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontStyle, onSelect: { v => cfg_highlightTextFontStyle = v })
                                 ConfigTabSelector(title: "高亮文本字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextFontFamily, onSelect: { v => cfg_highlightTextFontFamily = v })
                                 ConfigTabSelector(title: "高亮文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_highlightTextLineHeight, onSelect: { v => cfg_highlightTextLineHeight = v })

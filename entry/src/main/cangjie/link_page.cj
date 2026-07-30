@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -33,59 +33,59 @@ class LinkPage {
     @State var cfg_time: String = "50"
     @State var cfg_textNumber: String = "10"
     @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "false"
+    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
     @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
     @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
     @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
     @State var cfg_openGestureSwipeTest: String = "false"
     @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
     @State @Watch[onConfigChanged] var cfg_linkIsIcon: String = "false"
-    @State @Watch[onConfigChanged] var cfg_linkTextFontColor: String = "undefined"
+    @State @Watch[onConfigChanged] var cfg_linkTextFontColor: String = "#FFFF0000"
     @State @Watch[onConfigChanged] var cfg_linkTextFontSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkTextDecorationColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkTextBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkTextFontWeight: String = "Normal"
+    @State @Watch[onConfigChanged] var cfg_linkTextDecorationColor: String = "#FFFF0000"
+    @State @Watch[onConfigChanged] var cfg_linkTextBackgroundColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_linkTextFontWeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_linkTextFontFamily: String = "undefined"
 
     @State @Watch[onConfigChanged] var cfg_linkListIsIcon: String = "false"
     @State @Watch[onConfigChanged] var cfg_linkTextFontStyle: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_linkTextLineHeight: String = "undefined"
     @State @Watch[onConfigChanged] var cfg_linkTextLetterSpacing: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkTextDecorationType: String = "None"
-    @State @Watch[onConfigChanged] var cfg_linkTextDecorationStyle: String = "Solid"
+    @State @Watch[onConfigChanged] var cfg_linkTextDecorationType: String = "Underline"
+    @State @Watch[onConfigChanged] var cfg_linkTextDecorationStyle: String = "SOLID"
     @State @Watch[onConfigChanged] var cfg_linkTextBackgroundRadiusTopLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_linkTextBackgroundRadiusTopRight: String = "0"
     @State @Watch[onConfigChanged] var cfg_linkTextBackgroundRadiusBottomLeft: String = "0"
     @State @Watch[onConfigChanged] var cfg_linkTextBackgroundRadiusBottomRight: String = "0"
     @State var cfg_isLoadLinkifyPlugin: String = "true"
-    @State @Watch[onConfigChanged] var cfg_linkCircleIconBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkCircleIconButtonBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkCircleIconTextSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkCircleIconTextColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkCircleIconRadius: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkCircleIconMargin: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectIconBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkRectIconButtonBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkRectIconTextSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkRectIconTextColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkRectIconHeight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectIconPadding: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectIconRadius: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectIconMargin: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconButtonBackgroundColor: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconTextSize: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconHeight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconPadding: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconBorderWidth: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconDividingLineWidth: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconMargin: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconLineLeftPadding: String = "0"
-    @State @Watch[onConfigChanged] var cfg_linkRectToolIconLineRightPadding: String = "0"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconBackgroundColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconButtonBackgroundColor: String = "#FF000000"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconTextSize: String = "14"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconTextColor: String = "#FFFFFFFF"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconRadius: String = "20"
+    @State @Watch[onConfigChanged] var cfg_linkCircleIconMargin: String = "6"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconBackgroundColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconButtonBackgroundColor: String = "#FF000000"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconTextSize: String = "14"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconTextColor: String = "#FFFFFFFF"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconHeight: String = "20"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconPadding: String = "6"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconRadius: String = "6"
+    @State @Watch[onConfigChanged] var cfg_linkRectIconMargin: String = "6"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconBackgroundColor: String = "#00000000"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconButtonBackgroundColor: String = "#FFFFFFFF"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconTextSize: String = "14"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconHeight: String = "21"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconPadding: String = "6"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconBorderWidth: String = "1"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconDividingLineWidth: String = "1"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconMargin: String = "6"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconLineLeftPadding: String = "3"
+    @State @Watch[onConfigChanged] var cfg_linkRectToolIconLineRightPadding: String = "3"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
@@ -200,7 +200,9 @@ class LinkPage {
         if (cfg_linkTextBackgroundColor != "undefined") {
             linkTheme.setLinkTextBackgroundColor(parseColor(cfg_linkTextBackgroundColor))
         }
-        linkTheme.setLinkTextFontWeight(parseFontWeight(cfg_linkTextFontWeight))
+        if (cfg_linkTextFontWeight != "undefined") {
+            linkTheme.setLinkTextFontWeight(parseFontWeight(cfg_linkTextFontWeight))
+        }
         if (cfg_linkTextFontFamily != "undefined") {
             linkTheme.setLinkTextFontFamily(cfg_linkTextFontFamily)
         }
@@ -334,14 +336,14 @@ class LinkPage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
                                 ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
                                 ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
-                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
+                                ConfigTabSelector(title: "背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_backgroundColor, onSelect: { v => cfg_backgroundColor = v })
                                 ConfigTabSelector(title: "响应滑动测试 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipeTest, onSelect: { v => cfg_openGestureSwipeTest = v })
                                 ConfigTabSelector(title: "控件响应滑动 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_openGestureSwipe, onSelect: { v => cfg_openGestureSwipe = v })
                             }
@@ -382,12 +384,12 @@ class LinkPage {
                                 ConfigTabSelector(title: "链接是否图片显示 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_linkIsIcon, onSelect: { v => cfg_linkIsIcon = v })
                                 ConfigTabSelector(title: "链接列表是否图标 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_linkListIsIcon, onSelect: { v => cfg_linkListIsIcon = v })
                                 ConfigTabSelector(title: "是否加载链接自动解析插件 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isLoadLinkifyPlugin, onSelect: { v => cfg_isLoadLinkifyPlugin = v })
-                                ConfigTabSelector(title: "链接圆形图标背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkCircleIconBackgroundColor, onSelect: { v => cfg_linkCircleIconBackgroundColor = v })
-                                ConfigTabSelector(title: "链接圆形图标按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkCircleIconButtonBackgroundColor, onSelect: { v => cfg_linkCircleIconButtonBackgroundColor = v })
-                                ConfigTabSelector(title: "链接圆形图标文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkCircleIconTextSize, onSelect: { v => cfg_linkCircleIconTextSize = v })
-                                ConfigTabSelector(title: "链接圆形图标文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkCircleIconTextColor, onSelect: { v => cfg_linkCircleIconTextColor = v })
-                                ConfigTabSelector(title: "链接圆形图标圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_linkCircleIconRadius, onSelect: { v => cfg_linkCircleIconRadius = v })
-                                ConfigTabSelector(title: "链接圆形图标外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_linkCircleIconMargin, onSelect: { v => cfg_linkCircleIconMargin = v })
+                                ConfigTabSelector(title: "链接圆形图标背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_linkCircleIconBackgroundColor, onSelect: { v => cfg_linkCircleIconBackgroundColor = v })
+                                ConfigTabSelector(title: "链接圆形图标按钮背景颜色 - ", options: colorList, defaultValue: "#FF000000", configKey: "", currentValue: cfg_linkCircleIconButtonBackgroundColor, onSelect: { v => cfg_linkCircleIconButtonBackgroundColor = v })
+                                ConfigTabSelector(title: "链接圆形图标文本大小 - ", options: textSizeList, defaultValue: "14", configKey: "", currentValue: cfg_linkCircleIconTextSize, onSelect: { v => cfg_linkCircleIconTextSize = v })
+                                ConfigTabSelector(title: "链接圆形图标文本颜色 - ", options: colorList, defaultValue: "#FFFFFFFF", configKey: "", currentValue: cfg_linkCircleIconTextColor, onSelect: { v => cfg_linkCircleIconTextColor = v })
+                                ConfigTabSelector(title: "链接圆形图标圆角 - ", options: radiusList, defaultValue: "20", configKey: "", currentValue: cfg_linkCircleIconRadius, onSelect: { v => cfg_linkCircleIconRadius = v })
+                                ConfigTabSelector(title: "链接圆形图标外边距 - ", options: marginList, defaultValue: "6", configKey: "", currentValue: cfg_linkCircleIconMargin, onSelect: { v => cfg_linkCircleIconMargin = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -423,14 +425,14 @@ class LinkPage {
 
                         if (isExpanded3) {
                             Column {
-                                ConfigTabSelector(title: "链接矩形图标背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkRectIconBackgroundColor, onSelect: { v => cfg_linkRectIconBackgroundColor = v })
-                                ConfigTabSelector(title: "链接矩形图标按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkRectIconButtonBackgroundColor, onSelect: { v => cfg_linkRectIconButtonBackgroundColor = v })
-                                ConfigTabSelector(title: "链接矩形图标文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkRectIconTextSize, onSelect: { v => cfg_linkRectIconTextSize = v })
-                                ConfigTabSelector(title: "链接矩形图标文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkRectIconTextColor, onSelect: { v => cfg_linkRectIconTextColor = v })
-                                ConfigTabSelector(title: "链接矩形图标高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectIconHeight, onSelect: { v => cfg_linkRectIconHeight = v })
-                                ConfigTabSelector(title: "链接矩形图标内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectIconPadding, onSelect: { v => cfg_linkRectIconPadding = v })
-                                ConfigTabSelector(title: "链接矩形图标圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectIconRadius, onSelect: { v => cfg_linkRectIconRadius = v })
-                                ConfigTabSelector(title: "链接矩形图标外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectIconMargin, onSelect: { v => cfg_linkRectIconMargin = v })
+                                ConfigTabSelector(title: "链接矩形图标背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_linkRectIconBackgroundColor, onSelect: { v => cfg_linkRectIconBackgroundColor = v })
+                                ConfigTabSelector(title: "链接矩形图标按钮背景颜色 - ", options: colorList, defaultValue: "#FF000000", configKey: "", currentValue: cfg_linkRectIconButtonBackgroundColor, onSelect: { v => cfg_linkRectIconButtonBackgroundColor = v })
+                                ConfigTabSelector(title: "链接矩形图标文本大小 - ", options: textSizeList, defaultValue: "14", configKey: "", currentValue: cfg_linkRectIconTextSize, onSelect: { v => cfg_linkRectIconTextSize = v })
+                                ConfigTabSelector(title: "链接矩形图标文本颜色 - ", options: colorList, defaultValue: "#FFFFFFFF", configKey: "", currentValue: cfg_linkRectIconTextColor, onSelect: { v => cfg_linkRectIconTextColor = v })
+                                ConfigTabSelector(title: "链接矩形图标高度 - ", options: widthOrHeightList, defaultValue: "20", configKey: "", currentValue: cfg_linkRectIconHeight, onSelect: { v => cfg_linkRectIconHeight = v })
+                                ConfigTabSelector(title: "链接矩形图标内边距 - ", options: paddingList, defaultValue: "6", configKey: "", currentValue: cfg_linkRectIconPadding, onSelect: { v => cfg_linkRectIconPadding = v })
+                                ConfigTabSelector(title: "链接矩形图标圆角 - ", options: radiusList, defaultValue: "6", configKey: "", currentValue: cfg_linkRectIconRadius, onSelect: { v => cfg_linkRectIconRadius = v })
+                                ConfigTabSelector(title: "链接矩形图标外边距 - ", options: marginList, defaultValue: "6", configKey: "", currentValue: cfg_linkRectIconMargin, onSelect: { v => cfg_linkRectIconMargin = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -466,16 +468,16 @@ class LinkPage {
 
                         if (isExpanded4) {
                             Column {
-                                ConfigTabSelector(title: "链接矩形工具图标背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkRectToolIconBackgroundColor, onSelect: { v => cfg_linkRectToolIconBackgroundColor = v })
-                                ConfigTabSelector(title: "链接矩形工具图标按钮背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkRectToolIconButtonBackgroundColor, onSelect: { v => cfg_linkRectToolIconButtonBackgroundColor = v })
-                                ConfigTabSelector(title: "链接矩形工具图标文本大小 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkRectToolIconTextSize, onSelect: { v => cfg_linkRectToolIconTextSize = v })
-                                ConfigTabSelector(title: "链接矩形工具图标高度 - ", options: widthOrHeightList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectToolIconHeight, onSelect: { v => cfg_linkRectToolIconHeight = v })
-                                ConfigTabSelector(title: "链接矩形工具图标内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectToolIconPadding, onSelect: { v => cfg_linkRectToolIconPadding = v })
-                                ConfigTabSelector(title: "链接矩形工具图标边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectToolIconBorderWidth, onSelect: { v => cfg_linkRectToolIconBorderWidth = v })
-                                ConfigTabSelector(title: "链接矩形工具图标分割线宽度 - ", options: lineOrBorderWidthList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectToolIconDividingLineWidth, onSelect: { v => cfg_linkRectToolIconDividingLineWidth = v })
-                                ConfigTabSelector(title: "链接矩形工具图标外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectToolIconMargin, onSelect: { v => cfg_linkRectToolIconMargin = v })
-                                ConfigTabSelector(title: "链接矩形工具图标线条左内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectToolIconLineLeftPadding, onSelect: { v => cfg_linkRectToolIconLineLeftPadding = v })
-                                ConfigTabSelector(title: "链接矩形工具图标线条右内边距 - ", options: paddingList, defaultValue: "0", configKey: "", currentValue: cfg_linkRectToolIconLineRightPadding, onSelect: { v => cfg_linkRectToolIconLineRightPadding = v })
+                                ConfigTabSelector(title: "链接矩形工具图标背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_linkRectToolIconBackgroundColor, onSelect: { v => cfg_linkRectToolIconBackgroundColor = v })
+                                ConfigTabSelector(title: "链接矩形工具图标按钮背景颜色 - ", options: colorList, defaultValue: "#FFFFFFFF", configKey: "", currentValue: cfg_linkRectToolIconButtonBackgroundColor, onSelect: { v => cfg_linkRectToolIconButtonBackgroundColor = v })
+                                ConfigTabSelector(title: "链接矩形工具图标文本大小 - ", options: textSizeList, defaultValue: "14", configKey: "", currentValue: cfg_linkRectToolIconTextSize, onSelect: { v => cfg_linkRectToolIconTextSize = v })
+                                ConfigTabSelector(title: "链接矩形工具图标高度 - ", options: widthOrHeightList, defaultValue: "21", configKey: "", currentValue: cfg_linkRectToolIconHeight, onSelect: { v => cfg_linkRectToolIconHeight = v })
+                                ConfigTabSelector(title: "链接矩形工具图标内边距 - ", options: paddingList, defaultValue: "6", configKey: "", currentValue: cfg_linkRectToolIconPadding, onSelect: { v => cfg_linkRectToolIconPadding = v })
+                                ConfigTabSelector(title: "链接矩形工具图标边框宽度 - ", options: lineOrBorderWidthList, defaultValue: "1", configKey: "", currentValue: cfg_linkRectToolIconBorderWidth, onSelect: { v => cfg_linkRectToolIconBorderWidth = v })
+                                ConfigTabSelector(title: "链接矩形工具图标分割线宽度 - ", options: lineOrBorderWidthList, defaultValue: "1", configKey: "", currentValue: cfg_linkRectToolIconDividingLineWidth, onSelect: { v => cfg_linkRectToolIconDividingLineWidth = v })
+                                ConfigTabSelector(title: "链接矩形工具图标外边距 - ", options: marginList, defaultValue: "6", configKey: "", currentValue: cfg_linkRectToolIconMargin, onSelect: { v => cfg_linkRectToolIconMargin = v })
+                                ConfigTabSelector(title: "链接矩形工具图标线条左内边距 - ", options: paddingList, defaultValue: "3", configKey: "", currentValue: cfg_linkRectToolIconLineLeftPadding, onSelect: { v => cfg_linkRectToolIconLineLeftPadding = v })
+                                ConfigTabSelector(title: "链接矩形工具图标线条右内边距 - ", options: paddingList, defaultValue: "3", configKey: "", currentValue: cfg_linkRectToolIconLineRightPadding, onSelect: { v => cfg_linkRectToolIconLineRightPadding = v })
                             }
                             .width(100.percent)
                             .padding(bottom: 5.0, left: 5.0, right: 5.0)
@@ -511,17 +513,17 @@ class LinkPage {
 
                         if (isExpanded5) {
                             Column {
-                                ConfigTabSelector(title: "链接文本颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextFontColor, onSelect: { v => cfg_linkTextFontColor = v })
+                                ConfigTabSelector(title: "链接文本颜色 - ", options: colorList, defaultValue: "#FFFF0000", configKey: "", currentValue: cfg_linkTextFontColor, onSelect: { v => cfg_linkTextFontColor = v })
                                 ConfigTabSelector(title: "链接文本尺寸 - ", options: textSizeList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextFontSize, onSelect: { v => cfg_linkTextFontSize = v })
-                                ConfigTabSelector(title: "链接下划线颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextDecorationColor, onSelect: { v => cfg_linkTextDecorationColor = v })
-                                ConfigTabSelector(title: "链接背景颜色 - ", options: colorList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextBackgroundColor, onSelect: { v => cfg_linkTextBackgroundColor = v })
-                                ConfigTabSelector(title: "链接字体粗细 - ", options: fontWeightList, defaultValue: "Normal", configKey: "", currentValue: cfg_linkTextFontWeight, onSelect: { v => cfg_linkTextFontWeight = v })
+                                ConfigTabSelector(title: "链接下划线颜色 - ", options: colorList, defaultValue: "#FFFF0000", configKey: "", currentValue: cfg_linkTextDecorationColor, onSelect: { v => cfg_linkTextDecorationColor = v })
+                                ConfigTabSelector(title: "链接背景颜色 - ", options: colorList, defaultValue: "#00000000", configKey: "", currentValue: cfg_linkTextBackgroundColor, onSelect: { v => cfg_linkTextBackgroundColor = v })
+                                ConfigTabSelector(title: "链接字体粗细 - ", options: fontWeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextFontWeight, onSelect: { v => cfg_linkTextFontWeight = v })
                                 ConfigTabSelector(title: "链接字体 - ", options: textTypefaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextFontFamily, onSelect: { v => cfg_linkTextFontFamily = v })
                                 ConfigTabSelector(title: "链接文本字体样式 - ", options: fontStyleList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextFontStyle, onSelect: { v => cfg_linkTextFontStyle = v })
                                 ConfigTabSelector(title: "链接文本行高 - ", options: textLineHeightList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextLineHeight, onSelect: { v => cfg_linkTextLineHeight = v })
                                 ConfigTabSelector(title: "链接文本字符间距 - ", options: textWordSpaceList, defaultValue: "undefined", configKey: "", currentValue: cfg_linkTextLetterSpacing, onSelect: { v => cfg_linkTextLetterSpacing = v })
-                                ConfigTabSelector(title: "链接文本装饰类型 - ", options: textDecorationTypeList, defaultValue: "None", configKey: "", currentValue: cfg_linkTextDecorationType, onSelect: { v => cfg_linkTextDecorationType = v })
-                                ConfigTabSelector(title: "链接文本装饰样式 - ", options: textDecorationStyleList, defaultValue: "Solid", configKey: "", currentValue: cfg_linkTextDecorationStyle, onSelect: { v => cfg_linkTextDecorationStyle = v })
+                                ConfigTabSelector(title: "链接文本装饰类型 - ", options: textDecorationTypeList, defaultValue: "Underline", configKey: "", currentValue: cfg_linkTextDecorationType, onSelect: { v => cfg_linkTextDecorationType = v })
+                                ConfigTabSelector(title: "链接文本装饰样式 - ", options: textDecorationStyleList, defaultValue: "SOLID", configKey: "", currentValue: cfg_linkTextDecorationStyle, onSelect: { v => cfg_linkTextDecorationStyle = v })
                                 ConfigTabSelector(title: "链接文本背景左上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_linkTextBackgroundRadiusTopLeft, onSelect: { v => cfg_linkTextBackgroundRadiusTopLeft = v })
                                 ConfigTabSelector(title: "链接文本背景右上圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_linkTextBackgroundRadiusTopRight, onSelect: { v => cfg_linkTextBackgroundRadiusTopRight = v })
                                 ConfigTabSelector(title: "链接文本背景左下圆角 - ", options: radiusList, defaultValue: "0", configKey: "", currentValue: cfg_linkTextBackgroundRadiusBottomLeft, onSelect: { v => cfg_linkTextBackgroundRadiusBottomLeft = v })
