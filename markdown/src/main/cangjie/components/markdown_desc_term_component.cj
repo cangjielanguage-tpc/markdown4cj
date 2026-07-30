@@ -18,12 +18,6 @@ public class MarkdownDescTermComponent {
     var descTermTocListOnClick: (Int64) -> Unit // TOC列表点击事件
     var descTermImageCallback: (String) -> Unit // 图片点击事件
     var descTermFootnoteCallback: (String) -> Unit // 脚注点击事件
-    @BuilderParam
-    var blockImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局块级图片
-    @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局行内图片
-    @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
     var descTermNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表术语控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
@@ -50,9 +44,6 @@ public class MarkdownDescTermComponent {
                                 paragraphTocListOnClick: descTermTocListOnClick,
                                 paragraphImageCallback: descTermImageCallback,
                                 paragraphFootnoteCallback: descTermFootnoteCallback,
-                                blockImageCardComponent: blockImageCardComponent,
-                                inlineImageCardComponent: inlineImageCardComponent,
-                                inlineLinkCardComponent: inlineLinkCardComponent
                             )
                         }
                     } else {

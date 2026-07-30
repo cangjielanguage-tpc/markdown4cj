@@ -56,9 +56,7 @@ public class MarkdownComponent {
     @BuilderParam
     var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit = CustomInlineImageBuilder  //自定义卡片布局行内图片
-    @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit = CustomInlineLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
     let screenWidth: Int32 = getDefaultDisplaySync().width // 屏幕宽度 - 单位px
     @State
     var componentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
@@ -202,9 +200,6 @@ public class MarkdownComponent {
                             paragraphTocListOnClick: tocListOnClick,
                             paragraphImageCallback: imageCallback,
                             paragraphFootnoteCallback: footnoteCallback,
-                            blockImageCardComponent: blockImageCardComponent,
-                            inlineImageCardComponent: inlineImageCardComponent,
-                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
@@ -217,9 +212,6 @@ public class MarkdownComponent {
                             headingCustomHeadingLineBuilder: customHeadingLineBuilder,
                             headingImageCallback: imageCallback,
                             headingFootnoteCallback: footnoteCallback,
-                            blockImageCardComponent: blockImageCardComponent,
-                            inlineImageCardComponent: inlineImageCardComponent,
-                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "FencedCodeBlockListBlock") {
@@ -271,9 +263,8 @@ public class MarkdownComponent {
                             listImageCallback: imageCallback,
                             listVideoCallback: videoCallback,
                             listDepth: 0,
-                            blockImageCardComponent: blockImageCardComponent,
-                            inlineImageCardComponent: inlineImageCardComponent,
-                            inlineLinkCardComponent: inlineLinkCardComponent
+                            blockImageCardComponent:blockImageCardComponent,
+                            blockLinkCardComponent:blockLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "OrderedList") {
@@ -297,9 +288,8 @@ public class MarkdownComponent {
                             listImageCallback: imageCallback,
                             listVideoCallback: videoCallback,
                             listDepth: 0,
-                            blockImageCardComponent: blockImageCardComponent,
-                            inlineImageCardComponent: inlineImageCardComponent,
-                            inlineLinkCardComponent: inlineLinkCardComponent
+                            blockImageCardComponent:blockImageCardComponent,
+                            blockLinkCardComponent:blockLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "BlockQuote") {
@@ -322,9 +312,8 @@ public class MarkdownComponent {
                             quoteImageCallback: imageCallback,
                             quoteVideoCallback: videoCallback,
                             quoteDepth: 0,
-                            blockImageCardComponent: blockImageCardComponent,
-                            inlineImageCardComponent: inlineImageCardComponent,
-                            inlineLinkCardComponent: inlineLinkCardComponent
+                            blockImageCardComponent:blockImageCardComponent,
+                            blockLinkCardComponent:blockLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "LatexMathBlock") {
@@ -369,8 +358,6 @@ public class MarkdownComponent {
                             tableBlockImageCallback: imageCallback,
                             tableBlockFootnoteCallback: footnoteCallback,
                             tableBlockListItemIndex: Int32(idx),
-                            inlineImageCardComponent: inlineImageCardComponent,
-                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "ThematicBreak") {
@@ -391,9 +378,6 @@ public class MarkdownComponent {
                             footnoteTocListOnClick: tocListOnClick,
                             footnoteImageCallback: imageCallback,
                             footnoteFootnoteCallback: footnoteCallback,
-                            blockImageCardComponent: blockImageCardComponent,
-                            inlineImageCardComponent: inlineImageCardComponent,
-                            inlineLinkCardComponent: inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "DescList") {
@@ -407,9 +391,6 @@ public class MarkdownComponent {
                             descListTocListOnClick: tocListOnClick,
                             descListImageCallback: imageCallback,
                             descListFootnoteCallback: footnoteCallback,
-                            blockImageCardComponent: blockImageCardComponent,
-                            inlineImageCardComponent: inlineImageCardComponent,
-                            inlineLinkCardComponent:inlineLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "SlideBlock") {
@@ -440,6 +421,23 @@ public class MarkdownComponent {
                             item,
                             markdownConfiguration.markdownTheme,
                             markdownConfiguration.audioCallback
+                        )
+                    }
+                } else if (item.nodeType == "CustomCardImage") {
+                    // 自定义卡片图片
+                    ListItem() {
+                        blockImageCardComponent(
+                            item.imageAltText,
+                            item.imageUrl,
+                            item.imageTitle,
+                        )
+                    }
+                } else if (item.nodeType == "CustomCardLink") {
+                    // 自定义卡片链接
+                    ListItem() {
+                        blockLinkCardComponent(
+                            item.linkUrl,
+                            item.linkTitle,
                         )
                     }
                 } else if (item.nodeType == "BlockAD") {

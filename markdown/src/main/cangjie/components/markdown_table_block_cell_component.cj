@@ -19,10 +19,6 @@ class MarkdownTableBlockCellComponent {
     var tableBlockCellCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格Cell控件
     var tableBlockCellImageCallback: (String) -> Unit // 图片点击事件
     var tableBlockCellFootnoteCallback: (String) -> Unit // 脚注点击事件
-    @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局行内图片
-    @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
     var tableBlockCellRow: Int64 // 表格的第几行
     var tableBlockCellCell: Int64 // 表格的第几条
     var tableBlockCellCellSize: Int64 // 表格总共有几列
@@ -248,11 +244,6 @@ class MarkdownTableBlockCellComponent {
                 } else if (spanListNodeView.nodeType == "HardLineBreak") {
                     Span("\n")
                 } else if (spanListNodeView.nodeType == "Link" || spanListNodeView.nodeType == "HeadLink") {
-                    if(spanListNodeView.linkUrl.isSome() && spanListMarkdownConfiguration.isInLineLinkCustom.isSome()
-                        && spanListMarkdownConfiguration.isInLineLinkCustom.getOrThrow()(spanListNodeView.linkUrl.getOrThrow())){
-                        // 行内链接卡片组件
-                        inlineLinkCardComponent(spanListNodeView.linkUrl, spanListNodeView.linkTitle)
-                    }else{
                         // 链接, TOC列表链接
                         spanLinkComponent(
                         spanListNodeView,
@@ -261,19 +252,13 @@ class MarkdownTableBlockCellComponent {
                         spanListFootnoteCallback,
                         false
                         )
-                    }
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
-                    if((spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage") && spanListNodeView.imageAltText.isSome() && spanListMarkdownConfiguration.isInLineImageCustom.isSome()
-                        && spanListMarkdownConfiguration.isInLineImageCustom.getOrThrow()(spanListNodeView.imageAltText.getOrThrow())){
-                        inlineImageCardComponent(spanListNodeView.imageAltText,spanListNodeView.imageUrl, spanListNodeView.imageTitle)
-                    }else{
                         spanImageComponent(
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
                         spanListImageCallback
                         )
-                    }
                 } else {
                     tableBlockCellCustomTableLineBuilder(spanListNodeView, index)
                 }

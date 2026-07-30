@@ -26,10 +26,6 @@ class MarkdownTableBlockComponent {
     var cellWidthTracker: CellWidthTracker = CellWidthTracker() // 列宽跟踪器（非@Observed，onAreaChange只写不触发重渲染）
     @Provide["tableColumnWidths"]
     var columnWidths: Array<Float64> = Array<Float64>(0, repeat: 0.0) // 列宽快照（@Provide让TableCell通过@Consume直接读取）
-    @BuilderParam
-    var inlineImageCardComponent: (?String,?String, ?String) -> Unit  //自定义卡片布局行内图片
-    @BuilderParam
-    var inlineLinkCardComponent: (?String, ?String) -> Unit  //自定义卡片布局行内链接
     @State
     var tableBlockCellSize: Int64 = 0 // 表格总共有几列
     @State
@@ -104,8 +100,6 @@ class MarkdownTableBlockComponent {
                                     tableBlockRowRow: 0,
                                     tableBlockRowCellSize: tableBlockCellSize,
                                     tableBlockRowRowSize: tableBlockNodeView.children.size,
-                                    inlineImageCardComponent: inlineImageCardComponent,
-                                    inlineLinkCardComponent: inlineLinkCardComponent
                                 )
                             }
                             .scrollable(ScrollDirection.Horizontal)
@@ -149,8 +143,6 @@ class MarkdownTableBlockComponent {
                                             tableBlockRowRow: idRow + 1,
                                             tableBlockRowCellSize: tableBlockCellSize,
                                             tableBlockRowRowSize: tableBlockNodeView.children.size,
-                                            inlineImageCardComponent: inlineImageCardComponent,
-                                            inlineLinkCardComponent: inlineLinkCardComponent
                                         )
                                     } else {
                                         Text("")
@@ -229,8 +221,6 @@ class MarkdownTableBlockComponent {
                                         tableBlockRowRow: idRow,
                                         tableBlockRowCellSize: tableBlockCellSize,
                                         tableBlockRowRowSize: tableBlockNodeView.children.size,
-                                        inlineImageCardComponent: inlineImageCardComponent,
-                                        inlineLinkCardComponent: inlineLinkCardComponent
                                     )
                                 } else {
                                     Text("")

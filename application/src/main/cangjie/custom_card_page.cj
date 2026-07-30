@@ -57,6 +57,7 @@ class CustomCardPage {
         .usePlugin(CodeListPlugin.create())
         .usePlugin(FootnotePlugin.create())
         .usePlugin(TocPlugin.create())
+        .usePlugin(BlockCustomCardPlugin.create())
         .usePlugin(ImageCollectPlugin.create())
         .usePlugin(NodeIdPlugin.create())
         .build()
@@ -65,6 +66,8 @@ class CustomCardPage {
 
     protected override func aboutToAppear(): Unit {
         markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        setCustomCardConditionImg(isBlockImageCustom)
+        setCustomCardConditionLink(isBlockLinkCustom)
         updateConfig()
     }
 
@@ -121,12 +124,6 @@ class CustomCardPage {
 
     func updateConfig() {
         isCustomCardContent = parseBool(cfg_isCustomCardContent)
-        if(isCustomCardContent){
-            markdownConfiguration
-                .setIsBlockImageCustom(isBlockImageCustom)
-                .setIsInLineImageCustom(isInLineImageCustom)
-                .setIsInLineLinkCustom(isInLineLinkCustom)
-        }
         let theme = markdownConfiguration.getMarkdownTheme()
         let globalTheme = theme.getGlobalTheme()
         globalTheme.blockMarginTop = parseFloat64(cfg_blockMarginTop)
@@ -149,31 +146,26 @@ class CustomCardPage {
         return "card"==description
     }
 
-    func isInLineImageCustom(description:String):Bool{
-        return "badge"==description
-    }
-
-    func isInLineLinkCustom(destination:String):Bool{
+    func isBlockLinkCustom(destination:String):Bool{
         return destination.startsWith("star_")
     }
 
     @Builder
     func CustomBlockImageBuilder(str:?String,str1:?String,str2:?String) { /* cjlint-ignore !G.FUN.02 */
-        Text("111111111111")
-        Image("https://markdown.com.cn/images/blue.jpg").width(20).height(20)
+        Column(20){
+            Text("111111111111")
+            Image("https://markdown.com.cn/images/blue.jpg").width(20).height(20)
+        }
     }
 
     @Builder
-    func CustomInlineImageBuilder(str:?String,str1:?String,str2:?String) { /* cjlint-ignore !G.FUN.02 */
-        Span("2222222222222")
-        ImageSpan("https://markdown.com.cn/images/blue.jpg").width(20).height(20)
+    func CustomBlockLinkBuilder(str:?String,str1:?String) { /* cjlint-ignore !G.FUN.02 */
+        Column(20){
+            Text("22222222222")
+            Image("https://markdown.com.cn/images/green.jpg").width(20).height(20)
+        }
     }
 
-    @Builder
-    func CustomInlineLinkBuilder(str:?String,str2:?String) { /* cjlint-ignore !G.FUN.02 */
-         Span("33333333333333")
-         ImageSpan("https://markdown.com.cn/images/blue.jpg").width(20).height(20)
-    }
 
 
     public func build() {
@@ -282,8 +274,7 @@ class CustomCardPage {
                                 scroller: scroller,
                                 markdownConfiguration: markdownConfiguration,
                                 blockImageCardComponent:CustomBlockImageBuilder,
-                                inlineImageCardComponent:CustomInlineImageBuilder,
-                                inlineLinkCardComponent:CustomInlineLinkBuilder,
+                                blockLinkCardComponent:CustomBlockLinkBuilder,
                                 markdownPlugin: markdownPlugin
                                 )
                             }else{
