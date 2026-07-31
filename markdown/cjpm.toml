@@ -50,6 +50,7 @@
     incremental = true
     lto = ""
     performance_analysis = true
+    experimental = true
     enable-heuristic-parallelism = true
     compile-pipeline-parallel = true
   [profile.customized-option]
