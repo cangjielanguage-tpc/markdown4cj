@@ -2,6 +2,7 @@ package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
+import ohos.resource_manager.ResourceManager
 
 @HybridComponentEntry
 @Component
@@ -108,7 +109,20 @@ class ImagePage {
 
     protected override func aboutToAppear(): Unit {
         markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        markdownConfiguration.setImageCallbackCallback(imageCallbackCallback)
         updateConfig()
+    }
+
+    func imageCallbackCallback(str: String): ?Array<UInt8> {
+        var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
+        if (str == "https://markdown.com.cn/images/philly-magic-garden.jpg") {
+            let a =  @r(app.media.app_icon)
+            if (let Some(w) <- GlobalContext.getContext()) {
+                var resourceManager = ResourceManager.getResourceManager(w)
+                arr = resourceManager.getMediaContent(a, 0)
+            }
+        }
+        return arr
     }
 
     func onConfigChanged(): Unit {

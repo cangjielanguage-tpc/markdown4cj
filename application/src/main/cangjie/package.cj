@@ -48,3 +48,4 @@ internal import ohos.ark_interop_helper.*
 
 // kit
 internal import kit.LocalizationKit.AppResource
+internal import kit.LocalizationKit.__GenerateResource__
