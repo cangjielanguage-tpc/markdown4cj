@@ -86,35 +86,3 @@ tryContinue ? addline : {closeBlock;parseInlines}
  */
 
 
-var customCardCondition:CustomCardCondition = CustomCardCondition(None,None)
-
-
-public func setCustomCardConditionImg(blockImage: ?(String) -> Bool){
-    customCardCondition.setImageCondition(blockImage)
-}
-
-
-public func setCustomCardConditionLink( blockLink: ?(String) -> Bool){
-    customCardCondition.setLinkCondition(blockLink)
-}
-
-
-class CustomCardCondition{
-
-    var mBlockImage:?(String) -> Bool = None
-    var mBlockLink:?(String) -> Bool = None
-
-    init(blockImage: ?(String) -> Bool, blockLink: ?(String) -> Bool) {
-        this.mBlockImage = blockImage
-        this.mBlockLink = blockLink
-    }
-
-    func setImageCondition(blockImage: ?(String) -> Bool):Unit{
-         this.mBlockImage = blockImage
-    }
-
-    func setLinkCondition(blockLink: ?(String) -> Bool):Unit{
-         this.mBlockLink = blockLink
-    }
-
-}

@@ -39,6 +39,11 @@ class MarkdownTableBlockCellComponent {
     var viewportReady: Bool = false // onAreaChange是否触发过
     var isAlive: Bool = true // 组件是否存活
 
+    @BuilderParam
+    var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    @BuilderParam
+    var blockLinkCardComponent: (?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
         refreshTableBlockCellData(tableBlockCellNodeView)
@@ -121,9 +126,24 @@ class MarkdownTableBlockCellComponent {
         }
     }
 
+    //判断节点里有没有TableCellPart或者CustomCardImage或者CustomCardLink 如果没有走原来逻辑
+    func isBlockLogic(nodeViewList: ObservedArrayList<NodeView>):Bool{
+        for(i in nodeViewList.get()){
+            if(i.nodeType == "TableCellPart" || i.nodeType == "CustomCardImage" || i.nodeType == "CustomCardLink"){
+                return true
+            }
+        }
+        return false
+    }
+
+
     func build() {
         Column() {
-            tableBlockCellComponent()
+            if(isBlockLogic(tableBlockCellNodeViewList)){
+                tableBlockCellCustomComponent()
+            }else{
+                tableBlockCellComponent()
+            }
         }
         .alignItems(tableBlockCellNodeView.tableAlignment)
         .justifyContent(FlexAlign.Center)
@@ -154,6 +174,50 @@ class MarkdownTableBlockCellComponent {
             return columnWidths[tableBlockCellCell]
         }
         return 0.0
+    }
+
+
+
+    /**
+     * 表格自定义内容
+     */
+    @Builder
+    func tableBlockCellCustomComponent() {
+            ForEach(
+            tableBlockCellNodeViewList,
+            itemGeneratorFunc: {
+                spanListNodeView: NodeView, index: Int64 => if (spanListNodeView.nodeType == "CustomCardImage") {
+                     // 自定义卡片图片
+                            blockImageCardComponent(
+                                spanListNodeView.imageAltText,
+                                spanListNodeView.imageUrl,
+                                spanListNodeView.imageTitle,
+                            )
+                } else if (spanListNodeView.nodeType == "CustomCardLink") {
+                              blockLinkCardComponent(
+                                spanListNodeView.linkUrl,
+                                spanListNodeView.linkTitle,
+                            )
+                } else if (spanListNodeView.nodeType == "TableCellPart") {
+                            Text() {
+                                if (isRefresh) {
+                                    markdownSpanListComponent(
+                                        ObservedArrayList(spanListNodeView.children),
+                                        tableBlockCellMarkdownConfiguration,
+                                        tableBlockCellComponentWidth,
+                                        Option<(Int64) -> Unit>.None,
+                                        tableBlockCellImageCallback,
+                                        tableBlockCellFootnoteCallback
+                                    )
+                                }
+                            }
+                }
+            },
+            keyGeneratorFunc: {
+                spanListNodeView: NodeView, idx: Int64 =>
+                   return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+            }
+        )
     }
 
     /**
