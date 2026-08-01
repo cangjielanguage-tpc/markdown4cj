@@ -2432,7 +2432,7 @@ public class MarkdownTheme {
     /**
      * 设置六级标题文本行高
      *
-     * @param headingTextLineHeight1 六级标题文本行高 - 默认22.0vp
+     * @param headingTextLineHeight6 六级标题文本行高 - 默认22.0vp
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用HeadingTheme.setTextLineHeightForDesignateHeading方法代替", since: "1.4.0"]

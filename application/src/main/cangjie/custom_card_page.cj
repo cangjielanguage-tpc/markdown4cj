@@ -153,7 +153,7 @@ class CustomCardPage {
     @Builder
     func CustomBlockImageBuilder(str:?String,str1:?String,str2:?String) { /* cjlint-ignore !G.FUN.02 */
         Column(20){
-            Text("111111111111")
+            Text("111111111111"+str.getOrThrow()+"---"+str1.getOrThrow())
             Image("https://markdown.com.cn/images/blue.jpg").width(20).height(20)
         }
     }
@@ -161,7 +161,7 @@ class CustomCardPage {
     @Builder
     func CustomBlockLinkBuilder(str:?String,str1:?String) { /* cjlint-ignore !G.FUN.02 */
         Column(20){
-            Text("22222222222")
+            Text("22222222222"+str.getOrThrow()+"---"+str1.getOrThrow())
             Image("https://markdown.com.cn/images/green.jpg").width(20).height(20)
         }
     }

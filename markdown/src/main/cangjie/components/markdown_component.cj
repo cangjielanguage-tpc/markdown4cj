@@ -358,6 +358,8 @@ public class MarkdownComponent {
                             tableBlockImageCallback: imageCallback,
                             tableBlockFootnoteCallback: footnoteCallback,
                             tableBlockListItemIndex: Int32(idx),
+                            blockImageCardComponent:blockImageCardComponent,
+                            blockLinkCardComponent:blockLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "ThematicBreak") {

@@ -16,6 +16,7 @@ public class NodeView {
     var isTableBody: Bool = false // 表格内容
     var isTableRow: Bool = false // 表格行
     var isTableCell: Bool = false // 表格列
+    var isTableCellPart: Bool = false // 表格列中的自定义卡片引起的Part
     var isDescList: Bool = false // 定义列表
     var isDescTerm: Bool = false // 定义列表术语
     var isBulletList: Bool = false // 无序列表
@@ -87,6 +88,7 @@ public func nodeToNodeView(
                     childrenNodeView.isTableBody = childrenNewNodeView.isTableBody
                     childrenNodeView.isTableRow = childrenNewNodeView.isTableRow
                     childrenNodeView.isTableCell = childrenNewNodeView.isTableCell
+                    childrenNodeView.isTableCellPart = childrenNewNodeView.isTableCellPart
                     childrenNodeView.isDescList = childrenNewNodeView.isDescList
                     childrenNodeView.isDescTerm = childrenNewNodeView.isDescTerm
                     childrenNodeView.isBulletList = childrenNewNodeView.isBulletList
@@ -376,6 +378,11 @@ public func nodeToNodeView(
                         childrenNodeView.isTableHead = tableCell.isHeader()
                         nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
+                    }else if(nodeType == "TableCellPart"){
+                        // 表格格子中的Part
+                        childrenNodeView.isTableCellPart = true
+                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
+                        parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "ThematicBreak") {
                         // 分割线
                         parentNewNodeView.children.add(childrenNodeView)
@@ -503,9 +510,9 @@ public func nodeToNodeView(
                     }else if (nodeType == "CustomCardLink") {
                         // xc自定义卡片
                         commonmarkChildrenNode.iterateChildren().forEach({
-                                commonmarkNode: CommonmarkNode => if (commonmarkNode is CommonmarkImage) {
-                                    childrenNodeView.linkUrl = (commonmarkNode as CommonmarkImage)().getDestination()
-                                    childrenNodeView.linkTitle = (commonmarkNode as CommonmarkImage)().getTitle()
+                                commonmarkNode: CommonmarkNode => if (commonmarkNode is CommonmarkLink) {
+                                    childrenNodeView.linkUrl = (commonmarkNode as CommonmarkLink)().getDestination()
+                                    childrenNodeView.linkTitle = (commonmarkNode as CommonmarkLink)().getTitle()
                                 }
                             })
                         parentNewNodeView.children.add(childrenNodeView)

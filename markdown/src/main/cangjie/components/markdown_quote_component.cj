@@ -185,6 +185,8 @@ public class MarkdownQuoteComponent {
                                 tableBlockImageCallback: quoteImageCallback,
                                 tableBlockFootnoteCallback: quoteFootnoteCallback,
                                 tableBlockListItemIndex: Int32(-1),
+                                blockImageCardComponent:blockImageCardComponent,
+                                blockLinkCardComponent:blockLinkCardComponent
                             )
                         } else if (item.nodeType == "ThematicBreak") {
                             // 分割线

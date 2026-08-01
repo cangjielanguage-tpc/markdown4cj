@@ -53,6 +53,12 @@ class MarkdownTableBlockComponent {
     let syncManager: TableHorizontalScrollSync = TableHorizontalScrollSync() // header/body横向滚动同步器
     var oldStickyRowCount: Int64 = 0 // sticky模式上一次的总行数（含标题行），用于行减少时清理列宽记录
 
+    @BuilderParam
+    var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    @BuilderParam
+    var blockLinkCardComponent: (?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+
+
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockNodeView.nodeHash, refreshTableBlockData)
         cellWidthTracker.onWidthUpdated = { => this.applyColumnWidths() }
@@ -100,6 +106,8 @@ class MarkdownTableBlockComponent {
                                     tableBlockRowRow: 0,
                                     tableBlockRowCellSize: tableBlockCellSize,
                                     tableBlockRowRowSize: tableBlockNodeView.children.size,
+                                    blockImageCardComponent:blockImageCardComponent,
+                                    blockLinkCardComponent:blockLinkCardComponent
                                 )
                             }
                             .scrollable(ScrollDirection.Horizontal)
@@ -143,6 +151,8 @@ class MarkdownTableBlockComponent {
                                             tableBlockRowRow: idRow + 1,
                                             tableBlockRowCellSize: tableBlockCellSize,
                                             tableBlockRowRowSize: tableBlockNodeView.children.size,
+                                            blockImageCardComponent:blockImageCardComponent,
+                                            blockLinkCardComponent:blockLinkCardComponent
                                         )
                                     } else {
                                         Text("")
@@ -221,6 +231,8 @@ class MarkdownTableBlockComponent {
                                         tableBlockRowRow: idRow,
                                         tableBlockRowCellSize: tableBlockCellSize,
                                         tableBlockRowRowSize: tableBlockNodeView.children.size,
+                                        blockImageCardComponent:blockImageCardComponent,
+                                        blockLinkCardComponent:blockLinkCardComponent
                                     )
                                 } else {
                                     Text("")
