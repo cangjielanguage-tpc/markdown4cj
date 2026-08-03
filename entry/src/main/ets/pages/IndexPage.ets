@@ -20,7 +20,7 @@ struct IndexPage {
     // 仍需保留 globalThis 上的全局回调，供仓颉页面调用
     globalThis.navigate = (page: string) => {
       if (page === 'demo') {
-        router.pushUrl({ url: 'pages/demo_page' })
+        router.pushUrl({ url: 'pages/DemoPage' })
       } else {
         router.pushUrl({ url: 'pages/' + page })
       }
@@ -76,7 +76,7 @@ struct IndexPage {
               .backgroundColor(0xFFFF0000)
               .margin({ top: 5, bottom: 5 })
               .fontSize(16)
-              .onClick(() => router.pushUrl({ url: 'pages/demo_page' }))
+              .onClick(() => router.pushUrl({ url: 'pages/DemoPage' }))
           }
 
           ListItem() {
