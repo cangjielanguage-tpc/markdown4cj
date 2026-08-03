@@ -33,6 +33,7 @@ struct IndexPage {
       globalThis.markdownContent = content
     }
     globalThis.safeTop = this.safeTop.toString()
+    globalThis.aiChatIncremental = "false"
     globalThis.appResources = {
       "startIcon": $r('app.media.startIcon'),
       "app_icon": $r('app.media.app_icon'),
@@ -534,6 +535,54 @@ struct IndexPage {
               .margin({ top: 5, bottom: 5 })
               .fontSize(16)
               .onClick(() => router.pushUrl({ url: 'pages/CustomCardPage' }))
+          }
+
+          ListItem() {
+            Button("42、AI聊天全量加载")
+              .height(40)
+              .width('80%')
+              .type(ButtonType.Capsule)
+              .fontColor(0xFFFFFFFF)
+              .backgroundColor(0xFFFF0000)
+              .margin({ top: 5, bottom: 5 })
+              .fontSize(16)
+              .onClick(() => router.pushUrl({ url: 'pages/AIChatDetailsPage' }))
+          }
+
+          ListItem() {
+            Button("43、AI聊天懒加载")
+              .height(40)
+              .width('80%')
+              .type(ButtonType.Capsule)
+              .fontColor(0xFFFFFFFF)
+              .backgroundColor(0xFFFF0000)
+              .margin({ top: 5, bottom: 5 })
+              .fontSize(16)
+              .onClick(() => router.pushUrl({ url: 'pages/AIChatLazyDetailsPage' }))
+          }
+
+          ListItem() {
+            Button("44、AI聊天表格吸顶")
+              .height(40)
+              .width('80%')
+              .type(ButtonType.Capsule)
+              .fontColor(0xFFFFFFFF)
+              .backgroundColor(0xFFFF0000)
+              .margin({ top: 5, bottom: 5 })
+              .fontSize(16)
+              .onClick(() => router.pushUrl({ url: 'pages/AIChatTableStickyPage' }))
+          }
+
+          ListItem() {
+            Button("45、AI聊天表格吸顶懒加载")
+              .height(40)
+              .width('80%')
+              .type(ButtonType.Capsule)
+              .fontColor(0xFFFFFFFF)
+              .backgroundColor(0xFFFF0000)
+              .margin({ top: 5, bottom: 5 })
+              .fontSize(16)
+              .onClick(() => router.pushUrl({ url: 'pages/AIChatTableStickyLazyPage' }))
           }
         }
         .alignListItem(ListItemAlign.Center)
