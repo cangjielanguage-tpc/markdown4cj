@@ -56,7 +56,7 @@ class MarkdownTableBlockComponent {
     @BuilderParam
     var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (?String, ?String,?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
 
 
     protected override func aboutToAppear(): Unit {

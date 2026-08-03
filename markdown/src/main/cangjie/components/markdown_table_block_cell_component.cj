@@ -42,7 +42,7 @@ class MarkdownTableBlockCellComponent {
     @BuilderParam
     var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (?String, ?String,?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
@@ -195,8 +195,10 @@ class MarkdownTableBlockCellComponent {
                             )
                 } else if (spanListNodeView.nodeType == "CustomCardLink") {
                               blockLinkCardComponent(
+                                spanListNodeView.nodeText,
                                 spanListNodeView.linkUrl,
-                                spanListNodeView.linkTitle,
+                                spanListNodeView.linkTitle
+
                             )
                 } else if (spanListNodeView.nodeType == "TableCellPart") {
                             Text() {

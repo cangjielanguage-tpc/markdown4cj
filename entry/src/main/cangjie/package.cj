@@ -33,6 +33,7 @@ internal import markdown.plugin.ImageTextMixPlugin
 internal import markdown.plugin.BlockCustomCardPlugin
 internal import markdown.plugin.setCustomCardConditionImg
 internal import markdown.plugin.setCustomCardConditionLink
+internal import markdown.plugin.CardBean
 
 // 系统UI
 internal import ohos.base.*

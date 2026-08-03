@@ -2,32 +2,34 @@ package markdown.plugin
 
 internal import commonmark4cj.commonmark.Text as CommonmarkText
 internal import commonmark4cj.commonmark.Node as CommonmarkNode
+internal import commonmark4cj.commonmark.Image as CommonmarkImage
+internal import commonmark4cj.commonmark.Link as CommonmarkLink
 
 var customCardCondition:CustomCardCondition = CustomCardCondition(None,None)
 
-public func setCustomCardConditionImg(blockImage: ?(String) -> Bool){
+public func setCustomCardConditionImg(blockImage: ?(CardBean) -> Bool){
     customCardCondition.setImageCondition(blockImage)
 }
 
-public func setCustomCardConditionLink( blockLink: ?(String) -> Bool){
+public func setCustomCardConditionLink( blockLink: ?(CardBean) -> Bool){
     customCardCondition.setLinkCondition(blockLink)
 }
 
 class CustomCardCondition{
 
-    var mBlockImage:?(String) -> Bool = None
-    var mBlockLink:?(String) -> Bool = None
+    var mBlockImage:?(CardBean) -> Bool = None
+    var mBlockLink:?(CardBean) -> Bool = None
 
-    init(blockImage: ?(String) -> Bool, blockLink: ?(String) -> Bool) {
+    init(blockImage: ?(CardBean) -> Bool, blockLink: ?(CardBean) -> Bool) {
         this.mBlockImage = blockImage
         this.mBlockLink = blockLink
     }
 
-    func setImageCondition(blockImage: ?(String) -> Bool):Unit{
+    func setImageCondition(blockImage: ?(CardBean) -> Bool):Unit{
          this.mBlockImage = blockImage
     }
 
-    func setLinkCondition(blockLink: ?(String) -> Bool):Unit{
+    func setLinkCondition(blockLink: ?(CardBean) -> Bool):Unit{
          this.mBlockLink = blockLink
     }
 
@@ -66,18 +68,32 @@ func getAltText(n: Node): String {
     return altText
 }
 
-func isRightImg(str: String, blockImage: ?(String) -> Bool): Bool {
+func ImgNodeToCardBean(n:Node):CardBean{
+    let description:String = getAltText(n)
+    let destination = (n as CommonmarkImage)().getDestination()
+    let title = (n as CommonmarkImage)().getTitle()
+    return CardBean(description,destination,title)
+}
+
+
+func LinkNodeToCardBean(n:Node):CardBean{
+    let description:String = getLinkString(StringClass(), n)
+    let destination = (n as CommonmarkLink)().getDestination()
+    let title = (n as CommonmarkLink)().getTitle()
+    return CardBean(description,destination,title)
+}
+
+func isRightImg(n: Node, blockImage: ?(CardBean) -> Bool): Bool {
     if (let Some(v) <- blockImage) {
-        return v(str)
+        return v(ImgNodeToCardBean(n))
     }
     return false
 }
 
-//评分：[](star_5 "rating")
 
-func isRightLink(str: String, blockLink: ?(String) -> Bool): Bool {
+func isRightLink(n: Node, blockLink: ?(CardBean) -> Bool): Bool {
     if (let Some(v) <- blockLink) {
-        return v(str)
+        return v(LinkNodeToCardBean(n))
     }
     return false
 }
@@ -107,10 +123,10 @@ class BlockCustomCardVisitor <: AbstractVisitor {
     // 判断是否为card, 返回CardContainer, 用于装载Card节点
     func isCard(n: Node): ?() -> Node {
         match (n) {
-            case n: Image where isRightImg(getAltText(n), customCardCondition.mBlockImage) => {
+            case n: Image where isRightImg(n, customCardCondition.mBlockImage) => {
                 => CustomCardImage()
             }
-            case n: Link where isRightLink(n.getDestination(), customCardCondition.mBlockLink) => {
+            case n: Link where isRightLink(n, customCardCondition.mBlockLink) => {
                 => CustomCardLink()
             }
             case _ => return None
@@ -251,4 +267,25 @@ public class StringClass {
     func addString(s: String): Unit {
         str = str + s
     }
+}
+
+func getLinkString(stringClass: StringClass, commonmarkNode: CommonmarkNode): String {
+    commonmarkNode.iterateChildren().forEach(
+            {
+                commonmarkChildrenNode: CommonmarkNode =>
+                    let nodeType = commonmarkChildrenNode.getNodeType()
+                    if (nodeType == "Text") {
+                        stringClass.addString((commonmarkChildrenNode as CommonmarkText)().getLiteral())
+                    } else if (nodeType == "Code") {
+                        stringClass.addString((commonmarkChildrenNode as Code)().getLiteral())
+                    } else if (nodeType == "Footnote") {
+                        stringClass.addString((commonmarkChildrenNode as Footnote)().noteid)
+                    } else if (nodeType == "LatexMathNode") {
+                        stringClass.addString((commonmarkChildrenNode as LatexMathNode)().latex)
+                    } else {
+                        stringClass.addString(getLinkString(stringClass, commonmarkChildrenNode))
+                    }
+            }
+        )
+    return stringClass.str
 }
