@@ -38,7 +38,7 @@ class MarkdownListItemComponent {
     @BuilderParam
     var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (?String, ?String,?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(listItemNodeView.nodeHash, refreshListItemData)
@@ -235,8 +235,9 @@ class MarkdownListItemComponent {
                         } else if (item.nodeType == "CustomCardLink") {
                             // 自定义卡片链接
                             blockLinkCardComponent(
+                                item.nodeText,
                                 item.linkUrl,
-                                item.linkTitle,
+                                item.linkTitle
                             )
                         } else if (item.nodeType == "BlockAD") {
                             // 广告

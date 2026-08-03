@@ -158,7 +158,6 @@ public func nodeToNodeView(
                         let link = (commonmarkChildrenNode as CommonmarkLink)()
                         childrenNodeView.linkUrl = link.getDestination()
                         childrenNodeView.linkTitle = link.getTitle()
-                        let nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                         if (isLinkStyle) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
@@ -172,7 +171,6 @@ public func nodeToNodeView(
                         childrenNodeView.linkUrl = link.getDestination()
                         childrenNodeView.linkTitle = link.getTitle()
                         childrenNodeView.headLinkIndex = link.headIndex
-                        let nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                         if (isLinkStyle) {
                             childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                             parentNewNodeView.children.add(childrenNodeView)
@@ -513,6 +511,7 @@ public func nodeToNodeView(
                                 commonmarkNode: CommonmarkNode => if (commonmarkNode is CommonmarkLink) {
                                     childrenNodeView.linkUrl = (commonmarkNode as CommonmarkLink)().getDestination()
                                     childrenNodeView.linkTitle = (commonmarkNode as CommonmarkLink)().getTitle()
+                                    childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
                                 }
                             })
                         parentNewNodeView.children.add(childrenNodeView)

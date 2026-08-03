@@ -56,7 +56,7 @@ public class MarkdownComponent {
     @BuilderParam
     var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (?String, ?String,?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
     let screenWidth: Int32 = getDefaultDisplaySync().width // 屏幕宽度 - 单位px
     @State
     var componentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
@@ -438,8 +438,9 @@ public class MarkdownComponent {
                     // 自定义卡片链接
                     ListItem() {
                         blockLinkCardComponent(
+                            item.nodeText,
                             item.linkUrl,
-                            item.linkTitle,
+                            item.linkTitle
                         )
                     }
                 } else if (item.nodeType == "BlockAD") {

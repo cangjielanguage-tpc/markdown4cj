@@ -8,7 +8,7 @@ func CustomBlockImageBuilder(description:?String,destination:?String,title:?Stri
 }
 
 @Builder
-func CustomBlockLinkBuilder(destination:?String,title:?String) { /* cjlint-ignore !G.FUN.02 */
+func CustomBlockLinkBuilder(description:?String,destination:?String,title:?String) { /* cjlint-ignore !G.FUN.02 */
     Text("")
 }
 
