@@ -50,6 +50,7 @@ internal import commonmark4cj.commonmark.Link as CommonmarkLink
 internal import commonmark4cj.commonmark.Node as CommonmarkNode
 internal import commonmark4cj.commonmark.StrongEmphasis
 internal import commonmark4cj.commonmark.Emphasis
+internal import commonmark4cj.strikethrough.Strikethrough
 internal import commonmark4cj.table.TableBlock
 internal import commonmark4cj.table.TableRow
 internal import commonmark4cj.table.TableHead
