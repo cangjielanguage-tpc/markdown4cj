@@ -215,6 +215,18 @@ func fontWeightValue(w: FontWeight): Int64 {
  * @return 内容高度（vp）
  */
 func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Float64, lineHeight: Float64, componentWidth: Float64, letterSpacing: Float64): Float64 {
+    // 无实际文本内容（空段落/空标题/空单元格）不占高度，与渲染端空 Text() 行为一致
+    // 任务列表 - [ ] 空内容项的空段落会走到此分支，避免多算一个行高
+    var hasText: Bool = false
+    for (seg in segments) {
+        if (seg.text.size > 0) {
+            hasText = true
+            break
+        }
+    }
+    if (!hasText) {
+        return 0.0
+    }
     if (componentWidth <= 0.0) {
         return lineHeight
     }
@@ -520,13 +532,26 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         Float64(bulletTheme.bulletListChildChildSpacing)
     }
     let paragraphLineHeight: Float64 = theme.paragraphTheme.paragraphTextLineHeight
-    // 前缀（列表符号/序号文本）高度，与内容高度取最大值；任务列表复选框高度通常更小，由内容主导
+    // 检测是否为任务列表（BulletList 子节点为 TaskListItem）
+    // BulletList 子节点要么全是普通 ListItem，要么全是 TaskListItem，检查首个子节点即可
+    var isTaskList: Bool = false
+    if (!isOrdered) {
+        for (child in node.iterateChildren()) {
+            isTaskList = child is TaskListItem
+            break
+        }
+    }
+    // 前缀高度：无序/任务列表分别使用对应前缀高度；与内容高度取最大值
+    // 普通无序列表用符号文本行高，任务列表用复选框高度（与渲染端 Checkbox().height 一致）
     let prefixHeight: Float64 = if (isOrdered) {
         orderedTheme.orderedListMarkerTextLineHeight
+    } else if (isTaskList) {
+        bulletTheme.bulletListCheckboxHeight
     } else {
         bulletTheme.bulletListBulletTextLineHeight
     }
     // 前缀宽度：列表符号/序号文本宽度 + 间距，需从内容宽度中扣除
+    // 任务列表前缀为复选框：复选框宽度 + 复选框与内容间距（与渲染端 Checkbox 的 width + right margin 一致）
     let prefixWidth: Float64 = if (isOrdered) {
         let markerWidthPx = Measure.MeasureText(MeasureOptions(
             textContent: "1.",
@@ -534,6 +559,8 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
             fontWeight: orderedTheme.orderedListMarkerTextFontWeight
         ))
         px2vp(markerWidthPx.px).getOrThrow().value + orderedTheme.orderedListMarkerSpacing
+    } else if (isTaskList) {
+        bulletTheme.bulletListCheckboxWidth + bulletTheme.bulletListCheckboxSpacing
     } else {
         let bulletWidthPx = Measure.MeasureText(MeasureOptions(
             textContent: "\u{25CF}",
