@@ -26,7 +26,9 @@ public class MarkdownComponent {
     * @param customBlockBuilder 传入自定义块结构布局
     * @param customHeadingLineBuilder 传入自定义标题行内布局
     * @param customParagraphLineBuilder 传入自定义段落行内布局
-    * @param customTableLineBuilder 传入自定义表格行内布局
+    * @param blockImageCardComponent 传入块级图片的自定义组件 参数分别为description或者称alttext,destination,title
+    * @param blockLinkCardComponent 传入块级链接的自定义组件 参数分别为description,destination,title  
+
     * @param scroller list控制器
     */
     MarkdownComponent(
@@ -43,8 +45,7 @@ public class MarkdownComponent {
         @BuilderParam customParagraphLineBuilder!: (NodeView, Int64) -> Unit,
         @BuilderParam customTableLineBuilder!: (NodeView, Int64) -> Unit,
         @BuilderParam blockImageCardComponent!: (?String,?String,?String) -> Unit,
-        @BuilderParam inlineImageCardComponent!: (?String,?String, ?String) -> Unit,
-        @BuilderParam inlineLinkCardComponent!: (?String, ?String) -> Unit,
+        @BuilderParam blockLinkCardComponent!: (?String,?String, ?String) -> Unit,
         scroller: Scroller
     )
 }
@@ -334,7 +335,7 @@ public class MarkdownConfiguration {
      * @param cb 段落动画开始回调
      * @return MarkdownConfiguration MarkdownConfiguration对象
      */
-    public func setParagraphAnimationStart(cb: () -> Unit): MarkdownConfiguration
+    public func setParagraphHeadingAnimationStart(cb: () -> Unit): MarkdownConfiguration
 
     /**
      * 设置段落动画结束回调
@@ -342,7 +343,7 @@ public class MarkdownConfiguration {
      * @param cb 段落动画结束回调
      * @return MarkdownConfiguration MarkdownConfiguration对象
      */
-    public func setParagraphAnimationEnd(cb: () -> Unit): MarkdownConfiguration
+    public func setParagraphHeadingAnimationEnd(cb: () -> Unit): MarkdownConfiguration
 
     /**
      * 设置段落长按回调
@@ -8520,6 +8521,20 @@ public class WhitelistLooseDelimiterPlugin <: AbstractMarkdownPlugin {
 }
 ```
 
+### Markdown自定义组件插件
+
+```cangjie
+public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
+    /**
+     * 创建自定义组件插件
+     * 
+     * @return SubPlugin
+     */
+     public static func create():BlockCustomCardPlugin 
+}
+```
+
+
 ### 分隔符过滤模式枚举
 
 ```cangjie
@@ -8548,3 +8563,50 @@ public class NodeViewStringBuilder <: ToString {
 }
 ```
 
+### Markdown 自定义卡片对象Bean
+
+```cangjie
+public class CardBean  {
+
+    /**
+     * 获取图片或者链接md标签的中括号内的内容，即描述
+     *
+     * @return ?String  图片或者链接md标签的中括号内的内容，即描述
+     */
+    public func getDescription(): ?String 
+    
+    /**
+     * 获取图片或者链接md标签的链接,即url
+     *
+     * @return ?String  图片或者链接md标签的链接
+     */
+    public func getDestination(): ?String 
+    
+     /**
+     * 获取图片或者链接md标签的title
+     *
+     * @return ?String  图片或者链接md标签的title
+     */
+    public func getTitle(): ?String 
+
+}
+```
+
+### Markdown 设置满足自定义卡片的条件
+
+```cangjie
+    /**
+    * 设置满足自定义块级图片的条件
+    *
+    * @param blockImage 满足自定义块级图片的条件
+    */
+    public func setCustomCardConditionImg(blockImage: ?(CardBean) -> Bool)
+
+
+    /**
+     * 设置满足自定义块级链接的条件
+     *
+     * @param blockLink 满足自定义块级链接的条件
+     */
+    public func setCustomCardConditionLink(blockLink: ?(CardBean) -> Bool)
+```

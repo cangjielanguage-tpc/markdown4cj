@@ -54,9 +54,9 @@ public class MarkdownComponent {
     @BuilderParam
     var customTableLineBuilder: (NodeView, Int64) -> Unit = CustomTableLineBuilder // 自定义行内表格布局
     @BuilderParam
-    var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    var blockImageCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String,?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
     let screenWidth: Int32 = getDefaultDisplaySync().width // 屏幕宽度 - 单位px
     @State
     var componentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
@@ -263,8 +263,8 @@ public class MarkdownComponent {
                             listImageCallback: imageCallback,
                             listVideoCallback: videoCallback,
                             listDepth: 0,
-                            blockImageCardComponent:blockImageCardComponent,
-                            blockLinkCardComponent:blockLinkCardComponent
+                            blockImageCardComponent: blockImageCardComponent,
+                            blockLinkCardComponent: blockLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "OrderedList") {
@@ -288,8 +288,8 @@ public class MarkdownComponent {
                             listImageCallback: imageCallback,
                             listVideoCallback: videoCallback,
                             listDepth: 0,
-                            blockImageCardComponent:blockImageCardComponent,
-                            blockLinkCardComponent:blockLinkCardComponent
+                            blockImageCardComponent: blockImageCardComponent,
+                            blockLinkCardComponent: blockLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "BlockQuote") {
@@ -312,8 +312,8 @@ public class MarkdownComponent {
                             quoteImageCallback: imageCallback,
                             quoteVideoCallback: videoCallback,
                             quoteDepth: 0,
-                            blockImageCardComponent:blockImageCardComponent,
-                            blockLinkCardComponent:blockLinkCardComponent
+                            blockImageCardComponent: blockImageCardComponent,
+                            blockLinkCardComponent: blockLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "LatexMathBlock") {
@@ -358,8 +358,8 @@ public class MarkdownComponent {
                             tableBlockImageCallback: imageCallback,
                             tableBlockFootnoteCallback: footnoteCallback,
                             tableBlockListItemIndex: Int32(idx),
-                            blockImageCardComponent:blockImageCardComponent,
-                            blockLinkCardComponent:blockLinkCardComponent
+                            blockImageCardComponent: blockImageCardComponent,
+                            blockLinkCardComponent: blockLinkCardComponent
                         )
                     }
                 } else if (item.nodeType == "ThematicBreak") {

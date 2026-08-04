@@ -469,11 +469,11 @@ class MarkdownParagraphComponent {
         .onAppear({ =>
             // 段落加载动画开始回调在组件显示时触发
             if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
-                if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphAnimationStart) {
+                if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphHeadingAnimationStart) {
                     cb()
                 }
                 let duration = paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
-                let endCb = paragraphMarkdownConfiguration.paragraphAnimationEnd
+                let endCb = paragraphMarkdownConfiguration.paragraphHeadingAnimationEnd
                 Timer.once(Int64(duration) * Duration.millisecond, { =>
                     if (let Some(cb) <- endCb) {
                         cb()

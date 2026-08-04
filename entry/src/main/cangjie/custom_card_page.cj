@@ -289,8 +289,8 @@ class CustomCardPage {
                                 incrementalAnalysis: incrementalAnalysis,
                                 scroller: scroller,
                                 markdownConfiguration: markdownConfiguration,
-                                blockImageCardComponent:CustomBlockImageBuilder,
-                                blockLinkCardComponent:CustomBlockLinkBuilder,
+                                blockImageCardComponent: CustomBlockImageBuilder,
+                                blockLinkCardComponent: CustomBlockLinkBuilder,
                                 markdownPlugin: markdownPlugin
                                 )
                             }else{
