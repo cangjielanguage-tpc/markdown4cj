@@ -11,14 +11,14 @@ public func setCustomCardConditionImg(blockImage: ?(CardBean) -> Bool){
     customCardCondition.setImageCondition(blockImage)
 }
 
-public func setCustomCardConditionLink( blockLink: ?(CardBean) -> Bool){
+public func setCustomCardConditionLink(blockLink: ?(CardBean) -> Bool){
     customCardCondition.setLinkCondition(blockLink)
 }
 
 class CustomCardCondition{
 
-    var mBlockImage:?(CardBean) -> Bool = None
-    var mBlockLink:?(CardBean) -> Bool = None
+    var mBlockImage: ?(CardBean) -> Bool = None
+    var mBlockLink: ?(CardBean) -> Bool = None
 
     init(blockImage: ?(CardBean) -> Bool, blockLink: ?(CardBean) -> Bool) {
         this.mBlockImage = blockImage
@@ -68,7 +68,7 @@ func getAltText(n: Node): String {
     return altText
 }
 
-func ImgNodeToCardBean(n:Node):CardBean{
+func ImgNodeToCardBean(n: Node): CardBean {
     let description:String = getAltText(n)
     let destination = (n as CommonmarkImage)().getDestination()
     let title = (n as CommonmarkImage)().getTitle()
@@ -76,7 +76,7 @@ func ImgNodeToCardBean(n:Node):CardBean{
 }
 
 
-func LinkNodeToCardBean(n:Node):CardBean{
+func LinkNodeToCardBean(n: Node): CardBean {
     let description:String = getLinkString(StringClass(), n)
     let destination = (n as CommonmarkLink)().getDestination()
     let title = (n as CommonmarkLink)().getTitle()

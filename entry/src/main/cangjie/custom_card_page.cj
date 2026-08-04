@@ -142,15 +142,15 @@ class CustomCardPage {
         }
     }
 
-    func isBlockImageCustom(bean:CardBean):Bool{
+    func isBlockImageCustom(bean: CardBean): Bool {
         return bean.getDescription().isSome() && bean.getDescription().getOrThrow() == "card"
     }
 
-    func isBlockLinkCustom(bean:CardBean):Bool{
+    func isBlockLinkCustom(bean: CardBean): Bool {
         return bean.getDestination().isSome() && bean.getDestination().getOrThrow().startsWith("link_")
     }
 
-    func showText(str:?String,str1:?String,str2:?String):String{
+    func showText(str: ?String, str1: ?String, str2: ?String): String {
         var stringbuilder = StringBuilder()
         if(let Some(i) <- str){
             stringbuilder.append(i)
@@ -167,7 +167,7 @@ class CustomCardPage {
     }
 
     @Builder
-    func CustomBlockImageBuilder(str:?String,str1:?String,str2:?String) { /* cjlint-ignore !G.FUN.02 */
+    func CustomBlockImageBuilder(str: ?String, str1: ?String, str2: ?String) { /* cjlint-ignore !G.FUN.02 */
         Column(20){
             Text(showText(str,str1,str2))
             Image("https://markdown.com.cn/images/blue.jpg").width(20).height(20)
@@ -175,7 +175,7 @@ class CustomCardPage {
     }
 
     @Builder
-    func CustomBlockLinkBuilder(str:?String,str1:?String,str2:?String) { /* cjlint-ignore !G.FUN.02 */
+    func CustomBlockLinkBuilder(str: ?String, str1: ?String, str2: ?String) { /* cjlint-ignore !G.FUN.02 */
         Column(20){
             Text(showText(str,str1,str2))
             Image("https://markdown.com.cn/images/green.jpg").width(20).height(20)
