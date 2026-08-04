@@ -252,11 +252,11 @@ class MarkdownHeadingComponent {
  	     ).onAppear({ =>
             // 段落加载动画开始回调在组件显示时触发
             if (headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
-                if (let Some(cb) <- headingMarkdownConfiguration.paragraphAnimationStart) {
+                if (let Some(cb) <- headingMarkdownConfiguration.paragraphHeadingAnimationStart) {
                     cb()
                 }
                 let duration = headingMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
-                let endCb = headingMarkdownConfiguration.paragraphAnimationEnd
+                let endCb = headingMarkdownConfiguration.paragraphHeadingAnimationEnd
                 Timer.once(Int64(duration) * Duration.millisecond, { =>
                     if (let Some(cb) <- endCb) {
                         cb()

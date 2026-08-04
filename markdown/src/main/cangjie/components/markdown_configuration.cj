@@ -45,8 +45,8 @@ public class MarkdownConfiguration {
     @Publish
     var markdownHighlightParagraph: MarkdownHighlightParagraph = MarkdownHighlightParagraph() // 高亮段落设置
     var scrollController: ?MarkdownScrollController = None // 外层滚动控制器（用于不固定高度模式下吸顶）
-    var paragraphAnimationStart: ?() -> Unit = None // 段落动画开始回调
-    var paragraphAnimationEnd: ?() -> Unit = None // 段落动画结束回调
+    var paragraphHeadingAnimationStart: ?() -> Unit = None // 段落动画开始回调
+    var paragraphHeadingAnimationEnd: ?() -> Unit = None // 段落动画结束回调
     var customLongPressCallback: ?(String) -> Unit = None // 段落长按回调（返回段落纯文本内容）
 
     /**
@@ -75,7 +75,7 @@ public class MarkdownConfiguration {
      * @return MarkdownConfiguration 创建MarkdownConfiguration对象
      */
     public static func copy(copyFrom: MarkdownConfiguration): MarkdownConfiguration {
-        return MarkdownConfiguration(markdownTheme: copyFrom.markdownTheme, textCopyCallback: copyFrom.textCopyCallback, linkCallback: copyFrom.linkCallback, imageCallback: copyFrom.imageCallback, imageReplaceCallback: copyFrom.imageReplaceCallback, imageDownloadCallback: copyFrom.imageDownloadCallback, audioCallback: copyFrom.audioCallback, videoCallback: copyFrom.videoCallback, videoImageCallback: copyFrom.videoImageCallback, videoReleaseCallback: copyFrom.videoReleaseCallback, videoDownloadCallback: copyFrom.videoDownloadCallback, codeCopyCallback: copyFrom.codeCopyCallback, codeFullScreenCallback: copyFrom.codeFullScreenCallback, latexImageCallback: copyFrom.latexImageCallback, latexStrCallback: copyFrom.latexStrCallback, tocIndexCallback: copyFrom.tocIndexCallback, footnoteCallback: copyFrom.footnoteCallback, nodeString: copyFrom.nodeString, tableCopyCallback: copyFrom.tableCopyCallback, elementExposureCallback: copyFrom.elementExposureCallback, exposureThreshold: copyFrom.exposureThreshold, markdownHighlightParagraph: copyFrom.markdownHighlightParagraph, scrollController: copyFrom.scrollController, paragraphAnimationStart: copyFrom.paragraphAnimationStart, paragraphAnimationEnd: copyFrom.paragraphAnimationEnd, customLongPressCallback: copyFrom.customLongPressCallback)
+        return MarkdownConfiguration(markdownTheme: copyFrom.markdownTheme, textCopyCallback: copyFrom.textCopyCallback, linkCallback: copyFrom.linkCallback, imageCallback: copyFrom.imageCallback, imageReplaceCallback: copyFrom.imageReplaceCallback, imageDownloadCallback: copyFrom.imageDownloadCallback, audioCallback: copyFrom.audioCallback, videoCallback: copyFrom.videoCallback, videoImageCallback: copyFrom.videoImageCallback, videoReleaseCallback: copyFrom.videoReleaseCallback, videoDownloadCallback: copyFrom.videoDownloadCallback, codeCopyCallback: copyFrom.codeCopyCallback, codeFullScreenCallback: copyFrom.codeFullScreenCallback, latexImageCallback: copyFrom.latexImageCallback, latexStrCallback: copyFrom.latexStrCallback, tocIndexCallback: copyFrom.tocIndexCallback, footnoteCallback: copyFrom.footnoteCallback, nodeString: copyFrom.nodeString, tableCopyCallback: copyFrom.tableCopyCallback, elementExposureCallback: copyFrom.elementExposureCallback, exposureThreshold: copyFrom.exposureThreshold, markdownHighlightParagraph: copyFrom.markdownHighlightParagraph, scrollController: copyFrom.scrollController, paragraphHeadingAnimationStart: copyFrom.paragraphHeadingAnimationStart, paragraphHeadingAnimationEnd: copyFrom.paragraphHeadingAnimationEnd, customLongPressCallback: copyFrom.customLongPressCallback)
     }
     public func setMarkdownTheme(markdownTheme: MarkdownTheme): MarkdownConfiguration {
         this.markdownTheme = markdownTheme
@@ -379,8 +379,8 @@ public class MarkdownConfiguration {
      * @param cb 段落动画开始回调
      * @return MarkdownConfiguration MarkdownConfiguration对象
      */
-    public func setParagraphAnimationStart(cb: () -> Unit): MarkdownConfiguration {
-        this.paragraphAnimationStart = cb
+    public func setParagraphHeadingAnimationStart(cb: () -> Unit): MarkdownConfiguration {
+        this.paragraphHeadingAnimationStart = cb
         return this
     }
 
@@ -390,8 +390,8 @@ public class MarkdownConfiguration {
      * @param cb 段落动画结束回调
      * @return MarkdownConfiguration MarkdownConfiguration对象
      */
-    public func setParagraphAnimationEnd(cb: () -> Unit): MarkdownConfiguration {
-        this.paragraphAnimationEnd = cb
+    public func setParagraphHeadingAnimationEnd(cb: () -> Unit): MarkdownConfiguration {
+        this.paragraphHeadingAnimationEnd = cb
         return this
     }
 

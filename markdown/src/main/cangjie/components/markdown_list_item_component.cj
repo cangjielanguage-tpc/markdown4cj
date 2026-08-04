@@ -36,9 +36,9 @@ class MarkdownListItemComponent {
     var listItemDepth: Int64 // 列表深度
     var listItemNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
     @BuilderParam
-    var blockImageCardComponent: (?String,?String,?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    var blockImageCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String,?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(listItemNodeView.nodeHash, refreshListItemData)
@@ -118,8 +118,8 @@ class MarkdownListItemComponent {
                                 listImageCallback: listItemImageCallback,
                                 listVideoCallback: listItemVideoCallback,
                                 listDepth: listItemDepth + 1,
-                                blockImageCardComponent:blockImageCardComponent,
-                                blockLinkCardComponent:blockLinkCardComponent
+                                blockImageCardComponent: blockImageCardComponent,
+                                blockLinkCardComponent: blockLinkCardComponent
                             )
                         } else if (item.nodeType == "OrderedList") {
                             // 有序列表
@@ -141,8 +141,8 @@ class MarkdownListItemComponent {
                                 listImageCallback: listItemImageCallback,
                                 listVideoCallback: listItemVideoCallback,
                                 listDepth: listItemDepth + 1,
-                                blockImageCardComponent:blockImageCardComponent,
-                                blockLinkCardComponent:blockLinkCardComponent
+                                blockImageCardComponent: blockImageCardComponent,
+                                blockLinkCardComponent: blockLinkCardComponent
                             )
                         } else if (item.nodeType == "BlockQuote") {
                             // 块引用
@@ -163,8 +163,8 @@ class MarkdownListItemComponent {
                                 quoteImageCallback: listItemImageCallback,
                                 quoteVideoCallback: listItemVideoCallback,
                                 quoteDepth: listItemDepth + 1,
-                                blockImageCardComponent:blockImageCardComponent,
-                                blockLinkCardComponent:blockLinkCardComponent
+                                blockImageCardComponent: blockImageCardComponent,
+                                blockLinkCardComponent: blockLinkCardComponent
                             )
                         } else if (item.nodeType == "LatexMathBlock") {
                             // 数学公式块
@@ -184,8 +184,8 @@ class MarkdownListItemComponent {
                                 tableBlockImageCallback: listItemImageCallback,
                                 tableBlockFootnoteCallback: listItemFootnoteCallback,
                                 tableBlockListItemIndex: Int32(-1),
-                                blockImageCardComponent:blockImageCardComponent,
-                                blockLinkCardComponent:blockLinkCardComponent
+                                blockImageCardComponent: blockImageCardComponent,
+                                blockLinkCardComponent: blockLinkCardComponent
                             )
                         } else if (item.nodeType == "ThematicBreak") {
                             // 分割线
