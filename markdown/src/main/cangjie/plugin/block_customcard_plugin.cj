@@ -7,11 +7,11 @@ internal import commonmark4cj.commonmark.Link as CommonmarkLink
 
 var customCardCondition:CustomCardCondition = CustomCardCondition(None,None)
 
-public func setCustomCardConditionImg(blockImage: ?(CardBean) -> Bool){
+public func setCustomCardConditionImg(blockImage: ?(CardBean) -> Bool) {
     customCardCondition.setImageCondition(blockImage)
 }
 
-public func setCustomCardConditionLink(blockLink: ?(CardBean) -> Bool){
+public func setCustomCardConditionLink(blockLink: ?(CardBean) -> Bool) {
     customCardCondition.setLinkCondition(blockLink)
 }
 
