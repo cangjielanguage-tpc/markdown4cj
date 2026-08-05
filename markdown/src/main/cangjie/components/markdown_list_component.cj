@@ -198,9 +198,12 @@ public class MarkdownListComponent {
     @Builder
     func listPrefixCheckboxINCComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration) {
         Checkbox()
-            .height(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxWidth)
-            .width(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight)
-            .margin(right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
+            .height(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight)
+            .width(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxWidth)
+            .margin(
+                top: listCheckboxTopMargin(markdownConfiguration.markdownTheme),
+                right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing
+            )
             .shape(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxShape)
             .selectedColor(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSelectedColor)
             .select(item.isTaskListSelected)

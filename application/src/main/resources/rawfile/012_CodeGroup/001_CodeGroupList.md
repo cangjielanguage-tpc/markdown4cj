@@ -36,3 +36,67 @@ implementation "ru.noties:markwon-view:\${markwonVersion}"
   "age": 25
 }
 ```
+
+组合代码块列表
+
+```java []
+public class Main {
+    public static void main(String[] args) {
+        System.out.print("你好力扣");
+    }
+}
+```
+```cangjie []
+public class Main {
+    public static void main(String[] args) {
+        System.out.print("你好力扣");
+    }
+}
+```
+```cangjie []
+public class GlobalContext {
+    static var _context: Option<StageContext> = None
+
+    /**
+     * 设置StageContext
+     *
+     * @param context StageContext
+     */
+    public static func setContext(context: ?StageContext): Unit {
+        _context = context
+    }
+
+    /**
+     * 获取StageContext
+     *
+     * @return Option<StageContext> StageContext
+     */
+    public static func getContext(): Option<StageContext> {
+        return _context
+    }
+}
+```
+```很长很长很长很长很长很长很长很长很长很长很长很长的标题 []
+public class GlobalContext {
+    static var _context: Option<StageContext> = None
+
+    /**
+     * 设置StageContext
+     *
+     * @param context StageContext
+     */
+    public static func setContext(context: ?StageContext): Unit {
+        _context = context
+    }
+
+    /**
+     * 获取StageContext
+     *
+     * @return Option<StageContext> StageContext
+     */
+    public static func getContext(): Option<StageContext> {
+        return _context
+    }
+}
+```
+
