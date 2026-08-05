@@ -55,14 +55,14 @@
 
 ### 含有图片的表格
 
-| ArkTS颜色效果      | 效果预览图                                                            | 图片说明                             | 对应数值/代码                                  |
-|----------------|------------------------------------------------------------------|----------------------------------|------------------------------------------|
-| 纯黑（不透明）        | ![](https://qcdn2.zhaomi.cn/d/ptyGRnnvhwP_vlyRrwOPHhp_mark.png)             | 组件背景设置0xFF000000的渲染效果            | `0xFF000000` / `new Color(0xFF000000)`   |
-| 完全透明（兜底显黑）     |![示例图](https://markdown.com.cn/images/blue.jpg) | 0x00000000在黑底父容器下的显示效果           | `0x00000000` / `Color.Transparent`       |
-| 半透红（Alpha=128） | ![示例图](https://markdown.com.cn/images/green.jpg)          | Alpha=128的红色在黄色背景上的叠加效果          | `0x80FF0000` / `Color.rgba(255,0,0,0.5)` |
-| 6位RGB补Alpha对比  | ![](https://markdown.com.cn/images/i-am-svg.svg)    | 左：0x000000（透明黑） 右：0xFF000000（纯黑） | `0x000000` vs `0xFF000000`               |
-| 本地图片-颜色面板      | ![图片名称3](./003.png)                       | 本地assets目录下的颜色配置面板截图             | -                                        |
-| 透明度叠加效果        | ![图片名称3](./001.svg)   | Alpha=128 + opacity=0.5的最终渲染效果   | `new Color(0x80000000)` + `opacity:0.5`  |
+| ArkTS颜色效果      | 效果预览图                                                           | 图片说明                             | 对应数值/代码                                  |
+|----------------|-----------------------------------------------------------------|----------------------------------|------------------------------------------|
+| 纯黑（不透明）        | ![](https://qcdn2.zhaomi.cn/d/ptyGRnnvhwP_vlyRrwOPHhp_mark.png) | 组件背景设置0xFF000000的渲染效果            | `0xFF000000` / `new Color(0xFF000000)`   |
+| 完全透明（兜底显黑）     | ![示例图](https://markdown.com.cn/images/blue.jpg)                 | 0x00000000在黑底父容器下的显示效果           | `0x00000000` / `Color.Transparent`       |
+| 半透红（Alpha=128） | ![示例图](https://markdown.com.cn/images/green.jpg)                | Alpha=128的红色在黄色背景上的叠加效果          | `0x80FF0000` / `Color.rgba(255,0,0,0.5)` |
+| 6位RGB补Alpha对比  | ![](https://markdown.com.cn/images/i-am-svg.svg)                | 左：0x000000（透明黑） 右：0xFF000000（纯黑） | `0x000000` vs `0xFF000000`               |
+| 本地图片-颜色面板      | ![图片名称3](./003.png)                                             | 本地assets目录下的颜色配置面板截图             | -                                        |
+| 透明度叠加效果        | ![图片名称3](./001.svg)                                             | Alpha=128 + opacity=0.5的最终渲染效果   | `new Color(0x80000000)` + `opacity:0.5`  |
 
 ### 含有html文本的表格
 
