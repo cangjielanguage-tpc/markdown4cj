@@ -512,7 +512,7 @@ public func nodeToNodeView(
                                 commonmarkNode: CommonmarkNode => if (commonmarkNode is CommonmarkLink) {
                                     childrenNodeView.linkUrl = (commonmarkNode as CommonmarkLink)().getDestination()
                                     childrenNodeView.linkTitle = (commonmarkNode as CommonmarkLink)().getTitle()
-                                    childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkChildrenNode)
+                                    childrenNodeView.nodeText = getLinkString(StringClass(), commonmarkNode)
                                 }
                             })
                         parentNewNodeView.children.add(childrenNodeView)

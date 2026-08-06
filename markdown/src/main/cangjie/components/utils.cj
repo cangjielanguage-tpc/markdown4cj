@@ -37,3 +37,11 @@ public class StringClass {
         str = str + s
     }
 }
+
+func getStrFromOptStr(optStr: ?String): String {
+    if(let Some(i) <- optStr){
+        return i
+    }else{
+        return ""
+    }
+}

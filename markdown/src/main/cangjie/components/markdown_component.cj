@@ -54,9 +54,9 @@ public class MarkdownComponent {
     @BuilderParam
     var customTableLineBuilder: (NodeView, Int64) -> Unit = CustomTableLineBuilder // 自定义行内表格布局
     @BuilderParam
-    var blockImageCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (String, String, String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
     let screenWidth: Int32 = getDefaultDisplaySync().width // 屏幕宽度 - 单位px
     @State
     var componentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
@@ -429,9 +429,9 @@ public class MarkdownComponent {
                     // 自定义卡片图片
                     ListItem() {
                         blockImageCardComponent(
-                            item.imageAltText,
-                            item.imageUrl,
-                            item.imageTitle,
+                            getStrFromOptStr(item.imageAltText),
+                            getStrFromOptStr(item.imageUrl),
+                            getStrFromOptStr(item.imageTitle)
                         )
                     }
                 } else if (item.nodeType == "CustomCardLink") {
@@ -439,8 +439,8 @@ public class MarkdownComponent {
                     ListItem() {
                         blockLinkCardComponent(
                             item.nodeText,
-                            item.linkUrl,
-                            item.linkTitle
+                            getStrFromOptStr(item.linkUrl),
+                            getStrFromOptStr(item.linkTitle)
                         )
                     }
                 } else if (item.nodeType == "BlockAD") {
