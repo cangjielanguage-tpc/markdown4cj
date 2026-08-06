@@ -26,7 +26,7 @@ public class MarkdownLinkExposureRegistry {
      * 设置曝光回调
      * 由MarkdownComponent在aboutToAppear时调用
      *
-     * @param cb 回调函数 (MarkdownExposureEvent: { type, visible, data })
+     * @param cb 回调函数 (MarkdownExposureEvent: { eventType, visible, data })
      */
     public static func setExposureCallback(cb: (MarkdownExposureEvent) -> Unit): Unit {
         exposureCallback = cb
@@ -113,7 +113,7 @@ public class MarkdownLinkExposureRegistry {
             let count = linkCounts.get(url) ?? Int64(0)
             if (count == 0) {
                 if (let Some(cb) <- exposureCallback) {
-                    cb(MarkdownExposureEvent(`type`: "link", visible: true, data: url))
+                    cb(MarkdownExposureEvent(eventType: "link", visible: true, data: url))
                 }
             }
             linkCounts[url] = count + 1
@@ -135,7 +135,7 @@ public class MarkdownLinkExposureRegistry {
                     if (newCount == 0) {
                         linkCounts.remove(url)
                         if (let Some(cb) <- exposureCallback) {
-                            cb(MarkdownExposureEvent(`type`: "link", visible: false, data: url))
+                            cb(MarkdownExposureEvent(eventType: "link", visible: false, data: url))
                         }
                     } else {
                         linkCounts[url] = newCount

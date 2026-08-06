@@ -198,7 +198,7 @@ class LinkExposurePage {
      * 同时打hilog + push到屏幕事件列表（限最近50条）
      */
     func elementExposureCallback(event: MarkdownExposureEvent): Unit {
-        let eventType = event.`type`
+        let eventType = event.eventType
         let eventVisible = event.visible
         let eventData = event.data
         Hilog.error(1, "EXPOSURE-DEBUG", "elementExposureCallback type=${eventType} visible=${eventVisible} data=${eventData}")
