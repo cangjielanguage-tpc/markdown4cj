@@ -44,14 +44,17 @@ class MarkdownParagraphComponent {
     var needHideMenu: Bool = false // 是否需要隐藏菜单，同时关闭划选文字效果
     var paragraphSelectionMenuTimer: ?Timer = None // 选区菜单自动隐藏定时器
     // 链接曝光：URL列表缓存 + 当前可见状态
-    // 对齐 ArkUI MarkdownParagraph.ets：用 onVisibleAreaChange(触发scheduleExposure) + onAreaChange(标记ready) +
-    // componentUtils.getRectangleById(拿段落全局rect) 与屏幕高度 [0, screenH] 求交判定可见性。
+    // onVisibleAreaChange(ratio阈值回调) 缓存 lastVisibleRatio + 触发 scheduleExposure，
+    // onAreaChange 标记 viewportReady + 触发 scheduleExposure，
+    // evaluateExposure 用 lastVisibleRatio 与 threshold 比较，判定 register/unregister。
     // 简化版：不做偏移/span级别，Text级别曝光。
     var paragraphExposureUrls: ArrayList<String> = ArrayList<String>() // 本段落的http链接URL列表（aboutToAppear时提取一次）
     var paragraphExposureVisible: Bool = false // 本段落当前是否处于"可见"状态（避免同一组件反复触发register）
-    var paragraphId: String = "" // 段落Text的唯一id（componentUtils.getRectangleById 用，aboutToAppear赋值）
+    var paragraphId: String = "" // 段落Text的唯一id（aboutToAppear赋值）
     var viewportReady: Bool = false // onAreaChange是否触发过（尺寸已就绪）
     var isAlive: Bool = true // 组件是否存活
+    var exposureScheduled: Bool = false // 曝光评估是否已调度（防抖标志，避免onVisibleAreaChange多次阈值回调每次都spawn协程）
+    var lastVisibleRatio: Float64 = 0.0 // onVisibleAreaChange 最近一次回调的可见比例（0=完全不可见，1=完全可见，已考虑所有祖先裁剪）
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(paragraphNodeView.nodeHash, refreshParagraphData)
@@ -59,7 +62,7 @@ class MarkdownParagraphComponent {
         // 段落Text的唯一id：用nodeHash保证流式复用同一节点时id稳定
         paragraphId = "md-exp-${paragraphNodeView.nodeHash}"
         // 链接曝光：仅提取URL列表缓存，不在此处register
-        // 可见性由 scheduleExposure() 用 componentUtils.getRectangleById 与屏幕 [0, screenH] 求交判定
+        // 可见性由 evaluateExposure() 用 onVisibleAreaChange 缓存的 lastVisibleRatio 与 threshold 比较判定
         if (isExposureEnabled()) {
             paragraphExposureUrls = MarkdownLinkExposureRegistry.extractHttpLinks(paragraphNodeView)
         }
@@ -101,8 +104,8 @@ class MarkdownParagraphComponent {
      * 防抖触发曝光评估。合并连续的 onAreaChange/onVisibleAreaChange 触发。
      * 评估后对「本次显示」的链接回调 visible=true，「本次消失」的回调 visible=false。
      *
-     * 视口：componentUtils.getRectangleById(paragraphId) 拿段落全局 rect（px），
-     * 与屏幕 [0, screenH] 求交得段落在屏可见区。
+     * 可见性判定：直接使用 onVisibleAreaChange 回调缓存的 lastVisibleRatio（已考虑所有祖先裁剪），
+     * 无需手动用 componentUtils.getRectangleById 求交。
      */
     func scheduleExposure(): Unit {
         if (!isAlive) {
@@ -114,10 +117,15 @@ class MarkdownParagraphComponent {
         if (paragraphExposureUrls.size == 0) {
             return
         }
+        if (exposureScheduled) {
+            return
+        }
+        exposureScheduled = true
         // 防抖：16ms（~1帧）后执行评估，合并连续触发
         spawn {
             sleep(Duration.millisecond * 16)
             launch {
+                exposureScheduled = false
                 if (isAlive && viewportReady) {
                     evaluateExposure()
                 }
@@ -126,34 +134,17 @@ class MarkdownParagraphComponent {
     }
 
     /**
-     * 曝光评估：用 componentUtils 拿段落全局 rect，与屏幕 [0, screenH] 求交，判定可见性
-     * 简化版：不做偏移/span级别，Text级别曝光。
+     * 曝光评估：直接使用 onVisibleAreaChange 缓存的 lastVisibleRatio 判定可见性
+     * ratio 已考虑所有祖先裁剪（Scroll/List/屏幕），无需手动用 componentUtils 求交
      */
     func evaluateExposure(): Unit {
-        var globalTop: Float64 = 0.0
-        var globalBottom: Float64 = 0.0
-        try {
-            let info = ComponentUtils.getRectangleById(paragraphId)
-            globalTop = Float64(info.windowOffset.y)
-            globalBottom = globalTop + Float64(info.size.height)
-        } catch (_: Exception) {
-            return
-        }
-        // 简化：直接用整屏 [0, screenH] 作为可见窗口
-        let screenHeight = Float64(getDefaultDisplaySync().height)
-        let vpTop = 0.0
-        let vpBottom = screenHeight
-        // 段落 rect 与可见窗口求交
-        let clipTop = if (vpTop > globalTop) { vpTop } else { globalTop }
-        let clipBottom = if (vpBottom < globalBottom) { vpBottom } else { globalBottom }
-        let visibleHeight = if (clipBottom > clipTop) { clipBottom - clipTop } else { 0.0 }
-        let paragraphHeight = if (globalBottom > globalTop) { globalBottom - globalTop } else { 0.0 }
-        let ratio = if (paragraphHeight > 0.0) { visibleHeight / paragraphHeight } else { 0.0 }
+        let ratio = lastVisibleRatio
         let threshold = MarkdownLinkExposureRegistry.getExposureThreshold()
-        if (ratio >= threshold && !paragraphExposureVisible) {
+        let isVisible = ratio > 0.0 && ratio >= threshold
+        if (isVisible && !paragraphExposureVisible) {
             paragraphExposureVisible = true
             MarkdownLinkExposureRegistry.register(paragraphNodeView.nodeHash, paragraphExposureUrls)
-        } else if (ratio < threshold && paragraphExposureVisible) {
+        } else if (!isVisible && paragraphExposureVisible) {
             paragraphExposureVisible = false
             MarkdownLinkExposureRegistry.unregister(paragraphNodeView.nodeHash)
         }
@@ -581,12 +572,13 @@ class MarkdownParagraphComponent {
                     handleParagraphLongPressCancel()
                 })
         )
-        // 链接曝光：Text 的唯一 id（componentUtils.getRectangleById 用）
+        // 链接曝光：Text 的唯一 id
         .id(paragraphId)
-        // onVisibleAreaChange：ratio 阈值变化时触发 scheduleExposure（仅作触发用，真正可见性由 rect 求交判定）
+        // onVisibleAreaChange：缓存 ratio + 触发 scheduleExposure（ratio 即可见性指标，已考虑所有祖先裁剪）
         .onVisibleAreaChange(
             [0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0],
-            { _: Bool, _: Float64 =>
+            { _: Bool, ratio: Float64 =>
+                lastVisibleRatio = ratio
                 if (isExposureEnabled()) {
                     scheduleExposure()
                 }

@@ -36,13 +36,14 @@ class MarkdownTableBlockCellComponent {
     @State
     var cellHasExposure: Bool = false // 缓存：是否启用链接曝光统计（构建时决定，避免600个cell都注册onVisibleAreaChange/onAreaChange/id）
     // 链接曝光：URL列表缓存 + 当前可见状态（与MarkdownParagraphComponent同款）
-    // 简化版：Text级别曝光，与屏幕 [0, screenH] 求交判定可见性
+    // onVisibleAreaChange 缓存 ratio + scheduleExposure，evaluateExposure 用 ratio 判定可见性
     var tableBlockCellExposureUrls: ArrayList<String> = ArrayList<String>()
     var tableBlockCellExposureVisible: Bool = false
     var tableBlockCellId: String = "" // Cell Text的唯一id
     var viewportReady: Bool = false // onAreaChange是否触发过
     var isAlive: Bool = true // 组件是否存活
     var exposureScheduled: Bool = false // 曝光评估是否已调度（防抖标志，避免onVisibleAreaChange多次阈值回调每次都spawn协程）
+    var lastVisibleRatio: Float64 = 0.0 // onVisibleAreaChange 最近一次回调的可见比例（0=完全不可见，1=完全可见，已考虑所有祖先裁剪）
 
     @BuilderParam
     var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
@@ -110,32 +111,17 @@ class MarkdownTableBlockCellComponent {
     }
 
     /**
-     * 曝光评估：用 componentUtils 拿 Cell 全局 rect，与屏幕 [0, screenH] 求交，判定可见性
-     * 简化版：Text级别曝光
+     * 曝光评估：直接使用 onVisibleAreaChange 缓存的 lastVisibleRatio 判定可见性
+     * ratio 已考虑所有祖先裁剪（Scroll/List/屏幕），无需手动用 componentUtils 求交
      */
     func evaluateExposure(): Unit {
-        var globalTop: Float64 = 0.0
-        var globalBottom: Float64 = 0.0
-        try {
-            let info = ComponentUtils.getRectangleById(tableBlockCellId)
-            globalTop = Float64(info.windowOffset.y)
-            globalBottom = globalTop + Float64(info.size.height)
-        } catch (_: Exception) {
-            return
-        }
-        let screenHeight = Float64(getDefaultDisplaySync().height)
-        let vpTop = 0.0
-        let vpBottom = screenHeight
-        let clipTop = if (vpTop > globalTop) { vpTop } else { globalTop }
-        let clipBottom = if (vpBottom < globalBottom) { vpBottom } else { globalBottom }
-        let visibleHeight = if (clipBottom > clipTop) { clipBottom - clipTop } else { 0.0 }
-        let cellHeight = if (globalBottom > globalTop) { globalBottom - globalTop } else { 0.0 }
-        let ratio = if (cellHeight > 0.0) { visibleHeight / cellHeight } else { 0.0 }
+        let ratio = lastVisibleRatio
         let threshold = MarkdownLinkExposureRegistry.getExposureThreshold()
-        if (ratio >= threshold && !tableBlockCellExposureVisible) {
+        let isVisible = ratio > 0.0 && ratio >= threshold
+        if (isVisible && !tableBlockCellExposureVisible) {
             tableBlockCellExposureVisible = true
             MarkdownLinkExposureRegistry.register(tableBlockCellNodeView.nodeHash, tableBlockCellExposureUrls)
-        } else if (ratio < threshold && tableBlockCellExposureVisible) {
+        } else if (!isVisible && tableBlockCellExposureVisible) {
             tableBlockCellExposureVisible = false
             MarkdownLinkExposureRegistry.unregister(tableBlockCellNodeView.nodeHash)
         }
@@ -315,7 +301,8 @@ class MarkdownTableBlockCellComponent {
         .id(tableBlockCellId)
         .onVisibleAreaChange(
             [0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0],
-            { _: Bool, _: Float64 =>
+            { _: Bool, ratio: Float64 =>
+                lastVisibleRatio = ratio
                 scheduleExposure()
             }
         )

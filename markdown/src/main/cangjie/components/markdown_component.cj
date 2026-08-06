@@ -78,6 +78,9 @@ public class MarkdownComponent {
     var throttleTimer: ?Timer = None // 节流定时器
     @Provide["mdStickyHolder"]
     var stickyHolder: StickyScrollYHolder = StickyScrollYHolder() // 表格吸顶滚动Y持有者（@Provide供后代Table @Consume）
+    // 根 List 的唯一 id（.id() 用）
+    // 子组件 onVisibleAreaChange 已考虑所有祖先裁剪，不再需要查询 List rect
+    var listRootId: String = ""
     @State
     var lastViewIndex: Int64 = 0 // 最后一条数据的位置
 
@@ -107,6 +110,9 @@ public class MarkdownComponent {
             MarkdownLinkExposureRegistry.setExposureCallback(cb)
             MarkdownLinkExposureRegistry.setExposureThreshold(markdownConfiguration.exposureThreshold)
         }
+        // 注册根 List 的唯一 id
+        listRootId = MarkdownLinkExposureRegistry.generateListId()
+        MarkdownLinkExposureRegistry.setListRootId(listRootId)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -141,6 +147,8 @@ public class MarkdownComponent {
             .scrollBar(BarState.Off)
             .enableScrollInteraction(markdownConfiguration.markdownTheme.globalTheme.openGestureSwipe)
             .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
+            // 链接曝光：根 List 的唯一 id，子组件 evaluateExposure 用此 id 查询根 List 的窗口 rect
+            .id(listRootId)
             .onScroll({
                 offset: Float64, state: ScrollState =>
                     // 内层List滚动模式（未提供scrollController时）：用List内部scrollY驱动吸顶

@@ -17,6 +17,10 @@ public class MarkdownLinkExposureRegistry {
     static var exposureThreshold: Float64 = 0.5
     static var linkCounts: HashMap<String, Int64> = HashMap<String, Int64>()
     static var componentUrls: HashMap<Int64, ArrayList<String>> = HashMap<Int64, ArrayList<String>>()
+    // 根 List 的唯一 id（.id() 用），由 MarkdownComponent 在 aboutToAppear 时注册
+    // 子组件 onVisibleAreaChange 已考虑所有祖先裁剪，不再需要查询 List rect
+    static var listRootId: String = ""
+    static var listIdCounter: Int64 = 0
 
     /**
      * 设置曝光回调
@@ -31,11 +35,44 @@ public class MarkdownLinkExposureRegistry {
     /**
      * 设置曝光阈值
      * 由MarkdownComponent在aboutToAppear时调用
+     * 阈值范围 [0, 1]：>1 按 1 处理（完全可见才报），<0 按 0 处理（漏出即报）
      *
      * @param threshold 0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见
      */
     public static func setExposureThreshold(threshold: Float64): Unit {
-        exposureThreshold = threshold
+        var t = threshold
+        if (t > 1.0) {
+            t = 1.0
+        } else if (t < 0.0) {
+            t = 0.0
+        }
+        exposureThreshold = t
+    }
+
+    /**
+     * 生成根 List 的唯一 id（MarkdownComponent aboutToAppear 时调用一次）
+     * @return 形如 "md-list-0" 的唯一 id
+     */
+    public static func generateListId(): String {
+        let id = "md-list-${listIdCounter}"
+        listIdCounter = listIdCounter + 1
+        return id
+    }
+
+    /**
+     * 设置根 List 的 id
+     * @param id 由 generateListId 生成
+     */
+    public static func setListRootId(id: String): Unit {
+        listRootId = id
+    }
+
+    /**
+     * 获取根 List 的 id
+     * @return 根 List 的 id
+     */
+    public static func getListRootId(): String {
+        return listRootId
     }
 
     /**
@@ -120,12 +157,13 @@ public class MarkdownLinkExposureRegistry {
     }
 
     /**
-     * 清空所有数据（含回调+阈值）
+     * 清空所有数据（含回调+阈值+根 List id）
      * 由页面在aboutToDisappear时调用（非 MarkdownComponent 的 aboutToDisappear）
      */
     public static func clear(): Unit {
         exposureCallback = None
         exposureThreshold = 0.5
+        listRootId = ""
         linkCounts.clear()
         componentUrls.clear()
     }

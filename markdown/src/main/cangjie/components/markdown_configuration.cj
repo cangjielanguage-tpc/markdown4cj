@@ -331,12 +331,19 @@ public class MarkdownConfiguration {
 
     /**
      * 设置曝光可见阈值
+     * 阈值范围 [0, 1]：>1 按 1 处理（完全可见才报），<0 按 0 处理（漏出即报）
      *
      * @param threshold 0~1，链接与可见区交集面积 / 链接面积 ≥ 此值才算可见。0=漏出任意像素即可见
      * @return MarkdownConfiguration MarkdownConfiguration对象
      */
     public func setExposureThreshold(threshold: Float64): MarkdownConfiguration {
-        this.exposureThreshold = threshold
+        var t = threshold
+        if (t > 1.0) {
+            t = 1.0
+        } else if (t < 0.0) {
+            t = 0.0
+        }
+        this.exposureThreshold = t
         return this
     }
 
