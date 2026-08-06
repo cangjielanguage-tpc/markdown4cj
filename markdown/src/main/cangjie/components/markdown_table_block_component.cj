@@ -33,8 +33,6 @@ class MarkdownTableBlockComponent {
     @State
     var tableBlockHeaderNodeView: NodeView = NodeView() // 吸顶模式下的标题行数据
     @State
-    var tableBlockFullText: String = "" // 表格序列化的纯文本（用于复制按钮）
-    @State
     var useOffsetSticky: Bool = false // 是否使用 offset sticky 模式（aboutToAppear时确定）
     @State
     var tableY: Float64 = 999999.0 // 表格在父容器中的Y位置（onAreaChange获取）
@@ -92,7 +90,7 @@ class MarkdownTableBlockComponent {
                             if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableHeadIsShow) {
                                 MarkdownTableTitleComponent(
                                     tableTitleMarkdownConfiguration: tableBlockMarkdownConfiguration,
-                                    tableTitleFullText: tableBlockFullText
+                                    tableTitleNode: tableBlockNodeView
                                 )
                             }
                             Scroll(headerScroller) {
@@ -212,7 +210,7 @@ class MarkdownTableBlockComponent {
                 if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableHeadIsShow) {
                     MarkdownTableTitleComponent(
                         tableTitleMarkdownConfiguration: tableBlockMarkdownConfiguration,
-                        tableTitleFullText: tableBlockFullText
+                        tableTitleNode: tableBlockNodeView
                     )
                 }
                 Scroll() {
@@ -321,7 +319,6 @@ class MarkdownTableBlockComponent {
         } else {
             updateBodyRows(refreshNodeViewChildren, 0, refreshNodeViewSize)
         }
-        tableBlockFullText = getFullTableText()
         applyColumnWidths()
     }
 
@@ -461,35 +458,5 @@ class MarkdownTableBlockComponent {
         if (stickyOffset > 0.0) {
             println("[STICKY-DEBUG] idx=${tableBlockListItemIndex} scrollY=${scrollY} itemY=${itemY} listScrollY=${listScrollY} tableY(position.y)=${tableY} blockMarginTop=${blockMarginTopNum} tableBorderTop=${tableBorderTopNum} tablePaddingTop=${tablePaddingTopNum} tableYTotal=${tableYTotal} offset=${offset} upperBound=${upperBound} stickyOffset=${stickyOffset} tableHeight=${tableHeight} stickyContentHeight=${stickyContentHeight}")
         }
-    }
-
-    /**
-     * 序列化表格为纯文本
-     */
-    func getFullTableText(): String {
-        let children = tableBlockNodeView.children
-        if (children.size == 0) {
-            return ""
-        }
-        var result = ""
-        for (i in 0..children.size) {
-            let row = children[i]
-            for (j in 0..row.children.size) {
-                result = result + extractNodeText(row.children[j]) + " "
-            }
-            result = result + "\n"
-        }
-        return result
-    }
-
-    /**
-     * 递归提取NodeView的纯文本
-     */
-    func extractNodeText(node: NodeView): String {
-        var text = node.nodeText
-        for (child in node.children) {
-            text = text + extractNodeText(child)
-        }
-        return text
     }
 }

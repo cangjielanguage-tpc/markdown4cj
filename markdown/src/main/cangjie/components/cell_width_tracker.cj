@@ -3,18 +3,29 @@ package markdown.components
 /**
  * 表格列宽度跟踪器（非@Observed，不触发重渲染）
  * 按单元格(row,col)跟踪最新宽度，列宽=该列所有行的最大值
- * onAreaChange写入tracker → onWidthUpdated回调 → applyColumnWidths批量读取到@State → 一次性应用
+ * onAreaChange写入tracker → scheduleFlush延迟回调 → applyColumnWidths批量读取到@State → 一次性应用
+ *
+ * 性能优化（O(M*N)初始测量场景）：
+ * 1. updateCellWidth 快路径：宽度增长且超过当前列最大值时直接更新，O(1)避免遍历所有行
+ * 2. scheduleFlush 防抖：一帧内多次updateCellWidth只触发一次onWidthUpdated回调，
+ *    避免M*N次applyColumnWidths调用与columnWidths重赋值导致的N²布局级联
+ * 3. widths数组同步更新，getWidths()返回最新快照，仅UI回调被推迟
  */
 public class CellWidthTracker {
     var widths: ArrayList<Float64> = ArrayList<Float64>()
     var onWidthUpdated: ?() -> Unit = None
     private let cellWidths: HashMap<Int64, ArrayList<Float64>> = HashMap<Int64, ArrayList<Float64>>()
+    private var flushScheduled: Bool = false // 是否已调度onWidthUpdated回调
 
     public init() {
     }
 
     /**
-     * 更新指定单元格的宽度，并重算该列最大宽度
+     * 更新指定单元格的宽度，并视情况重算该列最大宽度
+     *
+     * 快路径（初始布局、内容增长）：width > oldMax → 直接更新最大值，O(1)
+     * 慢路径（内容收缩，且本单元格原本就是最大值持有者）：重算该列最大值，O(M)
+     * 其余情况（width <= oldMax 且本单元格不是最大值持有者）：列最大值不变，O(1)
      *
      * @param row 行索引
      * @param col 列索引
@@ -35,21 +46,52 @@ public class CellWidthTracker {
                 cellWidths[row] = rws
                 rws
         }
-        if (rowWidths[col] == width) {
+        let oldAtCell = rowWidths[col]
+        if (oldAtCell == width) {
             return
         }
         rowWidths[col] = width
         let oldMax = widths[col]
-        var newMax: Float64 = 0.0
-        for ((_, rws) in cellWidths) {
-            if (rws[col] > newMax) {
-                newMax = rws[col]
+        if (width > oldMax) {
+            // 快路径：宽度增长超过当前列最大值
+            widths[col] = width
+            scheduleFlush()
+        } else if (width < oldMax && oldAtCell == oldMax) {
+            // 慢路径：本单元格原本是最大值持有者，宽度收缩 → 重算该列最大值
+            var newMax: Float64 = 0.0
+            for ((_, rws) in cellWidths) {
+                if (rws[col] > newMax) {
+                    newMax = rws[col]
+                }
+            }
+            if (newMax != oldMax) {
+                widths[col] = newMax
+                scheduleFlush()
             }
         }
-        if (newMax != oldMax) {
-            widths[col] = newMax
-            if (let Some(cb) <- onWidthUpdated) {
-                cb()
+        // 其余情况：width < oldMax 且本单元格非最大值持有者，列最大值不变，无需触发
+    }
+
+    /**
+     * 调度延迟回调。一帧内多次调用只触发一次onWidthUpdated，
+     * 把M*N次单元格测量合并为一次applyColumnWidths调用。
+     * widths数组始终同步更新， getWidths()/getWidth()可立即读到最新值。
+     */
+    private func scheduleFlush(): Unit {
+        if (flushScheduled) {
+            return
+        }
+        if (onWidthUpdated.isNone()) {
+            return
+        }
+        flushScheduled = true
+        spawn {
+            sleep(Duration.millisecond * 1)
+            launch {
+                flushScheduled = false
+                if (let Some(cb) <- onWidthUpdated) {
+                    cb()
+                }
             }
         }
     }
@@ -80,9 +122,7 @@ public class CellWidthTracker {
             }
         }
         if (changed) {
-            if (let Some(cb) <- onWidthUpdated) {
-                cb()
-            }
+            scheduleFlush()
         }
     }
 

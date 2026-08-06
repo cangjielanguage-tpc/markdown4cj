@@ -353,6 +353,7 @@ public func nodeToNodeView(
                     } else if (nodeType == "TableBlock") {
                         // 表格
                         childrenNodeView.isTable = true
+                        childrenNodeView.commonmarkNode = Option<CommonmarkNode>.Some(commonmarkChildrenNode)
                         nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, config, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "TableHead") {
