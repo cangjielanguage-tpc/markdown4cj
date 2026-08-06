@@ -11,7 +11,7 @@ class MarkdownTableTitleComponent {
     @Prop
     var tableTitleMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    var tableTitleFullText: String // 表格序列化的纯文本
+    var tableTitleNode: NodeView // 表格节点（点击复制时按需序列化）
 
     func build() {
         Row {
@@ -108,7 +108,9 @@ class MarkdownTableTitleComponent {
      */
     func onCopyClicked(): Unit {
         if (let Some(cb) <- tableTitleMarkdownConfiguration.tableCopyCallback) {
-            cb(tableTitleFullText)
+            if (let Some(node) <- tableTitleNode.commonmarkNode) {
+                cb(NodeViewStringBuilder(node).toString())
+            }
         }
     }
 }

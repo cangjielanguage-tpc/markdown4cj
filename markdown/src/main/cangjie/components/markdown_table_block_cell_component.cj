@@ -31,6 +31,10 @@ class MarkdownTableBlockCellComponent {
     var isRefresh: Bool = false // 表格Cell子节点是否不为0
     @State
     var tableBlockCellNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
+    @State
+    var useCustomCellLogic: Bool = false // 缓存：是否使用自定义Cell逻辑（TableCellPart/CustomCardImage/CustomCardLink），refreshTableBlockCellData时重算
+    @State
+    var cellHasExposure: Bool = false // 缓存：是否启用链接曝光统计（构建时决定，避免600个cell都注册onVisibleAreaChange/onAreaChange/id）
     // 链接曝光：URL列表缓存 + 当前可见状态（与MarkdownParagraphComponent同款）
     // 简化版：Text级别曝光，与屏幕 [0, screenH] 求交判定可见性
     var tableBlockCellExposureUrls: ArrayList<String> = ArrayList<String>()
@@ -38,6 +42,7 @@ class MarkdownTableBlockCellComponent {
     var tableBlockCellId: String = "" // Cell Text的唯一id
     var viewportReady: Bool = false // onAreaChange是否触发过
     var isAlive: Bool = true // 组件是否存活
+    var exposureScheduled: Bool = false // 曝光评估是否已调度（防抖标志，避免onVisibleAreaChange多次阈值回调每次都spawn协程）
 
     @BuilderParam
     var blockImageCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
@@ -46,11 +51,14 @@ class MarkdownTableBlockCellComponent {
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
+        // 构建时一次性决定是否注册曝光相关回调（registry在MarkdownComponent.aboutToAppear已设置，子组件aboutToAppear时一定可见）
+        // 默认未设置elementExposureCallback → cellHasExposure=false → 600个cell完全跳过id/onVisibleAreaChange/onAreaChange注册
+        cellHasExposure = MarkdownLinkExposureRegistry.isExposureEnabled()
         refreshTableBlockCellData(tableBlockCellNodeView)
         // Cell Text的唯一id
         tableBlockCellId = "md-exp-${tableBlockCellNodeView.nodeHash}"
         // 链接曝光：仅提取URL列表缓存
-        if (isExposureEnabled()) {
+        if (cellHasExposure) {
             tableBlockCellExposureUrls = MarkdownLinkExposureRegistry.extractHttpLinks(tableBlockCellNodeView)
         }
     }
@@ -73,6 +81,8 @@ class MarkdownTableBlockCellComponent {
 
     /**
      * 防抖触发曝光评估
+     * 优化：用exposureScheduled标志位避免在onVisibleAreaChange的7个阈值回调里各spawn一个协程，
+     * 一帧内多次触发只调度一次评估（与段落组件语义一致：合并连续触发）
      */
     func scheduleExposure(): Unit {
         if (!isAlive) {
@@ -84,9 +94,14 @@ class MarkdownTableBlockCellComponent {
         if (tableBlockCellExposureUrls.size == 0) {
             return
         }
+        if (exposureScheduled) {
+            return
+        }
+        exposureScheduled = true
         spawn {
             sleep(Duration.millisecond * 16)
             launch {
+                exposureScheduled = false
                 if (isAlive && viewportReady) {
                     evaluateExposure()
                 }
@@ -139,7 +154,7 @@ class MarkdownTableBlockCellComponent {
 
     func build() {
         Column() {
-            if(isBlockLogic(tableBlockCellNodeViewList)){
+            if(useCustomCellLogic){
                 tableBlockCellCustomComponent()
             }else{
                 tableBlockCellComponent()
@@ -224,9 +239,55 @@ class MarkdownTableBlockCellComponent {
 
     /**
      * 表格文字内容
+     * 根据 cellHasExposure 选择是否注册曝光相关回调（id/onVisibleAreaChange/onAreaChange）。
+     * 默认未设置 elementExposureCallback 时 cellHasExposure=false，跳过600个cell的
+     * id注册 + 7阈值 × 600 = 4200 次阈值追踪 + 600次area change追踪，显著降低首屏开销。
      */
     @Builder
     func tableBlockCellComponent() {
+        if (cellHasExposure) {
+            tableBlockCellComponentWithExposure()
+        } else {
+            tableBlockCellComponentPlain()
+        }
+    }
+
+    /**
+     * 无曝光统计的Cell Text：仅基础属性，不注册id/onVisibleAreaChange/onAreaChange
+     */
+    @Builder
+    func tableBlockCellComponentPlain() {
+        Text() {
+            if (isRefresh) {
+                markdownSpanListComponent(
+                    tableBlockCellNodeViewList,
+                    tableBlockCellMarkdownConfiguration,
+                    tableBlockCellComponentWidth,
+                    Option<(Int64) -> Unit>.None,
+                    tableBlockCellImageCallback,
+                    tableBlockCellFootnoteCallback
+                )
+            }
+        }
+        .textAlign(TextAlign.Start)
+        .halfLeading(true)
+        .copyOption(if (tableBlockCellMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
+            CopyOptions.LocalDevice
+        } else {
+            CopyOptions.None
+        })
+        .onCopy({
+            str => if (let Some(v) <- tableBlockCellMarkdownConfiguration.textCopyCallback) {
+                tableBlockCellMarkdownConfiguration.textCopyCallback()(str)
+            }
+        })
+    }
+
+    /**
+     * 启用曝光统计的Cell Text：在Plain基础上额外注册id/onVisibleAreaChange/onAreaChange
+     */
+    @Builder
+    func tableBlockCellComponentWithExposure() {
         Text() {
             if (isRefresh) {
                 markdownSpanListComponent(
@@ -256,17 +317,13 @@ class MarkdownTableBlockCellComponent {
         .onVisibleAreaChange(
             [0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0],
             { _: Bool, _: Float64 =>
-                if (isExposureEnabled()) {
-                    scheduleExposure()
-                }
+                scheduleExposure()
             }
         )
         .onAreaChange({
             old, new =>
-                if (isExposureEnabled()) {
-                    viewportReady = true
-                    scheduleExposure()
-                }
+                viewportReady = true
+                scheduleExposure()
         })
     }
 
@@ -385,6 +442,7 @@ class MarkdownTableBlockCellComponent {
         let tableBlockCellNodeViewListSize: Int64 = tableBlockCellNodeViewList.size
         if (refreshNodeViewSize == 0) {
             tableBlockCellNodeViewList.clear()
+            useCustomCellLogic = false
             return
         }
         if (refreshNodeViewSize > 0) {
@@ -409,6 +467,11 @@ class MarkdownTableBlockCellComponent {
             for (i in tableBlockCellNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 tableBlockCellNodeViewList.remove(i)
             }
+        }
+        // 数据变更后重算是否走自定义Cell逻辑（含节点增删/类型变化），缓存到@State避免每次build都遍历列表
+        let newUseCustomCellLogic = isBlockLogic(tableBlockCellNodeViewList)
+        if (newUseCustomCellLogic != useCustomCellLogic) {
+            useCustomCellLogic = newUseCustomCellLogic
         }
     }
 }

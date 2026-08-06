@@ -132,27 +132,32 @@ public class MarkdownLinkExposureRegistry {
 
     /**
      * 递归提取NodeView子树中所有http链接URL（去重）
+     * 优化：用HashSet做去重，避免ArrayList.contains的O(K)线性查找（原O(K²)→现O(K)）
      *
      * @param node 节点
      * @return 去重后的http链接URL列表
      */
     public static func extractHttpLinks(node: NodeView): ArrayList<String> {
+        let seen = HashSet<String>()
         let urls = ArrayList<String>()
+        collectHttpLinks(node, seen, urls)
+        return urls
+    }
+
+    /**
+     * 递归收集http链接URL到urls（用seen去重）
+     */
+    private static func collectHttpLinks(node: NodeView, seen: HashSet<String>, urls: ArrayList<String>): Unit {
         if (let Some(url) <- node.linkUrl) {
             if (url.startsWith("http://") || url.startsWith("https://")) {
-                if (!urls.contains(url)) {
+                if (!seen.contains(url)) {
+                    seen.add(url)
                     urls.add(url)
                 }
             }
         }
         for (child in node.children) {
-            let childUrls = extractHttpLinks(child)
-            for (u in childUrls) {
-                if (!urls.contains(u)) {
-                    urls.add(u)
-                }
-            }
+            collectHttpLinks(child, seen, urls)
         }
-        return urls
     }
 }
