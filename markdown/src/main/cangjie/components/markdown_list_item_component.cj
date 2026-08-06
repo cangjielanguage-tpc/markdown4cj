@@ -36,9 +36,9 @@ class MarkdownListItemComponent {
     var listItemDepth: Int64 // 列表深度
     var listItemNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
     @BuilderParam
-    var blockImageCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (String, String, String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(listItemNodeView.nodeHash, refreshListItemData)
@@ -228,16 +228,16 @@ class MarkdownListItemComponent {
                         }else if (item.nodeType == "CustomCardImage") {
                             // 自定义卡片图片
                             blockImageCardComponent(
-                                item.imageAltText,
-                                item.imageUrl,
-                                item.imageTitle,
+                                getStrFromOptStr(item.imageAltText),
+                                getStrFromOptStr(item.imageUrl),
+                                getStrFromOptStr(item.imageTitle),
                             )
                         } else if (item.nodeType == "CustomCardLink") {
                             // 自定义卡片链接
                             blockLinkCardComponent(
                                 item.nodeText,
-                                item.linkUrl,
-                                item.linkTitle
+                                getStrFromOptStr(item.linkUrl),
+                                getStrFromOptStr(item.linkTitle)
                             )
                         } else if (item.nodeType == "BlockAD") {
                             // 广告

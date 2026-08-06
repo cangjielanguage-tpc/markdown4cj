@@ -52,9 +52,9 @@ class MarkdownTableBlockComponent {
     var oldStickyRowCount: Int64 = 0 // sticky模式上一次的总行数（含标题行），用于行减少时清理列宽记录
 
     @BuilderParam
-    var blockImageCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (String, String, String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
 
 
     protected override func aboutToAppear(): Unit {

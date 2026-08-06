@@ -45,9 +45,9 @@ class MarkdownTableBlockCellComponent {
     var exposureScheduled: Bool = false // 曝光评估是否已调度（防抖标志，避免onVisibleAreaChange多次阈值回调每次都spawn协程）
 
     @BuilderParam
-    var blockImageCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (String, String, String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockCellNodeView.nodeHash, refreshTableBlockCellData)
@@ -204,16 +204,15 @@ class MarkdownTableBlockCellComponent {
                 spanListNodeView: NodeView, index: Int64 => if (spanListNodeView.nodeType == "CustomCardImage") {
                      // 自定义卡片图片
                             blockImageCardComponent(
-                                spanListNodeView.imageAltText,
-                                spanListNodeView.imageUrl,
-                                spanListNodeView.imageTitle,
+                                getStrFromOptStr(spanListNodeView.imageAltText),
+                                getStrFromOptStr(spanListNodeView.imageUrl),
+                                getStrFromOptStr(spanListNodeView.imageTitle)
                             )
                 } else if (spanListNodeView.nodeType == "CustomCardLink") {
                               blockLinkCardComponent(
                                 spanListNodeView.nodeText,
-                                spanListNodeView.linkUrl,
-                                spanListNodeView.linkTitle
-
+                                getStrFromOptStr(spanListNodeView.linkUrl),
+                                getStrFromOptStr(spanListNodeView.linkTitle)
                             )
                 } else if (spanListNodeView.nodeType == "TableCellPart") {
                             Text() {

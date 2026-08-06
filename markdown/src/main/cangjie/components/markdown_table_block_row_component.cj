@@ -25,9 +25,9 @@ class MarkdownTableBlockRowComponent {
     var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // UI数据源
 
     @BuilderParam
-    var blockImageCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
+    var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
     @BuilderParam
-    var blockLinkCardComponent: (?String, ?String, ?String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
+    var blockLinkCardComponent: (String, String, String) -> Unit = CustomBlockLinkBuilder  //自定义卡片布局行内链接
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(tableBlockRowNodeView.nodeHash, refreshTableBlockRowData)

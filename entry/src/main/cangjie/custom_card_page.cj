@@ -57,7 +57,10 @@ class CustomCardPage {
         .usePlugin(CodeListPlugin.create())
         .usePlugin(FootnotePlugin.create())
         .usePlugin(TocPlugin.create())
-        .usePlugin(BlockCustomCardPlugin.create())
+        .usePlugin(BlockCustomCardPlugin.create(
+            { bean: CardBean => bean.getDescription().isSome() && bean.getDescription().getOrThrow() == "card" },
+            { bean: CardBean => bean.getDestination().isSome() && bean.getDestination().getOrThrow().startsWith("link_")}
+        ))
         .usePlugin(ImageCollectPlugin.create())
         .usePlugin(NodeIdPlugin.create())
         .build()
@@ -66,8 +69,6 @@ class CustomCardPage {
 
     protected override func aboutToAppear(): Unit {
         markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
-        setCustomCardConditionImg(isBlockImageCustom)
-        setCustomCardConditionLink(isBlockLinkCustom)
         updateConfig()
     }
 
@@ -142,42 +143,21 @@ class CustomCardPage {
         }
     }
 
-    func isBlockImageCustom(bean: CardBean): Bool {
-        return bean.getDescription().isSome() && bean.getDescription().getOrThrow() == "card"
-    }
 
-    func isBlockLinkCustom(bean: CardBean): Bool {
-        return bean.getDestination().isSome() && bean.getDestination().getOrThrow().startsWith("link_")
-    }
 
-    func showText(str: ?String, str1: ?String, str2: ?String): String {
-        var stringbuilder = StringBuilder()
-        if(let Some(i) <- str){
-            stringbuilder.append(i)
-            stringbuilder.append("-----")
-        }
-        if(let Some(i) <- str1){
-            stringbuilder.append(i)
-            stringbuilder.append("-----")
-        }
-        if(let Some(i) <- str2){
-            stringbuilder.append(i)
-        }
-        return stringbuilder.toString()
-    }
 
     @Builder
-    func CustomBlockImageBuilder(str: ?String, str1: ?String, str2: ?String) { /* cjlint-ignore !G.FUN.02 */
+    func CustomBlockImageBuilder(str: String, str1: String, str2: String) { /* cjlint-ignore !G.FUN.02 */
         Column(20){
-            Text(showText(str,str1,str2))
+            Text(str+"-----"+str1+"-----"+str2)
             Image("https://markdown.com.cn/images/blue.jpg").width(20).height(20)
         }
     }
 
     @Builder
-    func CustomBlockLinkBuilder(str: ?String, str1: ?String, str2: ?String) { /* cjlint-ignore !G.FUN.02 */
+    func CustomBlockLinkBuilder(str: String, str1: String, str2: String) { /* cjlint-ignore !G.FUN.02 */
         Column(20){
-            Text(showText(str,str1,str2))
+            Text(str+"-----"+str1+"-----"+str2)
             Image("https://markdown.com.cn/images/green.jpg").width(20).height(20)
         }
     }

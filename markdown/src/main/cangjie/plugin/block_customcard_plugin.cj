@@ -5,17 +5,11 @@ internal import commonmark4cj.commonmark.Node as CommonmarkNode
 internal import commonmark4cj.commonmark.Image as CommonmarkImage
 internal import commonmark4cj.commonmark.Link as CommonmarkLink
 
-var customCardCondition:CustomCardCondition = CustomCardCondition(None,None)
 
-public func setCustomCardConditionImg(blockImage: ?(CardBean) -> Bool) {
-    customCardCondition.setImageCondition(blockImage)
-}
 
-public func setCustomCardConditionLink(blockLink: ?(CardBean) -> Bool) {
-    customCardCondition.setLinkCondition(blockLink)
-}
 
-class CustomCardCondition{
+
+public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
 
     var mBlockImage: ?(CardBean) -> Bool = None
     var mBlockLink: ?(CardBean) -> Bool = None
@@ -25,20 +19,8 @@ class CustomCardCondition{
         this.mBlockLink = blockLink
     }
 
-    func setImageCondition(blockImage: ?(CardBean) -> Bool):Unit{
-         this.mBlockImage = blockImage
-    }
-
-    func setLinkCondition(blockLink: ?(CardBean) -> Bool):Unit{
-         this.mBlockLink = blockLink
-    }
-
-}
-
-
-public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
-    public static func create(): BlockCustomCardPlugin {
-        return BlockCustomCardPlugin()
+    public static func create(blockImage: ?(CardBean) -> Bool, blockLink: ?(CardBean) -> Bool): BlockCustomCardPlugin {
+        return BlockCustomCardPlugin(blockImage,blockLink)
     }
 
     public func getClassType(): String {
@@ -46,13 +28,24 @@ public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
     }
 
     public override func configureParser(builder: ParserBuilder): Unit {
-        builder.postProcessor(BlockCustomCardProcessor())
+        builder.postProcessor(BlockCustomCardProcessor(mBlockImage, mBlockLink))
     }
 }
 
 class BlockCustomCardProcessor <: PostProcessor {
+
+    var mBlockImage: ?(CardBean) -> Bool = None
+    var mBlockLink: ?(CardBean) -> Bool = None
+
+
+    init(blockImage: ?(CardBean) -> Bool, blockLink: ?(CardBean) -> Bool) {
+        this.mBlockImage = blockImage
+        this.mBlockLink = blockLink
+    }
+
+
     public func process(node: Node): Node {
-        node.accept(BlockCustomCardVisitor())
+        node.accept(BlockCustomCardVisitor(mBlockImage, mBlockLink))
         node
     }
 }
@@ -99,6 +92,16 @@ func isRightLink(n: Node, blockLink: ?(CardBean) -> Bool): Bool {
 }
 
 class BlockCustomCardVisitor <: AbstractVisitor {
+
+    var mBlockImage: ?(CardBean) -> Bool = None
+    var mBlockLink: ?(CardBean) -> Bool = None
+
+    init(blockImage: ?(CardBean) -> Bool, blockLink: ?(CardBean) -> Bool) {
+        this.mBlockImage = blockImage
+        this.mBlockLink = blockLink
+    }
+
+
     public func visit(p: Heading): Unit {
         refactorWithSplit(
             p,
@@ -123,10 +126,10 @@ class BlockCustomCardVisitor <: AbstractVisitor {
     // 判断是否为card, 返回CardContainer, 用于装载Card节点
     func isCard(n: Node): ?() -> Node {
         match (n) {
-            case n: Image where isRightImg(n, customCardCondition.mBlockImage) => {
+            case n: Image where isRightImg(n, mBlockImage) => {
                 => CustomCardImage()
             }
-            case n: Link where isRightLink(n, customCardCondition.mBlockLink) => {
+            case n: Link where isRightLink(n, mBlockLink) => {
                 => CustomCardLink()
             }
             case _ => return None

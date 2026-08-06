@@ -3,12 +3,12 @@ package markdown.components
 import ohos.state_macro_manage.*
 
 @Builder
-func CustomBlockImageBuilder(description: ?String, destination: ?String, title: ?String) { /* cjlint-ignore !G.FUN.02 */
+func CustomBlockImageBuilder(description: String, destination: String, title: String) { /* cjlint-ignore !G.FUN.02 */
     Text("")
 }
 
 @Builder
-func CustomBlockLinkBuilder(description: ?String, destination: ?String, title: ?String) { /* cjlint-ignore !G.FUN.02 */
+func CustomBlockLinkBuilder(description: String, destination: String, title: String) { /* cjlint-ignore !G.FUN.02 */
     Text("")
 }
 
