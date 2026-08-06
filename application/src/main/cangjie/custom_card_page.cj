@@ -58,8 +58,8 @@ class CustomCardPage {
         .usePlugin(FootnotePlugin.create())
         .usePlugin(TocPlugin.create())
         .usePlugin(BlockCustomCardPlugin.create(
-            { bean: CardBean => bean.getDescription().isSome() && bean.getDescription().getOrThrow() == "card" },
-            { bean: CardBean => bean.getDestination().isSome() && bean.getDestination().getOrThrow().startsWith("link_")}
+            blockImage : { bean: CardBean => bean.getDescription().isSome() && bean.getDescription().getOrThrow() == "card" },
+            blockLink : { bean: CardBean => bean.getDestination().isSome() && bean.getDestination().getOrThrow().startsWith("link_")}
         ))
         .usePlugin(ImageCollectPlugin.create())
         .usePlugin(NodeIdPlugin.create())

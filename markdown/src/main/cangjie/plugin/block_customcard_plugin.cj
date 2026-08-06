@@ -19,7 +19,7 @@ public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
         this.mBlockLink = blockLink
     }
 
-    public static func create(blockImage: ?(CardBean) -> Bool, blockLink: ?(CardBean) -> Bool): BlockCustomCardPlugin {
+    public static func create(blockImage!: ?(CardBean) -> Bool = None, blockLink!: ?(CardBean) -> Bool = None): BlockCustomCardPlugin {
         return BlockCustomCardPlugin(blockImage,blockLink)
     }
 

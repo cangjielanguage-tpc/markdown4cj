@@ -44,8 +44,8 @@ public class MarkdownComponent {
         @BuilderParam customHeadingLineBuilder!: (NodeView, Int64) -> Unit,
         @BuilderParam customParagraphLineBuilder!: (NodeView, Int64) -> Unit,
         @BuilderParam customTableLineBuilder!: (NodeView, Int64) -> Unit,
-        @BuilderParam blockImageCardComponent!: (?String,?String,?String) -> Unit,
-        @BuilderParam blockLinkCardComponent!: (?String,?String, ?String) -> Unit,
+        @BuilderParam blockImageCardComponent!: (String, String, String) -> Unit,
+        @BuilderParam blockLinkCardComponent!: (String, String, String) -> Unit,
         scroller: Scroller
     )
 }
@@ -8528,9 +8528,12 @@ public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
     /**
      * 创建自定义组件插件
      * 
+     * @param 命名参数 blockImage 满足自定义块级图片的条件,默认为None 
+     * @param 命名参数 blockLink 满足自定义块级链接的条件,默认为None 
+     *
      * @return SubPlugin
      */
-     public static func create():BlockCustomCardPlugin 
+    public static func create(blockImage!: ?(CardBean) -> Bool = None, blockLink!: ?(CardBean) -> Bool = None): BlockCustomCardPlugin {
 }
 ```
 
@@ -8590,23 +8593,4 @@ public class CardBean  {
     public func getTitle(): ?String 
 
 }
-```
-
-### Markdown 设置满足自定义卡片的条件
-
-```cangjie
-    /**
-    * 设置满足自定义块级图片的条件
-    *
-    * @param blockImage 满足自定义块级图片的条件
-    */
-    public func setCustomCardConditionImg(blockImage: ?(CardBean) -> Bool)
-
-
-    /**
-     * 设置满足自定义块级链接的条件
-     *
-     * @param blockLink 满足自定义块级链接的条件
-     */
-    public func setCustomCardConditionLink(blockLink: ?(CardBean) -> Bool)
 ```
