@@ -277,7 +277,6 @@ class MarkdownHeadingComponent {
             }
         }
         .textAlign(TextAlign.Start)
-        .halfLeading(true)
         .copyOption(if (headingMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {

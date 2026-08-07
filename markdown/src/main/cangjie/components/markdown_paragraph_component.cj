@@ -498,7 +498,6 @@ class MarkdownParagraphComponent {
             }
         }
         .textAlign(TextAlign.Start)
-        .halfLeading(true)
         .copyOption(if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {
