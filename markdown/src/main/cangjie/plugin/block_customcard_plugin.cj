@@ -165,10 +165,27 @@ class BlockCustomCardVisitor <: AbstractVisitor {
     }
 
     /**
-     * 以增加一层的形式重构TableCell：卡片包装为卡片容器，普通行内节点分组进TableCellPart。
-     * 卡片须留在表格内，故不调用splitParent（加层语义）。
+     * 以"提升+加层"的形式重构TableCell：先按文档序收集单元格内所有卡片（含行内嵌套），
+     * 用 splitParent 把每张卡片提升为单元格的直接子节点（卡片留在表格内），再重建单元格：
+     * 卡片包装为卡片容器，普通行内节点分组进TableCellPart。
      */
     public func refactorTableCell(refactorRoot: TableCell): Unit {
+        // 收集单元格内所有卡片（含嵌套），按文档序
+        let cards = ArrayList<Node>()
+        collectCards(refactorRoot, cards)
+        if (cards.isEmpty()) {
+            return
+        }
+        // 逐个把卡片提升为单元格的直接子节点（分割保序，卡片不越出单元格）
+        for (c in cards) {
+            while (c.getParent() != refactorRoot) {
+                c.splitParent()
+            }
+        }
+        // 清理分割掏空的强调容器（如整格加粗卡片）
+        removeEmptyEmphasis(refactorRoot)
+
+        // 重建单元格：卡片包装为容器，其余行内节点分组进 TableCellPart
         let cell = TableCell()
         cell.setWidth(refactorRoot.getWidth())
         cell.setHeader(refactorRoot.isHeader())
@@ -176,12 +193,9 @@ class BlockCustomCardVisitor <: AbstractVisitor {
         cell.setSourceSpans(refactorRoot.getSourceSpans())
         cell.custom = refactorRoot.custom
 
-        var needRefact = false
         var pending = ArrayList<Node>()
-
         for (n in refactorRoot.listChildren()) {
             if (isCard(n).isSome()) {
-                needRefact = true
                 // 冲刷累积的普通行内节点到当前Part
                 if (!pending.isEmpty()) {
                     let part = TableCellPart()
@@ -200,15 +214,27 @@ class BlockCustomCardVisitor <: AbstractVisitor {
                 pending.add(n)
             }
         }
-        if (needRefact) {
-            if (!pending.isEmpty()) {
-                let part = TableCellPart()
-                for (p in pending) {
-                    part.appendChild(p)
-                }
-                cell.appendChild(part)
+        if (!pending.isEmpty()) {
+            let part = TableCellPart()
+            for (p in pending) {
+                part.appendChild(p)
             }
-            refactorRoot.replaceWith(cell)
+            cell.appendChild(part)
+        }
+        refactorRoot.replaceWith(cell)
+    }
+
+    /**
+     * 移除单元格内被分割掏空的强调类容器（无子节点的 StrongEmphasis/Emphasis 等）。
+     */
+    func removeEmptyEmphasis(cell: TableCell): Unit {
+        var current = cell.getFirstChild()
+        while (let Some(n) <- current) {
+            current = n.getNext()
+            if (n.childrenSize == 0 && (n is StrongEmphasis || n is Emphasis || n is Strikethrough
+                || n is SubNode || n is SupNode || n is UnderlineNode)) {
+                n.unlink()
+            }
         }
     }
 }
