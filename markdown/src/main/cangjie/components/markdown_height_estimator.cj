@@ -1,7 +1,5 @@
 package markdown.components
 
-import ohos.hilog.*
-
 /**
  * 预计算 Markdown 渲染高度
  *
@@ -36,7 +34,7 @@ public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguratio
     let global: GlobalTheme = theme.globalTheme
     let blockSpacing: Float64 = Float64(global.markdownBlockSpacing)
     // MarkdownComponent 渲染为带 .margin(blockMarginL/R/T/B) 的 List，其 onSizeChange 报告高度
-    // 不含外层 margin；文本约束宽度也需扣除左右 blockMargin，与 List 内部内容宽度一致
+    // 含外层上下 margin；文本约束宽度也需扣除左右 blockMargin，与 List 内部内容宽度一致
     let actualWidth: Float64 = outerWidth - global.blockMarginLeft - global.blockMarginRight
 
     let doc: CommonmarkNode = markdownPlugin.toMarkdown(content)
@@ -44,14 +42,13 @@ public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguratio
     var first: Bool = true
     for (block in doc.iterateChildren()) {
         let blockHeight = estimateBlockNodeHeight(block, theme, actualWidth, blockSpacing)
-        Hilog.error(0x0D01, "PrecomputeDebug", "block type=${block.getNodeType()} height=${blockHeight}")
         if (!first) {
             totalHeight += blockSpacing
         }
         first = false
         totalHeight += blockHeight
     }
-    Hilog.error(0x0D01, "PrecomputeDebug", "total=${totalHeight} width=${actualWidth} blockSpacing=${blockSpacing}")
+    totalHeight += global.blockMarginTop + global.blockMarginBottom
     return totalHeight
 }
 
@@ -726,13 +723,11 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
             }
             first = false
             let itemHeight = estimateListItemContentHeight(child, theme, effectiveContentWidth, childChildSpacing, paragraphLineHeight, prefixHeight)
-            Hilog.error(0x0D01, "PrecomputeDebug", "  listItem[${itemIndex}] height=${itemHeight} prefixH=${prefixHeight} contentW=${effectiveContentWidth}")
             innerHeight += itemHeight
             itemIndex++
         }
     }
     let listTotal = marginTop + paddingTop + innerHeight + paddingBottom + marginBottom
-    Hilog.error(0x0D01, "PrecomputeDebug", "List isOrdered=${isOrdered} items=${itemIndex} margin=${marginTop}+${marginBottom} padding=${paddingTop}+${paddingBottom} inner=${innerHeight} childSpacing=${childSpacing} total=${listTotal}")
     return listTotal
 }
 
@@ -763,7 +758,6 @@ func estimateListItemContentHeight(item: CommonmarkNode, theme: MarkdownTheme, c
             contentHeight += childChildSpacing
         }
         first = false
-        Hilog.error(0x0D01, "PrecomputeDebug", "    itemChild type=${child.getNodeType()} height=${childHeight}")
         contentHeight += childHeight
     }
     let rowHeight: Float64 = if (contentHeight > prefixHeight) { contentHeight } else { prefixHeight }

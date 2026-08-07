@@ -56,25 +56,7 @@ class HeightPage {
     var scroller: Scroller = Scroller()
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
-    var markdownPlugin: Markdown = Markdown
-        .builder()
-        .usePlugin(HtmlPlugin.create())
-        .usePlugin(TaskListPlugin.create())
-        .usePlugin(StrikethroughPlugin.create())
-        .usePlugin(TablePlugin.create())
-        .usePlugin(LatexMathPluginV2.create())
-        .usePlugin(BlockAudioPlugin.create())
-        .usePlugin(BlockVideoPlugin.create())
-        .usePlugin(LinkifyPlugin.create([]))
-        .usePlugin(ImageSlidePlugin.create())
-        .usePlugin(ImageStylePlugin.create())
-        .usePlugin(CodeListPlugin.create())
-        .usePlugin(FootnotePlugin.create())
-        .usePlugin(DescListPlugin.create())
-        .usePlugin(TocPlugin.create())
-        .usePlugin(ImageCollectPlugin.create())
-        .usePlugin(NodeIdPlugin.create())
-        .build()
+    var markdownPlugin: Markdown = setAllPlugin()
     @State
     var estimatedHeightByNode: Float64 = 0.0
 
@@ -239,4 +221,37 @@ class HeightPage {
         .backgroundColor(0xFFEAEAEA)
         .justifyContent(FlexAlign.Start)
     }
+}
+
+
+public func setAllPlugin(): Markdown {
+    let plugin = Markdown.builder()
+    plugin.usePlugin(BlockAudioPlugin.create())
+    plugin.usePlugin(BlockVideoPlugin.create())
+    plugin.usePlugin(CodeListPlugin.create())
+    plugin.usePlugin(FootnotePlugin.create())
+    plugin.usePlugin(HtmlPlugin.create())
+    plugin.usePlugin(TocPlugin.create())
+    plugin.usePlugin(TablePlugin.create())
+
+    plugin.usePlugin(TaskListPlugin.create())
+    plugin.usePlugin(StrikethroughPlugin.create())
+    plugin.usePlugin(LinkifyPlugin.create([]))
+    plugin.usePlugin(LinkViewPlugin.create())
+    plugin.usePlugin(LatexMathPluginV2.create())
+    plugin.usePlugin(ImageCollectPlugin.create())
+    plugin.usePlugin(ImageStylePlugin.create())
+
+    plugin.usePlugin(ImageSlidePlugin.create())
+    plugin.usePlugin(ImageTextMixPlugin.create())
+    plugin.usePlugin(DescListPlugin.create())
+    plugin.usePlugin(IdHeadingPlugin.create())
+    plugin.usePlugin(SupPlugin.create())
+    plugin.usePlugin(SubPlugin.create())
+    plugin.usePlugin(EmojiPlugin.create())
+    plugin.usePlugin(HighlightDelimeterPlugin.create())
+    plugin.usePlugin(WhitelistLooseDelimiterPlugin.create(DelimiterFilterMode.Strict))
+    plugin.usePlugin(NodeIdPlugin.create()) // 唯一ID标识插件
+    plugin.includeSourceSpans(2) // BLOCKS_AND_INLINES
+    plugin.build()
 }
