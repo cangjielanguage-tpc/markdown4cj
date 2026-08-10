@@ -475,13 +475,14 @@ func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Flo
                     continue
                 }
                 // 加入当前段会溢出：结算当前行，开新行
-                if (currentLineWidth + widthVp > componentWidth && currentLineWidth > 0.0) {
+                // 段间边界也需计入 letterSpacing（渲染端 Text+Span 跨 Span 边界同样施加 letterSpacing）
+                if (currentLineWidth > 0.0 && currentLineWidth + letterSpacing + widthVp > componentWidth) {
                     totalHeight += currentLineMaxLh
                     lineCount++
                     currentLineWidth = 0.0
                     currentLineMaxLh = 0.0
                 }
-                currentLineWidth += widthVp
+                currentLineWidth += if (currentLineWidth > 0.0) { letterSpacing + widthVp } else { widthVp }
                 if (seg.lineHeight > currentLineMaxLh) {
                     currentLineMaxLh = seg.lineHeight
                 }
@@ -699,7 +700,8 @@ func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme, info: St
 func estimateBlockquoteNodeHeight(bq: BlockQuote, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     let bqt: BlockQuoteTheme = theme.blockQuoteTheme
     let innerBlockSpacing: Float64 = Float64(bqt.blockQuoteChildSpacing)
-    let innerWidth: Float64 = componentWidth - bqt.blockQuotePaddingLeft - bqt.blockQuotePaddingRight - bqt.blockQuoteLeftBorderWidth
+    let innerWidth: Float64 = componentWidth - bqt.blockQuoteMarginLeft - bqt.blockQuoteMarginRight -
+        bqt.blockQuotePaddingLeft - bqt.blockQuotePaddingRight - bqt.blockQuoteLeftBorderWidth
     let children = ArrayList<CommonmarkNode>()
     for (child in bq.iterateChildren()) {
         match (child) {
@@ -803,9 +805,11 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
     }
     // 内容宽度 = 控件宽度 - 前缀宽度 - 列表左右内边距
     let listPaddingH: Float64 = if (isOrdered) {
-        orderedTheme.orderedListPaddingLeft + orderedTheme.orderedListPaddingRight
+        orderedTheme.orderedListPaddingLeft + orderedTheme.orderedListPaddingRight +
+            orderedTheme.orderedListMarginLeft + orderedTheme.orderedListMarginRight
     } else {
-        bulletTheme.bulletListPaddingLeft + bulletTheme.bulletListPaddingRight
+        bulletTheme.bulletListPaddingLeft + bulletTheme.bulletListPaddingRight +
+            bulletTheme.bulletListMarginLeft + bulletTheme.bulletListMarginRight
     }
     let contentWidth: Float64 = componentWidth - prefixWidth - listPaddingH
     let effectiveContentWidth: Float64 = if (contentWidth > 1.0) { contentWidth } else { 1.0 }
@@ -994,6 +998,8 @@ func estimateDividerHeight(theme: MarkdownTheme): Float64 {
  */
 func estimateFootnoteBlockNodeHeight(fb: FootnoteBlock, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     let fdt: FootnoteDefTheme = theme.footnoteDefTheme
+    let innerWidth: Float64 = componentWidth - fdt.footnoteDefPaddingLeft - fdt.footnoteDefPaddingRight -
+        fdt.footnoteDefMarginLeft - fdt.footnoteDefMarginRight
     var innerHeight: Float64 = 0.0
     var first: Bool = true
     for (child in fb.iterateChildren()) {
@@ -1001,7 +1007,7 @@ func estimateFootnoteBlockNodeHeight(fb: FootnoteBlock, theme: MarkdownTheme, co
             innerHeight += blockSpacing
         }
         first = false
-        innerHeight += estimateBlockNodeHeight(child, theme, componentWidth, blockSpacing)
+        innerHeight += estimateBlockNodeHeight(child, theme, innerWidth, blockSpacing)
     }
     return fdt.footnoteDefMarginTop + fdt.footnoteDefPaddingTop + innerHeight +
         fdt.footnoteDefPaddingBottom + fdt.footnoteDefMarginBottom
@@ -1022,6 +1028,8 @@ func estimateFootnoteBlockNodeHeight(fb: FootnoteBlock, theme: MarkdownTheme, co
  */
 func estimateDescListNodeHeight(dl: DescList, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     let dlt: DefinitionListTheme = theme.definitionListTheme
+    let innerWidth: Float64 = componentWidth - dlt.definitionListMarginLeft - dlt.definitionListMarginRight -
+        dlt.definitionListPaddingLeft - dlt.definitionListPaddingRight
     let termSpacing: Float64 = dlt.definitionListTermToDescriptionSpacing
     let defSpacing: Float64 = dlt.definitionListDescriptionItemSpacing
     var innerHeight: Float64 = 0.0
@@ -1029,7 +1037,7 @@ func estimateDescListNodeHeight(dl: DescList, theme: MarkdownTheme, componentWid
     var prevIsDef: Bool = false
     var first: Bool = true
     for (child in dl.iterateChildren()) {
-        let childHeight: Float64 = estimateBlockNodeHeight(child, theme, componentWidth, blockSpacing)
+        let childHeight: Float64 = estimateBlockNodeHeight(child, theme, innerWidth, blockSpacing)
         if (!first) {
             if (child is DescTerm) {
                 innerHeight += defSpacing
@@ -1205,7 +1213,8 @@ func estimateAudioBlockNodeHeight(theme: MarkdownTheme): Float64 {
  */
 func estimateVideoBlockNodeHeight(theme: MarkdownTheme, componentWidth: Float64): Float64 {
     let vt: VideoTheme = theme.videoTheme
-    let effectiveWidth: Float64 = componentWidth - vt.videoPaddingLeft - vt.videoPaddingRight
+    let effectiveWidth: Float64 = componentWidth - vt.videoMarginLeft - vt.videoMarginRight -
+        vt.videoPaddingLeft - vt.videoPaddingRight
     let imageHeight: Float64 = effectiveWidth * (9.0 / 16.0)
     var bottomLayoutHeight: Float64 = 0.0
     if (vt.videoBottomLayoutVisible) {
