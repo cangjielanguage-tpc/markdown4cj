@@ -59,6 +59,8 @@ class HeightPage {
     var markdownPlugin: Markdown = setAllPlugin()
     @State
     var estimatedHeightByNode: Float64 = 0.0
+    @State
+    var actualHeight: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
         let markdownTheme:MarkdownTheme = MarkdownTheme()
@@ -196,14 +198,24 @@ class HeightPage {
                                 .fontSize(12.0)
                                 .fontColor(0xFF666666)
                                 .margin(top: 3.0, left: 5.0)
-                            MarkdownComponent(
-                                output: mdStr,
-                                isInputEnded: isInputEnded,
-                                incrementalAnalysis: incrementalAnalysis,
-                                scroller: scroller,
-                                markdownConfiguration: markdownConfiguration,
-                                markdownPlugin: markdownPlugin
-                            )
+                            Text("MarkdownComponent 实际: " + actualHeight.toString() + " vp")
+                                .fontSize(12.0)
+                                .fontColor(0xFF666666)
+                                .margin(top: 3.0, left: 5.0)
+                            Column {
+                                MarkdownComponent(
+                                    output: mdStr,
+                                    isInputEnded: isInputEnded,
+                                    incrementalAnalysis: incrementalAnalysis,
+                                    scroller: scroller,
+                                    markdownConfiguration: markdownConfiguration,
+                                    markdownPlugin: markdownPlugin
+                                )
+                            }
+                            .onAreaChange({ old, new =>
+                                actualHeight = new.height
+                                Hilog.error(0x0D01, "PrecomputeDebug", "onAreaChange MarkdownComponent actualHeight=${new.height}")
+                            })
                         }
                         .width(100.percent)
                         .padding(5.0)

@@ -68,9 +68,9 @@ func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, compone
         case p: Paragraph =>
             return estimateParagraphNodeHeight(p, theme, componentWidth)
         case fcb: FencedCodeBlock =>
-            return estimateCodeBlockNodeHeight(fcb.getLiteral(), theme)
+            return estimateCodeBlockNodeHeight(fcb.getLiteral(), theme, fcb.getInfo(), true)
         case icb: IndentedCodeBlock =>
-            return estimateCodeBlockNodeHeight(icb.getLiteral(), theme)
+            return estimateCodeBlockNodeHeight(icb.getLiteral(), theme, "", false)
         case _: ThematicBreak =>
             return estimateDividerHeight(theme)
         case bq: BlockQuote =>
@@ -565,11 +565,18 @@ func estimateCodeButtonBarHeight(theme: MarkdownTheme): Float64 {
  * @param theme MarkdownTheme
  * @return 块高度（vp）
  */
-func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme): Float64 {
+func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme, info: String, isFenced: Bool): Float64 {
     let ct: CodeBlockTheme = theme.codeBlockTheme
-    // 与渲染端一致（node_view.cj: getLiteral().removeSuffix("\n")），
-    // 围栏/缩进代码块 literal 末尾会多一个换行符，需移除避免 split 后多计一行空行
-    let normalized: String = literal.removeSuffix("\n")
+    var codeTextStr = literal
+    if (isFenced && ct.codeBlockIsCodeFormat) {
+        let formatConfig = FormatConfig(useTab: ct.codeBlockUseTab, indentWidth: ct.codeBlockIndentWidth)
+        try {
+            codeTextStr = codeFormat(info, literal, formatConfig)
+        } catch (_: Exception) {
+            codeTextStr = literal
+        }
+    }
+    let normalized: String = codeTextStr.removeSuffix("\n")
     let codeLines: Array<String> = normalized.split("\n")
     var lines: Int64 = Int64(codeLines.size)
     if (lines < 1) {
@@ -577,7 +584,6 @@ func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme): Float64
     }
     let lineHeight: Float64 = ct.codeBlockTextLineHeight
     let codeContentHeight: Float64 = Float64(lines) * lineHeight
-    // 按钮栏高度（与渲染端 codeBlockButtonComponent 一致：仅当代码非空时显示）
     let buttonBarHeight: Float64 = if (normalized.trimAscii().size > 0) {
         estimateCodeButtonBarHeight(theme)
     } else {
