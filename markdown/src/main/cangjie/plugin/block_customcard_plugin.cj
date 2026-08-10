@@ -9,10 +9,6 @@ public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
         this.mBlockLink = blockLink
     }
 
-    public static func create(): BlockCustomCardPlugin {
-        return BlockCustomCardPlugin(None, None)
-    }
-
     public static func create(blockImage: Option<(CardBean) -> Bool>, blockLink: Option<(CardBean) -> Bool>): BlockCustomCardPlugin {
         return BlockCustomCardPlugin(blockImage, blockLink)
     }
