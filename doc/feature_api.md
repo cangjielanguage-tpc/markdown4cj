@@ -8533,7 +8533,7 @@ public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
      *
      * @return SubPlugin
      */
-    public static func create(?(CardBean) -> Bool, ?(CardBean) -> Bool): BlockCustomCardPlugin
+    public static func create(blockImage: ?(CardBean) -> Bool, blockLink: ?(CardBean) -> Bool): BlockCustomCardPlugin
 }
 ```
 
