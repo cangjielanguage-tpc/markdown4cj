@@ -8531,7 +8531,7 @@ public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
      * @param  blockImage 满足自定义块级图片的条件 
      * @param  blockLink 满足自定义块级链接的条件 
      *
-     * @return SubPlugin
+     * @return BlockCustomCardPlugin
      */
     public static func create(blockImage: ?(CardBean) -> Bool, blockLink: ?(CardBean) -> Bool): BlockCustomCardPlugin
 }
