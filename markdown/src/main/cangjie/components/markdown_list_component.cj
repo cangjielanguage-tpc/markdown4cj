@@ -164,7 +164,6 @@ public class MarkdownListComponent {
             .fontColor(listPrefixColor(isBullet, markdownConfiguration.markdownTheme))
             .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration.markdownTheme))
             .margin(right: listPrefixSpacing(isBullet, markdownConfiguration.markdownTheme))
-            .halfLeading(true)
             .textAlign(TextAlign.Center)
             .transition(
                TransitionEffect.asymmetric(

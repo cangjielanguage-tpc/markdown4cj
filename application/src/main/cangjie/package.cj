@@ -32,6 +32,9 @@ internal import markdown.plugin.TocPlugin
 internal import markdown.plugin.ImageTextMixPlugin
 internal import markdown.plugin.BlockCustomCardPlugin
 internal import markdown.plugin.CardBean
+internal import markdown.plugin.LinkViewPlugin
+internal import markdown.plugin.WhitelistLooseDelimiterPlugin
+internal import markdown.plugin.DelimiterFilterMode
 
 // 系统UI
 internal import ohos.base.*

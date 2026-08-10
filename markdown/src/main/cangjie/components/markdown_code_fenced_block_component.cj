@@ -223,10 +223,13 @@ class MarkdownCodeFencedBlockComponent {
      * 代码数据高亮解析
      */
     func stringCodeToResListSync(code: String) {
-        let codeTextStr = if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsCodeFormat) {
-            codeFormat(info, code, formatConfig)
-        } else {
-            code
+        var codeTextStr = code
+        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsCodeFormat) {
+            try {
+                codeTextStr = codeFormat(info, code, formatConfig)
+            } catch (_: Exception) {
+                codeTextStr = code
+            }
         }
         let arr = codeTextStr.split("\n") // 代码块数据分割
         let lines = arr.size

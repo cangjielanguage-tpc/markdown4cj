@@ -584,6 +584,18 @@ struct IndexPage {
               .fontSize(16)
               .onClick(() => router.pushUrl({ url: 'pages/AIChatTableStickyLazyPage' }))
           }
+
+          ListItem() {
+            Button("46、预计算高度")
+              .height(40)
+              .width('80%')
+              .type(ButtonType.Capsule)
+              .fontColor(0xFFFFFFFF)
+              .backgroundColor(0xFFFF0000)
+              .margin({ top: 5, bottom: 5 })
+              .fontSize(16)
+              .onClick(() => router.pushUrl({ url: 'pages/HeightPage' }))
+          }
         }
         .alignListItem(ListItemAlign.Center)
       }

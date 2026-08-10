@@ -255,7 +255,6 @@ class MarkdownTableBlockCellComponent {
             }
         }
         .textAlign(TextAlign.Start)
-        .halfLeading(true)
         .copyOption(if (tableBlockCellMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {
@@ -286,7 +285,6 @@ class MarkdownTableBlockCellComponent {
             }
         }
         .textAlign(TextAlign.Start)
-        .halfLeading(true)
         .copyOption(if (tableBlockCellMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {
