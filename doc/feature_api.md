@@ -291,13 +291,14 @@ public class MarkdownConfiguration {
      * 可见判定：链接渲染矩形与段落在屏可见区交集面积 / 链接面积 ≥ exposureThreshold。
      * 同一链接持续停留不重复触发；滚出后再滚入会再次触发（一次显示+一次消失成对）。
      *
-     * @param elementExposureCallback 曝光回调 (MarkdownExposureEvent: { type, visible, data })
+     * @param elementExposureCallback 曝光回调 (MarkdownExposureEvent: { eventType, visible, data })
      * @return MarkdownConfiguration MarkdownConfiguration对象
      */
     public func setElementExposureCallback(elementExposureCallback: (MarkdownExposureEvent) -> Unit): MarkdownConfiguration
 
     /**
      * 设置曝光可见阈值
+     * 阈值范围 [0, 1]：>1 按 1 处理（完全可见才报），<0 按 0 处理（漏出即报）
      *
      * @param threshold 0~1，链接与可见区交集面积 / 链接面积 ≥ 此值才算可见。0=漏出任意像素即可见
      * @return MarkdownConfiguration MarkdownConfiguration对象
@@ -8586,11 +8587,135 @@ public class CardBean  {
     public func getDestination(): ?String 
     
      /**
-     * 获取图片或者链接md标签的title
-     *
-     * @return ?String  图片或者链接md标签的title
-     */
+      * 获取图片或者链接md标签的title
+      *
+      * @return ?String  图片或者链接md标签的title
+      */
     public func getTitle(): ?String 
 
+}
+```
+
+## Markdown 链接曝光
+
+链接曝光用于统计 markdown 中 http/https 链接在屏幕可见区域的「显示」与「消失」事件，适用于埋点、广告曝光统计等场景。
+
+工作原理：
+
+1. 页面通过 `MarkdownConfiguration.setElementExposureCallback` 注册曝光回调，通过 `setExposureThreshold` 设置可见阈值（0~1）
+2. `MarkdownComponent` 在 `aboutToAppear` 时将回调和阈值同步写入 `MarkdownLinkExposureRegistry`（静态注册表），子组件通过 registry 查询，避免 `@Prop` 对 `@Observed` 类深拷贝丢失 `Option<Function>` 字段
+3. 段落 / 标题 / 表格 cell 组件在 `aboutToAppear` 时调用 `extractHttpLinks` 提取本节点包含的 http 链接 URL 列表缓存
+4. 组件 `onVisibleAreaChange` 回调（已考虑所有祖先裁剪）按防抖（~16ms）触发 `evaluateExposure`：可见比例 ≥ 阈值时调用 `register` 上报 `visible=true`，反之调用 `unregister` 上报 `visible=false`
+5. 同一 URL 可能出现在多个段落，使用引用计数：count 从 0→1 报 `visible=true`，count 从 1→0 报 `visible=false`
+
+可见判定：链接渲染矩形与段落在屏可见区交集面积 / 链接面积 ≥ exposureThreshold。
+同一链接持续停留不重复触发；滚出后再滚入会再次触发（一次显示 + 一次消失成对）。
+
+### class MarkdownExposureEvent
+
+元素曝光事件模型。链接（后续可扩展 image/regex）在屏幕上「显示」或「消失」时回调上报。对齐 ArkTS `MarkdownExposureEvent`：eventType/visible/data，未来扩字段不破坏签名。
+
+```cangjie
+/**
+ * 元素曝光事件模型
+ */
+public class MarkdownExposureEvent {
+    /**
+     * 曝光元素的类型。当前固定为 "link"，预留 "image"/"regex"
+     */
+    public var eventType: String
+
+    /**
+     * 是否可见。true=链接进入可见态（显示），false=链接离开可见态（消失）
+     */
+    public var visible: Bool
+
+    /**
+     * 元素数据。eventType="link" 时为链接 url 字符串
+     */
+    public var data: String
+
+    /**
+     * 创建曝光事件
+     *
+     * @param eventType 曝光元素类型（"link"）
+     * @param visible 是否可见（true=显示，false=消失）
+     * @param data 元素数据（eventType="link" 时为链接 url）
+     */
+    public init(eventType!: String, visible!: Bool, data!: String)
+}
+```
+
+### class MarkdownLinkExposureRegistry
+
+链接曝光注册表（静态）。消费方（`MarkdownParagraphComponent` / `MarkdownHeadingComponent` / `MarkdownTableBlockCellComponent`）在 `aboutToAppear` 时调用 `register` 注册本组件包含的 http 链接 URL 列表，`aboutToDisappear` 时调用 `unregister` 注销。
+
+由于根列表使用 `LazyForEach`，组件的创建 / 销毁与可见性高度相关：
+
+- 组件创建（滚入视口 + 预加载区）→ 链接 `visible=true`
+- 组件销毁（滚出视口 + 预加载区）→ 链接 `visible=false`
+
+同一 URL 可能出现在多个段落中，使用引用计数：count 从 0→1 时报 `visible=true`，count 从 1→0 时报 `visible=false`。
+
+```cangjie
+/**
+ * 链接曝光注册表（静态）
+ */
+public class MarkdownLinkExposureRegistry {
+    /**
+     * 设置曝光回调
+     * 由 MarkdownComponent 在 aboutToAppear 时调用（页面也可直接调用，绕过 @Prop 对 @Observed 类深拷贝可能丢失 Option<Function> 的问题）
+     *
+     * @param cb 回调函数 (MarkdownExposureEvent: { eventType, visible, data })
+     */
+    public static func setExposureCallback(cb: (MarkdownExposureEvent) -> Unit): Unit
+
+    /**
+     * 设置曝光阈值
+     * 阈值范围 [0, 1]：>1 按 1 处理（完全可见才报），<0 按 0 处理（漏出即报）
+     *
+     * @param threshold 0~1，链接与可见区交集面积 / 链接面积 ≥ 此值才算可见
+     */
+    public static func setExposureThreshold(threshold: Float64): Unit
+}
+```
+
+使用示例：
+
+```cangjie
+import markdown.components.*
+
+@HybridComponentEntry
+@Component
+class LinkExposurePage {
+    @State
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
+    protected override func aboutToAppear(): Unit {
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        // 注册曝光回调（同时写入 Configuration 和 Registry）
+        markdownConfiguration.setElementExposureCallback(elementExposureCallback)
+        // 直接写入 Registry，绕过 @Prop 对 @Observed 类深拷贝可能丢失 Option<Function> 的问题
+        MarkdownLinkExposureRegistry.setExposureCallback(elementExposureCallback)
+        // 设置曝光阈值（0.5 = 链接 50% 面积可见才上报）
+        markdownConfiguration.setExposureThreshold(0.5)
+        MarkdownLinkExposureRegistry.setExposureThreshold(0.5)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 页面销毁时清空所有 registry 数据，避免下次进入残留
+        MarkdownLinkExposureRegistry.clear()
+    }
+
+    /**
+     * 元素曝光回调：链接显示/消失时触发
+     * event.eventType == "link"
+     * event.visible == true  → 链接进入可见区（显示）
+     * event.visible == false → 链接离开可见区（消失）
+     * event.data     → 链接 url
+     */
+    func elementExposureCallback(event: MarkdownExposureEvent): Unit {
+        Hilog.error(1, "EXPOSURE", "type=${event.eventType} visible=${event.visible} url=${event.data}")
+    }
 }
 ```
