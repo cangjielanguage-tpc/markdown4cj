@@ -106,8 +106,8 @@ export struct MarkdownParagraph {
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（链接显示/消失）
   exposureThreshold: number = 0.5 // 曝光可见阈值
-  paragraphAnimationStart?: () => void // 段落动画开始回调
-  paragraphAnimationEnd?: () => void // 段落动画结束回调
+  paragraphHeadingAnimationStart?: () => void // 段落动画开始回调
+  paragraphHeadingAnimationEnd?: () => void // 段落动画结束回调
   customLongPressCallback?: () => void = undefined // 自定义长按事件
   @State @Watch('onListChanged') list: NodeView[] = [] // 段落子节点数据源
   private isAlive: boolean = true // 组件是否存活
@@ -307,18 +307,18 @@ export struct MarkdownParagraph {
     })
     .transition(
       TransitionEffect.asymmetric(
-        this.paragraphTheme.paragraphAnimationEnabled
-          ? TransitionEffect.opacity(0).animation({ duration: this.paragraphTheme.paragraphAnimationDuration })
+        this.globalTheme.paragraphHeadingAnimationEnabled
+          ? TransitionEffect.opacity(0).animation({ duration: this.globalTheme.paragraphHeadingAnimationDuration })
           : TransitionEffect.IDENTITY,
         TransitionEffect.IDENTITY
       )
     )
     .onAppear(() => {
-      if (this.paragraphTheme.paragraphAnimationEnabled) {
-        this.paragraphAnimationStart?.()
+      if (this.globalTheme.paragraphHeadingAnimationEnabled) {
+        this.paragraphHeadingAnimationStart?.()
         setTimeout(() => {
-          this.paragraphAnimationEnd?.()
-        }, this.paragraphTheme.paragraphAnimationDuration)
+          this.paragraphHeadingAnimationEnd?.()
+        }, this.globalTheme.paragraphHeadingAnimationDuration)
       }
     })
   }

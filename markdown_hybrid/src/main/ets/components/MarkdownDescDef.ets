@@ -60,8 +60,8 @@ export struct MarkdownDescDef {
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   customLongPressCallback?: () => void = undefined // 自定义长按事件
-  paragraphAnimationStart?: () => void // 段落动画开始回调
-  paragraphAnimationEnd?: () => void // 段落动画结束回调
+  paragraphHeadingAnimationStart?: () => void // 段落动画开始回调
+  paragraphHeadingAnimationEnd?: () => void // 段落动画结束回调
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
@@ -111,8 +111,8 @@ export struct MarkdownDescDef {
                 imageReplaceCallback: this.imageReplaceCallback,
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
                 customLongPressCallback: this.customLongPressCallback,
-                paragraphAnimationStart: this.paragraphAnimationStart,
-                paragraphAnimationEnd: this.paragraphAnimationEnd,
+                paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
+                paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
               })
             } else {
               // 其它

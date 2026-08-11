@@ -328,7 +328,9 @@ export struct CJMarkdown {
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
                     customLongPressCallback: this.config.customLongPressCallback,
                     elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold
+                    exposureThreshold: this.config.exposureThreshold,
+                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd
                   })
                 } else if (item.nodeType === "Paragraph") {
                   // 段落
@@ -366,8 +368,8 @@ export struct CJMarkdown {
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
                     customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphAnimationStart: this.config.paragraphAnimationStart,
-                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
+                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
                   })
                 } else if (item.nodeType === "FencedCodeBlockListBlock") {
                   // 围栏代码块列表
@@ -448,8 +450,8 @@ export struct CJMarkdown {
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
                     customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphAnimationStart: this.config.paragraphAnimationStart,
-                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
+                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd
                   })
                 } else if (item.nodeType === "OrderedList") {
                   // 有序列表
@@ -506,8 +508,8 @@ export struct CJMarkdown {
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
                     customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphAnimationStart: this.config.paragraphAnimationStart,
-                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
+                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
                   })
                 } else if (item.nodeType === "BlockQuote") {
                   // 块引用
@@ -563,8 +565,8 @@ export struct CJMarkdown {
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
                     customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphAnimationStart: this.config.paragraphAnimationStart,
-                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
+                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
                   })
                 } else if (item.nodeType === "LatexMathBlock") {
                   // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本
@@ -691,8 +693,8 @@ export struct CJMarkdown {
                     codeFullScreenCallback: this.config.codeFullScreenCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
                     customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphAnimationStart: this.config.paragraphAnimationStart,
-                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
+                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
                   })
                 } else if (item.nodeType === "DescList") {
                   // 定义列表
@@ -730,8 +732,8 @@ export struct CJMarkdown {
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
                     customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphAnimationStart: this.config.paragraphAnimationStart,
-                    paragraphAnimationEnd: this.config.paragraphAnimationEnd,
+                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
                   })
                 } else if (item.nodeType === "SlideBlock") {
                   // 图片幻灯片

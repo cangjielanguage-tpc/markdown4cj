@@ -171,11 +171,11 @@ struct ParagraphPage {
   selectedParagraphBackgroundColorList: Array<ResourceColor | undefined> = colorListGeneralData
   @State selectedParagraphBackgroundColor: ResourceColor | undefined = undefined // 当前长按放手后选中文字的背景色
   // 段落加载动画启用列表
-  paragraphAnimationEnabledList: Array<boolean> = booleanListGeneralData
-  @State paragraphAnimationEnabled: boolean = false // 段落加载动画是否启用
+  paragraphHeadingAnimationEnabledList: Array<boolean> = booleanListGeneralData
+  @State paragraphHeadingAnimationEnabled: boolean = false // 段落加载动画是否启用
   // 段落加载动画时长列表
-  paragraphAnimationDurationList: Array<number> = [0, 200, 500, 1000, 2000]
-  @State paragraphAnimationDuration: number = 0 // 段落加载动画时长（ms）
+  paragraphHeadingAnimationDurationList: Array<number> = [0, 200, 500, 1000, 2000]
+  @State paragraphHeadingAnimationDuration: number = 0 // 段落加载动画时长（ms）
   @State // 配置数据内容
   paragraphData: ParagraphData = new ParagraphData()
   @State isExpanded1: boolean = false // 控制展开/折叠状态
@@ -249,8 +249,8 @@ struct ParagraphPage {
                   this.paragraphData._paragraphTextFontFamily = this.paragraphTextFontFamily
                   this.paragraphData._paragraphTextLineHeight = this.paragraphTextLineHeight
                   this.paragraphData._paragraphTextLetterSpacing = this.paragraphTextLetterSpacing
-                  this.paragraphData._paragraphAnimationEnabled = this.paragraphAnimationEnabled
-                  this.paragraphData._paragraphAnimationDuration = this.paragraphAnimationDuration
+                  this.paragraphData._paragraphHeadingAnimationEnabled = this.paragraphHeadingAnimationEnabled
+                  this.paragraphData._paragraphHeadingAnimationDuration = this.paragraphHeadingAnimationDuration
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/ParagraphDetailsPage", params: this.paragraphData })
               })
@@ -577,14 +577,14 @@ struct ParagraphPage {
                 BaseTabComponent({
                   titleStr: "段落加载动画启用 - ",
                   typeEnum: TypeEnum.IS_BOOLEAN,
-                  allListData: this.paragraphAnimationEnabledList,
-                  allData: this.paragraphAnimationEnabled
+                  allListData: this.paragraphHeadingAnimationEnabledList,
+                  allData: this.paragraphHeadingAnimationEnabled
                 })
                 BaseTabComponent({
                   titleStr: "段落加载动画时长(ms) - ",
                   typeEnum: TypeEnum.IS_NUMBER,
-                  allListData: this.paragraphAnimationDurationList,
-                  allData: this.paragraphAnimationDuration
+                  allListData: this.paragraphHeadingAnimationDurationList,
+                  allData: this.paragraphHeadingAnimationDuration
                 })
               }
               .width('100%')

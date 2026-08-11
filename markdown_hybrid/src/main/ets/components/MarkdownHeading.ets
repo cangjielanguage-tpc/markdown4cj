@@ -138,6 +138,8 @@ export struct MarkdownHeading {
   private delayTime: number = 300 // 自定义菜单关闭延时时间（毫秒）
   private timerId: number = -1 // 自定义菜单关闭延时定时器 ID
   @State @Watch('onParamChange') needHideMenu: boolean = false // 需要监听的条件参数
+  paragraphHeadingAnimationStart?: () => void // 段落动画开始回调
+  paragraphHeadingAnimationEnd?: () => void // 段落动画结束回调
 
   // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
   // 未设回调时短路掉 computeLinkRanges/getRectsForRange/监听器/onVisibleAreaChange 等，省 CPU。
@@ -234,6 +236,21 @@ export struct MarkdownHeading {
         this.node.headingLevel,
         this.headingTheme
       )
+    }).transition(
+      TransitionEffect.asymmetric(
+        this.globalTheme.paragraphHeadingAnimationEnabled
+          ? TransitionEffect.opacity(0).animation({ duration: this.globalTheme.paragraphHeadingAnimationDuration })
+          : TransitionEffect.IDENTITY,
+        TransitionEffect.IDENTITY
+      )
+    )
+    .onAppear(() => {
+      if (this.globalTheme.paragraphHeadingAnimationEnabled) {
+        this.paragraphHeadingAnimationStart?.()
+        setTimeout(() => {
+          this.paragraphHeadingAnimationEnd?.()
+        }, this.globalTheme.paragraphHeadingAnimationDuration)
+      }
     })
   }
 

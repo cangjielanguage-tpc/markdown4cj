@@ -106,9 +106,9 @@ struct ParagraphDetailsPage {
   @State // 段落文本字符间距
   paragraphTextLetterSpacing: number = 0.0
   @State // 段落加载动画是否启用
-  paragraphAnimationEnabled: boolean = false
+  paragraphHeadingAnimationEnabled: boolean = false
   @State // 段落加载动画时长（ms）
-  paragraphAnimationDuration: number = 0
+  paragraphHeadingAnimationDuration: number = 0
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -167,8 +167,8 @@ struct ParagraphDetailsPage {
       this.paragraphTextFontFamily = paragraphData._paragraphTextFontFamily
       this.paragraphTextLineHeight = paragraphData._paragraphTextLineHeight
       this.paragraphTextLetterSpacing = paragraphData._paragraphTextLetterSpacing
-      this.paragraphAnimationEnabled = paragraphData._paragraphAnimationEnabled
-      this.paragraphAnimationDuration = paragraphData._paragraphAnimationDuration
+      this.paragraphHeadingAnimationEnabled = paragraphData._paragraphHeadingAnimationEnabled
+      this.paragraphHeadingAnimationDuration = paragraphData._paragraphHeadingAnimationDuration
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -286,8 +286,8 @@ struct ParagraphDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setParagraphAnimationStart(this.paragraphAnimationStartCallBack)
-    config.setParagraphAnimationEnd(this.paragraphAnimationEndCallBack)
+    config.setParagraphHeadingAnimationStart(this.paragraphHeadingAnimationStartCallBack)
+    config.setParagraphHeadingAnimationEnd(this.paragraphHeadingAnimationEndCallBack)
     if (this.beforeSelectedParagraphBackgroundColor !== undefined) {
       config.getMarkdownHighlightParagraph().setBeforeSelectedParagraphBackgroundColor(this.beforeSelectedParagraphBackgroundColor)
     }
@@ -298,11 +298,11 @@ struct ParagraphDetailsPage {
     return config
   }
 
-  paragraphAnimationStartCallBack(): void {
+  paragraphHeadingAnimationStartCallBack(): void {
     hilog.error(1, "paragraphAnimation", `---AnimationStart`)
   }
 
-  paragraphAnimationEndCallBack(): void {
+  paragraphHeadingAnimationEndCallBack(): void {
     hilog.error(1, "paragraphAnimation", `---AnimationEnd`)
   }
 
@@ -326,6 +326,8 @@ struct ParagraphDetailsPage {
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
     globalTheme.setEnableParseThrottle(this.enableParseThrottle)
     globalTheme.setParseThrottleMs(this.parseThrottleMs)
+    globalTheme.setParagraphHeadingAnimationEnabled(this.paragraphHeadingAnimationEnabled)
+    globalTheme.setParagraphHeadingAnimationDuration(this.paragraphHeadingAnimationDuration)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Paragraph
@@ -344,8 +346,6 @@ struct ParagraphDetailsPage {
     paragraphTheme.setParagraphTextFontFamily(this.paragraphTextFontFamily)
     paragraphTheme.setParagraphTextLineHeight(this.paragraphTextLineHeight)
     paragraphTheme.setParagraphTextLetterSpacing(this.paragraphTextLetterSpacing)
-    paragraphTheme.setParagraphAnimationEnabled(this.paragraphAnimationEnabled)
-    paragraphTheme.setParagraphAnimationDuration(this.paragraphAnimationDuration)
     theme.setParagraphTheme(paragraphTheme)
     
     return theme

@@ -17,8 +17,8 @@ export class ParagraphData extends BaseMDData {
   _paragraphTextFontFamily: string | Resource = 'HarmonyOS Sans' // 段落文本字体
   _paragraphTextLineHeight: number | string | Resource = 22.0 // 段落文本行高
   _paragraphTextLetterSpacing: number = 0.0 // 段落文本字符间距
-  _paragraphAnimationEnabled: boolean = false // 段落加载动画是否启用
-  _paragraphAnimationDuration: number = 0 // 段落加载动画时长（ms）
+  _paragraphHeadingAnimationEnabled: boolean = false // 段落加载动画是否启用
+  _paragraphHeadingAnimationDuration: number = 0 // 段落加载动画时长（ms）
   constructor() {
     super()
   }

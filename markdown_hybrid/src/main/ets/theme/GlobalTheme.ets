@@ -20,7 +20,8 @@ export class GlobalTheme implements MarkdownBaseTheme {
   isLineBreak: boolean = false // 是否启用换行渲染
   openGestureSwipe: boolean = false // 是否启用手势滑动打开
   backgroundColor: ResourceColor = COLOR_TRANSPARENT // Markdown容器背景颜色
-
+  paragraphHeadingAnimationEnabled: boolean = false // 段落加载动画是否启用
+  paragraphHeadingAnimationDuration: number = 0 // 段落加载动画时长（ms）
   /**
    * 设置Stage上下文
    *
@@ -171,6 +172,28 @@ export class GlobalTheme implements MarkdownBaseTheme {
    */
   setBackgroundColor(color: ResourceColor): GlobalTheme {
     this.backgroundColor = color
+    return this
+  }
+
+  /**
+   * 设置段落加载动画是否启用
+   *
+   * @param enabled 是否启用
+   * @return ParagraphTheme
+   */
+  setParagraphHeadingAnimationEnabled(enabled: boolean): GlobalTheme {
+    this.paragraphHeadingAnimationEnabled = enabled
+    return this
+  }
+
+  /**
+   * 设置段落加载动画时长
+   *
+   * @param duration 动画时长（ms）
+   * @return ParagraphTheme
+   */
+  setParagraphHeadingAnimationDuration(duration: number): GlobalTheme {
+    this.paragraphHeadingAnimationDuration = duration
     return this
   }
 }

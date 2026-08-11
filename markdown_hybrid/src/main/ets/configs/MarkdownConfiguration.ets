@@ -26,8 +26,8 @@ export class MarkdownConfiguration {
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   tableCopyCallback?: (text: string) => void = undefined // 表格复制点击事件
   customLongPressCallback?: () => void = undefined // 自定义长按事件
-  paragraphAnimationStart?: () => void = undefined // 段落动画开始回调
-  paragraphAnimationEnd?: () => void = undefined // 段落动画结束回调
+  paragraphHeadingAnimationStart?: () => void = undefined // 段落动画开始回调
+  paragraphHeadingAnimationEnd?: () => void = undefined // 段落动画结束回调
 
   markdownHighlightParagraph: MarkdownHighlightParagraph = new MarkdownHighlightParagraph() // 高亮段落设置
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
@@ -93,8 +93,8 @@ export class MarkdownConfiguration {
    *
    * @param cb 段落动画开始回调
    */
-  setParagraphAnimationStart(cb: () => void): MarkdownConfiguration {
-    this.paragraphAnimationStart = cb
+  setParagraphHeadingAnimationStart(cb: () => void): MarkdownConfiguration {
+    this.paragraphHeadingAnimationStart = cb
     return this
   }
 
@@ -103,8 +103,8 @@ export class MarkdownConfiguration {
    *
    * @param cb 段落动画结束回调
    */
-  setParagraphAnimationEnd(cb: () => void): MarkdownConfiguration {
-    this.paragraphAnimationEnd = cb
+  setParagraphHeadingAnimationEnd(cb: () => void): MarkdownConfiguration {
+    this.paragraphHeadingAnimationEnd = cb
     return this
   }
 
