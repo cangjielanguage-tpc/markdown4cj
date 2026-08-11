@@ -24,7 +24,7 @@
     tag = "v1.5.2"
     git = "https://gitcode.com/Cangjie-TPC/formula-ffi.git"
   [dependencies.codeformat]
-    tag = "v1.0.4"
+    tag = "v1.0.7"
     git = "https://gitcode.com/Cangjie-TPC/codeformat4cj.git"
 
 [ffi]
