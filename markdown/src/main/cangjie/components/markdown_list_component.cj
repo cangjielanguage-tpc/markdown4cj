@@ -174,22 +174,7 @@ public class MarkdownListComponent {
                  TransitionEffect.IDENTITY
                )
              )
-             .onAppear({ =>
-                // 段落加载动画开始回调在组件显示时触发
-                if (listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
-                    if (let Some(cb) <- listMarkdownConfiguration.paragraphHeadingAnimationStart) {
-                        cb()
-                    }
-                    let duration = listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
-                    let endCb = listMarkdownConfiguration.paragraphHeadingAnimationEnd
-                    Timer.once(Int64(duration) * Duration.millisecond, { =>
-                        if (let Some(cb) <- endCb) {
-                            cb()
-                        }
-                    })
-                }
-            })
-    }
+        }
 
     /**
      * 任务列表的前缀多选框
@@ -216,22 +201,7 @@ public class MarkdownListComponent {
                  TransitionEffect.IDENTITY
                )
              )
-             .onAppear({ =>
-                // 段落加载动画开始回调在组件显示时触发
-                if (listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
-                    if (let Some(cb) <- listMarkdownConfiguration.paragraphHeadingAnimationStart) {
-                        cb()
-                    }
-                    let duration = listMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
-                    let endCb = listMarkdownConfiguration.paragraphHeadingAnimationEnd
-                    Timer.once(Int64(duration) * Duration.millisecond, { =>
-                        if (let Some(cb) <- endCb) {
-                            cb()
-                        }
-                    })
-                }
-            })
-    }
+        }
 
     /**
      * 数据刷新
