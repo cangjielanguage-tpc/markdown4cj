@@ -448,8 +448,8 @@ public func setParamsTheme(theme: MarkdownTheme): MarkdownTheme {
     theme.setItalicTheme(italicTheme)
 
     let linkTheme = LinkTheme()
-    linkTheme.setLinkIsIcon(true)
-        .setLinkListIsIcon(true)
+    linkTheme.setLinkIsIcon(false)
+        .setLinkListIsIcon(false)
         .setLinkTextFontColor(Color.BLUE)
         .setLinkTextFontSize(16.0)
         .setLinkTextFontStyle(FontStyle.Italic)
@@ -980,7 +980,7 @@ public func setParamsThemeAll(theme: MarkdownTheme): MarkdownTheme {
 
     let linkTheme = LinkTheme()
     linkTheme.setLinkIsIcon(true)
-        .setLinkListIsIcon(true)
+        .setLinkListIsIcon(false)
         .setLinkTextFontColor(Color.BLUE)
         .setLinkTextFontSize(16.0)
         .setLinkTextFontStyle(FontStyle.Italic)

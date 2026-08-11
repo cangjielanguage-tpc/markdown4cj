@@ -258,7 +258,8 @@ func collectSegmentsRecursive(node: CommonmarkNode, currentWeight: FontWeight, b
                 let codeLh = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextLineHeight) { v } else { currentLineHeight }
                 let codeFst = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextFontStyle) { v } else { currentFontStyle }
                 let codeLs = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextLetterSpacing) { v } else { currentLetterSpacing }
-                segments.add(TextSegment(c.getLiteral(), currentWeight, codeFs, codeLh, codeFst, codeLs))
+                let codeWt = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextFontWeight) { v } else { currentWeight }
+                segments.add(TextSegment(c.getLiteral(), codeWt, codeFs, codeLh, codeFst, codeLs))
             case _: SoftLineBreak =>
                 segments.add(TextSegment(if (isLineBreak) { "\n" } else { " " }, currentWeight, currentFontSize, currentLineHeight, currentFontStyle, currentLetterSpacing))
             case _: HardLineBreak =>
@@ -273,25 +274,29 @@ func collectSegmentsRecursive(node: CommonmarkNode, currentWeight: FontWeight, b
                 let italicFs = if (let Some(v) <- theme.italicTheme.italicTextFontSize) { v } else { currentFontSize }
                 let italicLh = if (let Some(v) <- theme.italicTheme.italicTextLineHeight) { v } else { currentLineHeight }
                 let italicLs = if (let Some(v) <- theme.italicTheme.italicTextLetterSpacing) { v } else { currentLetterSpacing }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, italicFs, italicLh, FontStyle.Italic, italicLs, theme, segments)
+                let italicWt = if (let Some(v) <- theme.italicTheme.italicTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, italicWt, boldWeight, isLineBreak, italicFs, italicLh, FontStyle.Italic, italicLs, theme, segments)
             case _: Strikethrough =>
                 let strikeFs = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextFontSize) { v } else { currentFontSize }
                 let strikeLh = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextLineHeight) { v } else { currentLineHeight }
                 let strikeFst = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextFontStyle) { v } else { currentFontStyle }
                 let strikeLs = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextLetterSpacing) { v } else { currentLetterSpacing }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, strikeFs, strikeLh, strikeFst, strikeLs, theme, segments)
+                let strikeWt = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, strikeWt, boldWeight, isLineBreak, strikeFs, strikeLh, strikeFst, strikeLs, theme, segments)
             case _: HighlightNode =>
                 let hlFs = if (let Some(v) <- theme.highlightTheme.highlightTextFontSize) { v } else { currentFontSize }
                 let hlLh = if (let Some(v) <- theme.highlightTheme.highlightTextLineHeight) { v } else { currentLineHeight }
                 let hlFst = if (let Some(v) <- theme.highlightTheme.highlightTextFontStyle) { v } else { currentFontStyle }
                 let hlLs = if (let Some(v) <- theme.highlightTheme.highlightTextLetterSpacing) { v } else { currentLetterSpacing }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, hlFs, hlLh, hlFst, hlLs, theme, segments)
+                let hlWt = if (let Some(v) <- theme.highlightTheme.highlightTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, hlWt, boldWeight, isLineBreak, hlFs, hlLh, hlFst, hlLs, theme, segments)
             case _: UnderlineNode =>
                 let ulFs = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextFontSize) { v } else { currentFontSize }
                 let ulLh = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextLineHeight) { v } else { currentLineHeight }
                 let ulFst = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextFontStyle) { v } else { currentFontStyle }
                 let ulLs = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextLetterSpacing) { v } else { currentLetterSpacing }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, ulFs, ulLh, ulFst, ulLs, theme, segments)
+                let ulWt = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, ulWt, boldWeight, isLineBreak, ulFs, ulLh, ulFst, ulLs, theme, segments)
             case _: CommonmarkLink =>
                 let linkFs = if (let Some(v) <- theme.linkTheme.linkTextFontSize) { v } else { currentFontSize }
                 let linkLh = if (let Some(v) <- theme.linkTheme.linkTextLineHeight) { v } else { currentLineHeight }
@@ -304,15 +309,18 @@ func collectSegmentsRecursive(node: CommonmarkNode, currentWeight: FontWeight, b
                 let fnLh = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextLineHeight) { v } else { currentLineHeight }
                 let fnFst = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextFontStyle) { v } else { currentFontStyle }
                 let fnLs = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextLetterSpacing) { v } else { currentLetterSpacing }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, fnFs, fnLh, fnFst, fnLs, theme, segments)
+                let fnWt = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, fnWt, boldWeight, isLineBreak, fnFs, fnLh, fnFst, fnLs, theme, segments)
             case _: SubNode =>
                 let subFst = if (let Some(v) <- theme.subTheme.subTextFontStyle) { v } else { currentFontStyle }
                 let subLs = if (let Some(v) <- theme.subTheme.subTextLetterSpacing) { v } else { currentLetterSpacing }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, theme.subTheme.subTextFontSize, currentLineHeight, subFst, subLs, theme, segments)
+                let subWt = if (let Some(v) <- theme.subTheme.subTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, subWt, boldWeight, isLineBreak, theme.subTheme.subTextFontSize, currentLineHeight, subFst, subLs, theme, segments)
             case _: SupNode =>
                 let supFst = if (let Some(v) <- theme.supTheme.supTextFontStyle) { v } else { currentFontStyle }
                 let supLs = if (let Some(v) <- theme.supTheme.supTextLetterSpacing) { v } else { currentLetterSpacing }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, theme.supTheme.supTextFontSize, currentLineHeight, supFst, supLs, theme, segments)
+                let supWt = if (let Some(v) <- theme.supTheme.supTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, supWt, boldWeight, isLineBreak, theme.supTheme.supTextFontSize, currentLineHeight, supFst, supLs, theme, segments)
             case _: FontNode =>
                 var fontNodeFontSize: Float64 = currentFontSize
                 try {
@@ -470,7 +478,6 @@ func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Flo
             var currentLineWidth: Float64 = 0.0
             var currentLineMaxLh: Float64 = 0.0
             var lineCount: Int64 = 0
-            var prevSegLetterSpacing: Float64 = 0.0
             for (seg in lineSegs) {
                 let widthPx = Measure.MeasureText(MeasureOptions(
                     textContent: seg.text,
@@ -511,17 +518,15 @@ func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Flo
                         currentLineWidth = 1.0
                         currentLineMaxLh = seg.lineHeight
                     }
-                    prevSegLetterSpacing = seg.letterSpacing
                     continue
                 }
-                if (currentLineWidth > 0.0 && currentLineWidth + prevSegLetterSpacing + widthVp > componentWidth) {
+                if (currentLineWidth > 0.0 && currentLineWidth + widthVp > componentWidth) {
                     totalHeight += currentLineMaxLh
                     lineCount++
                     currentLineWidth = 0.0
                     currentLineMaxLh = 0.0
                 }
-                currentLineWidth += if (currentLineWidth > 0.0) { prevSegLetterSpacing + widthVp } else { widthVp }
-                prevSegLetterSpacing = seg.letterSpacing
+                currentLineWidth += widthVp
                 if (seg.lineHeight > currentLineMaxLh) {
                     currentLineMaxLh = seg.lineHeight
                 }
@@ -573,7 +578,7 @@ func calcHeadingHeight(node: Heading, theme: MarkdownTheme, componentWidth: Floa
             result = ht.heading2MarginTop + ht.heading2PaddingTop + contentHeight +
                 ht.heading2UnderlineHeight + ht.heading2UnderlineSpacing +
                 ht.heading2PaddingBottom + ht.heading2MarginBottom
-        case 3 =>
+         case 3 =>
             let textWidth: Float64 = componentWidth - ht.heading3MarginLeft - ht.heading3MarginRight -
                 ht.heading3PaddingLeft - ht.heading3PaddingRight
             let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading3TextFontWeight, boldWeight, isLineBreak, ht.heading3TextFontSize, ht.heading3TextLineHeight, ht.heading3TextFontStyle, ht.heading3TextLetterSpacing, theme), ht.heading3TextFontSize, ht.heading3TextLineHeight, textWidth, ht.heading3TextLetterSpacing)
