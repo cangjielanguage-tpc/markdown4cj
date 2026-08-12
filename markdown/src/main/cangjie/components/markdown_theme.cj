@@ -3761,54 +3761,6 @@ public class MarkdownTheme {
     }
 
     /**
-     * 设置表格标题行是否吸顶
-     *
-     * @param tableStickyHeader 是否吸顶 - 默认false
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用TableTheme.setTableStickyHeader方法代替", since: "1.4.0"]
-    public func setTableStickyHeader(tableStickyHeader: Bool): MarkdownTheme {
-        this.tableTheme.tableStickyHeader = tableStickyHeader
-        return this
-    }
-
-    /**
-     * 设置表格头复制按钮是否显示
-     *
-     * @param tableHeadIsShow 是否显示
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用TableTheme.setTableHeadIsShow方法代替", since: "1.4.0"]
-    public func setTableHeadIsShow(tableHeadIsShow: Bool): MarkdownTheme {
-        this.tableTheme.tableHeadIsShow = tableHeadIsShow
-        return this
-    }
-
-    /**
-     * 设置表格头标题文字
-     *
-     * @param tableHeadTitleText 标题文字
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用TableTheme.setTableHeadTitleText方法代替", since: "1.4.0"]
-    public func setTableHeadTitleText(tableHeadTitleText: String): MarkdownTheme {
-        this.tableTheme.tableHeadTitleText = tableHeadTitleText
-        return this
-    }
-
-    /**
-     * 设置表格头复制图标
-     *
-     * @param tableHeadCopyIcon 复制图标资源
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用TableTheme.setTableHeadCopyIcon方法代替", since: "1.4.0"]
-    public func setTableHeadCopyIcon(tableHeadCopyIcon: AppResource): MarkdownTheme {
-        this.tableTheme.tableHeadCopyIcon = tableHeadCopyIcon
-        return this
-    }
-
-    /**
      * 设置删除线颜色
      *
      * @param strikethroughColor 删除线颜色 默认0xFF191919
