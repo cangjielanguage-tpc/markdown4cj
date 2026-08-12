@@ -40,13 +40,20 @@ public func preMarkwonHeightByNode(content: String, config: MarkdownConfiguratio
     let doc: CommonmarkNode = markdownPlugin.toMarkdown(content)
     var totalHeight: Float64 = 0.0
     var first: Bool = true
+    var blockIdx: Int64 = 0
     for (block in doc.iterateChildren()) {
-        let blockHeight = estimateBlockNodeHeight(block, theme, actualWidth, blockSpacing)
-        if (!first) {
-            totalHeight += blockSpacing
+        match (block) {
+            case _: HtmlBlock =>
+                ()
+            case _ =>
+                let blockHeight = estimateBlockNodeHeight(block, theme, actualWidth, blockSpacing)
+                if (!first) {
+                    totalHeight += blockSpacing
+                }
+                first = false
+                totalHeight += blockHeight
         }
-        first = false
-        totalHeight += blockHeight
+        blockIdx++
     }
     totalHeight += global.blockMarginTop + global.blockMarginBottom
     return totalHeight
@@ -68,9 +75,9 @@ func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, compone
         case p: Paragraph =>
             return estimateParagraphNodeHeight(p, theme, componentWidth)
         case fcb: FencedCodeBlock =>
-            return estimateCodeBlockNodeHeight(fcb.getLiteral(), theme)
+            return estimateCodeBlockNodeHeight(fcb.getLiteral(), theme, fcb.getInfo(), true)
         case icb: IndentedCodeBlock =>
-            return estimateCodeBlockNodeHeight(icb.getLiteral(), theme)
+            return estimateCodeBlockNodeHeight(icb.getLiteral(), theme, "", false)
         case _: ThematicBreak =>
             return estimateDividerHeight(theme)
         case bq: BlockQuote =>
@@ -121,6 +128,79 @@ func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, compone
     }
 }
 
+func blockTypeName(node: CommonmarkNode): String {
+    match (node) {
+        case _: Heading => "Heading"
+        case _: Paragraph => "Paragraph"
+        case _: FencedCodeBlock => "FencedCodeBlock"
+        case _: IndentedCodeBlock => "IndentedCodeBlock"
+        case _: ThematicBreak => "ThematicBreak"
+        case _: BlockQuote => "BlockQuote"
+        case _: BulletList => "BulletList"
+        case _: OrderedList => "OrderedList"
+        case _: TableBlock => "TableBlock"
+        case _: FootnoteBlock => "FootnoteBlock"
+        case _: DescList => "DescList"
+        case _: DescTerm => "DescTerm"
+        case _: DescDef => "DescDef"
+        case _: LatexMathBlock => "LatexMathBlock"
+        case _: FencedCodeBlockListBlock => "FencedCodeBlockListBlock"
+        case _: BlockAudio => "BlockAudio"
+        case _: BlockVideo => "BlockVideo"
+        case _: SlideBlock => "SlideBlock"
+        case _: ImageSingleBlock => "ImageSingleBlock"
+        case _: IgnoreBlockNode => "IgnoreBlockNode"
+        case _: HtmlBlock => "HtmlBlock"
+        case _ => "Other"
+    }
+}
+
+func getBlockTopMargin(node: CommonmarkNode, theme: MarkdownTheme): Float64 {
+    match (node) {
+        case _: Paragraph => return theme.paragraphTheme.paragraphMarginTop
+        case h: Heading =>
+            match (Int64(h.getLevel())) {
+                case 1 => return theme.headingTheme.heading1MarginTop
+                case 2 => return theme.headingTheme.heading2MarginTop
+                case 3 => return theme.headingTheme.heading3MarginTop
+                case 4 => return theme.headingTheme.heading4MarginTop
+                case 5 => return theme.headingTheme.heading5MarginTop
+                case 6 => return theme.headingTheme.heading6MarginTop
+                case _ => return 0.0
+            }
+        case _: OrderedList => return theme.orderedListTheme.orderedListMarginTop
+        case _: BulletList => return theme.bulletListTheme.bulletListMarginTop
+        case _: BlockQuote => return theme.blockQuoteTheme.blockQuoteMarginTop
+        case _: FencedCodeBlock => return theme.codeBlockTheme.codeBlockMarginTop
+        case _: IndentedCodeBlock => return theme.codeBlockTheme.codeBlockMarginTop
+        case _: ThematicBreak => return theme.dividerTheme.dividerMarginTop
+        case _ => return 0.0
+    }
+}
+
+func getBlockBottomMargin(node: CommonmarkNode, theme: MarkdownTheme): Float64 {
+    match (node) {
+        case _: Paragraph => return theme.paragraphTheme.paragraphMarginBottom
+        case h: Heading =>
+            match (Int64(h.getLevel())) {
+                case 1 => return theme.headingTheme.heading1MarginBottom
+                case 2 => return theme.headingTheme.heading2MarginBottom
+                case 3 => return theme.headingTheme.heading3MarginBottom
+                case 4 => return theme.headingTheme.heading4MarginBottom
+                case 5 => return theme.headingTheme.heading5MarginBottom
+                case 6 => return theme.headingTheme.heading6MarginBottom
+                case _ => return 0.0
+            }
+        case _: OrderedList => return theme.orderedListTheme.orderedListMarginBottom
+        case _: BulletList => return theme.bulletListTheme.bulletListMarginBottom
+        case _: BlockQuote => return theme.blockQuoteTheme.blockQuoteMarginBottom
+        case _: FencedCodeBlock => return theme.codeBlockTheme.codeBlockMarginBottom
+        case _: IndentedCodeBlock => return theme.codeBlockTheme.codeBlockMarginBottom
+        case _: ThematicBreak => return theme.dividerTheme.dividerMarginBottom
+        case _ => return 0.0
+    }
+}
+
 /**
  * 文本片段（带字体粗细）
  *
@@ -132,11 +212,15 @@ struct TextSegment {
     public let weight: FontWeight
     public let fontSize: Float64
     public let lineHeight: Float64
-    public init(text: String, weight: FontWeight, fontSize: Float64, lineHeight: Float64) {
+    public let fontStyle: FontStyle
+    public let letterSpacing: Float64
+    public init(text: String, weight: FontWeight, fontSize: Float64, lineHeight: Float64, fontStyle: FontStyle, letterSpacing: Float64) {
         this.text = text
         this.weight = weight
         this.fontSize = fontSize
         this.lineHeight = lineHeight
+        this.fontStyle = fontStyle
+        this.letterSpacing = letterSpacing
     }
 }
 
@@ -155,60 +239,88 @@ struct TextSegment {
  * @param baseFontSize 基础字号（段落/标题/表格单元格的 fontSize，FontNode/SpanNode 子节点会覆盖）
  * @return 文本片段列表
  */
-func collectInlineSegments(node: CommonmarkNode, baseWeight: FontWeight, boldWeight: FontWeight, isLineBreak: Bool, baseFontSize: Float64, baseLineHeight: Float64, theme: MarkdownTheme): ArrayList<TextSegment> {
+func collectInlineSegments(node: CommonmarkNode, baseWeight: FontWeight, boldWeight: FontWeight, isLineBreak: Bool, baseFontSize: Float64, baseLineHeight: Float64, baseFontStyle: FontStyle, baseLetterSpacing: Float64, theme: MarkdownTheme): ArrayList<TextSegment> {
     let segments = ArrayList<TextSegment>()
-    collectSegmentsRecursive(node, baseWeight, boldWeight, isLineBreak, baseFontSize, baseLineHeight, theme, segments)
+    collectSegmentsRecursive(node, baseWeight, boldWeight, isLineBreak, baseFontSize, baseLineHeight, baseFontStyle, baseLetterSpacing, theme, segments)
     if (segments.size == 0) {
-        segments.add(TextSegment("", baseWeight, baseFontSize, baseLineHeight))
+        segments.add(TextSegment("", baseWeight, baseFontSize, baseLineHeight, baseFontStyle, baseLetterSpacing))
     }
     return segments
 }
 
-func collectSegmentsRecursive(node: CommonmarkNode, currentWeight: FontWeight, boldWeight: FontWeight, isLineBreak: Bool, currentFontSize: Float64, currentLineHeight: Float64, theme: MarkdownTheme, segments: ArrayList<TextSegment>): Unit {
+func collectSegmentsRecursive(node: CommonmarkNode, currentWeight: FontWeight, boldWeight: FontWeight, isLineBreak: Bool, currentFontSize: Float64, currentLineHeight: Float64, currentFontStyle: FontStyle, currentLetterSpacing: Float64, theme: MarkdownTheme, segments: ArrayList<TextSegment>): Unit {
     for (child in node.iterateChildren()) {
         match (child) {
             case t: CommonmarkText =>
-                segments.add(TextSegment(t.getLiteral(), currentWeight, currentFontSize, currentLineHeight))
+                segments.add(TextSegment(t.getLiteral(), currentWeight, currentFontSize, currentLineHeight, currentFontStyle, currentLetterSpacing))
             case c: Code =>
                 let codeFs = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextFontSize) { v } else { currentFontSize }
                 let codeLh = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextLineHeight) { v } else { currentLineHeight }
-                segments.add(TextSegment(c.getLiteral(), currentWeight, codeFs, codeLh))
+                let codeFst = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextFontStyle) { v } else { currentFontStyle }
+                let codeLs = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextLetterSpacing) { v } else { currentLetterSpacing }
+                let codeWt = if (let Some(v) <- theme.inlineCodeTheme.inlineCodeTextFontWeight) { v } else { currentWeight }
+                segments.add(TextSegment(c.getLiteral(), codeWt, codeFs, codeLh, codeFst, codeLs))
             case _: SoftLineBreak =>
-                segments.add(TextSegment(if (isLineBreak) { "\n" } else { " " }, currentWeight, currentFontSize, currentLineHeight))
+                segments.add(TextSegment(if (isLineBreak) { "\n" } else { " " }, currentWeight, currentFontSize, currentLineHeight, currentFontStyle, currentLetterSpacing))
             case _: HardLineBreak =>
-                segments.add(TextSegment("\n", currentWeight, currentFontSize, currentLineHeight))
+                segments.add(TextSegment("\n", currentWeight, currentFontSize, currentLineHeight, currentFontStyle, currentLetterSpacing))
             case _: StrongEmphasis =>
                 let boldFs = if (let Some(v) <- theme.boldTheme.boldTextFontSize) { v } else { currentFontSize }
                 let boldLh = if (let Some(v) <- theme.boldTheme.boldTextLineHeight) { v } else { currentLineHeight }
-                collectSegmentsRecursive(child, boldWeight, boldWeight, isLineBreak, boldFs, boldLh, theme, segments)
+                let boldFst = if (let Some(v) <- theme.boldTheme.boldTextFontStyle) { v } else { currentFontStyle }
+                let boldLs = if (let Some(v) <- theme.boldTheme.boldTextLetterSpacing) { v } else { currentLetterSpacing }
+                collectSegmentsRecursive(child, boldWeight, boldWeight, isLineBreak, boldFs, boldLh, boldFst, boldLs, theme, segments)
             case _: Emphasis =>
                 let italicFs = if (let Some(v) <- theme.italicTheme.italicTextFontSize) { v } else { currentFontSize }
                 let italicLh = if (let Some(v) <- theme.italicTheme.italicTextLineHeight) { v } else { currentLineHeight }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, italicFs, italicLh, theme, segments)
+                let italicLs = if (let Some(v) <- theme.italicTheme.italicTextLetterSpacing) { v } else { currentLetterSpacing }
+                let italicWt = if (let Some(v) <- theme.italicTheme.italicTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, italicWt, boldWeight, isLineBreak, italicFs, italicLh, FontStyle.Italic, italicLs, theme, segments)
             case _: Strikethrough =>
                 let strikeFs = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextFontSize) { v } else { currentFontSize }
                 let strikeLh = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextLineHeight) { v } else { currentLineHeight }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, strikeFs, strikeLh, theme, segments)
+                let strikeFst = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextFontStyle) { v } else { currentFontStyle }
+                let strikeLs = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextLetterSpacing) { v } else { currentLetterSpacing }
+                let strikeWt = if (let Some(v) <- theme.strikethroughTheme.strikethroughTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, strikeWt, boldWeight, isLineBreak, strikeFs, strikeLh, strikeFst, strikeLs, theme, segments)
             case _: HighlightNode =>
                 let hlFs = if (let Some(v) <- theme.highlightTheme.highlightTextFontSize) { v } else { currentFontSize }
                 let hlLh = if (let Some(v) <- theme.highlightTheme.highlightTextLineHeight) { v } else { currentLineHeight }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, hlFs, hlLh, theme, segments)
+                let hlFst = if (let Some(v) <- theme.highlightTheme.highlightTextFontStyle) { v } else { currentFontStyle }
+                let hlLs = if (let Some(v) <- theme.highlightTheme.highlightTextLetterSpacing) { v } else { currentLetterSpacing }
+                let hlWt = if (let Some(v) <- theme.highlightTheme.highlightTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, hlWt, boldWeight, isLineBreak, hlFs, hlLh, hlFst, hlLs, theme, segments)
             case _: UnderlineNode =>
                 let ulFs = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextFontSize) { v } else { currentFontSize }
                 let ulLh = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextLineHeight) { v } else { currentLineHeight }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, ulFs, ulLh, theme, segments)
+                let ulFst = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextFontStyle) { v } else { currentFontStyle }
+                let ulLs = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextLetterSpacing) { v } else { currentLetterSpacing }
+                let ulWt = if (let Some(v) <- theme.htmlUnderlineTheme.htmlUnderlineTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, ulWt, boldWeight, isLineBreak, ulFs, ulLh, ulFst, ulLs, theme, segments)
             case _: CommonmarkLink =>
                 let linkFs = if (let Some(v) <- theme.linkTheme.linkTextFontSize) { v } else { currentFontSize }
                 let linkLh = if (let Some(v) <- theme.linkTheme.linkTextLineHeight) { v } else { currentLineHeight }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, linkFs, linkLh, theme, segments)
+                let linkFst = if (let Some(v) <- theme.linkTheme.linkTextFontStyle) { v } else { currentFontStyle }
+                let linkWt = if (let Some(v) <- theme.linkTheme.linkTextFontWeight) { v } else { currentWeight }
+                let linkLs = if (let Some(v) <- theme.linkTheme.linkTextLetterSpacing) { v } else { currentLetterSpacing }
+                collectSegmentsRecursive(child, linkWt, boldWeight, isLineBreak, linkFs, linkLh, linkFst, linkLs, theme, segments)
             case _: Footnote =>
                 let fnFs = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextFontSize) { v } else { currentFontSize }
                 let fnLh = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextLineHeight) { v } else { currentLineHeight }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, fnFs, fnLh, theme, segments)
+                let fnFst = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextFontStyle) { v } else { currentFontStyle }
+                let fnLs = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextLetterSpacing) { v } else { currentLetterSpacing }
+                let fnWt = if (let Some(v) <- theme.footnoteRefTheme.footnoteRefTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, fnWt, boldWeight, isLineBreak, fnFs, fnLh, fnFst, fnLs, theme, segments)
             case _: SubNode =>
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, theme.subTheme.subTextFontSize, currentLineHeight, theme, segments)
+                let subFst = if (let Some(v) <- theme.subTheme.subTextFontStyle) { v } else { currentFontStyle }
+                let subLs = if (let Some(v) <- theme.subTheme.subTextLetterSpacing) { v } else { currentLetterSpacing }
+                let subWt = if (let Some(v) <- theme.subTheme.subTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, subWt, boldWeight, isLineBreak, theme.subTheme.subTextFontSize, currentLineHeight, subFst, subLs, theme, segments)
             case _: SupNode =>
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, theme.supTheme.supTextFontSize, currentLineHeight, theme, segments)
+                let supFst = if (let Some(v) <- theme.supTheme.supTextFontStyle) { v } else { currentFontStyle }
+                let supLs = if (let Some(v) <- theme.supTheme.supTextLetterSpacing) { v } else { currentLetterSpacing }
+                let supWt = if (let Some(v) <- theme.supTheme.supTextFontWeight) { v } else { currentWeight }
+                collectSegmentsRecursive(child, supWt, boldWeight, isLineBreak, theme.supTheme.supTextFontSize, currentLineHeight, supFst, supLs, theme, segments)
             case _: FontNode =>
                 var fontNodeFontSize: Float64 = currentFontSize
                 try {
@@ -220,7 +332,7 @@ func collectSegmentsRecursive(node: CommonmarkNode, currentWeight: FontWeight, b
                     }
                 } catch (_: Exception) {
                 }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, fontNodeFontSize, currentLineHeight, theme, segments)
+                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, fontNodeFontSize, currentLineHeight, currentFontStyle, currentLetterSpacing, theme, segments)
             case _: SpanNode =>
                 var spanNodeFontSize: Float64 = currentFontSize
                 try {
@@ -237,9 +349,9 @@ func collectSegmentsRecursive(node: CommonmarkNode, currentWeight: FontWeight, b
                     }
                 } catch (_: Exception) {
                 }
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, spanNodeFontSize, currentLineHeight, theme, segments)
+                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, spanNodeFontSize, currentLineHeight, currentFontStyle, currentLetterSpacing, theme, segments)
             case _ =>
-                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, currentFontSize, currentLineHeight, theme, segments)
+                collectSegmentsRecursive(child, currentWeight, boldWeight, isLineBreak, currentFontSize, currentLineHeight, currentFontStyle, currentLetterSpacing, theme, segments)
         }
     }
 }
@@ -264,12 +376,21 @@ func fontWeightValue(w: FontWeight): Int64 {
     }
 }
 
+func fontStyleValue(fs: FontStyle): Int64 {
+    match (fs) {
+        case FontStyle.Normal => 0
+        case FontStyle.Italic => 1
+        case _ => 0
+    }
+}
+
 /**
  * 使用系统字体度量（ohos.measure）精确计算文本高度
  *
  * 对每行（\n 分隔）文本：
  * - 单一粗细行：调用 Measure.MeasureTextSize(constraintWidth) 获取精确换行高度
- * - 混合粗细行：逐段调用 Measure.MeasureText 获取宽度，按 componentWidth 计算换行行数
+ * - 混合粗细行：将同一行内所有片段拼接后整体调用 Measure.MeasureTextSize(constraintWidth) 测量，
+ *   与渲染端 Text+Span 字符级跨 Span 换行行为一致
  *
  * 替代原固定系数方案（CJK≈fontSize, ASCII≈0.55×fontSize），使用系统真实字体度量，
  * 消除字符宽度系数误差与加粗宽度低估（原方案对加粗文本统一用 W400 系数 1.0，
@@ -309,7 +430,7 @@ func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Flo
                 currentLine = ArrayList<TextSegment>()
             }
             if (parts[i].size > 0) {
-                currentLine.add(TextSegment(parts[i], seg.weight, seg.fontSize, seg.lineHeight))
+                currentLine.add(TextSegment(parts[i], seg.weight, seg.fontSize, seg.lineHeight, seg.fontStyle, seg.letterSpacing))
             }
         }
     }
@@ -327,14 +448,15 @@ func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Flo
         let firstWeightValue = fontWeightValue(firstWeight)
         let firstFontSize = lineSegs[0].fontSize
         let firstLineHeight = lineSegs[0].lineHeight
+        let firstFontStyle = lineSegs[0].fontStyle
+        let firstLetterSpacing = lineSegs[0].letterSpacing
         for (seg in lineSegs) {
-            if (fontWeightValue(seg.weight) != firstWeightValue || seg.fontSize != firstFontSize || seg.lineHeight != firstLineHeight) {
+            if (fontWeightValue(seg.weight) != firstWeightValue || seg.fontSize != firstFontSize || seg.lineHeight != firstLineHeight || fontStyleValue(seg.fontStyle) != fontStyleValue(firstFontStyle) || seg.letterSpacing != firstLetterSpacing) {
                 sameStyle = false
                 break
             }
         }
         if (sameStyle) {
-            // 单一粗细+字号+行高：用 MeasureTextSize + constraintWidth 获取精确换行高度
             var lineText = StringBuilder()
             for (seg in lineSegs) {
                 lineText.append(seg.text)
@@ -345,59 +467,57 @@ func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Flo
                 fontSize: Some(firstFontSize.fp),
                 lineHeight: Some(firstLineHeight.vp),
                 constraintWidth: Some(componentWidth.vp),
-                letterSpacing: Some(letterSpacing.vp)
+                letterSpacing: Some(firstLetterSpacing.vp),
+                fontStyle: firstFontStyle
             ))
             let heightVp = px2vp(size.height.px).getOrThrow().value
-            totalHeight += if (heightVp > 0.0) { heightVp } else { firstLineHeight }
+            let h = if (heightVp > 0.0) { heightVp } else { firstLineHeight }
+            totalHeight += h
         } else {
-            // 混合粗细/字号/行高：逐段测宽度按 componentWidth 拆行
-            // 每行取该行内片段 lineHeight 最大值（与渲染端 Text+Span 行内 max lineHeight 一致）
-            var currentLineWidth: Float64 = 0.0
-            var currentLineMaxLh: Float64 = 0.0
+            // 混合粗细/字号/行高：将同一行内所有片段拼接后整体测量
+            // 与渲染端 Text+Span 行为一致：文本在字符级别跨 Span 边界换行，
+            // 而非将每个片段视为原子单元。使用最长片段的样式作为代表样式，
+            // 行高取所有片段 lineHeight 最大值（与渲染端 Text+Span 行内 max lineHeight 一致）。
+            var lineText = StringBuilder()
+            var maxLh: Float64 = 0.0
+            var repFs: Float64 = lineSegs[0].fontSize
+            var repWeight: FontWeight = lineSegs[0].weight
+            var repStyle: FontStyle = lineSegs[0].fontStyle
+            var repLs: Float64 = lineSegs[0].letterSpacing
+            var maxTextLen: Int64 = 0
             for (seg in lineSegs) {
-                let widthPx = Measure.MeasureText(MeasureOptions(
-                    textContent: seg.text,
-                    fontWeight: seg.weight,
-                    fontSize: Some(seg.fontSize.fp),
-                    letterSpacing: Some(letterSpacing.vp)
-                ))
-                let widthVp = px2vp(widthPx.px).getOrThrow().value
-                // 单段宽度超过行宽：段内换行，按 ceil(width/lineWidth) 计占用行数，每行用该段 lineHeight
-                if (widthVp > componentWidth) {
-                    // 先结算当前行（若有内容）
-                    if (currentLineWidth > 0.0) {
-                        let partialLh = if (seg.lineHeight > currentLineMaxLh) { seg.lineHeight } else { currentLineMaxLh }
-                        totalHeight += partialLh
-                        let remainingWidth = componentWidth - currentLineWidth
-                        let restWidth = widthVp - remainingWidth
-                        let rawLines = ceil(restWidth / componentWidth)
-                        let segLines: Float64 = if (rawLines > 1.0) { rawLines } else { 1.0 }
-                        totalHeight += segLines * seg.lineHeight
-                        currentLineWidth = 0.0
-                        currentLineMaxLh = 0.0
-                    } else {
-                        let rawLines = ceil(widthVp / componentWidth)
-                        let segLines: Float64 = if (rawLines > 1.0) { rawLines } else { 1.0 }
-                        totalHeight += segLines * seg.lineHeight
-                    }
-                    continue
+                lineText.append(seg.text)
+                if (seg.lineHeight > maxLh) {
+                    maxLh = seg.lineHeight
                 }
-                // 加入当前段会溢出：结算当前行，开新行
-                if (currentLineWidth + widthVp > componentWidth && currentLineWidth > 0.0) {
-                    totalHeight += currentLineMaxLh
-                    currentLineWidth = 0.0
-                    currentLineMaxLh = 0.0
-                }
-                currentLineWidth += widthVp
-                if (seg.lineHeight > currentLineMaxLh) {
-                    currentLineMaxLh = seg.lineHeight
+                if (seg.text.size > maxTextLen) {
+                    maxTextLen = seg.text.size
+                    repFs = seg.fontSize
+                    repWeight = seg.weight
+                    repStyle = seg.fontStyle
+                    repLs = seg.letterSpacing
                 }
             }
-            // 结算最后一行
-            if (currentLineWidth > 0.0 || currentLineMaxLh > 0.0) {
-                totalHeight += currentLineMaxLh
+            if (maxLh <= 0.0) {
+                maxLh = lineHeight
             }
+            let mixSize = Measure.MeasureTextSize(MeasureOptions(
+                textContent: lineText.toString(),
+                fontWeight: repWeight,
+                fontSize: Some(repFs.fp),
+                lineHeight: Some(maxLh.vp),
+                constraintWidth: Some(componentWidth.vp),
+                letterSpacing: Some(repLs.vp),
+                fontStyle: repStyle
+            ))
+            let mixHeightVp = px2vp(mixSize.height.px).getOrThrow().value
+            let mixH = if (mixHeightVp > 0.0) { mixHeightVp } else { maxLh }
+            totalHeight += mixH
         }
+    }
+    var segDetail = StringBuilder()
+    for (seg in segments) {
+        segDetail.append("[text='${seg.text}' fs=${seg.fontSize} lh=${seg.lineHeight} w=${fontWeightValue(seg.weight)} ls=${seg.letterSpacing}] ")
     }
     return totalHeight
 }
@@ -419,49 +539,50 @@ func calcHeadingHeight(node: Heading, theme: MarkdownTheme, componentWidth: Floa
     let isLineBreak = theme.globalTheme.isLineBreak
     let boldWeight = theme.boldTheme.boldTextFontWeight
     let level: Int64 = Int64(node.getLevel())
+    var result: Float64 = 0.0
     match (level) {
         case 1 =>
-            // 文本约束宽度需扣除一级标题自身左右 margin + padding，与渲染端 Row.margin/padding 后的 Text 可用宽度一致
             let textWidth: Float64 = componentWidth - ht.heading1MarginLeft - ht.heading1MarginRight -
                 ht.heading1PaddingLeft - ht.heading1PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading1TextFontWeight, boldWeight, isLineBreak, ht.heading1TextFontSize, ht.heading1TextLineHeight, theme), ht.heading1TextFontSize, ht.heading1TextLineHeight, textWidth, ht.heading1TextLetterSpacing)
-            return ht.heading1MarginTop + ht.heading1PaddingTop + contentHeight +
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading1TextFontWeight, boldWeight, isLineBreak, ht.heading1TextFontSize, ht.heading1TextLineHeight, ht.heading1TextFontStyle, ht.heading1TextLetterSpacing, theme), ht.heading1TextFontSize, ht.heading1TextLineHeight, textWidth, ht.heading1TextLetterSpacing)
+            result = ht.heading1MarginTop + ht.heading1PaddingTop + contentHeight +
                 ht.heading1UnderlineHeight + ht.heading1UnderlineSpacing +
                 ht.heading1PaddingBottom + ht.heading1MarginBottom
         case 2 =>
             let textWidth: Float64 = componentWidth - ht.heading2MarginLeft - ht.heading2MarginRight -
                 ht.heading2PaddingLeft - ht.heading2PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading2TextFontWeight, boldWeight, isLineBreak, ht.heading2TextFontSize, ht.heading2TextLineHeight, theme), ht.heading2TextFontSize, ht.heading2TextLineHeight, textWidth, ht.heading2TextLetterSpacing)
-            return ht.heading2MarginTop + ht.heading2PaddingTop + contentHeight +
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading2TextFontWeight, boldWeight, isLineBreak, ht.heading2TextFontSize, ht.heading2TextLineHeight, ht.heading2TextFontStyle, ht.heading2TextLetterSpacing, theme), ht.heading2TextFontSize, ht.heading2TextLineHeight, textWidth, ht.heading2TextLetterSpacing)
+            result = ht.heading2MarginTop + ht.heading2PaddingTop + contentHeight +
                 ht.heading2UnderlineHeight + ht.heading2UnderlineSpacing +
                 ht.heading2PaddingBottom + ht.heading2MarginBottom
-        case 3 =>
+         case 3 =>
             let textWidth: Float64 = componentWidth - ht.heading3MarginLeft - ht.heading3MarginRight -
                 ht.heading3PaddingLeft - ht.heading3PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading3TextFontWeight, boldWeight, isLineBreak, ht.heading3TextFontSize, ht.heading3TextLineHeight, theme), ht.heading3TextFontSize, ht.heading3TextLineHeight, textWidth, ht.heading3TextLetterSpacing)
-            return ht.heading3MarginTop + ht.heading3PaddingTop + contentHeight +
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading3TextFontWeight, boldWeight, isLineBreak, ht.heading3TextFontSize, ht.heading3TextLineHeight, ht.heading3TextFontStyle, ht.heading3TextLetterSpacing, theme), ht.heading3TextFontSize, ht.heading3TextLineHeight, textWidth, ht.heading3TextLetterSpacing)
+            result = ht.heading3MarginTop + ht.heading3PaddingTop + contentHeight +
                 ht.heading3PaddingBottom + ht.heading3MarginBottom
         case 4 =>
             let textWidth: Float64 = componentWidth - ht.heading4MarginLeft - ht.heading4MarginRight -
                 ht.heading4PaddingLeft - ht.heading4PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading4TextFontWeight, boldWeight, isLineBreak, ht.heading4TextFontSize, ht.heading4TextLineHeight, theme), ht.heading4TextFontSize, ht.heading4TextLineHeight, textWidth, ht.heading4TextLetterSpacing)
-            return ht.heading4MarginTop + ht.heading4PaddingTop + contentHeight +
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading4TextFontWeight, boldWeight, isLineBreak, ht.heading4TextFontSize, ht.heading4TextLineHeight, ht.heading4TextFontStyle, ht.heading4TextLetterSpacing, theme), ht.heading4TextFontSize, ht.heading4TextLineHeight, textWidth, ht.heading4TextLetterSpacing)
+            result = ht.heading4MarginTop + ht.heading4PaddingTop + contentHeight +
                 ht.heading4PaddingBottom + ht.heading4MarginBottom
         case 5 =>
             let textWidth: Float64 = componentWidth - ht.heading5MarginLeft - ht.heading5MarginRight -
                 ht.heading5PaddingLeft - ht.heading5PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading5TextFontWeight, boldWeight, isLineBreak, ht.heading5TextFontSize, ht.heading5TextLineHeight, theme), ht.heading5TextFontSize, ht.heading5TextLineHeight, textWidth, ht.heading5TextLetterSpacing)
-            return ht.heading5MarginTop + ht.heading5PaddingTop + contentHeight +
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading5TextFontWeight, boldWeight, isLineBreak, ht.heading5TextFontSize, ht.heading5TextLineHeight, ht.heading5TextFontStyle, ht.heading5TextLetterSpacing, theme), ht.heading5TextFontSize, ht.heading5TextLineHeight, textWidth, ht.heading5TextLetterSpacing)
+            result = ht.heading5MarginTop + ht.heading5PaddingTop + contentHeight +
                 ht.heading5PaddingBottom + ht.heading5MarginBottom
         case 6 =>
             let textWidth: Float64 = componentWidth - ht.heading6MarginLeft - ht.heading6MarginRight -
                 ht.heading6PaddingLeft - ht.heading6PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading6TextFontWeight, boldWeight, isLineBreak, ht.heading6TextFontSize, ht.heading6TextLineHeight, theme), ht.heading6TextFontSize, ht.heading6TextLineHeight, textWidth, ht.heading6TextLetterSpacing)
-            return ht.heading6MarginTop + ht.heading6PaddingTop + contentHeight +
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading6TextFontWeight, boldWeight, isLineBreak, ht.heading6TextFontSize, ht.heading6TextLineHeight, ht.heading6TextFontStyle, ht.heading6TextLetterSpacing, theme), ht.heading6TextFontSize, ht.heading6TextLineHeight, textWidth, ht.heading6TextLetterSpacing)
+            result = ht.heading6MarginTop + ht.heading6PaddingTop + contentHeight +
                 ht.heading6PaddingBottom + ht.heading6MarginBottom
         case _ =>
-            return 0.0
+            result = 0.0
     }
+    return result
 }
 
 /**
@@ -497,8 +618,7 @@ func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWi
     let fontSize: Float64 = pt.paragraphTextFontSize
     let lineHeight: Float64 = pt.paragraphTextLineHeight
     let letterSpacing: Float64 = pt.paragraphTextLetterSpacing
-    let segments = collectInlineSegments(p, pt.paragraphTextFontWeight, theme.boldTheme.boldTextFontWeight, theme.globalTheme.isLineBreak, pt.paragraphTextFontSize, pt.paragraphTextLineHeight, theme)
-    // 文本约束宽度需扣除段落自身左右 margin + padding，与渲染端 Row.margin/padding 后的 Text 可用宽度一致
+    let segments = collectInlineSegments(p, pt.paragraphTextFontWeight, theme.boldTheme.boldTextFontWeight, theme.globalTheme.isLineBreak, pt.paragraphTextFontSize, pt.paragraphTextLineHeight, pt.paragraphTextFontStyle, pt.paragraphTextLetterSpacing, theme)
     let textWidth: Float64 = componentWidth - pt.paragraphMarginLeft - pt.paragraphMarginRight -
         pt.paragraphPaddingLeft - pt.paragraphPaddingRight
     let contentHeight: Float64 = measureTextHeightBySegments(segments, fontSize, lineHeight, textWidth, letterSpacing)
@@ -519,10 +639,9 @@ func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWi
  * @param theme MarkdownTheme
  * @return 按钮栏总高度（vp，含 margin）
  */
-func estimateCodeButtonBarHeight(theme: MarkdownTheme): Float64 {
+func estimateCodeButtonBarHeight(theme: MarkdownTheme, includeTypeText!: Bool = true): Float64 {
     let ct: CodeBlockTheme = theme.codeBlockTheme
-    // 代码类型文本行高（始终显示，当 isCodeNone=true）
-    var contentHeight: Float64 = codeTypeTextLineHeight(theme)
+    var contentHeight: Float64 = if (includeTypeText) { codeTypeTextLineHeight(theme) } else { 0.0 }
     // 复制按钮高度
     if (ct.codeBlockCopyButtonIsShow) {
         var copyBtnHeight: Float64 = 0.0
@@ -565,11 +684,18 @@ func estimateCodeButtonBarHeight(theme: MarkdownTheme): Float64 {
  * @param theme MarkdownTheme
  * @return 块高度（vp）
  */
-func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme): Float64 {
+func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme, info: String, isFenced: Bool): Float64 {
     let ct: CodeBlockTheme = theme.codeBlockTheme
-    // 与渲染端一致（node_view.cj: getLiteral().removeSuffix("\n")），
-    // 围栏/缩进代码块 literal 末尾会多一个换行符，需移除避免 split 后多计一行空行
-    let normalized: String = literal.removeSuffix("\n")
+    var codeTextStr = literal
+    if (isFenced && ct.codeBlockIsCodeFormat) {
+        let formatConfig = FormatConfig(useTab: ct.codeBlockUseTab, indentWidth: ct.codeBlockIndentWidth)
+        try {
+            codeTextStr = codeFormat(info, literal, formatConfig)
+        } catch (_: Exception) {
+            codeTextStr = literal
+        }
+    }
+    let normalized: String = codeTextStr.removeSuffix("\n")
     let codeLines: Array<String> = normalized.split("\n")
     var lines: Int64 = Int64(codeLines.size)
     if (lines < 1) {
@@ -577,14 +703,14 @@ func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme): Float64
     }
     let lineHeight: Float64 = ct.codeBlockTextLineHeight
     let codeContentHeight: Float64 = Float64(lines) * lineHeight
-    // 按钮栏高度（与渲染端 codeBlockButtonComponent 一致：仅当代码非空时显示）
     let buttonBarHeight: Float64 = if (normalized.trimAscii().size > 0) {
         estimateCodeButtonBarHeight(theme)
     } else {
         0.0
     }
-    return ct.codeBlockMarginTop + ct.codeBlockPaddingTop + ct.codeBlockBorderWidth * 2.0 + buttonBarHeight + codeContentHeight +
+    let total: Float64 = ct.codeBlockMarginTop + ct.codeBlockPaddingTop + ct.codeBlockBorderWidth * 2.0 + buttonBarHeight + codeContentHeight +
         ct.codeBlockPaddingBottom + ct.codeBlockMarginBottom
+    return total
 }
 
 /**
@@ -599,19 +725,30 @@ func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme): Float64
 func estimateBlockquoteNodeHeight(bq: BlockQuote, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     let bqt: BlockQuoteTheme = theme.blockQuoteTheme
     let innerBlockSpacing: Float64 = Float64(bqt.blockQuoteChildSpacing)
-    // 块引用内容宽度 = 控件宽度 - 左右内边距 - 左侧边框宽度
-    let innerWidth: Float64 = componentWidth - bqt.blockQuotePaddingLeft - bqt.blockQuotePaddingRight - bqt.blockQuoteLeftBorderWidth
-    var innerHeight: Float64 = 0.0
-    var first: Bool = true
+    let innerWidth: Float64 = componentWidth - bqt.blockQuoteMarginLeft - bqt.blockQuoteMarginRight -
+        bqt.blockQuotePaddingLeft - bqt.blockQuotePaddingRight - bqt.blockQuoteLeftBorderWidth
+    let children = ArrayList<CommonmarkNode>()
     for (child in bq.iterateChildren()) {
-        if (!first) {
+        match (child) {
+            case _: HtmlBlock =>
+                ()
+            case _ =>
+                children.add(child)
+        }
+    }
+    var innerHeight: Float64 = 0.0
+    let childCount = children.size
+    for (i in 0..childCount) {
+        let child = children[i]
+        var childHeight = estimateBlockNodeHeight(child, theme, innerWidth, innerBlockSpacing)
+        if (i > 0) {
             innerHeight += innerBlockSpacing
         }
-        first = false
-        innerHeight += estimateBlockNodeHeight(child, theme, innerWidth, innerBlockSpacing)
+        innerHeight += childHeight
     }
-    return bqt.blockQuoteMarginTop + bqt.blockQuotePaddingTop + innerHeight +
+    let bqTotal = bqt.blockQuoteMarginTop + bqt.blockQuotePaddingTop + innerHeight +
         bqt.blockQuotePaddingBottom + bqt.blockQuoteMarginBottom
+    return bqTotal
 }
 
 /**
@@ -657,11 +794,11 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         }
     }
     // 前缀高度：无序/任务列表分别使用对应前缀高度；与内容高度取最大值
-    // 普通无序列表用符号文本行高，任务列表用复选框高度（与渲染端 Checkbox().height 一致）
+    // 普通无序列表用符号文本行高，任务列表用复选框高度+顶部对齐边距（与渲染端 Checkbox().height + margin(top) 一致）
     let prefixHeight: Float64 = if (isOrdered) {
         orderedTheme.orderedListMarkerTextLineHeight
     } else if (isTaskList) {
-        bulletTheme.bulletListCheckboxHeight
+        bulletTheme.bulletListCheckboxHeight + listCheckboxTopMargin(theme)
     } else {
         bulletTheme.bulletListBulletTextLineHeight
     }
@@ -671,7 +808,8 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         let markerWidthPx = Measure.MeasureText(MeasureOptions(
             textContent: "1.",
             fontSize: Some(orderedTheme.orderedListMarkerTextFontSize.fp),
-            fontWeight: orderedTheme.orderedListMarkerTextFontWeight
+            fontWeight: orderedTheme.orderedListMarkerTextFontWeight,
+            fontStyle: orderedTheme.orderedListMarkerTextFontStyle
         ))
         px2vp(markerWidthPx.px).getOrThrow().value + orderedTheme.orderedListMarkerSpacing
     } else if (isTaskList) {
@@ -680,15 +818,18 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         let bulletWidthPx = Measure.MeasureText(MeasureOptions(
             textContent: "\u{25CF}",
             fontSize: Some(bulletTheme.bulletListBulletTextFontSize.fp),
-            fontWeight: bulletTheme.bulletListBulletTextFontWeight
+            fontWeight: bulletTheme.bulletListBulletTextFontWeight,
+            fontStyle: bulletTheme.bulletListBulletTextFontStyle
         ))
         px2vp(bulletWidthPx.px).getOrThrow().value + bulletTheme.bulletListBulletSpacing
     }
     // 内容宽度 = 控件宽度 - 前缀宽度 - 列表左右内边距
     let listPaddingH: Float64 = if (isOrdered) {
-        orderedTheme.orderedListPaddingLeft + orderedTheme.orderedListPaddingRight
+        orderedTheme.orderedListPaddingLeft + orderedTheme.orderedListPaddingRight +
+            orderedTheme.orderedListMarginLeft + orderedTheme.orderedListMarginRight
     } else {
-        bulletTheme.bulletListPaddingLeft + bulletTheme.bulletListPaddingRight
+        bulletTheme.bulletListPaddingLeft + bulletTheme.bulletListPaddingRight +
+            bulletTheme.bulletListMarginLeft + bulletTheme.bulletListMarginRight
     }
     let contentWidth: Float64 = componentWidth - prefixWidth - listPaddingH
     let effectiveContentWidth: Float64 = if (contentWidth > 1.0) { contentWidth } else { 1.0 }
@@ -727,6 +868,7 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
             itemIndex++
         }
     }
+    let listType = if (isOrdered) { "OL" } else { "BL" }
     let listTotal = marginTop + paddingTop + innerHeight + paddingBottom + marginBottom
     return listTotal
 }
@@ -751,13 +893,17 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
  */
 func estimateListItemContentHeight(item: CommonmarkNode, theme: MarkdownTheme, componentWidth: Float64, childChildSpacing: Float64, paragraphLineHeight: Float64, prefixHeight: Float64): Float64 {
     var contentHeight: Float64 = 0.0
-    var first: Bool = true
+    let children = ArrayList<CommonmarkNode>()
     for (child in item.iterateChildren()) {
-        let childHeight = estimateBlockNodeHeight(child, theme, componentWidth, childChildSpacing)
-        if (!first) {
+        children.add(child)
+    }
+    let childCount = children.size
+    for (i in 0..childCount) {
+        let child = children[i]
+        var childHeight = estimateBlockNodeHeight(child, theme, componentWidth, childChildSpacing)
+        if (i > 0) {
             contentHeight += childChildSpacing
         }
-        first = false
         contentHeight += childHeight
     }
     let rowHeight: Float64 = if (contentHeight > prefixHeight) { contentHeight } else { prefixHeight }
@@ -826,10 +972,11 @@ func estimateTableRowContentHeight(row: CommonmarkNode, tt: TableTheme, isHeader
     let lineHeight: Float64 = if (isHeader) { tt.tableTitleTextLineHeight } else { tt.tableContentTextLineHeight }
     let fontWeight: FontWeight = if (isHeader) { tt.tableTitleTextFontWeight } else { tt.tableContentTextFontWeight }
     let letterSpacing: Float64 = if (isHeader) { tt.tableTitleTextLetterSpacing } else { tt.tableContentTextLetterSpacing }
+    let fontStyle: FontStyle = if (isHeader) { tt.tableTitleTextFontStyle } else { tt.tableContentTextFontStyle }
     var maxLines: Float64 = 1.0
     for (cell in row.iterateChildren()) {
         if (cell is TableCell) {
-            let segments = collectInlineSegments(cell, fontWeight, boldWeight, isLineBreak, fontSize, lineHeight, theme)
+            let segments = collectInlineSegments(cell, fontWeight, boldWeight, isLineBreak, fontSize, lineHeight, fontStyle, letterSpacing, theme)
             let textHeight: Float64 = measureTextHeightBySegments(segments, fontSize, lineHeight, cellContentWidth, letterSpacing)
             let lines: Float64 = textHeight / lineHeight
             if (lines > maxLines) {
@@ -848,8 +995,9 @@ func estimateTableRowContentHeight(row: CommonmarkNode, tt: TableTheme, isHeader
  */
 func estimateDividerHeight(theme: MarkdownTheme): Float64 {
     let dt: DividerTheme = theme.dividerTheme
-    return dt.dividerMarginTop + dt.dividerPaddingTop + dt.dividerStrokeWidth +
+    let h = dt.dividerMarginTop + dt.dividerPaddingTop + dt.dividerStrokeWidth +
         dt.dividerPaddingBottom + dt.dividerMarginBottom
+    return h
 }
 
 /**
@@ -865,6 +1013,8 @@ func estimateDividerHeight(theme: MarkdownTheme): Float64 {
  */
 func estimateFootnoteBlockNodeHeight(fb: FootnoteBlock, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     let fdt: FootnoteDefTheme = theme.footnoteDefTheme
+    let innerWidth: Float64 = componentWidth - fdt.footnoteDefPaddingLeft - fdt.footnoteDefPaddingRight -
+        fdt.footnoteDefMarginLeft - fdt.footnoteDefMarginRight
     var innerHeight: Float64 = 0.0
     var first: Bool = true
     for (child in fb.iterateChildren()) {
@@ -872,7 +1022,7 @@ func estimateFootnoteBlockNodeHeight(fb: FootnoteBlock, theme: MarkdownTheme, co
             innerHeight += blockSpacing
         }
         first = false
-        innerHeight += estimateBlockNodeHeight(child, theme, componentWidth, blockSpacing)
+        innerHeight += estimateBlockNodeHeight(child, theme, innerWidth, blockSpacing)
     }
     return fdt.footnoteDefMarginTop + fdt.footnoteDefPaddingTop + innerHeight +
         fdt.footnoteDefPaddingBottom + fdt.footnoteDefMarginBottom
@@ -893,6 +1043,8 @@ func estimateFootnoteBlockNodeHeight(fb: FootnoteBlock, theme: MarkdownTheme, co
  */
 func estimateDescListNodeHeight(dl: DescList, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
     let dlt: DefinitionListTheme = theme.definitionListTheme
+    let innerWidth: Float64 = componentWidth - dlt.definitionListMarginLeft - dlt.definitionListMarginRight -
+        dlt.definitionListPaddingLeft - dlt.definitionListPaddingRight
     let termSpacing: Float64 = dlt.definitionListTermToDescriptionSpacing
     let defSpacing: Float64 = dlt.definitionListDescriptionItemSpacing
     var innerHeight: Float64 = 0.0
@@ -900,7 +1052,7 @@ func estimateDescListNodeHeight(dl: DescList, theme: MarkdownTheme, componentWid
     var prevIsDef: Bool = false
     var first: Bool = true
     for (child in dl.iterateChildren()) {
-        let childHeight: Float64 = estimateBlockNodeHeight(child, theme, componentWidth, blockSpacing)
+        let childHeight: Float64 = estimateBlockNodeHeight(child, theme, innerWidth, blockSpacing)
         if (!first) {
             if (child is DescTerm) {
                 innerHeight += defSpacing
@@ -954,6 +1106,7 @@ func estimateLatexMathBlockNodeHeight(lmb: LatexMathBlock, theme: MarkdownTheme,
         textContent: latex,
         fontSize: Some(lmt.latexMathDefaultTextFontSize.fp),
         fontWeight: lmt.latexMathDefaultTextFontWeight,
+        fontStyle: lmt.latexMathDefaultTextFontStyle,
         constraintWidth: Some(effectiveConstraint.vp)
     ))
     let contentHeight: Float64 = px2vp(size.height.px).getOrThrow().value
@@ -1021,7 +1174,7 @@ func estimateCodeListBlockNodeHeight(clb: FencedCodeBlockListBlock, theme: Markd
     // 标签栏高度（标题字号近似 + 内边距 top/bottom 各 5）+ 底部 margin
     let tabBarHeight: Float64 = ct.codeBlockListTitleSelectTextSize + 10.0 + ct.codeBlockTitleLayoutMarginBottom
     // 按钮栏高度（仅当代码非空时显示）
-    let buttonBarHeight: Float64 = if (hasNonEmptyCode) { estimateCodeButtonBarHeight(theme) } else { 0.0 }
+    let buttonBarHeight: Float64 = if (hasNonEmptyCode) { estimateCodeButtonBarHeight(theme, includeTypeText: false) } else { 0.0 }
     return ct.codeBlockMarginTop + ct.codeBlockPaddingTop + ct.codeBlockBorderWidth * 2.0 + tabBarHeight + buttonBarHeight + maxCodeContentHeight +
         ct.codeBlockPaddingBottom + ct.codeBlockMarginBottom
 }
@@ -1075,7 +1228,8 @@ func estimateAudioBlockNodeHeight(theme: MarkdownTheme): Float64 {
  */
 func estimateVideoBlockNodeHeight(theme: MarkdownTheme, componentWidth: Float64): Float64 {
     let vt: VideoTheme = theme.videoTheme
-    let effectiveWidth: Float64 = componentWidth - vt.videoPaddingLeft - vt.videoPaddingRight
+    let effectiveWidth: Float64 = componentWidth - vt.videoMarginLeft - vt.videoMarginRight -
+        vt.videoPaddingLeft - vt.videoPaddingRight
     let imageHeight: Float64 = effectiveWidth * (9.0 / 16.0)
     var bottomLayoutHeight: Float64 = 0.0
     if (vt.videoBottomLayoutVisible) {

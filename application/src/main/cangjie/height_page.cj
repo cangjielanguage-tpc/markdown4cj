@@ -59,6 +59,10 @@ class HeightPage {
     var markdownPlugin: Markdown = setAllPlugin()
     @State
     var estimatedHeightByNode: Float64 = 0.0
+    @State
+    var actualHeight: Float64 = 0.0
+    @State
+    var precomputeWidthUsed: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
         let markdownTheme:MarkdownTheme = MarkdownTheme()
@@ -92,7 +96,9 @@ class HeightPage {
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
-            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
+            let pw = getMarkdownComponentWidth(paddingH: 5.0)
+            precomputeWidthUsed = pw
+            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin, componentWidth: pw)
         } else {
             mdStr = ""
             let number = textNumber
@@ -156,61 +162,74 @@ class HeightPage {
                 .margin(top: 5.0)
 
             Scroll {
-            Flex(FlexOptions(direction: FlexDirection.Row, wrap: FlexWrap.Wrap)) {
-                ForEach(
-                    getFileList(),
-                    itemGeneratorFunc: {
-                        item: String, _: Int64 =>
-                            Text(item)
-                                .fontSize(12.0)
-                                .fontColor(0xFFFFFFFF)
-                                .backgroundColor(0xFF2196F3)
-                                .height(25.0)
-                                .padding(5.0)
-                                .borderRadius(5.0)
-                                .maxLines(1)
-                                .textOverflow(TextOverflow.Clip)
-                                .margin(2.0)
-                                .onClick {evt => loadFile(item)}
-                    }
-                )
-            }
-            .padding(5.0)
-            .width(100.percent)
-            .backgroundColor(0xFFEAEAEA)
+                Flex(FlexOptions(direction: FlexDirection.Row, wrap: FlexWrap.Wrap)) {
+                    ForEach(
+                        getFileList(),
+                        itemGeneratorFunc: {
+                            item: String, _: Int64 =>
+                                Text(item)
+                                    .fontSize(12.0)
+                                    .fontColor(0xFFFFFFFF)
+                                    .backgroundColor(0xFF2196F3)
+                                    .height(25.0)
+                                    .padding(5.0)
+                                    .borderRadius(5.0)
+                                    .maxLines(1)
+                                    .textOverflow(TextOverflow.Clip)
+                                    .margin(2.0)
+                                    .onClick {evt => loadFile(item)}
+                        }
+                    )
+                }
+                .padding(5.0)
+                .width(100.percent)
+                .backgroundColor(0xFFEAEAEA)
             }
             .width(100.percent)
             .constraintSize(maxHeight: 200.0)
             .scrollable(ScrollDirection.Vertical)
             .scrollBar(BarState.Auto)
+            Text("预览: " + selectedFileName)
+                .fontSize(14.0)
+                .fontColor(0xFF333333)
+                .margin(top: 10.0, left: 5.0)
+            Text("preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
+                .fontSize(12.0)
+                .fontColor(0xFF666666)
+                .margin(top: 3.0, left: 5.0)
+            Text("MarkdownComponent 实际: " + actualHeight.toString() + " vp")
+                .fontSize(12.0)
+                .fontColor(0xFF666666)
+                .margin(top: 3.0, left: 5.0)
 
             Scroll {
-                Column {
-                    if (mdStr != "") {
-                        Text("预览: " + selectedFileName)
-                            .fontSize(14.0)
-                            .fontColor(0xFF333333)
-                            .margin(top: 10.0, left: 5.0)
-                        Column {
-                            Text("preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
-                                .fontSize(12.0)
-                                .fontColor(0xFF666666)
-                                .margin(top: 3.0, left: 5.0)
-                            MarkdownComponent(
-                                output: mdStr,
-                                isInputEnded: isInputEnded,
-                                incrementalAnalysis: incrementalAnalysis,
-                                scroller: scroller,
-                                markdownConfiguration: markdownConfiguration,
-                                markdownPlugin: markdownPlugin
-                            )
-                        }
-                        .width(100.percent)
-                        .padding(5.0)
-                        .backgroundColor(0xFFFFFFFF)
+                if (mdStr != "") {
+                    Column {
+                        MarkdownComponent(
+                            output: mdStr,
+                            isInputEnded: isInputEnded,
+                            incrementalAnalysis: incrementalAnalysis,
+                            scroller: scroller,
+                            markdownConfiguration: markdownConfiguration,
+                            markdownPlugin: markdownPlugin
+                        )
                     }
+                    .onAreaChange({ old, new =>
+                        actualHeight = new.height - 10.0
+                        let actualContentWidth = new.width - 10.0
+                        if (estimatedHeightByNode > 0.0 && actualContentWidth > 0.0) {
+                            let diff = actualContentWidth - precomputeWidthUsed
+                            if (diff > 0.5 || diff < -0.5) {
+                                estimatedHeightByNode = preMarkwonHeightByNode(mdStr, markdownConfiguration, markdownPlugin, componentWidth: actualContentWidth)
+                                precomputeWidthUsed = actualContentWidth
+                            }
+                        }
+                    })
+                    .width(100.percent)
+                    .padding(5.0)
+                    .backgroundColor(0xFFFFFFFF)
+                    .justifyContent(FlexAlign.Start)
                 }
-                .justifyContent(FlexAlign.Start)
             }
             .scrollable(ScrollDirection.Vertical)
             .align(Alignment.Top)

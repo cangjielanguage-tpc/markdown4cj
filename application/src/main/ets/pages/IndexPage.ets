@@ -596,6 +596,18 @@ struct IndexPage {
               .fontSize(16)
               .onClick(() => router.pushUrl({ url: 'pages/HeightPage' }))
           }
+
+          ListItem() {
+            Button("46、预计算高度 - 默认值")
+              .height(40)
+              .width('80%')
+              .type(ButtonType.Capsule)
+              .fontColor(0xFFFFFFFF)
+              .backgroundColor(0xFFFF0000)
+              .margin({ top: 5, bottom: 5 })
+              .fontSize(16)
+              .onClick(() => router.pushUrl({ url: 'pages/HeightDefPage' }))
+          }
         }
         .alignListItem(ListItemAlign.Center)
       }

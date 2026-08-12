@@ -45,6 +45,7 @@ internal import commonmark4cj.commonmark.SoftLineBreak
 internal import commonmark4cj.commonmark.HardLineBreak
 internal import commonmark4cj.commonmark.Code
 internal import commonmark4cj.commonmark.Text as CommonmarkText
+internal import commonmark4cj.commonmark.HtmlBlock
 internal import commonmark4cj.commonmark.Image as CommonmarkImage
 internal import commonmark4cj.commonmark.Link as CommonmarkLink
 internal import commonmark4cj.commonmark.Node as CommonmarkNode
