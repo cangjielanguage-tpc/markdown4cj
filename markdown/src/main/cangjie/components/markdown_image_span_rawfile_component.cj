@@ -20,6 +20,8 @@ public class MarkdownSpanImageRawFileComponent {
     var rawFileImageHeight: Option<Length> // 图片高度
     var rawFileImageRadius: Option<Length> // 图片圆角
     var rawFileImageAlign: Option<HorizontalAlign> // 图片对齐方式
+    @State var rawFileHeight: Float64 = 0.0 // 图片最终高度 - 单位px
+    @State var rawFileWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
     @State
     var rawFileImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
     @State
@@ -86,8 +88,8 @@ public class MarkdownSpanImageRawFileComponent {
                     .borderWidth(rawFileMarkdownTheme.imageTheme.imageBorderWidth)
                     .borderColor(rawFileMarkdownTheme.imageTheme.imageBorderColor)
                     .borderStyle(rawFileMarkdownTheme.imageTheme.imageBorderStyle)
-                    .width(rawFilePlaceholderWidth.px)
-                    .height(rawFilePlaceholderHeight.px)
+                    .width(rawFileWidth.px)
+                    .height(rawFileHeight.px)
                     .objectFit(rawFileMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     .constraintSize(maxWidth: 100.percent)
@@ -136,8 +138,8 @@ public class MarkdownSpanImageRawFileComponent {
                         rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth,
                         rawFileMarkdownTheme.imageTheme.imageMaximumWidth
                     )
-                    rawFilePlaceholderWidth = res[0]
-                    rawFilePlaceholderHeight = res[1]
+                    rawFileWidth = res[0]
+                    rawFileHeight = res[1]
                     rawFileImageType = 1
                 } else {
                     rawFileImageType = 2

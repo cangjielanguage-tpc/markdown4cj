@@ -115,8 +115,8 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .borderWidth(urlCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                     .borderColor(urlCallbackMarkdownTheme.imageTheme.imageBorderColor)
                     .borderStyle(urlCallbackMarkdownTheme.imageTheme.imageBorderStyle)
-                    .width(urlCallbackPlaceholderWidth.px)
-                    .height(urlCallbackPlaceholderHeight.px)
+                    .width(urlCallbackReplaceWidth().px)
+                    .height(urlCallbackReplaceHeight().px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     .constraintSize(maxWidth: 100.percent)
@@ -142,8 +142,8 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .borderWidth(urlCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                     .borderColor(urlCallbackMarkdownTheme.imageTheme.imageBorderColor)
                     .borderStyle(urlCallbackMarkdownTheme.imageTheme.imageBorderStyle)
-                    .width(urlCallbackPlaceholderWidth.px)
-                    .height(urlCallbackPlaceholderHeight.px)
+                    .width(urlCallbackWidth.px)
+                    .height(urlCallbackHeight.px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     .constraintSize(maxWidth: 100.percent)
@@ -163,8 +163,8 @@ public class MarkdownSpanImageCallbackUrlComponent {
                                 urlCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
                                 urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
                             )
-                            urlCallbackPlaceholderWidth = res[0]
-                            urlCallbackPlaceholderHeight = res[1]
+                            urlCallbackWidth = res[0]
+                            urlCallbackHeight = res[1]
                             urlCallbackImageType = 1
                     }
                     .onError {
@@ -190,8 +190,8 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .borderWidth(urlCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                     .borderColor(urlCallbackMarkdownTheme.imageTheme.imageBorderColor)
                     .borderStyle(urlCallbackMarkdownTheme.imageTheme.imageBorderStyle)
-                    .width(urlCallbackPlaceholderWidth.px)
-                    .height(urlCallbackPlaceholderHeight.px)
+                    .width(urlCallbackReplaceWidth().px)
+                    .height(urlCallbackReplaceHeight().px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     .constraintSize(maxWidth: 100.percent)
@@ -216,8 +216,8 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .borderWidth(urlCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                     .borderColor(urlCallbackMarkdownTheme.imageTheme.imageBorderColor)
                     .borderStyle(urlCallbackMarkdownTheme.imageTheme.imageBorderStyle)
-                    .width(urlCallbackPlaceholderWidth.px)
-                    .height(urlCallbackPlaceholderHeight.px)
+                    .width(urlCallbackWidth.px)
+                    .height(urlCallbackHeight.px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     .constraintSize(maxWidth: 100.percent)
@@ -238,8 +238,8 @@ public class MarkdownSpanImageCallbackUrlComponent {
                                 urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
                             )
                             if (urlCallbackReplaceImageType != 1) {
-                                urlCallbackPlaceholderWidth = res[0]
-                                urlCallbackPlaceholderHeight = res[1]
+                                urlCallbackWidth = res[0]
+                                urlCallbackHeight = res[1]
                                 urlCallbackImageType = 1
                             }
                     }
@@ -266,8 +266,8 @@ public class MarkdownSpanImageCallbackUrlComponent {
                         urlCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
                         urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
                     )
-                    urlCallbackPlaceholderWidth = res[0]
-                    urlCallbackPlaceholderHeight = res[1]
+                    urlCallbackReplaceWidth = res[0]
+                    urlCallbackReplaceHeight = res[1]
                     urlCallbackReplaceImageType = 1
                 } else {
                     urlCallbackReplaceImageType = 2

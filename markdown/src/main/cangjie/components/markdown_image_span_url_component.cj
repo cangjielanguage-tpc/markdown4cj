@@ -19,6 +19,8 @@ public class MarkdownSpanImageUrlComponent {
     var urlImageHeight: Option<Length> // 图片高度
     var urlImageRadius: Option<Length> // 图片圆角
     var urlImageAlign: Option<HorizontalAlign> // 图片对齐方式
+    @State var urlHeight: Float64 = 0.0 // 图片最终高度 - 单位px
+    @State var urlWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
     @State var urlImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
     @State var urlRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State var urlRadiusTopRight: Float64 = 0.0 // 图片右上圆角 - 单位vp
@@ -102,8 +104,8 @@ public class MarkdownSpanImageUrlComponent {
                 .borderWidth(urlMarkdownTheme.imageTheme.imageBorderWidth)
                 .borderColor(urlMarkdownTheme.imageTheme.imageBorderColor)
                 .borderStyle(urlMarkdownTheme.imageTheme.imageBorderStyle)
-                .width(urlPlaceholderWidth.px)
-                .height(urlPlaceholderHeight.px)
+                .width(urlWidth.px)
+                .height(urlHeight.px)
                 .objectFit(urlMarkdownTheme.imageTheme.imageFitType)
                 .verticalAlign(ImageSpanAlignment.CENTER)
                 .constraintSize(maxWidth: 100.percent)
@@ -123,8 +125,8 @@ public class MarkdownSpanImageUrlComponent {
                             urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
                             urlMarkdownTheme.imageTheme.imageMaximumWidth
                         )
-                        urlPlaceholderWidth = res[0]
-                        urlPlaceholderHeight = res[1]
+                        urlWidth = res[0]
+                        urlHeight = res[1]
                         urlImageType = 1
                 }
                 .onError {
@@ -147,8 +149,8 @@ public class MarkdownSpanImageUrlComponent {
                 .borderWidth(urlMarkdownTheme.imageTheme.imageBorderWidth)
                 .borderColor(urlMarkdownTheme.imageTheme.imageBorderColor)
                 .borderStyle(urlMarkdownTheme.imageTheme.imageBorderStyle)
-                .width(urlPlaceholderWidth.px)
-                .height(urlPlaceholderHeight.px)
+                .width(urlWidth.px)
+                .height(urlHeight.px)
                 .objectFit(urlMarkdownTheme.imageTheme.imageFitType)
                 .verticalAlign(ImageSpanAlignment.CENTER)
                 .constraintSize(maxWidth: 100.percent)
@@ -168,8 +170,8 @@ public class MarkdownSpanImageUrlComponent {
                             urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
                             urlMarkdownTheme.imageTheme.imageMaximumWidth
                         )
-                        urlPlaceholderWidth = res[0]
-                        urlPlaceholderHeight = res[1]
+                        urlWidth = res[0]
+                        urlHeight = res[1]
                         urlImageType = 1
                 }
                 .onError {
