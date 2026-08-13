@@ -506,9 +506,10 @@ func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Flo
                     if (currentLineWidth > 0.0) {
                         let partialLh = if (seg.lineHeight > currentLineMaxLh) { seg.lineHeight } else { currentLineMaxLh }
                         totalHeight += partialLh
-                        // 多行片段起于行中：首行仅部分宽，容纳文字少于满宽行，
-                        // 剩余仍需 segLines 个满宽行，总计 segLines+1 行（原 segLines 少算 1 行）
-                        totalHeight += segLines * seg.lineHeight
+                        let remainingSpace = if (currentLineWidth <= 1.0) { 0.0 } else { componentWidth - currentLineWidth }
+                        let excessWidth = widthVp - (segLines - 1.0) * componentWidth
+                        let actualSegLines = if (excessWidth <= remainingSpace) { segLines - 1.0 } else { segLines }
+                        totalHeight += actualSegLines * seg.lineHeight
                         currentLineWidth = 0.0
                         currentLineMaxLh = 0.0
                     } else {
@@ -641,6 +642,25 @@ func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWi
     let textWidth: Float64 = componentWidth - pt.paragraphMarginLeft - pt.paragraphMarginRight -
         pt.paragraphPaddingLeft - pt.paragraphPaddingRight
     let contentHeight: Float64 = measureTextHeightBySegments(segments, fontSize, lineHeight, textWidth, letterSpacing)
+    let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
+        pt.paragraphPaddingBottom + pt.paragraphMarginBottom
+    return result
+}
+
+func estimateParagraphNodeHeightWithFootnote(p: Paragraph, theme: MarkdownTheme, componentWidth: Float64, footnoteId: String): Float64 {
+    let pt: ParagraphTheme = theme.paragraphTheme
+    let fontSize: Float64 = pt.paragraphTextFontSize
+    let lineHeight: Float64 = pt.paragraphTextLineHeight
+    let letterSpacing: Float64 = pt.paragraphTextLetterSpacing
+    let segments = collectInlineSegments(p, pt.paragraphTextFontWeight, theme.boldTheme.boldTextFontWeight, theme.globalTheme.isLineBreak, pt.paragraphTextFontSize, pt.paragraphTextLineHeight, pt.paragraphTextFontStyle, pt.paragraphTextLetterSpacing, theme)
+    let prefixed = ArrayList<TextSegment>()
+    prefixed.add(TextSegment("[^${footnoteId}]: ", pt.paragraphTextFontWeight, fontSize, lineHeight, FontStyle.Normal, 0.0))
+    for (seg in segments) {
+        prefixed.add(seg)
+    }
+    let textWidth: Float64 = componentWidth - pt.paragraphMarginLeft - pt.paragraphMarginRight -
+        pt.paragraphPaddingLeft - pt.paragraphPaddingRight
+    let contentHeight: Float64 = measureTextHeightBySegments(prefixed, fontSize, lineHeight, textWidth, letterSpacing)
     let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
         pt.paragraphPaddingBottom + pt.paragraphMarginBottom
     return result
@@ -1041,7 +1061,12 @@ func estimateFootnoteBlockNodeHeight(fb: FootnoteBlock, theme: MarkdownTheme, co
             innerHeight += blockSpacing
         }
         first = false
-        innerHeight += estimateBlockNodeHeight(child, theme, innerWidth, blockSpacing)
+        match (child) {
+            case p: Paragraph =>
+                innerHeight += estimateParagraphNodeHeightWithFootnote(p, theme, innerWidth, fb.noteid)
+            case _ =>
+                innerHeight += estimateBlockNodeHeight(child, theme, innerWidth, blockSpacing)
+        }
     }
     return fdt.footnoteDefMarginTop + fdt.footnoteDefPaddingTop + innerHeight +
         fdt.footnoteDefPaddingBottom + fdt.footnoteDefMarginBottom
