@@ -389,8 +389,7 @@ func fontStyleValue(fs: FontStyle): Int64 {
  *
  * 对每行（\n 分隔）文本：
  * - 单一粗细行：调用 Measure.MeasureTextSize(constraintWidth) 获取精确换行高度
- * - 混合粗细行：将同一行内所有片段拼接后整体调用 Measure.MeasureTextSize(constraintWidth) 测量，
- *   与渲染端 Text+Span 字符级跨 Span 换行行为一致
+ * - 混合粗细行：逐段调用 Measure.MeasureText 获取宽度，按 componentWidth 计算换行行数
  *
  * 替代原固定系数方案（CJK≈fontSize, ASCII≈0.55×fontSize），使用系统真实字体度量，
  * 消除字符宽度系数误差与加粗宽度低估（原方案对加粗文本统一用 W400 系数 1.0，
@@ -474,45 +473,66 @@ func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Flo
             let h = if (heightVp > 0.0) { heightVp } else { firstLineHeight }
             totalHeight += h
         } else {
-            // 混合粗细/字号/行高：将同一行内所有片段拼接后整体测量
-            // 与渲染端 Text+Span 行为一致：文本在字符级别跨 Span 边界换行，
-            // 而非将每个片段视为原子单元。使用最长片段的样式作为代表样式，
-            // 行高取所有片段 lineHeight 最大值（与渲染端 Text+Span 行内 max lineHeight 一致）。
-            var lineText = StringBuilder()
-            var maxLh: Float64 = 0.0
-            var repFs: Float64 = lineSegs[0].fontSize
-            var repWeight: FontWeight = lineSegs[0].weight
-            var repStyle: FontStyle = lineSegs[0].fontStyle
-            var repLs: Float64 = lineSegs[0].letterSpacing
-            var maxTextLen: Int64 = 0
+            // 混合粗细/字号/行高：逐段测宽度按 componentWidth 拆行
+            // 每行取该行内片段 lineHeight 最大值（与渲染端 Text+Span 行内 max lineHeight 一致）
+            var currentLineWidth: Float64 = 0.0
+            var currentLineMaxLh: Float64 = 0.0
             for (seg in lineSegs) {
-                lineText.append(seg.text)
-                if (seg.lineHeight > maxLh) {
-                    maxLh = seg.lineHeight
+                let widthPx = Measure.MeasureText(MeasureOptions(
+                    textContent: seg.text,
+                    fontWeight: seg.weight,
+                    fontSize: Some(seg.fontSize.fp),
+                    letterSpacing: Some(seg.letterSpacing.vp),
+                    fontStyle: seg.fontStyle
+                ))
+                let widthVp = px2vp(widthPx.px).getOrThrow().value
+                if (widthVp > componentWidth) {
+                    let segSize = Measure.MeasureTextSize(MeasureOptions(
+                        textContent: seg.text,
+                        fontWeight: seg.weight,
+                        fontSize: Some(seg.fontSize.fp),
+                        lineHeight: Some(seg.lineHeight.vp),
+                        constraintWidth: Some(componentWidth.vp),
+                        letterSpacing: Some(seg.letterSpacing.vp),
+                        fontStyle: seg.fontStyle
+                    ))
+                    let segHeightVp = px2vp(segSize.height.px).getOrThrow().value
+                    let ratio = segHeightVp / seg.lineHeight
+                    let segLines: Float64 = if (segHeightVp > 0.0) {
+                        if (ratio > floor(ratio) + 0.01) { ceil(ratio) } else { floor(ratio) }
+                    } else {
+                        1.0
+                    }
+                    if (currentLineWidth > 0.0) {
+                        let partialLh = if (seg.lineHeight > currentLineMaxLh) { seg.lineHeight } else { currentLineMaxLh }
+                        totalHeight += partialLh
+                        let remainingSpace = if (currentLineWidth <= 1.0) { 0.0 } else { componentWidth - currentLineWidth }
+                        let excessWidth = widthVp - (segLines - 1.0) * componentWidth
+                        let actualSegLines = if (excessWidth <= remainingSpace) { segLines - 1.0 } else { segLines }
+                        totalHeight += actualSegLines * seg.lineHeight
+                        currentLineWidth = 0.0
+                        currentLineMaxLh = 0.0
+                    } else {
+                        totalHeight += (segLines - 1.0) * seg.lineHeight
+                        currentLineWidth = 1.0
+                        currentLineMaxLh = seg.lineHeight
+                    }
+                    continue
                 }
-                if (seg.text.size > maxTextLen) {
-                    maxTextLen = seg.text.size
-                    repFs = seg.fontSize
-                    repWeight = seg.weight
-                    repStyle = seg.fontStyle
-                    repLs = seg.letterSpacing
+                if (currentLineWidth > 0.0 && currentLineWidth + widthVp > componentWidth) {
+                    totalHeight += currentLineMaxLh
+                    currentLineWidth = 0.0
+                    currentLineMaxLh = 0.0
+                }
+                currentLineWidth += widthVp
+                if (seg.lineHeight > currentLineMaxLh) {
+                    currentLineMaxLh = seg.lineHeight
                 }
             }
-            if (maxLh <= 0.0) {
-                maxLh = lineHeight
+            // 结算最后一行
+            if (currentLineWidth > 0.0 || currentLineMaxLh > 0.0) {
+                totalHeight += currentLineMaxLh
             }
-            let mixSize = Measure.MeasureTextSize(MeasureOptions(
-                textContent: lineText.toString(),
-                fontWeight: repWeight,
-                fontSize: Some(repFs.fp),
-                lineHeight: Some(maxLh.vp),
-                constraintWidth: Some(componentWidth.vp),
-                letterSpacing: Some(repLs.vp),
-                fontStyle: repStyle
-            ))
-            let mixHeightVp = px2vp(mixSize.height.px).getOrThrow().value
-            let mixH = if (mixHeightVp > 0.0) { mixHeightVp } else { maxLh }
-            totalHeight += mixH
         }
     }
     var segDetail = StringBuilder()
@@ -622,6 +642,25 @@ func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWi
     let textWidth: Float64 = componentWidth - pt.paragraphMarginLeft - pt.paragraphMarginRight -
         pt.paragraphPaddingLeft - pt.paragraphPaddingRight
     let contentHeight: Float64 = measureTextHeightBySegments(segments, fontSize, lineHeight, textWidth, letterSpacing)
+    let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
+        pt.paragraphPaddingBottom + pt.paragraphMarginBottom
+    return result
+}
+
+func estimateParagraphNodeHeightWithFootnote(p: Paragraph, theme: MarkdownTheme, componentWidth: Float64, footnoteId: String): Float64 {
+    let pt: ParagraphTheme = theme.paragraphTheme
+    let fontSize: Float64 = pt.paragraphTextFontSize
+    let lineHeight: Float64 = pt.paragraphTextLineHeight
+    let letterSpacing: Float64 = pt.paragraphTextLetterSpacing
+    let segments = collectInlineSegments(p, pt.paragraphTextFontWeight, theme.boldTheme.boldTextFontWeight, theme.globalTheme.isLineBreak, pt.paragraphTextFontSize, pt.paragraphTextLineHeight, pt.paragraphTextFontStyle, pt.paragraphTextLetterSpacing, theme)
+    let prefixed = ArrayList<TextSegment>()
+    prefixed.add(TextSegment("[^${footnoteId}]: ", pt.paragraphTextFontWeight, fontSize, lineHeight, FontStyle.Normal, 0.0))
+    for (seg in segments) {
+        prefixed.add(seg)
+    }
+    let textWidth: Float64 = componentWidth - pt.paragraphMarginLeft - pt.paragraphMarginRight -
+        pt.paragraphPaddingLeft - pt.paragraphPaddingRight
+    let contentHeight: Float64 = measureTextHeightBySegments(prefixed, fontSize, lineHeight, textWidth, letterSpacing)
     let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
         pt.paragraphPaddingBottom + pt.paragraphMarginBottom
     return result
@@ -1022,7 +1061,12 @@ func estimateFootnoteBlockNodeHeight(fb: FootnoteBlock, theme: MarkdownTheme, co
             innerHeight += blockSpacing
         }
         first = false
-        innerHeight += estimateBlockNodeHeight(child, theme, innerWidth, blockSpacing)
+        match (child) {
+            case p: Paragraph =>
+                innerHeight += estimateParagraphNodeHeightWithFootnote(p, theme, innerWidth, fb.noteid)
+            case _ =>
+                innerHeight += estimateBlockNodeHeight(child, theme, innerWidth, blockSpacing)
+        }
     }
     return fdt.footnoteDefMarginTop + fdt.footnoteDefPaddingTop + innerHeight +
         fdt.footnoteDefPaddingBottom + fdt.footnoteDefMarginBottom

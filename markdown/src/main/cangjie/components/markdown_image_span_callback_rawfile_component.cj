@@ -26,6 +26,10 @@ public class MarkdownSpanImageCallbackRawFileComponent {
     @State
     var rawFileCallbackImagePixelMap: Option<PixelMap> = Option<PixelMap>.None // 图片数据
     @State
+    var rawFileCallbackHeight: Float64 = 0.0 // 图片最终高度 - 单位px
+    @State
+    var rawFileCallbackWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
+    @State
     var rawFileCallbackRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State
     var rawFileCallbackRadiusTopRight: Float64 = 0.0 // 图片右上圆角 - 单位vp
@@ -127,8 +131,8 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                         .borderWidth(rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle)
-                        .width(rawFileCallbackPlaceholderWidth.px)
-                        .height(rawFileCallbackPlaceholderHeight.px)
+                        .width(rawFileCallbackWidth.px)
+                        .height(rawFileCallbackHeight.px)
                         .objectFit(rawFileCallbackMarkdownTheme.imageTheme.imageFitType)
                         .verticalAlign(ImageSpanAlignment.CENTER)
                         .constraintSize(maxWidth: 100.percent)
@@ -209,8 +213,8 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                         rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
                         rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
                     )
-                    rawFileCallbackPlaceholderWidth = res[0]
-                    rawFileCallbackPlaceholderHeight = res[1]
+                    rawFileCallbackWidth = res[0]
+                    rawFileCallbackHeight = res[1]
                     rawFileCallbackImageType = 1
                 } else {
                     rawFileCallbackImageType = 2
