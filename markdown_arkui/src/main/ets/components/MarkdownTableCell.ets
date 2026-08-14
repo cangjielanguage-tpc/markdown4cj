@@ -37,7 +37,9 @@ import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import {
-  imageUrlHandle, imageWidthAndHeight, lengthToVpNumber, spanSoftLineBreak
+  imageUrlHandle, imageWidthAndHeight, lengthToVpNumber,
+  safeString,
+  spanSoftLineBreak
 } from "../utils/MarkdownUtils"
 import {
   generateLinkIconPixelMap, computeLinkIconInfo, LinkIconResult
@@ -132,6 +134,9 @@ export struct MarkdownTableCell {
   private delayTime: number = 500 // 自定义菜单关闭延时时间（毫秒）
   private timerId: number = -1 // 自定义菜单关闭延时定时器 ID
   @State @Watch('onParamChange') needHideMenu: boolean = false // 需要监听的条件参数
+  @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void
+  @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void
+
 
   // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
   // 未设回调时短路掉 computeLinkRanges/getRectsForRange/监听器/onVisibleAreaChange 等，省 CPU。
@@ -314,9 +319,30 @@ export struct MarkdownTableCell {
     }, 0)
   }
 
+
+
+  //判断节点里有没有TableCellPart或者CustomCardImage或者CustomCardLink 如果没有走原来逻辑
+  isBlockLogic(nodeViewList: NodeView[]):boolean{
+      for (let i = 0; i < nodeViewList.length; i++) {
+        let nodeView = nodeViewList[i]
+        if(nodeView.nodeType == "TableCellPart" || nodeView.nodeType == "CustomCardImage" || nodeView.nodeType == "CustomCardLink"){
+            return true
+        }
+      }
+      return false
+    }
+
+
+
+
   build() {
     Column() {
-      this.tableCellColumn()
+      if(this.isBlockLogic(this.list)){
+        this.tableBlockCellCustomComponent()
+      }else{
+        this.tableCellColumn()
+      }
+
     }
     .alignItems(this.node.tableAlignment)
     .justifyContent(FlexAlign.Center)
@@ -445,6 +471,51 @@ export struct MarkdownTableCell {
       }
     })
   }
+
+
+  @Builder
+  tableBlockCellCustomComponent() {
+    Column() {
+      ForEach(
+        this.list,
+        (item: NodeView, idx: number) => {
+          if (item.nodeType == "CustomCardImage") {
+            // 自定义卡片图片
+            this.blockImageCardComponent(
+              safeString(item.imageAltText),
+              safeString(item.imageUrl),
+              safeString(item.imageTitle),
+            )
+          } else if (item.nodeType == "CustomCardLink") {
+            this.blockLinkCardComponent(
+              safeString(item.nodeText),
+              safeString(item.linkUrl),
+              safeString(item.linkTitle),
+            )
+          } else if (item.nodeType == "TableCellPart") {
+            Text(undefined, { controller: this.textController }) {
+              ForEach(
+                item.children,
+                (itemNodeView: NodeView, index: number) => {
+                  this.tableCellInlineItem(itemNodeView, index)
+                },
+                (itemNodeView: NodeView, index: number) => {
+                  this.updateTextContent(itemNodeView) // 整理出当前所有的文本
+                  return `${index}-${itemNodeView.nodeHash}-${itemNodeView.contentHash}-${itemNodeView.imageWidth}-${itemNodeView.imageHeight}-${itemNodeView.latexImageWidth}-${itemNodeView.latexImageHeight}-${itemNodeView.latexPixelMap !== undefined}-${itemNodeView.imageReplacePixelMap !== undefined}-${itemNodeView.linkIconPixelMap !== undefined}-${itemNodeView.linkIconType}-${itemNodeView.linkIconWidth}-${itemNodeView.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
+                }
+              )
+            }
+          }
+        },
+        (item: string, idx: number) => `${idx}-${item}`
+      )
+    }
+}
+
+
+
+
+
 
   /**
    * 渲染单个内联节点（文本/代码/链接/加粗等）

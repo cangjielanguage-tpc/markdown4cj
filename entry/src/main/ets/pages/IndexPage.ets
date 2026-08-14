@@ -321,9 +321,9 @@ struct IndexPage {
           }
           ListItem() {
             itemListComponent(
-              "36、card",
+              "36、自定义card",
               0xFFFF0000,
-              "pages/CardPage"
+              "pages/customCardPage"
             )
           }
 

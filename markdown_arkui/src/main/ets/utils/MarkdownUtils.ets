@@ -1,3 +1,4 @@
+import { JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid/Index"
 import {
   SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE,
@@ -141,6 +142,7 @@ import {
   NUM_FF9ACD32
 } from "../base/Constants"
 import { BulletListTheme } from "../theme/BulletListTheme"
+import { hilog } from "@kit.PerformanceAnalysisKit"
 
 /**
  * 判断软换行是否换行
@@ -1204,5 +1206,43 @@ function base64Decode(input: string): string {
   }
 
   return parts.join("")
+}
+
+export function safeString(str: string | null | undefined): string {
+  if (str === null || str === undefined) {
+    return "";
+  }
+  return str;
+}
+
+export function printNodes(node: JsNodeImpl| null | undefined) {
+  if(node !== null && node != undefined){
+    let current = node
+    while (current.parent !== null && current.parent != undefined){
+      current = current.parent
+    }
+    let builder:String = ""
+    printNode2(current, 0, builder)
+  }
+}
+
+ function printNode2(node: JsNodeImpl| null | undefined, depth: number, builder: String) {
+  if(node !== null && node != undefined){
+    let str = (node.nodeType+"---"+node.toStr).toString().replace("\n","\\n")
+    builder = dealWithBuilder(builder,depth,str)
+    let child = node.firstChild
+    printNode2(child,depth+4,builder)
+    let next = node.next
+    printNode2(next,depth,builder)
+  }
+}
+
+function dealWithBuilder(builder:String,depth:number,str:String):string{
+  for(let i = 0;i<depth;i++){
+    builder = builder+" "
+  }
+  let res = builder.toString()+str+"\n"
+  hilog.error(0,"nodeinfo",res.toString())
+  return res
 }
 

@@ -41,6 +41,7 @@ import { MarkdownAudio } from "./MarkdownAudio"
 import { MarkdownList } from "./MarkdownList"
 import { MarkdownLatexMathBlock } from "./MarkdownLatexMathBlock"
 import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
+import { safeString } from "../utils/MarkdownUtils"
 
 /**
  * 块引用控件
@@ -103,6 +104,9 @@ export struct MarkdownQuote {
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
 
+  @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void
+  @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void
+
   aboutToAppear(): void {
     this.refreshData() // 首次加载
   }
@@ -140,7 +144,9 @@ export struct MarkdownQuote {
               markdownHighlightParagraph: this.markdownHighlightParagraph,
               customLongPressCallback: this.customLongPressCallback,
               elementExposureCallback: this.elementExposureCallback,
-              exposureThreshold: this.exposureThreshold
+              exposureThreshold: this.exposureThreshold,
+              blockImageCardComponent:this.blockImageCardComponent,
+              blockLinkCardComponent:this.blockLinkCardComponent
             })
           } else {
             ListItem() {
@@ -181,7 +187,7 @@ export struct MarkdownQuote {
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
                   customLongPressCallback: this.customLongPressCallback,
                   paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
-                  paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
+                  paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd
                 })
               } else if (item.nodeType === "Heading" || item.nodeType === "IdHeading") {
                 // 标题/标题ID
@@ -302,7 +308,9 @@ export struct MarkdownQuote {
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
                   customLongPressCallback: this.customLongPressCallback,
                   paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
-                  paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd
+                  paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
+                  blockImageCardComponent:this.blockImageCardComponent,
+                  blockLinkCardComponent:this.blockLinkCardComponent
                 })
               } else if (item.nodeType === "OrderedList") {
                 // 有序列表
@@ -360,7 +368,9 @@ export struct MarkdownQuote {
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
                   customLongPressCallback: this.customLongPressCallback,
                   paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
-                  paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd
+                  paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
+                  blockImageCardComponent:this.blockImageCardComponent,
+                  blockLinkCardComponent:this.blockLinkCardComponent
                 })
               } else if (item.nodeType === "BlockQuote") {
                 // 块引用
@@ -417,7 +427,9 @@ export struct MarkdownQuote {
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
                   customLongPressCallback: this.customLongPressCallback,
                   paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
-                  paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd
+                  paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
+                  blockImageCardComponent:this.blockImageCardComponent,
+                  blockLinkCardComponent:this.blockLinkCardComponent
                 })
               } else if (item.nodeType === "LatexMathBlock") {
                 // 数学公式块：闭合时渲染图片，未闭合时渲染文本
@@ -477,7 +489,9 @@ export struct MarkdownQuote {
                   markdownHighlightParagraph: this.markdownHighlightParagraph,
                   customLongPressCallback: this.customLongPressCallback,
                   elementExposureCallback: this.elementExposureCallback,
-                  exposureThreshold: this.exposureThreshold
+                  exposureThreshold: this.exposureThreshold,
+                  blockImageCardComponent:this.blockImageCardComponent,
+                  blockLinkCardComponent:this.blockLinkCardComponent
                 })
               } else if (item.nodeType === "ThematicBreak") {
                 // 分割线
@@ -565,6 +579,20 @@ export struct MarkdownQuote {
                   audioTheme: this.audioTheme,
                   audioCallback: this.audioCallback
                 })
+              }else if (item.nodeType === "CustomCardImage") {
+                // 音频
+                this.blockImageCardComponent(
+                  safeString(item.imageAltText),
+                  safeString(item.imageUrl),
+                  safeString(item.imageTitle)
+                )
+              } else if (item.nodeType === "CustomCardLink") {
+                // 音频
+                this.blockLinkCardComponent(
+                  safeString(item.nodeText),
+                  safeString(item.linkUrl),
+                  safeString(item.linkTitle)
+                )
               } else if (item.nodeType === "BlockAD") {
                 // 广告
               } else {

@@ -53,6 +53,7 @@ export class NodeView {
   linkTitle?: string = undefined // 链接标题
   imageUrl?: string = undefined // 图片URL
   imageTitle?: string = undefined // 图片标题
+  imageAltText?: string = undefined //图片Alt
   imageStyleWidth?: number = undefined // 图片样式宽度
   imageStyleHeight?: number = undefined // 图片样式高度
   imageWidth?: number = undefined // 控件宽度

@@ -64,6 +64,9 @@ export struct MarkdownTableRow {
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
   elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（透传给TableCell）
   exposureThreshold: number = 0.5 // 曝光阈值（透传给TableCell）
+  @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void
+  @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void
+
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -113,7 +116,9 @@ export struct MarkdownTableRow {
               markdownHighlightParagraph: this.markdownHighlightParagraph,
               customLongPressCallback: this.customLongPressCallback,
               elementExposureCallback: this.elementExposureCallback,
-              exposureThreshold: this.exposureThreshold
+              exposureThreshold: this.exposureThreshold,
+              blockImageCardComponent:this.blockImageCardComponent,
+              blockLinkCardComponent:this.blockLinkCardComponent
             })
           } else {
             // 其它

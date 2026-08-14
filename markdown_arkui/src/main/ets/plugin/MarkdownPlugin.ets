@@ -34,6 +34,10 @@ export class MarkdownPlugin {
    */
   isTocPlugin: boolean = false
   /**
+   * 是否加载自定义卡片解析插件
+   */
+  isBlockCustomCardPlugin: boolean = false
+  /**
    * 是否加载任务列表解析插件
    */
   isTaskListPlugin: boolean = false
@@ -115,6 +119,16 @@ export class MarkdownPlugin {
   whitelist: Array<string> = []
 
   /**
+   * 自定义卡片块级图片条件
+   */
+  blockImageCard?: (desc: string, imageSrc: string, title: string) => boolean = undefined
+
+  /**
+   * 自定义卡片块级链接条件
+   */
+  blockLinkCard?: (desc: string, link: string, title: string) => boolean = undefined
+
+  /**
    * 设置音频插件
    *
    * @param isBlockAudioPlugin 是否设置音频插件 - true：设置音频插件；false：不设置音频插件。默认false
@@ -175,6 +189,23 @@ export class MarkdownPlugin {
    */
   setIsTocPlugin(isTocPlugin: boolean): void {
     this.isTocPlugin = isTocPlugin
+  }
+
+
+  /**
+   * 设置TOC插件
+   *
+   * @param isBlockCustomCardPlugin 是否设置自定义卡片插件 - true：设置插件；false：不设置插件。默认false
+   * @param blockImageCard 满足块级图片自定义卡片条件
+   * @param blockLinkCard 满足块级链接自定义卡片条件
+
+   */
+  setIsBlockCustomCardPlugin(isBlockCustomCardPlugin: boolean,
+    blockImageCard? :(desc: string, imageSrc: string, title: string) => boolean,
+    blockLinkCard?: (desc: string, link: string, title: string) => boolean): void {
+    this.isBlockCustomCardPlugin = isBlockCustomCardPlugin
+    this.blockImageCard = blockImageCard
+    this.blockLinkCard = blockLinkCard
   }
 
   /**
@@ -376,6 +407,9 @@ export class MarkdownPlugin {
       TablePlugin: this.isTablePlugin,
       TaskListPlugin: this.isTaskListPlugin,
       TocPlugin: this.isTocPlugin,
+      BlockCustomCardPlugin: this.isBlockCustomCardPlugin,
+      blockImageCard: this.blockImageCard,
+      blockLinkCard: this.blockLinkCard,
       WhitelistLooseDelimiterPlugin: this.isWhitelistPlugin,
       WhitelistLooseDelimiterPlugin_DelimiterFilterMode:
       this.mode === DelimiterFilterMode.Permissive ? "Permissive" : this.mode === DelimiterFilterMode.Strict ? "Strict" : this.whitelist

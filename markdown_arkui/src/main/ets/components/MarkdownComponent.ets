@@ -5,6 +5,7 @@ import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
 import { MarkdownPlugin } from '../plugin/MarkdownPlugin'
 import { JsNodePoolImpl, NodeView } from "../model/NodeView"
 import { nodeToNodeView } from "../utils/MarkdownParserUtils"
+import { printNodes, safeString } from "../utils/MarkdownUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
 import { image } from "@kit.ImageKit"
@@ -27,6 +28,8 @@ import { StickyScrollYHolder } from "../model/StickyScrollYHolder"
 import { ArrayList } from "@kit.ArkTS"
 import { MarkdownVisibleRectHolder } from "../model/MarkdownVisibleRectHolder"
 import { componentUtils } from "@kit.ArkUI"
+import { printNode } from "@cangjie-tpc/markdown_parser_hybrid/src/main/ets/util"
+import { hilog } from "@kit.PerformanceAnalysisKit"
 
 @Component
 export struct CJMarkdown {
@@ -59,6 +62,19 @@ export struct CJMarkdown {
   private parseTimerId: number = -1 // 异步解析setTimeout定时器ID
   private indexFootnoteHashMap: Map<string, number> = new Map<string, number>() // 脚注ID→列表索引映射
   private indexTocHashMap: Map<number, number> = new Map<number, number>() // TOC标题索引→列表索引映射
+
+  @Builder
+  CustomBlockImageBuilder(description: String, destination: String, title: String) { /* cjlint-ignore !G.FUN.02 */
+    Text("")
+  }
+
+  @Builder
+  CustomBlockLinkBuilder(description: String, destination: String, title: String) { /* cjlint-ignore !G.FUN.02 */
+    Text("")
+  }
+
+  @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void = this.CustomBlockImageBuilder  //自定义卡片布局块级图片
+  @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void = this.CustomBlockLinkBuilder  //自定义卡片布局行内链接
   /**
    * 图片点击回调
    */
@@ -289,7 +305,9 @@ export struct CJMarkdown {
                 imageDownloadCallback: this.config.imageDownloadCallback,
                 imageReplaceCallback: this.config.imageReplaceCallback,
                 markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                customLongPressCallback: this.config.customLongPressCallback
+                customLongPressCallback: this.config.customLongPressCallback,
+                blockImageCardComponent:this.blockImageCardComponent,
+                blockLinkCardComponent:this.blockLinkCardComponent
               })
             } else {
               ListItem() {
@@ -451,7 +469,9 @@ export struct CJMarkdown {
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
                     customLongPressCallback: this.config.customLongPressCallback,
                     paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
-                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd
+                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                    blockImageCardComponent:this.blockImageCardComponent,
+                    blockLinkCardComponent:this.blockLinkCardComponent
                   })
                 } else if (item.nodeType === "OrderedList") {
                   // 有序列表
@@ -510,6 +530,8 @@ export struct CJMarkdown {
                     customLongPressCallback: this.config.customLongPressCallback,
                     paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
                     paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                    blockImageCardComponent:this.blockImageCardComponent,
+                    blockLinkCardComponent:this.blockLinkCardComponent
                   })
                 } else if (item.nodeType === "BlockQuote") {
                   // 块引用
@@ -567,6 +589,8 @@ export struct CJMarkdown {
                     customLongPressCallback: this.config.customLongPressCallback,
                     paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
                     paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                    blockImageCardComponent:this.blockImageCardComponent,
+                    blockLinkCardComponent:this.blockLinkCardComponent
                   })
                 } else if (item.nodeType === "LatexMathBlock") {
                   // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本
@@ -633,7 +657,9 @@ export struct CJMarkdown {
                     imageReplaceCallback: this.config.imageReplaceCallback,
                     tableCopyCallback: this.config.tableCopyCallback,
                     markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback
+                    customLongPressCallback: this.config.customLongPressCallback,
+                    blockImageCardComponent:this.blockImageCardComponent,
+                    blockLinkCardComponent:this.blockLinkCardComponent
                   })
                 } else if (item.nodeType === "ThematicBreak") {
                   // 分割线
@@ -760,6 +786,20 @@ export struct CJMarkdown {
                     audioTheme: this.config.markdownTheme.audioTheme,
                     audioCallback: this.config.audioCallback
                   })
+                } else if (item.nodeType === "CustomCardImage") {
+                  // 音频
+                  this.blockImageCardComponent(
+                    safeString(item.imageAltText),
+                    safeString(item.imageUrl),
+                    safeString(item.imageTitle)
+                  )
+                } else if (item.nodeType === "CustomCardLink") {
+                  // 音频
+                  this.blockLinkCardComponent(
+                    safeString(item.nodeText),
+                    safeString(item.linkUrl),
+                    safeString(item.linkTitle)
+                  )
                 } else if (item.nodeType === "BlockAD") {
                   // 广告
                 } else {
@@ -876,15 +916,20 @@ export struct CJMarkdown {
       }
       try {
         markdownParser.parse(this.content).then((node) => {
+          hilog.error(0,"cjlog","g111")
+          printNodes(node as JsNodeImpl)
           if (!this.isAlive) {
             this.jsNodePoolImpl.put(node as JsNodeImpl)
             return
           }
+          hilog.error(0,"cjlog","g222")
           this.applyParseResult(node as JsNodeImpl, currentVersion)
+          hilog.error(0,"cjlog","g333")
         }).catch(() => {
           console.error('refreshAsyncData parse failed, keeping last result')
         })
       } catch (e) {
+        hilog.error(0,"cjlog","g444")
         console.error('refreshAsyncData sync parse exception: ' + JSON.stringify(e))
       }
     }, 0)
@@ -926,7 +971,9 @@ export struct CJMarkdown {
       nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
       let parseOk: boolean = false
       try {
+        hilog.error(0,"cjlog","h111")
         nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, highlightSelectedList)
+        hilog.error(0,"cjlog","h555")
         parseOk = true
       } catch (e) {
         console.error('nodeToNodeView failed: ' + JSON.stringify(e))

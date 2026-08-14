@@ -93,6 +93,8 @@ export struct MarkdownList {
   paragraphHeadingAnimationEnd?: () => void // 段落动画结束回调
   scroller: Scroller = new Scroller() // list控制器
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
+  @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void
+  @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -168,6 +170,8 @@ export struct MarkdownList {
                 customLongPressCallback: this.customLongPressCallback,
                 paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
                 paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
+                blockImageCardComponent:this.blockImageCardComponent,
+                blockLinkCardComponent:this.blockLinkCardComponent
               })
             }
             .alignItems(VerticalAlign.Top)

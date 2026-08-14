@@ -53,6 +53,8 @@
     "pages/AllPage",
     "pages/AllDetailsPage",
     "pages/CardPage",
+    "pages/customCardPage",
+    "pages/customCardDeatilsPage",
     "pages/ABCustomPage",
     "pages/ABCustomDetailsPage",
     "pages/AIChatPage",

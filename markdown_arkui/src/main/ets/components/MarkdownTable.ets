@@ -91,6 +91,8 @@ export struct MarkdownTable {
   @State private offsetHolder: StickyOffsetHolder = new StickyOffsetHolder() // @State，引用不变不触发build()；@ObjectLink检测offset属性变化
   @State private copyRowHeight: number = 0 // 复制按钮栏高度（onAreaChange获取）
   @State private stickyContentHeight: number = 0 // 吸顶内容总高度（copy row + header，onAreaChange获取）
+  @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void
+  @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void
 
   /**
    * componentWidth变化时立即应用列宽
@@ -340,7 +342,9 @@ export struct MarkdownTable {
                       markdownHighlightParagraph: this.markdownHighlightParagraph,
                       customLongPressCallback: this.customLongPressCallback,
                       elementExposureCallback: this.elementExposureCallback,
-                      exposureThreshold: this.exposureThreshold
+                      exposureThreshold: this.exposureThreshold,
+                      blockImageCardComponent:this.blockImageCardComponent,
+                      blockLinkCardComponent:this.blockLinkCardComponent
                     })
                   } else {
                     Text("")
@@ -441,7 +445,9 @@ export struct MarkdownTable {
             markdownHighlightParagraph: this.markdownHighlightParagraph,
             customLongPressCallback: this.customLongPressCallback,
             elementExposureCallback: this.elementExposureCallback,
-            exposureThreshold: this.exposureThreshold
+            exposureThreshold: this.exposureThreshold,
+            blockImageCardComponent:this.blockImageCardComponent,
+            blockLinkCardComponent:this.blockLinkCardComponent
           })
         }
         .scrollable(ScrollDirection.Horizontal)
@@ -506,7 +512,9 @@ export struct MarkdownTable {
               markdownHighlightParagraph: this.markdownHighlightParagraph,
               customLongPressCallback: this.customLongPressCallback,
               elementExposureCallback: this.elementExposureCallback,
-              exposureThreshold: this.exposureThreshold
+              exposureThreshold: this.exposureThreshold,
+              blockImageCardComponent:this.blockImageCardComponent,
+              blockLinkCardComponent:this.blockLinkCardComponent
             })
           },
           (item: NodeView, index: number) => {
@@ -593,7 +601,9 @@ export struct MarkdownTable {
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
                 customLongPressCallback: this.customLongPressCallback,
                 elementExposureCallback: this.elementExposureCallback,
-                exposureThreshold: this.exposureThreshold
+                exposureThreshold: this.exposureThreshold,
+                blockImageCardComponent:this.blockImageCardComponent,
+                blockLinkCardComponent:this.blockLinkCardComponent
               })
             }
             .scrollable(ScrollDirection.Horizontal)
@@ -655,7 +665,9 @@ export struct MarkdownTable {
                 markdownHighlightParagraph: this.markdownHighlightParagraph,
                 customLongPressCallback: this.customLongPressCallback,
                 elementExposureCallback: this.elementExposureCallback,
-                exposureThreshold: this.exposureThreshold
+                exposureThreshold: this.exposureThreshold,
+                blockImageCardComponent:this.blockImageCardComponent,
+                blockLinkCardComponent:this.blockLinkCardComponent
               })
             },
             (item: NodeView, index: number) => {

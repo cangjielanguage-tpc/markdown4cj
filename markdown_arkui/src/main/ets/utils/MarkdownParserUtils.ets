@@ -10,6 +10,7 @@ import {
 } from "./MarkdownUtils"
 import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
 import { ArrayList } from "@kit.ArkTS"
+import { hilog } from "@kit.PerformanceAnalysisKit"
 
 /**
  * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
@@ -617,6 +618,43 @@ export function nodeToNodeView(
       case 'Image': // 图片
         currentView.imageUrl = currentJsNode.destination
         currentView.imageTitle = currentJsNode.title
+        targetParentView.children.push(currentView)
+        break
+      case 'CustomCardImage':
+        hilog.error(0,"cjlog","h222")
+        let child = currentJsNode.firstChild
+        while (child !== undefined) {
+          const childType = child.nodeType
+          if (childType === 'Image') {
+            currentView.imageUrl = child.destination
+            currentView.imageTitle = child.title
+            //再循环，获取altText
+            let subChild = child.firstChild
+            while (subChild !== undefined) {
+              const subChildType = subChild.nodeType
+              if(subChildType === 'Text'){
+                currentView.imageAltText = subChild.literal
+              }
+              subChild = subChild.next
+            }
+          }
+          child = child.next
+        }
+        targetParentView.children.push(currentView)
+        break
+      case 'CustomCardLink':
+        hilog.error(0,"cjlog","h333")
+        let childccl = currentJsNode.firstChild
+        while (childccl !== undefined) {
+          hilog.error(0,"cjlog","h444")
+          const childType = childccl.nodeType
+          if (childType === 'Link') {
+            currentView.linkUrl = childccl.destination
+            currentView.linkTitle = childccl.title
+            currentView.nodeText = getLinkText(childccl)
+          }
+          childccl = childccl.next
+        }
         targetParentView.children.push(currentView)
         break
       case 'StyleImage': { // 样式图片
