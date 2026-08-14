@@ -3,7 +3,7 @@
  */
 import { getIcon, Message } from "../model/Message"
 import { CJMarkdownWrapSticky } from "./CJMarkdownWrapSticky"
-import { MarkdownScrollController } from '@cangjie-tpc/markdown_hybrid'
+import { MarkdownScrollController } from '@cangjie-tpc/markdown_arkui'
 
 const SIZE: number = 36
 const MARGIN: number = SIZE * 2 + 25

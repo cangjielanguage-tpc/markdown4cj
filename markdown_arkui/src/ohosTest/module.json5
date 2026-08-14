@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "markdown_hybrid_test",
+    "name": "markdown_arkui_test",
     "type": "feature",
     "deviceTypes": [
       "default"

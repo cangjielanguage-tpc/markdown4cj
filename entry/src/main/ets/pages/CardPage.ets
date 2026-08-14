@@ -1,6 +1,6 @@
 import { HotelCard } from '../customuicard/HotelCard';
 import { PlaneCard } from '../customuicard/PlaneTicket';
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin } from '@cangjie-tpc/markdown_arkui'
 
 globalThis.HotelCard = HotelCard
 globalThis.PlaneCard = PlaneCard

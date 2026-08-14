@@ -5,7 +5,7 @@ import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownTheme,
   // ImageFitType,
   GlobalTheme,
-  ImageTheme} from '@cangjie-tpc/markdown_hybrid'
+  ImageTheme} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextArr, getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ImageDataMD } from '../model/ImageDataMD'

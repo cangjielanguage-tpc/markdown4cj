@@ -7,7 +7,7 @@ import {
   MarkdownPlugin,
   MarkdownTheme,
   TableTheme
-} from '@cangjie-tpc/markdown_hybrid'
+} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { LinkExposureData } from '../model/LinkExposureData'

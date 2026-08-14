@@ -1,4 +1,4 @@
-// import { LatexMathColorFormat } from "@cangjie-tpc/markdown_hybrid"
+// import { LatexMathColorFormat } from "@cangjie-tpc/markdown_arkui"
 import { BaseMDData } from "./BaseMDData"
 
 export class LatexMathData extends BaseMDData {

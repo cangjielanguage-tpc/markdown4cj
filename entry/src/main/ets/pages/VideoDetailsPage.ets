@@ -5,7 +5,7 @@ import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownTheme,
   // ImageFitType,
   GlobalTheme,
-  VideoTheme} from '@cangjie-tpc/markdown_hybrid'
+  VideoTheme} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { VideoData } from '../model/VideoData'

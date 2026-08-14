@@ -5,7 +5,7 @@ import { CJMarkdown,
   MarkdownConfiguration,
   MarkdownPlugin,
   // MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import { LineBreakData } from '../model/LineBreakData'
 import hilog from '@ohos.hilog'

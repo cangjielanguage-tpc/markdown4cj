@@ -5,7 +5,7 @@ import { CJMarkdown,
   LinkTheme,
   MarkdownConfiguration, MarkdownExposureEvent, MarkdownPlugin,
   // MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { LinkData } from '../model/LinkData'

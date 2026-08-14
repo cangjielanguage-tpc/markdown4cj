@@ -1,4 +1,4 @@
-// import { ImageFitType, LatexMathColorFormat } from "@cangjie-tpc/markdown_hybrid"
+// import { ImageFitType, LatexMathColorFormat } from "@cangjie-tpc/markdown_arkui"
 
 export class DeprecatedData {
   // 是否全量加载Markdown文本

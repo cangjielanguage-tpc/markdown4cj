@@ -23,7 +23,7 @@ import {
   timeListGeneralData
 } from '../model/GeneralData'
 import { VideoData } from '../model/VideoData'
-// import { ImageFitType } from '@cangjie-tpc/markdown_hybrid'
+// import { ImageFitType } from '@cangjie-tpc/markdown_arkui'
 
 @Entry
 @Component

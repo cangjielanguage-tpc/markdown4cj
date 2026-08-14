@@ -3,7 +3,7 @@ import { CJMarkdown,
   HtmlUnderlineTheme,
   MarkdownConfiguration, MarkdownPlugin,
   // MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_arkui'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'

@@ -5,7 +5,7 @@ import {
   MarkdownPlugin,
   // MarkdownScroller,
   MarkdownTheme
-} from '@cangjie-tpc/markdown_hybrid'
+} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr, getFileListStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ConfigurationConstant } from '@kit.AbilityKit'

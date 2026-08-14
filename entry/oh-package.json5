@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@cangjie-tpc/markdown_hybrid": "file:../markdown_hybrid"
+    "@cangjie-tpc/markdown_arkui": "file:../markdown_arkui"
   }
 }
 

@@ -5,7 +5,7 @@ import { Message, MessageContent, Who } from '../model/Message'
 import { GeneralDataSource } from '../utils/ForLazyRender'
 import { LLM } from '../utils/LLM'
 import { AIChatLazyBlockSticky } from '../component/AIChatLazyBlockSticky'
-import { MarkdownScrollController } from '@cangjie-tpc/markdown_hybrid'
+import { MarkdownScrollController } from '@cangjie-tpc/markdown_arkui'
 import { inputMethod } from '@kit.IMEKit'
 import { titleComponent } from '../component/BaseComponent'
 import {

@@ -5,16 +5,16 @@ import { CJMarkdown,
   HeadingTheme,
   MarkdownConfiguration, MarkdownPlugin,
   // MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { TitleData } from '../model/TitleData'
 import { ConfigurationConstant } from '@kit.AbilityKit'
 import { COLOR_FF4A90E2, COLOR_FFA9B7C6, COLOR_RED,
-  NUM_FFE9967A } from '@cangjie-tpc/markdown_hybrid/src/main/ets/base/Constants'
+  NUM_FFE9967A } from '@cangjie-tpc/markdown_arkui/src/main/ets/base/Constants'
 import {
   MarkdownHighlightParagraph
-} from '@cangjie-tpc/markdown_hybrid/src/main/ets/configs/MarkdownHighlightParagraph'
+} from '@cangjie-tpc/markdown_arkui/src/main/ets/configs/MarkdownHighlightParagraph'
 
 @Entry
 @Component

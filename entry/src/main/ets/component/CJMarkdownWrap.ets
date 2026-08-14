@@ -6,7 +6,7 @@ import {
   MarkdownConfiguration,
   MarkdownPlugin,
   MarkdownTheme
-} from '@cangjie-tpc/markdown_hybrid'
+} from '@cangjie-tpc/markdown_arkui'
 import hilog from '@ohos.hilog'
 import { promptAction } from '@kit.ArkUI'
 

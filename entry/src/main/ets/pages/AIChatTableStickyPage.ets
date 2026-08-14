@@ -1,6 +1,6 @@
 import { titleComponent } from '../component/BaseComponent'
 import { Message, MessageContent, Who } from '../model/Message'
-import { MarkdownScrollController } from '@cangjie-tpc/markdown_hybrid'
+import { MarkdownScrollController } from '@cangjie-tpc/markdown_arkui'
 import { inputMethod } from '@kit.IMEKit'
 import { AIChatBlockSticky } from '../component/AIChatBlockSticky'
 import {

@@ -5,15 +5,15 @@ import { CJMarkdown,
   MarkdownConfiguration, MarkdownPlugin,
   // MarkdownScroller,
   MarkdownTheme,
-  ParagraphTheme} from '@cangjie-tpc/markdown_hybrid'
+  ParagraphTheme} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ParagraphData } from '../model/ParagraphData'
 import { ConfigurationConstant } from '@kit.AbilityKit'
-import { COLOR_FF4A90E2, NUM_FFE9967A } from '@cangjie-tpc/markdown_hybrid/src/main/ets/base/Constants'
+import { COLOR_FF4A90E2, NUM_FFE9967A } from '@cangjie-tpc/markdown_arkui/src/main/ets/base/Constants'
 import {
   MarkdownHighlightParagraph
-} from '@cangjie-tpc/markdown_hybrid/src/main/ets/configs/MarkdownHighlightParagraph'
+} from '@cangjie-tpc/markdown_arkui/src/main/ets/configs/MarkdownHighlightParagraph'
 
 @Entry
 @Component

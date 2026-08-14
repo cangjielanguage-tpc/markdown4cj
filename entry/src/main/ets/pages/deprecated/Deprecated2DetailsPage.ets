@@ -4,7 +4,7 @@ import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
   // MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { DeprecatedData } from '../../model/DeprecatedData'

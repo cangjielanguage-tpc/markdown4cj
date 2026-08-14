@@ -7,7 +7,7 @@ import {
   MarkdownConfiguration, MarkdownPlugin,
   // MarkdownScroller,
   MarkdownTheme,
-  OrderedListTheme} from '@cangjie-tpc/markdown_hybrid'
+  OrderedListTheme} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ListData } from '../model/ListData'

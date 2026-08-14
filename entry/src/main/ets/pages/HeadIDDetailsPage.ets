@@ -4,12 +4,12 @@ import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
   // MarkdownScroller,
-  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { HeadIDData } from '../model/HeadIDData'
 import { ConfigurationConstant } from '@kit.AbilityKit'
-import { COLOR_FF4A90E2, NUM_FFE9967A } from '@cangjie-tpc/markdown_hybrid/src/main/ets/base/Constants'
+import { COLOR_FF4A90E2, NUM_FFE9967A } from '@cangjie-tpc/markdown_arkui/src/main/ets/base/Constants'
 
 @Entry
 @Component

@@ -7,7 +7,7 @@ import { CJMarkdown,
   // MarkdownScroller,
   MarkdownTheme,
   MarkdownExposureEvent,
-  TableTheme} from '@cangjie-tpc/markdown_hybrid'
+  TableTheme} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { TableData } from '../model/TableData'

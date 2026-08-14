@@ -5,7 +5,7 @@ import { CJMarkdown,
   MarkdownConfiguration, MarkdownPlugin,
   // MarkdownScroller,
   MarkdownTheme,
-  SubTheme} from '@cangjie-tpc/markdown_hybrid'
+  SubTheme} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { SubData } from '../model/SubData'

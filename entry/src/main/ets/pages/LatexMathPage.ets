@@ -16,7 +16,7 @@ import {
 } from '../model/GeneralData'
 import { LatexMathData } from '../model/LatexMathData'
 
-// import { LatexMathColorFormat } from '@cangjie-tpc/markdown_hybrid'
+// import { LatexMathColorFormat } from '@cangjie-tpc/markdown_arkui'
 
 @Entry
 @Component
