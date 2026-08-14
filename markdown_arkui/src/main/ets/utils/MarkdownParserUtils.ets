@@ -10,7 +10,6 @@ import {
 } from "./MarkdownUtils"
 import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
 import { ArrayList } from "@kit.ArkTS"
-import { hilog } from "@kit.PerformanceAnalysisKit"
 
 /**
  * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
@@ -621,7 +620,6 @@ export function nodeToNodeView(
         targetParentView.children.push(currentView)
         break
       case 'CustomCardImage':
-        hilog.error(0,"cjlog","h222")
         let child = currentJsNode.firstChild
         while (child !== undefined) {
           const childType = child.nodeType
@@ -643,10 +641,8 @@ export function nodeToNodeView(
         targetParentView.children.push(currentView)
         break
       case 'CustomCardLink':
-        hilog.error(0,"cjlog","h333")
         let childccl = currentJsNode.firstChild
         while (childccl !== undefined) {
-          hilog.error(0,"cjlog","h444")
           const childType = childccl.nodeType
           if (childType === 'Link') {
             currentView.linkUrl = childccl.destination

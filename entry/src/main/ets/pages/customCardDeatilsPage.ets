@@ -1,7 +1,7 @@
 import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
-  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_arkui'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -243,11 +243,9 @@ struct customCardDeatilsPage {
     plugin.setIsTocPlugin(true) // TOC插件
     plugin.setIsBlockCustomCardPlugin(true,
       (desc: string, imageSrc: string, title: string): boolean => {
-        hilog.error(0,"cjlog",desc)
         return desc === "Custom"
       },
       (desc: string, link: string, title: string): boolean => {
-        hilog.error(0,"cjlog",desc)
         return desc === "Custom"
       }
     )

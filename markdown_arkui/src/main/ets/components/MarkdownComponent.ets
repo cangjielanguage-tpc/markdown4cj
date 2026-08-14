@@ -916,20 +916,15 @@ export struct CJMarkdown {
       }
       try {
         markdownParser.parse(this.content).then((node) => {
-          hilog.error(0,"cjlog","g111")
-          printNodes(node as JsNodeImpl)
           if (!this.isAlive) {
             this.jsNodePoolImpl.put(node as JsNodeImpl)
             return
           }
-          hilog.error(0,"cjlog","g222")
           this.applyParseResult(node as JsNodeImpl, currentVersion)
-          hilog.error(0,"cjlog","g333")
         }).catch(() => {
           console.error('refreshAsyncData parse failed, keeping last result')
         })
       } catch (e) {
-        hilog.error(0,"cjlog","g444")
         console.error('refreshAsyncData sync parse exception: ' + JSON.stringify(e))
       }
     }, 0)
@@ -971,9 +966,7 @@ export struct CJMarkdown {
       nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
       let parseOk: boolean = false
       try {
-        hilog.error(0,"cjlog","h111")
         nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, highlightSelectedList)
-        hilog.error(0,"cjlog","h555")
         parseOk = true
       } catch (e) {
         console.error('nodeToNodeView failed: ' + JSON.stringify(e))

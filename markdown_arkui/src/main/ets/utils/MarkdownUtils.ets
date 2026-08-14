@@ -1242,7 +1242,6 @@ function dealWithBuilder(builder:String,depth:number,str:String):string{
     builder = builder+" "
   }
   let res = builder.toString()+str+"\n"
-  hilog.error(0,"nodeinfo",res.toString())
   return res
 }
 
