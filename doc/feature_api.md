@@ -34,6 +34,24 @@ export struct CJMarkdown {
         useCangjieComponent?: boolean,
         customContains?: () => void
     )
+
+    /**
+     * 块级图片的自定义组件
+     *
+     * @param desc 图片的alt文本
+     * @param imageSrc 图片的url
+     * @param title 图片markdown标签的title
+     */
+    @BuilderParam blockImageCardComponent: (desc: string, imageSrc: string, title: string) => void
+
+    /**
+     * 块级链接的自定义组件
+     *
+     * @param desc 链接的显示文本
+     * @param link 链接的url
+     * @param title 链接markdown标签的title
+     */
+    @BuilderParam blockLinkCardComponent: (desc: string, link: string, title: string) => void
 }
 ```
 
@@ -164,6 +182,36 @@ export class MarkdownConfiguration {
    * 获取高亮设置对象
    */
   getMarkdownHighlightParagraph(): MarkdownHighlightParagraph
+
+  /**
+   * 设置表格复制的点击事件
+   *
+   * @param cb 文本复制的点击事件(funcArg0：复制的文本)
+   */
+  setTableCopyCallback(cb: (funcArg0: string) => void): void
+
+  /**
+   * 设置全局文本对象
+   *
+   * @param nodeString 全局文本对象
+   */
+  setNodeString(nodeString: MarkdownNodeViewString): void
+
+  /**
+   * 设置段落标题动画开始回调
+   *
+   * @param cb 段落标题动画开始回调
+   * @return MarkdownConfiguration
+   */
+  setParagraphHeadingAnimationStart(cb: () => void): MarkdownConfiguration
+
+  /**
+   * 设置段落标题动画结束回调
+   *
+   * @param cb 段落标题动画结束回调
+   * @return MarkdownConfiguration
+   */
+  setParagraphHeadingAnimationEnd(cb: () => void): MarkdownConfiguration
 }
 ```
 
@@ -1663,6 +1711,97 @@ export class MarkdownTheme {
   setTableScrollBarColor(tableScrollBarColor: number): void
 
   /**
+   * 设置表格头是否显示
+   *
+   * @param enable 是否显示 - 默认true
+   */
+  setTableHeadIsShow(enable: boolean): void
+
+  /**
+   * 设置表格头标题文本
+   *
+   * @param text 标题文本 - 默认""
+   */
+  setTableHeadTitleText(text: string): void
+
+  /**
+   * 设置表格头标题文本字体族
+   *
+   * @param family 字体族 - 默认"HarmonyOS Sans"
+   */
+  setTableHeadTitleTextFontFamily(family: string | Resource | undefined): void
+
+  /**
+   * 设置表格头标题文本字体大小
+   *
+   * @param size 字体大小 - 默认14.0fp
+   */
+  setTableHeadTitleTextFontSize(size: number | string | Resource | undefined): void
+
+  /**
+   * 设置表格头标题文本字体粗细
+   *
+   * @param weight 字体粗细 - 默认FontWeight.Bold
+   */
+  setTableHeadTitleTextFontWeight(weight: number | FontWeight | undefined): void
+
+  /**
+   * 设置表格头标题文本字体样式
+   *
+   * @param style 字体样式 - 默认FontStyle.Normal
+   */
+  setTableHeadTitleTextFontStyle(style: FontStyle | undefined): void
+
+  /**
+   * 设置表格头标题文本字体颜色
+   *
+   * @param color 颜色 - 默认0XFF191919
+   */
+  setTableHeadTitleTextFontColor(color: ResourceColor | undefined): void
+
+  /**
+   * 设置表格头标题文本行高
+   *
+   * @param lineHeight 行高 - 默认22.0vp
+   */
+  setTableHeadTitleTextLineHeight(lineHeight: number | string | Resource | undefined): void
+
+  /**
+   * 设置表格头标题文本左边距
+   *
+   * @param marginLeft 左边距 - 默认16.0vp
+   */
+  setTableHeadTitleTextMarginLeft(marginLeft: Length): void
+
+  /**
+   * 设置表格头复制图标
+   *
+   * @param icon 图标资源 - 默认undefined
+   */
+  setTableHeadCopyIcon(icon: Resource | undefined): void
+
+  /**
+   * 设置表格头复制图标宽度
+   *
+   * @param width 宽度 - 默认24.0vp
+   */
+  setTableHeadCopyIconWidth(width: Length): void
+
+  /**
+   * 设置表格头复制图标高度
+   *
+   * @param height 高度 - 默认24.0vp
+   */
+  setTableHeadCopyIconHeight(height: Length): void
+
+  /**
+   * 设置表格头复制图标右边距
+   *
+   * @param marginRight 右边距离 - 默认16.0vp
+   */
+  setTableHeadCopyIconMarginRight(marginRight: Length): void
+
+  /**
    * 设置代码块深浅色
    *
    * @param isDark 是否是深色 - true：深色；false：浅色。默认false
@@ -1780,6 +1919,33 @@ export class MarkdownTheme {
    * @param indentWidth 空格缩进数量，默认4空格
    */
   setIndentWidth(indentWidth: number): void
+}
+```
+
+### class GlobalTheme
+
+全局样式配置
+
+```ets
+/**
+ * 全局样式配置
+ */
+export class GlobalTheme {
+  /**
+   * 设置段落标题加载动画是否启用
+   *
+   * @param enabled 是否启用 - 默认false
+   * @return GlobalTheme
+   */
+  setParagraphHeadingAnimationEnabled(enabled: boolean): GlobalTheme
+
+  /**
+   * 设置段落标题加载动画时长
+   *
+   * @param duration 动画时长（ms） - 默认300
+   * @return GlobalTheme
+   */
+  setParagraphHeadingAnimationDuration(duration: number): GlobalTheme
 }
 ```
 
@@ -1957,6 +2123,16 @@ export class MarkdownPlugin {
    * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void
+
+  /**
+   * 设置自定义卡片插件
+   *
+   * @param isBlockCustomCardPlugin 是否设置自定义卡片插件 - true：设置插件；false：不设置插件。默认false
+   * @param blockImageCard 满足块级图片自定义卡片条件
+   * @param blockLinkCard 满足块级链接自定义卡片条件
+   */
+  setIsBlockCustomCardPlugin(isBlockCustomCardPlugin: boolean, blockImageCard?: (desc: string, imageSrc: string, title: string) => boolean,
+    blockLinkCard?: (desc: string, link: string, title: string) => boolean): void
 }
 ```
 
@@ -2115,5 +2291,32 @@ export class MarkdownHighlightParagraph {
    * @param backgroundColor 选中文字的背景色
    */
   setSelectedParagraphBackgroundColor(backgroundColor: ResourceColor): void
+}
+```
+
+### class MarkdownNodeViewString
+
+全局文本对象，深度优先遍历NodeView树，提取纯文本
+
+```ets
+/**
+ * 全局文本对象
+ * 深度优先遍历NodeView树，提取纯文本
+ */
+export class MarkdownNodeViewString {
+  /**
+   * 构造函数
+   */
+  constructor()
+
+  /**
+   * 获取全局文本
+   * - 处理缩进（列表、引用）
+   * - 处理行内节点（Text/Code/换行等）
+   * - block节点尾插换行
+   *
+   * @return 全局文本
+   */
+  toString(): string
 }
 ```

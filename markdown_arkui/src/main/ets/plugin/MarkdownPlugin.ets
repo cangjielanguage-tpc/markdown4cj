@@ -193,12 +193,11 @@ export class MarkdownPlugin {
 
 
   /**
-   * 设置TOC插件
+   * 设置自定义卡片插件
    *
    * @param isBlockCustomCardPlugin 是否设置自定义卡片插件 - true：设置插件；false：不设置插件。默认false
    * @param blockImageCard 满足块级图片自定义卡片条件
    * @param blockLinkCard 满足块级链接自定义卡片条件
-
    */
   setIsBlockCustomCardPlugin(isBlockCustomCardPlugin: boolean,
     blockImageCard? :(desc: string, imageSrc: string, title: string) => boolean,
