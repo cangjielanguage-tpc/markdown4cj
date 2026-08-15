@@ -623,7 +623,7 @@ export function nodeToNodeView(
         let child = currentJsNode.firstChild
         while (child !== undefined) {
           const childType = child.nodeType
-          if (childType === 'Image') {
+          if (childType === 'Image' || childType === 'StyleImage' || childType === 'ImageHtmlNode') {
             currentView.imageUrl = child.destination
             currentView.imageTitle = child.title
             //再循环，获取altText
@@ -644,13 +644,18 @@ export function nodeToNodeView(
         let childccl = currentJsNode.firstChild
         while (childccl !== undefined) {
           const childType = childccl.nodeType
-          if (childType === 'Link') {
+          if (childType === 'Link' || childType === 'HeadLink') {
             currentView.linkUrl = childccl.destination
             currentView.linkTitle = childccl.title
             currentView.nodeText = getLinkText(childccl)
           }
           childccl = childccl.next
         }
+        targetParentView.children.push(currentView)
+        break
+      case 'TableCellPart': // 表格单元格内文本段（与自定义卡片共存时由解析器包裹）
+        currentView.isTableCellPart = true
+        nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
         targetParentView.children.push(currentView)
         break
       case 'StyleImage': { // 样式图片

@@ -20,6 +20,7 @@ export class NodeView {
   isTableBody: boolean = false // 是否在表格内容中
   isTableRow: boolean = false // 是否在表格行中
   isTableCell: boolean = false // 是否在表格列中
+  isTableCellPart: boolean = false // 是否在表格Part中
   isDescList: boolean = false // 是否在定义列表中
   isDescTerm: boolean = false // 是否在定义列表术语中
   isBulletList: boolean = false // 是否在无序列表中
@@ -236,6 +237,7 @@ export class NodeView {
     this.isTableBody = source.isTableBody
     this.isTableRow = source.isTableRow
     this.isTableCell = source.isTableCell
+    this.isTableCellPart = source.isTableCellPart
     this.isDescList = source.isDescList
     this.isDescTerm = source.isDescTerm
     this.isBulletList = source.isBulletList

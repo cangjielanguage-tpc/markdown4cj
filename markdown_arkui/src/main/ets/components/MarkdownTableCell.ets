@@ -332,6 +332,28 @@ export struct MarkdownTableCell {
       return false
     }
 
+  isGrandchildInList(item: NodeView): boolean {
+    for (const parent of this.list) {
+      if (parent.children && parent.children.indexOf(item) >= 0) {
+        return true
+      }
+    }
+    return false
+  }
+
+  collectAllDescendants(): NodeView[] {
+    const result: NodeView[] = []
+    for (const child of this.list) {
+      result.push(child)
+      if (child.children) {
+        for (const grandChild of child.children) {
+          result.push(grandChild)
+        }
+      }
+    }
+    return result
+  }
+
 
 
 
@@ -505,9 +527,22 @@ export struct MarkdownTableCell {
                 }
               )
             }
+            .textAlign(TextAlign.Start)
+            .halfLeading(true)
+            .copyOption(
+              this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
+            )
           }
         },
-        (item: string, idx: number) => `${idx}-${item}`
+        (item: NodeView, idx: number) => {
+          let childKey = ''
+          if (item.children) {
+            for (const child of item.children) {
+              childKey += `-${child.nodeHash}-${child.imageWidth}-${child.imageHeight}-${child.imageReplacePixelMap !== undefined}-${child.latexPixelMap !== undefined}`
+            }
+          }
+          return `${idx}-${item.nodeHash}-${item.nodeType}${childKey}`
+        }
       )
     }
 }
@@ -731,7 +766,7 @@ export struct MarkdownTableCell {
             let h = l[1]
             item.imageWidth = w
             item.imageHeight = h
-            if (this.list.indexOf(item) >= 0) {
+            if (this.list.indexOf(item) >= 0 || this.isGrandchildInList(item)) {
               this.list = [...this.list]
             }
           })
@@ -914,6 +949,13 @@ export struct MarkdownTableCell {
       if (oldChild.imageUrl !== undefined && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
         oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
       }
+      if (oldChild.children) {
+        for (const grandChild of oldChild.children) {
+          if (grandChild.imageUrl !== undefined && grandChild.imageWidth !== undefined && grandChild.imageWidth > 0 && grandChild.imageHeight !== undefined) {
+            oldImageSizes.set(grandChild.imageUrl, [grandChild.imageWidth, grandChild.imageHeight])
+          }
+        }
+      }
     }
     for (const newChild of children) {
       if (newChild.imageUrl !== undefined) {
@@ -921,6 +963,17 @@ export struct MarkdownTableCell {
         if (oldSize) {
           newChild.imageWidth = oldSize[0]
           newChild.imageHeight = oldSize[1]
+        }
+      }
+      if (newChild.children) {
+        for (const grandChild of newChild.children) {
+          if (grandChild.imageUrl !== undefined) {
+            const oldSize = oldImageSizes.get(grandChild.imageUrl)
+            if (oldSize) {
+              grandChild.imageWidth = oldSize[0]
+              grandChild.imageHeight = oldSize[1]
+            }
+          }
         }
       }
     }
@@ -951,7 +1004,8 @@ export struct MarkdownTableCell {
     if (!this.isLatexMathEnabled) {
       return
     }
-    for (const child of this.list) {
+    const allItems: NodeView[] = this.collectAllDescendants()
+    for (const child of allItems) {
       if (child.nodeType === "LatexMathNode" && !child.latexIsLoading && child.latexPixelMap === undefined) {
         child.latexIsLoading = true
         LatexParseQueue.enqueue(() => {
@@ -983,20 +1037,21 @@ export struct MarkdownTableCell {
     if (this.imageReplaceCallback === undefined) {
       return
     }
-    for (const child of this.list) {
+    const allItems: NodeView[] = this.collectAllDescendants()
+    for (const child of allItems) {
       if (child.imageUrl !== undefined && !child.imageReplaceTried) {
         child.imageReplaceTried = true
         this.imageReplaceCallback(child.imageUrl).then((buffer: ArrayBuffer | undefined) => {
           if (!this.isAlive || buffer === undefined) {
             return
           }
-          if (this.list.indexOf(child) < 0) {
+          if (this.list.indexOf(child) < 0 && !this.isGrandchildInList(child)) {
             return
           }
           const imageSource: image.ImageSource = image.createImageSource(buffer)
           imageSource.createPixelMap().then((pm: PixelMap) => {
             imageSource.release()
-            if (!this.isAlive || this.list.indexOf(child) < 0) {
+            if (!this.isAlive || (this.list.indexOf(child) < 0 && !this.isGrandchildInList(child))) {
               pm.release()
               return
             }
@@ -1041,7 +1096,8 @@ export struct MarkdownTableCell {
    * 异步生成链接图标PixelMap（通过C++原生绘图）
    */
   private tryGenerateLinkIcons(): void {
-    for (const child of this.list) {
+    const allItems: NodeView[] = this.collectAllDescendants()
+    for (const child of allItems) {
       if ((child.nodeType === "Link" || child.nodeType === "HeadLink") && child.isLinkStyle && !child.linkIconTried) {
         child.linkIconTried = true
         child.linkIconText = child.nodeText
@@ -1054,11 +1110,10 @@ export struct MarkdownTableCell {
               }
               return
             }
-            if (this.list.indexOf(child) < 0) {
+            if (this.list.indexOf(child) < 0 && !this.isGrandchildInList(child)) {
               result.pixelMap.release()
               return
             }
-            // 流式输出中文本可能已变化，检查是否仍是生成时的文本
             if (child.linkIconText !== child.nodeText) {
               result.pixelMap.release()
               return
