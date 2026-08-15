@@ -59,8 +59,8 @@ export class TableTheme implements MarkdownBaseTheme {
   tableStickyHeader: boolean = false // 表格标题行是否吸顶（仅当外层 List 可滚动时生效）
 
   //下面是表格的
-  tableHeadIsShow: boolean = true // 表格头复制按钮是否显示
-  tableHeadTitleText: string = '比较' // 表格头标题
+  tableHeadIsShow: boolean = false // 表格头复制按钮是否显示
+  tableHeadTitleText: string = '' // 表格头标题
   tableHeadTitleTextFontFamily: string | Resource | undefined = undefined // 表格头标题类型文本字体族
   tableHeadTitleTextFontSize: number | string | Resource | undefined = undefined // 表格头标题类型文本字体大小
   tableHeadTitleTextFontWeight: number | FontWeight | undefined = undefined // 表格头标题类型文本字体粗细

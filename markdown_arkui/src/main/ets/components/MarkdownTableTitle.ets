@@ -22,7 +22,7 @@ export struct MarkDownTableTitle {
         .fontStyle(this.tableTheme.tableHeadTitleTextFontStyle ?? this.tableTheme.tableTitleTextFontStyle)
         .fontFamily(this.tableTheme.tableHeadTitleTextFontFamily ?? this.tableTheme.tableTitleTextFontFamily)
         .lineHeight(this.tableTheme.tableHeadTitleTextLineHeight ?? this.tableTheme.tableTitleTextLineHeight)
-        .width('30%')
+        .width('70%')
         .maxLines(1)
         .textOverflow({ overflow: TextOverflow.Ellipsis })
         .padding({
