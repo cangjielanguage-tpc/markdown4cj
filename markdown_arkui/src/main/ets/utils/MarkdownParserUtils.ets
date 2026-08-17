@@ -185,6 +185,19 @@ export function nodeToNodeView(
       prevChild.nodeHash = newNodeHash
       prevChild.contentHash = newContentHash
       prevChild.sourceSpan = currentJsNode.getSourceSpans()
+      // 继承当前上下文样式（与新节点创建路径一致）
+      // 修复增量解析时Link/HeadLink子节点未继承isLink/headLinkIndex等样式的问题
+      prevChild.copyStyleFrom(inheritedStyleView)
+      // copyStyleFrom可能覆盖节点自身类型标记，需重新设置
+      if (nodeType === 'Code') {
+        prevChild.isInLineCode = true
+      }
+      if (nodeType === 'Link' || nodeType === 'HeadLink') {
+        prevChild.isLink = true
+      }
+      if (nodeType === 'LatexMathBlock') {
+        prevChild.isLatexMathBlock = true
+      }
       if (nodeType === 'Text' || nodeType === 'Code') {
         prevChild.nodeText = currentJsNode.literal ?? ""
       } else if (nodeType === 'FencedCodeBlock' || nodeType === 'IndentedCodeBlock') {

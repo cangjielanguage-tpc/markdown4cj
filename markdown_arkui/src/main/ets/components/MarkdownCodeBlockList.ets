@@ -243,10 +243,6 @@ export struct MarkdownCodeBlockList {
    * @param changedIndices 变化的索引数组
    */
   parseChangedCode(changedIndices: number[]): void {
-    // 始终递增版本号，确保数组收缩时未完成的回调被作废
-    this.parseVersion++
-    const currentVersion = this.parseVersion
-
     // 调整数组大小：保留已有CodeBlockData实例（保持@ObjectLink绑定），新增空的
     let dataList: Array<CodeBlockData> = []
     for (let i = 0; i < this.strText.length; i++) {
@@ -261,6 +257,11 @@ export struct MarkdownCodeBlockList {
     if (changedIndices.length === 0) {
       return
     }
+
+    // 仅在真正需要解析时递增版本号
+    // 避免changedIndices为空时递增parseVersion导致正在进行的有效解析结果被丢弃
+    this.parseVersion++
+    const currentVersion = this.parseVersion
 
     if (this.codeBlockTheme.codeBlockParserSync) {
       this.parseChangedCodeSync(changedIndices, currentVersion)

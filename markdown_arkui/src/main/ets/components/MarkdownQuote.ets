@@ -602,7 +602,8 @@ export struct MarkdownQuote {
           }
         },
         (item: NodeView, index: number) => {
-          if (item.nodeType === "LatexMathBlock") {
+          if (item.nodeType === "LatexMathBlock" || item.nodeType === "FencedCodeBlock" ||
+            item.nodeType === "IndentedCodeBlock" || item.nodeType === "FencedCodeBlockListBlock") {
             return `${index}-${item.nodeHash}-${item.contentHash}`
           }
           if (item.nodeType === "TableBlock") {

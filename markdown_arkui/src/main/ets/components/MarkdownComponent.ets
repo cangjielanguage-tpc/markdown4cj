@@ -229,6 +229,10 @@ export struct CJMarkdown {
             }
           },
           (item: NodeView, index: number) => {
+            if (item.nodeType === "FencedCodeBlock" || item.nodeType === "IndentedCodeBlock" ||
+              item.nodeType === "FencedCodeBlockListBlock") {
+              return `${index}-${item.nodeHash}-${item.contentHash}`
+            }
             return `${index}-${item.nodeHash}`
           }
         )
@@ -809,7 +813,8 @@ export struct CJMarkdown {
             }
           },
           (item: NodeView, index: number) => {
-            if (item.nodeType === "LatexMathBlock") {
+            if (item.nodeType === "LatexMathBlock" || item.nodeType === "FencedCodeBlock" ||
+              item.nodeType === "IndentedCodeBlock" || item.nodeType === "FencedCodeBlockListBlock") {
               return `${index}-${item.nodeHash}-${item.contentHash}`
             }
             if (item.nodeType === "TableBlock") {

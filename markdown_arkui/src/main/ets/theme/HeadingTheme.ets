@@ -171,19 +171,6 @@ export class HeadingTheme implements MarkdownBaseTheme {
   }
 
   /**
-   * 设置所有标题等级外边距
-   *
-   * @param margin 外边距
-   * @return HeadingTheme
-   */
-  setMarginForAllHeading(margin: Length): HeadingTheme {
-    for (let i = 1; i <= 6; i++) {
-      this.setMarginForDesignateHeading(i, margin)
-    }
-    return this
-  }
-
-  /**
    * 设置标题的4个外边距：设置H1-H6级标题，所有等级的某一个外边距为统一值
    *
    * @param options MarkdownMarginOptions | number 类型
@@ -359,19 +346,6 @@ export class HeadingTheme implements MarkdownBaseTheme {
           this.heading6MarginLeft = l
         }
         break
-    }
-    return this
-  }
-
-  /**
-   * 设置所有标题等级内边距
-   *
-   * @param padding 内边距
-   * @return HeadingTheme
-   */
-  setPaddingForAllHeading(padding: Length): HeadingTheme {
-    for (let i = 1; i <= 6; i++) {
-      this.setPaddingForDesignateHeading(i, padding)
     }
     return this
   }
