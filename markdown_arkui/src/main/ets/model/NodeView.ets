@@ -115,6 +115,22 @@ export class NodeView {
     this.headingLevel = source.headingLevel
     this.headingID = source.headingID
     this.copyStyleFrom(source)
+    this.headLinkIndex = source.headLinkIndex
+    this.linkUrl = source.linkUrl
+    this.linkTitle = source.linkTitle
+    this.imageUrl = source.imageUrl
+    this.imageTitle = source.imageTitle
+    this.imageWidth = source.imageWidth
+    this.imageHeight = source.imageHeight
+    this.imageStyleWidth = source.imageStyleWidth
+    this.imageStyleHeight = source.imageStyleHeight
+    this.imageRadius = source.imageRadius
+    this.imageAlign = source.imageAlign
+    this.imageAltText = source.imageAltText
+    this.codeInfo = source.codeInfo
+    this.codeListTab = source.codeListTab
+    this.cardName = source.cardName
+    this.cardData = source.cardData
     if (this.imageReplacePixelMap !== undefined && this.imageReplacePixelMap !== source.imageReplacePixelMap) {
       try {
         this.imageReplacePixelMap.release()
@@ -265,23 +281,7 @@ export class NodeView {
     this.isSubNode = source.isSubNode
     this.isSupNode = source.isSupNode
     this.isInLineCode = source.isInLineCode
-    this.headLinkIndex = source.headLinkIndex
     this.isLink = source.isLink
-    this.linkUrl = source.linkUrl
-    this.linkTitle = source.linkTitle
-    this.imageUrl = source.imageUrl
-    this.imageWidth = source.imageWidth
-    this.imageTitle = source.imageTitle
-    this.imageHeight = source.imageHeight
-    this.imageStyleWidth = source.imageStyleWidth
-    this.imageStyleHeight = source.imageStyleHeight
-    this.imageRadius = source.imageRadius
-    this.imageAlign = source.imageAlign
-    this.imageAltText = source.imageAltText
-    this.codeInfo = source.codeInfo
-    this.codeListTab = source.codeListTab
-    this.cardName = source.cardName
-    this.cardData = source.cardData
     this.isLinkStyle = source.isLinkStyle
     this.linkIconType = source.linkIconType
     this.linkTypeStr = source.linkTypeStr
