@@ -23,6 +23,9 @@ export struct CJMarkdown {
     * @param listScroller 滑动控制器
     * @param useCangjieComponent 是否使用Cangjie互操作组件展示。true:使用Cangjie互操作组件,false:使用ArkUI。默认true
     * @param customContains 使用ArkUI布局用户传入ArkUI自定义组件,不传则使用三方库自带的Text组件显示
+    * @param blockImageCardComponent 块级图片的自定义组件
+    * @param blockLinkCardComponent 块级链接的自定义组件
+
     */
     CJMarkdown(
         content: string,
@@ -32,26 +35,10 @@ export struct CJMarkdown {
         plugin?: MarkdownPlugin,
         listScroller?: MarkdownScroller,
         useCangjieComponent?: boolean,
-        customContains?: () => void
+        customContains?: () => void,
+        blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void,
+        blockLinkCardComponent:(desc:string, link:string, title:string) => void
     )
-
-    /**
-     * 块级图片的自定义组件
-     *
-     * @param desc 图片的alt文本
-     * @param imageSrc 图片的url
-     * @param title 图片markdown标签的title
-     */
-    @BuilderParam blockImageCardComponent: (desc: string, imageSrc: string, title: string) => void
-
-    /**
-     * 块级链接的自定义组件
-     *
-     * @param desc 链接的显示文本
-     * @param link 链接的url
-     * @param title 链接markdown标签的title
-     */
-    @BuilderParam blockLinkCardComponent: (desc: string, link: string, title: string) => void
 }
 ```
 
