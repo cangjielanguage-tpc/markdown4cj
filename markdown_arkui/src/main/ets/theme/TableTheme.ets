@@ -69,7 +69,7 @@ export class TableTheme implements MarkdownBaseTheme {
   tableHeadTitleTextLineHeight: number | string | Resource | undefined = undefined // 表格头标题类型文本行高
   tableHeadTitleTextMarginLeft: Length = 0.0 // 表格头标题类型文本左边距
 
-  tableHeadCopyIcon: Resource | undefined = undefined // 表格头复制图标
+  tableHeadCopyIcon: Resource | undefined = $r('app.media.startIcon') // 表格头复制图标
   tableHeadCopyIconWidth: Length = 24.0 // 表格头复制图标宽度
   tableHeadCopyIconHeight: Length = 24.0 // 表格头复制图标高度
   tableHeadCopyIconMarginRight: Length = 0.0 // 表格头复制图标右边距

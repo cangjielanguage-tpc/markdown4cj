@@ -277,6 +277,7 @@ export class NodeView {
     this.imageStyleHeight = source.imageStyleHeight
     this.imageRadius = source.imageRadius
     this.imageAlign = source.imageAlign
+    this.imageAltText = source.imageAltText
     this.codeInfo = source.codeInfo
     this.codeListTab = source.codeListTab
     this.cardName = source.cardName
