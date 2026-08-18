@@ -926,6 +926,7 @@ export struct CJMarkdown {
             return
           }
           this.applyParseResult(node as JsNodeImpl, currentVersion)
+          this.jsNodePoolImpl.put(node as JsNodeImpl)
         }).catch(() => {
           console.error('refreshAsyncData parse failed, keeping last result')
         })
@@ -950,6 +951,7 @@ export struct CJMarkdown {
         return
       }
       this.applyParseResult(node, currentVersion)
+      this.jsNodePoolImpl.put(node)
     } catch (e) {
       console.error('refreshSyncData parse failed, keeping last result: ' + JSON.stringify(e))
     }
