@@ -3,7 +3,7 @@ import { router } from '@kit.ArkUI'
 import {
   CJMarkdown,
   GlobalTheme,
-  // LatexMathColorFormat,
+  LatexMathColorFormat,
   LatexMathTheme,
   MarkdownConfiguration,
   MarkdownPlugin,
@@ -103,8 +103,8 @@ struct LatexMathDetailsPage {
   latexMathBackgroundColor: ResourceColor | undefined = undefined
   @State // 数学公式文本颜色
   latexMathTextColor: ResourceColor | undefined = undefined
-  // @State // 数学公式生成图片格式
-  // latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+  @State // 数学公式生成图片格式
+  latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
   @State // 块结构的数学公式是否居中
   latexMathBlockCenter: boolean = false
   @State // 数学公式字体路径
@@ -157,7 +157,7 @@ struct LatexMathDetailsPage {
       this.latexMathTextSize = latexMathData._latexMathTextSize
       this.latexMathBackgroundColor = latexMathData._latexMathBackgroundColor
       this.latexMathTextColor = latexMathData._latexMathTextColor
-      // this.latexMathColorFormat = latexMathData._latexMathColorFormat
+      this.latexMathColorFormat = latexMathData._latexMathColorFormat
       this.latexMathBlockCenter = latexMathData._latexMathBlockCenter
       this.latexMathResPath = latexMathData._latexMathResPath
     } catch (e) {
@@ -274,7 +274,7 @@ struct LatexMathDetailsPage {
     if (this.latexMathTextColor !== undefined) {
       latexMathTheme.setLatexMathTextColor(this.latexMathTextColor)
     }
-    // latexMathTheme.setLatexMathColorFormat(this.latexMathColorFormat)
+    latexMathTheme.setLatexMathColorFormat(this.latexMathColorFormat)
     latexMathTheme.setLatexMathBlockCenter(this.latexMathBlockCenter)
     latexMathTheme.setLatexMathResPath(this.latexMathResPath)
     theme.setLatexMathTheme(latexMathTheme)

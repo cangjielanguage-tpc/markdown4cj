@@ -1,4 +1,4 @@
-// import { LatexMathColorFormat } from "@cangjie-tpc/markdown_arkui"
+import { LatexMathColorFormat } from "@cangjie-tpc/markdown_arkui"
 import { BaseMDData } from "./BaseMDData"
 
 export class LatexMathData extends BaseMDData {
@@ -19,7 +19,7 @@ export class LatexMathData extends BaseMDData {
   _latexMathTextSize: number = 16 // 数学公式文本大小
   _latexMathBackgroundColor: ResourceColor | undefined = undefined // 数学公式背景色
   _latexMathTextColor: ResourceColor | undefined = undefined // 数学公式文本颜色
-  // _latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888 // 数学公式生成图片格式
+  _latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888 // 数学公式生成图片格式
   _latexMathBlockCenter: boolean = false // 块结构的数学公式是否居中
   _latexMathResPath: string = '/data/storage/el1/bundle/entry/resources/resfile/res' // 数学公式字体路径
 

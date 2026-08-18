@@ -1,3 +1,4 @@
+import { LatexMathColorFormat } from "@cangjie-tpc/markdown_arkui"
 import { util } from "@kit.ArkTS";
 import hilog from "@ohos.hilog";
 
@@ -202,16 +203,16 @@ export function styleToString(style: TextDecorationStyle): string {
 /**
  * 数学公式生成图片格式转文本
  */
-// export function enumToString(e: LatexMathColorFormat): string {
-//   switch (e) {
-//     case LatexMathColorFormat.COLOR_FORMAT_RGB_565:
-//       return "COLOR_FORMAT_RGB_565"
-//     case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888:
-//       return "COLOR_FORMAT_BGRA_8888"
-//     default :
-//       return "null"
-//   }
-// }
+export function enumToString(e: LatexMathColorFormat): string {
+  switch (e) {
+    case LatexMathColorFormat.COLOR_FORMAT_RGB_565:
+      return "COLOR_FORMAT_RGB_565"
+    case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888:
+      return "COLOR_FORMAT_BGRA_8888"
+    default :
+      return "null"
+  }
+}
 
 /**
  * BorderStyle样式转文本

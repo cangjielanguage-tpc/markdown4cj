@@ -5,7 +5,7 @@ import {
   colorSwitch,
   colorSwitch1,
   decorationTypeToString,
-  // enumToString,
+  enumToString,
   fontStyleToString,
   fontWeightToString,
   imageFitToString,
@@ -88,7 +88,7 @@ export struct BaseTabComponent {
           }
         } else if (this.typeEnum == TypeEnum.IS_LATEX_FORMAT) {
           if (this.allData !== undefined) {
-            Text(styleToString(this.allData as number))
+            Text(enumToString(this.allData as number))
               .fontSize(16)
               .textAlign(TextAlign.Start)
           } else {
@@ -326,31 +326,31 @@ export struct BaseTabComponent {
 
           })
         } else if (this.typeEnum == TypeEnum.IS_LATEX_FORMAT) {
-          // ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
-          //   if (item !== undefined) {
-          //     Button(`${enumToString(item as number)}`)
-          //       .type(ButtonType.Capsule)
-          //       .stateEffect(true)
-          //       .height(25)
-          //       .margin(2)
-          //       .backgroundColor(0xFF317AFF)
-          //       .fontSize(14)
-          //       .onClick(() => {
-          //         this.allData = item as number
-          //       })
-          //   } else {
-          //     Button("undefined")
-          //       .type(ButtonType.Capsule)
-          //       .stateEffect(true)
-          //       .height(25)
-          //       .margin(2)
-          //       .backgroundColor(0xFF317AFF)
-          //       .fontSize(14)
-          //       .onClick(() => {
-          //         this.allData = undefined
-          //       })
-          //   }
-          // })
+          ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
+            if (item !== undefined) {
+              Button(`${enumToString(item as number)}`)
+                .type(ButtonType.Capsule)
+                .stateEffect(true)
+                .height(25)
+                .margin(2)
+                .backgroundColor(0xFF317AFF)
+                .fontSize(14)
+                .onClick(() => {
+                  this.allData = item as number
+                })
+            } else {
+              Button("undefined")
+                .type(ButtonType.Capsule)
+                .stateEffect(true)
+                .height(25)
+                .margin(2)
+                .backgroundColor(0xFF317AFF)
+                .fontSize(14)
+                .onClick(() => {
+                  this.allData = undefined
+                })
+            }
+          })
         } else if (this.typeEnum == TypeEnum.IS_DECORATION_STYLE) {
           ForEach(this.allListData, (item: string | number | boolean | Resource | ResourceColor | BorderStyle | FontStyle | FontWeight | TextDecorationType | TextDecorationStyle | ImageFit  | BarState | LineCapStyle| undefined, _: number) => {
             if (item !== undefined) {

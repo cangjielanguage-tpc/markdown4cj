@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -15,8 +15,7 @@ import {
   timeListGeneralData
 } from '../model/GeneralData'
 import { LatexMathData } from '../model/LatexMathData'
-
-// import { LatexMathColorFormat } from '@cangjie-tpc/markdown_arkui'
+import { LatexMathColorFormat } from '@cangjie-tpc/markdown_arkui'
 
 @Entry
 @Component
@@ -166,9 +165,9 @@ struct LatexMathPage {
   @State // 数学公式文本颜色
   latexMathTextColor: ResourceColor | undefined = undefined
   // 数学公式生成图片格式列表
-  // latexMathColorFormatList: Array<number> = [LatexMathColorFormat.COLOR_FORMAT_BGRA_8888, LatexMathColorFormat.COLOR_FORMAT_RGB_565]
+  latexMathColorFormatList: Array<number> = [LatexMathColorFormat.COLOR_FORMAT_BGRA_8888, LatexMathColorFormat.COLOR_FORMAT_RGB_565]
   @State // 数学公式生成图片格式
-  // latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+  latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
   // 块结构的数学公式是否居中列表
   latexMathBlockCenterList: Array<boolean> = booleanListGeneralData
   @State // 块结构的数学公式是否居中
@@ -248,7 +247,7 @@ struct LatexMathPage {
                 this.latexMathData._latexMathTextSize = this.latexMathTextSize
                 this.latexMathData._latexMathBackgroundColor = this.latexMathBackgroundColor
                 this.latexMathData._latexMathTextColor = this.latexMathTextColor
-                // this.latexMathData._latexMathColorFormat = this.latexMathColorFormat
+                this.latexMathData._latexMathColorFormat = this.latexMathColorFormat
                 this.latexMathData._latexMathBlockCenter = this.latexMathBlockCenter
                 this.latexMathData._latexMathResPath = this.latexMathResPath
                 // ---------- 跳转到详情
@@ -480,24 +479,24 @@ struct LatexMathPage {
                   allListData: this.latexMathPaddingLeftList,
                   allData: this.latexMathPaddingLeft
                 })
-                // BaseTabComponent({
-                //   titleStr: "数学公式生成图片格式 - ",
-                //   typeEnum: TypeEnum.IS_LATEX_FORMAT,
-                //   allListData: this.latexMathColorFormatList,
-                //   allData: this.latexMathColorFormat
-                // })
+                BaseTabComponent({
+                  titleStr: "数学公式生成图片格式 - ",
+                  typeEnum: TypeEnum.IS_LATEX_FORMAT,
+                  allListData: this.latexMathColorFormatList,
+                  allData: this.latexMathColorFormat
+                })
                 BaseTabComponent({
                   titleStr: "块结构的数学公式是否居中 - ",
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.latexMathBlockCenterList,
                   allData: this.latexMathBlockCenter
                 })
-                // BaseTabComponent({
-                //           titleStr: "数学公式字体路径 - ",
-                //           typeEnum: TypeEnum.IS_STRING,
-                //           allListData: this.latexMathResPathList,
-                //           allData: this.latexMathResPath
-                // })
+                BaseTabComponent({
+                  titleStr: "数学公式字体路径 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.latexMathResPathList,
+                  allData: this.latexMathResPath
+                })
               }
               .width('100%')
               .padding({ bottom: 5, left: 5, right: 5 })
