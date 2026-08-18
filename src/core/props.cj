@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 /**
  * Class to hold data in {@link RenderProps}. Represents a certain <em>property</em>.

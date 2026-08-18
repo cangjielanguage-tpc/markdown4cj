@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 public class Registry {
     private let origin: ArrayList<MarkdownPlugin>

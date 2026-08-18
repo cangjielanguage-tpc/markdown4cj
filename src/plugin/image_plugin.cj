@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 class Style <: CustomNode {
     Style(let style: String) {}

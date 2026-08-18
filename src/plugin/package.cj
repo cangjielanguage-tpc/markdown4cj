@@ -1,6 +1,6 @@
-package markdown.plugin
+package markdown_parser.plugin
 
-internal import markdown.core.*
+internal import markdown_parser.core.*
 // internal import commonmark4cj.commonmark.*
 public import commonmark4cj.strikethrough.*
 public import commonmark4cj.table.*

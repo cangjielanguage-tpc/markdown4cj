@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public class ImageCollectPlugin <: AbstractMarkdownPlugin {
     public static func create(): ImageCollectPlugin {

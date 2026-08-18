@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public abstract class TagHandler {
     public func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node

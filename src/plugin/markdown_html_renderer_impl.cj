@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 class MarkdownHtmlRendererImpl <: MarkdownHtmlRenderer {
     private let allowNonClosedTags: Bool

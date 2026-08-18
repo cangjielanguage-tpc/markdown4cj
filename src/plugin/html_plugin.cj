@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public class HtmlPlugin <: AbstractMarkdownPlugin {
     public static func create(): HtmlPlugin {

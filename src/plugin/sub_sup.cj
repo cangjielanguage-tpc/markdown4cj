@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public open class SubNode <: CustomNode {
     public open override func getNodeType(): NodeType {

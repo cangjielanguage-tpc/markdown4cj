@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 /**
  * A single key + value attribute. (Only used for presentation.)

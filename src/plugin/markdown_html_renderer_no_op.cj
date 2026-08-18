@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 class MarkdownHtmlRendererNoOp <: MarkdownHtmlRenderer {
     init() {

@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 /**
  * Util methods for normalizing strings. Html4cj internal use only, please don't depend on this API.

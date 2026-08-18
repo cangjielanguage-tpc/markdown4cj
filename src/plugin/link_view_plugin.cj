@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 /**
  * Link作为单独NodeView节点

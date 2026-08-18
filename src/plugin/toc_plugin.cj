@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public class TocPlugin <: AbstractMarkdownPlugin {
     public static func create(): TocPlugin {

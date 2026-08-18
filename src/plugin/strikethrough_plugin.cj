@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 /**
  * Plugin to add strikethrough markdown feature.

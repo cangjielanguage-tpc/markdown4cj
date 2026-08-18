@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 /**
  * 图片幻灯片

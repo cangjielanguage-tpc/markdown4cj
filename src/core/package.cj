@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 public import commonmark4cj.commonmark.* // 重导出commonmark公共api
 internal import std.collection.ArrayList

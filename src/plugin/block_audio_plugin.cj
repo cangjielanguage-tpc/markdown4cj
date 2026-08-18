@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public class BlockAudioPlugin <: AbstractMarkdownPlugin {
     public static func create(): BlockAudioPlugin {

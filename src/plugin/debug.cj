@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 /* public class Debuger {
     static var _logger: ?Logger = None

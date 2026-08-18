@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 /**
  * A Parse Error records an error in the input HTML that occurs in either the tokenisation or the tree building phase.

@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 /**
  * Class to parse and render markdown. instance specific (previously consisted

@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 /**
  * Class represents a plugin (extension) to Markdown to configure how parsing and rendering

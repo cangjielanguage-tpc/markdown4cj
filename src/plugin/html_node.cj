@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public class ImageHtmlNode <: CustomNode {
     private var destination: String

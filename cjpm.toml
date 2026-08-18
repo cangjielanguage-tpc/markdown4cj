@@ -3,13 +3,13 @@
   compile-option = ""
   description = "markdown4cj"
   link-option = ""
-  name = "markdown"
+  name = "markdown_parser"
   output-type = "dynamic"
   src-dir = "src"
   target-dir = ""
   version = "1.0.0"
   [package.package-configuration]
-  [package.package-configuration.markdown]
+  [package.package-configuration.markdown_parser]
     #output-type = "dynamic"
     #compile-option = "--compile-as-exe"
     #combine-all-deps = true

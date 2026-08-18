@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public abstract class MarkdownHtmlRenderer {
     public func render(

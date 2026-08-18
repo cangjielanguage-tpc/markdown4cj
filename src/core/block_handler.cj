@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 /**
  * Primary purpose is to control the spacing applied before/after certain blocks, which

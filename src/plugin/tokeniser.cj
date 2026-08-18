@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 class Tokeniser {
     static let replacementChar: Rune = r'\u{FFFD}' // replaces null Character

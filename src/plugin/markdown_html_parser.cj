@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public interface FlushAction<T> {
     func apply(tags: Collection<T>): Unit

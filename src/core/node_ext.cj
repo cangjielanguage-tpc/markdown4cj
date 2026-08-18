@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 import std.collection.at
 import std.collection.count

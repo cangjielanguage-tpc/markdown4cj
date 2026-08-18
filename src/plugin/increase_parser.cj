@@ -1,8 +1,8 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 import commonmark4cj.commonmark.*
 import commonmark4cj.table.*
-import markdown.core.*
+import markdown_parser.core.*
 import std.collection.*
 
 /**

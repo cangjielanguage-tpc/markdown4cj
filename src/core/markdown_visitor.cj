@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 /**
  * Configurable visitor of parsed markdown. Allows visiting certain (registered) nodes without

@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public class TaskListItem <: ListItem {
     public static let TASK_DEPTH: String = "TaskDepth"

@@ -1,4 +1,4 @@
-package markdown.plugin
+package markdown_parser.plugin
 
 public class LinkifyPlugin <: AbstractMarkdownPlugin {
     var regs: Array<String> = EMPTY_STRING_ARRAY

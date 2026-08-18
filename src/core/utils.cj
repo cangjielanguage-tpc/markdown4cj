@@ -1,4 +1,4 @@
-package markdown.core
+package markdown_parser.core
 
 public abstract class ParserUtils {
     public static func moveChildren(to: Node, froms: Node): Unit {
