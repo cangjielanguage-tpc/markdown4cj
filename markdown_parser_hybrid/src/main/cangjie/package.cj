@@ -1,12 +1,12 @@
 package markdown_parser_hybrid
 
-//internal import markdown.core.{Node as Node, Text as Text, HtmlInline as HtmlInline, Image as Image, Code as Code,
+//internal import markdown_parser.core.{Node as Node, Text as Text, HtmlInline as HtmlInline, Image as Image, Code as Code,
 //    LinkReferenceDefinition as LinkReferenceDefinition, Link as Link, StrongEmphasis as StrongEmphasis, Emphasis as Emphasis,
 //    HtmlBlock as HtmlBlock, IndentedCodeBlock as IndentedCodeBlock, FencedCodeBlock as FencedCodeBlock, Heading as Heading,
 //    ListBlock as ListBlock, BulletList as BulletList, OrderedList as OrderedList}
-internal import markdown.core.*
-internal import markdown.plugin.*
-internal import markdown.plugin.emoji.*
+internal import markdown_parser.core.*
+internal import markdown_parser.plugin.*
+internal import markdown_parser.plugin.emoji.*
 internal import std.collection.*
 internal import ohos.ark_interop.*
 internal import ohos.hilog.Hilog

@@ -32,8 +32,7 @@
   package-option = {}
 
 [dependencies]
-  [dependencies.markdown]
-    #tag = "markdown_parser_v1.0.0"
+  [dependencies.markdown_parser]
     branch = "markdown_parser"
     git = "https://gitcode.com/Cangjie-TPC/markdown4cj.git"
   [dependencies.commonmark4cj]

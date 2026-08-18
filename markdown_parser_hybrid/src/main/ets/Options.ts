@@ -40,6 +40,9 @@ export interface Options {
   TablePlugin?: boolean
   TaskListPlugin?: boolean
   TocPlugin?: boolean
+  BlockCustomCardPlugin?:boolean
   WhitelistLooseDelimiterPlugin?: boolean
   WhitelistLooseDelimiterPlugin_DelimiterFilterMode?: "Permissive" | "Strict" | Array<String>
+  blockImageCard?: ( desc: string, imageSrc: string, title: string) => boolean
+  blockLinkCard?: (desc: string, link: string, title: string) => boolean
 }
