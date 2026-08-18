@@ -45,6 +45,7 @@ export class JsNodeSendableImpl implements JsNode {
   headIndex: number | undefined = undefined
   props: collections.Map<string, string> | undefined = undefined // 用于存放Js行内自定义解析插件所产生的数据
   sourceSpans: collections.Array<SourceSpanSendableImpl> = new collections.Array()
+  tagName: string | undefined = undefined
 
   appendChild(child: JsNodeSendableImpl) {
     child.unlink()
@@ -165,6 +166,11 @@ export class JsNodeSendableImpl implements JsNode {
 
     this.props = undefined
     this.sourceSpans = new collections.Array()
+
+    this.tagName = undefined
+    this.ImageStyles = undefined
+    this.SpanNodeAttr = undefined
+    this.SpanNodeStyle = undefined
   }
 }
 

@@ -162,6 +162,11 @@ export class JsNodeImpl implements JsNode {
 
     this.props = undefined
     this.sourceSpans = []
+
+    this.tagName = undefined
+    this.ImageStyles = undefined
+    this.SpanNodeAttr = undefined
+    this.SpanNodeStyle = undefined
   }
 }
 
