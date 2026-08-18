@@ -112,6 +112,9 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         if (opt.get('TocPlugin', false, context)) {
             builder.usePlugin(TocPlugin.create())
         }
+        if (opt.get('BlockCustomCardPlugin', false, context)) {
+            builder.usePlugin(createCustomCardPlugin(opt, context))
+        }
         if (opt.get('NodeIdPlugin', false, context)) {
             builder.usePlugin(NodeIdPlugin.create())
         }

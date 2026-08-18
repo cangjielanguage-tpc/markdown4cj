@@ -166,7 +166,6 @@ export class JsNodeSendableImpl implements JsNode {
 
     this.props = undefined
     this.sourceSpans = new collections.Array()
-
     this.tagName = undefined
     this.ImageStyles = undefined
     this.SpanNodeAttr = undefined

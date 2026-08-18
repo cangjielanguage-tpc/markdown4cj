@@ -40,6 +40,7 @@ export let opt: Options = {
   TablePlugin: true,
   TaskListPlugin: true,
   TocPlugin: true,
+  BlockCustomCardPlugin:false,
   WhitelistLooseDelimiterPlugin: true
 }
 
