@@ -5,6 +5,17 @@
       "path": "./cjpm.toml",
       "abiFilters": ["arm64-v8a","x86_64"],
       "flattenLibs": true
+    },
+    "nativeLib": {
+      "filter": {
+        "excludes": [
+          "**/libcangjie-std-ast.so",
+          "**/libcangjie-std-deriving.api.so",
+          "**/libcangjie-std-deriving.builtins.so",
+          "**/libcangjie-std-deriving.impl.so",
+          "**/libcangjie-std-deriving.resolve.so"
+        ]
+      }
     }
   },
   "buildOptionSet": [
