@@ -15,9 +15,9 @@
     "Latex"
   ],
   "dependencies": {
-    "@cangjie-tpc/markdown_parser_hybrid": "file:./har/markdown_parser_hybrid.har",
-    "@cangjie-tpc/prism_hybrid": "file:./har/prism_hybrid.har",
+    "@cangjie-tpc/prism_hybrid": "file:../modules/prism4cj/prism_hybrid",
+    "@cangjie-tpc/codeformat_hybrid": "file:../modules/codeformat4cj/codeformat_hybrid",
+    "@cangjie-tpc/markdown_parser_hybrid": "file:../modules/markdown4cj/markdown_parser_hybrid",
     "@cangjie-tpc/formula_hybrid": "file:./har/formula_hybrid.har",
-    "@cangjie-tpc/codeformat_hybrid": "file:./har/codeformat_hybrid.har"
   }
 }

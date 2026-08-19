@@ -1,6 +1,35 @@
 {
   "apiType": "stageMode",
   "buildOption": {
+    "nativeLib": {
+      "filter": {
+        "pickFirsts": [
+          "**/libcodeformat.so",
+          "**/libcommonmark4cj.so",
+          "**/libcommonmark4cj.commonmark.so",
+          "**/libcommonmark4cj.strikethrough.so",
+          "**/libcommonmark4cj.table.so",
+          "**/libformula.so",
+          "**/liblatex.so",
+          "**/libmarkdown.so",
+          "**/libmarkdown.components.so",
+          "**/libmarkdown.components.theme.so",
+          "**/libmarkdown.core.so",
+          "**/libmarkdown.plugin.so",
+          "**/libmarkdown.plugin.emoji.so",
+          "**/libtext_to_img.so",
+          "**/libmarkdown.texttoimg4cj.so",
+          "**/libprism4cj.so",
+          "**/libprism4cj.prism.so",
+          "**/libprism4cj.languages.so",
+          "**/libark_interop*.so",
+          "**/libutf16string*.so",
+          "**/libboundscheck.so",
+          "**/libpcre2*.so*",
+          "**/libcangjie*.so"
+        ]
+      }
+    }
   },
   "buildOptionSet": [
     {

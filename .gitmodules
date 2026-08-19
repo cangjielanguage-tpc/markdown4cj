@@ -1,0 +1,15 @@
+[submodule "modules/prism4cj"]
+	path = modules/prism4cj
+	url = https://gitcode.com/Cangjie-TPC/prism4cj.git
+	branch = prism4cj_hybrid_cangjie-plugin-6.1.1_compatibility
+	shallow = true
+[submodule "modules/codeformat4cj"]
+	path = modules/codeformat4cj
+	url = https://gitcode.com/Cangjie-TPC/codeformat4cj.git
+	branch = codeformat_hybrid_cangjie-plugin-6.1.1_compatibility
+	shallow = true
+[submodule "modules/markdown4cj"]
+	path = modules/markdown4cj
+	url = https://gitcode.com/Cangjie-TPC/markdown4cj.git
+	branch = markdown_parser_hybrid_cangjie-plugin-6.1.1_compatibility
+	shallow = true
