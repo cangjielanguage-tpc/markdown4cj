@@ -18,6 +18,6 @@
     "@cangjie-tpc/prism_hybrid": "file:../modules/prism4cj/prism_hybrid",
     "@cangjie-tpc/codeformat_hybrid": "file:../modules/codeformat4cj/codeformat_hybrid",
     "@cangjie-tpc/markdown_parser_hybrid": "file:../modules/markdown4cj/markdown_parser_hybrid",
-    "@cangjie-tpc/formula_hybrid": "file:./har/formula_hybrid.har",
+    "@cangjie-tpc/formula_hybrid": "file:../modules/formula/formula_hybrid",
   }
 }

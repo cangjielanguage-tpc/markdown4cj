@@ -67,6 +67,14 @@
     {
       "name": "markdown_parser_hybrid",
       "srcPath": "./modules/markdown4cj/markdown_parser_hybrid"
+    },
+    {
+      "name": "formula_hybrid",
+      "srcPath": "./modules/formula/formula_hybrid"
+    },
+    {
+      "name": "formula",
+      "srcPath": "./modules/formula/formula-ffi/formula"
     }
   ]
 }
