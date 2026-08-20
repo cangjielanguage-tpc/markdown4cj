@@ -190,10 +190,15 @@ export function evaluateLinkExposure(
     return result
   }
   for (const link of httpLinks) {
-    const boxes: Array<text.TextBox> = lm.getRectsForRange(
-      { start: link.rangeStart, end: link.rangeEnd },
-      text.RectWidthStyle.TIGHT, text.RectHeightStyle.TIGHT
-    )
+    let boxes: Array<text.TextBox> = []
+    try {
+      boxes = lm.getRectsForRange(
+        { start: link.rangeStart, end: link.rangeEnd },
+        text.RectWidthStyle.TIGHT, text.RectHeightStyle.TIGHT
+      )
+    } catch (e) {
+      continue
+    }
     // 汇总：链接总面积 + 与视口交集面积（多行链接有多个 TextBox）
     let linkArea: number = 0
     let interArea: number = 0

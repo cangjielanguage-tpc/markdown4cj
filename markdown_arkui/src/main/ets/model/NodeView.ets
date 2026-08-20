@@ -283,6 +283,9 @@ export class NodeView {
     this.isInLineCode = source.isInLineCode
     this.isLink = source.isLink
     this.isLinkStyle = source.isLinkStyle
+    this.headLinkIndex = source.headLinkIndex
+    this.linkUrl = source.linkUrl
+    this.linkTitle = source.linkTitle
     this.linkIconType = source.linkIconType
     this.linkTypeStr = source.linkTypeStr
   }
