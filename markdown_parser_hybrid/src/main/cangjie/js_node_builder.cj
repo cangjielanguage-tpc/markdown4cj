@@ -100,11 +100,19 @@ class JsNodeBuilder {
 
     func visitNode(node: ?Node, parentProxy: JSObject): Unit {
         let current = node ?? return
-        let next = current.getNext()
-        let currentProxy = buildJsNode(current)
-        parentProxy.callMethod('appendChild', currentProxy.toJSValue())
-        visitNode(current.getFirstChild(), currentProxy)
-        visitNode(next, parentProxy)
+        let stack = ArrayStack<(Node,JSObject)>()
+        stack.add((current, parentProxy))
+        while (!stack.isEmpty()) {
+            let (node,parentProxy) = stack.remove() ?? continue
+            let currentProxy = buildJsNode(node)
+            parentProxy.callMethod('appendChild', currentProxy.toJSValue())
+            if (let Some(next) <- node.getNext()) {
+                stack.add((next, parentProxy))   // 先压next
+            }
+            if (let Some(first) <- node.getFirstChild()) {
+                stack.add((first, currentProxy))      // 再压 first child
+            }
+        }
     }
 
     func setSourceSpans(instance: Node, jsNode: JSObject): Unit {
