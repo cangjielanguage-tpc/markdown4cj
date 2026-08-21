@@ -1,10 +1,10 @@
 package markdown_parser_hybrid
 
 class JsNodeBuilder {
-    // Root 的第一层直接子节点队列。
-    // 作为成员字段保存, 使分片状态可以在多个 postJSTask 之间保持。
-    // LIFO 栈: 倒序压入(lastChild 先入), 弹出时即 firstChild 到 lastChild 的顺序。
-    let children: ArrayStack<Node> = ArrayStack<Node>()
+    // 下一个待处理的第一层 child(遍历游标)。
+    // 作为成员字段保存, 使遍历状态可以在多个 postJSTask 之间保持。
+    // 通过 getFirstChild/getNext 沿 Root 的兄弟链表顺序推进, 无需额外数组缓存。
+    var nextChild: ?Node = None
 
     JsNodeBuilder(let builder: JSObject, let context: JSContext) {}
 
@@ -13,7 +13,7 @@ class JsNodeBuilder {
      *
      * 分片粒度: 只对 Root 的第一层 children 进行分片处理。
      * 整个构建流程拆成多个 postJSTask, 每个 postJSTask 只负责一个 Root 的第一层子节点(及其整棵子树):
-     *   - 第0个 postJSTask: 构建 Root 节点本身(start 内部直接 enterNode, 并压入第一层 children)。
+     *   - 第0个 postJSTask: 构建 Root 节点本身(start 内部直接 enterNode, 并记录第一个 child 为遍历起点)。
      *   - 第1个 postJSTask: 取出 Root 的第一个子节点, 在单个 task 内构建它及其整棵子树。
      *   - 第n个 postJSTask: 取出 Root 的第 n 个子节点, 同样在单个 task 内构建其整棵子树。
      *   - 最后: 所有第一层 children 处理完后, 结束 Root 节点并回调 onDone(None)。
@@ -29,12 +29,8 @@ class JsNodeBuilder {
         builder.callMethod('reset', [])
         // 第0个分片: 构建 Root 节点本身。
         enterNode(root)
-        // Root 的直接子节点从 lastChild 反向压栈(LIFO), 弹出时即为 firstChild 到 lastChild 的顺序。
-        var child = root.getLastChild()
-        while (let Some(c) <- child) {
-            children.add(c)
-            child = c.getPrevious()
-        }
+        // 从 Root 的第一个 child 开始遍历第一层 children。
+        nextChild = root.getFirstChild()
         scheduleNext(onDone)
     }
 
@@ -49,10 +45,11 @@ class JsNodeBuilder {
         }
     }
 
-    // 处理 Root 的一个第一层子节点; 队列非空则继续调度下一个分片, 否则结束 Root 并回调 onDone(None)。
+    // 处理 Root 的一个第一层子节点; 游标非空则继续调度下一个分片, 否则结束 Root 并回调 onDone(None)。
     func step(onDone: (?Exception) -> Unit): Unit {
-        if (let Some(child) <- children.remove()) {
-            // 在单个 postJSTask 内构建该子节点及其整棵子树。
+        if (let Some(child) <- nextChild) {
+            // 先沿兄弟链表推进游标, 再构建当前 child 及其整棵子树。
+            nextChild = child.getNext()
             buildSubtree(child)
             scheduleNext(onDone)
         } else {
