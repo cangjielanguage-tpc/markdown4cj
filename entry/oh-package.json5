@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@cangjie-tpc/markdown_arkui": "1.4.0"
+    "@cangjie-tpc/markdown_arkui": "file:../markdown_arkui"
   }
 }
 

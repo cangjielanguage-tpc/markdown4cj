@@ -65,6 +65,7 @@ export struct MarkdownTable {
   customLongPressCallback?: () => void = undefined // 自定义长按事件
   elementExposureCallback?: (event: MarkdownExposureEvent) => void // 元素曝光回调（透传给TableRow→TableCell）
   exposureThreshold: number = 0.5 // 曝光阈值（透传给TableRow→TableCell）
+  enableSticky: boolean = true
   scroller: Scroller = new Scroller() // list控制器（非sticky模式使用）
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown数据源（非sticky模式：全部行；sticky模式：body行）
   @State tableBlockCellSize: number = 0 // 表格总共有几列
@@ -109,7 +110,7 @@ export struct MarkdownTable {
     this.cellWidthTracker.onWidthUpdated = () => {
       this.applyColumnWidths()
     }
-    if (this.tableTheme.tableStickyHeader) {
+    if (this.tableTheme.tableStickyHeader && this.enableSticky) {
       this.syncManager.registerHeader(this.headerScroller)
       this.syncManager.registerBody(this.bodyScroller)
     }
@@ -122,7 +123,7 @@ export struct MarkdownTable {
     this.isAlive = false
     this.cellWidthTracker.onWidthUpdated = undefined
     this.stickyHolder.removeListener(this.onStickyYChanged)
-    if (this.tableTheme.tableStickyHeader) {
+    if (this.tableTheme.tableStickyHeader && this.enableSticky) {
       this.syncManager.unregisterHeader()
       this.syncManager.unregisterBody()
       this.syncManager.reset()
@@ -202,7 +203,7 @@ export struct MarkdownTable {
   }
 
   build() {
-    if (this.tableTheme.tableStickyHeader && this.useOffsetSticky) {
+    if (this.tableTheme.tableStickyHeader && this.enableSticky && this.useOffsetSticky) {
       // offset sticky 模式（不固定高度）：header用.offset()钉在视口顶部，非浮层
       ListItemGroup() {
         ListItem() {
@@ -259,7 +260,7 @@ export struct MarkdownTable {
         this.tableHeight = newValue.height as number
         this.onTableAreaChanged()
       })
-    } else if (this.tableTheme.tableStickyHeader) {
+    } else if (this.tableTheme.tableStickyHeader && this.enableSticky) {
       // 原生 sticky 模式（固定高度）：ListItemGroup + List.sticky(StickyStyle.Header)
       ListItemGroup({ header: this.tableHeaderBuilder }) {
         ListItem() {
@@ -713,7 +714,7 @@ export struct MarkdownTable {
       this.tableBlockCellSize = cellSize
       this.cellWidthTracker.resize(cellSize)
     }
-    if (this.tableTheme.tableStickyHeader) {
+    if (this.tableTheme.tableStickyHeader && this.enableSticky) {
       // sticky 模式：body 行通过 smartUpdateDataArray 就地更新（copyDataFrom），
       // 确保 @ObjectLink 检测到行属性变化，避免 ForEach 复用组件时 UI 不同步
       const newRowCount = this.node.children.length

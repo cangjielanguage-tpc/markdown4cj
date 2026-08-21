@@ -121,40 +121,9 @@ export struct MarkdownListItem {
       LazyForEach(
         this.markdownDataSource,
         (item: NodeView, index: number) => {
-          if (item.nodeType === "TableBlock" && this.tableTheme.tableStickyHeader) {
-            // sticky 模式：表格以 ListItemGroup 形式直接作为 List 子节点，标题行天然吸顶
-            MarkdownTable({
-              node: item,
-              headingTheme: this.headingTheme,
-              globalTheme: this.globalTheme,
-              blockQuoteTheme: this.blockQuoteTheme,
-              subTheme: this.subTheme,
-              supTheme: this.supTheme,
-              inlineCodeTheme: this.inlineCodeTheme,
-              boldTheme: this.boldTheme,
-              italicTheme: this.italicTheme,
-              strikethroughTheme: this.strikethroughTheme,
-              highlightTheme: this.highlightTheme,
-              htmlUnderlineTheme: this.htmlUnderlineTheme,
-              linkTheme: this.linkTheme,
-              footnoteRefTheme: this.footnoteRefTheme,
-              tableTheme: this.tableTheme,
-              paragraphTheme: this.paragraphTheme,
-              definitionListTheme: this.definitionListTheme,
-              imageTheme: this.imageTheme,
-              latexMathTheme: this.latexMathTheme,
-              latexImageCallback: this.latexImageCallback,
-              latexStrCallback: this.latexStrCallback,
-              componentWidth: this.tableBlockComponentWidth,
-              markdownHighlightParagraph: this.markdownHighlightParagraph,
-              customLongPressCallback: this.customLongPressCallback,
-              elementExposureCallback: this.elementExposureCallback,
-              exposureThreshold: this.exposureThreshold,
-              blockImageCardComponent:this.blockImageCardComponent,
-              blockLinkCardComponent:this.blockLinkCardComponent
-            })
-          } else {
-            ListItem() {
+          // 列表内表格不吸顶：stickyHolder.y 是最外层滚动 Y，tableY 相对父 List，offset 计算错误
+          // 始终走 ListItem 路径，MarkdownTable 内部通过 enableSticky=false 关闭吸顶渲染
+          ListItem() {
               if (item.nodeType === "Paragraph") {
                 // 段落
                 MarkdownParagraph({
@@ -495,6 +464,7 @@ export struct MarkdownListItem {
                   customLongPressCallback: this.customLongPressCallback,
                   elementExposureCallback: this.elementExposureCallback,
                   exposureThreshold: this.exposureThreshold,
+                  enableSticky: false,
                   blockImageCardComponent:this.blockImageCardComponent,
                   blockLinkCardComponent:this.blockLinkCardComponent
                 })
@@ -604,7 +574,6 @@ export struct MarkdownListItem {
                 // 其他
               }
             }
-          }
         },
         (item: NodeView, index: number) => {
           if (item.nodeType === "LatexMathBlock" || item.nodeType === "FencedCodeBlock" ||
