@@ -13,8 +13,8 @@
 	url = https://gitcode.com/Cangjie-TPC/markdown4cj.git
 	branch = markdown_parser_hybrid_cangjie-plugin-6.1.1_compatibility
 	shallow = true
-[submodule "modules/formula"]
-	path = modules/formula
+[submodule "modules/formula4cj"]
+	path = modules/formula4cj
 	url = https://gitcode.com/Cangjie-TPC/formula-ffi.git
 	branch = v2.0.2-hybrid
 	shallow = true
