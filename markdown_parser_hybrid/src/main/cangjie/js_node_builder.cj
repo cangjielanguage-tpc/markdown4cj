@@ -1,44 +1,74 @@
 package markdown_parser_hybrid
 
 class JsNodeBuilder {
+    // Root 的第一层直接子节点队列。
+    // 作为成员字段保存, 使分片状态可以在多个 postJSTask 之间保持。
+    // LIFO 栈: 倒序压入(lastChild 先入), 弹出时即 firstChild 到 lastChild 的顺序。
+    let children: ArrayStack<Node> = ArrayStack<Node>()
+
     JsNodeBuilder(let builder: JSObject, let context: JSContext) {}
 
     /*
-     * 将整棵 cangjie 节点树转换为 js 节点树。
+     * 开始分片构建节点树。
      *
-     * 遍历采用深度优先的先序遍历, 用显式栈模拟递归, 避免深文档导致栈溢出。
+     * 分片粒度: 只对 Root 的第一层 children 进行分片处理。
+     * 整个构建流程拆成多个 postJSTask, 每个 postJSTask 只负责一个 Root 的第一层子节点(及其整棵子树):
+     *   - 第0个 postJSTask: 构建 Root 节点本身(start 内部直接 enterNode, 并压入第一层 children)。
+     *   - 第1个 postJSTask: 取出 Root 的第一个子节点, 在单个 task 内构建它及其整棵子树。
+     *   - 第n个 postJSTask: 取出 Root 的第 n 个子节点, 同样在单个 task 内构建其整棵子树。
+     *   - 最后: 所有第一层 children 处理完后, 结束 Root 节点并回调 onDone(None)。
      *
-     * 核心思路:
-     * 构建器 builder 内部维护一个"当前节点"指针, beginNode 会把新节点挂到当前节点下并下钻,
-     * endNode 则把当前节点指针回退到父节点。因此每个节点都需要两件事:
-     *   1. 进入它(挂载 + 填充数据), 2. 处理完它所有子节点后离开它(回退)。
+     * 子树内部仍用显式栈 while 循环做深度优先先序遍历, 模拟递归, 避免深文档栈溢出。
+     * 这样既避免"一次性构建整棵树"导致单次 postJSTask 占用主线程过久, 又避免"逐节点分片"
+     * 带来的过多 task 调度开销, 在流畅度与效率之间取得平衡。
      *
-     * 这里没有像递归那样靠调用栈天然地区分"进入"和"返回", 而是用一个栈元素同时表达两种动作,
-     * 用 Option<Node> 充当"事件":
-     *   Some(node) = 进入事件(enter)
-     *   None       = 离开事件(exit)
-     * 进入某节点时, 先压入一个 None 作为它的离开标记, 再压入其子节点; 由于栈是后进先出,
-     * 子节点必然先于该 None 被处理, 于是"离开"自然发生在所有子节点处理完之后——
-     * 无需额外的访问状态位, 一个 None 就把"何时回退"这件事交给了栈的先后顺序。
-     *
-     * 例: 树 A(B(C), D), 栈顶在右, 演变如下:
-     *   [A]                     -- 初始压入根节点进入事件
-     *   pop A  -> 访问 A, 压入 exit(A) 与子节点 D、B
-     *   [exit(A), D, B]         -- 注意先压 None(exit) 再压子节点, 且子节点倒序压入
-     *   pop B  -> 访问 B, 压入 exit(B) 与子节点 C
-     *   [exit(A), D, exit(B), C]
-     *   pop C  -> 访问 C(无子节点)
-     *   [exit(A), D, exit(B)]
-     *   pop exit(B) -> 离开 B, 回退到 A
-     *   pop D  -> 访问 D
-     *   pop exit(A) -> 离开 A
-     * 最终访问顺序 A -> B -> C -> D, 即先序遍历。
+     * onDone 回调在全部处理完毕(None)或处理过程抛异常(Some(异常))时被调用。
      */
-    func buildNode(root: Node): JSValue {
+    func start(root: Node, onDone: (?Exception) -> Unit): Unit {
         // 构建前重置 builder 状态, 支持复用同一个 builder 进行多次 parse。
         builder.callMethod('reset', [])
+        // 第0个分片: 构建 Root 节点本身。
+        enterNode(root)
+        // Root 的直接子节点从 lastChild 反向压栈(LIFO), 弹出时即为 firstChild 到 lastChild 的顺序。
+        var child = root.getLastChild()
+        while (let Some(c) <- child) {
+            children.add(c)
+            child = c.getPrevious()
+        }
+        scheduleNext(onDone)
+    }
+
+    // 调度下一个分片任务, 每个分片处理 Root 的一个第一层子节点及其整棵子树。
+    func scheduleNext(onDone: (?Exception) -> Unit): Unit {
+        context.postJSTask {
+            try {
+                step(onDone)
+            } catch (e: Exception) {
+                onDone(Some(e))
+            }
+        }
+    }
+
+    // 处理 Root 的一个第一层子节点; 队列非空则继续调度下一个分片, 否则结束 Root 并回调 onDone(None)。
+    func step(onDone: (?Exception) -> Unit): Unit {
+        if (let Some(child) <- children.remove()) {
+            // 在单个 postJSTask 内构建该子节点及其整棵子树。
+            buildSubtree(child)
+            scheduleNext(onDone)
+        } else {
+            // 所有第一层 children 处理完毕, 结束 Root 节点(回退当前节点指针)。
+            builder.callMethod('endNode', [])
+            onDone(None)
+        }
+    }
+
+    /*
+     * 在单个 postJSTask 内, 用显式栈 while 循环构建某节点及其整棵子树。
+     * 栈元素是"事件": Some(node) 表示进入该节点, None 表示离开当前节点(即回退到父节点)。
+     * 注意: 此方法不跨 postJSTask, 局部栈随方法返回而销毁。
+     */
+    func buildSubtree(root: Node): Unit {
         let stack = ArrayStack<Option<Node>>()
-        // 先压入根节点的进入事件。
         stack.add(Some(root))
         while (!stack.isEmpty()) {
             match (stack.remove()) {
@@ -58,7 +88,10 @@ class JsNodeBuilder {
                     builder.callMethod('endNode', [])
             }
         }
-        // 全部处理完毕, 返回构建出的根节点。
+    }
+
+    // 返回构建好的根节点(在全部节点构建完成后调用)。
+    func getRoot(): JSValue {
         builder.callMethod('getRoot', [])
     }
 

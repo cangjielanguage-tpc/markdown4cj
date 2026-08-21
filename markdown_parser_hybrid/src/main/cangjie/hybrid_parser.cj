@@ -138,8 +138,23 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
                 context.postJSTask {
                     try {
                         let nodeBuilder = JsNodeBuilder(jsNodeTreeBuilder, context)
-                        let RET = nodeBuilder.buildNode(doc)
-                        promise.resolve(RET)
+                        // 分片构建: 只对 Root 的第一层 children 分片, 每个 postJSTask 处理一个 child 及其整棵子树,
+                        // 全部完成后在 onDone 回调中 resolve promise。
+                        nodeBuilder.start(doc) { result =>
+                            match (result) {
+                                case Some(e) =>
+                                    promise.reject(context.string(e.toString()).toJSValue())
+                                    Hilog.error(0, 'hybrid Exception 3.1', getStackTrace(e))
+                                case None =>
+                                    try {
+                                        let RET = nodeBuilder.getRoot()
+                                        promise.resolve(RET)
+                                    } catch (e: Exception) {
+                                        promise.reject(context.string(e.toString()).toJSValue())
+                                        Hilog.error(0, 'hybrid Exception 3.1', getStackTrace(e))
+                                    }
+                            }
+                        }
                     } catch (e: Exception) {
                         promise.reject(context.string(e.toString()).toJSValue())
                         Hilog.error(0, 'hybrid Exception 3.1', getStackTrace(e))
