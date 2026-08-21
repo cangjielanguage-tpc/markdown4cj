@@ -157,7 +157,7 @@ struct LinkExposureDetailsPage {
    * 同时打hilog + push到屏幕事件列表（限最近50条）
    */
   elementExposureCallBack(event: MarkdownExposureEvent): void {
-    hilog.error(1, "1", `---elementExposure type:${event.type} visible:${event.visible} data:${event.data}`)
+    hilog.error(1, "1", `---elementExposure eventType:${event.eventType} visible:${event.visible} data:${event.data}`)
     const item: ExposureLogItem = {
       seq: ++this.eventSeq,
       visible: event.visible,

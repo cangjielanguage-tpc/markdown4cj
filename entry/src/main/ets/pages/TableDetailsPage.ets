@@ -380,7 +380,7 @@ struct TableDetailsPage {
    * 显示→visible=true，消失→visible=false，成对触发。
    */
   elementExposureCallBack(event: MarkdownExposureEvent): void {
-    hilog.error(1, "1", `---elementExposure type:${event.type} visible:${event.visible} data:${event.data}`)
+    hilog.error(1, "1", `---elementExposure eventType:${event.eventType} visible:${event.visible} data:${event.data}`)
   }
 
   setMarkdownTheme(): MarkdownTheme {

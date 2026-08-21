@@ -416,6 +416,6 @@ struct LinkDetailsPage {
   }
 
   elementExposureCallBack(event: MarkdownExposureEvent): void {
-    hilog.error(1, "1", `---elementExposure type:${event.type} visible:${event.visible} data:${event.data}`)
+    hilog.error(1, "1", `---elementExposure eventType:${event.eventType} visible:${event.visible} data:${event.data}`)
   }
 }

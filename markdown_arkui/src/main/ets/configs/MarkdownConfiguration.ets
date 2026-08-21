@@ -47,11 +47,11 @@ export class MarkdownConfiguration {
 
   /**
    * 设置元素曝光回调
-   * 链接（type='link'）进入屏幕可见区域时回调 visible=true，离开时回调 visible=false。
+   * 链接（eventType='link'）进入屏幕可见区域时回调 visible=true，离开时回调 visible=false。
    * 可见判定：链接渲染矩形与段落在屏可见区交集面积 / 链接面积 ≥ exposureThreshold。
    * 同一链接持续停留不重复触发；滚出后再滚入会再次触发（一次显示+一次消失成对）。
    *
-   * @param cb 曝光回调(event：{ type, visible, data })
+   * @param cb 曝光回调(event：{ eventType, visible, data })
    */
   setElementExposureCallback(cb: (event: MarkdownExposureEvent) => void): MarkdownConfiguration {
     this.elementExposureCallback = cb

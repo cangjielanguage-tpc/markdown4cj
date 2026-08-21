@@ -177,7 +177,7 @@ export struct MarkdownParagraph {
       for (const link of this.httpLinks) {
         if (link.isLinkVisible()) {
           link.markLinkHidden()
-          this.elementExposureCallback?.({ type: 'link', visible: false, data: link.linkUrl ?? '' })
+          this.elementExposureCallback?.({ eventType: 'link', visible: false, data: link.linkUrl ?? '' })
         }
       }
     }
@@ -273,10 +273,10 @@ export struct MarkdownParagraph {
       }
       const result = evaluateLinkExposure(this.textController, viewport, this.exposureThreshold, this.httpLinks)
       for (const link of result.becameVisible) {
-        this.elementExposureCallback?.({ type: 'link', visible: true, data: link.linkUrl ?? '' })
+        this.elementExposureCallback?.({ eventType: 'link', visible: true, data: link.linkUrl ?? '' })
       }
       for (const link of result.becameHidden) {
-        this.elementExposureCallback?.({ type: 'link', visible: false, data: link.linkUrl ?? '' })
+        this.elementExposureCallback?.({ eventType: 'link', visible: false, data: link.linkUrl ?? '' })
       }
     }, 0)
   }
