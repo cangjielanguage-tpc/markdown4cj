@@ -1,10 +1,8 @@
 package markdown_parser_hybrid
 
 class JsNodeBuilder {
-    // Root 的第一层直接子节点队列。
-    // 作为成员字段保存, 使分片状态可以在多个 postJSTask 之间保持。
-    // LIFO 栈: 倒序压入(lastChild 先入), 弹出时即 firstChild 到 lastChild 的顺序。
-    let children: ArrayStack<Node> = ArrayStack<Node>()
+    // 失败标志: 供多个 postJSTask 串行共享, 任一 child 构建失败后短路后续 task, 避免重复回调 onDone。
+    var failed: Bool = false
 
     JsNodeBuilder(let builder: JSObject, let context: JSContext) {}
 
@@ -13,52 +11,58 @@ class JsNodeBuilder {
      *
      * 分片粒度: 只对 Root 的第一层 children 进行分片处理。
      * 整个构建流程拆成多个 postJSTask, 每个 postJSTask 只负责一个 Root 的第一层子节点(及其整棵子树):
-     *   - 第0个 postJSTask: 构建 Root 节点本身(start 内部直接 enterNode, 并压入第一层 children)。
-     *   - 第1个 postJSTask: 取出 Root 的第一个子节点, 在单个 task 内构建它及其整棵子树。
-     *   - 第n个 postJSTask: 取出 Root 的第 n 个子节点, 同样在单个 task 内构建其整棵子树。
-     *   - 最后: 所有第一层 children 处理完后, 结束 Root 节点并回调 onDone(None)。
+     *   - 第0个 postJSTask: 构建 Root 节点本身(start 内部直接 enterNode)。
+     *   - 第1个 postJSTask: 构建 Root 的第一个子节点及其整棵子树。
+     *   - 第n个 postJSTask: 构建 Root 的第 n 个子节点及其整棵子树。
+     *   - 最后: 额外提交一个结束 task, 结束 Root 节点并回调 onDone(None)。
      *
+     * 实现直接通过 getFirstChild/getNext 遍历第一层 children, 为每个 child 提交一个
+     * 独立的 postJSTask(无递归), 各 task 由 JS 事件循环按提交顺序串行执行, 让出主线程。
      * 子树内部仍用显式栈 while 循环做深度优先先序遍历, 模拟递归, 避免深文档栈溢出。
-     * 这样既避免"一次性构建整棵树"导致单次 postJSTask 占用主线程过久, 又避免"逐节点分片"
-     * 带来的过多 task 调度开销, 在流畅度与效率之间取得平衡。
      *
      * onDone 回调在全部处理完毕(None)或处理过程抛异常(Some(异常))时被调用。
      */
     func start(root: Node, onDone: (?Exception) -> Unit): Unit {
         // 构建前重置 builder 状态, 支持复用同一个 builder 进行多次 parse。
         builder.callMethod('reset', [])
+        failed = false
         // 第0个分片: 构建 Root 节点本身。
         enterNode(root)
-        // Root 的直接子节点从 lastChild 反向压栈(LIFO), 弹出时即为 firstChild 到 lastChild 的顺序。
-        var child = root.getLastChild()
+        // 直接遍历 Root 的第一层直接子节点, 为每个 child 提交一个构建 task。
+        var child = root.getFirstChild()
         while (let Some(c) <- child) {
-            children.add(c)
-            child = c.getPrevious()
+            submitTask(c, onDone)
+            child = c.getNext()
         }
-        scheduleNext(onDone)
-    }
-
-    // 调度下一个分片任务, 每个分片处理 Root 的一个第一层子节点及其整棵子树。
-    func scheduleNext(onDone: (?Exception) -> Unit): Unit {
+        // 最后提交一个结束 task: 结束 Root 节点并回调 onDone(None)。
         context.postJSTask {
             try {
-                step(onDone)
+                if (!failed) {
+                    builder.callMethod('endNode', [])
+                    onDone(None)
+                }
             } catch (e: Exception) {
+                failed = true
                 onDone(Some(e))
             }
         }
     }
 
-    // 处理 Root 的一个第一层子节点; 队列非空则继续调度下一个分片, 否则结束 Root 并回调 onDone(None)。
-    func step(onDone: (?Exception) -> Unit): Unit {
-        if (let Some(child) <- children.remove()) {
-            // 在单个 postJSTask 内构建该子节点及其整棵子树。
-            buildSubtree(child)
-            scheduleNext(onDone)
-        } else {
-            // 所有第一层 children 处理完毕, 结束 Root 节点(回退当前节点指针)。
-            builder.callMethod('endNode', [])
-            onDone(None)
+    /*
+     * 提交一个构建 task: 在单个 postJSTask 内构建某个第一层 child 及其整棵子树。
+     * 无递归: 每个 task 由 start 的 while 循环独立提交, task 之间不相互调用。
+     */
+    func submitTask(child: Node, onDone: (?Exception) -> Unit): Unit {
+        context.postJSTask {
+            try {
+                if (!failed) {
+                    // 同步构建该 child 及其整棵子树。
+                    buildSubtree(child)
+                }
+            } catch (e: Exception) {
+                failed = true
+                onDone(Some(e))
+            }
         }
     }
 
