@@ -12,12 +12,12 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         }
     }
 
-    public HybridParser(let parser: Markdown, let jsNodeFactory: JSFunction) {}
+    public HybridParser(let parser: Markdown, let jsNodeTreeBuilder: JSObject) {}
 
     public static func jsConstructor(context: JSContext, callInfo: JSCallInfo): JSValue {
         JSCurrentJSContext.set(context)
         let opt = callInfo[0].asObject()
-        let jsNodeFactory = opt['jsNodeFactory'].asFunction()
+        let jsNodeTreeBuilder = opt['jsNodeTreeBuilder'].asObject()
         let includeSourceSpans = Int64.fromJSValue(context, opt['includeSourceSpans'])
         let builder = Markdown.builder().includeSourceSpans(includeSourceSpans)
         if (opt.get('ADPlugin', false, context)) {
@@ -120,7 +120,7 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         }
 
         let parser = builder.build()
-        let clazz = HybridParser(parser, jsNodeFactory)
+        let clazz = HybridParser(parser, jsNodeTreeBuilder)
 
         JSCurrentJSContext.unset()
         let thisArg = callInfo.thisArg
@@ -137,8 +137,8 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
                 let doc: Node = parser.toMarkdown(md)
                 context.postJSTask {
                     try {
-                        let jsNodeTreeBuilder = JsNodeBuilder(jsNodeFactory, context)
-                        let RET = jsNodeTreeBuilder.buildNode(doc).toJSValue()
+                        let nodeBuilder = JsNodeBuilder(jsNodeTreeBuilder, context)
+                        let RET = nodeBuilder.buildNode(doc)
                         promise.resolve(RET)
                     } catch (e: Exception) {
                         promise.reject(context.string(e.toString()).toJSValue())

@@ -119,7 +119,7 @@ export interface JsNode {
   /**
    * 适用: ImageHtmlNode
    */
-  heigh?: string
+  height?: string
   /**
    * 任务列表选中标志
    * 适用nodeType:TaskListItem

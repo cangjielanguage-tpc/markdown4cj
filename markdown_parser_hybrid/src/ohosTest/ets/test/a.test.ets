@@ -1,7 +1,7 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
 import {
-  JsNode, Options, printNode, JsNodeImpl, JsNodeSendableImpl,
+  JsNode, Options, printNode, JsNodeImpl, JsNodeSendableImpl, JsNodeTreeBuilder,
 } from '../../../../Index';
 import { getParser, parser } from './md'
 
@@ -19,7 +19,7 @@ export default function aTest() {
       let md = `- [^2^]: [异环NTE：免费开放世界RPG封闭测试](https://cg.163.com/static/content/69895252326700b55b0d178b)
 - [^1^]: [百度百科 - 异环](https://baike.baidu.com/item/异环)`
       let parser = getParser({
-        jsNodeFactory: () => new JsNodeSendableImpl(),
+        jsNodeTreeBuilder: new JsNodeTreeBuilder(() => new JsNodeSendableImpl()),
         includeSourceSpans: 0,
         FootnotePlugin: true
       })
@@ -44,7 +44,7 @@ export default function aTest() {
 - [^4^]: [完美世界收获"二连板" 自研游戏《异环》测试表现亮眼](https://www.stcn.com/article/detail/3635940.html)
 - [^5^]: [德国科隆，进入"中国时间"](http://mp.weixin.qq.com/s?__biz=MjM5MjMwMjcyMA==)`
       let parser = getParser({
-        jsNodeFactory: () => new JsNodeSendableImpl(),
+        jsNodeTreeBuilder: new JsNodeTreeBuilder(() => new JsNodeSendableImpl()),
         includeSourceSpans: 0
       })
       let doc = await parser.parse(md)
@@ -64,7 +64,7 @@ https://www.wanuxi.com/为美好的世界献上祝福第三季主视觉图公开
     it('StyleImage1', 0, async () => {
       let md = `1111![示例图](https://markdown.com.cn/images/blue.jpg){:width=200}1111`
       let doc = await getParser({
-        jsNodeFactory: () => new JsNodeImpl(),
+        jsNodeTreeBuilder: new JsNodeTreeBuilder(),
         includeSourceSpans: 2,
         ImageStylePlugin: true
       }).parse(md)

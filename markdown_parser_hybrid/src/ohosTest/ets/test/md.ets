@@ -1,6 +1,6 @@
 import {
   JsNode,
-  JsNodeImpl,
+  JsNodeTreeBuilder,
   MarkdownParser,
   Options,
   printNode,
@@ -10,7 +10,7 @@ import {
 import { hilog } from "@kit.PerformanceAnalysisKit";
 
 export let opt: Options = {
-  jsNodeFactory: () => new JsNodeImpl(),
+  jsNodeTreeBuilder: new JsNodeTreeBuilder(),
   includeSourceSpans: 0,
 
   ADPlugin: true,
@@ -58,12 +58,9 @@ export async function parseIntoJsNode(md: string, includeSourceSpans: 0 | 1 | 2)
 export function getParser(opt?: Options): MarkdownParser {
   if (!opt) {
     opt = {
-      jsNodeFactory: () => new JsNodeImpl(),
+      jsNodeTreeBuilder: new JsNodeTreeBuilder(),
       includeSourceSpans: 2
     }
-  }
-  if (!opt.jsNodeFactory) {
-    opt.jsNodeFactory = () => new JsNodeImpl()
   }
   if (!opt.includeSourceSpans) {
     opt.includeSourceSpans = 2

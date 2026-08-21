@@ -1,13 +1,13 @@
-import { JsNode } from "./JsNode"
+import { JsNodeTreeBuilder } from "./JsNodeTreeBuilder"
 
 /*
  * markdown初始化选项
  */
 export interface Options {
   /*
-   * 用于JsNode复用
+   * 节点树构建器, 由调用方创建并传入
    */
-  jsNodeFactory: () => JsNode
+  jsNodeTreeBuilder: JsNodeTreeBuilder
   /*
    * 是否包含SourceSpan信息 0:不包含(默认) 1:仅Block节点 2:全部节点
    */

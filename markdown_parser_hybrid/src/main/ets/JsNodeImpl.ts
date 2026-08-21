@@ -34,13 +34,19 @@ export class JsNodeImpl implements JsNode {
   isTight: boolean | undefined
   isHeader: boolean | undefined
   alignment: string | undefined = undefined
-  width: number | undefined = undefined
+  width: number | string | undefined = undefined
+  height: string | undefined = undefined
   isdone: boolean | undefined = undefined
   latex: string | undefined = undefined
   isClosed: boolean | undefined = undefined
   noteid: string | undefined = undefined
   blockIndex: number | undefined = undefined
   headIndex: number | undefined = undefined
+  text: string | undefined = undefined
+  color: string | undefined = undefined
+  size: string | undefined = undefined
+  name: string | undefined = undefined
+  data: string | undefined = undefined
 
   props: Map<string, string> | undefined = undefined // 用于存放Js行内自定义解析插件所产生的数据
   sourceSpans: SourceSpanImpl[] = []
@@ -153,12 +159,18 @@ export class JsNodeImpl implements JsNode {
     this.isHeader = undefined
     this.alignment = undefined
     this.width = undefined
+    this.height = undefined
     this.isdone = undefined
     this.latex = undefined
     this.isClosed = undefined
     this.noteid = undefined
     this.blockIndex = undefined
     this.headIndex = undefined
+    this.text = undefined
+    this.color = undefined
+    this.size = undefined
+    this.name = undefined
+    this.data = undefined
 
     this.props = undefined
     this.sourceSpans = []
