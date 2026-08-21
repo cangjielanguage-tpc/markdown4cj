@@ -55,26 +55,6 @@
     {
       "name": "markdown_arkui",
       "srcPath": "./markdown_arkui"
-    },
-    {
-      "name": "prism_hybrid",
-      "srcPath": "./modules/prism4cj/prism_hybrid"
-    },
-    {
-      "name": "codeformat_hybrid",
-      "srcPath": "./modules/codeformat4cj/codeformat_hybrid"
-    },
-    {
-      "name": "markdown_parser_hybrid",
-      "srcPath": "./modules/markdown4cj/markdown_parser_hybrid"
-    },
-    {
-      "name": "formula_hybrid",
-      "srcPath": "./modules/formula4cj/formula_hybrid"
-    },
-    {
-      "name": "formula",
-      "srcPath": "./modules/formula4cj/formula-ffi/formula"
     }
   ]
 }
