@@ -272,7 +272,7 @@ export function nodeToNodeView(
               prevChild.imageStyleWidth = w
             }
           }
-          const imgHeight: string | undefined = imgHtmlNode.heigh
+          const imgHeight: string | undefined = imgHtmlNode.height
           if (imgHeight !== undefined) {
             const h = strToLengthNumber(imgHeight)
             if (h !== undefined) {
@@ -611,7 +611,7 @@ export function nodeToNodeView(
           }
         }
         // heigh属性（注意JsNode接口字段拼写为heigh，非height）
-        const imgHeight: string | undefined = imgHtmlNode.heigh
+        const imgHeight: string | undefined = imgHtmlNode.height
         if (imgHeight !== undefined) {
           const h = strToLengthNumber(imgHeight)
           if (h !== undefined) {

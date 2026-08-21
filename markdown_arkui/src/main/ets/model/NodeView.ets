@@ -1,4 +1,4 @@
-import { SourceSpan, JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid"
+import { SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
 
 /**
  * MarkdownNodeView
@@ -319,51 +319,5 @@ export class NodeView {
    */
   isLinkVisible(): boolean {
     return this._linkVisible
-  }
-}
-
-export interface JsNodePool {
-  getJsNode(): JsNodeImpl
-}
-
-export class JsNodePoolImpl implements JsNodePool {
-  generator: Array<JsNodeImpl> = []
-
-  constructor() {
-  }
-
-  /**
-   * 将节点树回收到对象池中
-   *
-   * @param nodeTree 节点树
-   */
-  put(nodeTree: JsNodeImpl) {
-    traverseTree(nodeTree, this.generator)
-  }
-
-  /**
-   * 将节点树中的Node依次取出,若无则返回新Node
-   *
-   * @return 节点对象，池为空时返回新实例
-   */
-  getJsNode(): JsNodeImpl {
-    return this.generator.pop() ?? new JsNodeImpl()
-  }
-}
-
-/**
- * 递归遍历节点树，将所有节点reset后存入数组（用于节点池回收）
- *
- * @param node 当前节点
- * @param arr 存放回收节点的数组
- */
-export function traverseTree(node: JsNodeImpl | undefined, arr: Array<JsNodeImpl>) {
-  if (node !== undefined) {
-    let child: JsNodeImpl | undefined = node.firstChild
-    let next: JsNodeImpl | undefined = node.next
-    node.reset()
-    arr.push(node)
-    traverseTree(child, arr)
-    traverseTree(next, arr)
   }
 }

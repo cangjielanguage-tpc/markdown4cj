@@ -3,7 +3,7 @@ import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
 import { MarkdownPlugin } from '../plugin/MarkdownPlugin'
-import { JsNodePoolImpl, NodeView } from "../model/NodeView"
+import { NodeView } from "../model/NodeView"
 import { nodeToNodeView } from "../utils/MarkdownParserUtils"
 import { printNodes, safeString } from "../utils/MarkdownUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
@@ -55,7 +55,6 @@ export struct CJMarkdown {
   private isThrottled: boolean = false // 解析节流标志
   private hasPendingRefresh: boolean = false // 节流期间有未处理的刷新请求
   imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
-  jsNodePoolImpl: JsNodePoolImpl = new JsNodePoolImpl()
   plugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件配置
   private isAlive: boolean = true // 组件是否存活
   private throttleTimerId: number = -1 // 节流定时器ID
@@ -909,7 +908,7 @@ export struct CJMarkdown {
   refreshAsyncData(): void {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
+    let op: Options = this.plugin.buildOptions()
     let markdownParser: MarkdownParser = new MarkdownParser(op)
     if (this.parseTimerId !== -1) {
       clearTimeout(this.parseTimerId)
@@ -922,7 +921,6 @@ export struct CJMarkdown {
       try {
         markdownParser.parse(this.content).then((node) => {
           if (!this.isAlive) {
-            this.jsNodePoolImpl.put(node as JsNodeImpl)
             return
           }
           this.applyParseResult(node as JsNodeImpl, currentVersion)
@@ -941,12 +939,11 @@ export struct CJMarkdown {
   async refreshSyncData(): Promise<void> {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let op: Options = this.plugin.buildOptions((): JsNodeImpl => this.jsNodePoolImpl.getJsNode())
+    let op: Options = this.plugin.buildOptions()
     let markdownParser: MarkdownParser = new MarkdownParser(op)
     try {
       let node: JsNodeImpl = await markdownParser.parse(this.content) as JsNodeImpl
       if (!this.isAlive) {
-        this.jsNodePoolImpl.put(node)
         return
       }
       this.applyParseResult(node, currentVersion)
@@ -962,41 +959,37 @@ export struct CJMarkdown {
    * @param currentVersion 当前版本
    */
   private applyParseResult(node: JsNodeImpl, currentVersion: number): void {
+    if (!this.isAlive || currentVersion <= this.appliedVersion) {
+      return
+    }
+    let nodeView: NodeView = new NodeView()
+    let highlightSelectedList: ArrayList<string> = new ArrayList<string>()
+    nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
+    let parseOk: boolean = false
     try {
-      if (!this.isAlive || currentVersion <= this.appliedVersion) {
-        return
-      }
-      let nodeView: NodeView = new NodeView()
-      let highlightSelectedList: ArrayList<string> = new ArrayList<string>()
-      nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
-      let parseOk: boolean = false
-      try {
-        nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, highlightSelectedList)
-        parseOk = true
-      } catch (e) {
-        console.error('nodeToNodeView failed: ' + JSON.stringify(e))
-      }
-      this.collectImageAndVideoUrls(node)
-      if (!parseOk) {
-        // 解析失败时不更新数据源，保留上一次成功的结果
-        this.appliedVersion = currentVersion
-        return
-      }
-      if (nodeView.children.length === 0) {
-        this.markdownDataSource.clear()
-        this.buildIndexMaps()
-        this.config.markdownNodeViewString.setRoot(nodeView)
-        this.appliedVersion = currentVersion
-        return
-      }
-      this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+      nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, highlightSelectedList)
+      parseOk = true
+    } catch (e) {
+      console.error('nodeToNodeView failed: ' + JSON.stringify(e))
+    }
+    this.collectImageAndVideoUrls(node)
+    if (!parseOk) {
+      // 解析失败时不更新数据源，保留上一次成功的结果
+      this.appliedVersion = currentVersion
+      return
+    }
+    if (nodeView.children.length === 0) {
+      this.markdownDataSource.clear()
       this.buildIndexMaps()
-      this.config.markdownHighlightParagraph.setAllParagraphItems(highlightSelectedList)
       this.config.markdownNodeViewString.setRoot(nodeView)
       this.appliedVersion = currentVersion
-    } finally {
-      this.jsNodePoolImpl.put(node)
+      return
     }
+    this.markdownDataSource.smartUpdateDataArray(nodeView.children)
+    this.buildIndexMaps()
+    this.config.markdownHighlightParagraph.setAllParagraphItems(highlightSelectedList)
+    this.config.markdownNodeViewString.setRoot(nodeView)
+    this.appliedVersion = currentVersion
   }
 
   /**
