@@ -627,17 +627,17 @@ export struct MarkdownHeading {
             this.componentWidth,
             imageLoadResult.width,
             imageLoadResult.height,
-            item.imageStyleWidth ?? this.imageTheme.imageWidth,
-            item.imageStyleHeight ?? this.imageTheme.imageHeight,
+            (item.imageStyleWidth !== undefined ? vp2px(item.imageStyleWidth) : undefined) ??
+              (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
+              (item.imageStyleHeight !== undefined ? vp2px(item.imageStyleHeight) : undefined) ??
+              (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
             this.imageTheme.imageMaxWidth,
             this.imageTheme.imageMaxHeight,
             this.imageTheme.imageFixedRatioWidth,
             this.imageTheme.imageMaximumWidth
           )
-          let w = l[0]
-          let h = l[1]
-          item.imageWidth = w
-          item.imageHeight = h
+          item.imageWidth = px2vp(l[0])
+          item.imageHeight = px2vp(l[1])
           if (this.list.indexOf(item) >= 0) {
             this.list = [...this.list]
           }

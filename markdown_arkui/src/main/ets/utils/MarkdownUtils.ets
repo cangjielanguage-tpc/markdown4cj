@@ -271,13 +271,13 @@ export function imageUrlHandle(url?: string): ResourceStr | undefined {
 /**
  * 处理图片的宽高
  *
- * @param componentImageWidth 控件宽度
- * @param imageResWidth 图片真实宽度
- * @param imageResHeight 图片真实高度
- * @param imageWidthPx 图片设置宽度
- * @param imageHeightPx 图片设置高度
- * @param imageMaxWidth 图片最大宽度
- * @param imageMaxHeight 图片最大高度
+ * @param componentImageWidth 控件宽度（vp，函数内部会转成px）
+ * @param imageResWidth 图片真实宽度（px）
+ * @param imageResHeight 图片真实高度（px）
+ * @param imageWidthPx 图片设置宽度（px）
+ * @param imageHeightPx 图片设置高度（px）
+ * @param imageMaxWidth 图片最大宽度（vp，函数内部会转成px）
+ * @param imageMaxHeight 图片最大高度（vp，函数内部会转成px）
  * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比
  * @param imageMaximumWidth 图片基于自身宽度缩放百分比
  * @return 图片的宽高单位是PX
@@ -295,9 +295,11 @@ export function imageWidthAndHeight(
 ): Array<number> {
   let width: number = 0
   let height: number = 0
+  const componentImageWidthPx = vp2px(componentImageWidth)
   const componentImageWidthNew = (imageMaxWidth !== undefined)
-    ? Math.min(vp2px(imageMaxWidth), componentImageWidth)
-    : componentImageWidth
+    ? Math.min(vp2px(imageMaxWidth), componentImageWidthPx)
+    : componentImageWidthPx
+  const imageMaxHeightPx = (imageMaxHeight !== undefined) ? vp2px(imageMaxHeight) : undefined
   if (!(imageResWidth > 0) || !(imageResHeight > 0)) {
     return [0, 0]
   }
@@ -305,19 +307,18 @@ export function imageWidthAndHeight(
   if (imageWidthPx !== undefined && imageHeightPx !== undefined) {
     const aspectRatioNew: number = imageWidthPx > 0 ? imageHeightPx / imageWidthPx : aspectRatio
     let widthNew = (imageFixedRatioWidth !== undefined)
-      ? componentImageWidth * imageFixedRatioWidth
+      ? componentImageWidthPx * imageFixedRatioWidth
       : Math.min(imageWidthPx, componentImageWidthNew) * imageMaximumWidth
     widthNew = Math.min(widthNew, componentImageWidthNew)
     let heightNew: number = widthNew * aspectRatioNew
-    if (imageMaxHeight !== undefined) {
-      const imageMaxHeightPX = vp2px(imageMaxHeight)
-      if (heightNew < imageMaxHeightPX) {
+    if (imageMaxHeightPx !== undefined) {
+      if (heightNew < imageMaxHeightPx) {
         width = widthNew
         height = heightNew
       } else if (heightNew > 0) {
-        const aspectRatioHeightNew = imageMaxHeightPX / heightNew
+        const aspectRatioHeightNew = imageMaxHeightPx / heightNew
         width = widthNew * aspectRatioHeightNew
-        height = imageMaxHeightPX
+        height = imageMaxHeightPx
       } else {
         width = 0
         height = 0
@@ -328,19 +329,18 @@ export function imageWidthAndHeight(
     }
   } else if (imageWidthPx !== undefined && imageHeightPx === undefined) {
     let widthNew = (imageFixedRatioWidth !== undefined)
-      ? componentImageWidth * imageFixedRatioWidth
+      ? componentImageWidthPx * imageFixedRatioWidth
       : Math.min(imageWidthPx, componentImageWidthNew) * imageMaximumWidth
     widthNew = Math.min(widthNew, componentImageWidthNew)
     let heightNew: number = widthNew * aspectRatio
-    if (imageMaxHeight !== undefined) {
-      const imageMaxHeightPX = vp2px(imageMaxHeight)
-      if (heightNew < imageMaxHeightPX) {
+    if (imageMaxHeightPx !== undefined) {
+      if (heightNew < imageMaxHeightPx) {
         width = widthNew
         height = heightNew
       } else if (heightNew > 0) {
-        const aspectRatioHeightNew = imageMaxHeightPX / heightNew
+        const aspectRatioHeightNew = imageMaxHeightPx / heightNew
         width = widthNew * aspectRatioHeightNew
-        height = imageMaxHeightPX
+        height = imageMaxHeightPx
       } else {
         width = 0
         height = 0
@@ -351,19 +351,18 @@ export function imageWidthAndHeight(
     }
   } else if (imageWidthPx === undefined && imageHeightPx !== undefined) {
     let widthNew = (imageFixedRatioWidth !== undefined)
-      ? componentImageWidth * imageFixedRatioWidth
+      ? componentImageWidthPx * imageFixedRatioWidth
       : Math.min(imageHeightPx / aspectRatio, componentImageWidthNew) * imageMaximumWidth
     widthNew = Math.min(widthNew, componentImageWidthNew)
     let heightNew: number = widthNew * aspectRatio
-    if (imageMaxHeight !== undefined) {
-      const imageMaxHeightPX = vp2px(imageMaxHeight)
-      if (heightNew < imageMaxHeightPX) {
+    if (imageMaxHeightPx !== undefined) {
+      if (heightNew < imageMaxHeightPx) {
         width = widthNew
         height = heightNew
       } else if (heightNew > 0) {
-        const aspectRatioHeightNew = imageMaxHeightPX / heightNew
+        const aspectRatioHeightNew = imageMaxHeightPx / heightNew
         width = widthNew * aspectRatioHeightNew
-        height = imageMaxHeightPX
+        height = imageMaxHeightPx
       } else {
         width = 0
         height = 0
@@ -374,19 +373,18 @@ export function imageWidthAndHeight(
     }
   } else {
     let widthNew = (imageFixedRatioWidth !== undefined)
-      ? componentImageWidth * imageFixedRatioWidth
+      ? componentImageWidthPx * imageFixedRatioWidth
       : Math.min(imageResWidth, componentImageWidthNew) * imageMaximumWidth
     widthNew = Math.min(widthNew, componentImageWidthNew)
     let heightNew: number = widthNew * aspectRatio
-    if (imageMaxHeight !== undefined) {
-      const imageMaxHeightPX = vp2px(imageMaxHeight)
-      if (heightNew < imageMaxHeightPX) {
+    if (imageMaxHeightPx !== undefined) {
+      if (heightNew < imageMaxHeightPx) {
         width = widthNew
         height = heightNew
       } else if (heightNew > 0) {
-        const aspectRatioHeightNew = imageMaxHeightPX / heightNew
+        const aspectRatioHeightNew = imageMaxHeightPx / heightNew
         width = widthNew * aspectRatioHeightNew
-        height = imageMaxHeightPX
+        height = imageMaxHeightPx
       } else {
         width = 0
         height = 0
@@ -1058,7 +1056,7 @@ function applyStyleProp(prop: string, picStyleObj: PicStyleObj): void {
  * 解析样式中的长度值（支持px和纯数字）
  *
  * @param value 长度字符串（如 "100px"、"100"）
- * @return 数值（px），解析失败返回undefined
+ * @return 数值（vp），解析失败返回undefined
  */
 function parseStyleLength(value: string): number | undefined {
   if (value.length === 0) {

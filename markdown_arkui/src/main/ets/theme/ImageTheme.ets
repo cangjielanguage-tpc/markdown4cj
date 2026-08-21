@@ -22,10 +22,10 @@ export class ImageTheme implements MarkdownBaseTheme {
   isImageMixedLayout: boolean = true // 图片是否混合布局
   imageMaximumWidth: number = 1.0 // 图片基于自身宽度缩放百分比
   imageFixedRatioWidth: number | undefined = undefined // 图片基于父布局宽度缩放百分比
-  imageMaxHeight: number | undefined = undefined // 图片最大高度
-  imageHeight: number | undefined = undefined // 图片高度
-  imageMaxWidth: number | undefined = undefined // 图片最大宽度
-  imageWidth: number | undefined = undefined // 图片宽度
+  imageMaxHeight: number | undefined = undefined // 图片最大高度（vp）
+  imageHeight: number | undefined = undefined // 图片高度（vp）
+  imageMaxWidth: number | undefined = undefined // 图片最大宽度（vp）
+  imageWidth: number | undefined = undefined // 图片宽度（vp）
   imageFitType: ImageFit = ImageFit.Contain // 图片适应类型
   imageBottomLayoutMarginTop: Length = 14.0 // 图片底部布局上外边距
   imageDownloadButtonVisible: boolean = false // 是否图片下载按钮可见

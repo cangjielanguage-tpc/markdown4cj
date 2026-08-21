@@ -95,15 +95,17 @@ export struct MarkdownImageBlock {
                 this.componentWidth,
                 imageLoadResult.width,
                 imageLoadResult.height,
-                this.item.imageStyleWidth ?? this.imageTheme.imageWidth,
-                this.item.imageStyleHeight ?? this.imageTheme.imageHeight,
+                (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
+                (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
+                (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
+                (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
                 this.imageTheme.imageMaxWidth,
                 this.imageTheme.imageMaxHeight,
                 this.imageTheme.imageFixedRatioWidth,
                 this.imageTheme.imageMaximumWidth
               )
-              this.item.imageWidth = l[0]
-              this.item.imageHeight = l[1]
+              this.item.imageWidth = px2vp(l[0])
+              this.item.imageHeight = px2vp(l[1])
             }
           })
       } else {
@@ -141,15 +143,17 @@ export struct MarkdownImageBlock {
                 this.componentWidth,
                 imageLoadResult.width,
                 imageLoadResult.height,
-                this.item.imageStyleWidth ?? this.imageTheme.imageWidth,
-                this.item.imageStyleHeight ?? this.imageTheme.imageHeight,
+                (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
+                (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
+                (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
+                (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
                 this.imageTheme.imageMaxWidth,
                 this.imageTheme.imageMaxHeight,
                 this.imageTheme.imageFixedRatioWidth,
                 this.imageTheme.imageMaximumWidth
               )
-              this.item.imageWidth = l[0]
-              this.item.imageHeight = l[1]
+              this.item.imageWidth = px2vp(l[0])
+              this.item.imageHeight = px2vp(l[1])
             }
           })
       }
