@@ -29,7 +29,6 @@ import { ArrayList } from "@kit.ArkTS"
 import { MarkdownVisibleRectHolder } from "../model/MarkdownVisibleRectHolder"
 import { componentUtils } from "@kit.ArkUI"
 import { printNode } from "@cangjie-tpc/markdown_parser_hybrid/src/main/ets/util"
-import { hilog } from "@kit.PerformanceAnalysisKit"
 
 @Component
 export struct CJMarkdown {

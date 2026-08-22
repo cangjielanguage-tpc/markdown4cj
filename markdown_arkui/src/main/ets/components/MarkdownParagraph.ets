@@ -62,7 +62,6 @@ import display from "@ohos.display"
 import { componentUtils, PromptAction } from "@kit.ArkUI"
 import { MarkdownVisibleRectHolder, MarkdownVisibleRectSnapshot } from "../model/MarkdownVisibleRectHolder"
 import { pasteboard } from "@kit.BasicServicesKit"
-import hilog from "@ohos.hilog"
 
 /**
  * 段落控件

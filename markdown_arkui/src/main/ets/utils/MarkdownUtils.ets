@@ -142,7 +142,6 @@ import {
   NUM_FF9ACD32
 } from "../base/Constants"
 import { BulletListTheme } from "../theme/BulletListTheme"
-import { hilog } from "@kit.PerformanceAnalysisKit"
 
 /**
  * 判断软换行是否换行
