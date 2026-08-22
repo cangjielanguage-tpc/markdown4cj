@@ -139,8 +139,9 @@ struct ItalicPage {
       )
 
       // md文档展示部分
-      Grid() {
-        ForEach(this.folderList, (item: string, index: number) => {
+      Scroll() {
+        Grid() {
+          ForEach(this.folderList, (item: string, index: number) => {
           GridItem() {
             Text(`${item}`)
               .fontSize(12)
@@ -175,16 +176,17 @@ struct ItalicPage {
                   router.pushUrl({ url: "pages/ItalicDetailsPage", params: this.italicData })
               })
           }
-        })
+          })
+        }
+        .columnsGap(5)
+        .rowsGap(5)
+        .maxCount(5)
+        .minCount(1)
+        .cellLength(30)
+        .layoutDirection(GridDirection.Row)
+        .padding(5)
       }
       .constraintSize({ maxHeight: 200 })
-      .columnsGap(5)
-      .rowsGap(5)
-      .maxCount(5)
-      .minCount(3)
-      .cellLength(30)
-      .layoutDirection(GridDirection.Row)
-      .padding(5)
       .width('100%')
       .backgroundColor(0xFFEAEAEA)
 

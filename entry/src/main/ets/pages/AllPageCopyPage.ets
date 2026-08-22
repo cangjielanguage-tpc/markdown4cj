@@ -1,4 +1,4 @@
-import { titleComponent } from '../component/BaseComponent'
+﻿import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseMDData } from '../model/BaseMDData'
@@ -54,8 +54,9 @@ struct AllPageCopyPage {
       )
 
       // md文档展示部分
-      Grid() {
-        ForEach(this.folderList, (item: string, index: number) => {
+      Scroll() {
+        Grid() {
+          ForEach(this.folderList, (item: string, index: number) => {
           GridItem() {
             Text(`${item}`)
               .fontSize(10)
@@ -88,18 +89,19 @@ struct AllPageCopyPage {
                   router.pushUrl({ url: "pages/AllPageCopyDetailsPage", params: this.baseMDData })
               })
           }
-        })
+          })
+        }
+        .columnsGap(5)
+        .rowsGap(5)
+        .maxCount(5)
+        .minCount(1)
+        .cellLength(30)
+        .layoutDirection(GridDirection.Row)
+        .padding(5)
+        .layoutWeight(1)
       }
       .constraintSize({ maxHeight: 200 })
-      .columnsGap(5)
-      .rowsGap(5)
-      .maxCount(5)
-      .minCount(3)
-      .cellLength(30)
-      .layoutDirection(GridDirection.Row)
-      .padding(5)
       .width('100%')
-      .layoutWeight(1)
     }
     .backgroundColor('#FFEAEAEA')
     .height("100%")
