@@ -90,10 +90,7 @@ export struct MarkdownCodeIndented {
   refreshData() {
     this.codeText = this.node.nodeText
     this.info = this.node.codeInfo
-    let arr = this.codeText.split("\n") // 代码块数据分割
-    if (arr.length > 1 && arr[arr.length - 1] === "") {
-      arr.pop()
-    }
+    let arr = this.codeText.split("\n") // 代码块数据分割，nodeText已去除末尾换行，无需再pop
     this.lines = arr.length
     let lineArr: number[] = []
     for (let i = 1; i <= this.lines; i++) {

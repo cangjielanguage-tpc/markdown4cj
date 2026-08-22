@@ -142,10 +142,7 @@ export struct MarkdownCodeFenced {
     if (this.codeBlockTheme.codeBlockIsCodeFormat) {
       this.codeText = this.formatCode(this.info, this.codeText)
     }
-    let arr = this.codeText.split("\n") // 代码块数据分割
-    if (arr.length > 1 && arr[arr.length - 1] === "") {
-      arr.pop()
-    }
+    let arr = this.codeText.split("\n") // 代码块数据分割，nodeText已去除末尾换行，无需再pop
     let lineArr: number[] = []
     for (let i = 1; i <= arr.length; i++) {
       lineArr.push(i)

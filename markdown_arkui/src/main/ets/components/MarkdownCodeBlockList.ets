@@ -225,10 +225,7 @@ export struct MarkdownCodeBlockList {
    */
   updateLineArray(): void {
     let code = this.strText.length > this.idxSelect ? this.strText[this.idxSelect] : ''
-    let arr = code.split('\n')
-    if (arr.length > 1 && arr[arr.length - 1] === '') {
-      arr.pop()
-    }
+    let arr = code.split('\n') // nodeText已去除末尾换行，无需再pop
     let lineArr: number[] = []
     for (let i = 1; i <= arr.length; i++) {
       lineArr.push(i)
