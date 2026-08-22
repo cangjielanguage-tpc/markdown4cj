@@ -1,4 +1,4 @@
-﻿import { GlobalTheme } from "../theme/GlobalTheme"
+import { GlobalTheme } from "../theme/GlobalTheme"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { HeadingTheme } from "../theme/HeadingTheme"
 import { NodeView } from "../model/NodeView"

@@ -1,4 +1,4 @@
-﻿import { JsNodeImpl, JsNode, SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
+import { JsNodeImpl, JsNode, SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
 import { NodeView } from "../model/NodeView"
 import {
   renderTableCellColumnAlign,

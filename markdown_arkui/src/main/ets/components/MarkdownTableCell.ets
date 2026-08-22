@@ -414,7 +414,7 @@ export struct MarkdownTableCell {
         },
         (item: NodeView, index: number) => {
           this.updateTextContent(item) // 整理出当前所有的文本
-          return `${index}-${item.nodeHash}-${item.contentHash}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
+          return `${index}-${item.nodeHash}-${item.contentHash}-${item.isEmphasis}-${item.isStrongEmphasis}-${item.isInLineCode}-${item.isStrikethrough}-${item.isHighlight}-${item.isUnderlineNode}-${item.isSubNode}-${item.isSupNode}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
         }
       )
     }
