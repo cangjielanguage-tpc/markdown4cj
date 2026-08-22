@@ -32,8 +32,13 @@ export class MarkdownConfiguration {
   markdownHighlightParagraph: MarkdownHighlightParagraph = new MarkdownHighlightParagraph() // 高亮段落设置
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
   markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown默认样式
-  elementExposureCallback?: (event: MarkdownExposureEvent) => void = undefined // 元素曝光回调（链接显示/消失时触发）
+  elementExposureCallback?: (event: MarkdownExposureEvent) => void = undefined // 元素曝光回调（链接显示/消失时触发，由 setElementExposureCallback 包装为去重代理）
   exposureThreshold: number = 0.5 // 曝光可见阈值（0~1，链接与可见区交集面积/链接面积 ≥ 此值才算可见）
+
+  // 链接曝光去重：相同 URL 在多个位置（段落/标题/表格/同一行内多次出现）同时可见时，
+  // 首次进入可见区上报 visible=true，全部离开后才上报 visible=false，避免同一 URL 重复曝光。
+  private rawElementExposureCallback?: (event: MarkdownExposureEvent) => void = undefined
+  private linkExposureRefCount: Map<string, number> = new Map()
 
   /**
    * 设置链接点击回调
@@ -51,11 +56,51 @@ export class MarkdownConfiguration {
    * 可见判定：链接渲染矩形与段落在屏可见区交集面积 / 链接面积 ≥ exposureThreshold。
    * 同一链接持续停留不重复触发；滚出后再滚入会再次触发（一次显示+一次消失成对）。
    *
+   * 链接曝光按 URL 去重：相同 URL 在文中多处同时可见时，首次进入可见区上报 visible=true，
+   * 全部离开后才上报 visible=false，避免同一 URL 产生重复曝光事件。
+   *
    * @param cb 曝光回调(event：{ eventType, visible, data })
    */
   setElementExposureCallback(cb: (event: MarkdownExposureEvent) => void): MarkdownConfiguration {
-    this.elementExposureCallback = cb
+    this.rawElementExposureCallback = cb
+    this.elementExposureCallback = (event: MarkdownExposureEvent): void => {
+      this.handleElementExposureEvent(event)
+    }
     return this
+  }
+
+  /**
+   * 处理元素曝光事件，对 link 类型按 URL 做引用计数去重。
+   * 非 link 事件直接透传给业务回调。
+   *
+   * @param event 曝光事件
+   */
+  private handleElementExposureEvent(event: MarkdownExposureEvent): void {
+    if (event.eventType !== 'link') {
+      this.rawElementExposureCallback?.(event)
+      return
+    }
+    const url: string = event.data
+    let count: number = this.linkExposureRefCount.get(url) ?? 0
+    if (event.visible) {
+      count++
+      this.linkExposureRefCount.set(url, count)
+      if (count === 1) {
+        // 该 URL 首次有链接进入可见区，才向业务层上报显示
+        this.rawElementExposureCallback?.(event)
+      }
+    } else {
+      if (count > 0) {
+        count--
+      }
+      if (count === 0) {
+        this.linkExposureRefCount.delete(url)
+        // 该 URL 所有可见链接均已离开可见区，才向业务层上报消失
+        this.rawElementExposureCallback?.(event)
+      } else {
+        this.linkExposureRefCount.set(url, count)
+      }
+    }
   }
 
   /**
