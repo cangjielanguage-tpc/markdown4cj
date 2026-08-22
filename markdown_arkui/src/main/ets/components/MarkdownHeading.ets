@@ -699,32 +699,7 @@ export struct MarkdownHeading {
         let selectedText = this.textContent.substring(this.selectStart, this.selectEnd)
         let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, selectedText)
         pasteboard.getSystemPasteboard().setData(pasteData)
-        this.promptAction.showToast({
-          message: '已复制文本',
-          duration: 1000
-        })
-        this.textController.closeSelectionMenu()
-      })
-
-      // 分割线
-      Divider()
-        .height(10)
-        .strokeWidth(1)
-        .color(COLOR_FF808080)
-        .vertical(true)
-
-      // 菜单项：粘贴
-      Column() {
-        Text('粘贴')
-          .fontSize(14)
-          .fontColor(COLOR_FF191919)
-      }
-      .padding({ left: 10, right: 10, top: 8, bottom: 8 })
-      .onClick(() => {
-        this.promptAction.showToast({
-          message: '文本粘贴',
-          duration: 1000
-        })
+        this.textCopyCallback?.(selectedText)
         this.textController.closeSelectionMenu()
       })
     }
