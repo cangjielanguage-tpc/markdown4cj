@@ -1,4 +1,4 @@
-import { JsNodeImpl, JsNode, SourceSpan } from "@cangjie-tpc/markdown_parser_hybrid"
+import { JsNodeImpl, JsNode } from "@cangjie-tpc/markdown_parser_hybrid"
 import { NodeView } from "../model/NodeView"
 import {
   renderTableCellColumnAlign,
@@ -10,32 +10,6 @@ import {
 } from "./MarkdownUtils"
 import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
 import { ArrayList } from "@kit.ArkTS"
-
-/**
- * 比较两个SourceSpan数组是否相等（基于行号、列号、长度）
- * 用于增量nodeToNodeView的稳定子树判断
- *
- * @param a 源位置数组A
- * @param b 源位置数组B
- * @return 是否相等
- */
-function sourceSpansEqual(a: Array<SourceSpan>, b: Array<SourceSpan>): boolean {
-  if (a.length !== b.length) {
-    return false
-  }
-  for (let i = 0; i < a.length; i++) {
-    if (a[i].getLineIndex() !== b[i].getLineIndex()) {
-      return false
-    }
-    if (a[i].getColumnIndex() !== b[i].getColumnIndex()) {
-      return false
-    }
-    if (a[i].getLength() !== b[i].getLength()) {
-      return false
-    }
-  }
-  return true
-}
 
 /**
  * 递归查找节点所有子节点中第一个Image节点的destination
@@ -128,6 +102,317 @@ function getLinkText(node: JsNodeImpl | undefined): string {
 }
 
 /**
+ * 从 JsNode 的 props 中读取 nodeHash 与 contentHash
+ */
+function readNodeHashes(node: JsNodeImpl): [string, string] {
+  const prop = node.getProps()
+  const nodeHash = prop !== undefined ? (prop.get("nodeHash") ?? "0") : "0"
+  const contentHash = prop !== undefined ? (prop.get("contentHash") ?? "0") : "0"
+  return [nodeHash, contentHash]
+}
+
+/**
+ * 从 previousChildren 中查找可复用的同类型子节点
+ * 优先按位置匹配；位置不匹配时，在未使用的节点中按 hash 匹配，
+ * 以兼容节点位置变化、删除后重新出现等更多增量场景。
+ *
+ * @param usedIndices 已复用节点的索引集合，避免重复匹配
+ */
+function findReusablePreviousChild(
+  previousChildren: NodeView[] | undefined,
+  position: number,
+  nodeType: string,
+  usedIndices: Set<number> | undefined,
+  currentNodeHash: string,
+  currentContentHash: string
+): NodeView | undefined {
+  if (previousChildren === undefined || previousChildren.length === 0) {
+    return undefined
+  }
+
+  // 1. 位置优先匹配：保持最稳定的对象身份
+  if (position < previousChildren.length) {
+    const candidate = previousChildren[position]
+    if (candidate.nodeType === nodeType && !usedIndices?.has(position)) {
+      usedIndices?.add(position)
+      return candidate
+    }
+  }
+
+  if (usedIndices === undefined) {
+    return undefined
+  }
+
+  // 2. 按 nodeHash + contentHash 精确匹配（内容完全未变）
+  for (let i = 0; i < previousChildren.length; i++) {
+    if (usedIndices.has(i)) {
+      continue
+    }
+    const candidate = previousChildren[i]
+    if (candidate.nodeType === nodeType &&
+      candidate.nodeHash === currentNodeHash &&
+      candidate.contentHash === currentContentHash) {
+      usedIndices.add(i)
+      return candidate
+    }
+  }
+
+  // 3. 按 contentHash 匹配（子结构未变）
+  if (currentContentHash !== "0") {
+    for (let i = 0; i < previousChildren.length; i++) {
+      if (usedIndices.has(i)) {
+        continue
+      }
+      const candidate = previousChildren[i]
+      if (candidate.nodeType === nodeType && candidate.contentHash === currentContentHash) {
+        usedIndices.add(i)
+        return candidate
+      }
+    }
+  }
+
+  // 4. 按 nodeHash 匹配（节点自身标识未变）
+  if (currentNodeHash !== "0") {
+    for (let i = 0; i < previousChildren.length; i++) {
+      if (usedIndices.has(i)) {
+        continue
+      }
+      const candidate = previousChildren[i]
+      if (candidate.nodeType === nodeType && candidate.nodeHash === currentNodeHash) {
+        usedIndices.add(i)
+        return candidate
+      }
+    }
+  }
+
+  return undefined
+}
+
+/**
+ * 判断节点类型是否为叶子节点（无子节点展开）
+ */
+function isLeafNodeType(nodeType: string): boolean {
+  return nodeType === 'Text' || nodeType === 'Code' ||
+    nodeType === 'FencedCodeBlock' || nodeType === 'IndentedCodeBlock' ||
+    nodeType === 'LatexMathNode' || nodeType === 'LatexMathBlock' ||
+    nodeType === 'Image' || nodeType === 'StyleImage' || nodeType === 'ImageHtmlNode'
+}
+
+/**
+ * 判断当前节点在增量解析中是否可以复用
+ */
+function canReuseLeafNode(
+  nodeType: string,
+  previousChild: NodeView | undefined,
+  isLinkStyle: boolean
+): boolean {
+  if (previousChild === undefined) {
+    return false
+  }
+  // FencedCodeBlockListBlock 内容结构复杂，强制重建
+  if (nodeType === 'FencedCodeBlockListBlock') {
+    return false
+  }
+  if (isLeafNodeType(nodeType)) {
+    return true
+  }
+  // Link/HeadLink 仅在块状化模式下作为叶子节点复用
+  if ((nodeType === 'Link' || nodeType === 'HeadLink') && isLinkStyle) {
+    return true
+  }
+  return false
+}
+
+/**
+ * 应用 StyleImage 的样式属性到 NodeView
+ */
+function applyStyleImageProps(view: NodeView, imageStyles: Array<string> | undefined | null): void {
+  if (imageStyles === undefined || imageStyles === null || imageStyles.length === 0) {
+    return
+  }
+  const picStyle = parsePicStyle(imageStyles)
+  if (picStyle.width !== undefined) {
+    view.imageStyleWidth = picStyle.width
+  }
+  if (picStyle.height !== undefined) {
+    view.imageStyleHeight = picStyle.height
+  }
+  if (picStyle.borderRadius !== undefined) {
+    view.imageRadius = picStyle.borderRadius
+  }
+  if (picStyle.align !== undefined) {
+    view.imageAlign = picStyle.align
+  }
+}
+
+/**
+ * 应用 ImageHtmlNode 的 width/height 到 NodeView
+ */
+function applyImageHtmlNodeProps(view: NodeView, imgHtmlNode: JsNode): void {
+  const imgWidth: number | string | undefined = imgHtmlNode.width
+  if (imgWidth !== undefined) {
+    const widthStr = typeof imgWidth === 'number' ? String(imgWidth) : imgWidth
+    const w = strToLengthNumber(widthStr)
+    if (w !== undefined) {
+      view.imageStyleWidth = w
+    }
+  }
+  const imgHeight: string | undefined = imgHtmlNode.height
+  if (imgHeight !== undefined) {
+    const h = strToLengthNumber(imgHeight)
+    if (h !== undefined) {
+      view.imageStyleHeight = h
+    }
+  }
+}
+
+/**
+ * 更新复用的图片/样式图片/HTML图片节点
+ */
+function updateReusedImageNode(
+  prevChild: NodeView,
+  currentJsNode: JsNodeImpl,
+  nodeType: string
+): void {
+  const newUrl: string | undefined = currentJsNode.destination
+  const newTitle: string | undefined = currentJsNode.title
+  const urlChanged = prevChild.imageUrl !== newUrl
+  if (urlChanged) {
+    prevChild.imageUrl = newUrl
+    prevChild.imageTitle = newTitle
+    if (prevChild.imageReplacePixelMap !== undefined) {
+      try {
+        prevChild.imageReplacePixelMap.release()
+      } catch (e) {
+        console.error('Image imageReplacePixelMap release failed: ' + JSON.stringify(e))
+      }
+      prevChild.imageReplacePixelMap = undefined
+    }
+    prevChild.imageReplaceTried = false
+    prevChild.imageWidth = undefined
+    prevChild.imageHeight = undefined
+  } else if (prevChild.imageTitle !== newTitle) {
+    // URL 未变但 title 变化：同步更新 title，无需重置已加载的图片资源
+    prevChild.imageTitle = newTitle
+  }
+  if (nodeType === 'StyleImage') {
+    applyStyleImageProps(prevChild, currentJsNode.ImageStyles)
+  } else if (nodeType === 'ImageHtmlNode') {
+    applyImageHtmlNodeProps(prevChild, currentJsNode as JsNode)
+  }
+}
+
+/**
+ * 更新复用的链接/标题链接节点
+ */
+function updateReusedLinkNode(
+  prevChild: NodeView,
+  currentJsNode: JsNodeImpl,
+  nodeType: string
+): void {
+  const newUrl: string | undefined = currentJsNode.destination
+  const newText: string = getLinkText(currentJsNode)
+  if (prevChild.linkUrl !== newUrl || prevChild.nodeText !== newText) {
+    prevChild.linkUrl = newUrl
+    prevChild.linkTitle = currentJsNode.title
+    prevChild.nodeText = newText
+    const iconInfo = computeLinkIconInfo(newUrl ?? '', newText)
+    prevChild.linkIconType = iconInfo.iconType
+    prevChild.linkTypeStr = iconInfo.typeStr
+    if (prevChild.linkIconPixelMap !== undefined) {
+      try {
+        prevChild.linkIconPixelMap.release()
+      } catch (e) {
+        console.error('Link linkIconPixelMap release failed: ' + JSON.stringify(e))
+      }
+      prevChild.linkIconPixelMap = undefined
+    }
+    prevChild.linkIconTried = false
+    prevChild.linkIconText = ''
+    prevChild.linkIconWidth = 0
+    prevChild.linkIconHeight = 0
+  }
+  if (nodeType === 'HeadLink') {
+    prevChild.headLinkIndex = currentJsNode.headIndex
+  } else {
+    prevChild.headLinkIndex = undefined
+  }
+}
+
+/**
+ * 就地更新可复用的叶子节点
+ */
+function updateReusedLeafNode(
+  prevChild: NodeView,
+  currentJsNode: JsNodeImpl,
+  nodeType: string,
+  inheritedStyleView: NodeView
+): void {
+  const [newNodeHash, newContentHash] = readNodeHashes(currentJsNode)
+  prevChild.nodeHash = newNodeHash
+  prevChild.contentHash = newContentHash
+  prevChild.sourceSpan = currentJsNode.getSourceSpans()
+  prevChild.copyStyleFrom(inheritedStyleView)
+
+  // copyStyleFrom 可能覆盖节点自身类型标记，需重新设置
+  if (nodeType === 'Code') {
+    prevChild.isInLineCode = true
+  }
+  if (nodeType === 'Link' || nodeType === 'HeadLink') {
+    prevChild.isLink = true
+  }
+  if (nodeType === 'LatexMathBlock') {
+    prevChild.isLatexMathBlock = true
+  }
+
+  switch (nodeType) {
+    case 'Text':
+    case 'Code':
+      prevChild.nodeText = currentJsNode.literal ?? ""
+      break
+    case 'FencedCodeBlock':
+    case 'IndentedCodeBlock':
+      prevChild.nodeText = currentJsNode.literal?.replace(/\n$/, '') ?? ""
+      if (nodeType === 'FencedCodeBlock') {
+        prevChild.codeInfo = currentJsNode.info
+      }
+      break
+    case 'LatexMathNode': {
+      const newLatex: string = currentJsNode.latex ?? ""
+      if (prevChild.nodeText !== newLatex) {
+        prevChild.nodeText = newLatex
+        if (prevChild.latexPixelMap !== undefined) {
+          try {
+            prevChild.latexPixelMap.release()
+          } catch (e) {
+            console.error('LatexMathNode latexPixelMap release failed: ' + JSON.stringify(e))
+          }
+          prevChild.latexPixelMap = undefined
+        }
+        prevChild.latexImageData = undefined
+        prevChild.latexImageWidth = 0
+        prevChild.latexImageHeight = 0
+        prevChild.latexIsLoading = false
+      }
+      break
+    }
+    case 'LatexMathBlock':
+      prevChild.nodeText = currentJsNode.latex ?? ""
+      prevChild.isLatexMathBlockClose = currentJsNode.isClosed ?? false
+      break
+    case 'Image':
+    case 'StyleImage':
+    case 'ImageHtmlNode':
+      updateReusedImageNode(prevChild, currentJsNode, nodeType)
+      break
+    case 'Link':
+    case 'HeadLink':
+      updateReusedLinkNode(prevChild, currentJsNode, nodeType)
+      break
+  }
+}
+
+/**
  * 解析处理，将JsNode转换成NodeView
  *
  * @param sourceJsNode 源节点JsNode
@@ -143,187 +428,38 @@ export function nodeToNodeView(
   highlightSelectedList?: ArrayList<string>
 ): void {
   let currentJsNode = sourceJsNode.firstChild
+  // 追踪本层 previousChildren 中哪些索引已被复用，避免跨位置 hash 匹配时重复消费
+  const usedIndices = previousChildren !== undefined ? new Set<number>() : undefined
+
   while (currentJsNode !== undefined) {
     const nodeType = currentJsNode.nodeType
-    // 增量复用：用targetParentView.children.length作为previousChildren的索引
-    // 对于Pattern1节点(push currentView)：索引随每个push+1，与previousChildren 1:1对应
-    // 对于Pattern2节点(不push，children平铺到targetParentView)：索引随子节点push递增
-    //   递归调用传入相同previousChildren，子节点用targetParentView.children.length定位
+    const [newNodeHash, newContentHash] = readNodeHashes(currentJsNode)
     const prevChildPos = targetParentView.children.length
-    // 分步判空，避免&&短路求值在ArkTS运行时不可靠
-    let prevChild: NodeView | undefined = undefined
-    if (previousChildren !== undefined) {
-      if (prevChildPos < previousChildren.length) {
-        const candidate = previousChildren[prevChildPos]
-        if (candidate.nodeType === nodeType) {
-          prevChild = candidate
-        }
-      }
-    }
-    let canReuse = prevChild !== undefined
-    if (canReuse && nodeType === 'FencedCodeBlockListBlock') {
-      canReuse = false
-    }
-    // 只有叶子节点可以复用（容器节点走copyDataFrom正常分支）
-    // Link/HeadLink仅当isLinkStyle时为叶子节点（块状化），否则为Pattern2（子节点平铺）
-    if (canReuse && nodeType !== 'Text' && nodeType !== 'Code' &&
-      nodeType !== 'FencedCodeBlock' && nodeType !== 'IndentedCodeBlock' &&
-      nodeType !== 'LatexMathNode' && nodeType !== 'LatexMathBlock' &&
-      nodeType !== 'Image' && nodeType !== 'StyleImage' && nodeType !== 'ImageHtmlNode' &&
-      !((nodeType === 'Link' || nodeType === 'HeadLink') && inheritedStyleView.isLinkStyle)) {
-      canReuse = false
-    }
-    // 提前读取props，用于复用判断和新NodeView创建
-    const prop = currentJsNode.getProps()
-    const newNodeHash = prop !== undefined ? (prop.get("nodeHash") ?? "0") : "0"
-    const newContentHash = prop !== undefined ? (prop.get("contentHash") ?? "0") : "0"
-    if (canReuse && prevChild !== undefined) {
-      // 叶子节点复用：不再要求sourceSpansEqual
-      // 流式输出时sourceSpan的columnIndex会随前方文本增长而偏移，
-      // 导致sourceSpansEqual失败→节点不复用→新NodeView无pixmap→闪烁
-      // 叶子节点无子树，内容变化通过下方的更新逻辑处理
-      prevChild.nodeHash = newNodeHash
-      prevChild.contentHash = newContentHash
-      prevChild.sourceSpan = currentJsNode.getSourceSpans()
-      // 继承当前上下文样式（与新节点创建路径一致）
-      // 修复增量解析时Link/HeadLink子节点未继承isLink/headLinkIndex等样式的问题
-      prevChild.copyStyleFrom(inheritedStyleView)
-      // copyStyleFrom可能覆盖节点自身类型标记，需重新设置
-      if (nodeType === 'Code') {
-        prevChild.isInLineCode = true
-      }
-      if (nodeType === 'Link' || nodeType === 'HeadLink') {
-        prevChild.isLink = true
-      }
-      if (nodeType === 'LatexMathBlock') {
-        prevChild.isLatexMathBlock = true
-      }
-      if (nodeType === 'Text' || nodeType === 'Code') {
-        prevChild.nodeText = currentJsNode.literal ?? ""
-      } else if (nodeType === 'FencedCodeBlock' || nodeType === 'IndentedCodeBlock') {
-        prevChild.nodeText = currentJsNode.literal?.replace(/\n$/, '') ?? ""
-        if (nodeType === 'FencedCodeBlock') {
-          prevChild.codeInfo = currentJsNode.info
-        }
-      } else if (nodeType === 'LatexMathNode') {
-        const newLatex: string = currentJsNode.latex ?? ""
-        if (prevChild.nodeText !== newLatex) {
-          prevChild.nodeText = newLatex
-          if (prevChild.latexPixelMap !== undefined) {
-            try {
-              prevChild.latexPixelMap.release()
-            } catch (e) {
-              console.error('LatexMathNode latexPixelMap release failed: ' + JSON.stringify(e))
-            }
-            prevChild.latexPixelMap = undefined
-          }
-          prevChild.latexImageData = undefined
-          prevChild.latexImageWidth = 0
-          prevChild.latexImageHeight = 0
-          prevChild.latexIsLoading = false
-        }
-      } else if (nodeType === 'LatexMathBlock') {
-        prevChild.nodeText = currentJsNode.latex ?? ""
-        prevChild.isLatexMathBlockClose = currentJsNode.isClosed ?? false
-      } else if (nodeType === 'Image' || nodeType === 'StyleImage' || nodeType === 'ImageHtmlNode') {
-        // 图片节点：URL不变时保留imageReplacePixelMap，URL变化时重置
-        const newUrl: string | undefined = currentJsNode.destination
-        if (prevChild.imageUrl !== newUrl) {
-          prevChild.imageUrl = newUrl
-          prevChild.imageTitle = currentJsNode.title
-          if (prevChild.imageReplacePixelMap !== undefined) {
-            try {
-              prevChild.imageReplacePixelMap.release()
-            } catch (e) {
-              console.error('Image imageReplacePixelMap release failed: ' + JSON.stringify(e))
-            }
-            prevChild.imageReplacePixelMap = undefined
-          }
-          prevChild.imageReplaceTried = false
-          prevChild.imageWidth = undefined
-          prevChild.imageHeight = undefined
-        }
-        if (nodeType === 'StyleImage') {
-          const imageStyles: Array<string> | undefined = currentJsNode.ImageStyles
-          if (imageStyles !== undefined && imageStyles !== null) {
-            if (imageStyles.length > 0) {
-              const picStyle = parsePicStyle(imageStyles)
-              if (picStyle.width !== undefined) {
-                prevChild.imageStyleWidth = picStyle.width
-              }
-              if (picStyle.height !== undefined) {
-                prevChild.imageStyleHeight = picStyle.height
-              }
-              if (picStyle.borderRadius !== undefined) {
-                prevChild.imageRadius = picStyle.borderRadius
-              }
-              if (picStyle.align !== undefined) {
-                prevChild.imageAlign = picStyle.align
-              }
-            }
-          }
-        } else if (nodeType === 'ImageHtmlNode') {
-          const imgHtmlNode = currentJsNode as JsNode
-          const imgWidth: number | string | undefined = imgHtmlNode.width
-          if (imgWidth !== undefined) {
-            const widthStr = typeof imgWidth === 'number' ? String(imgWidth) : imgWidth
-            const w = strToLengthNumber(widthStr)
-            if (w !== undefined) {
-              prevChild.imageStyleWidth = w
-            }
-          }
-          const imgHeight: string | undefined = imgHtmlNode.height
-          if (imgHeight !== undefined) {
-            const h = strToLengthNumber(imgHeight)
-            if (h !== undefined) {
-              prevChild.imageStyleHeight = h
-            }
-          }
-        }
-      } else if (nodeType === 'Link' || nodeType === 'HeadLink') {
-        // 块状化链接（isLinkStyle）：URL+文本不变时保留linkIconPixelMap，变化时重置
-        const newUrl: string | undefined = currentJsNode.destination
-        const newText: string = getLinkText(currentJsNode)
-        if (prevChild.linkUrl !== newUrl || prevChild.nodeText !== newText) {
-          prevChild.linkUrl = newUrl
-          prevChild.linkTitle = currentJsNode.title
-          prevChild.nodeText = newText
-          const iconInfo = computeLinkIconInfo(newUrl ?? '', newText)
-          prevChild.linkIconType = iconInfo.iconType
-          prevChild.linkTypeStr = iconInfo.typeStr
-          if (prevChild.linkIconPixelMap !== undefined) {
-            try {
-              prevChild.linkIconPixelMap.release()
-            } catch (e) {
-              console.error('Link linkIconPixelMap release failed: ' + JSON.stringify(e))
-            }
-            prevChild.linkIconPixelMap = undefined
-          }
-          prevChild.linkIconTried = false
-          prevChild.linkIconText = ''
-          prevChild.linkIconWidth = 0
-          prevChild.linkIconHeight = 0
-        }
-        if (nodeType === 'HeadLink') {
-          prevChild.headLinkIndex = currentJsNode.headIndex
-        }
-      }
+    const prevChild = findReusablePreviousChild(
+      previousChildren, prevChildPos, nodeType, usedIndices, newNodeHash, newContentHash
+    )
+
+    // 增量复用：仅叶子节点可复用，容器节点走新建/递归分支
+    if (canReuseLeafNode(nodeType, prevChild, inheritedStyleView.isLinkStyle) && prevChild !== undefined) {
+      updateReusedLeafNode(prevChild, currentJsNode, nodeType, inheritedStyleView)
       targetParentView.children.push(prevChild)
       currentJsNode = currentJsNode.next
       continue
     }
-    const currentView: NodeView = new NodeView()
+    const currentView = new NodeView()
     currentView.nodeType = nodeType
     currentView.sourceSpan = currentJsNode.getSourceSpans()
-
+    currentView.nodeHash = newNodeHash
+    currentView.contentHash = newContentHash
     currentView.copyStyleFrom(inheritedStyleView)
 
-    if (prop !== undefined) {
-      currentView.nodeHash = newNodeHash
-      currentView.contentHash = newContentHash
-    }
-
+    // 根据节点类型配置 currentView 并决定递归/平铺方式
+    // A. 叶子节点：直接 push 到 targetParentView
+    // B. 行内容器：设置样式标记后，子节点平铺到 targetParentView
+    // C. 块级容器：设置样式标记后，子节点挂到 currentView，再 push currentView
+    // D. 表格头/体 与 忽略节点：设置样式标记后，子节点平铺到 targetParentView，不 push currentView
     switch (nodeType) {
+      // ===== 纯叶子节点 =====
       case 'Text': // 文本
         currentView.nodeText = currentJsNode.literal ?? ""
         targetParentView.children.push(currentView)
@@ -334,13 +470,13 @@ export function nodeToNodeView(
         targetParentView.children.push(currentView)
         break
       case 'SoftLineBreak': // 软换行
-        targetParentView.children.push(currentView)
-        break
       case 'HardLineBreak': // 硬换行
         targetParentView.children.push(currentView)
         break
       case 'LinkReferenceDefinition': // 链接引用定义
         break
+
+      // ===== 链接（块状化时作为叶子，否则平铺子节点） =====
       case 'Link': // 链接
         currentView.isLink = true
         currentView.linkUrl = currentJsNode.destination
@@ -370,6 +506,8 @@ export function nodeToNodeView(
           nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         }
         break
+
+      // ===== 行内样式容器（子节点平铺） =====
       case 'SubNode': // 下标
       case 'SubHtmlNode':
         currentView.isSubNode = true
@@ -384,65 +522,6 @@ export function nodeToNodeView(
         currentView.isUnderlineNode = true
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
         break
-      case 'FontNode': { // FontNode标签
-        currentView.isFontNode = true
-        const fontNode = currentJsNode as JsNode
-        // size属性
-        const fontSizeStr: string | undefined = fontNode.size
-        if (fontSizeStr !== undefined) {
-          if (fontSizeStr.length > 0) {
-            const size = sizeStringToSize(fontSizeStr)
-            if (size !== undefined) {
-              currentView.fontNodeSize = size
-            }
-          }
-        }
-        // color属性
-        const fontColorStr: string | undefined = fontNode.color
-        if (fontColorStr !== undefined) {
-          if (fontColorStr.length > 0) {
-            const color = colorStringToColor(fontColorStr)
-            if (color !== undefined) {
-              currentView.fontNodeColor = color
-            }
-          }
-        }
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
-        break
-      }
-      case 'SpanNode': { // SpanNode标签
-        currentView.isSpanNode = true
-        // SpanNodeStyle直接在JsNodeImpl类上声明，可直接访问
-        const style: Map<string, string> | undefined = currentJsNode.SpanNodeStyle
-        if (style !== undefined) {
-          // font-size
-          const sizeStr = style.get('font-size')
-          if (sizeStr !== undefined) {
-            const size = sizeStringToSize(sizeStr)
-            if (size !== undefined) {
-              currentView.spanNodeSize = size
-            }
-          }
-          // font-weight
-          const weightStr = style.get('font-weight')
-          if (weightStr !== undefined) {
-            const weight = fontWeightToValue(weightStr)
-            if (weight !== undefined) {
-              currentView.spanNodeWeight = weight
-            }
-          }
-          // color
-          const colorStr = style.get('color')
-          if (colorStr !== undefined) {
-            const color = colorStringToColor(colorStr)
-            if (color !== undefined) {
-              currentView.spanNodeColor = color
-            }
-          }
-        }
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
-        break
-      }
       case 'Emphasis': // 斜体
         currentView.isEmphasis = true
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
@@ -459,6 +538,57 @@ export function nodeToNodeView(
         currentView.isHighlight = true
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
         break
+      case 'FontNode': { // FontNode标签
+        currentView.isFontNode = true
+        const fontNode = currentJsNode as JsNode
+        const fontSizeStr: string | undefined = fontNode.size
+        if (fontSizeStr !== undefined && fontSizeStr.length > 0) {
+          const size = sizeStringToSize(fontSizeStr)
+          if (size !== undefined) {
+            currentView.fontNodeSize = size
+          }
+        }
+        const fontColorStr: string | undefined = fontNode.color
+        if (fontColorStr !== undefined && fontColorStr.length > 0) {
+          const color = colorStringToColor(fontColorStr)
+          if (color !== undefined) {
+            currentView.fontNodeColor = color
+          }
+        }
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        break
+      }
+      case 'SpanNode': { // SpanNode标签
+        currentView.isSpanNode = true
+        const style: Map<string, string> | undefined = currentJsNode.SpanNodeStyle
+        if (style !== undefined) {
+          const sizeStr = style.get('font-size')
+          if (sizeStr !== undefined) {
+            const size = sizeStringToSize(sizeStr)
+            if (size !== undefined) {
+              currentView.spanNodeSize = size
+            }
+          }
+          const weightStr = style.get('font-weight')
+          if (weightStr !== undefined) {
+            const weight = fontWeightToValue(weightStr)
+            if (weight !== undefined) {
+              currentView.spanNodeWeight = weight
+            }
+          }
+          const colorStr = style.get('color')
+          if (colorStr !== undefined) {
+            const color = colorStringToColor(colorStr)
+            if (color !== undefined) {
+              currentView.spanNodeColor = color
+            }
+          }
+        }
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        break
+      }
+
+      // ===== 块级结构容器（子节点挂到 currentView） =====
       case 'Paragraph': // 段落
         highlightSelectedList?.add(currentView.nodeHash.toString())
         if (currentView.isParagraph) {
@@ -480,8 +610,9 @@ export function nodeToNodeView(
         highlightSelectedList?.add(currentView.nodeHash.toString())
         currentView.isHeading = true
         currentView.headingLevel = currentJsNode.level ?? 1
-        if (prop !== undefined) {
-          currentView.headingID = prop.get("headingId") ?? ""
+        const headingProp = currentJsNode.getProps()
+        if (headingProp !== undefined) {
+          currentView.headingID = headingProp.get("headingId") ?? ""
         }
         nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, highlightSelectedList)
         targetParentView.children.push(currentView)
@@ -587,6 +718,8 @@ export function nodeToNodeView(
         nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
         targetParentView.children.push(currentView)
         break
+
+      // ===== 特殊/自定义节点 =====
       case 'IgnoreBlockNode': // 忽略节点
       case 'IgnoreInlineNode':
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
@@ -595,32 +728,12 @@ export function nodeToNodeView(
       case 'HtmlInline':
       case 'ImgVideo':
         break
-      case 'ImageHtmlNode': { // HTML图片
+      case 'ImageHtmlNode': // HTML图片
         currentView.imageUrl = currentJsNode.destination
         currentView.imageTitle = currentJsNode.title
-        // 通过JsNode接口访问width/heigh/color等HTML属性字段
-        // （JsNodeImpl类声明中仅部分字段显式声明，JsNode接口包含完整字段定义）
-        const imgHtmlNode = currentJsNode as JsNode
-        // width属性（number|string）
-        const imgWidth: number | string | undefined = imgHtmlNode.width
-        if (imgWidth !== undefined) {
-          const widthStr = typeof imgWidth === 'number' ? String(imgWidth) : imgWidth
-          const w = strToLengthNumber(widthStr)
-          if (w !== undefined) {
-            currentView.imageStyleWidth = w
-          }
-        }
-        // heigh属性（注意JsNode接口字段拼写为heigh，非height）
-        const imgHeight: string | undefined = imgHtmlNode.height
-        if (imgHeight !== undefined) {
-          const h = strToLengthNumber(imgHeight)
-          if (h !== undefined) {
-            currentView.imageStyleHeight = h
-          }
-        }
+        applyImageHtmlNodeProps(currentView, currentJsNode as JsNode)
         targetParentView.children.push(currentView)
         break
-      }
       case 'SlideBlock': // 幻灯片块
         nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
         targetParentView.children.push(currentView)
@@ -632,37 +745,41 @@ export function nodeToNodeView(
         currentView.imageTitle = currentJsNode.title
         targetParentView.children.push(currentView)
         break
-      case 'CustomCardImage':
-        let child = currentJsNode.firstChild
-        while (child !== undefined) {
-          const childType = child.nodeType
+      case 'StyleImage': // 样式图片
+        currentView.imageUrl = currentJsNode.destination
+        currentView.imageTitle = currentJsNode.title
+        applyStyleImageProps(currentView, currentJsNode.ImageStyles)
+        targetParentView.children.push(currentView)
+        break
+      case 'CustomCardImage': // 自定义卡片图片
+        let cciChild = currentJsNode.firstChild
+        while (cciChild !== undefined) {
+          const childType = cciChild.nodeType
           if (childType === 'Image' || childType === 'StyleImage' || childType === 'ImageHtmlNode') {
-            currentView.imageUrl = child.destination
-            currentView.imageTitle = child.title
-            //再循环，获取altText
-            let subChild = child.firstChild
+            currentView.imageUrl = cciChild.destination
+            currentView.imageTitle = cciChild.title
+            let subChild = cciChild.firstChild
             while (subChild !== undefined) {
-              const subChildType = subChild.nodeType
-              if(subChildType === 'Text'){
+              if (subChild.nodeType === 'Text') {
                 currentView.imageAltText = subChild.literal
               }
               subChild = subChild.next
             }
           }
-          child = child.next
+          cciChild = cciChild.next
         }
         targetParentView.children.push(currentView)
         break
-      case 'CustomCardLink':
-        let childccl = currentJsNode.firstChild
-        while (childccl !== undefined) {
-          const childType = childccl.nodeType
+      case 'CustomCardLink': // 自定义卡片链接
+        let cclChild = currentJsNode.firstChild
+        while (cclChild !== undefined) {
+          const childType = cclChild.nodeType
           if (childType === 'Link' || childType === 'HeadLink') {
-            currentView.linkUrl = childccl.destination
-            currentView.linkTitle = childccl.title
-            currentView.nodeText = getLinkText(childccl)
+            currentView.linkUrl = cclChild.destination
+            currentView.linkTitle = cclChild.title
+            currentView.nodeText = getLinkText(cclChild)
           }
-          childccl = childccl.next
+          cclChild = cclChild.next
         }
         targetParentView.children.push(currentView)
         break
@@ -671,32 +788,6 @@ export function nodeToNodeView(
         nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children)
         targetParentView.children.push(currentView)
         break
-      case 'StyleImage': { // 样式图片
-        currentView.imageUrl = currentJsNode.destination
-        currentView.imageTitle = currentJsNode.title
-        // ImageStyles直接在JsNodeImpl类上声明，可直接访问
-        // 先判空再传入parsePicStyle，避免undefined/null导致.length异常
-        const imageStyles: Array<string> | undefined = currentJsNode.ImageStyles
-        if (imageStyles !== undefined && imageStyles !== null) {
-          if (imageStyles.length > 0) {
-            const picStyle = parsePicStyle(imageStyles)
-            if (picStyle.width !== undefined) {
-              currentView.imageStyleWidth = picStyle.width
-            }
-            if (picStyle.height !== undefined) {
-              currentView.imageStyleHeight = picStyle.height
-            }
-            if (picStyle.borderRadius !== undefined) {
-              currentView.imageRadius = picStyle.borderRadius
-            }
-            if (picStyle.align !== undefined) {
-              currentView.imageAlign = picStyle.align
-            }
-          }
-        }
-        targetParentView.children.push(currentView)
-        break
-      }
       case 'BlockVideo': // 视频
         currentView.imageUrl = findImageUrlFromDescendants(currentJsNode)
         targetParentView.children.push(currentView)

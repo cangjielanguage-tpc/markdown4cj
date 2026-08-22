@@ -86,6 +86,30 @@ export class NodeView {
   private _linkVisible: boolean = false // 链接当前是否处于可见状态（曝光状态机标志，不随copyDataFrom拷贝，对象复用时保留）
 
   /**
+   * 转移 PixelMap 引用：释放当前持有的旧资源，再指向新资源。
+   * 用于 copyDataFrom 中避免重复释放逻辑。
+   *
+   * @param current 当前持有的 PixelMap
+   * @param source 目标 PixelMap
+   * @param tag 日志标签
+   * @return 应设置的新 PixelMap
+   */
+  private transferPixelMap(
+    current: PixelMap | undefined,
+    source: PixelMap | undefined,
+    tag: string
+  ): PixelMap | undefined {
+    if (current !== undefined && current !== source) {
+      try {
+        current.release()
+      } catch (e) {
+        console.error(`${tag} release failed: ` + JSON.stringify(e))
+      }
+    }
+    return source
+  }
+
+  /**
    * 全量数据拷贝（包括children、nodeType等所有属性）
    * 用于就地更新NodeView属性，保持对象引用不变
    * 这样@Observed能检测到属性变化，@ObjectLink的@Watch会触发，避免组件重建导致闪烁
@@ -97,6 +121,8 @@ export class NodeView {
     this.nodeText = source.nodeText
     this.nodeHash = source.nodeHash
     this.contentHash = source.contentHash
+    this.sourceSpan = source.sourceSpan
+
     // 先收集未被复用的旧子节点，延迟到this.children更新后再释放PixelMap
     // 这样@Watch('refreshData')同步触发时this.list已更新为新子节点，
     // 旧子节点不再被渲染，释放其PixelMap不会导致闪烁
@@ -111,59 +137,47 @@ export class NodeView {
       }
     }
     this.children = source.children
-    this.sourceSpan = source.sourceSpan
-    this.headingLevel = source.headingLevel
-    this.headingID = source.headingID
+
+    // 样式与链接属性由 copyStyleFrom 统一处理，避免重复赋值
     this.copyStyleFrom(source)
-    this.headLinkIndex = source.headLinkIndex
-    this.linkUrl = source.linkUrl
-    this.linkTitle = source.linkTitle
+
+    // 数据属性（非样式类）
     this.imageUrl = source.imageUrl
     this.imageTitle = source.imageTitle
+    this.imageAltText = source.imageAltText
     this.imageWidth = source.imageWidth
     this.imageHeight = source.imageHeight
     this.imageStyleWidth = source.imageStyleWidth
     this.imageStyleHeight = source.imageStyleHeight
     this.imageRadius = source.imageRadius
     this.imageAlign = source.imageAlign
-    this.imageAltText = source.imageAltText
     this.codeInfo = source.codeInfo
     this.codeListTab = source.codeListTab
     this.cardName = source.cardName
     this.cardData = source.cardData
-    if (this.imageReplacePixelMap !== undefined && this.imageReplacePixelMap !== source.imageReplacePixelMap) {
-      try {
-        this.imageReplacePixelMap.release()
-      } catch (e) {
-        console.error('imageReplacePixelMap release failed: ' + JSON.stringify(e))
-      }
-    }
-    this.imageReplacePixelMap = source.imageReplacePixelMap
+
+    // PixelMap 资源转移
+    this.imageReplacePixelMap = this.transferPixelMap(
+      this.imageReplacePixelMap, source.imageReplacePixelMap, 'imageReplacePixelMap'
+    )
     this.imageReplaceTried = source.imageReplaceTried
-    if (this.latexPixelMap !== undefined && this.latexPixelMap !== source.latexPixelMap) {
-      try {
-        this.latexPixelMap.release()
-      } catch (e) {
-        console.error('latexPixelMap release failed: ' + JSON.stringify(e))
-      }
-    }
-    this.latexPixelMap = source.latexPixelMap
+
+    this.latexPixelMap = this.transferPixelMap(
+      this.latexPixelMap, source.latexPixelMap, 'latexPixelMap'
+    )
     this.latexImageData = source.latexImageData
     this.latexImageWidth = source.latexImageWidth
     this.latexImageHeight = source.latexImageHeight
     this.latexIsLoading = source.latexIsLoading
-    if (this.linkIconPixelMap !== undefined && this.linkIconPixelMap !== source.linkIconPixelMap) {
-      try {
-        this.linkIconPixelMap.release()
-      } catch (e) {
-        console.error('linkIconPixelMap release failed: ' + JSON.stringify(e))
-      }
-    }
-    this.linkIconPixelMap = source.linkIconPixelMap
+
+    this.linkIconPixelMap = this.transferPixelMap(
+      this.linkIconPixelMap, source.linkIconPixelMap, 'linkIconPixelMap'
+    )
     this.linkIconTried = source.linkIconTried
     this.linkIconText = source.linkIconText
     this.linkIconWidth = source.linkIconWidth
     this.linkIconHeight = source.linkIconHeight
+
     // 释放未被复用的旧子节点的自身PixelMap（延迟到this.children更新后）
     // 注意：只释放子节点自身的pixmap，不递归释放孙节点pixmap
     // 因为孙节点可能被复用到新容器中（同一对象引用），递归释放会导致复用节点pixmap丢失→闪烁
@@ -243,10 +257,13 @@ export class NodeView {
    * @param source 拷贝的NodeView
    */
   copyStyleFrom(source: NodeView): void {
+    // 块级结构标识
     this.isParagraph = source.isParagraph
     this.isHeading = source.isHeading
     this.headingLevel = source.headingLevel
     this.headingID = source.headingID
+
+    // 表格结构标识
     this.isTable = source.isTable
     this.tableAlignment = source.tableAlignment
     this.isTableHead = source.isTableHead
@@ -254,6 +271,8 @@ export class NodeView {
     this.isTableRow = source.isTableRow
     this.isTableCell = source.isTableCell
     this.isTableCellPart = source.isTableCellPart
+
+    // 列表与引用标识
     this.isDescList = source.isDescList
     this.isDescTerm = source.isDescTerm
     this.isBulletList = source.isBulletList
@@ -264,8 +283,12 @@ export class NodeView {
     this.isQuote = source.isQuote
     this.isFootnote = source.isFootnote
     this.footnoteID = source.footnoteID
+
+    // LaTeX 公式标识
     this.isLatexMathBlock = source.isLatexMathBlock
     this.isLatexMathBlockClose = source.isLatexMathBlockClose
+
+    // 字体样式节点
     this.isFontNode = source.isFontNode
     this.fontNodeSize = source.fontNodeSize
     this.fontNodeColor = source.fontNodeColor
@@ -273,6 +296,8 @@ export class NodeView {
     this.spanNodeSize = source.spanNodeSize
     this.spanNodeWeight = source.spanNodeWeight
     this.spanNodeColor = source.spanNodeColor
+
+    // 行内样式标识
     this.isEmphasis = source.isEmphasis
     this.isStrongEmphasis = source.isStrongEmphasis
     this.isUnderlineNode = source.isUnderlineNode
@@ -281,6 +306,8 @@ export class NodeView {
     this.isSubNode = source.isSubNode
     this.isSupNode = source.isSupNode
     this.isInLineCode = source.isInLineCode
+
+    // 链接相关
     this.isLink = source.isLink
     this.isLinkStyle = source.isLinkStyle
     this.headLinkIndex = source.headLinkIndex
