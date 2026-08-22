@@ -348,9 +348,9 @@ function updateReusedLeafNode(
   nodeType: string,
   inheritedStyleView: NodeView
 ): void {
-  const [newNodeHash, newContentHash] = readNodeHashes(currentJsNode)
-  prevChild.nodeHash = newNodeHash
-  prevChild.contentHash = newContentHash
+  const hashResult = readNodeHashes(currentJsNode)
+  prevChild.nodeHash = hashResult[0]
+  prevChild.contentHash = hashResult[1]
   prevChild.sourceSpan = currentJsNode.getSourceSpans()
   prevChild.copyStyleFrom(inheritedStyleView)
 
@@ -433,7 +433,9 @@ export function nodeToNodeView(
 
   while (currentJsNode !== undefined) {
     const nodeType = currentJsNode.nodeType
-    const [newNodeHash, newContentHash] = readNodeHashes(currentJsNode)
+    const hashResult = readNodeHashes(currentJsNode)
+    const newNodeHash = hashResult[0]
+    const newContentHash = hashResult[1]
     const prevChildPos = targetParentView.children.length
     const prevChild = findReusablePreviousChild(
       previousChildren, prevChildPos, nodeType, usedIndices, newNodeHash, newContentHash
