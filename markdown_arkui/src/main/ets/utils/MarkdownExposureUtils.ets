@@ -220,7 +220,14 @@ export function evaluateLinkExposure(
       }
     }
     // 可见：交集占比 ≥ 阈值（linkArea=0 视为不可见，避免除零）
-    const visible: boolean = linkArea > 0 && (interArea / linkArea) >= threshold
+    // threshold=0 语义为「露出任意像素即可见」，因此要求 interArea > 0；
+    // 若仍用 >=0 会导致完全未进入视口的链接也被判为可见，初始化即全部标记，后续不再触发曝光。
+    let visible: boolean
+    if (threshold <= 0) {
+      visible = linkArea > 0 && interArea > 0
+    } else {
+      visible = linkArea > 0 && (interArea / linkArea) >= threshold
+    }
     if (visible) {
       if (link.markLinkVisible()) {
         becameVisible.push(link)
