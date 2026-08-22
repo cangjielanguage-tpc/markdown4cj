@@ -209,14 +209,6 @@ export struct MarkdownCodeBlockList {
       this.idxSelect = 0
     }
     this.updateLineArray()
-    // 清除已变化代码块的旧高亮，显示rawText（完整最新文本）作为fallback
-    // 避免流式输出时显示旧的、不完整的高亮代码
-    for (let i = 0; i < changedIndices.length; i++) {
-      let idx = changedIndices[i]
-      if (idx < this.blocksDataList.length) {
-        this.blocksDataList[idx].blocks = []
-      }
-    }
     this.parseChangedCode(changedIndices)
   }
 
