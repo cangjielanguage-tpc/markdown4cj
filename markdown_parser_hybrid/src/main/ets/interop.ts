@@ -1,5 +1,4 @@
 import { requireCJLib } from 'libark_interop_loader.so';
-import { JsNode } from './JsNode';
 import { Options } from './Options';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
@@ -10,9 +9,9 @@ export interface HybridParser {
   /**
    * parse markdown
    * @param md
-   * @returns Promise<JsNode>
+   * @returns Promise<void> 构建完成后 resolve, 结果节点由 Options.jsNodeTreeBuilder.getRoot() 获取
    */
-  parse(md: string): Promise<JsNode>
+  parse(md: string): Promise<void>
 }
 
 export declare interface CustomLib {

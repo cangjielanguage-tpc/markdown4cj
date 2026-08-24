@@ -6,7 +6,8 @@ class JsNodeBuilder {
     // 通过 getFirstChild/getNext 沿 Root 的兄弟链表顺序推进, 无需额外数组缓存。
     var nextChild: ?Node = None
 
-    JsNodeBuilder(let builder: JSObject, let context: JSContext) {}
+    // onDone 在构造函数中注入, 无异常参数; 构建过程抛出的异常直接向上抛出, 由调用者 catch。
+    JsNodeBuilder(let builder: JSObject, let context: JSContext, let onDone: () -> Unit) {}
 
     /*
      * 开始分片构建节点树。
@@ -16,46 +17,42 @@ class JsNodeBuilder {
      *   - 第0个 postJSTask: 构建 Root 节点本身(start 内部直接 enterNode, 并记录第一个 child 为遍历起点)。
      *   - 第1个 postJSTask: 取出 Root 的第一个子节点, 在单个 task 内构建它及其整棵子树。
      *   - 第n个 postJSTask: 取出 Root 的第 n 个子节点, 同样在单个 task 内构建其整棵子树。
-     *   - 最后: 所有第一层 children 处理完后, 结束 Root 节点并回调 onDone(None)。
+     *   - 最后: 所有第一层 children 处理完后, 结束 Root 节点并回调 onDone()。
      *
      * 子树内部仍用显式栈 while 循环做深度优先先序遍历, 模拟递归, 避免深文档栈溢出。
      * 这样既避免"一次性构建整棵树"导致单次 postJSTask 占用主线程过久, 又避免"逐节点分片"
      * 带来的过多 task 调度开销, 在流畅度与效率之间取得平衡。
      *
-     * onDone 回调在全部处理完毕(None)或处理过程抛异常(Some(异常))时被调用。
+     * onDone(无异常参数)在全部处理完毕后回调; 处理过程抛出的异常直接向上抛出, 由调用者 catch。
      */
-    func start(root: Node, onDone: (?Exception) -> Unit): Unit {
+    func start(root: Node): Unit {
         // 构建前重置 builder 状态, 支持复用同一个 builder 进行多次 parse。
         builder.callMethod('reset', [])
         // 第0个分片: 构建 Root 节点本身。
         enterNode(root)
         // 从 Root 的第一个 child 开始遍历第一层 children。
         nextChild = root.getFirstChild()
-        scheduleNext(onDone)
+        scheduleNext()
     }
 
     // 调度下一个分片任务, 每个分片处理 Root 的一个第一层子节点及其整棵子树。
-    func scheduleNext(onDone: (?Exception) -> Unit): Unit {
+    func scheduleNext(): Unit {
         context.postJSTask {
-            try {
-                step(onDone)
-            } catch (e: Exception) {
-                onDone(Some(e))
-            }
+            step()
         }
     }
 
-    // 处理 Root 的一个第一层子节点; 游标非空则继续调度下一个分片, 否则结束 Root 并回调 onDone(None)。
-    func step(onDone: (?Exception) -> Unit): Unit {
+    // 处理 Root 的一个第一层子节点; 游标非空则继续调度下一个分片, 否则结束 Root 并回调 onDone()。
+    func step(): Unit {
         if (let Some(child) <- nextChild) {
             // 先沿兄弟链表推进游标, 再构建当前 child 及其整棵子树。
             nextChild = child.getNext()
             buildSubtree(child)
-            scheduleNext(onDone)
+            scheduleNext()
         } else {
             // 所有第一层 children 处理完毕, 结束 Root 节点(回退当前节点指针)。
             builder.callMethod('endNode', [])
-            onDone(None)
+            onDone()
         }
     }
 
@@ -85,11 +82,6 @@ class JsNodeBuilder {
                     builder.callMethod('endNode', [])
             }
         }
-    }
-
-    // 返回构建好的根节点(在全部节点构建完成后调用)。
-    func getRoot(): JSValue {
-        builder.callMethod('getRoot', [])
     }
 
     func enterNode(node: Node): Unit {

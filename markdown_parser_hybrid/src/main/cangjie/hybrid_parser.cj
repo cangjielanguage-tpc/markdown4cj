@@ -137,24 +137,13 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
                 let doc: Node = parser.toMarkdown(md)
                 context.postJSTask {
                     try {
-                        let nodeBuilder = JsNodeBuilder(jsNodeTreeBuilder, context)
-                        // 分片构建: 只对 Root 的第一层 children 分片, 每个 postJSTask 处理一个 child 及其整棵子树,
-                        // 全部完成后在 onDone 回调中 resolve promise。
-                        nodeBuilder.start(doc) { result =>
-                            match (result) {
-                                case Some(e) =>
-                                    promise.reject(context.string(e.toString()).toJSValue())
-                                    Hilog.error(0, 'hybrid Exception 3.1', getStackTrace(e))
-                                case None =>
-                                    try {
-                                        let RET = nodeBuilder.getRoot()
-                                        promise.resolve(RET)
-                                    } catch (e: Exception) {
-                                        promise.reject(context.string(e.toString()).toJSValue())
-                                        Hilog.error(0, 'hybrid Exception 3.1', getStackTrace(e))
-                                    }
-                            }
+                        // 分片构建: 只对 Root 的第一层 children 分片, 每个 postJSTask 处理一个 child 及其整棵子树。
+                        // onDone 在构造函数中注入(无异常参数): 构建完成后 resolve undefined;
+                        // 构建结果(根节点)由 ArkTS 侧通过 jsNodeTreeBuilder.getRoot() 获取, 异常由本 try/catch 捕获。
+                        let nodeBuilder = JsNodeBuilder(jsNodeTreeBuilder, context) {
+                            promise.resolve(context.undefined().toJSValue())
                         }
+                        nodeBuilder.start(doc)
                     } catch (e: Exception) {
                         promise.reject(context.string(e.toString()).toJSValue())
                         Hilog.error(0, 'hybrid Exception 3.1', getStackTrace(e))
