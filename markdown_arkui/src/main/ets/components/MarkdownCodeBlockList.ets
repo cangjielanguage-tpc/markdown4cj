@@ -46,6 +46,7 @@ export struct MarkdownCodeBlockList {
           CodeTitleComponent({
             codeText: this.strText.length > 0 ? this.strText[this.idxSelect] : '',
             info: this.strInfoText.length > 0 ? this.strInfoText[this.idxSelect] : '',
+            showTypeText: false,
             codeBlockTheme: this.codeBlockTheme,
             codeCopyCallback: this.codeCopyCallback,
             codeFullScreenCallback: this.codeFullScreenCallback

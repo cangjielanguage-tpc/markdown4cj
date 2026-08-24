@@ -8,11 +8,13 @@ import { CodeBlockTheme } from "../theme/CodeBlockTheme"
  * @param codeBlockTheme 代码样式
  * @param codeCopyCallback 复制点击事件
  * @param codeFullScreenCallback 全屏点击事件
+ * @param showTypeText 是否显示代码块类型文本（组合代码块列表已用Tab展示，传false避免重复）
  */
 @Component
 export struct CodeTitleComponent {
   @Prop codeText: string = "" // 代码内容
   @Prop info: string = "" // 代码类型
+  @Prop showTypeText: boolean = true // 是否显示代码块类型文本
   @ObjectLink codeBlockTheme: CodeBlockTheme // 代码样式
   codeCopyCallback?: (code: string) => void // 复制点击事件
   codeFullScreenCallback?: (code: string, language: string | undefined) => void // 全屏点击事件
@@ -30,7 +32,7 @@ export struct CodeTitleComponent {
         .maxLines(1)
         .width('30%')
         .margin({ left: this.codeBlockTheme.codeBlockTypeTextMarginLeft })
-        .visibility(this.codeText.trim().length > 0 ? Visibility.Visible : Visibility.None)
+        .visibility(this.showTypeText && this.codeText.trim().length > 0 ? Visibility.Visible : Visibility.None)
 
       Blank()
         .layoutWeight(1)
