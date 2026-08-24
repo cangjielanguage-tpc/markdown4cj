@@ -670,7 +670,7 @@ export struct MarkdownParagraph {
         .borderWidth(this.imageTheme.imageBorderWidth)
         .borderColor(this.imageTheme.imageBorderColor)
         .borderStyle(this.imageTheme.imageBorderStyle)
-        .width(item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
+        .width(item.imageWidth ?? undefined)
         .height(item.imageHeight)
         .objectFit(this.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
