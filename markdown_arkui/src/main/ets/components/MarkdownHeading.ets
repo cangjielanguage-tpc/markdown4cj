@@ -111,7 +111,7 @@ export struct MarkdownHeading {
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
-  customLongPressCallback?: () => void = undefined // 自定义长按事件
+  customLongPressCallback?: (str: string) => void = undefined // 自定义长按事件
   @State @Watch('onListChanged') list: NodeView[] = [] // 标题子节点数据源
   private isAlive: boolean = true // 组件是否存活
   // —— 曝光统计（与 MarkdownParagraph 同构） ——
@@ -333,7 +333,7 @@ export struct MarkdownHeading {
             .onActionEnd((event: GestureEvent) => {
               if (!this.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
                 this.textBackgroundColor = COLOR_TRANSPARENT
-                this.customLongPressCallback?.() // 调用用户自定义长按回调方法
+                this.customLongPressCallback?.(this.textContent) // 调用用户自定义长按回调方法
               }
             })
         )

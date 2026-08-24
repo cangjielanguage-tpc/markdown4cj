@@ -25,7 +25,7 @@ export class MarkdownConfiguration {
   latexImageCallback?: (data: ArrayBuffer, height: number, width: number) => void = undefined // 数学公式图片点击事件
   latexStrCallback: (str: string) => string = (str: string) => str // 数学公式数据处理事件
   tableCopyCallback?: (text: string) => void = undefined // 表格复制点击事件
-  customLongPressCallback?: () => void = undefined // 自定义长按事件
+  customLongPressCallback?: (str: string) => void = undefined // 自定义长按事件
   paragraphHeadingAnimationStart?: () => void = undefined // 段落动画开始回调
   paragraphHeadingAnimationEnd?: () => void = undefined // 段落动画结束回调
 
@@ -316,8 +316,9 @@ export class MarkdownConfiguration {
    *
    * @param cb 自定义长按事件
    */
-  setLongCallback(cb: () => void): void {
+  setCustomLongPressCallback(cb: (str: string) => void): MarkdownConfiguration {
     this.customLongPressCallback = cb
+    return this
   }
 
   /**

@@ -107,7 +107,7 @@ export struct MarkdownParagraph {
   exposureThreshold: number = 0.5 // 曝光可见阈值
   paragraphHeadingAnimationStart?: () => void // 段落动画开始回调
   paragraphHeadingAnimationEnd?: () => void // 段落动画结束回调
-  customLongPressCallback?: () => void = undefined // 自定义长按事件
+  customLongPressCallback?: (str: string) => void = undefined // 自定义长按事件
   @State @Watch('onListChanged') list: NodeView[] = [] // 段落子节点数据源
   private isAlive: boolean = true // 组件是否存活
   private textController: TextController = new TextController() // 段落Text控制器，用于getRectsForRange拿链接矩形
@@ -355,6 +355,9 @@ export struct MarkdownParagraph {
               this.paragraphInlineItem(item, index)
             },
             (item: NodeView, index: number) => {
+              if(index === 0){
+                this.textContent = ""
+              }
               this.updateTextContent(item) // 整理出当前所有的文本
               return `${index}-${item.nodeHash}-${item.contentHash}-${item.isEmphasis}-${item.isStrongEmphasis}-${item.isInLineCode}-${item.isStrikethrough}-${item.isHighlight}-${item.isUnderlineNode}-${item.isSubNode}-${item.isSupNode}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
             }
@@ -407,7 +410,7 @@ export struct MarkdownParagraph {
             .onActionEnd((event: GestureEvent) => {
               if (!this.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
                 this.textBackgroundColor = COLOR_TRANSPARENT
-                this.customLongPressCallback?.() // 调用用户自定义长按回调方法
+                this.customLongPressCallback?.(this.textContent) // 调用用户自定义长按回调方法
               }
             })
         )

@@ -553,7 +553,7 @@ struct TitleDetailsPage {
     if (this.selectedParagraphBackgroundColor !== undefined) {
       config.getMarkdownHighlightParagraph().setSelectedParagraphBackgroundColor(this.selectedParagraphBackgroundColor)
     }
-    config.setLongCallback(this.longPressCallback.bind(this))
+    config.setCustomLongPressCallback(this.longPressCallback.bind(this))
     return config
   }
 
@@ -692,7 +692,7 @@ struct TitleDetailsPage {
     return plugin
   }
 
-  longPressCallback(): void {
-    hilog.error(1, "1", `-----> 自定义长按回调方法触发 <-----`)
+  longPressCallback(str: string): void {
+    hilog.error(1, "1", `-----> 自定义长按回调方法触发 <-----`+str)
   }
 }

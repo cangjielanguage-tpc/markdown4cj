@@ -156,7 +156,7 @@ export class MarkdownConfiguration {
    *
    * @param cb 自定义长按事件
    */
-  setLongCallback(cb: () => void): void
+  setCustomLongPressCallback(cb: (str: string) => void): MarkdownConfiguration
   
   /**
    * 设置markdown样式
