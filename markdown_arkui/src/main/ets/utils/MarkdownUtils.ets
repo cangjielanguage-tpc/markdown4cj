@@ -397,10 +397,10 @@ export function imageWidthAndHeight(
 }
 
 /**
- * 将字符串解析为数值（用于HTML图片width/height属性）
+ * 将字符串解析为数值（vp）（用于HTML图片width/height属性）
  *
- * @param str 字符串形式的数值（如 "100"）
- * @return 数值，解析失败返回undefined
+ * @param str 字符串形式的数值（如 "100"、"100px"）；"100"按vp，"100px"按px并换算成vp
+ * @return 数值（vp），解析失败返回undefined
  */
 export function strToLengthNumber(str: string | undefined): number | undefined {
   if (str === undefined) {
@@ -417,7 +417,7 @@ export function strToLengthNumber(str: string | undefined): number | undefined {
     const numStr = trimmed.substring(0, trimmed.length - 2)
     const num = Number.parseFloat(numStr)
     if (!Number.isNaN(num)) {
-      return num
+      return px2vp(num)
     }
     return undefined
   }
@@ -1054,7 +1054,7 @@ function applyStyleProp(prop: string, picStyleObj: PicStyleObj): void {
 /**
  * 解析样式中的长度值（支持px和纯数字）
  *
- * @param value 长度字符串（如 "100px"、"100"）
+ * @param value 长度字符串（如 "100px"、"100"）；"100"按vp，"100px"按px并换算成vp
  * @return 数值（vp），解析失败返回undefined
  */
 function parseStyleLength(value: string): number | undefined {
@@ -1064,7 +1064,7 @@ function parseStyleLength(value: string): number | undefined {
   if (value.endsWith('px')) {
     const num = Number.parseFloat(value.substring(0, value.length - 2))
     if (!Number.isNaN(num)) {
-      return num
+      return px2vp(num)
     }
     return undefined
   }

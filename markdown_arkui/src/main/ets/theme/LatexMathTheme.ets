@@ -25,7 +25,7 @@ export class LatexMathTheme implements MarkdownBaseTheme {
   latexMathBackgroundColor: ResourceColor = COLOR_TRANSPARENT_SCB // 数学公式背景颜色
   latexMathTextColor: ResourceColor = COLOR_BLACK // 数学公式文本颜色
   latexMathColorFormat: number = 1 // 数学公式生成图片格式 - 0:RGB_565, 1:BGRA_8888
-  latexMathBlockCenter: boolean = true // 块结构的数学公式是否居中
+  latexMathBlockCenter: boolean = false // 块结构的数学公式是否居中
   latexMathResPath: string | undefined = undefined // 数学公式资源路径
 
   /**
