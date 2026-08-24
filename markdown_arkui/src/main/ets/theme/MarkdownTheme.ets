@@ -1989,9 +1989,6 @@ export class MarkdownTheme {
    * @return MarkdownTheme
    */
   setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): MarkdownTheme {
-    if (headingTextSizeMultipliers.length !== 6) {
-      return this
-    }
     this.headingTheme.setTextFontSizeForEachHeading(headingTextSizeMultipliers)
     return this
   }
