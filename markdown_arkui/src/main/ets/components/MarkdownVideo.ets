@@ -105,19 +105,38 @@ export struct MarkdownVideo {
    */
   @Builder
   imgVideoComponent() {
-    Image(this.imageUrl === "" ? this.videoTheme.videoPlaceholder : this.imageUrl)
-      .width('100%')
-      .aspectRatio(this.videoRatio > 0 ? this.videoRatio : 16.0 / 9.0)
-      .objectFit(this.videoTheme.videoImageFitType)
-      .borderRadius({
-        topLeft: this.videoTheme.videoRadiusTopLeft,
-        topRight: this.videoTheme.videoRadiusTopRight,
-        bottomLeft: this.videoTheme.videoRadiusBottomLeft,
-        bottomRight: this.videoTheme.videoRadiusBottomRight
-      })
-      .borderWidth(this.videoTheme.videoBorderWidth)
-      .borderColor(this.videoTheme.videoBorderColor)
-      .borderStyle(this.videoTheme.videoBorderStyle)
+    if (this.imageUrl === "") {
+      if (this.videoTheme.videoPlaceholder !== undefined) {
+        Image(this.videoTheme.videoPlaceholder)
+          .width('100%')
+          .aspectRatio(this.videoRatio > 0 ? this.videoRatio : 16.0 / 9.0)
+          .objectFit(this.videoTheme.videoImageFitType)
+          .borderRadius({
+            topLeft: this.videoTheme.videoRadiusTopLeft,
+            topRight: this.videoTheme.videoRadiusTopRight,
+            bottomLeft: this.videoTheme.videoRadiusBottomLeft,
+            bottomRight: this.videoTheme.videoRadiusBottomRight
+          })
+          .borderWidth(this.videoTheme.videoBorderWidth)
+          .borderColor(this.videoTheme.videoBorderColor)
+          .borderStyle(this.videoTheme.videoBorderStyle)
+      }
+    } else {
+      Image(this.imageUrl)
+        .width('100%')
+        .aspectRatio(this.videoRatio > 0 ? this.videoRatio : 16.0 / 9.0)
+        .objectFit(this.videoTheme.videoImageFitType)
+        .borderRadius({
+          topLeft: this.videoTheme.videoRadiusTopLeft,
+          topRight: this.videoTheme.videoRadiusTopRight,
+          bottomLeft: this.videoTheme.videoRadiusBottomLeft,
+          bottomRight: this.videoTheme.videoRadiusBottomRight
+        })
+        .borderWidth(this.videoTheme.videoBorderWidth)
+        .borderColor(this.videoTheme.videoBorderColor)
+        .borderStyle(this.videoTheme.videoBorderStyle)
+    }
+
     if (this.videoTheme.videoPlayIcon !== undefined) {
       Image(this.videoTheme.videoPlayIcon)
         .width(this.videoTheme.videoPlayIconWidth)
