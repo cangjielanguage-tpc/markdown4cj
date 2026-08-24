@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "./sign/default_markdown4cj_hybrid_irhUbhRwTy6rMqkmCSKq8tHdrvfc_puDJ9wCPq5TRyU=.cer",
+          "certpath": "./sign/default_markdown_arkui_6.1.1_u8CoRLKbKR_shQ3bP-Kx8pJby0KIBJTw1wijnqEyxAA=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B0F0F0A8C6AF60DD1B0787BFF74E9DC0D576BC9993F44A8CA86363B6674243C979B52C3141CBD91",
-          "profile": "./sign/default_markdown4cj_hybrid_irhUbhRwTy6rMqkmCSKq8tHdrvfc_puDJ9wCPq5TRyU=.p7b",
+          "keyPassword": "0000001BDF6681E8864B0EE4F7C3896E5EAB7EAE87998753F9F0E27DC783582611C83514ADB6EB2B0D46B8",
+          "profile": "./sign/default_markdown_arkui_6.1.1_u8CoRLKbKR_shQ3bP-Kx8pJby0KIBJTw1wijnqEyxAA=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "./sign/default_markdown4cj_hybrid_irhUbhRwTy6rMqkmCSKq8tHdrvfc_puDJ9wCPq5TRyU=.p12",
-          "storePassword": "0000001B79467812C51A87D2E60954E680442A6064949EA2C6E3F8B256864FE9631FEEE31FD249B85CA052"
+          "storeFile": "./sign/default_markdown_arkui_6.1.1_u8CoRLKbKR_shQ3bP-Kx8pJby0KIBJTw1wijnqEyxAA=.p12",
+          "storePassword": "0000001B76AB763970A046447765E9EFF8062BF27C8BE2A8E57F3E8152EEABAF1CF5A60C0EDCCC176CC15A"
         }
       }
     ],

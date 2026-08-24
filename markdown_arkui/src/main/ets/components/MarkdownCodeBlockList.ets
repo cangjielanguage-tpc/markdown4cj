@@ -23,8 +23,7 @@ export struct MarkdownCodeBlockList {
   @State lineArray: number[] = [] // 当选中代码行号列表
   @State blocksDataList: Array<CodeBlockData> = [] // 所有代码块的高亮数据（@Observed，子组件@ObjectLink原地监听）
   private isAlive: boolean = false // 组件是否存活
-  private parseVersion: number = 0 // 解析版本号
-  private timerIds: number[] = [] // setTimeout定时器ID列表
+  private timerId: number = -1 // 单个setTimeout定时器ID（与MarkdownCodeFenced一致）
 
   aboutToAppear(): void {
     this.isAlive = true
@@ -33,10 +32,10 @@ export struct MarkdownCodeBlockList {
 
   aboutToDisappear(): void {
     this.isAlive = false
-    for (let i = 0; i < this.timerIds.length; i++) {
-      clearTimeout(this.timerIds[i])
+    if (this.timerId !== -1) {
+      clearTimeout(this.timerId)
+      this.timerId = -1
     }
-    this.timerIds = []
   }
 
   build() {
@@ -168,13 +167,6 @@ export struct MarkdownCodeBlockList {
    * 仅对内容变化的代码块重新解析高亮，避免闪烁
    */
   refreshData(): void {
-    // Clear stale pending timers (parseVersion guards correctness, safe to cancel)
-    if (this.timerIds.length > 0) {
-      for (let i = 0; i < this.timerIds.length; i++) {
-        clearTimeout(this.timerIds[i])
-      }
-      this.timerIds = []
-    }
     let infos: string[] = []
     let texts: string[] = []
     let infoTexts: string[] = []
@@ -229,7 +221,10 @@ export struct MarkdownCodeBlockList {
    * 解析变化的代码块高亮
    * 调整blocksDataList大小后，原地修改CodeBlockData属性触发子组件@ObjectLink刷新
    *
-   * @param changedIndices 变化的索引数组
+   * 单定时器+暴力全量解析：流式新增代码块时只需调度一次setTimeout，
+   * 回调中遍历所有代码块逐个解析。源文本比对保证过期解析结果（流式期间文本已变化）不应用。
+   *
+   * @param changedIndices 变化的索引数组（仅用于判断是否需要解析，实际解析全量）
    */
   parseChangedCode(changedIndices: number[]): void {
     // 调整数组大小：保留已有CodeBlockData实例（保持@ObjectLink绑定），新增空的
@@ -247,44 +242,47 @@ export struct MarkdownCodeBlockList {
       return
     }
 
-    // 仅在真正需要解析时递增版本号
-    // 避免changedIndices为空时递增parseVersion导致正在进行的有效解析结果被丢弃
-    this.parseVersion++
-    const currentVersion = this.parseVersion
-
+    // 单定时器：清旧调度新（与MarkdownCodeFenced一致的模式）
+    if (this.timerId !== -1) {
+      clearTimeout(this.timerId)
+      this.timerId = -1
+    }
     if (this.codeBlockTheme.codeBlockParserSync) {
-      this.parseChangedCodeSync(changedIndices, currentVersion)
+      this.parseChangedCodeSync()
     } else {
-      this.parseChangedCodeAsync(changedIndices, currentVersion)
+      this.parseChangedCodeAsync()
     }
   }
 
   /**
-   * 异步解析变化的代码块高亮
-   * 原地修改CodeBlockData.blocks属性，@ObjectLink触发子组件原地刷新
-   *
-   * @param changedIndices 变化的索引数组
+   * 异步解析所有代码块高亮（暴力全量）
+   * 单定时器回调中遍历strText逐个解析，原地修改CodeBlockData.blocks属性，
+   * @ObjectLink触发子组件原地刷新。源文本比对防止流式期间过期解析结果应用。
    */
-  parseChangedCodeAsync(changedIndices: number[], currentVersion: number): void {
-    for (let i = 0; i < changedIndices.length; i++) {
-      let idx = changedIndices[i]
-      let codeText = this.strText[idx]
-      if (codeText.length === 0) {
-        continue
+  parseChangedCodeAsync(): void {
+    this.timerId = setTimeout(() => {
+      this.timerId = -1
+      if (!this.isAlive) {
+        return
       }
-      let info: string | undefined = undefined
-      const infoText: string | undefined = this.strInfoText[idx]
-      if (infoText !== undefined) {
-        if (infoText.length > 0) {
-          info = infoText
+      for (let idx = 0; idx < this.strText.length; idx++) {
+        let codeText = this.strText[idx]
+        if (codeText.length === 0) {
+          continue
         }
-      }
-      let timerId = setTimeout(() => {
-        if (!this.isAlive || currentVersion < this.parseVersion) {
-          return
+        let info: string | undefined = undefined
+        const infoText: string | undefined = this.strInfoText[idx]
+        if (infoText !== undefined) {
+          if (infoText.length > 0) {
+            info = infoText
+          }
         }
         codeStringToColorString(codeText, info, this.codeBlockTheme.codeBlockIsDark).then((prismRes: PrismRes) => {
-          if (!this.isAlive || currentVersion < this.parseVersion) {
+          if (!this.isAlive) {
+            return
+          }
+          // 流式期间文本可能已变化，比对源文本，过期解析结果丢弃
+          if (idx >= this.strText.length || this.strText[idx] !== codeText) {
             return
           }
           if (idx >= this.blocksDataList.length) {
@@ -296,21 +294,19 @@ export struct MarkdownCodeBlockList {
         }).catch(() => {
           console.error('CodeBlockList codeStringToColorString failed')
         })
-      }, 0)
-      this.timerIds.push(timerId)
-    }
+      }
+    }, 0)
   }
 
   /**
-   * 同步解析变化的代码块高亮
-   * 原地修改CodeBlockData.blocks属性，@ObjectLink触发子组件原地刷新
+   * 同步解析所有代码块高亮（暴力全量）
+   * 遍历strText逐个await解析，原地修改CodeBlockData.blocks属性，
+   * @ObjectLink触发子组件原地刷新。源文本比对防止await期间文本变化后应用过期结果。
    *
-   * @param changedIndices 变化的索引数组
    * @return Promise<void>，解析完成后resolve
    */
-  async parseChangedCodeSync(changedIndices: number[], currentVersion: number): Promise<void> {
-    for (let i = 0; i < changedIndices.length; i++) {
-      let idx = changedIndices[i]
+  async parseChangedCodeSync(): Promise<void> {
+    for (let idx = 0; idx < this.strText.length; idx++) {
       let codeText = this.strText[idx]
       if (codeText.length === 0) {
         continue
@@ -323,21 +319,25 @@ export struct MarkdownCodeBlockList {
         }
       }
       try {
-        if (!this.isAlive || currentVersion < this.parseVersion) {
+        if (!this.isAlive) {
           break
         }
         let prismRes: PrismRes = await codeStringToColorString(codeText, info, this.codeBlockTheme.codeBlockIsDark)
-        if (!this.isAlive || currentVersion < this.parseVersion) {
+        if (!this.isAlive) {
           break
         }
+        // await期间本idx文本可能又变化，比对源文本，过期解析结果跳过
+        if (idx >= this.strText.length || this.strText[idx] !== codeText) {
+          continue
+        }
         if (idx >= this.blocksDataList.length) {
-          break
+          continue
         }
         // 原地修改CodeBlockData属性，@ObjectLink触发子组件刷新（不重建）
         this.blocksDataList[idx].blocks = Array.from(prismRes.getListColor())
         this.blocksDataList[idx].defaultFontColor = prismRes.getDefaultFontColor()
       } catch (e) {
-        console.error('CodeBlockList parseNextBlockAsync failed: ' + JSON.stringify(e))
+        console.error('CodeBlockList parseChangedCodeSync failed: ' + JSON.stringify(e))
       }
     }
   }
