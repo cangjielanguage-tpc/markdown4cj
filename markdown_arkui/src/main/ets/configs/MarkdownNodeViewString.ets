@@ -8,6 +8,7 @@ export class MarkdownNodeViewString {
   private root: NodeView | undefined = undefined
   private fragments: string[] = []
   private isBuilt: boolean = false
+  private codeBlockIsSeparate: boolean = false // 是否单独代码块模式
 
   /**
    * 构造函数
@@ -19,9 +20,11 @@ export class MarkdownNodeViewString {
    * 设置根节点
    *
    * @param root 根节点
+   * @param codeBlockIsSeparate 是否单独代码块模式 - true: 仅复制第一个代码块节点；第一个节点不是代码块则为空
    */
-  setRoot(root: NodeView): void {
+  setRoot(root: NodeView, codeBlockIsSeparate: boolean = false): void {
     this.root = root
+    this.codeBlockIsSeparate = codeBlockIsSeparate
     this.isBuilt = false
   }
 
@@ -30,6 +33,7 @@ export class MarkdownNodeViewString {
    * - 处理缩进（列表、引用）
    * - 处理行内节点（Text/Code/换行等）
    * - block节点尾插换行
+   * - codeBlockIsSeparate: 单独代码块模式下，仅复制第一个节点；第一个节点不是代码块则为空
    *
    * @return 全局文本
    */
@@ -37,7 +41,18 @@ export class MarkdownNodeViewString {
     if (!this.isBuilt) {
       if (this.root !== undefined) {
         this.fragments = []
-        this.traverse(this.root, 0, 0, 0)
+        if (this.codeBlockIsSeparate) {
+          // 单独代码块模式: 页面仅显示第一条代码块，全文复制也只复制第一个节点
+          if (this.root.children.length > 0) {
+            const firstChild = this.root.children[0]
+            if (firstChild.nodeType === 'FencedCodeBlock' || firstChild.nodeType === 'IndentedCodeBlock') {
+              this.traverse(firstChild, 0, 0, 0)
+            }
+            // 第一个节点不是代码块，直接为空
+          }
+        } else {
+          this.traverse(this.root, 0, 0, 0)
+        }
         this.isBuilt = true
       }
     }

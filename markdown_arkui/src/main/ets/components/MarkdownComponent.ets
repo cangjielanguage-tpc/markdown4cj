@@ -975,14 +975,14 @@ export struct CJMarkdown {
     if (nodeView.children.length === 0) {
       this.markdownDataSource.clear()
       this.buildIndexMaps()
-      this.config.markdownNodeViewString.setRoot(nodeView)
+      this.config.markdownNodeViewString.setRoot(nodeView, this.config.markdownTheme.codeBlockTheme.codeBlockIsSeparate)
       this.appliedVersion = currentVersion
       return
     }
     this.markdownDataSource.smartUpdateDataArray(nodeView.children)
     this.buildIndexMaps()
     this.config.markdownHighlightParagraph.setAllParagraphItems(highlightSelectedList)
-    this.config.markdownNodeViewString.setRoot(nodeView)
+    this.config.markdownNodeViewString.setRoot(nodeView, this.config.markdownTheme.codeBlockTheme.codeBlockIsSeparate)
     this.appliedVersion = currentVersion
   }
 
