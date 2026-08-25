@@ -26,7 +26,8 @@
           "**/libutf16string*.so",
           "**/libboundscheck.so",
           "**/libpcre2*.so*",
-          "**/libcangjie*.so"
+          "**/libcangjie*.so",
+          "**/runtime/libohos*.so"
         ]
       }
     },

@@ -345,6 +345,14 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "39、SDUI卡片接入",
+              0xFFFF0000,
+              "pages/SduiCardPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "【已废弃接口】",
               0xFFFF0000,
               "pages/deprecated/DeprecatedIndexPage"
