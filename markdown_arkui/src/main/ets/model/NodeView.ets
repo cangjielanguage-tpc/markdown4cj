@@ -72,6 +72,9 @@ export class NodeView {
   codeListTab?: Array<string> = undefined // 代码块列表标题
   cardName?: string = undefined // 卡片名称
   cardData?: string = undefined // 卡片内容
+  customTag?: string = undefined // 已注册的自定义HTML块级标签名（如 sdui）
+  customAttrs?: Record<string, string> = undefined // 自定义标签属性表
+  customContent?: string = undefined // 自定义标签开闭标签之间的内容
   sourceSpan: Array<SourceSpan> = new Array<SourceSpan>() // 每个节点位置信息
   isLinkStyle: boolean = false // 链接是否块状化（isLinkStyle=true时Link节点作为独立节点，不扁平化）
   linkIconType: number = 0 // 链接图标类型（0=圆形,1=方形,2=空心方形带类型标签）
@@ -155,6 +158,9 @@ export class NodeView {
     this.codeListTab = source.codeListTab
     this.cardName = source.cardName
     this.cardData = source.cardData
+    this.customTag = source.customTag
+    this.customAttrs = source.customAttrs
+    this.customContent = source.customContent
 
     // PixelMap 资源转移
     this.imageReplacePixelMap = this.transferPixelMap(

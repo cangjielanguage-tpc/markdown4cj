@@ -9,6 +9,7 @@ import {
   parsePicStyle
 } from "./MarkdownUtils"
 import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
+import { CustomViewRegistry } from "../plugin/CustomViewRegistry"
 import { ArrayList } from "@kit.ArkTS"
 
 /**
@@ -625,9 +626,24 @@ export function nodeToNodeView(
         targetParentView.children.push(currentView)
         break
       case 'FencedCodeBlock': // 围栏代码块
-        currentView.nodeText = currentJsNode.literal?.replace(/\n$/, '') ?? ""
-        currentView.codeInfo = currentJsNode.info
-        targetParentView.children.push(currentView)
+        {
+          // 自定义标签载体还原：preprocessCustomTags 把 <tag ...>...</tag> 原文包进无语言围栏块，
+          // 此处从 literal 还原为自定义视图节点（不作为代码块渲染）。
+          // parseTagLiteral 内部自跳前导空白，此处不做首字符判断（literal 可能带前导换行）
+          const fenceLiteral = currentJsNode.literal ?? ''
+          const parsedFenceTag = CustomViewRegistry.parseTagLiteral(fenceLiteral)
+          if (parsedFenceTag !== undefined && CustomViewRegistry.isRegistered(parsedFenceTag.tag)) {
+            currentView.nodeType = 'CustomTagView' // 专属类型，避免被 FencedCodeBlock 渲染分支截走
+            currentView.customTag = parsedFenceTag.tag
+            currentView.customAttrs = parsedFenceTag.attrs
+            currentView.customContent = parsedFenceTag.content
+            targetParentView.children.push(currentView)
+            break
+          }
+          currentView.nodeText = fenceLiteral.replace(/\n$/, '')
+          currentView.codeInfo = currentJsNode.info
+          targetParentView.children.push(currentView)
+        }
         break
       case 'IndentedCodeBlock': // 缩进代码块
         currentView.nodeText = currentJsNode.literal?.replace(/\n$/, '') ?? ""
@@ -726,8 +742,34 @@ export function nodeToNodeView(
       case 'IgnoreInlineNode':
         nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
         break
-      case 'HtmlBlock':
-      case 'HtmlInline':
+      case 'HtmlBlock': {
+        // 已注册的自定义标签块（如 <sdui data='...'></sdui>）转为自定义视图节点；其余保持原有丢弃行为
+        const parsedTag = CustomViewRegistry.parseTagLiteral(currentJsNode.literal)
+        if (parsedTag !== undefined && CustomViewRegistry.isRegistered(parsedTag.tag)) {
+          currentView.nodeType = 'CustomTagView' // 专属类型，走 customTagViewComponent 渲染
+          currentView.customTag = parsedTag.tag
+          currentView.customAttrs = parsedTag.attrs
+          currentView.customContent = parsedTag.content
+          targetParentView.children.push(currentView)
+        }
+        break
+      }
+      case 'HtmlInline': {
+        // 非CommonMark已知块标签（如 <sdui>）单行书写时落在段落行内流（HtmlInline）。
+        // 已注册自定义标签的开标签生成节点（后处理 liftCustomTagBlocks 会将其提升为块级），闭标签丢弃
+        const inlineLiteral = currentJsNode.literal ?? ''
+        if (inlineLiteral.length > 1 && inlineLiteral[1] !== '/') {
+          const parsedInlineTag = CustomViewRegistry.parseTagLiteral(inlineLiteral)
+          if (parsedInlineTag !== undefined && CustomViewRegistry.isRegistered(parsedInlineTag.tag)) {
+            currentView.nodeType = 'CustomTagView' // 专属类型，走 customTagViewComponent 渲染
+            currentView.customTag = parsedInlineTag.tag
+            currentView.customAttrs = parsedInlineTag.attrs
+            currentView.customContent = parsedInlineTag.content
+            targetParentView.children.push(currentView)
+          }
+        }
+        break
+      }
       case 'ImgVideo':
         break
       case 'ImageHtmlNode': // HTML图片
@@ -807,4 +849,73 @@ export function nodeToNodeView(
     }
     currentJsNode = currentJsNode.next
   }
+}
+
+/**
+ * 行内容器（段落/标题）children 是否含自定义标签节点
+ */
+function hasCustomTagChild(node: NodeView): boolean {
+  for (let i = 0; i < node.children.length; i++) {
+    if (node.children[i].customTag !== undefined) {
+      return true
+    }
+  }
+  return false
+}
+
+/**
+ * 把含自定义标签节点的行内容器拆为 段落切片/卡片节点 序列，追加到 out
+ */
+function splitInlineContainerByCustomTags(node: NodeView, out: Array<NodeView>): void {
+  let currentChildren: Array<NodeView> = []
+  for (let i = 0; i < node.children.length; i++) {
+    const child = node.children[i]
+    if (child.customTag !== undefined) {
+      // 先冲刷切片段落
+      if (currentChildren.length > 0) {
+        const seg = new NodeView()
+        seg.copyStyleFrom(node)
+        seg.nodeType = node.nodeType
+        seg.nodeHash = `${node.nodeHash}-seg${out.length}`
+        seg.contentHash = `${node.contentHash}-seg${out.length}`
+        seg.children = currentChildren
+        out.push(seg)
+        currentChildren = []
+      }
+      out.push(child)
+    } else {
+      currentChildren.push(child)
+    }
+  }
+  if (currentChildren.length > 0) {
+    const seg = new NodeView()
+    seg.copyStyleFrom(node)
+    seg.nodeType = node.nodeType
+    seg.nodeHash = `${node.nodeHash}-seg${out.length}`
+    seg.contentHash = `${node.contentHash}-seg${out.length}`
+    seg.children = currentChildren
+    out.push(seg)
+  }
+}
+
+/**
+ * 将行内容器（段落/标题）中的自定义标签节点提升为块级（原地修改 root 子树）
+ *
+ * CommonMark 规范中非已知块标签（如 <sdui>）的单行书写落在段落行内流（HtmlInline），
+ * 卡片为块级视图无法行内渲染，故在 NodeView 层拆段提升到容器父级，
+ * 与 CTMarkdown-master CustomInlineTagParser 的行内兜底语义对齐。
+ * 仅提升段落/标题；表格单元格内的自定义标签保持原位（表格结构不可插块）。
+ */
+export function liftCustomTagBlocks(parent: NodeView): void {
+  const rebuilt: Array<NodeView> = []
+  for (let i = 0; i < parent.children.length; i++) {
+    const child = parent.children[i]
+    if ((child.isParagraph || child.isHeading) && hasCustomTagChild(child)) {
+      splitInlineContainerByCustomTags(child, rebuilt)
+    } else {
+      liftCustomTagBlocks(child)
+      rebuilt.push(child)
+    }
+  }
+  parent.children = rebuilt
 }
