@@ -750,7 +750,15 @@ export struct MarkdownTableCell {
             }
           })
           .onComplete((imageLoadResult) => {
-            const cellMaxWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? this.componentWidth
+            if (imageLoadResult === undefined || imageLoadResult === null) {
+              return
+            }
+            // 优先 tableMaxCellWidth，其次父布局宽度，都没有时 fallback 到图片自身渲染宽度
+            const cellMaxWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth)
+              ?? (this.componentWidth > 0 ? this.componentWidth : px2vp(imageLoadResult.componentWidth))
+            if (cellMaxWidth <= 0) {
+              return
+            }
             const l = imageWidthAndHeight(
               cellMaxWidth,
               imageLoadResult.width,
@@ -764,10 +772,12 @@ export struct MarkdownTableCell {
               this.imageTheme.imageFixedRatioWidth,
               this.imageTheme.imageMaximumWidth
             )
-            item.imageWidth = px2vp(l[0])
-            item.imageHeight = px2vp(l[1])
-            if (this.list.indexOf(item) >= 0 || this.isGrandchildInList(item)) {
-              this.list = [...this.list]
+            if (l[0] > 0 && l[1] > 0) {
+              item.imageWidth = px2vp(l[0])
+              item.imageHeight = px2vp(l[1])
+              if (this.list.indexOf(item) >= 0 || this.isGrandchildInList(item)) {
+                this.list = [...this.list]
+              }
             }
           })
       }

@@ -623,8 +623,14 @@ export struct MarkdownHeading {
           }
         })
         .onComplete((imageLoadResult) => {
+          if (imageLoadResult === undefined || imageLoadResult === null) {
+            return
+          }
+          const effectiveWidth: number = this.componentWidth > 0
+            ? this.componentWidth
+            : px2vp(imageLoadResult.componentWidth)
           const l = imageWidthAndHeight(
-            this.componentWidth,
+            effectiveWidth,
             imageLoadResult.width,
             imageLoadResult.height,
             (item.imageStyleWidth !== undefined ? vp2px(item.imageStyleWidth) : undefined) ??
@@ -636,10 +642,12 @@ export struct MarkdownHeading {
             this.imageTheme.imageFixedRatioWidth,
             this.imageTheme.imageMaximumWidth
           )
-          item.imageWidth = px2vp(l[0])
-          item.imageHeight = px2vp(l[1])
-          if (this.list.indexOf(item) >= 0) {
-            this.list = [...this.list]
+          if (l[0] > 0 && l[1] > 0) {
+            item.imageWidth = px2vp(l[0])
+            item.imageHeight = px2vp(l[1])
+            if (this.list.indexOf(item) >= 0) {
+              this.list = [...this.list]
+            }
           }
         })
       }

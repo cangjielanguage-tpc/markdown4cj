@@ -24,6 +24,7 @@ export struct MarkdownImageBlock {
   imageDownloadCallback?: (url: string) => void // 图片下载点击事件
   imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> // 图片替换回调
   @State replacePixelMap: PixelMap | undefined = undefined // 替换后的PixelMap
+  @State replaceFailed: boolean = false // 图片替换失败，回退到URL加载
   private isAlive: boolean = false // 组件是否存活
   private replaceToken: number = 0 // 替换请求令牌（防stale回调覆盖新数据）
 
@@ -44,6 +45,7 @@ export struct MarkdownImageBlock {
       }
       this.replacePixelMap = undefined
     }
+    this.replaceFailed = false
     this.tryReplaceImage()
   }
 
@@ -82,6 +84,7 @@ export struct MarkdownImageBlock {
           .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
           .height(this.item.imageHeight)
           .objectFit(this.imageTheme.imageFitType)
+          .autoResize(this.imageTheme.imageAutoResize)
           .constraintSize({
             maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
             maxHeight: this.imageTheme.imageMaxHeight
@@ -90,25 +93,32 @@ export struct MarkdownImageBlock {
             this.imageCallback?.(this.item.imageUrl ?? "")
           })
           .onComplete((imageLoadResult) => {
-            if (imageLoadResult !== undefined && imageLoadResult !== null) {
-              const l = imageWidthAndHeight(
-                this.componentWidth,
-                imageLoadResult.width,
-                imageLoadResult.height,
-                (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
-                (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
-                (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
-                (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
-                this.imageTheme.imageMaxWidth,
-                this.imageTheme.imageMaxHeight,
-                this.imageTheme.imageFixedRatioWidth,
-                this.imageTheme.imageMaximumWidth
-              )
+            if (imageLoadResult === undefined || imageLoadResult === null) {
+              return
+            }
+            const effectiveWidth: number = this.componentWidth > 0
+              ? this.componentWidth
+              : px2vp(imageLoadResult.componentWidth)
+            const l = imageWidthAndHeight(
+              effectiveWidth,
+              imageLoadResult.width,
+              imageLoadResult.height,
+              (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
+              (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
+              (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
+              (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
+              this.imageTheme.imageMaxWidth,
+              this.imageTheme.imageMaxHeight,
+              this.imageTheme.imageFixedRatioWidth,
+              this.imageTheme.imageMaximumWidth
+            )
+            if (l[0] > 0 && l[1] > 0) {
               this.item.imageWidth = px2vp(l[0])
               this.item.imageHeight = px2vp(l[1])
             }
           })
-      } else {
+      } else if (this.imageReplaceCallback === undefined || this.replaceFailed) {
+        // 未配置图片替换 或 替换失败 → 直接用URL加载
         Image(imageUrlHandle(this.item.imageUrl))
           .alt(this.placeholderPixelMap)
           .margin({
@@ -138,24 +148,57 @@ export struct MarkdownImageBlock {
             this.imageCallback?.(this.item.imageUrl ?? "")
           })
           .onComplete((imageLoadResult) => {
-            if (imageLoadResult !== undefined && imageLoadResult !== null) {
-              const l = imageWidthAndHeight(
-                this.componentWidth,
-                imageLoadResult.width,
-                imageLoadResult.height,
-                (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
-                (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
-                (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
-                (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
-                this.imageTheme.imageMaxWidth,
-                this.imageTheme.imageMaxHeight,
-                this.imageTheme.imageFixedRatioWidth,
-                this.imageTheme.imageMaximumWidth
-              )
+            if (imageLoadResult === undefined || imageLoadResult === null) {
+              return
+            }
+            const effectiveWidth: number = this.componentWidth > 0
+              ? this.componentWidth
+              : px2vp(imageLoadResult.componentWidth)
+            const l = imageWidthAndHeight(
+              effectiveWidth,
+              imageLoadResult.width,
+              imageLoadResult.height,
+              (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
+              (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
+              (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
+              (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
+              this.imageTheme.imageMaxWidth,
+              this.imageTheme.imageMaxHeight,
+              this.imageTheme.imageFixedRatioWidth,
+              this.imageTheme.imageMaximumWidth
+            )
+            if (l[0] > 0 && l[1] > 0) {
               this.item.imageWidth = px2vp(l[0])
               this.item.imageHeight = px2vp(l[1])
             }
           })
+      } else {
+        // 图片替换中 → 仅显示占位图，避免先渲染URL图片再切换导致闪屏
+        if (this.placeholderPixelMap !== undefined) {
+          Image(this.placeholderPixelMap)
+            .margin({
+              top: this.imageTheme.imageMarginTop,
+              right: this.imageTheme.imageMarginRight,
+              bottom: this.imageTheme.imageMarginBottom,
+              left: this.imageTheme.imageMarginLeft
+            })
+            .borderRadius({
+              topLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
+              topRight: this.item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
+              bottomLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
+              bottomRight: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
+            })
+            .borderWidth(this.imageTheme.imageBorderWidth)
+            .borderColor(this.imageTheme.imageBorderColor)
+            .borderStyle(this.imageTheme.imageBorderStyle)
+            .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
+            .height(this.item.imageHeight)
+            .objectFit(this.imageTheme.imageFitType)
+            .constraintSize({
+              maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
+              maxHeight: this.imageTheme.imageMaxHeight
+            })
+        }
       }
 
       if (this.imageTheme.imageDownloadButtonVisible) {
@@ -215,12 +258,22 @@ export struct MarkdownImageBlock {
    * 宿主返回原始字节→转为PixelMap→渲染替换后的图片；失败则回退到URL加载
    */
   private tryReplaceImage(): void {
-    if (this.imageReplaceCallback === undefined || this.item.imageUrl === undefined) {
+    if (this.imageReplaceCallback === undefined) {
+      return
+    }
+    if (this.item.imageUrl === undefined) {
+      this.replaceFailed = true
       return
     }
     const myToken = ++this.replaceToken
     this.imageReplaceCallback(this.item.imageUrl).then((buffer: ArrayBuffer | undefined) => {
-      if (!this.isAlive || buffer === undefined || myToken !== this.replaceToken) {
+      if (!this.isAlive) {
+        return
+      }
+      if (buffer === undefined || myToken !== this.replaceToken) {
+        if (myToken === this.replaceToken) {
+          this.replaceFailed = true
+        }
         return
       }
       const imageSource: image.ImageSource = image.createImageSource(buffer)
@@ -252,9 +305,15 @@ export struct MarkdownImageBlock {
         } catch (e) {
           console.error('ImageBlock imageSource release failed: ' + JSON.stringify(e))
         }
+        if (this.isAlive && myToken === this.replaceToken) {
+          this.replaceFailed = true
+        }
       })
     }).catch(() => {
       console.error('ImageBlock imageReplaceCallback failed')
+      if (this.isAlive && myToken === this.replaceToken) {
+        this.replaceFailed = true
+      }
     })
   }
 }

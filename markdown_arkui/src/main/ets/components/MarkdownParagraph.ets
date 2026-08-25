@@ -683,8 +683,16 @@ export struct MarkdownParagraph {
           }
         })
         .onComplete((imageLoadResult) => {
+          if (imageLoadResult === undefined || imageLoadResult === null) {
+            return
+          }
+          // 优先用父布局宽度（imageFixedRatioWidth按父宽度计算），父布局未测量时
+          // fallback 到 imageLoadResult.componentWidth（图片自身渲染宽度，回调触发时必>0）
+          const effectiveWidth: number = this.componentWidth > 0
+            ? this.componentWidth
+            : px2vp(imageLoadResult.componentWidth)
           const l = imageWidthAndHeight(
-            this.componentWidth,
+            effectiveWidth,
             imageLoadResult.width,
             imageLoadResult.height,
             (item.imageStyleWidth !== undefined ? vp2px(item.imageStyleWidth) : undefined) ??
@@ -696,10 +704,12 @@ export struct MarkdownParagraph {
             this.imageTheme.imageFixedRatioWidth,
             this.imageTheme.imageMaximumWidth
           )
-          item.imageWidth = px2vp(l[0])
-          item.imageHeight = px2vp(l[1])
-          if (this.list.indexOf(item) >= 0) {
-            this.list = [...this.list]
+          if (l[0] > 0 && l[1] > 0) {
+            item.imageWidth = px2vp(l[0])
+            item.imageHeight = px2vp(l[1])
+            if (this.list.indexOf(item) >= 0) {
+              this.list = [...this.list]
+            }
           }
         })
       }
