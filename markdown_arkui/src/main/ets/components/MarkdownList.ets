@@ -219,7 +219,6 @@ export struct MarkdownList {
       .margin({
         right: this.isOrdered ? this.orderedListTheme.orderedListMarkerSpacing : this.bulletListTheme.bulletListBulletSpacing
       })
-      .halfLeading(true)
       .textAlign(TextAlign.Center)
       .transition(
         TransitionEffect.asymmetric(

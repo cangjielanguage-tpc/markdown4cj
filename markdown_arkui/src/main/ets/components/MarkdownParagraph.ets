@@ -364,7 +364,6 @@ export struct MarkdownParagraph {
           )
         }
         .textAlign(TextAlign.Start)
-        .halfLeading(true)
         .copyOption(
           this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
         )

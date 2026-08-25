@@ -419,7 +419,6 @@ export struct MarkdownTableCell {
       )
     }
     .textAlign(TextAlign.Start)
-    .halfLeading(true)
     .copyOption(
       this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
     )
@@ -528,7 +527,6 @@ export struct MarkdownTableCell {
               )
             }
             .textAlign(TextAlign.Start)
-            .halfLeading(true)
             .copyOption(
               this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
             )
