@@ -79,6 +79,8 @@
     "pages/HighlightDetailsPage",
     "pages/LinkExposurePage",
     "pages/LinkExposureDetailsPage",
+    "pages/SduiCardPage",
+    "pages/SduiCardDetailsPage",
     "pages/TocPage",
     "pages/TocDetailsPage",
     "pages/deprecated/Deprecated0Page",

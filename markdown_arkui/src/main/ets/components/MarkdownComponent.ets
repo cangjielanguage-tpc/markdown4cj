@@ -3,8 +3,9 @@ import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
 import { MarkdownPlugin } from '../plugin/MarkdownPlugin'
+import { CustomViewRegistry } from '../plugin/CustomViewRegistry'
 import { NodeView } from "../model/NodeView"
-import { nodeToNodeView } from "../utils/MarkdownParserUtils"
+import { nodeToNodeView, liftCustomTagBlocks } from "../utils/MarkdownParserUtils"
 import { printNodes, safeString } from "../utils/MarkdownUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
@@ -73,6 +74,13 @@ export struct CJMarkdown {
 
   @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void = this.CustomBlockImageBuilder  //自定义卡片布局块级图片
   @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void = this.CustomBlockLinkBuilder  //自定义卡片布局行内链接
+
+  @Builder
+  CustomTagViewBuilder(tag: string, attrs: Record<string, string>, content: string) { /* cjlint-ignore !G.FUN.02 */
+    Text("")
+  }
+
+  @BuilderParam customTagViewComponent: (tag:string, attrs:Record<string,string>, content:string) => void = this.CustomTagViewBuilder  //自定义标签块级视图（如 <sdui data='...'></sdui>）
   /**
    * 图片点击回调
    */
@@ -798,6 +806,14 @@ export struct CJMarkdown {
                     safeString(item.linkUrl),
                     safeString(item.linkTitle)
                   )
+                } else if (item.customTag !== undefined) {
+                  // 已注册的自定义标签块级视图（如 <sdui data='...'></sdui>），回调宿主Builder渲染
+                  // 来源可能是块级 HtmlBlock，也可能是提升后的行内 HtmlInline（nodeType 不限定）
+                  this.customTagViewComponent(
+                    item.customTag,
+                    item.customAttrs ?? {},
+                    item.customContent ?? ""
+                  )
                 } else if (item.nodeType === "BlockAD") {
                   // 广告
                 } else {
@@ -913,7 +929,7 @@ export struct CJMarkdown {
         return
       }
       try {
-        markdownParser.parse(this.content).then((node) => {
+        markdownParser.parse(CustomViewRegistry.preprocessCustomTags(this.content)).then((node) => {
           if (!this.isAlive) {
             return
           }
@@ -936,7 +952,7 @@ export struct CJMarkdown {
     let op: Options = this.plugin.buildOptions()
     let markdownParser: MarkdownParser = new MarkdownParser(op)
     try {
-      let node: JsNodeImpl = await markdownParser.parse(this.content) as JsNodeImpl
+      let node: JsNodeImpl = await markdownParser.parse(CustomViewRegistry.preprocessCustomTags(this.content)) as JsNodeImpl
       if (!this.isAlive) {
         return
       }
@@ -962,6 +978,7 @@ export struct CJMarkdown {
     let parseOk: boolean = false
     try {
       nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, highlightSelectedList)
+      liftCustomTagBlocks(nodeView) // 行内自定义标签（如段落中的 <sdui>）提升为块级
       parseOk = true
     } catch (e) {
       console.error('nodeToNodeView failed: ' + JSON.stringify(e))
