@@ -558,8 +558,8 @@ export struct MarkdownTableCell {
    */
   @Builder
   tableCellInlineItem(item: NodeView, index: number) {
-    if (item.nodeType === "Text" || item.nodeType === "Code" || item.nodeType === "Footnote") {
-      // 普通文本/内联代码/内联脚注
+    if ((item.nodeType === "Text" || item.nodeType === "Code" || item.nodeType === "Footnote") && (item.isSupNode || item.isSubNode)) {
+      // 上下标：使用baselineOffset，不使用lineHeight（两者不能混用）
       Span(item.nodeText)
         .fontColor(spanFontColor(
           item,
@@ -677,6 +677,135 @@ export struct MarkdownTableCell {
           item,
           this.subTheme,
           this.supTheme
+        ))
+        .onClick(() => {
+          if (item.footnoteID !== undefined) {
+            this.footnoteCallback?.(item.footnoteID)
+            return
+          }
+          if (item.headLinkIndex !== undefined) {
+            this.tocCallback?.(item.headLinkIndex)
+            return
+          }
+          if (item.linkUrl !== undefined) {
+            this.linkCallback?.(item.linkUrl)
+            return
+          }
+        })
+    } else if (item.nodeType === "Text" || item.nodeType === "Code" || item.nodeType === "Footnote") {
+      // 普通文本/内联代码/内联脚注：使用lineHeight，不使用baselineOffset
+      Span(item.nodeText)
+        .fontColor(spanFontColor(
+          item,
+          this.subTheme,
+          this.supTheme,
+          this.inlineCodeTheme,
+          this.boldTheme,
+          this.italicTheme,
+          this.strikethroughTheme,
+          this.highlightTheme,
+          this.htmlUnderlineTheme,
+          this.linkTheme,
+          this.footnoteRefTheme,
+          this.headingTheme,
+          this.tableTheme,
+          this.paragraphTheme
+        ))
+        .fontSize(spanFontSize(
+          item,
+          this.subTheme,
+          this.supTheme,
+          this.inlineCodeTheme,
+          this.boldTheme,
+          this.italicTheme,
+          this.strikethroughTheme,
+          this.highlightTheme,
+          this.htmlUnderlineTheme,
+          this.linkTheme,
+          this.footnoteRefTheme,
+          this.headingTheme,
+          this.tableTheme,
+          this.paragraphTheme
+        ))
+        .fontStyle(spanFontStyle(
+          item,
+          this.subTheme,
+          this.supTheme,
+          this.inlineCodeTheme,
+          this.boldTheme,
+          this.strikethroughTheme,
+          this.highlightTheme,
+          this.htmlUnderlineTheme,
+          this.linkTheme,
+          this.footnoteRefTheme,
+          this.headingTheme,
+          this.tableTheme,
+          this.paragraphTheme,
+          this.definitionListTheme
+        ))
+        .fontWeight(spanFontWeight(
+          item,
+          this.tableBlockCellCell === 0 && this.tableTheme.tableFirstColumnIsBold,
+          this.subTheme,
+          this.supTheme,
+          this.inlineCodeTheme,
+          this.boldTheme,
+          this.italicTheme,
+          this.strikethroughTheme,
+          this.highlightTheme,
+          this.htmlUnderlineTheme,
+          this.linkTheme,
+          this.footnoteRefTheme,
+          this.headingTheme,
+          this.tableTheme,
+          this.paragraphTheme,
+          this.definitionListTheme
+        ))
+        .fontFamily(spanFontFamily(
+          item,
+          this.subTheme,
+          this.supTheme,
+          this.inlineCodeTheme,
+          this.boldTheme,
+          this.italicTheme,
+          this.strikethroughTheme,
+          this.highlightTheme,
+          this.htmlUnderlineTheme,
+          this.linkTheme,
+          this.footnoteRefTheme,
+          this.headingTheme,
+          this.tableTheme,
+          this.paragraphTheme
+        ))
+        .letterSpacing(spanLetterSpacing(
+          item,
+          this.subTheme,
+          this.supTheme,
+          this.inlineCodeTheme,
+          this.boldTheme,
+          this.italicTheme,
+          this.strikethroughTheme,
+          this.highlightTheme,
+          this.htmlUnderlineTheme,
+          this.linkTheme,
+          this.footnoteRefTheme,
+          this.headingTheme,
+          this.tableTheme,
+          this.paragraphTheme
+        ))
+        .decoration(spanDecoration(
+          item,
+          this.strikethroughTheme,
+          this.htmlUnderlineTheme,
+          this.linkTheme,
+          this.footnoteRefTheme
+        ))
+        .textBackgroundStyle(spanBackgroundColor(
+          item,
+          this.inlineCodeTheme,
+          this.highlightTheme,
+          this.linkTheme,
+          this.footnoteRefTheme
         ))
         .lineHeight(spanLineHeight(
           item,
