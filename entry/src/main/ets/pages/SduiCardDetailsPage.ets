@@ -2,7 +2,7 @@ import { CJMarkdown,
   CustomViewRegistry,
   MarkdownConfiguration, MarkdownPlugin,
   MarkdownTheme } from '@cangjie-tpc/markdown_arkui'
-import { SDUIView } from 'sdui'
+import { SDUIView, installSduiHostRegistry } from 'sdui'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -35,6 +35,10 @@ struct SduiCardDetailsPage {
   markdownTheme: MarkdownTheme = new MarkdownTheme()
   @State // markdown插件
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // SDUI卡片点击次数（click 用例验证）
+  sduiClickCount: number = 0
+  @State // SDUI卡片最近一次点击的label（data 透传验证）
+  sduiClickLabel: string = ""
 
   /**
    * <sdui data='SDUI JSON'></sdui> 标签的渲染Builder
@@ -52,6 +56,49 @@ struct SduiCardDetailsPage {
   aboutToAppear(): void {
     // 注册 <sdui> 标签名（幂等）：解析层据此拦截 <sdui> HTML块
     CustomViewRegistry.register('sdui')
+    // 注册SDUI卡片点击action（幂等替换）
+    // 注意：native侧固定以 'phase1Callback' 名分发（见 SDUI NativeActionRegistry.nativeActionNameFor），
+    // DSL actions里声明的 target/data 通过 payload（action原文JSON）透传，在此解析路由。
+    // 点击链路：卡片按钮onClick → Cangjie分发('phase1Callback') → SDUI_HOST_REGISTRY → 此handler
+    installSduiHostRegistry().setAction('phase1Callback',
+      (payload: string, _meta: string): string => {
+        try {
+          // payload形如 {"trigger":"onClick","type":"callback","target":"onSduiCardClick","data":{"label":"..."}}
+          const action = JSON.parse(payload) as Record<string, Object>
+          const target = action['target']
+          if (target === 'onSduiCardClick') {
+            this.sduiClickCount += 1
+            const data = action['data']
+            const label = data instanceof Object ? (data as Record<string, Object>)['label'] : undefined
+            this.sduiClickLabel = typeof label === 'string' ? label : ''
+            this.dispatchSduiCardClick(this.sduiClickLabel)
+          }
+        } catch (_) {
+          // 非本用例的action，忽略
+        }
+        return `OK_SDUI_CARD_CLICK count=${this.sduiClickCount}`
+      })
+
+    // SDUI 标准跳转事件（type=link）：native侧固定以 'phase1Link' 名分发，
+    // 跳转目标由 DSL actions.target 声明（本用例为 pages/BlankPage）。
+    // 点击链路：卡片按钮onClick → Cangjie分发('phase1Link') → SDUI_HOST_REGISTRY → 此handler执行路由
+    installSduiHostRegistry().setAction('phase1Link',
+      (payload: string, _meta: string): string => {
+        try {
+          // payload形如 {"trigger":"onClick","type":"link","target":"pages/BlankPage"}
+          const action = JSON.parse(payload) as Record<string, Object>
+          const target = action['target']
+          if (typeof target === 'string' && target.startsWith('pages/')) {
+            this.sduiClickCount += 1
+            this.sduiClickLabel = '立即预订(link)'
+            router.pushUrl({ url: target })
+            return `OK_SDUI_LINK target=${target}`
+          }
+          return `ERR_LINK_TARGET_UNSUPPORTED target=${target}`
+        } catch (_) {
+          return 'ERR_LINK_PAYLOAD_INVALID'
+        }
+      })
 
     let baseMDData: BaseMDData = router.getParams() as BaseMDData
     this.content = getFileContextStr(baseMDData._pagePath)
@@ -62,6 +109,27 @@ struct SduiCardDetailsPage {
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
+  /**
+   * 按钮点击分发（003用例）：
+   * - 查看详情：弹框显示酒店详细信息
+   * （立即预订走 type=link 标准跳转事件，由 phase1Link handler 路由）
+   */
+  private dispatchSduiCardClick(label: string): void {
+    if (label === '查看详情') {
+      AlertDialog.show({
+        title: '外滩景观大酒店',
+        message: '房型：黄浦江景房\n权益：免费升房\n价格：¥1288 起\n\n点击来源：SDUI 卡片「查看详情」按钮',
+        autoCancel: true,
+        alignment: DialogAlignment.Center,
+        primaryButton: {
+          value: '关闭',
+          action: () => {
+          }
+        }
+      })
+    }
+  }
+
   build() {
     Column() {
       titleComponent(
@@ -70,6 +138,16 @@ struct SduiCardDetailsPage {
         true,
         this.safeTop
       )
+      // SDUI卡片点击验证状态栏：点击卡片按钮后计数+label实时更新
+      Text(this.sduiClickCount > 0
+        ? `点击验证：第${this.sduiClickCount}次 · ${this.sduiClickLabel}`
+        : '点击验证：尚未点击（点击下方卡片按钮）')
+        .fontSize(13)
+        .fontColor(this.sduiClickCount > 0 ? '#FF166534' : '#FF6B7280')
+        .backgroundColor(this.sduiClickCount > 0 ? '#FFDCFCE7' : '#FFF3F4F6')
+        .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+        .borderRadius(6)
+        .margin({ top: 8, bottom: 4 })
       Scroll(this.scroller) {
         Column() {
           CJMarkdown({
