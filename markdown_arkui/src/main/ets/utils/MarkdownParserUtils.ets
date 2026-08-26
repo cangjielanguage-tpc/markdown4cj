@@ -426,11 +426,15 @@ export function nodeToNodeView(
   targetParentView: NodeView,
   inheritedStyleView: NodeView,
   previousChildren?: NodeView[],
-  highlightSelectedList?: ArrayList<string>
+  highlightSelectedList?: ArrayList<string>,
+  inheritedUsedIndices?: Set<number>
 ): void {
   let currentJsNode = sourceJsNode.firstChild
   // 追踪本层 previousChildren 中哪些索引已被复用，避免跨位置 hash 匹配时重复消费
-  const usedIndices = previousChildren !== undefined ? new Set<number>() : undefined
+  // 行内容器（StrongEmphasis/SupHtmlNode 等）平铺子节点到同一 targetParentView 并共用同一 previousChildren，
+  // 必须共享同一个 usedIndices，否则 hash 匹配会跨递归分支重复消费同一索引，
+  // 导致同一个 NodeView 被复用到多个位置，后一次 copyStyleFrom 覆盖前一次的样式标记。
+  const usedIndices = inheritedUsedIndices ?? (previousChildren !== undefined ? new Set<number>() : undefined)
 
   while (currentJsNode !== undefined) {
     const nodeType = currentJsNode.nodeType
@@ -491,7 +495,7 @@ export function nodeToNodeView(
           currentView.linkTypeStr = iconInfo.typeStr
           targetParentView.children.push(currentView)
         } else {
-          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         }
         break
       case 'HeadLink': // 标题链接
@@ -506,7 +510,7 @@ export function nodeToNodeView(
           currentView.linkTypeStr = iconInfo.typeStr
           targetParentView.children.push(currentView)
         } else {
-          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         }
         break
 
@@ -514,32 +518,32 @@ export function nodeToNodeView(
       case 'SubNode': // 下标
       case 'SubHtmlNode':
         currentView.isSubNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         break
       case 'SupNode': // 上标
       case 'SupHtmlNode':
         currentView.isSupNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         break
       case 'UnderlineNode': // 下划线
         currentView.isUnderlineNode = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         break
       case 'Emphasis': // 斜体
         currentView.isEmphasis = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         break
       case 'StrongEmphasis': // 粗体
         currentView.isStrongEmphasis = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         break
       case 'Strikethrough': // 删除线
         currentView.isStrikethrough = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         break
       case 'HighlightNode': // 高亮
         currentView.isHighlight = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, undefined, usedIndices)
         break
       case 'FontNode': { // FontNode标签
         currentView.isFontNode = true
@@ -558,7 +562,7 @@ export function nodeToNodeView(
             currentView.fontNodeColor = color
           }
         }
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, undefined, usedIndices)
         break
       }
       case 'SpanNode': { // SpanNode标签
@@ -587,7 +591,7 @@ export function nodeToNodeView(
             }
           }
         }
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, undefined, usedIndices)
         break
       }
 
@@ -595,7 +599,7 @@ export function nodeToNodeView(
       case 'Paragraph': // 段落
         highlightSelectedList?.add(currentView.nodeHash.toString())
         if (currentView.isParagraph) {
-          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList)
+          nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         } else {
           currentView.isParagraph = true
           nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, highlightSelectedList)
@@ -691,11 +695,11 @@ export function nodeToNodeView(
         break
       case 'TableHead': // 表头
         currentView.isTableHead = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, undefined, usedIndices)
         break
       case 'TableBody': // 表体
         currentView.isTableBody = true
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, undefined, usedIndices)
         break
       case 'TableRow': // 表格行
         currentView.isTableRow = true
@@ -740,7 +744,7 @@ export function nodeToNodeView(
       // ===== 特殊/自定义节点 =====
       case 'IgnoreBlockNode': // 忽略节点
       case 'IgnoreInlineNode':
-        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren)
+        nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, undefined, usedIndices)
         break
       case 'HtmlBlock': {
         // 已注册的自定义标签块（如 <sdui data='...'></sdui>）转为自定义视图节点；其余保持原有丢弃行为
