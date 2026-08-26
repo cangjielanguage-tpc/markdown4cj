@@ -27,7 +27,8 @@
           "**/libboundscheck.so",
           "**/libpcre2*.so*",
           "**/libcangjie*.so",
-          "**/runtime/libohos*.so"
+          "**/runtime/libohos*.so",
+          "**/libcj_frontend_ohos*.so"
         ]
       }
     }

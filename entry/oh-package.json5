@@ -7,7 +7,7 @@
   "license": "",
   "dependencies": {
     "@cangjie-tpc/markdown_arkui": "file:../markdown_arkui",
-    "sdui": "file:../markdown_arkui/har/sdui.har"
+    "sdui": "file:./har/sdui.har"
   }
 }
 
