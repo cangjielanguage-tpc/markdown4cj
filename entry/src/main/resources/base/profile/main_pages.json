@@ -81,6 +81,7 @@
     "pages/LinkExposureDetailsPage",
     "pages/SduiCardPage",
     "pages/SduiCardDetailsPage",
+    "pages/BlankPage",
     "pages/TocPage",
     "pages/TocDetailsPage",
     "pages/deprecated/Deprecated0Page",
