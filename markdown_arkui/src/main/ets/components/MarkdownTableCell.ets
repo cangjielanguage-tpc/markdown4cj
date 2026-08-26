@@ -385,7 +385,7 @@ export struct MarkdownTableCell {
     .borderStyle(this.tableTheme.tableBorderStyle)
     .borderColor(this.tableTheme.tableBorderColor)
     .constraintSize({
-      minWidth: this.columnWidths[this.tableBlockCellCell] ?? 0,
+      minWidth: Math.max(this.columnWidths[this.tableBlockCellCell] ?? 0, lengthToVpNumber(this.tableTheme.tableMinCellWidth) ?? 0),
       maxWidth: this.tableTheme.tableMaxCellWidth
     })
     .onSizeChange((oldValue, newValue) => {

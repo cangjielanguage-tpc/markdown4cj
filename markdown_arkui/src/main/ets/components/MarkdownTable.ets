@@ -25,6 +25,7 @@ import { TableTheme } from "../theme/TableTheme"
 import { MarkdownTableRow } from "./MarkdownTableRow"
 import { MarkDownTableTitle } from "./MarkdownTableTitle"
 import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
+import { lengthToVpNumber } from "../utils/MarkdownUtils"
 
 /**
  * 表格控件
@@ -744,24 +745,34 @@ export struct MarkdownTable {
 
   /**
    * 对比tracker中的列宽与当前@State，仅在变化时更新以避免不必要重渲染
-   * 每列宽度 = max(tracker测量值, componentWidth均分值)
-   * - tracker有数据时：列宽≥内容最大宽度（列对齐）且≥evenWidth（充满屏幕）
-   * - tracker无数据时：列宽=evenWidth（充满屏幕，待cell渲染后tracker更新）
-   * - tracker宽度>evenWidth时：列宽=tracker宽度（内容超宽，横向滚动）
+   * 每列宽度 = max(tracker测量值, tableMinCellWidth, componentWidth均分值)
+   * - tracker有数据时：列宽≥内容最大宽度（列对齐）且≥minCellWidth（用户配置）且≥evenWidth（充满屏幕）
+   * - tracker无数据时：列宽=max(minCellWidth, evenWidth)（充满屏幕，待cell渲染后tracker更新）
+   * - tracker宽度>evenWidth/minCellWidth时：列宽=tracker宽度（内容超宽，横向滚动）
    */
   private applyColumnWidths(): void {
     const trackerWidths = this.cellWidthTracker.getWidths()
     const newWidths: number[] = [...trackerWidths]
-    if (this.componentWidth > 0 && newWidths.length > 0) {
-      const evenWidth = this.componentWidth / newWidths.length
+    const minCellWidth = lengthToVpNumber(this.tableTheme.tableMinCellWidth) ?? 0
+    if (newWidths.length > 0) {
+      // 先以配置的最小单元格宽度为下限
       for (let i = 0; i < newWidths.length; i++) {
-        if (newWidths[i] < evenWidth) {
-          newWidths[i] = evenWidth
+        if (newWidths[i] < minCellWidth) {
+          newWidths[i] = minCellWidth
+        }
+      }
+      // 再以均分宽度为下限（仅在容器宽度已知时），确保空/窄列仍占满容器
+      if (this.componentWidth > 0) {
+        const evenWidth = this.componentWidth / newWidths.length
+        for (let i = 0; i < newWidths.length; i++) {
+          if (newWidths[i] < evenWidth) {
+            newWidths[i] = evenWidth
+          }
         }
       }
     }
     let changed = newWidths.length !== this.columnWidths.length
-    for (let i = 0;!changed && i < newWidths.length; i++) {
+    for (let i = 0; !changed && i < newWidths.length; i++) {
       if (newWidths[i] !== this.columnWidths[i]) {
         changed = true
       }
