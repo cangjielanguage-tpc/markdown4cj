@@ -31,6 +31,7 @@ export struct MarkdownImageBlock {
   aboutToAppear(): void {
     this.isAlive = true
     this.tryReplaceImage()
+    this.recalculateImageDimensions()
   }
 
   /**
@@ -47,6 +48,48 @@ export struct MarkdownImageBlock {
     }
     this.replaceFailed = false
     this.tryReplaceImage()
+    this.recalculateImageDimensions()
+  }
+
+  /**
+   * 利用已缓存的图片原始宽高（imageNaturalWidth/Height）重新计算最终控件宽高。
+   * 增量加载时图片URL不变→Image组件不重新加载→onComplete不回调，
+   * 但imageStyleWidth/Height可能已变化，需用缓存的原始尺寸重新算最终尺寸。
+   */
+  private recalculateImageDimensions(): void {
+    if (this.item.imageNaturalWidth === undefined || this.item.imageNaturalHeight === undefined) {
+      return
+    }
+    if (this.item.imageNaturalWidth <= 0 || this.item.imageNaturalHeight <= 0) {
+      return
+    }
+    const effectiveWidth: number = this.componentWidth > 0
+      ? this.componentWidth
+      : 0
+    if (effectiveWidth <= 0) {
+      return
+    }
+    const l = imageWidthAndHeight(
+      effectiveWidth,
+      this.item.imageNaturalWidth,
+      this.item.imageNaturalHeight,
+      (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
+      (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
+      (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
+      (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
+      this.imageTheme.imageMaxWidth,
+      this.imageTheme.imageMaxHeight,
+      this.imageTheme.imageFixedRatioWidth,
+      this.imageTheme.imageMaximumWidth
+    )
+    if (l[0] > 0 && l[1] > 0) {
+      const newWidth = px2vp(l[0])
+      const newHeight = px2vp(l[1])
+      if (this.item.imageWidth !== newWidth || this.item.imageHeight !== newHeight) {
+        this.item.imageWidth = newWidth
+        this.item.imageHeight = newHeight
+      }
+    }
   }
 
   aboutToDisappear(): void {
@@ -96,6 +139,8 @@ export struct MarkdownImageBlock {
             if (imageLoadResult === undefined || imageLoadResult === null) {
               return
             }
+            this.item.imageNaturalWidth = imageLoadResult.width
+            this.item.imageNaturalHeight = imageLoadResult.height
             const effectiveWidth: number = this.componentWidth > 0
               ? this.componentWidth
               : px2vp(imageLoadResult.componentWidth)
@@ -151,6 +196,8 @@ export struct MarkdownImageBlock {
             if (imageLoadResult === undefined || imageLoadResult === null) {
               return
             }
+            this.item.imageNaturalWidth = imageLoadResult.width
+            this.item.imageNaturalHeight = imageLoadResult.height
             const effectiveWidth: number = this.componentWidth > 0
               ? this.componentWidth
               : px2vp(imageLoadResult.componentWidth)

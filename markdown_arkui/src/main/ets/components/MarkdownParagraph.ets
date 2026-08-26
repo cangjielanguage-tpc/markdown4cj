@@ -814,6 +814,8 @@ export struct MarkdownParagraph {
           if (imageLoadResult === undefined || imageLoadResult === null) {
             return
           }
+          item.imageNaturalWidth = imageLoadResult.width
+          item.imageNaturalHeight = imageLoadResult.height
           // 优先用父布局宽度（imageFixedRatioWidth按父宽度计算），父布局未测量时
           // fallback 到 imageLoadResult.componentWidth（图片自身渲染宽度，回调触发时必>0）
           const effectiveWidth: number = this.componentWidth > 0
@@ -911,17 +913,35 @@ export struct MarkdownParagraph {
       return
     }
     const oldImageSizes: Map<string, number[]> = new Map()
+    const oldImageNaturalSizes: Map<string, number[]> = new Map()
+    const oldImageStyles: Map<string, string> = new Map()
     for (const oldChild of this.list) {
-      if (oldChild.imageUrl !== undefined && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
-        oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
+      if (oldChild.imageUrl !== undefined) {
+        if (oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
+          oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
+        }
+        if (oldChild.imageNaturalWidth !== undefined && oldChild.imageNaturalHeight !== undefined) {
+          oldImageNaturalSizes.set(oldChild.imageUrl, [oldChild.imageNaturalWidth, oldChild.imageNaturalHeight])
+        }
+        oldImageStyles.set(oldChild.imageUrl,
+          `${oldChild.imageStyleWidth ?? ''}|${oldChild.imageStyleHeight ?? ''}|${oldChild.imageRadius ?? ''}`)
       }
     }
     for (const newChild of children) {
       if (newChild.imageUrl !== undefined) {
-        const oldSize = oldImageSizes.get(newChild.imageUrl)
-        if (oldSize) {
-          newChild.imageWidth = oldSize[0]
-          newChild.imageHeight = oldSize[1]
+        const oldNaturalSize = oldImageNaturalSizes.get(newChild.imageUrl)
+        if (oldNaturalSize) {
+          newChild.imageNaturalWidth = oldNaturalSize[0]
+          newChild.imageNaturalHeight = oldNaturalSize[1]
+        }
+        const oldStyleKey = oldImageStyles.get(newChild.imageUrl)
+        const newStyleKey = `${newChild.imageStyleWidth ?? ''}|${newChild.imageStyleHeight ?? ''}|${newChild.imageRadius ?? ''}`
+        if (oldStyleKey === newStyleKey) {
+          const oldSize = oldImageSizes.get(newChild.imageUrl)
+          if (oldSize) {
+            newChild.imageWidth = oldSize[0]
+            newChild.imageHeight = oldSize[1]
+          }
         }
       }
     }

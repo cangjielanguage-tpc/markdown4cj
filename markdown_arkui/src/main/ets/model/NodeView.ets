@@ -59,6 +59,8 @@ export class NodeView {
   imageStyleHeight?: number = undefined // 图片样式高度（vp）
   imageWidth?: number = undefined // 控件宽度（vp）
   imageHeight?: number = undefined // 控件高度（vp）
+  imageNaturalWidth?: number = undefined // 图片原始宽度（px，onComplete回调中存储）
+  imageNaturalHeight?: number = undefined // 图片原始高度（px，onComplete回调中存储）
   imageRadius?: Length = undefined // 图片圆角
   imageAlign?: HorizontalAlign = undefined // 图片对齐方式
   imageReplacePixelMap: PixelMap | undefined = undefined // 图片替换PixelMap（imageReplaceCallback异步加载后设置）
@@ -152,6 +154,8 @@ export class NodeView {
     this.imageHeight = source.imageHeight
     this.imageStyleWidth = source.imageStyleWidth
     this.imageStyleHeight = source.imageStyleHeight
+    this.imageNaturalWidth = source.imageNaturalWidth
+    this.imageNaturalHeight = source.imageNaturalHeight
     this.imageRadius = source.imageRadius
     this.imageAlign = source.imageAlign
     this.codeInfo = source.codeInfo

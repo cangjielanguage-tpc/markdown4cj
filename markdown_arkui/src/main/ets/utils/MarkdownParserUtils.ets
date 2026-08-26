@@ -292,6 +292,8 @@ function updateReusedImageNode(
     prevChild.imageReplaceTried = false
     prevChild.imageWidth = undefined
     prevChild.imageHeight = undefined
+    prevChild.imageNaturalWidth = undefined
+    prevChild.imageNaturalHeight = undefined
   } else if (prevChild.imageTitle !== newTitle) {
     // URL 未变但 title 变化：同步更新 title，无需重置已加载的图片资源
     prevChild.imageTitle = newTitle

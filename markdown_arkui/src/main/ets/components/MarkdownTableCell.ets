@@ -880,6 +880,8 @@ export struct MarkdownTableCell {
             if (imageLoadResult === undefined || imageLoadResult === null) {
               return
             }
+            item.imageNaturalWidth = imageLoadResult.width
+            item.imageNaturalHeight = imageLoadResult.height
             // 优先 tableMaxCellWidth，其次父布局宽度，都没有时 fallback 到图片自身渲染宽度
             const cellMaxWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth)
               ?? (this.componentWidth > 0 ? this.componentWidth : px2vp(imageLoadResult.componentWidth))
@@ -1057,33 +1059,67 @@ export struct MarkdownTableCell {
       return
     }
     const oldImageSizes: Map<string, number[]> = new Map()
+    const oldImageNaturalSizes: Map<string, number[]> = new Map()
+    const oldImageStyles: Map<string, string> = new Map()
     for (const oldChild of this.list) {
-      if (oldChild.imageUrl !== undefined && oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
-        oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
+      if (oldChild.imageUrl !== undefined) {
+        if (oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
+          oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
+        }
+        if (oldChild.imageNaturalWidth !== undefined && oldChild.imageNaturalHeight !== undefined) {
+          oldImageNaturalSizes.set(oldChild.imageUrl, [oldChild.imageNaturalWidth, oldChild.imageNaturalHeight])
+        }
+        oldImageStyles.set(oldChild.imageUrl,
+          `${oldChild.imageStyleWidth ?? ''}|${oldChild.imageStyleHeight ?? ''}|${oldChild.imageRadius ?? ''}`)
       }
       if (oldChild.children) {
         for (const grandChild of oldChild.children) {
-          if (grandChild.imageUrl !== undefined && grandChild.imageWidth !== undefined && grandChild.imageWidth > 0 && grandChild.imageHeight !== undefined) {
-            oldImageSizes.set(grandChild.imageUrl, [grandChild.imageWidth, grandChild.imageHeight])
+          if (grandChild.imageUrl !== undefined) {
+            if (grandChild.imageWidth !== undefined && grandChild.imageWidth > 0 && grandChild.imageHeight !== undefined) {
+              oldImageSizes.set(grandChild.imageUrl, [grandChild.imageWidth, grandChild.imageHeight])
+            }
+            if (grandChild.imageNaturalWidth !== undefined && grandChild.imageNaturalHeight !== undefined) {
+              oldImageNaturalSizes.set(grandChild.imageUrl, [grandChild.imageNaturalWidth, grandChild.imageNaturalHeight])
+            }
+            oldImageStyles.set(grandChild.imageUrl,
+              `${grandChild.imageStyleWidth ?? ''}|${grandChild.imageStyleHeight ?? ''}|${grandChild.imageRadius ?? ''}`)
           }
         }
       }
     }
     for (const newChild of children) {
       if (newChild.imageUrl !== undefined) {
-        const oldSize = oldImageSizes.get(newChild.imageUrl)
-        if (oldSize) {
-          newChild.imageWidth = oldSize[0]
-          newChild.imageHeight = oldSize[1]
+        const oldNaturalSize = oldImageNaturalSizes.get(newChild.imageUrl)
+        if (oldNaturalSize) {
+          newChild.imageNaturalWidth = oldNaturalSize[0]
+          newChild.imageNaturalHeight = oldNaturalSize[1]
+        }
+        const oldStyleKey = oldImageStyles.get(newChild.imageUrl)
+        const newStyleKey = `${newChild.imageStyleWidth ?? ''}|${newChild.imageStyleHeight ?? ''}|${newChild.imageRadius ?? ''}`
+        if (oldStyleKey === newStyleKey) {
+          const oldSize = oldImageSizes.get(newChild.imageUrl)
+          if (oldSize) {
+            newChild.imageWidth = oldSize[0]
+            newChild.imageHeight = oldSize[1]
+          }
         }
       }
       if (newChild.children) {
         for (const grandChild of newChild.children) {
           if (grandChild.imageUrl !== undefined) {
-            const oldSize = oldImageSizes.get(grandChild.imageUrl)
-            if (oldSize) {
-              grandChild.imageWidth = oldSize[0]
-              grandChild.imageHeight = oldSize[1]
+            const oldNaturalSize = oldImageNaturalSizes.get(grandChild.imageUrl)
+            if (oldNaturalSize) {
+              grandChild.imageNaturalWidth = oldNaturalSize[0]
+              grandChild.imageNaturalHeight = oldNaturalSize[1]
+            }
+            const oldStyleKey = oldImageStyles.get(grandChild.imageUrl)
+            const newStyleKey = `${grandChild.imageStyleWidth ?? ''}|${grandChild.imageStyleHeight ?? ''}|${grandChild.imageRadius ?? ''}`
+            if (oldStyleKey === newStyleKey) {
+              const oldSize = oldImageSizes.get(grandChild.imageUrl)
+              if (oldSize) {
+                grandChild.imageWidth = oldSize[0]
+                grandChild.imageHeight = oldSize[1]
+              }
             }
           }
         }
