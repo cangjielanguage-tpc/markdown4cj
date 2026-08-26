@@ -40,8 +40,8 @@ export struct CodeTitleComponent {
       // 复制按钮（始终创建，用visibility控制显隐）
       Row() {
         Image(this.codeBlockTheme.codeBlockCopyIcon)
-          .width(this.codeBlockTheme.codeBlockCopyIconWidth)
-          .height(this.codeBlockTheme.codeBlockCopyIconHeight)
+          .width(this.copyIconWidth())
+          .height(this.copyIconHeight())
           .objectFit(ImageFit.Contain)
           .visibility(this.codeBlockTheme.codeBlockCopyIcon !== undefined ? Visibility.Visible : Visibility.None)
 
@@ -74,8 +74,8 @@ export struct CodeTitleComponent {
       // 全屏按钮（始终创建，用visibility控制显隐）
       Row() {
         Image(this.codeBlockTheme.codeBlockFullScreenIcon)
-          .width(this.codeBlockTheme.codeBlockFullScreenIconWidth)
-          .height(this.codeBlockTheme.codeBlockFullScreenIconHeight)
+          .width(this.fullScreenIconWidth())
+          .height(this.fullScreenIconHeight())
           .objectFit(ImageFit.Contain)
           .visibility(this.codeBlockTheme.codeBlockFullScreenIcon !== undefined ? Visibility.Visible : Visibility.None)
 
@@ -107,5 +107,46 @@ export struct CodeTitleComponent {
       bottom: this.codeBlockTheme.codeBlockTitleLayoutMarginBottom
     })
     .alignItems(VerticalAlign.Center)
+  }
+
+  /**
+   * 复制图标宽度：负数/0 会触发 Image 回退到原图尺寸导致图标异常放大，这里兜底为默认 24.0
+   */
+  private copyIconWidth(): Length {
+    const w = this.codeBlockTheme.codeBlockCopyIconWidth
+    if (typeof w === 'number') {
+      return w > 0 ? w : 24.0
+    }
+    return w
+  }
+  /**
+   * 复制图标高度：负数/0 兜底为默认 24.0
+   */
+  private copyIconHeight(): Length {
+    const h = this.codeBlockTheme.codeBlockCopyIconHeight
+    if (typeof h === 'number') {
+      return h > 0 ? h : 24.0
+    }
+    return h
+  }
+  /**
+   * 全屏图标宽度：负数/0 兜底为默认 24.0
+   */
+  private fullScreenIconWidth(): Length {
+    const w = this.codeBlockTheme.codeBlockFullScreenIconWidth
+    if (typeof w === 'number') {
+      return w > 0 ? w : 24.0
+    }
+    return w
+  }
+  /**
+   * 全屏图标高度：负数/0 兜底为默认 24.0
+   */
+  private fullScreenIconHeight(): Length {
+    const h = this.codeBlockTheme.codeBlockFullScreenIconHeight
+    if (typeof h === 'number') {
+      return h > 0 ? h : 24.0
+    }
+    return h
   }
 }

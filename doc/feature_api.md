@@ -2250,6 +2250,246 @@ export class GlobalTheme {
  */
 export class TableTheme {
   /**
+   * 设置表格标题背景颜色
+   *
+   * @param color 表格标题背景颜色
+   * @return TableTheme
+   */
+  setTableTitleBackgroundColor(color: ResourceColor): TableTheme
+
+  /**
+   * 设置表格内容奇数行背景颜色
+   *
+   * @param color 表格内容奇数行背景颜色
+   * @return TableTheme
+   */
+  setTableContentOddRowBackgroundColor(color: ResourceColor): TableTheme
+
+  /**
+   * 设置表格内容偶数行背景颜色
+   *
+   * @param color 表格内容偶数行背景颜色
+   * @return TableTheme
+   */
+  setTableContentEvenRowBackgroundColor(color: ResourceColor): TableTheme
+
+  /**
+   * 设置表格外边距
+   *
+   * @param options 外边距
+   * @return TableTheme
+   */
+  setTableMargin(options: Margin | Length): TableTheme
+
+  /**
+   * 设置表格内边距
+   *
+   * @param options 内边距
+   * @return TableTheme
+   */
+  setTablePadding(options: Padding | Length): TableTheme
+
+  /**
+   * 设置表格单元格内边距
+   *
+   * @param options 单元格内边距
+   * @return TableTheme
+   */
+  setTableCellPadding(options: Padding | Length): TableTheme
+
+  /**
+   * 设置表格边框样式
+   *
+   * @param style 边框样式
+   * @return TableTheme
+   */
+  setTableBorderStyle(style: BorderStyle): TableTheme
+
+  /**
+   * 设置表格边框宽度
+   *
+   * @param width 边框宽度
+   * @return TableTheme
+   */
+  setTableBorderWidth(width: Length): TableTheme
+
+  /**
+   * 设置表格边框颜色
+   *
+   * @param color 边框颜色
+   * @return TableTheme
+   */
+  setTableBorderColor(color: ResourceColor): TableTheme
+
+  /**
+   * 设置表格圆角
+   *
+   * @param options 圆角
+   * @return TableTheme
+   */
+  setTableRadius(options: BorderRadiuses | Length): TableTheme
+
+  /**
+   * 设置表格滚动条状态
+   *
+   * @param state 滚动条状态
+   * @return TableTheme
+   */
+  setTableScrollBarState(state: BarState): TableTheme
+
+  /**
+   * 设置表格滚动条颜色
+   *
+   * @param color 滚动条颜色
+   * @return TableTheme
+   */
+  setTableScrollBarColor(color: Color | number | string): TableTheme
+
+  /**
+   * 设置表格最小单元格宽度
+   *
+   * @param width 最小单元格宽度
+   * @return TableTheme
+   */
+  setTableMinCellWidth(width: Length): TableTheme
+
+  /**
+   * 设置表格最大单元格宽度
+   *
+   * @param width 最大单元格宽度
+   * @return TableTheme
+   */
+  setTableMaxCellWidth(width: Length): TableTheme
+
+  /**
+   * 设置表格第一列是否加粗
+   *
+   * @param isBold 第一列是否加粗
+   * @return TableTheme
+   */
+  setTableFirstColumnIsBold(isBold: boolean): TableTheme
+
+  /**
+   * 设置表格标题文本字体颜色
+   *
+   * @param color 标题文本字体颜色
+   * @return TableTheme
+   */
+  setTableTitleTextFontColor(color: ResourceColor): TableTheme
+
+  /**
+   * 设置表格标题文本字体大小
+   *
+   * @param size 标题文本字体大小
+   * @return TableTheme
+   */
+  setTableTitleTextFontSize(size: number | string | Resource): TableTheme
+
+  /**
+   * 设置表格标题文本字体样式
+   *
+   * @param style 标题文本字体样式
+   * @return TableTheme
+   */
+  setTableTitleTextFontStyle(style: FontStyle): TableTheme
+
+  /**
+   * 设置表格标题文本字体粗细
+   *
+   * @param weight 标题文本字体粗细
+   * @return TableTheme
+   */
+  setTableTitleTextFontWeight(weight: number | FontWeight): TableTheme
+
+  /**
+   * 设置表格标题文本字体族
+   *
+   * @param family 标题文本字体族
+   * @return TableTheme
+   */
+  setTableTitleTextFontFamily(family: string | Resource): TableTheme
+
+  /**
+   * 设置表格标题文本行高
+   *
+   * @param lineHeight 标题文本行高
+   * @return TableTheme
+   */
+  setTableTitleTextLineHeight(lineHeight: number | string | Resource): TableTheme
+
+  /**
+   * 设置表格标题文本字间距
+   *
+   * @param spacing 标题文本字间距
+   * @return TableTheme
+   */
+  setTableTitleTextLetterSpacing(spacing: number): TableTheme
+
+  /**
+   * 设置表格内容文本字体颜色
+   *
+   * @param color 内容文本字体颜色
+   * @return TableTheme
+   */
+  setTableContentTextFontColor(color: ResourceColor): TableTheme
+
+  /**
+   * 设置表格内容文本字体大小
+   *
+   * @param size 内容文本字体大小
+   * @return TableTheme
+   */
+  setTableContentTextFontSize(size: number | string | Resource): TableTheme
+
+  /**
+   * 设置表格内容文本字体样式
+   *
+   * @param style 内容文本字体样式
+   * @return TableTheme
+   */
+  setTableContentTextFontStyle(style: FontStyle): TableTheme
+
+  /**
+   * 设置表格内容文本字体粗细
+   *
+   * @param weight 内容文本字体粗细
+   * @return TableTheme
+   */
+  setTableContentTextFontWeight(weight: number | FontWeight): TableTheme
+
+  /**
+   * 设置表格内容文本字体族
+   *
+   * @param family 内容文本字体族
+   * @return TableTheme
+   */
+  setTableContentTextFontFamily(family: string | Resource): TableTheme
+
+  /**
+   * 设置表格内容文本行高
+   *
+   * @param lineHeight 内容文本行高
+   * @return TableTheme
+   */
+  setTableContentTextLineHeight(lineHeight: number | string | Resource): TableTheme
+
+  /**
+   * 设置表格内容文本字间距
+   *
+   * @param spacing 内容文本字间距
+   * @return TableTheme
+   */
+  setTableContentTextLetterSpacing(spacing: number): TableTheme
+
+  /**
+   * 设置表格粘性表头
+   *
+   * @param enable 是否启用粘性表头 - 默认false
+   * @return TableTheme
+   */
+  setTableStickyHeader(enable: boolean): TableTheme
+
+  /**
    * 设置表格头是否显示
    *
    * @param enable 是否显示 - 默认true
