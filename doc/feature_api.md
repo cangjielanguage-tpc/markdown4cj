@@ -2046,20 +2046,6 @@ export class MarkdownTheme {
   setHighlightTheme(highlightTheme: HighlightTheme): MarkdownTheme
 
   /**
-   * 设置解析节流开关
-   * @param enableParseThrottle 是否启用解析节流 - 默认false
-   * @return MarkdownTheme
-   */
-  setEnableParseThrottle(enableParseThrottle: boolean): MarkdownTheme
-
-  /**
-   * 设置解析节流时间间隔(ms)
-   * @param parseThrottleMs 解析节流时间间隔 - 默认0
-   * @return MarkdownTheme
-   */
-  setParseThrottleMs(parseThrottleMs: number): MarkdownTheme
-
-  /**
    * 设置各级标题文本尺寸倍率
    * @param headingTextSizeMultipliers 各级标题文本尺寸倍率数组
    * @return MarkdownTheme
