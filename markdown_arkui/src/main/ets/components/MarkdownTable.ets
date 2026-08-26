@@ -298,6 +298,7 @@ export struct MarkdownTable {
           MarkDownTableTitle({
             node: this.node,
             tableTheme: this.tableTheme,
+            blockQuoteTheme: this.blockQuoteTheme,
             tableCopyCallback: this.tableCopyCallback
           })
         }
@@ -405,6 +406,7 @@ export struct MarkdownTable {
           MarkDownTableTitle({
             node: this.node,
             tableTheme: this.tableTheme,
+            blockQuoteTheme: this.blockQuoteTheme,
             tableCopyCallback: this.tableCopyCallback
           })
         }
@@ -561,6 +563,7 @@ export struct MarkdownTable {
               MarkDownTableTitle({
                 node: this.node,
                 tableTheme: this.tableTheme,
+                blockQuoteTheme: this.blockQuoteTheme,
                 tableCopyCallback: this.tableCopyCallback
               })
             }

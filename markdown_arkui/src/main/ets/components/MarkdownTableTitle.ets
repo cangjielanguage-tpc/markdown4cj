@@ -1,11 +1,13 @@
 import { MarkdownNodeViewString } from "../configs/MarkdownNodeViewString"
 import { NodeView } from "../model/NodeView"
+import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { TableTheme } from "../theme/TableTheme"
 
 @Component
 export struct MarkDownTableTitle {
   @ObjectLink @Watch('refreshData') node: NodeView // 表格自身节点数据
   @ObjectLink tableTheme: TableTheme // 表格样式
+  @ObjectLink blockQuoteTheme: BlockQuoteTheme // 块引用样式
   tableCopyCallback?: (str: string) => void // 表格复制点击回调事件
   nodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 表格全部文本对象
 
@@ -59,7 +61,7 @@ export struct MarkDownTableTitle {
     })
     .borderStyle(this.tableTheme.tableBorderStyle)
     .borderColor(this.tableTheme.tableBorderColor)
-    .backgroundColor(this.tableTheme.tableTitleBackgroundColor)
+    .backgroundColor(this.node.isQuote ? this.blockQuoteTheme.blockQuoteBackgroundColor : this.tableTheme.tableTitleBackgroundColor)
     .alignItems(VerticalAlign.Center)
   }
 
