@@ -108,7 +108,7 @@ export class NodeView {
       try {
         current.release()
       } catch (e) {
-        console.error(`${tag} release failed: ` + JSON.stringify(e))
+        console.error(`${tag} release failed: ` + (e instanceof Error ? e.stack : String(e)))
       }
     }
     return source
@@ -198,35 +198,14 @@ export class NodeView {
   }
 
   /**
-   * 递归释放子树中所有节点持有的PixelMap资源
+   * 递归释放子树中所有节点持有的PixelMap资源（不含this自身）
+   * 对每个直接子节点：先释放其自身资源（复用releaseOwnPixelMaps），再递归释放其子树
+   * 资源释放逻辑统一收敛到releaseOwnPixelMaps，避免重复代码导致字段遗漏
    */
   releaseChildrenPixelMaps(): void {
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i]
-      try {
-        if (child.imageReplacePixelMap !== undefined) {
-          child.imageReplacePixelMap.release()
-          child.imageReplacePixelMap = undefined
-        }
-      } catch (e) {
-        console.error('releaseChildrenPixelMaps imageReplacePixelMap release failed: ' + JSON.stringify(e))
-      }
-      try {
-        if (child.latexPixelMap !== undefined) {
-          child.latexPixelMap.release()
-          child.latexPixelMap = undefined
-        }
-      } catch (e) {
-        console.error('releaseChildrenPixelMaps latexPixelMap release failed: ' + JSON.stringify(e))
-      }
-      try {
-        if (child.linkIconPixelMap !== undefined) {
-          child.linkIconPixelMap.release()
-          child.linkIconPixelMap = undefined
-        }
-      } catch (e) {
-        console.error('releaseChildrenPixelMaps linkIconPixelMap release failed: ' + JSON.stringify(e))
-      }
+      child.releaseOwnPixelMaps()
       child.releaseChildrenPixelMaps()
     }
   }
@@ -241,7 +220,7 @@ export class NodeView {
         this.imageReplacePixelMap = undefined
       }
     } catch (e) {
-      console.error('releaseOwnPixelMaps imageReplacePixelMap release failed: ' + JSON.stringify(e))
+      console.error('releaseOwnPixelMaps imageReplacePixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
     try {
       if (this.latexPixelMap !== undefined) {
@@ -249,7 +228,7 @@ export class NodeView {
         this.latexPixelMap = undefined
       }
     } catch (e) {
-      console.error('releaseOwnPixelMaps latexPixelMap release failed: ' + JSON.stringify(e))
+      console.error('releaseOwnPixelMaps latexPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
     try {
       if (this.linkIconPixelMap !== undefined) {
@@ -257,7 +236,7 @@ export class NodeView {
         this.linkIconPixelMap = undefined
       }
     } catch (e) {
-      console.error('releaseOwnPixelMaps linkIconPixelMap release failed: ' + JSON.stringify(e))
+      console.error('releaseOwnPixelMaps linkIconPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
   }
 
