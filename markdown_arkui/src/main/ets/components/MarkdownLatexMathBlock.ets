@@ -33,7 +33,7 @@ export struct MarkdownLatexMathBlock {
       try {
         this.pixelMap.release()
       } catch (e) {
-        console.error('PixelMap release failed: ' + JSON.stringify(e))
+        console.error('PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
       }
       this.pixelMap = undefined
     }

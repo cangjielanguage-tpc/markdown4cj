@@ -1215,15 +1215,28 @@ export struct MarkdownTableCell {
           }
           const imageSource: image.ImageSource = image.createImageSource(buffer)
           imageSource.createPixelMap().then((pm: PixelMap) => {
-            imageSource.release()
+            try {
+              imageSource.release()
+            } catch (e) {
+              console.error('TableCell imageSource release failed: ' + (e instanceof Error ? e.stack : String(e)))
+            }
             if (!this.isAlive || (this.list.indexOf(child) < 0 && !this.isGrandchildInList(child))) {
-              pm.release()
+              try {
+                pm.release()
+              } catch (e) {
+                console.error('TableCell PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+              }
               return
             }
             child.imageReplacePixelMap = pm
             this.list = [...this.list]
-          }).catch(() => {
-            imageSource.release()
+          }).catch((e: Error) => {
+            console.error('TableCell imageReplace failed: ' + (e instanceof Error ? e.stack : String(e)))
+            try {
+              imageSource.release()
+            } catch (err) {
+              console.error('TableCell imageSource release in catch failed: ' + (err instanceof Error ? err.stack : String(err)))
+            }
           })
         }).catch(() => {
           console.error('TableCell imageReplace failed')
@@ -1271,23 +1284,35 @@ export struct MarkdownTableCell {
           .then((result: LinkIconResult | undefined) => {
             if (!this.isAlive || result === undefined) {
               if (result !== undefined) {
-                result.pixelMap.release()
+                try {
+                  result.pixelMap.release()
+                } catch (e) {
+                  console.error('TableCell linkIcon pixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+                }
               }
               return
             }
             if (this.list.indexOf(child) < 0 && !this.isGrandchildInList(child)) {
-              result.pixelMap.release()
+              try {
+                result.pixelMap.release()
+              } catch (e) {
+                console.error('TableCell linkIcon pixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+              }
               return
             }
             if (child.linkIconText !== child.nodeText) {
-              result.pixelMap.release()
+              try {
+                result.pixelMap.release()
+              } catch (e) {
+                console.error('TableCell linkIcon pixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+              }
               return
             }
             if (child.linkIconPixelMap !== undefined) {
               try {
                 child.linkIconPixelMap.release()
               } catch (e) {
-                console.error('linkIconPixelMap release failed: ' + JSON.stringify(e))
+                console.error('linkIconPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
               }
             }
             child.linkIconPixelMap = result.pixelMap
@@ -1295,8 +1320,8 @@ export struct MarkdownTableCell {
             child.linkIconHeight = result.height
             this.list = [...this.list]
           })
-          .catch(() => {
-            console.error('TableCell linkIcon generation failed')
+          .catch((e: Error) => {
+            console.error('TableCell linkIcon generation failed: ' + (e instanceof Error ? e.stack : String(e)))
           })
       }
     }

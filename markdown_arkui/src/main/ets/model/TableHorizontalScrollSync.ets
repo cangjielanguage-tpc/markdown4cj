@@ -109,7 +109,7 @@ export class TableHorizontalScrollSync {
     try {
       scroller.scrollTo({ xOffset: this.offset, yOffset: 0, animation: false })
     } catch (e) {
-      console.error('TableHorizontalScrollSync applyOffsetTo failed: ' + JSON.stringify(e))
+      console.error('TableHorizontalScrollSync applyOffsetTo failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
     this.isSyncing = false
   }
@@ -127,7 +127,7 @@ export class TableHorizontalScrollSync {
     try {
       this.bodyScroller.scrollTo({ xOffset: xOffset, yOffset: 0, animation: false })
     } catch (e) {
-      console.error('TableHorizontalScrollSync syncToBody failed: ' + JSON.stringify(e))
+      console.error('TableHorizontalScrollSync syncToBody failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
     this.isSyncing = false
   }
@@ -145,7 +145,7 @@ export class TableHorizontalScrollSync {
     try {
       this.headerScroller.scrollTo({ xOffset: xOffset, yOffset: 0, animation: false })
     } catch (e) {
-      console.error('TableHorizontalScrollSync syncToHeader failed: ' + JSON.stringify(e))
+      console.error('TableHorizontalScrollSync syncToHeader failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
     this.isSyncing = false
   }

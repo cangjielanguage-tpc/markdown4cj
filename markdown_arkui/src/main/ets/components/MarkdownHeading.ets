@@ -1090,24 +1090,36 @@ export struct MarkdownHeading {
           .then((result: LinkIconResult | undefined) => {
             if (!this.isAlive || result === undefined) {
               if (result !== undefined) {
-                result.pixelMap.release()
+                try {
+                  result.pixelMap.release()
+                } catch (e) {
+                  console.error('Heading linkIcon pixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+                }
               }
               return
             }
             if (this.list.indexOf(child) < 0) {
-              result.pixelMap.release()
+              try {
+                result.pixelMap.release()
+              } catch (e) {
+                console.error('Heading linkIcon pixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+              }
               return
             }
             // 流式输出中文本可能已变化，检查是否仍是生成时的文本
             if (child.linkIconText !== child.nodeText) {
-              result.pixelMap.release()
+              try {
+                result.pixelMap.release()
+              } catch (e) {
+                console.error('Heading linkIcon pixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+              }
               return
             }
             if (child.linkIconPixelMap !== undefined) {
               try {
                 child.linkIconPixelMap.release()
               } catch (e) {
-                console.error('linkIconPixelMap release failed: ' + JSON.stringify(e))
+                console.error('linkIconPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
               }
             }
             child.linkIconPixelMap = result.pixelMap
@@ -1115,8 +1127,8 @@ export struct MarkdownHeading {
             child.linkIconHeight = result.height
             this.list = [...this.list]
           })
-          .catch(() => {
-            console.error('Heading linkIcon generation failed')
+          .catch((e: Error) => {
+            console.error('Heading linkIcon generation failed: ' + (e instanceof Error ? e.stack : String(e)))
           })
       }
     }
@@ -1141,15 +1153,28 @@ export struct MarkdownHeading {
           }
           const imageSource: image.ImageSource = image.createImageSource(buffer)
           imageSource.createPixelMap().then((pm: PixelMap) => {
-            imageSource.release()
+            try {
+              imageSource.release()
+            } catch (e) {
+              console.error('Heading imageSource release failed: ' + (e instanceof Error ? e.stack : String(e)))
+            }
             if (!this.isAlive || this.list.indexOf(child) < 0) {
-              pm.release()
+              try {
+                pm.release()
+              } catch (e) {
+                console.error('Heading PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+              }
               return
             }
             child.imageReplacePixelMap = pm
             this.list = [...this.list]
-          }).catch(() => {
-            imageSource.release()
+          }).catch((e: Error) => {
+            console.error('Heading imageReplace failed: ' + (e instanceof Error ? e.stack : String(e)))
+            try {
+              imageSource.release()
+            } catch (err) {
+              console.error('Heading imageSource release in catch failed: ' + (err instanceof Error ? err.stack : String(err)))
+            }
           })
         }).catch(() => {
           console.error('Heading imageReplace failed')

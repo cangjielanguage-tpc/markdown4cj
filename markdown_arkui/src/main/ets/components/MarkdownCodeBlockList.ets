@@ -338,7 +338,7 @@ export struct MarkdownCodeBlockList {
         this.blocksDataList[idx].blocks = Array.from(prismRes.getListColor())
         this.blocksDataList[idx].defaultFontColor = prismRes.getDefaultFontColor()
       } catch (e) {
-        console.error('CodeBlockList parseChangedCodeSync failed: ' + JSON.stringify(e))
+        console.error('CodeBlockList parseChangedCodeSync failed: ' + (e instanceof Error ? e.stack : String(e)))
       }
     }
   }

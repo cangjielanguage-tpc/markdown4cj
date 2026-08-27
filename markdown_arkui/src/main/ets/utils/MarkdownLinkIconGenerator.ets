@@ -248,7 +248,7 @@ export function generateLinkIconPixelMap(
   try {
     imageSource = image.createImageSource(buffer)
   } catch (e) {
-    console.error('bufferToPixelMap createImageSource failed: ' + JSON.stringify(e))
+    console.error('bufferToPixelMap createImageSource failed: ' + (e instanceof Error ? e.stack : String(e)))
     return Promise.resolve(undefined)
   }
   if (imageSource === undefined || imageSource === null) {
@@ -264,7 +264,7 @@ export function generateLinkIconPixelMap(
           try {
             source.release()
           } catch (e) {
-            console.error('LinkIcon source release failed: ' + JSON.stringify(e))
+            console.error('LinkIcon source release failed: ' + (e instanceof Error ? e.stack : String(e)))
           }
           const result: LinkIconResult = {
             pixelMap: pm,
@@ -277,14 +277,14 @@ export function generateLinkIconPixelMap(
           try {
             pm.release()
           } catch (e) {
-            console.error('LinkIcon pm release failed: ' + JSON.stringify(e))
+            console.error('LinkIcon pm release failed: ' + (e instanceof Error ? e.stack : String(e)))
           }
           if (!imageSourceReleased) {
             imageSourceReleased = true
             try {
               source.release()
             } catch (e) {
-              console.error('LinkIcon source release failed: ' + JSON.stringify(e))
+              console.error('LinkIcon source release failed: ' + (e instanceof Error ? e.stack : String(e)))
             }
           }
           return undefined
@@ -296,7 +296,7 @@ export function generateLinkIconPixelMap(
         try {
           source.release()
         } catch (e) {
-          console.error('LinkIcon source release failed: ' + JSON.stringify(e))
+          console.error('LinkIcon source release failed: ' + (e instanceof Error ? e.stack : String(e)))
         }
       }
       return undefined

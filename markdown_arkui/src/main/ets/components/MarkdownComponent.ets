@@ -6,7 +6,7 @@ import { MarkdownPlugin } from '../plugin/MarkdownPlugin'
 import { CustomViewRegistry } from '../plugin/CustomViewRegistry'
 import { NodeView } from "../model/NodeView"
 import { nodeToNodeView, liftCustomTagBlocks } from "../utils/MarkdownParserUtils"
-import { printNodes, safeString } from "../utils/MarkdownUtils"
+import { safeString } from "../utils/MarkdownUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
 import { image } from "@kit.ImageKit"
@@ -29,7 +29,20 @@ import { StickyScrollYHolder } from "../model/StickyScrollYHolder"
 import { ArrayList } from "@kit.ArkTS"
 import { MarkdownVisibleRectHolder } from "../model/MarkdownVisibleRectHolder"
 import { componentUtils } from "@kit.ArkUI"
-import { printNode } from "@cangjie-tpc/markdown_parser_hybrid/src/main/ets/util"
+
+/**
+ * CJMarkdown 实例 rootId 生成器
+ * 进程内多 CJMarkdown 实例时，每个实例需唯一 rootId 供 componentUtils.getRectangleById 定位
+ * 旧版硬编码 'md-root-' 会导致多实例读取同一组件矩形，链接曝光判定错乱
+ */
+class MarkdownRootIdGenerator {
+  private static counter: number = 0
+  static nextId(): string {
+    const id = MarkdownRootIdGenerator.counter
+    MarkdownRootIdGenerator.counter = id + 1
+    return 'md-root-' + id
+  }
+}
 
 @Component
 export struct CJMarkdown {
@@ -43,7 +56,7 @@ export struct CJMarkdown {
   // 下发给 MarkdownParagraph/MarkdownTableCell 作链接曝光判定的「正交裁剪窗口」
   // （替代整屏高度，避免被标题栏/面板/系统栏遮挡区域误判可见）。
   @Provide('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder = new MarkdownVisibleRectHolder()
-  private rootId: string = 'md-root-' // CJMarkdown 根 List 的唯一 id（componentUtils.getRectangleById 用）。进程内多 CJMarkdown 实例时可能重名，但 demo 单实例够用。
+  private rootId: string = MarkdownRootIdGenerator.nextId() // CJMarkdown 根 List 的唯一 id（componentUtils.getRectangleById 用）。每个实例独立 id，避免多实例碰撞。
   private lastRatio: number = 0 // onVisibleAreaChange 最近一次 ratio（50ms tick 与 rect 一起喂给 holder）
   private visibleTickId: number = -1 // 50ms 轮询定时器：读根 rect + lastRatio → holder.applyRect
   @State componentWidth: number = 0.0 // markdown控件宽度
@@ -191,7 +204,7 @@ export struct CJMarkdown {
       try {
         this.placeholderPixelMap.release()
       } catch (e) {
-        console.error('placeholderPixelMap release failed: ' + JSON.stringify(e))
+        console.error('placeholderPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
       }
       this.placeholderPixelMap = undefined
     }
@@ -938,7 +951,7 @@ export struct CJMarkdown {
           console.error('refreshAsyncData parse failed, keeping last result')
         })
       } catch (e) {
-        console.error('refreshAsyncData sync parse exception: ' + JSON.stringify(e))
+        console.error('refreshAsyncData sync parse exception: ' + (e instanceof Error ? e.stack : String(e)))
       }
     }, 0)
   }
@@ -958,7 +971,7 @@ export struct CJMarkdown {
       }
       this.applyParseResult(node, currentVersion)
     } catch (e) {
-      console.error('refreshSyncData parse failed, keeping last result: ' + JSON.stringify(e))
+      console.error('refreshSyncData parse failed, keeping last result: ' + (e instanceof Error ? e.stack : String(e)))
     }
   }
 
@@ -981,7 +994,7 @@ export struct CJMarkdown {
       liftCustomTagBlocks(nodeView) // 行内自定义标签（如段落中的 <sdui>）提升为块级
       parseOk = true
     } catch (e) {
-      console.error('nodeToNodeView failed: ' + JSON.stringify(e))
+      console.error('nodeToNodeView failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
     this.collectImageAndVideoUrls(node)
     if (!parseOk) {
@@ -1074,20 +1087,20 @@ export struct CJMarkdown {
             try {
               pm.release()
             } catch (e) {
-              console.error('pm release failed: ' + JSON.stringify(e))
+              console.error('pm release failed: ' + (e instanceof Error ? e.stack : String(e)))
             }
             return
           }
           this.placeholderPixelMap = pm
         }
       } catch (e) {
-        console.error('loadPlaceholderImage failed: ' + JSON.stringify(e))
+        console.error('loadPlaceholderImage failed: ' + (e instanceof Error ? e.stack : String(e)))
       } finally {
         if (imageSource !== undefined) {
           try {
             imageSource.release()
           } catch (e) {
-            console.error('imageSource release failed: ' + JSON.stringify(e))
+            console.error('imageSource release failed: ' + (e instanceof Error ? e.stack : String(e)))
           }
         }
       }

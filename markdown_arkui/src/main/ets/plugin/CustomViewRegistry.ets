@@ -83,9 +83,11 @@ export class CustomViewRegistry {
       if (work.indexOf(`<${tag}`) < 0) {
         return
       }
+      // 转义 tag 中的正则特殊字符，防止正则注入导致误匹配或语法错误
+      const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, (c: string) => '\\' + c)
       // 完整开闭标签（内容限单行）或自闭合
       const pattern = new RegExp(
-        `<${tag}(\\s[^>]*?)?>([^\\n]*?)</${tag}\\s*>|<${tag}(\\s[^>]*?)?/>`,
+        `<${escapedTag}(\\s[^>]*?)?>([^\\n]*?)</${escapedTag}\\s*>|<${escapedTag}(\\s[^>]*?)?/>`,
         'g'
       )
       work = work.replace(pattern, (m: string) => {

@@ -86,15 +86,15 @@ export class MarkdownDataSource implements IDataSource {
 
   /**
    * 获取索引值index对应的数据
+   * 越界时返回空NodeView（安全降级，build()渲染空ListItem），
+   * 不再返回dataArray[0]以避免错误内容出现在错误位置（重复渲染）。
+   * LazyForEach在数据变化瞬间可能短暂请求越界index，属正常现象。
    *
    * @param index 索引值
    * @return 数据
    */
   public getData(index: number): NodeView {
     if (index < 0 || index >= this.dataArray.length) {
-      if (this.dataArray.length > 0) {
-        return this.dataArray[0]
-      }
       return new NodeView()
     }
     return this.dataArray[index]

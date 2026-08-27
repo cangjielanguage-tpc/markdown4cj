@@ -1,4 +1,3 @@
-import { JsNodeImpl } from "@cangjie-tpc/markdown_parser_hybrid/Index"
 import {
   SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE,
@@ -303,95 +302,46 @@ export function imageWidthAndHeight(
     return [0, 0]
   }
   const aspectRatio: number = imageResHeight / imageResWidth
+
+  // 根据传入的 imageWidthPx/imageHeightPx 组合确定 baseWidth 和 aspectRatioNew
+  // 4 个分支仅在这两个变量上有差异，其余计算逻辑完全相同（消除原 4x 重复）
+  let baseWidth: number = 0
+  let aspectRatioNew: number = 0
   if (imageWidthPx !== undefined && imageHeightPx !== undefined) {
-    const aspectRatioNew: number = imageWidthPx > 0 ? imageHeightPx / imageWidthPx : aspectRatio
-    let widthNew = (imageFixedRatioWidth !== undefined)
-      ? componentImageWidthPx * imageFixedRatioWidth
-      : Math.min(imageWidthPx, componentImageWidthNew) * imageMaximumWidth
-    widthNew = Math.min(widthNew, componentImageWidthNew)
-    let heightNew: number = widthNew * aspectRatioNew
-    if (imageMaxHeightPx !== undefined) {
-      if (heightNew < imageMaxHeightPx) {
-        width = widthNew
-        height = heightNew
-      } else if (heightNew > 0) {
-        const aspectRatioHeightNew = imageMaxHeightPx / heightNew
-        width = widthNew * aspectRatioHeightNew
-        height = imageMaxHeightPx
-      } else {
-        width = 0
-        height = 0
-      }
-    } else {
+    baseWidth = imageWidthPx
+    aspectRatioNew = imageWidthPx > 0 ? imageHeightPx / imageWidthPx : aspectRatio
+  } else if (imageWidthPx !== undefined) {
+    baseWidth = imageWidthPx
+    aspectRatioNew = aspectRatio
+  } else if (imageHeightPx !== undefined) {
+    baseWidth = imageHeightPx / aspectRatio
+    aspectRatioNew = aspectRatio
+  } else {
+    baseWidth = imageResWidth
+    aspectRatioNew = aspectRatio
+  }
+
+  // 共享的 widthNew / heightNew / imageMaxHeightPx 约束计算
+  let widthNew = (imageFixedRatioWidth !== undefined)
+    ? componentImageWidthPx * imageFixedRatioWidth
+    : Math.min(baseWidth, componentImageWidthNew) * imageMaximumWidth
+  widthNew = Math.min(widthNew, componentImageWidthNew)
+  const heightNew: number = widthNew * aspectRatioNew
+  if (imageMaxHeightPx !== undefined) {
+    if (heightNew < imageMaxHeightPx) {
       width = widthNew
       height = heightNew
-    }
-  } else if (imageWidthPx !== undefined && imageHeightPx === undefined) {
-    let widthNew = (imageFixedRatioWidth !== undefined)
-      ? componentImageWidthPx * imageFixedRatioWidth
-      : Math.min(imageWidthPx, componentImageWidthNew) * imageMaximumWidth
-    widthNew = Math.min(widthNew, componentImageWidthNew)
-    let heightNew: number = widthNew * aspectRatio
-    if (imageMaxHeightPx !== undefined) {
-      if (heightNew < imageMaxHeightPx) {
-        width = widthNew
-        height = heightNew
-      } else if (heightNew > 0) {
-        const aspectRatioHeightNew = imageMaxHeightPx / heightNew
-        width = widthNew * aspectRatioHeightNew
-        height = imageMaxHeightPx
-      } else {
-        width = 0
-        height = 0
-      }
+    } else if (heightNew > 0) {
+      const aspectRatioHeightNew = imageMaxHeightPx / heightNew
+      width = widthNew * aspectRatioHeightNew
+      height = imageMaxHeightPx
     } else {
-      width = widthNew
-      height = heightNew
-    }
-  } else if (imageWidthPx === undefined && imageHeightPx !== undefined) {
-    let widthNew = (imageFixedRatioWidth !== undefined)
-      ? componentImageWidthPx * imageFixedRatioWidth
-      : Math.min(imageHeightPx / aspectRatio, componentImageWidthNew) * imageMaximumWidth
-    widthNew = Math.min(widthNew, componentImageWidthNew)
-    let heightNew: number = widthNew * aspectRatio
-    if (imageMaxHeightPx !== undefined) {
-      if (heightNew < imageMaxHeightPx) {
-        width = widthNew
-        height = heightNew
-      } else if (heightNew > 0) {
-        const aspectRatioHeightNew = imageMaxHeightPx / heightNew
-        width = widthNew * aspectRatioHeightNew
-        height = imageMaxHeightPx
-      } else {
-        width = 0
-        height = 0
-      }
-    } else {
-      width = widthNew
-      height = heightNew
+      width = 0
+      height = 0
     }
   } else {
-    let widthNew = (imageFixedRatioWidth !== undefined)
-      ? componentImageWidthPx * imageFixedRatioWidth
-      : Math.min(imageResWidth, componentImageWidthNew) * imageMaximumWidth
-    widthNew = Math.min(widthNew, componentImageWidthNew)
-    let heightNew: number = widthNew * aspectRatio
-    if (imageMaxHeightPx !== undefined) {
-      if (heightNew < imageMaxHeightPx) {
-        width = widthNew
-        height = heightNew
-      } else if (heightNew > 0) {
-        const aspectRatioHeightNew = imageMaxHeightPx / heightNew
-        width = widthNew * aspectRatioHeightNew
-        height = imageMaxHeightPx
-      } else {
-        width = 0
-        height = 0
-      }
-    } else {
-      width = widthNew
-      height = heightNew
-    }
+    width = widthNew
+    height = heightNew
   }
   return [width, height]
 }
@@ -986,7 +936,7 @@ export function parsePicStyle(picStyle: Array<string> | undefined): PicStyleObj 
         applyStyleProp(style, picStyleObj)
       }
     } catch (e) {
-      console.error('parsePicStyle parse error: ' + JSON.stringify(e))
+      console.error('parsePicStyle parse error: ' + (e instanceof Error ? e.stack : String(e)))
     }
   }
   return picStyleObj
@@ -1118,7 +1068,7 @@ export function urlSafeBase64Decode(v: string): string {
     }
     return ''
   } catch (e) {
-    console.error('getFileExtensionFromUrl failed: ' + JSON.stringify(e))
+    console.error('getFileExtensionFromUrl failed: ' + (e instanceof Error ? e.stack : String(e)))
     return ''
   }
 }
@@ -1210,35 +1160,5 @@ export function safeString(str: string | null | undefined): string {
     return "";
   }
   return str;
-}
-
-export function printNodes(node: JsNodeImpl| null | undefined) {
-  if(node !== null && node != undefined){
-    let current = node
-    while (current.parent !== null && current.parent != undefined){
-      current = current.parent
-    }
-    let builder:String = ""
-    printNode2(current, 0, builder)
-  }
-}
-
- function printNode2(node: JsNodeImpl| null | undefined, depth: number, builder: String) {
-  if(node !== null && node != undefined){
-    let str = (node.nodeType+"---"+node.toStr).toString().replace("\n","\\n")
-    builder = dealWithBuilder(builder,depth,str)
-    let child = node.firstChild
-    printNode2(child,depth+4,builder)
-    let next = node.next
-    printNode2(next,depth,builder)
-  }
-}
-
-function dealWithBuilder(builder:String,depth:number,str:String):string{
-  for(let i = 0;i<depth;i++){
-    builder = builder+" "
-  }
-  let res = builder.toString()+str+"\n"
-  return res
 }
 

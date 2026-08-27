@@ -51,7 +51,7 @@ export struct MarkdownVideo {
         this.time = formatDurationToTime(time)
       })
     } catch (e) {
-      console.error('MarkdownVideo refreshData error: ' + JSON.stringify(e))
+      console.error('MarkdownVideo refreshData error: ' + (e instanceof Error ? e.stack : String(e)))
     }
   }
 

@@ -285,7 +285,7 @@ function updateReusedImageNode(
       try {
         prevChild.imageReplacePixelMap.release()
       } catch (e) {
-        console.error('Image imageReplacePixelMap release failed: ' + JSON.stringify(e))
+        console.error('Image imageReplacePixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
       }
       prevChild.imageReplacePixelMap = undefined
     }
@@ -326,7 +326,7 @@ function updateReusedLinkNode(
       try {
         prevChild.linkIconPixelMap.release()
       } catch (e) {
-        console.error('Link linkIconPixelMap release failed: ' + JSON.stringify(e))
+        console.error('Link linkIconPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
       }
       prevChild.linkIconPixelMap = undefined
     }
@@ -388,7 +388,7 @@ function updateReusedLeafNode(
           try {
             prevChild.latexPixelMap.release()
           } catch (e) {
-            console.error('LatexMathNode latexPixelMap release failed: ' + JSON.stringify(e))
+            console.error('LatexMathNode latexPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
           }
           prevChild.latexPixelMap = undefined
         }

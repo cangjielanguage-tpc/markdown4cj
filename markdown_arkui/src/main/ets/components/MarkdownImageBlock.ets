@@ -42,7 +42,7 @@ export struct MarkdownImageBlock {
       try {
         this.replacePixelMap.release()
       } catch (e) {
-        console.error('ImageBlock replacePixelMap release failed: ' + JSON.stringify(e))
+        console.error('ImageBlock replacePixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
       }
       this.replacePixelMap = undefined
     }
@@ -98,7 +98,7 @@ export struct MarkdownImageBlock {
       try {
         this.replacePixelMap.release()
       } catch (e) {
-        console.error('ImageBlock replacePixelMap release failed: ' + JSON.stringify(e))
+        console.error('ImageBlock replacePixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
       }
       this.replacePixelMap = undefined
     }
@@ -328,13 +328,13 @@ export struct MarkdownImageBlock {
         try {
           imageSource.release()
         } catch (e) {
-          console.error('ImageBlock imageSource release failed: ' + JSON.stringify(e))
+          console.error('ImageBlock imageSource release failed: ' + (e instanceof Error ? e.stack : String(e)))
         }
         if (!this.isAlive || myToken !== this.replaceToken) {
           try {
             pm.release()
           } catch (e) {
-            console.error('ImageBlock pm release failed: ' + JSON.stringify(e))
+            console.error('ImageBlock pm release failed: ' + (e instanceof Error ? e.stack : String(e)))
           }
           return
         }
@@ -342,7 +342,7 @@ export struct MarkdownImageBlock {
           try {
             this.replacePixelMap.release()
           } catch (e) {
-            console.error('ImageBlock replacePixelMap release failed: ' + JSON.stringify(e))
+            console.error('ImageBlock replacePixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
           }
         }
         this.replacePixelMap = pm
@@ -350,7 +350,7 @@ export struct MarkdownImageBlock {
         try {
           imageSource.release()
         } catch (e) {
-          console.error('ImageBlock imageSource release failed: ' + JSON.stringify(e))
+          console.error('ImageBlock imageSource release failed: ' + (e instanceof Error ? e.stack : String(e)))
         }
         if (this.isAlive && myToken === this.replaceToken) {
           this.replaceFailed = true
