@@ -2,7 +2,7 @@
 
 ## 一、快速开始
 
-在页面上渲染一段 Markdown，只需要一个组件 + 一个配置对象：
+在页面上渲染一段 Markdown，最简单只需要一个组件 + 一个MarkdownConfiguration对象,
 
 ```typescript
 import { CJMarkdown, MarkdownConfiguration } from '@cangjie-tpc/markdown_arkui'
@@ -10,26 +10,54 @@ import { CJMarkdown, MarkdownConfiguration } from '@cangjie-tpc/markdown_arkui'
 build() {
   Column() {
     CJMarkdown({
-      content: this.content,                      // 传入 Markdown 文本
-      config: new MarkdownConfiguration()         // 配置/回调
+      content: this.content,                      // 传入 Markdown 文本  //必填
+      config: new MarkdownConfiguration()         // 配置/回调           //必填
     })
   }
   .width('100%')
-  .padding(10)
+  .padding(10)                                                                                                                                                                                                                                                                                                                                                                                                                                              
 }
 ```
 
-| 组成 | 说明 |
-| --- | --- |
-| 组件 | `CJMarkdown`（渲染入口，`content` 为响应式属性，内容变化自动增量渲染） |
-| 配置 | `MarkdownConfiguration`（交互回调、样式注入、全局文本提取） |
-| 插件 | `MarkdownPlugin`（特性开关，默认全关） |
-| 样式 | `MarkdownTheme`（主题定制，默认内置浅色/深色两套） |
+当然还可以加其他辅助配置扩展功能
+
+
+| CJMarkdown 参数 | 类型 | 必填 | 说明 |
+| --- | --- | :-: | --- |
+| `content` | `string` | ✅ | Markdown 文档内容（响应式，变化自动增量解析渲染） |
+| `config` | `MarkdownConfiguration` | ✅ | 配置与交互回调 |
+| `plugin` | `MarkdownPlugin` | ❌ | 特性开关（默认全关；有默认值 `new MarkdownPlugin()`，可省略） |
+| `scroller` | `Scroller` | ❌ | 列表控制器（TOC/脚注跳转滚动用；有默认值 `new Scroller()`，可省略） |
+| `scrollController` | `MarkdownScrollController` | ❌ | 外层滚动控制器（不固定高度模式/吸顶联动用） |
+| `blockImageCardComponent` | `@Builder (desc, imageSrc, title)` | ❌ | 块级图片自定义卡片，见 §3.4 |
+| `blockLinkCardComponent` | `@Builder (desc, link, title)` | ❌ | 块级链接自定义卡片，见 §3.4 |
+| `customTagViewComponent` | `@Builder (tag, attrs, content)` | ❌ | 自定义标签（如 `<sdui>`）渲染，见 §3.5 |
+
+```typescript
+import { CJMarkdown, MarkdownConfiguration } from '@cangjie-tpc/markdown_arkui'
+
+build() {
+  Column() {
+    CJMarkdown({
+      content: string
+      config: new MarkdownConfiguration()
+      plugin: new MarkdownPlugin()
+      scroller: new Scroller()
+      scrollController: new MarkdownScrollController()
+      @BuilderParam blockImageCardComponent: (desc: string, imageSrc: string, title: string) => void
+      @BuilderParam blockLinkCardComponent: (desc: string, link: string, title: string) => void
+      @BuilderParam customTagViewComponent: (tag: string, attrs: Record<string, string>, content: string) => void
+    })
+  }
+  .width('100%')
+  .padding(10)                                                                                                                                                                                                                                                                                                                                                                                                                                              
+}
+```
 
 ## 二、接入流水线（4 步）
 
 ```
-工程 → ①引入依赖 → ②构造三件套 → ③注入组件 → ④主题适配
+工程 → ①引入依赖 → ②构造三件套 → ③注入组件
 ```
 
 ### ① 引入依赖
@@ -57,11 +85,90 @@ build() {
 @State mdPlugin: MarkdownPlugin = new MarkdownPlugin()
 
 aboutToAppear(): void {
-  this.mdTheme = this.buildTheme()   //buildTheme为伪代码
-  this.mdPlugin = this.buildPlugin()  //buildPlugin为伪代码
-  this.mdConfig = this.buildConfig()  //buildConfig为伪代码
+  this.mdTheme = this.setMarkdownTheme()   //buildTheme为伪代码
+  this.mdPlugin = this.setPlugin()  
+  this.mdConfig = this.setMarkdownConfig()  //buildConfig为伪代码
   this.mdConfig.setMarkdownTheme(this.mdTheme)   // 配置挂样式
 }
+
+
+setPlugin(): MarkdownPlugin {
+  let plugin: MarkdownPlugin = new MarkdownPlugin()
+  plugin.setIsTablePlugin(true) // 表格插件
+  plugin.setIsLatexMathPlugin(true) // 数学公式插件
+  plugin.setIsStrikethroughPlugin(true) // 删除线插件
+  plugin.setIsTaskListPlugin(true) // 任务列表插件
+  plugin.setIsLinkifyPlugin(true) // 自动链接插件
+  plugin.setIsBlockAudioPlugin(true) // 音频插件
+  plugin.setIsBlockVideoPlugin(true) // 视频插件
+  plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件
+  plugin.setIsImageTextMixPlugin(true) // 图文不混排插件
+  plugin.setIsImageSlidePlugin(true) // 图片banner
+  plugin.setIsCodeListPlugin(true) // 代码块列表
+  plugin.setIsImageStylePlugin(true) // 图片样式
+  plugin.setIsTocPlugin(true) // TOC插件
+  plugin.setIsFootnotePlugin(true) // 脚注
+  plugin.setIsHtmlPlugin(true) // Html插件
+  plugin.setIsLinkViewPlugin(true) // 链接单独块解析插件
+  plugin.setIsDescListPlugin(true) // 定义列表解析插件
+  plugin.setIsHeadIDPlugin(true) // 标题ID解析插件
+  return plugin
+}
+
+setMarkdownConfig(): MarkdownConfiguration {
+  let config = new MarkdownConfiguration()
+  config.setLinkCallback(this.linkCallBack.bind(this))
+  config.setImageCallback(this.imageCallback.bind(this))
+  config.setAudioCallback(this.audioCallback.bind(this))
+  config.setVideoCallback(this.videoCallback.bind(this))
+  config.setVideoImageCallback(this.videoImageCallback.bind(this))
+  config.setCodeCopyCallback(this.codeCopyCallback.bind(this))
+  config.setCodeFullScreenCallback(this.codeFullScreenCallback.bind(this))
+  config.setLatexImageCallback(this.latexCallBack.bind(this))
+  config.setTocIndexCallback(this.tocIndexCallback.bind(this))
+  config.setFootnoteCallback(this.footnoteCallback.bind(this))
+  if (this.beforeSelectedParagraphBackgroundColor !== undefined) {
+    config.getMarkdownHighlightParagraph().setBeforeSelectedParagraphBackgroundColor(this.beforeSelectedParagraphBackgroundColor)
+  }
+  if (this.selectedParagraphBackgroundColor !== undefined) {
+    config.getMarkdownHighlightParagraph().setSelectedParagraphBackgroundColor(this.selectedParagraphBackgroundColor)
+  }
+  config.setCustomLongPressCallback(this.longPressCallback.bind(this))
+  return config
+}
+
+setMarkdownTheme(): MarkdownTheme {
+  let theme = new MarkdownTheme()
+  if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+    theme.setDefaultTheme()
+  } else {
+    theme.setDarculaTheme()
+  }
+  // ---------- 通用 - Global
+  let globalTheme: GlobalTheme = new GlobalTheme()
+  if (this.globalBackgroundColor !== undefined) {
+    globalTheme.setBackgroundColor(this.globalBackgroundColor)
+  }
+  globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+  globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+  globalTheme.setIsLineBreak(this.isLineBreak)
+  globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+  globalTheme.setIsOnCopy(this.isOnCopy)
+  globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+  globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+  globalTheme.setParseThrottleMs(this.parseThrottleMs)
+  theme.setGlobalTheme(globalTheme)
+  // ---------- 专有
+  theme.setCodeFullScreenIcon($r('app.media.startIcon'))
+  theme.setCodeCopyIcon($r('app.media.startIcon'))
+  theme.setAudioIcon($r('app.media.startIcon'))
+  theme.setVideoImage($r('app.media.place_holder'))
+  theme.setPlayCircleFillIcon($r('app.media.play_circle_fill'))
+  theme.setBannerImage($r('app.media.place_holder'))
+  theme.setImageResource($r('app.media.place_holder'))
+  return theme
+}
+
 ```
 
 ### ③ 注入组件
@@ -89,53 +196,30 @@ tocIndexCallback(index: number | undefined): void {
 }
 ```
 
-| CJMarkdown 参数 | 类型 | 必填 | 说明 |
-| --- | --- | :-: | --- |
-| `content` | `string` | ✅ | Markdown 文档内容（响应式，变化自动增量解析渲染） |
-| `config` | `MarkdownConfiguration` | ✅ | 配置与交互回调 |
-| `plugin` | `MarkdownPlugin` | ❌ | 特性开关（默认全关；有默认值 `new MarkdownPlugin()`，可省略） |
-| `scroller` | `Scroller` | ❌ | 列表控制器（TOC/脚注跳转滚动用；有默认值 `new Scroller()`，可省略） |
-| `scrollController` | `MarkdownScrollController` | ❌ | 外层滚动控制器（不固定高度模式/吸顶联动用） |
-| `blockImageCardComponent` | `@Builder (desc, imageSrc, title)` | ❌ | 块级图片自定义卡片，见 §3.4 |
-| `blockLinkCardComponent` | `@Builder (desc, link, title)` | ❌ | 块级链接自定义卡片，见 §3.4 |
-| `customTagViewComponent` | `@Builder (tag, attrs, content)` | ❌ | 自定义标签（如 `<sdui>`）渲染，见 §3.5 |
-
-### ④ 主题适配
-
-深浅色跟随系统，或用内置主题一键切换：
-
-```typescript
-buildTheme(): MarkdownTheme {
-  let theme = new MarkdownTheme()
-  if (isDark) {
-    theme.setDarculaTheme()   // 深色
-  } else {
-    theme.setDefaultTheme()   // 浅色
-  }
-  return theme
-}
-```
 
 ## 三、核心接口
 
 ### 3.1 MarkdownConfiguration（配置/回调）
 
 | 能力 | 接口 | 说明 |
-| --- | --- | --- |
-| 样式注入 | `setMarkdownTheme(theme)` | 挂载体 |
-| 链接 | `setLinkCallback(cb)` | `(url: string) => void` |
-| 图片 | `setImageCallback(cb)` | `(url, urlList: Array<string>) => void` |
-| 图片替换 | `setImageReplaceCallback(cb)` | `(url) => Promise<ArrayBuffer \| undefined>` |
-| 音频/视频 | `setAudioCallback / setVideoCallback` | 点击回调 |
-| 视频首帧 | `setVideoImageCallback(cb)` | `(url, cb) => void` 回调占位图/宽高比/时长 |
-| 代码 | `setCodeCopyCallback / setCodeFullScreenCallback` | 复制 / 全屏 |
-| 数学公式 | `setLatexImageCallback / setLatexStrCallback` | 公式图片点击 / 预处理 |
-| TOC/脚注 | `setTocIndexCallback / setFootnoteCallback` | 偏移量回调 |
-| 长按复制 | `setTextCopyCallback(cb)` | 文本复制 |
-| 自定义长按 | `setCustomLongPressCallback(cb)` | `(str: string) => void` |
-| 曝光统计 | `setElementExposureCallback + setExposureThreshold` | 元素曝光 |
-| 全局文本 | `setNodeString(nodeString)` | 提取整篇纯文本（`nodeString.toString()`） |
-| 段落高亮 | `getMarkdownHighlightParagraph()` | 见 §3.4 |
+| --- | --- | ---  |
+| 样式注入 | `setMarkdownTheme(theme)` | 设置markdown样式 |
+| 链接 | `setLinkCallback(cb)` | 设置链接点击回调 |
+| 图片 | `setImageCallback(cb)/setImageDownloadCallback(cb)` | 设置图片点击回调/设置图片下载的点击事件|
+| 表格 | `setTableCopyCallback(cb)` | 设置表格复制的点击事件|
+| 段落 | `setParagraphHeadingAnimationStart(cb)/setParagraphHeadingAnimationEnd(cb)` | 设置段落动画开始/结束回调|
+| 图片替换 | `setImageReplaceCallback(cb)` | 设置图片替换事件|
+| 音频/视频 | `setAudioCallback(cb) / setVideoCallback(cb)` | 设置音/视频点击回调 |
+| 视频首帧 | `setVideoImageCallback(cb)` | 设置视频占位图和宽高比和视频时长的回调 |
+| 视频发布 | `setVideoReleaseCallback(cb)/setVideoDownloadCallback(cb)` | 设置视频发布/下载的点击事件 |
+| 代码 | `setCodeCopyCallback(cb) / setCodeFullScreenCallback(cb)` | 设置代码复制点击回调/设置代码全屏点击回调 |
+| 数学公式 | `setLatexImageCallback(cb) / setLatexStrCallback(cb)` | 设置数学公式图片点击回调/设置数学公式数据处理事件 |
+| TOC/脚注 | `setTocIndexCallback(cb) / setFootnoteCallback(cb)` | 设置TOC点击回调/设置脚注点击回调 |
+| 长按复制 | `setTextCopyCallback(cb)` | 设置文本复制的点击事件 |
+| 自定义长按 | `setCustomLongPressCallback(cb)` | 自定义长按事件 |
+| 曝光统计 | `setElementExposureCallback(cb) + setExposureThreshold(number)` | 设置元素曝光回调/设置曝光可见阈值 |
+| 全局文本 | `setNodeString(MarkdownNodeViewString)` | 设置全局文本对象 |
+| 段落高亮 | `getMarkdownHighlightParagraph()` | 获取高亮设置对象 |
 
 ### 3.2 MarkdownPlugin（特性开关）
 
@@ -162,23 +246,59 @@ plugin.setIsHeadIDPlugin(true)         // 标题 ID
 plugin.setIsSubPlugin / setIsSupPlugin // 下标 / 上标
 plugin.setIsEmojiPlugin(enable, light) // Emoji
 plugin.setIsWhitelistPlugin(mode)      // 白名单过滤
-plugin.setIsBlockCustomCardPlugin(true) // 自定义卡片（块级图片/链接转卡片）
+plugin.setIsLinkViewPlugin(true)       // 链接单独块解析插件
+plugin.setIsHighlightPlugin(true)      // 加载高亮解析插件
+plugin.setIsBlockCustomCardPlugin(true,(desc: string, imageSrc: string, title: string) => boolean,(desc: string, link: string, title: string) => boolean) // 自定义卡片（块级图片/链接转卡片）
 ```
 
 ### 3.3 MarkdownTheme（主题定制）
 
-所有子主题均通过 `Index.ets` 导出，可独立 `new` 后注入：
+所有子主题类均通过 `Index.ets` 导出，可独立 `new` 后注入到 `MarkdownTheme`（所有 `setXxxTheme` 均返回 `MarkdownTheme`，支持链式调用）：
 
 ```typescript
-theme.setGlobalTheme(new GlobalTheme())          // 全局、块间距、是否换行
-theme.setParagraphTheme(new ParagraphTheme())    // 段落
-theme.setHeadingTheme(new HeadingTheme())        // 标题（含 H1-H6）
-theme.setCodeBlockTheme(new CodeBlockTheme())    // 代码块（含复制/全屏按钮）
-theme.setTableTheme(new TableTheme())            // 表格（边框/单元格/标题/粘性表头）
-theme.setLinkTheme(new LinkTheme())              // 链接
-theme.setImageTheme(new ImageTheme())            // 图片
-// 音频 / 视频 / Banner / 列表 / 引用 / 脚注 / 数学公式等一应俱全，方法见 doc/feature_api.md
+let theme = new MarkdownTheme()
+theme.setDefaultTheme()                                    // 内置浅色主题
+// theme.setDarculaTheme()                                 // 内置深色主题
+
+// 全局
+theme.setGlobalTheme(new GlobalTheme())                    // 全局：外边距/块间距/换行/解析同步/长按复制/曝光
+// 文本样式
+theme.setBoldTheme(new BoldTheme())                        // 加粗
+theme.setItalicTheme(new ItalicTheme())                    // 斜体
+theme.setStrikethroughTheme(new StrikethroughTheme())      // 删除线
+theme.setHighlightTheme(new HighlightTheme())              // 高亮
+theme.setSubTheme(new SubTheme())                          // 下标
+theme.setSupTheme(new SupTheme())                          // 上标
+theme.setInlineCodeTheme(new InlineCodeTheme())            // 行内代码
+theme.setHtmlUnderlineTheme(new HtmlUnderlineTheme())      // HTML 下划线
+// 段落 / 标题 / 分割线 / 引用
+theme.setParagraphTheme(new ParagraphTheme())              // 段落
+theme.setHeadingTheme(new HeadingTheme())                  // 标题（含 H1-H6）
+theme.setDividerTheme(new DividerTheme())                  // 分割线
+theme.setBlockQuoteTheme(new BlockQuoteTheme())            // 块引用
+// 列表
+theme.setBulletListTheme(new BulletListTheme())            // 无序 / 任务列表
+theme.setOrderedListTheme(new OrderedListTheme())          // 有序列表
+theme.setDefinitionListTheme(new DefinitionListTheme())    // 定义列表
+// 表格
+theme.setTableTheme(new TableTheme())                      // 表格（边框/单元格/标题头/粘性表头）
+// 代码
+theme.setCodeBlockTheme(new CodeBlockTheme())              // 代码块（类型文本/复制/全屏/行号/高亮）
+// 链接
+theme.setLinkTheme(new LinkTheme())                        // 链接
+// 图片 / 音频 / 视频 / Banner
+theme.setImageTheme(new ImageTheme())                      // 图片
+theme.setAudioTheme(new AudioTheme())                      // 音频
+theme.setVideoTheme(new VideoTheme())                      // 视频
+theme.setBannerTheme(new BannerTheme())                    // 图片 Banner 幻灯片
+// 脚注
+theme.setFootnoteDefTheme(new FootnoteDefTheme())          // 脚注定义
+theme.setFootnoteRefTheme(new FootnoteRefTheme())          // 脚注引用
+// 数学公式
+theme.setLatexMathTheme(new LatexMathTheme())              // 数学公式（LaTeX）
 ```
+
+> 上文为 `MarkdownTheme` 对外暴露的全部 28 个 `setXxxTheme`/`setDefaultTheme`/`setDarculaTheme` 接口，与 `Index.ets` 导出的主题类一一对应；各主题类的字段与方法详见 `doc/feature_api.md`。
 
 ### 3.4 自定义卡片（块级图片 / 块级链接）
 
@@ -302,14 +422,14 @@ installSduiHostRegistry().setAction('phase1Callback', (payload: string, _meta: s
 
 ## 四、职责分层
 
-| 层 | 模块 | 职责 |
-| --- | --- | --- |
-| 使用方（entry） | 页面/组件 | 引入依赖、构造三件套、注入 `CJMarkdown`、实现回调与主题定制 |
+| 层                 | 模块 | 职责 |
+|-------------------| --- | --- |
+| 使用方（entry）        | 页面/组件 | 引入依赖、构造三件套、注入 `CJMarkdown`、实现回调与主题定制 |
 | 库（markdown_arkui） | `CJMarkdown` | 解析调度 + 渲染分发 |
-| 库 | `MarkdownParserUtils` | AST → NodeView 树（含增量复用） |
-| 库 | `MarkdownConfiguration` | 交互回调、样式注入、全局文本、段落高亮 |
-| 库 | `MarkdownPlugin` | 特性开关（表格/公式/音视频/HTML…） |
-| 库 | `MarkdownTheme` 系列 | 全量可定制样式 |
+| 接口                | `MarkdownParserUtils` | AST → NodeView 树（含增量复用） |
+| 接口                  | `MarkdownConfiguration` | 交互回调、样式注入、全局文本、段落高亮 |
+| 接口                  | `MarkdownPlugin` | 特性开关（表格/公式/音视频/HTML…） |
+| 接口                  | `MarkdownTheme` 系列 | 全量可定制样式 |
 
 ## 五、设计要点
 

@@ -323,7 +323,7 @@ struct IndexPage {
             itemListComponent(
               "36、自定义card",
               0xFFFF0000,
-              "pages/customCardPage"
+              "pages/CustomCardPage"
             )
           }
 

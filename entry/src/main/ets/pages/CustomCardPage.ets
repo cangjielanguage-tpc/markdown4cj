@@ -14,7 +14,7 @@ import {
 
 @Entry
 @Component
-struct customCardPage {
+struct CustomCardPage {
   // ---------------- 通用
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
@@ -131,7 +131,7 @@ struct customCardPage {
                   this.baseMDData._openGestureSwipeTest = this.openGestureSwipeTest
                   this.baseMDData._pagePath = `${this.rawFilePath}/${item}`
                   // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/customCardDeatilsPage", params: this.baseMDData })
+                  router.pushUrl({ url: "pages/CustomCardDeatilsPage", params: this.baseMDData })
               })
           }
           })

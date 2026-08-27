@@ -40,8 +40,8 @@ export struct MarkDownTableTitle {
 
       Row() {
         Image(this.tableTheme.tableHeadCopyIcon)
-          .width(this.tableHeadCopyIconWidth())
-          .height(this.tableHeadCopyIconHeight())
+          .width(this.tableTheme.tableHeadCopyIconWidth)
+          .height(this.tableTheme.tableHeadCopyIconHeight)
           .objectFit(ImageFit.Contain)
       }
       .onClick(() => {
@@ -63,21 +63,6 @@ export struct MarkDownTableTitle {
     .borderColor(this.tableTheme.tableBorderColor)
     .backgroundColor(this.node.isQuote ? this.blockQuoteTheme.blockQuoteBackgroundColor : this.tableTheme.tableTitleBackgroundColor)
     .alignItems(VerticalAlign.Center)
-  }
-
-  /**
-   * 表格头复制图标宽度：负数/0 等非法尺寸会触发 Image 回退到原图尺寸导致图标异常放大，这里兜底为默认 24.0
-   */
-  private tableHeadCopyIconWidth(): Length {
-    const w = this.tableTheme.tableHeadCopyIconWidth
-    return typeof w === 'number' && w <= 0 ? 24.0 : w
-  }
-  /**
-   * 表格头复制图标高度：同上，负值/0 兜底为默认 24.0
-   */
-  private tableHeadCopyIconHeight(): Length {
-    const h = this.tableTheme.tableHeadCopyIconHeight
-    return typeof h === 'number' && h <= 0 ? 24.0 : h
   }
 
   /**
