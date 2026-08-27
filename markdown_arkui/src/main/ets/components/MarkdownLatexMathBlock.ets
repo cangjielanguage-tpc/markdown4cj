@@ -50,18 +50,20 @@ export struct MarkdownLatexMathBlock {
   /**
    * 将解析任务加入全局队列
    * isQueued去重：避免@Watch高频触发时重复入队
+   * task 返回 Promise<void>：LatexParseQueue.processNext 会自动挂 .then/.catch，
+   * 即便 task 内部 promise 链丢 rejection 也能兜底推进队列，避免永久卡死。
    */
   private enqueueParse(): void {
     if (this.isQueued) {
       return
     }
     this.isQueued = true
-    LatexParseQueue.enqueue(() => {
+    LatexParseQueue.enqueue((): Promise<void> => {
       this.isQueued = false
       if (this.isAlive) {
-        this.latexMathBlockParser()
+        return this.latexMathBlockParser()
       } else {
-        LatexParseQueue.notifyDone()
+        return Promise.resolve()
       }
     })
   }
@@ -143,13 +145,14 @@ export struct MarkdownLatexMathBlock {
   /**
    * 将数学公式文本解析成图片
    * 全局队列保证同一时间只有一个latexStringToImage调用
+   * 返回 Promise<void>：让 processNext 自动接管 .then/.catch，确保任何异步 rejection 都能推进队列
    */
-  private latexMathBlockParser(): void {
+  private latexMathBlockParser(): Promise<void> {
     if (this.pixelMap !== undefined) {
       try {
         this.pixelMap.release()
       } catch (e) {
-        console.error('PixelMap release failed: ' + JSON.stringify(e))
+        console.error('PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
       }
       this.pixelMap = undefined
     }
@@ -164,31 +167,31 @@ export struct MarkdownLatexMathBlock {
       : LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
     const resPath: string | undefined = this.latexMathTheme.latexMathResPath
 
-    latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
+    return latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
       .then((buffer: ArrayBuffer) => {
         if (!this.isAlive) {
           LatexParseQueue.notifyDone()
           return
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
-        imageSource.createPixelMap().then((pm: PixelMap) => {
+        return imageSource.createPixelMap().then((pm: PixelMap) => {
           try {
             imageSource.release()
           } catch (e) {
-            console.error('ImageSource release failed: ' + JSON.stringify(e))
+            console.error('ImageSource release failed: ' + (e instanceof Error ? e.stack : String(e)))
           }
           if (!this.isAlive) {
             try {
               pm.release()
             } catch (e) {
-              console.error('PixelMap release failed: ' + JSON.stringify(e))
+              console.error('PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
             }
             LatexParseQueue.notifyDone()
             return
           }
           this.pixelMap = pm
           this.imageData = buffer
-          pm.getImageInfo().then((info: image.ImageInfo) => {
+          return pm.getImageInfo().then((info: image.ImageInfo) => {
             if (!this.isAlive) {
               LatexParseQueue.notifyDone()
               return
@@ -197,11 +200,13 @@ export struct MarkdownLatexMathBlock {
             this.imageHeight = info.size.height
             this.isParserEnd = true
             LatexParseQueue.notifyDone()
-          }).catch(() => {
+          }).catch((e: Error) => {
+            console.error('latexMathBlockParser getImageInfo failed: '
+              + (e instanceof Error ? e.stack : String(e)))
             try {
               pm.release()
-            } catch (e) {
-              console.error('PixelMap release failed: ' + JSON.stringify(e))
+            } catch (err) {
+              console.error('PixelMap release failed: ' + (err instanceof Error ? err.stack : String(err)))
             }
             this.pixelMap = undefined
             if (this.isAlive) {
@@ -209,11 +214,13 @@ export struct MarkdownLatexMathBlock {
             }
             LatexParseQueue.notifyDone()
           })
-        }).catch(() => {
+        }).catch((e: Error) => {
+          console.error('latexMathBlockParser createPixelMap failed: '
+            + (e instanceof Error ? e.stack : String(e)))
           try {
             imageSource.release()
-          } catch (e) {
-            console.error('ImageSource release failed: ' + JSON.stringify(e))
+          } catch (err) {
+            console.error('ImageSource release failed: ' + (err instanceof Error ? err.stack : String(err)))
           }
           if (this.isAlive) {
             this.isParserEnd = true
@@ -221,7 +228,9 @@ export struct MarkdownLatexMathBlock {
           LatexParseQueue.notifyDone()
         })
       })
-      .catch(() => {
+      .catch((e: Error) => {
+        console.error('latexMathBlockParser latexStringToImage failed: '
+          + (e instanceof Error ? e.stack : String(e)))
         if (this.isAlive) {
           this.isParserEnd = true
         }

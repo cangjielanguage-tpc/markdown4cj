@@ -976,6 +976,8 @@ export struct MarkdownParagraph {
 
   /**
    * 数学公式异步加载入队（从onListChanged提取，refreshData直接调用，不依赖@Watch链）
+   * task 返回 Promise<void>：LatexParseQueue.processNext 会自动挂 .then/.catch，
+   * 即便 task 内部 promise 链丢 rejection 也能兜底推进队列，避免永久卡死。
    */
   private tryEnqueueLatexLoading(): void {
     if (!this.isLatexMathEnabled) {
@@ -984,12 +986,12 @@ export struct MarkdownParagraph {
     for (const child of this.list) {
       if (child.nodeType === "LatexMathNode" && !child.latexIsLoading && child.latexPixelMap === undefined) {
         child.latexIsLoading = true
-        LatexParseQueue.enqueue(() => {
+        LatexParseQueue.enqueue((): Promise<void> => {
           if (this.isAlive) {
-            this.loadLatexImage(child)
+            return this.loadLatexImage(child)
           } else {
             child.latexIsLoading = false
-            LatexParseQueue.notifyDone()
+            return Promise.resolve()
           }
         })
       }
@@ -1115,10 +1117,11 @@ export struct MarkdownParagraph {
    * 异步加载数学公式图片
    * 流式输出时latex文本可能增长，需捕获调用时的文本，回调中校验是否已过期，
    * 避免旧文本的图片覆盖新状态（旧图片闪烁/内存泄漏）。
+   * 返回 Promise<void>：让 processNext 自动接管 .then/.catch，确保任何异步 rejection 都能推进队列。
    *
    * @param item 节点视图
    */
-  private loadLatexImage(item: NodeView): void {
+  private loadLatexImage(item: NodeView): Promise<void> {
     const capturedNodeText: string = item.nodeText
     const strLatexMath: string = this.latexStrCallback(capturedNodeText)
     const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
@@ -1129,7 +1132,7 @@ export struct MarkdownParagraph {
       : LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
     const resPath: string | undefined = this.latexMathTheme.latexMathResPath
 
-    latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
+    return latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
       .then((buffer: ArrayBuffer) => {
         if (!this.isAlive) {
           item.latexIsLoading = false
@@ -1137,17 +1140,29 @@ export struct MarkdownParagraph {
           return
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
-        imageSource.createPixelMap().then((pm: PixelMap) => {
-          imageSource.release()
+        return imageSource.createPixelMap().then((pm: PixelMap) => {
+          try {
+            imageSource.release()
+          } catch (e) {
+            console.error('Paragraph ImageSource release failed: ' + (e instanceof Error ? e.stack : String(e)))
+          }
           if (!this.isAlive) {
-            pm.release()
+            try {
+              pm.release()
+            } catch (e) {
+              console.error('Paragraph PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+            }
             item.latexIsLoading = false
             LatexParseQueue.notifyDone()
             return
           }
-          pm.getImageInfo().then((info: image.ImageInfo) => {
+          return pm.getImageInfo().then((info: image.ImageInfo) => {
             if (!this.isAlive) {
-              pm.release()
+              try {
+                pm.release()
+              } catch (e) {
+                console.error('Paragraph PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+              }
               item.latexIsLoading = false
               LatexParseQueue.notifyDone()
               return
@@ -1155,7 +1170,11 @@ export struct MarkdownParagraph {
             // 流式输出中文本可能已变化，丢弃过期结果
             // 重新触发onListChanged检查是否需要为新文本重新入队加载
             if (item.nodeText !== capturedNodeText) {
-              pm.release()
+              try {
+                pm.release()
+              } catch (e) {
+                console.error('Paragraph PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+              }
               LatexParseQueue.notifyDone()
               this.list = [...this.list]
               return
@@ -1165,7 +1184,7 @@ export struct MarkdownParagraph {
               try {
                 item.latexPixelMap.release()
               } catch (e) {
-                console.error('Paragraph latexPixelMap release failed: ' + JSON.stringify(e))
+                console.error('Paragraph latexPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
               }
             }
             item.latexPixelMap = pm
@@ -1175,23 +1194,37 @@ export struct MarkdownParagraph {
             item.latexIsLoading = false
             this.list = [...this.list]
             LatexParseQueue.notifyDone()
-          }).catch(() => {
-            pm.release()
+          }).catch((e: Error) => {
+            console.error('Paragraph loadLatexImage getImageInfo failed: '
+              + (e instanceof Error ? e.stack : String(e)))
+            try {
+              pm.release()
+            } catch (err) {
+              console.error('Paragraph PixelMap release failed: ' + (err instanceof Error ? err.stack : String(err)))
+            }
             // 仅当文本未变化时才重置loading，避免覆盖新一轮加载的loading状态
             if (item.nodeText === capturedNodeText) {
               item.latexIsLoading = false
             }
             LatexParseQueue.notifyDone()
           })
-        }).catch(() => {
-          imageSource.release()
+        }).catch((e: Error) => {
+          console.error('Paragraph loadLatexImage createPixelMap failed: '
+            + (e instanceof Error ? e.stack : String(e)))
+          try {
+            imageSource.release()
+          } catch (err) {
+            console.error('Paragraph ImageSource release failed: ' + (err instanceof Error ? err.stack : String(err)))
+          }
           if (item.nodeText === capturedNodeText) {
             item.latexIsLoading = false
           }
           LatexParseQueue.notifyDone()
         })
       })
-      .catch(() => {
+      .catch((e: Error) => {
+        console.error('Paragraph loadLatexImage latexStringToImage failed: '
+          + (e instanceof Error ? e.stack : String(e)))
         if (item.nodeText === capturedNodeText) {
           item.latexIsLoading = false
         }
