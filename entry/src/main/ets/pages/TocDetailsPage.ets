@@ -243,16 +243,24 @@ struct TocDetailsPage {
   tocIndexCallback(y: number | undefined): void {
     if(y !==undefined){
       hilog.error(1, "1", `---y:${y}`)
-      // let rect = this.markdownScroller.getItemRect(y)
-      // this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
+      if (this.openGestureSwipeTest) {
+        this.markdownScroller.scrollToIndex(y)
+      } else {
+        let rect = this.markdownScroller.getItemRect(y)
+        this.scroller.scrollTo({xOffset:0, yOffset: rect.y})
+      }
     }
   }
 
   footnoteCallback(y: number | undefined): void {
     if(y !==undefined){
       hilog.error(1, "1", `---y:${y}`)
-      // let rect = this.markdownScroller.getItemRect(y)
-      // this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
+      if (this.openGestureSwipeTest) {
+        this.markdownScroller.scrollToIndex(y)
+      } else {
+        let rect = this.markdownScroller.getItemRect(y)
+        this.scroller.scrollTo({xOffset:0, yOffset: rect.y})
+      }
     }
   }
 }
