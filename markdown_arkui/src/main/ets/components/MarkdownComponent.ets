@@ -56,7 +56,7 @@ export struct CJMarkdown {
   // 下发给 MarkdownParagraph/MarkdownTableCell 作链接曝光判定的「正交裁剪窗口」
   // （替代整屏高度，避免被标题栏/面板/系统栏遮挡区域误判可见）。
   @Provide('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder = new MarkdownVisibleRectHolder()
-  private rootId: string = MarkdownRootIdGenerator.nextId() // CJMarkdown 根 List 的唯一 id（componentUtils.getRectangleById 用）。每个实例独立 id，避免多实例碰撞。
+  private rootId: string = '' // CJMarkdown 根 List 的唯一 id（componentUtils.getRectangleById 用）。在 aboutToAppear 中赋值，避免 struct 字段初始化调用静态方法。
   private lastRatio: number = 0 // onVisibleAreaChange 最近一次 ratio（50ms tick 与 rect 一起喂给 holder）
   private visibleTickId: number = -1 // 50ms 轮询定时器：读根 rect + lastRatio → holder.applyRect
   @State componentWidth: number = 0.0 // markdown控件宽度
@@ -164,6 +164,7 @@ export struct CJMarkdown {
   }
 
   aboutToAppear(): void {
+    this.rootId = MarkdownRootIdGenerator.nextId()
     this.isLatexMathEnabled = this.plugin.isLatexMathPlugin
     if (this.scrollController) {
       this.stickyHolder.enabled = true
