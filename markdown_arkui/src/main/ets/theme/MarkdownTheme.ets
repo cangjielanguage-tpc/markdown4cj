@@ -23,7 +23,10 @@ import {
   COLOR_FFA0A0A0,
   COLOR_FF191919_SCB,
   COLOR_FFE0E0E0_SCB,
-  COLOR_TRANSPARENT_SCB
+  COLOR_TRANSPARENT_SCB,
+  COLOR_FFF5F2F0,
+  COLOR_DD000000,
+  COLOR_FFA9B7C6
 } from "../base/Constants"
 import { BannerTheme } from "./BannerTheme"
 import { BlockQuoteTheme } from "./BlockQuoteTheme"
@@ -179,7 +182,9 @@ export class MarkdownTheme {
     // 删除线主题
     this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF191919) // 删除线文本下划线颜色
     // 代码高亮主题
-    this.codeBlockTheme.setCodeBlockIsDark(false)
+    this.codeBlockTheme.codeBlockIsDark = false
+    this.codeBlockTheme.setCodeBlockBackgroundColor(COLOR_FFF5F2F0)
+    this.codeBlockTheme.setCodeBlockTextFontColor(COLOR_DD000000)
     // 数学公式主题
     this.latexMathTheme.setLatexMathTextColor(COLOR_FF191919)
     this.latexMathTheme.setLatexMathBackgroundColor(COLOR_TRANSPARENT_SCB)
@@ -269,7 +274,9 @@ export class MarkdownTheme {
     // 删除线主题
     this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF404040) // 删除线文本装饰线颜色
     // 代码高亮主题
-    this.codeBlockTheme.setCodeBlockIsDark(true)
+    this.codeBlockTheme.codeBlockIsDark = true
+    this.codeBlockTheme.setCodeBlockBackgroundColor(COLOR_FF2D2D2D)
+    this.codeBlockTheme.setCodeBlockTextFontColor(COLOR_FFA9B7C6)
     // 数学公式主题
     this.latexMathTheme.setLatexMathTextColor(COLOR_FFE0E0E0)
     this.latexMathTheme.setLatexMathBackgroundColor(COLOR_TRANSPARENT_SCB)
