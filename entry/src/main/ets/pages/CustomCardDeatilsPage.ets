@@ -11,7 +11,7 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
-struct customCardDeatilsPage {
+struct CustomCardDeatilsPage {
   // ---------- 通用
   scroller: Scroller = new Scroller() // 滑动控制器
   markdownScroller: Scroller = new Scroller() // Markdown的控制器
