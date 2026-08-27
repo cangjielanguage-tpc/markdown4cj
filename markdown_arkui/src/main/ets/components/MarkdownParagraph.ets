@@ -798,8 +798,8 @@ export struct MarkdownParagraph {
         .borderWidth(this.imageTheme.imageBorderWidth)
         .borderColor(this.imageTheme.imageBorderColor)
         .borderStyle(this.imageTheme.imageBorderStyle)
-        .width(item.imageWidth ?? undefined)
-        .height(item.imageHeight)
+        .width(item.imageWidth ?? 0)
+        .height(item.imageHeight ?? 0)
         .objectFit(this.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
         .constraintSize({ maxWidth: this.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.imageTheme.imageMaxHeight})
@@ -817,10 +817,10 @@ export struct MarkdownParagraph {
           item.imageNaturalWidth = imageLoadResult.width
           item.imageNaturalHeight = imageLoadResult.height
           // 优先用父布局宽度（imageFixedRatioWidth按父宽度计算），父布局未测量时
-          // fallback 到 imageLoadResult.componentWidth（图片自身渲染宽度，回调触发时必>0）
+          // fallback 到 imageLoadResult.width（图片自然宽度，width=0时componentWidth不可用）
           const effectiveWidth: number = this.componentWidth > 0
             ? this.componentWidth
-            : px2vp(imageLoadResult.componentWidth)
+            : px2vp(imageLoadResult.width)
           const l = imageWidthAndHeight(
             effectiveWidth,
             imageLoadResult.width,

@@ -738,8 +738,8 @@ export struct MarkdownHeading {
         .borderWidth(this.imageTheme.imageBorderWidth)
         .borderColor(this.imageTheme.imageBorderColor)
         .borderStyle(this.imageTheme.imageBorderStyle)
-        .width(item.imageWidth ?? undefined)
-        .height(item.imageHeight)
+        .width(item.imageWidth ?? 0)
+        .height(item.imageHeight ?? 0)
         .objectFit(this.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
         .constraintSize({ maxWidth: this.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.imageTheme.imageMaxHeight})
@@ -758,7 +758,7 @@ export struct MarkdownHeading {
           item.imageNaturalHeight = imageLoadResult.height
           const effectiveWidth: number = this.componentWidth > 0
             ? this.componentWidth
-            : px2vp(imageLoadResult.componentWidth)
+            : px2vp(imageLoadResult.width)
           const l = imageWidthAndHeight(
             effectiveWidth,
             imageLoadResult.width,

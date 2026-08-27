@@ -74,6 +74,7 @@ export struct MarkdownTable {
   @Provide('tableColumnWidths') columnWidths: number[] = [] // 列宽快照（@Provide让TableCell通过@Consume直接读取，避免LazyForEach不刷新@Prop的问题）
   @Provide tableContainerId: string = '' // 表格横向body Scroll容器id（TableCell曝光水平可见性判定用）
   private isAlive: boolean = true // 组件是否存活
+  private prevEvenWidth: number = 0 // 上次的evenWidth（componentWidth/列数），用于判断是否需要reset
   // ===== sticky 模式专用 =====
   private headerScroller: Scroller = new Scroller() // sticky 模式 header 横向 Scroll 控制器
   private bodyScroller: Scroller = new Scroller() // sticky 模式 body 横向 Scroll 控制器
@@ -97,13 +98,22 @@ export struct MarkdownTable {
   @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void
 
   /**
-   * componentWidth变化时立即应用列宽
-   * 不清除tracker数据：tracker保留已测量的内容宽度，避免clearWidths后
-   * 内容宽于evenWidth的cell因size不变不触发onSizeChange导致tracker为空
-   * applyColumnWidths内部用max(tracker, evenWidth)确保每列至少evenWidth
-   */
+    * componentWidth变化时立即应用列宽
+    * evenWidth缩小（容器变窄或列数增加）时：saveFallbackAndClear清零cellWidths，
+    * fallback保留宽cell的内容宽度（width>minWidth时记录的=contentWidth）。
+    * - 宽cell：fallback=contentWidth→widths=contentWidth→列宽不变→cell不变→无闪屏
+    * - 窄cell：fallback=0→widths=0→列宽=evenWidth→cell收缩→onSizeChange→重测
+    * evenWidth不变或增大时：tracker值仍有效，无需reset，直接applyColumnWidths
+    */
   onComponentWidthChanged(): void {
+    const evenWidth = this.tableBlockCellSize > 0
+      ? this.componentWidth / this.tableBlockCellSize
+      : 0
+    if (this.prevEvenWidth > 0 && evenWidth < this.prevEvenWidth - 1) {
+      this.cellWidthTracker.saveFallbackAndClear()
+    }
     this.applyColumnWidths()
+    this.prevEvenWidth = evenWidth
   }
 
   aboutToAppear(): void {
@@ -697,8 +707,11 @@ export struct MarkdownTable {
   }
 
   /**
-   * 刷新数据
-   */
+    * 刷新数据
+    * evenWidth缩小（容器变窄或列数增加）时：saveFallbackAndClear清零cellWidths，
+    * 保留fallback和imageFallback→窄cell重测，宽cell不变→增量=全量效果
+    * evenWidth不变或增大时：tracker值仍有效，无需reset，避免columnWidths跳变导致图片闪屏
+    */
   refreshData() {
     if (this.node.children.length === 0) {
       this.markdownDataSource.clear()
@@ -707,6 +720,7 @@ export struct MarkdownTable {
       this.columnWidths = []
       this.oldStickyRowCount = 0
       this.syncManager.reset()
+      this.prevEvenWidth = 0
       return
     }
     // 计算表格总共有几列（取第一行的子节点数）
@@ -717,6 +731,14 @@ export struct MarkdownTable {
     if (cellSize !== this.tableBlockCellSize) {
       this.tableBlockCellSize = cellSize
       this.cellWidthTracker.resize(cellSize)
+    }
+    // evenWidth缩小（容器变窄或列数增加）时才reset，避免每次增量更新都重置导致图片闪屏
+    const evenWidth = this.tableBlockCellSize > 0 && this.componentWidth > 0
+      ? this.componentWidth / this.tableBlockCellSize
+      : 0
+    const needsReset = this.prevEvenWidth > 0 && evenWidth < this.prevEvenWidth - 1
+    if (needsReset) {
+      this.cellWidthTracker.saveFallbackAndClear()
     }
     if (this.tableTheme.tableStickyHeader && this.enableSticky) {
       // sticky 模式：body 行通过 smartUpdateDataArray 就地更新（copyDataFrom），
@@ -744,6 +766,7 @@ export struct MarkdownTable {
     }
     // 立即应用列宽：applyColumnWidths内部有变化检测，宽度未变时不会触发@State重渲染
     this.applyColumnWidths()
+    this.prevEvenWidth = evenWidth
   }
 
   /**
@@ -752,9 +775,9 @@ export struct MarkdownTable {
    * - tracker有数据时：列宽≥内容最大宽度（列对齐）且≥minCellWidth（用户配置）且≥evenWidth（充满屏幕）
    * - tracker无数据时：列宽=max(minCellWidth, evenWidth)（充满屏幕，待cell渲染后tracker更新）
    * - tracker宽度>evenWidth/minCellWidth时：列宽=tracker宽度（内容超宽，横向滚动）
-   */
+    */
   private applyColumnWidths(): void {
-    const trackerWidths = this.cellWidthTracker.getWidths()
+    const trackerWidths: number[] = this.cellWidthTracker.getWidths()
     const newWidths: number[] = [...trackerWidths]
     const minCellWidth = lengthToVpNumber(this.tableTheme.tableMinCellWidth) ?? 0
     if (newWidths.length > 0) {

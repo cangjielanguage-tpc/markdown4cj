@@ -124,6 +124,7 @@ export struct MarkdownTableCell {
   private viewportReady: boolean = false // 视口宽度/屏幕高度是否已就绪
   // CJMarkdown根可见矩形变化监听器（滚动/根尺寸变化时重算曝光）。aboutToAppear注册/aboutToDisappear注销。
   private visibleRectListener: (r: MarkdownVisibleRectSnapshot) => void = () => {}
+  private prevTextLength: number = 0 // 上次list的文本总长度，用于检测内容缩短时清除列宽（如原始markdown→渲染后的链接）
 
   @State textBackgroundColor: ResourceColor = COLOR_TRANSPARENT // 被长按段落实时背景颜色
   @State selectBackgroundColor: ResourceColor = COLOR_FF4A90E2 // 选中文本的背景颜色
@@ -394,7 +395,8 @@ export struct MarkdownTableCell {
         newWidth = newValue.width
       }
       if (newWidth > 0) {
-        this.cellWidthTracker.updateCellWidth(this.tableBlockCellRow, this.tableBlockCellCell, newWidth)
+        const minWidth = Math.max(this.columnWidths[this.tableBlockCellCell] ?? 0, lengthToVpNumber(this.tableTheme.tableMinCellWidth) ?? 0)
+        this.cellWidthTracker.updateCellWidth(this.tableBlockCellRow, this.tableBlockCellCell, newWidth, minWidth)
       }
     })
   }
@@ -861,8 +863,8 @@ export struct MarkdownTableCell {
           .borderWidth(this.imageTheme.imageBorderWidth)
           .borderColor(this.imageTheme.imageBorderColor)
           .borderStyle(this.imageTheme.imageBorderStyle)
-          .width(item.imageWidth ?? undefined)
-          .height(item.imageHeight)
+          .width(item.imageWidth ?? 0)
+          .height(item.imageHeight ?? 0)
           .objectFit(this.imageTheme.imageFitType)
           .verticalAlign(ImageSpanAlignment.CENTER)
           .constraintSize({
@@ -882,9 +884,9 @@ export struct MarkdownTableCell {
             }
             item.imageNaturalWidth = imageLoadResult.width
             item.imageNaturalHeight = imageLoadResult.height
-            // 优先 tableMaxCellWidth，其次父布局宽度，都没有时 fallback 到图片自身渲染宽度
+            // 优先 tableMaxCellWidth，其次父布局宽度，都没有时 fallback 到图片自然宽度
             const cellMaxWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth)
-              ?? (this.componentWidth > 0 ? this.componentWidth : px2vp(imageLoadResult.componentWidth))
+              ?? (this.componentWidth > 0 ? this.componentWidth : px2vp(imageLoadResult.width))
             if (cellMaxWidth <= 0) {
               return
             }
@@ -904,6 +906,7 @@ export struct MarkdownTableCell {
             if (l[0] > 0 && l[1] > 0) {
               item.imageWidth = px2vp(l[0])
               item.imageHeight = px2vp(l[1])
+              this.cellWidthTracker.setFallback(this.tableBlockCellRow, this.tableBlockCellCell, item.imageWidth)
               if (this.list.indexOf(item) >= 0 || this.isGrandchildInList(item)) {
                 this.list = [...this.list]
               }
@@ -965,7 +968,7 @@ export struct MarkdownTableCell {
       if (this.isLatexMathEnabled && item.latexPixelMap !== undefined && item.latexImageWidth > 0 && item.latexImageHeight > 0) {
         ImageSpan(item.latexPixelMap)
           .height(this.latexMathTheme.latexMathTextSize)
-          .width((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize)
+          .width(Math.min((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize, lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? 300))
           .verticalAlign(ImageSpanAlignment.CENTER)
           .constraintSize({ maxWidth: this.tableTheme.tableMaxCellWidth })
           .onClick(() => {
@@ -1169,10 +1172,22 @@ export struct MarkdownTableCell {
   }
 
   /**
-   * list变化时触发异步加载（从refreshData移出tryReplaceImages/tryGenerateLinkIcons，避免每次this.list=[...this.list]都重跑；
-   * 各方法内置tried守卫，重复触发仅遍历检查不会重跑）
-   */
+    * list变化时触发异步加载（从refreshData移出tryReplaceImages/tryGenerateLinkIcons，避免每次this.list=[...this.list]都重跑；
+    * 各方法内置tried守卫，重复触发仅遍历检查不会重跑）
+    * 内容缩短检测：流式输出时原始markdown文本（如[百度](https://...）很长，补全后渲染成短文本（如"百度"）。
+    * minWidth卡在旧值→onSizeChange不触发→tracker有stale值→列宽不收缩。
+    * 通过比较文本总长度检测缩短，缩短时clearCellWidth清除列宽测量值→cell收缩→onSizeChange→重测→列收缩。
+    */
   onListChanged() {
+    // 检测内容是否缩短（如原始markdown→渲染后的链接，文本变短）
+    let totalTextLength = 0
+    for (const item of this.list) {
+      totalTextLength += item.nodeText.length
+    }
+    if (totalTextLength < this.prevTextLength) {
+      this.cellWidthTracker.clearCellWidth(this.tableBlockCellRow, this.tableBlockCellCell)
+    }
+    this.prevTextLength = totalTextLength
     this.tryReplaceImages()
     this.tryGenerateLinkIcons()
     this.tryEnqueueLatexLoading()
@@ -1348,6 +1363,12 @@ export struct MarkdownTableCell {
               item.latexImageWidth = info.size.width
               item.latexImageHeight = info.size.height
               item.latexIsLoading = false
+              this.cellWidthTracker.clearCellWidth(this.tableBlockCellRow, this.tableBlockCellCell)
+              const latexWidth: number = Math.min(
+                (item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize,
+                lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? 300
+              )
+              this.cellWidthTracker.setFallback(this.tableBlockCellRow, this.tableBlockCellCell, latexWidth)
               this.list = [...this.list] // 触发重渲染
               LatexParseQueue.notifyDone()
             }).catch(() => {
