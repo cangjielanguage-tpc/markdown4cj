@@ -166,6 +166,9 @@ export struct CJMarkdown {
    * config 同步后定时器自动启动的问题。
    */
   private onConfigChanged(): void {
+    if (!this.isAlive) {
+      return
+    }
     if (this.isExposureEnabled()) {
       this.startVisibleTickTimer()
     } else {
@@ -1069,6 +1072,9 @@ export struct CJMarkdown {
   /**
    * 从解析器props中收集所有图片和视频URL到imageAndVideoList
    *
+   * links 格式为 JSON 数组字符串（如 ["url1","url2"]），优先用 JSON.parse 解析，
+   * 正确处理 URL 内含逗号/引号等特殊字符。JSON.parse 失败时降级到手动分割。
+   *
    * @param node 解析后的根节点
    */
   private collectImageAndVideoUrls(node: JsNodeImpl): void {
@@ -1076,25 +1082,45 @@ export struct CJMarkdown {
     const prop = node.getProps()
     if (prop !== undefined) {
       const links = prop.get("links")
-      if (links !== undefined) {
-        if (links.length > 0) {
-          let str = links
-          if (str.startsWith('[') && str.endsWith(']')) {
-            str = str.substring(1, str.length - 1)
+      if (links !== undefined && links.length > 0) {
+        // 优先 JSON.parse：正确处理 URL 内含逗号/引号等特殊字符
+        try {
+          const parsed: Object = JSON.parse(links)
+          if (Array.isArray(parsed)) {
+            const arr: Object[] = parsed as Object[]
+            const result: string[] = []
+            for (let i = 0; i < arr.length; i++) {
+              const item: Object = arr[i]
+              if (typeof item === 'string') {
+                const s: string = item as string
+                if (s.length > 0) {
+                  result.push(s)
+                }
+              }
+            }
+            this.imageAndVideoList = result
+            return
           }
-          this.imageAndVideoList = str.split(',')
-            .map((s: string) => s.trim())
-            .filter((s: string) => s.length > 0)
-            .map((s: string) => {
-              if (s.startsWith('"') && s.endsWith('"')) {
-                return s.substring(1, s.length - 1)
-              }
-              if (s.startsWith("'") && s.endsWith("'")) {
-                return s.substring(1, s.length - 1)
-              }
-              return s
-            })
+        } catch (_e) {
+          // 非合法 JSON，降级到手动分割
         }
+        // 降级：处理非 JSON 格式的逗号分隔字符串
+        let str = links
+        if (str.startsWith('[') && str.endsWith(']')) {
+          str = str.substring(1, str.length - 1)
+        }
+        this.imageAndVideoList = str.split(',')
+          .map((s: string) => s.trim())
+          .filter((s: string) => s.length > 0)
+          .map((s: string) => {
+            if (s.startsWith('"') && s.endsWith('"')) {
+              return s.substring(1, s.length - 1)
+            }
+            if (s.startsWith("'") && s.endsWith("'")) {
+              return s.substring(1, s.length - 1)
+            }
+            return s
+          })
       }
     }
   }
