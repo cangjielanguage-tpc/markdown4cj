@@ -1798,14 +1798,14 @@ export class GlobalTheme {
   /**
    * 设置段落加载动画是否启用
    * @param enabled 是否启用
-   * @return ParagraphTheme
+   * @return GlobalTheme
    */
   setParagraphHeadingAnimationEnabled(enabled: boolean): GlobalTheme
 
   /**
    * 设置段落加载动画时长
    * @param duration 动画时长（ms）
-   * @return ParagraphTheme
+   * @return GlobalTheme
    */
   setParagraphHeadingAnimationDuration(duration: number): GlobalTheme
 }
@@ -6544,5 +6544,63 @@ export class MarkdownScrollController {
    * 通知滚动Y变化（由页面在外层 Scroll.onScrollFrameBegin 中调用）
    */
   notifyScrollY(yOffset: number): void
+}
+```
+
+### class MarkdownHighlightParagraph
+
+markdown 段落高亮配置（通过 MarkdownConfiguration#getMarkdownHighlightParagraph 获取）
+
+```ets
+export class MarkdownHighlightParagraph {
+  /**
+   * (markdown解析后自动调用)设置所有可以设置高亮的段落nodeHash集合
+   * @param itemNodeHashList 段落nodeHash集合
+   */
+  setAllParagraphItems(itemNodeHashList: ArrayList<string>): void
+
+  /**
+   * 获取所有可以设置高亮的段落的nodeHash集合
+   * @return 段落nodeHash集合
+   */
+  getAllParagraphItems(): Array<string>
+
+  /**
+   * 获取当前高亮显示的段落nodeHash集合
+   * @return 段落nodeHash集合
+   */
+  getSelectedParagraphItems(): ArrayList<string>
+
+  /**
+   * 设置指定段落高亮显示
+   * @param nodeHash 段落nodeHash
+   * @param color 段落高亮颜色
+   * @return 是否设置成功 false表示已经设置过或设置失败
+   */
+  setParagraphHighlight(nodeHash: string, color: ResourceColor): boolean
+
+  /**
+   * 取消指定段落的高亮
+   * @param nodeHash 段落nodeHash
+   * @return 是否取消成功 false表示该段落没有高亮
+   */
+  clearParagraphHighlight(nodeHash: string): boolean
+
+  /**
+   * 取消所有段落高亮
+   */
+  clearAllParagraphHighlights(): void
+
+  /**
+   * 设置当前长按未触发弹窗时段落前的背景色
+   * @param backgroundColor 段落背景色
+   */
+  setBeforeSelectedParagraphBackgroundColor(backgroundColor: ResourceColor): void
+
+  /**
+   * 设置当前长按放手后选中文字的背景色
+   * @param backgroundColor 选中文字的背景色
+   */
+  setSelectedParagraphBackgroundColor(backgroundColor: ResourceColor): void
 }
 ```
