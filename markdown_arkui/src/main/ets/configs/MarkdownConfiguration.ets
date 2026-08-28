@@ -109,6 +109,9 @@ export class MarkdownConfiguration {
    * @param threshold 0~1，链接与可见区交集面积 / 链接面积 ≥ 此值才算可见。0=漏出任意像素即可见
    */
   setExposureThreshold(threshold: number): MarkdownConfiguration {
+    if (Number.isNaN(threshold)) {
+      return this
+    }
     if (threshold < 0) {
       this.exposureThreshold = 0
     } else if (threshold > 1) {

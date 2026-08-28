@@ -223,7 +223,7 @@ export function evaluateLinkExposure(
     // threshold=0 语义为「露出任意像素即可见」，因此要求 interArea > 0；
     // 若仍用 >=0 会导致完全未进入视口的链接也被判为可见，初始化即全部标记，后续不再触发曝光。
     let visible: boolean
-    if (threshold <= 0) {
+    if (threshold <= 0 || Number.isNaN(threshold)) {
       visible = linkArea > 0 && interArea > 0
     } else {
       visible = linkArea > 0 && (interArea / linkArea) >= threshold
