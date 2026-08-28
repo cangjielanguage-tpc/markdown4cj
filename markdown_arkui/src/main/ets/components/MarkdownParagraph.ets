@@ -128,8 +128,9 @@ export struct MarkdownParagraph {
   @State selectEnd: number = 0 // 选中文本的结束位置
   private textContent: string = "" // 文本内容
   private promptAction: PromptAction = this.getUIContext().getPromptAction()
-  private delayTime: number = 500 // 自定义菜单关闭延时时间（毫秒）
+  private delayTime: number = 300 // 自定义菜单关闭延时时间（毫秒）
   private timerId: number = -1 // 自定义菜单关闭延时定时器 ID
+  private animationTimerId: number = -1 // 段落加载动画结束定时器 ID
   @State @Watch('onParamChange') needHideMenu: boolean = false // 需要监听的条件参数
 
   // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
@@ -169,6 +170,14 @@ export struct MarkdownParagraph {
     if (this.exposureTimerId !== -1) {
       clearTimeout(this.exposureTimerId)
       this.exposureTimerId = -1
+    }
+    if (this.timerId !== -1) {
+      clearTimeout(this.timerId)
+      this.timerId = -1
+    }
+    if (this.animationTimerId !== -1) {
+      clearTimeout(this.animationTimerId)
+      this.animationTimerId = -1
     }
     // 组件回收时，对当前可见的链接补发一次 visible=false（保证显示/消失成对），再重置标志。
     // 按运行时 exposureEnabled 门控：没回调则 httpLinks 恒空、无可见链接，跳过。
@@ -315,7 +324,14 @@ export struct MarkdownParagraph {
     .onAppear(() => {
       if (this.globalTheme.paragraphHeadingAnimationEnabled) {
         this.paragraphHeadingAnimationStart?.()
-        setTimeout(() => {
+        if (this.animationTimerId !== -1) {
+          clearTimeout(this.animationTimerId)
+        }
+        this.animationTimerId = setTimeout(() => {
+          this.animationTimerId = -1
+          if (!this.isAlive) {
+            return
+          }
           this.paragraphHeadingAnimationEnd?.()
         }, this.globalTheme.paragraphHeadingAnimationDuration)
       }
@@ -1288,13 +1304,16 @@ export struct MarkdownParagraph {
   private startDelay(): void {
     this.cancelDelay() // 先清除之前的定时器，防止重复
     this.timerId = setTimeout(() => {
+      this.timerId = -1
+      if (!this.isAlive) {
+        return
+      }
       // 延时到期，再次检查参数状态，参数仍为 true，关闭长按菜单
       if (this.needHideMenu) {
         this.selectStart = -1
         this.selectEnd = -1
         this.textController.closeSelectionMenu()
       }
-      this.timerId = -1
     }, this.delayTime)
   }
 
