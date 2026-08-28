@@ -143,7 +143,7 @@ export class MarkdownVisibleRectHolder {
       try {
         fn(info)
       } catch (e) {
-        // ignore 单个监听者异常
+        console.error('MarkdownVisibleRectHolder.notify listener error: ' + (e instanceof Error ? e.stack : String(e)))
       }
     }
   }
