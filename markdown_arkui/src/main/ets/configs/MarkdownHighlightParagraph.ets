@@ -50,11 +50,11 @@ export class MarkdownHighlightParagraph {
    * @return 是否设置成功 false表示已经设置过或设置失败
    */
   setParagraphHighlight(nodeHash: string, color: ResourceColor): boolean {
-    this.selectedParagraphItem = nodeHash
-    this.selectedParagraphItemColor = color
     if (this.selectedParagraphItems.has(nodeHash)) {
       return false
     } else {
+      this.selectedParagraphItem = nodeHash
+      this.selectedParagraphItemColor = color
       return this.selectedParagraphItems.add(nodeHash)
     }
   }

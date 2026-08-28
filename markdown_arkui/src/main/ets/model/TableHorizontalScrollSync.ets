@@ -5,9 +5,8 @@
  * 任意一端滚动时，通过 currentOffset 读取绝对偏移，再 scrollTo 到另一端，
  * 实现标题行与内容行的横向联动。
  *
- * 防抖策略：
- * - isSyncing 标志位防止 scrollTo 触发的 onDidScroll 回调递归
- * - scrollState 过滤掉程序触发的 Idle 状态，仅同步用户手势触发的滚动
+ * 防递归：调用方 onScrollFrameBegin 中 state !== ScrollState.Idle 过滤程序触发的滚动，
+ * scrollTo({ animation: false }) 不触发 onScrollFrameBegin，无需额外标志位。
  */
 export class TableHorizontalScrollSync {
   /** header 端 Scroller */
@@ -16,8 +15,6 @@ export class TableHorizontalScrollSync {
   private bodyScroller: Scroller | null = null
   /** 当前同步的横向偏移（vp） */
   private offset: number = 0
-  /** 是否正在程序化同步中（防止递归） */
-  private isSyncing: boolean = false
 
   /**
    * 注册 header 端 Scroller
@@ -60,9 +57,6 @@ export class TableHorizontalScrollSync {
    * @param xOffset header 当前绝对横向偏移
    */
   onHeaderScrolled(xOffset: number): void {
-    if (this.isSyncing) {
-      return
-    }
     this.offset = xOffset
     this.syncToBody(xOffset)
   }
@@ -73,9 +67,6 @@ export class TableHorizontalScrollSync {
    * @param xOffset body 当前绝对横向偏移
    */
   onBodyScrolled(xOffset: number): void {
-    if (this.isSyncing) {
-      return
-    }
     this.offset = xOffset
     this.syncToHeader(xOffset)
   }
@@ -105,13 +96,11 @@ export class TableHorizontalScrollSync {
     if (scroller === null || this.offset === 0) {
       return
     }
-    this.isSyncing = true
     try {
       scroller.scrollTo({ xOffset: this.offset, yOffset: 0, animation: false })
     } catch (e) {
       console.error('TableHorizontalScrollSync applyOffsetTo failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
-    this.isSyncing = false
   }
 
   /**
@@ -123,13 +112,11 @@ export class TableHorizontalScrollSync {
     if (this.bodyScroller === null) {
       return
     }
-    this.isSyncing = true
     try {
       this.bodyScroller.scrollTo({ xOffset: xOffset, yOffset: 0, animation: false })
     } catch (e) {
       console.error('TableHorizontalScrollSync syncToBody failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
-    this.isSyncing = false
   }
 
   /**
@@ -141,12 +128,10 @@ export class TableHorizontalScrollSync {
     if (this.headerScroller === null) {
       return
     }
-    this.isSyncing = true
     try {
       this.headerScroller.scrollTo({ xOffset: xOffset, yOffset: 0, animation: false })
     } catch (e) {
       console.error('TableHorizontalScrollSync syncToHeader failed: ' + (e instanceof Error ? e.stack : String(e)))
     }
-    this.isSyncing = false
   }
 }
