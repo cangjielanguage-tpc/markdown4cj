@@ -1242,8 +1242,8 @@ export struct MarkdownTableCell {
               console.error('TableCell imageSource release in catch failed: ' + (err instanceof Error ? err.stack : String(err)))
             }
           })
-        }).catch(() => {
-          console.error('TableCell imageReplace failed')
+        }).catch((e: Error) => {
+          console.error('TableCell imageReplace failed: ' + (e instanceof Error ? e.stack : String(e)))
         })
       }
     }

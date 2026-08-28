@@ -890,7 +890,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkTextFontColor
    * @return MarkdownTheme
    */
-  setLinkColor(linkColor: number): MarkdownTheme {
+  setLinkColor(linkColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkTextFontColor(linkColor)
     return this
   }
@@ -948,7 +948,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkTextBackgroundColor
    * @return MarkdownTheme
    */
-  setLinkBackgroundColor(linkBackgroundColor: number): MarkdownTheme {
+  setLinkBackgroundColor(linkBackgroundColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkTextBackgroundColor(linkBackgroundColor)
     return this
   }
@@ -978,7 +978,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkCircleIconBackgroundColor
    * @return MarkdownTheme
    */
-  setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): MarkdownTheme {
+  setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkCircleIconBackgroundColor(linkCircleImageBackgroundColor)
     return this
   }
@@ -991,7 +991,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkCircleIconButtonBackgroundColor
    * @return MarkdownTheme
    */
-  setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): MarkdownTheme {
+  setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkCircleIconButtonBackgroundColor(linkCircleImageButtonBackgroundColor)
     return this
   }
@@ -1017,7 +1017,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkCircleIconTextColor
    * @return MarkdownTheme
    */
-  setLinkCircleImageTextColor(linkCircleImageTextColor: number): MarkdownTheme {
+  setLinkCircleImageTextColor(linkCircleImageTextColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkCircleIconTextColor(linkCircleImageTextColor)
     return this
   }
@@ -1056,7 +1056,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkRectIconBackgroundColor
    * @return MarkdownTheme
    */
-  setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): MarkdownTheme {
+  setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkRectIconBackgroundColor(linkRectImageBackgroundColor)
     return this
   }
@@ -1069,7 +1069,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkRectIconButtonBackgroundColor
    * @return MarkdownTheme
    */
-  setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): MarkdownTheme {
+  setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkRectIconButtonBackgroundColor(linkRectImageButtonBackgroundColor)
     return this
   }
@@ -1095,7 +1095,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkRectIconTextColor
    * @return MarkdownTheme
    */
-  setLinkRectImageTextColor(linkRectImageTextColor: number): MarkdownTheme {
+  setLinkRectImageTextColor(linkRectImageTextColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkRectIconTextColor(linkRectImageTextColor)
     return this
   }
@@ -1160,7 +1160,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkRectToolIconBackgroundColor
    * @return MarkdownTheme
    */
-  setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): MarkdownTheme {
+  setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkRectToolIconBackgroundColor(linkRectToolImageBackgroundColor)
     return this
   }
@@ -1173,7 +1173,7 @@ export class MarkdownTheme {
    * @useinstead LinkTheme#setLinkRectToolIconButtonBackgroundColor
    * @return MarkdownTheme
    */
-  setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): MarkdownTheme {
+  setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: ResourceColor): MarkdownTheme {
     this.linkTheme.setLinkRectToolIconButtonBackgroundColor(linkRectToolImageButtonBackgroundColor)
     return this
   }
@@ -1329,7 +1329,7 @@ export class MarkdownTheme {
    * @useinstead BlockQuoteTheme#setBlockQuoteLeftBorderColor
    * @return MarkdownTheme
    */
-  setBlockQuoteColor(blockQuoteColor: number): MarkdownTheme {
+  setBlockQuoteColor(blockQuoteColor: ResourceColor): MarkdownTheme {
     this.blockQuoteTheme.setBlockQuoteLeftBorderColor(blockQuoteColor)
     return this
   }
@@ -1342,7 +1342,7 @@ export class MarkdownTheme {
    * @useinstead BlockQuoteTheme#setBlockQuoteBackgroundColor
    * @return MarkdownTheme
    */
-  setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): MarkdownTheme {
+  setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: ResourceColor): MarkdownTheme {
     this.blockQuoteTheme.setBlockQuoteBackgroundColor(blockQuoteBackgroundColor)
     return this
   }
@@ -1430,7 +1430,7 @@ export class MarkdownTheme {
    * @useinstead OrderedListTheme#setOrderedListMarkerTextFontColor
    * @return MarkdownTheme
    */
-  setOrderedListItemColor(orderedListItemColor: number): MarkdownTheme {
+  setOrderedListItemColor(orderedListItemColor: ResourceColor): MarkdownTheme {
     this.orderedListTheme.setOrderedListMarkerTextFontColor(orderedListItemColor)
     return this
   }
@@ -1482,7 +1482,7 @@ export class MarkdownTheme {
    * @useinstead BulletListTheme#setBulletListBulletTextFontColor
    * @return MarkdownTheme
    */
-  setBulletListItemColor(bulletListItemColor: number): MarkdownTheme {
+  setBulletListItemColor(bulletListItemColor: ResourceColor): MarkdownTheme {
     this.bulletListTheme.setBulletListBulletTextFontColor(bulletListItemColor)
     return this
   }
@@ -1549,7 +1549,7 @@ export class MarkdownTheme {
    * @useinstead InlineCodeTheme#setInlineCodeTextFontColor
    * @return MarkdownTheme
    */
-  setCodeTextColor(codeTextColor: number): MarkdownTheme {
+  setCodeTextColor(codeTextColor: ResourceColor): MarkdownTheme {
     this.inlineCodeTheme.setInlineCodeTextFontColor(codeTextColor)
     return this
   }
@@ -1562,7 +1562,7 @@ export class MarkdownTheme {
    * @useinstead InlineCodeTheme#setInlineCodeTextBackgroundColor
    * @return MarkdownTheme
    */
-  setCodeBackgroundColor(codeBackgroundColor: number): MarkdownTheme {
+  setCodeBackgroundColor(codeBackgroundColor: ResourceColor): MarkdownTheme {
     this.inlineCodeTheme.setInlineCodeTextBackgroundColor(codeBackgroundColor)
     return this
   }
@@ -1614,7 +1614,7 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockTextFontColor
    * @return MarkdownTheme
    */
-  setCodeBlockTextColor(codeBlockTextColor: number): MarkdownTheme {
+  setCodeBlockTextColor(codeBlockTextColor: ResourceColor): MarkdownTheme {
     this.codeBlockTheme.setCodeBlockTextFontColor(codeBlockTextColor)
     return this
   }
@@ -1627,7 +1627,7 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockTypeTextFontColor
    * @return MarkdownTheme
    */
-  setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): MarkdownTheme {
+  setCodeBlockTypeTextColor(codeBlockTypeTextColor: ResourceColor): MarkdownTheme {
     this.codeBlockTheme.setCodeBlockTypeTextFontColor(codeBlockTypeTextColor)
     return this
   }
@@ -1694,7 +1694,7 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockBackgroundColor
    * @return MarkdownTheme
    */
-  setCodeBlockBackgroundColor(codeBlockBackgroundColor: number): MarkdownTheme {
+  setCodeBlockBackgroundColor(codeBlockBackgroundColor: ResourceColor): MarkdownTheme {
     this.codeBlockTheme.setCodeBlockBackgroundColor(codeBlockBackgroundColor)
     return this
   }
@@ -1830,7 +1830,7 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectTextColor
    * @return MarkdownTheme
    */
-  setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: number): MarkdownTheme {
+  setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: ResourceColor): MarkdownTheme {
     this.codeBlockTheme.setCodeBlockListTitleSelectTextColor(codeListTitleSelectTextColor)
     return this
   }
@@ -1843,7 +1843,7 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockListTitleUnselectTextColor
    * @return MarkdownTheme
    */
-  setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: number): MarkdownTheme {
+  setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: ResourceColor): MarkdownTheme {
     this.codeBlockTheme.setCodeBlockListTitleUnselectTextColor(codeListTitleUnSelectTextColor)
     return this
   }
@@ -1856,7 +1856,7 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectBackgroundColor
    * @return MarkdownTheme
    */
-  setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): MarkdownTheme {
+  setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: ResourceColor): MarkdownTheme {
     this.codeBlockTheme.setCodeBlockListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor)
     return this
   }
@@ -1869,7 +1869,7 @@ export class MarkdownTheme {
    * @useinstead CodeBlockTheme#setCodeBlockListTitleUnselectBackgroundColor
    * @return MarkdownTheme
    */
-  setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): MarkdownTheme {
+  setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: ResourceColor): MarkdownTheme {
     this.codeBlockTheme.setCodeBlockListTitleUnselectBackgroundColor(codeListTitleUnSelectBackgroundColor)
     return this
   }
@@ -2064,7 +2064,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setTextFontColorForAllHeading
    * @return MarkdownTheme
    */
-  setHeadingTextColor(headingTextColor: number): MarkdownTheme {
+  setHeadingTextColor(headingTextColor: ResourceColor): MarkdownTheme {
     this.headingTheme.setTextFontColorForAllHeading(headingTextColor)
     return this
   }
@@ -2077,7 +2077,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setUnderlineColorForAllHeading
    * @return MarkdownTheme
    */
-  setHeadingBreakColor(headingBreakColor: number): MarkdownTheme {
+  setHeadingBreakColor(headingBreakColor: ResourceColor): MarkdownTheme {
     this.headingTheme.setUnderlineColorForAllHeading(headingBreakColor)
     return this
   }
@@ -2181,7 +2181,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    * @return MarkdownTheme
    */
-  setHeadingTextColor1(headingTextColor1: number): MarkdownTheme {
+  setHeadingTextColor1(headingTextColor1: ResourceColor): MarkdownTheme {
     this.headingTheme.setTextFontColorForDesignateHeading(1, headingTextColor1)
     return this
   }
@@ -2194,7 +2194,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setUnderlineColorForDesignateHeading
    * @return MarkdownTheme
    */
-  setHeadingBreakColor1(headingBreakColor1: number): MarkdownTheme {
+  setHeadingBreakColor1(headingBreakColor1: ResourceColor): MarkdownTheme {
     this.headingTheme.setUnderlineColorForDesignateHeading(1, headingBreakColor1)
     return this
   }
@@ -2207,7 +2207,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    * @return MarkdownTheme
    */
-  setHeadingTextColor2(headingTextColor2: number): MarkdownTheme {
+  setHeadingTextColor2(headingTextColor2: ResourceColor): MarkdownTheme {
     this.headingTheme.setTextFontColorForDesignateHeading(2, headingTextColor2)
     return this
   }
@@ -2220,7 +2220,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setUnderlineColorForDesignateHeading
    * @return MarkdownTheme
    */
-  setHeadingBreakColor2(headingBreakColor2: number): MarkdownTheme {
+  setHeadingBreakColor2(headingBreakColor2: ResourceColor): MarkdownTheme {
     this.headingTheme.setUnderlineColorForDesignateHeading(2, headingBreakColor2)
     return this
   }
@@ -2233,7 +2233,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    * @return MarkdownTheme
    */
-  setHeadingTextColor3(headingTextColor3: number): MarkdownTheme {
+  setHeadingTextColor3(headingTextColor3: ResourceColor): MarkdownTheme {
     this.headingTheme.setTextFontColorForDesignateHeading(3, headingTextColor3)
     return this
   }
@@ -2246,7 +2246,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    * @return MarkdownTheme
    */
-  setHeadingTextColor4(headingTextColor4: number): MarkdownTheme {
+  setHeadingTextColor4(headingTextColor4: ResourceColor): MarkdownTheme {
     this.headingTheme.setTextFontColorForDesignateHeading(4, headingTextColor4)
     return this
   }
@@ -2259,7 +2259,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    * @return MarkdownTheme
    */
-  setHeadingTextColor5(headingTextColor5: number): MarkdownTheme {
+  setHeadingTextColor5(headingTextColor5: ResourceColor): MarkdownTheme {
     this.headingTheme.setTextFontColorForDesignateHeading(5, headingTextColor5)
     return this
   }
@@ -2272,7 +2272,7 @@ export class MarkdownTheme {
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    * @return MarkdownTheme
    */
-  setHeadingTextColor6(headingTextColor6: number): MarkdownTheme {
+  setHeadingTextColor6(headingTextColor6: ResourceColor): MarkdownTheme {
     this.headingTheme.setTextFontColorForDesignateHeading(6, headingTextColor6)
     return this
   }
@@ -2324,7 +2324,7 @@ export class MarkdownTheme {
    * @useinstead ParagraphTheme#setParagraphTextFontColor
    * @return MarkdownTheme
    */
-  setParagraphTextColor(paragraphTextColor: number): MarkdownTheme {
+  setParagraphTextColor(paragraphTextColor: ResourceColor): MarkdownTheme {
     this.paragraphTheme.setParagraphTextFontColor(paragraphTextColor)
     return this
   }
@@ -2376,7 +2376,7 @@ export class MarkdownTheme {
    * @useinstead DividerTheme#setDividerColor
    * @return MarkdownTheme
    */
-  setThematicBreakColor(thematicBreakColor: number): MarkdownTheme {
+  setThematicBreakColor(thematicBreakColor: ResourceColor): MarkdownTheme {
     this.dividerTheme.setDividerColor(thematicBreakColor)
     return this
   }
@@ -2441,7 +2441,7 @@ export class MarkdownTheme {
    * @useinstead AudioTheme#setAudioShadowColor
    * @return MarkdownTheme
    */
-  setAudioShadowColor(audioShadowColor: number): MarkdownTheme {
+  setAudioShadowColor(audioShadowColor: ResourceColor): MarkdownTheme {
     this.audioTheme.setAudioShadowColor(audioShadowColor)
     return this
   }
@@ -2454,7 +2454,7 @@ export class MarkdownTheme {
    * @useinstead AudioTheme#setAudioBorderColor
    * @return MarkdownTheme
    */
-  setAudioBorderColor(audioBorderColor: number): MarkdownTheme {
+  setAudioBorderColor(audioBorderColor: ResourceColor): MarkdownTheme {
     this.audioTheme.setAudioBorderColor(audioBorderColor)
     return this
   }
@@ -2493,7 +2493,7 @@ export class MarkdownTheme {
    * @useinstead AudioTheme#setAudioButtonBackgroundColor
    * @return MarkdownTheme
    */
-  setAudioButtonBackgroundColor(audioButtonBackgroundColor: number): MarkdownTheme {
+  setAudioButtonBackgroundColor(audioButtonBackgroundColor: ResourceColor): MarkdownTheme {
     this.audioTheme.setAudioButtonBackgroundColor(audioButtonBackgroundColor)
     return this
   }
@@ -2506,7 +2506,7 @@ export class MarkdownTheme {
    * @useinstead AudioTheme#setAudioButtonTextFontColor
    * @return MarkdownTheme
    */
-  setAudioButtonTextColor(audioButtonTextColor: number): MarkdownTheme {
+  setAudioButtonTextColor(audioButtonTextColor: ResourceColor): MarkdownTheme {
     this.audioTheme.setAudioButtonTextFontColor(audioButtonTextColor)
     return this
   }
@@ -2571,7 +2571,7 @@ export class MarkdownTheme {
    * @useinstead AudioTheme#setAudioTitleTextFontColor
    * @return MarkdownTheme
    */
-  setAudioTitleTextColor(audioTitleTextColor: number): MarkdownTheme {
+  setAudioTitleTextColor(audioTitleTextColor: ResourceColor): MarkdownTheme {
     this.audioTheme.setAudioTitleTextFontColor(audioTitleTextColor)
     return this
   }
@@ -2610,7 +2610,7 @@ export class MarkdownTheme {
    * @useinstead AudioTheme#setAudioTypeTextFontColor
    * @return MarkdownTheme
    */
-  setAudioTypeTextColor(audioTypeTextColor: number): MarkdownTheme {
+  setAudioTypeTextColor(audioTypeTextColor: ResourceColor): MarkdownTheme {
     this.audioTheme.setAudioTypeTextFontColor(audioTypeTextColor)
     return this
   }
@@ -2675,7 +2675,7 @@ export class MarkdownTheme {
    * @useinstead VideoTheme#setVideoTimeTextFontColor
    * @return MarkdownTheme
    */
-  setVideoTimeTextColor(videoTimeTextColor: number): MarkdownTheme {
+  setVideoTimeTextColor(videoTimeTextColor: ResourceColor): MarkdownTheme {
     this.videoTheme.setVideoTimeTextFontColor(videoTimeTextColor)
     return this
   }
@@ -2846,7 +2846,7 @@ export class MarkdownTheme {
    * @useinstead VideoTheme#setVideoReleaseButtonTextFontColor
    * @return MarkdownTheme
    */
-  setVideoReleaseTextColor(videoReleaseTextColor: number): MarkdownTheme {
+  setVideoReleaseTextColor(videoReleaseTextColor: ResourceColor): MarkdownTheme {
     this.videoTheme.setVideoReleaseButtonTextFontColor(videoReleaseTextColor)
     return this
   }
@@ -2859,7 +2859,7 @@ export class MarkdownTheme {
    * @useinstead VideoTheme#setVideoReleaseButtonBackgroundColor
    * @return MarkdownTheme
    */
-  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): MarkdownTheme {
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: ResourceColor): MarkdownTheme {
     this.videoTheme.setVideoReleaseButtonBackgroundColor(videoReleaseBackgroundColor)
     return this
   }
@@ -2952,7 +2952,7 @@ export class MarkdownTheme {
    * @useinstead VideoTheme#setVideoDownloadButtonTextFontColor
    * @return MarkdownTheme
    */
-  setVideoDownloadTextColor(videoDownloadTextColor: number): MarkdownTheme {
+  setVideoDownloadTextColor(videoDownloadTextColor: ResourceColor): MarkdownTheme {
     this.videoTheme.setVideoDownloadButtonTextFontColor(videoDownloadTextColor)
     return this
   }
@@ -2965,7 +2965,7 @@ export class MarkdownTheme {
    * @useinstead VideoTheme#setVideoDownloadButtonBackgroundColor
    * @return MarkdownTheme
    */
-  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): MarkdownTheme {
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: ResourceColor): MarkdownTheme {
     this.videoTheme.setVideoDownloadButtonBackgroundColor(videoDownloadBackgroundColor)
     return this
   }
@@ -3069,7 +3069,7 @@ export class MarkdownTheme {
    * @useinstead ImageTheme#setImageBorderColor
    * @return MarkdownTheme
    */
-  setImageBorderColor(imageBorderColor: number): MarkdownTheme {
+  setImageBorderColor(imageBorderColor: ResourceColor): MarkdownTheme {
     this.imageTheme.setImageBorderColor(imageBorderColor)
     return this
   }
@@ -3227,7 +3227,7 @@ export class MarkdownTheme {
    * @useinstead ImageTheme#setImageDownloadButtonTextFontColor
    * @return MarkdownTheme
    */
-  setImageDownloadTextColor(imageDownloadTextColor: number): MarkdownTheme {
+  setImageDownloadTextColor(imageDownloadTextColor: ResourceColor): MarkdownTheme {
     this.imageTheme.setImageDownloadButtonTextFontColor(imageDownloadTextColor)
     return this
   }
@@ -3240,7 +3240,7 @@ export class MarkdownTheme {
    * @useinstead ImageTheme#setImageDownloadButtonBackgroundColor
    * @return MarkdownTheme
    */
-  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): MarkdownTheme {
+  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: ResourceColor): MarkdownTheme {
     this.imageTheme.setImageDownloadButtonBackgroundColor(imageDownloadBackgroundColor)
     return this
   }
@@ -3266,7 +3266,7 @@ export class MarkdownTheme {
    * @useinstead TableTheme#setTableBorderColor
    * @return MarkdownTheme
    */
-  setTableBorderColor(tableBorderColor: number): MarkdownTheme {
+  setTableBorderColor(tableBorderColor: ResourceColor): MarkdownTheme {
     this.tableTheme.setTableBorderColor(tableBorderColor)
     return this
   }
@@ -3292,7 +3292,7 @@ export class MarkdownTheme {
    * @useinstead TableTheme#setTableContentOddRowBackgroundColor
    * @return MarkdownTheme
    */
-  setTableOddRowBackgroundColor(tableOddRowBackgroundColor: number): MarkdownTheme {
+  setTableOddRowBackgroundColor(tableOddRowBackgroundColor: ResourceColor): MarkdownTheme {
     this.tableTheme.setTableContentOddRowBackgroundColor(tableOddRowBackgroundColor)
     return this
   }
@@ -3305,7 +3305,7 @@ export class MarkdownTheme {
    * @useinstead TableTheme#setTableContentEvenRowBackgroundColor
    * @return MarkdownTheme
    */
-  setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): MarkdownTheme {
+  setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: ResourceColor): MarkdownTheme {
     this.tableTheme.setTableContentEvenRowBackgroundColor(tableEvenRowBackgroundColor)
     return this
   }
@@ -3318,7 +3318,7 @@ export class MarkdownTheme {
    * @useinstead TableTheme#setTableTitleBackgroundColor
    * @return MarkdownTheme
    */
-  setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): MarkdownTheme {
+  setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: ResourceColor): MarkdownTheme {
     this.tableTheme.setTableTitleBackgroundColor(tableHeaderRowBackgroundColor)
     return this
   }
@@ -3331,7 +3331,7 @@ export class MarkdownTheme {
    * @useinstead TableTheme#setTableTitleTextFontColor
    * @return MarkdownTheme
    */
-  setTableTitleTextColor(tableTitleTextColor: number): MarkdownTheme {
+  setTableTitleTextColor(tableTitleTextColor: ResourceColor): MarkdownTheme {
     this.tableTheme.setTableTitleTextFontColor(tableTitleTextColor)
     return this
   }
@@ -3385,7 +3385,7 @@ export class MarkdownTheme {
    * @useinstead TableTheme#setTableContentTextFontColor
    * @return MarkdownTheme
    */
-  setTableContentTextColor(tableContentTextColor: number): MarkdownTheme {
+  setTableContentTextColor(tableContentTextColor: ResourceColor): MarkdownTheme {
     this.tableTheme.setTableContentTextFontColor(tableContentTextColor)
     return this
   }
@@ -3493,7 +3493,7 @@ export class MarkdownTheme {
    * @useinstead TableTheme#setTableScrollBarColor
    * @return MarkdownTheme
    */
-  setTableScrollBarColor(tableScrollBarColor: number): MarkdownTheme {
+  setTableScrollBarColor(tableScrollBarColor: Color | number | string): MarkdownTheme {
     this.tableTheme.setTableScrollBarColor(tableScrollBarColor)
     return this
   }
@@ -3519,7 +3519,7 @@ export class MarkdownTheme {
    * @useinstead StrikethroughTheme#setStrikethroughTextDecorationColor
    * @return MarkdownTheme
    */
-  setStrikethroughColor(strikethroughColor: number): MarkdownTheme {
+  setStrikethroughColor(strikethroughColor: ResourceColor): MarkdownTheme {
     this.strikethroughTheme.setStrikethroughTextDecorationColor(strikethroughColor)
     return this
   }
@@ -3584,7 +3584,7 @@ export class MarkdownTheme {
    * @useinstead SubTheme#setSubTextFontColor
    * @return MarkdownTheme
    */
-  setSubTextColor(subTextColor: number): MarkdownTheme {
+  setSubTextColor(subTextColor: ResourceColor): MarkdownTheme {
     this.subTheme.setSubTextFontColor(subTextColor)
     return this
   }
@@ -3623,7 +3623,7 @@ export class MarkdownTheme {
    * @useinstead SupTheme#setSupTextFontColor
    * @return MarkdownTheme
    */
-  setSupTextColor(supTextColor: number): MarkdownTheme {
+  setSupTextColor(supTextColor: ResourceColor): MarkdownTheme {
     this.supTheme.setSupTextFontColor(supTextColor)
     return this
   }
@@ -3662,7 +3662,7 @@ export class MarkdownTheme {
    * @useinstead HtmlUnderlineTheme#setHtmlUnderlineTextDecorationColor
    * @return MarkdownTheme
    */
-  setUnderlineColor(underlineColor: number): MarkdownTheme {
+  setUnderlineColor(underlineColor: ResourceColor): MarkdownTheme {
     this.htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(underlineColor)
     return this
   }

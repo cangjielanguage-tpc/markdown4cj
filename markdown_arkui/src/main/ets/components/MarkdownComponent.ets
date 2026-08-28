@@ -982,8 +982,8 @@ export struct CJMarkdown {
             return
           }
           this.applyParseResult(node as JsNodeImpl, currentVersion)
-        }).catch(() => {
-          console.error('refreshAsyncData parse failed, keeping last result')
+        }).catch((e: Error) => {
+          console.error('refreshAsyncData parse failed, keeping last result: ' + (e instanceof Error ? e.stack : String(e)))
         })
       } catch (e) {
         console.error('refreshAsyncData sync parse exception: ' + (e instanceof Error ? e.stack : String(e)))

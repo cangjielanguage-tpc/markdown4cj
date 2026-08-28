@@ -1192,8 +1192,8 @@ export struct MarkdownHeading {
               console.error('Heading imageSource release in catch failed: ' + (err instanceof Error ? err.stack : String(err)))
             }
           })
-        }).catch(() => {
-          console.error('Heading imageReplace failed')
+        }).catch((e: Error) => {
+          console.error('Heading imageReplace failed: ' + (e instanceof Error ? e.stack : String(e)))
         })
       }
     }

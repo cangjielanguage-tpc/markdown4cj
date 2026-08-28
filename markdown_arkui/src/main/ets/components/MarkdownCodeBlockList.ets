@@ -292,8 +292,8 @@ export struct MarkdownCodeBlockList {
           // 原地修改CodeBlockData属性，@ObjectLink触发子组件刷新（不重建）
           this.blocksDataList[idx].blocks = Array.from(prismRes.getListColor())
           this.blocksDataList[idx].defaultFontColor = prismRes.getDefaultFontColor()
-        }).catch(() => {
-          console.error('CodeBlockList codeStringToColorString failed')
+        }).catch((e: Error) => {
+          console.error('CodeBlockList codeStringToColorString failed: ' + (e instanceof Error ? e.stack : String(e)))
         })
       }
     }, 0)

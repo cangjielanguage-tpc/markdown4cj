@@ -1147,8 +1147,8 @@ export struct MarkdownParagraph {
               console.error('Paragraph imageSource release in catch failed: ' + (err instanceof Error ? err.stack : String(err)))
             }
           })
-        }).catch(() => {
-          console.error('Paragraph imageReplace failed')
+        }).catch((e: Error) => {
+          console.error('Paragraph imageReplace failed: ' + (e instanceof Error ? e.stack : String(e)))
         })
       }
     }

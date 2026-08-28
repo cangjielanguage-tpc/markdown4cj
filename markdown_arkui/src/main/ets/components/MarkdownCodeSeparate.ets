@@ -256,7 +256,8 @@ export struct MarkdownCodeSeparate {
         this.prismBlocks = Array.from(prismRes.getListColor())
         this.appliedVersion = currentVersion
         this.scrollChatIfAtBottom()
-      }).catch(() => {
+      }).catch((e: Error) => {
+        console.error('CodeSeparate codeStringToColorString failed: ' + (e instanceof Error ? e.stack : String(e)))
         if (!this.isAlive || currentVersion <= this.appliedVersion) {
           return
         }
@@ -292,6 +293,7 @@ export struct MarkdownCodeSeparate {
       this.appliedVersion = currentVersion
       this.scrollChatIfAtBottom()
     } catch (e) {
+      console.error('CodeSeparate codeStringToColorString sync failed: ' + (e instanceof Error ? e.stack : String(e)))
       if (!this.isAlive || currentVersion <= this.appliedVersion) {
         return
       }

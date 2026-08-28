@@ -273,30 +273,32 @@ export function generateLinkIconPixelMap(
           }
           return result
         })
-        .catch(() => {
+        .catch((e: Error) => {
+          console.error('LinkIcon getImageInfo failed: ' + (e instanceof Error ? e.stack : String(e)))
           try {
             pm.release()
-          } catch (e) {
-            console.error('LinkIcon pm release failed: ' + (e instanceof Error ? e.stack : String(e)))
+          } catch (err) {
+            console.error('LinkIcon pm release failed: ' + (err instanceof Error ? err.stack : String(err)))
           }
           if (!imageSourceReleased) {
             imageSourceReleased = true
             try {
               source.release()
-            } catch (e) {
-              console.error('LinkIcon source release failed: ' + (e instanceof Error ? e.stack : String(e)))
+            } catch (err) {
+              console.error('LinkIcon source release failed: ' + (err instanceof Error ? err.stack : String(err)))
             }
           }
           return undefined
         })
     })
-    .catch(() => {
+    .catch((e: Error) => {
+      console.error('LinkIcon createPixelMap failed: ' + (e instanceof Error ? e.stack : String(e)))
       if (!imageSourceReleased) {
         imageSourceReleased = true
         try {
           source.release()
-        } catch (e) {
-          console.error('LinkIcon source release failed: ' + (e instanceof Error ? e.stack : String(e)))
+        } catch (err) {
+          console.error('LinkIcon source release failed: ' + (err instanceof Error ? err.stack : String(err)))
         }
       }
       return undefined

@@ -346,18 +346,19 @@ export struct MarkdownImageBlock {
           }
         }
         this.replacePixelMap = pm
-      }).catch(() => {
+      }).catch((e: Error) => {
+        console.error('ImageBlock createPixelMap failed: ' + (e instanceof Error ? e.stack : String(e)))
         try {
           imageSource.release()
-        } catch (e) {
-          console.error('ImageBlock imageSource release failed: ' + (e instanceof Error ? e.stack : String(e)))
+        } catch (err) {
+          console.error('ImageBlock imageSource release failed: ' + (err instanceof Error ? err.stack : String(err)))
         }
         if (this.isAlive && myToken === this.replaceToken) {
           this.replaceFailed = true
         }
       })
-    }).catch(() => {
-      console.error('ImageBlock imageReplaceCallback failed')
+    }).catch((e: Error) => {
+      console.error('ImageBlock imageReplaceCallback failed: ' + (e instanceof Error ? e.stack : String(e)))
       if (this.isAlive && myToken === this.replaceToken) {
         this.replaceFailed = true
       }
