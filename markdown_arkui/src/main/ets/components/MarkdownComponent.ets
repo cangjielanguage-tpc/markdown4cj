@@ -47,7 +47,7 @@ class MarkdownRootIdGenerator {
 @Component
 export struct CJMarkdown {
   @Prop @Watch('refreshData') content: string // 外部传入的Markdown文档
-  @ObjectLink config: MarkdownConfiguration // markdown配置项
+  @ObjectLink @Watch('onConfigChanged') config: MarkdownConfiguration // markdown配置项
   @Provide placeholderPixelMap: PixelMap | undefined = undefined // 图片占位图
   @Provide isLatexMathEnabled: boolean = false // 数学公式插件是否启用（控制是否调用latexStringToImage）
   @Provide('mdStickyHolder') stickyHolder: StickyScrollYHolder = new StickyScrollYHolder() // 引用不变，不触发build()；通过setY+监听器通知MarkdownTable
@@ -58,7 +58,7 @@ export struct CJMarkdown {
   @Provide('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder = new MarkdownVisibleRectHolder()
   private rootId: string = '' // CJMarkdown 根 List 的唯一 id（componentUtils.getRectangleById 用）。在 aboutToAppear 中赋值，避免 struct 字段初始化调用静态方法。
   private lastRatio: number = 0 // onVisibleAreaChange 最近一次 ratio（50ms tick 与 rect 一起喂给 holder）
-  private visibleTickId: number = -1 // 50ms 轮询定时器：读根 rect + lastRatio → holder.applyRect
+  private visibleTickId: number = -1 // 50ms 轮询定时器（仅 exposureEnabled 时启动）：读根 rect + lastRatio → holder.applyRect
   @State componentWidth: number = 0.0 // markdown控件宽度
   scroller: Scroller = new Scroller() // list控制器
   scrollController?: MarkdownScrollController // 外层滚动控制器（不固定高度模式由页面传入）
@@ -139,6 +139,41 @@ export struct CJMarkdown {
   }
 
   /**
+   * 启动 50ms 轮询定时器（幂等：已运行则跳过）。
+   */
+  private startVisibleTickTimer(): void {
+    if (this.visibleTickId !== -1) {
+      return
+    }
+    this.visibleTickId = setInterval(() => {
+      this.tickVisibleRect()
+    }, 50)
+  }
+
+  /**
+   * 停止 50ms 轮询定时器（幂等：未运行则跳过）。
+   */
+  private stopVisibleTickTimer(): void {
+    if (this.visibleTickId !== -1) {
+      clearInterval(this.visibleTickId)
+      this.visibleTickId = -1
+    }
+  }
+
+  /**
+   * @Watch('onConfigChanged') 回调：config 属性变化时按运行时状态启停定时器。
+   * 解决 aboutToAppear 时刻 config 尚未同步（elementExposureCallback=undefined），
+   * config 同步后定时器自动启动的问题。
+   */
+  private onConfigChanged(): void {
+    if (this.isExposureEnabled()) {
+      this.startVisibleTickTimer()
+    } else {
+      this.stopVisibleTickTimer()
+    }
+  }
+
+  /**
    * 50ms tick：用 componentUtils.getRectangleById 拿根 List 窗口 rect（px），
    * 配 lastRatio（onVisibleAreaChange 缓存），喂给 holder.applyRect 运行方向/ratio 算法。
    * onAreaChange/onVisibleAreaChange 在外层 Scroll 滑动时未必逐帧触发（离散 ratio 阈值 +
@@ -148,8 +183,8 @@ export struct CJMarkdown {
     if (!this.isAlive) {
       return
     }
-    // 运行时短路：aboutToAppear 起无条件定时器，此处按当下 config 状态决定是否干活。
-    // config 同步后变 true 才真正读 rect/喂 holder，否则空 return。
+    // 防御：onConfigChanged 已确保仅在 exposureEnabled 时启动定时器，
+    // 此处再校验一次兜底（config 运行时被置空或 @Watch 未触发时）。
     if (!this.isExposureEnabled()) {
       return
     }
@@ -174,22 +209,18 @@ export struct CJMarkdown {
     }
     this.refreshData() // 首次加载
     this.loadPlaceholderImage() // 占位图处理
-    // 定时器无条件启动：aboutToAppear 时刻 @ObjectLink config 可能尚未与父组件状态同步
-    //（详情页在自身 aboutToAppear 才给 markdownConfiguration 赋带回调的新对象），此刻读
-    // elementExposureCallback 可能是 undefined。若在此一次性门控，会永久判 false 导致整条链路死。
-    // 改为无条件起定时器，由 tickVisibleRect 内部按「运行时」exposureEnabled 短路：
-    // config 同步后变 true，链路自然活过来。没回调时每 50ms 一次空 return（微秒级）。
-    this.visibleTickId = setInterval(() => {
-      this.tickVisibleRect()
-    }, 50)
+    // 定时器条件启动：aboutToAppear 时刻 config 可能尚未与父组件同步
+    //（详情页在自身 aboutToAppear 才给 markdownConfiguration 赋带回调的新对象），
+    // 此刻 elementExposureCallback 可能是 undefined。config 同步后
+    // @Watch('onConfigChanged') 触发 onConfigChanged，按运行时状态启动定时器。
+    if (this.isExposureEnabled()) {
+      this.startVisibleTickTimer()
+    }
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
-    if (this.visibleTickId !== -1) {
-      clearInterval(this.visibleTickId)
-      this.visibleTickId = -1
-    }
+    this.stopVisibleTickTimer()
     if (this.scrollController) {
       this.scrollController.setListener(null)
     }
