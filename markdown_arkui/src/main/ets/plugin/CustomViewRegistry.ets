@@ -24,6 +24,9 @@ export class CustomViewRegistry {
    * @param tag 标签名（大小写不敏感，内部统一小写存储）
    */
   static register(tag: string): void {
+    if (tag.length === 0 || !/[a-zA-Z]/.test(tag[0]) || /[<>\s]/.test(tag)) {
+      return
+    }
     CustomViewRegistry.tags.add(tag.toLowerCase())
   }
 
