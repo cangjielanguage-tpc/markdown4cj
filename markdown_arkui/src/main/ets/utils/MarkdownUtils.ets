@@ -1093,6 +1093,7 @@ function base64Decode(input: string): string {
     const d = dChar === '=' ? -1 : chars.indexOf(dChar)
 
     if (a === -1 || b === -1) {
+      console.error('base64Decode: invalid Base64 character at position ' + i + ', truncating')
       break
     }
 
