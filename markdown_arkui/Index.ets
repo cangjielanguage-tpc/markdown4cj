@@ -41,4 +41,4 @@ export { TableHorizontalScrollSync } from './src/main/ets/model/TableHorizontalS
 export { MarkdownScrollController } from './src/main/ets/controller/MarkdownScrollController'
 export { StickyScrollYHolder } from './src/main/ets/model/StickyScrollYHolder'
 export { LatexMathColorFormat } from '@cangjie-tpc/formula_hybrid'
-
+export { MarkdownHighlightParagraph } from './src/main/ets/configs/MarkdownHighlightParagraph'
