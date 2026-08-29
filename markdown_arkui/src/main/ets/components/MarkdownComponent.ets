@@ -525,7 +525,8 @@ export struct CJMarkdown {
                     paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
                     paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
                     blockImageCardComponent:this.blockImageCardComponent,
-                    blockLinkCardComponent:this.blockLinkCardComponent
+                    blockLinkCardComponent:this.blockLinkCardComponent,
+                    customTagViewComponent: this.customTagViewComponent
                   })
                 } else if (item.nodeType === "OrderedList") {
                   // 有序列表
@@ -585,7 +586,8 @@ export struct CJMarkdown {
                     paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
                     paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
                     blockImageCardComponent:this.blockImageCardComponent,
-                    blockLinkCardComponent:this.blockLinkCardComponent
+                    blockLinkCardComponent:this.blockLinkCardComponent,
+                    customTagViewComponent: this.customTagViewComponent
                   })
                 } else if (item.nodeType === "BlockQuote") {
                   // 块引用
@@ -644,7 +646,8 @@ export struct CJMarkdown {
                     paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
                     paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
                     blockImageCardComponent:this.blockImageCardComponent,
-                    blockLinkCardComponent:this.blockLinkCardComponent
+                    blockLinkCardComponent:this.blockLinkCardComponent,
+                    customTagViewComponent: this.customTagViewComponent
                   })
                 } else if (item.nodeType === "LatexMathBlock") {
                   // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本

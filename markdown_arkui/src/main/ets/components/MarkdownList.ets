@@ -95,6 +95,7 @@ export struct MarkdownList {
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
   @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void
   @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void
+  @BuilderParam customTagViewComponent: (tag:string, attrs:Record<string,string>, content:string) => void
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -171,7 +172,8 @@ export struct MarkdownList {
                 paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
                 paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
                 blockImageCardComponent:this.blockImageCardComponent,
-                blockLinkCardComponent:this.blockLinkCardComponent
+                blockLinkCardComponent:this.blockLinkCardComponent,
+                customTagViewComponent: this.customTagViewComponent
               })
             }
             .alignItems(VerticalAlign.Top)

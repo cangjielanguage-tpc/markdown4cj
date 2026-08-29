@@ -108,6 +108,7 @@ export struct MarkdownListItem {
 
   @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void
   @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void
+  @BuilderParam customTagViewComponent: (tag:string, attrs:Record<string,string>, content:string) => void
 
   aboutToAppear(): void {
     this.refreshData() // 首次加载
@@ -284,7 +285,8 @@ export struct MarkdownListItem {
                   paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
                   paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
                   blockImageCardComponent:this.blockImageCardComponent,
-                  blockLinkCardComponent:this.blockLinkCardComponent
+                  blockLinkCardComponent:this.blockLinkCardComponent,
+                  customTagViewComponent: this.customTagViewComponent
                 })
               } else if (item.nodeType === "OrderedList") {
                 // 有序列表
@@ -344,7 +346,8 @@ export struct MarkdownListItem {
                   paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
                   paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
                   blockImageCardComponent:this.blockImageCardComponent,
-                  blockLinkCardComponent:this.blockLinkCardComponent
+                  blockLinkCardComponent:this.blockLinkCardComponent,
+                  customTagViewComponent: this.customTagViewComponent
                 })
               } else if (item.nodeType === "BlockQuote") {
                 // 块引用
@@ -403,7 +406,8 @@ export struct MarkdownListItem {
                   paragraphHeadingAnimationStart: this.paragraphHeadingAnimationStart,
                   paragraphHeadingAnimationEnd: this.paragraphHeadingAnimationEnd,
                   blockImageCardComponent:this.blockImageCardComponent,
-                  blockLinkCardComponent:this.blockLinkCardComponent
+                  blockLinkCardComponent:this.blockLinkCardComponent,
+                  customTagViewComponent: this.customTagViewComponent
                 })
               } else if (item.nodeType === "LatexMathBlock") {
                 // 数学公式块：闭合时渲染图片，未闭合时渲染文本
@@ -567,6 +571,13 @@ export struct MarkdownListItem {
                   safeString(item.nodeText),
                   safeString(item.linkUrl),
                   safeString(item.linkTitle)
+                )
+              } else if (item.customTag !== undefined) {
+                // 已注册的自定义标签块级视图
+                this.customTagViewComponent(
+                  item.customTag,
+                  item.customAttrs ?? {},
+                  item.customContent ?? ""
                 )
               } else if (item.nodeType === "BlockAD") {
                 // 广告
