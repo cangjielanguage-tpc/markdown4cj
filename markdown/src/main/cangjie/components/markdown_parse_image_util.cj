@@ -63,11 +63,11 @@ class MarkdownParseImageUtil {
             } finally {
                 imageSource?.Release()
                 imageSource = Option<ImageSource>.None
-                if (Thread.currentThread.hasPendingCancellation) {
-                    pixelMap?.Release()
-                    pixelMap = Option<PixelMap>.None
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+                return
             }
             callback(pixelMap, width, height)
         }
@@ -123,11 +123,11 @@ class MarkdownParseImageUtil {
             } finally {
                 imageSource?.Release()
                 imageSource = Option<ImageSource>.None
-                if (Thread.currentThread.hasPendingCancellation) {
-                    pixelMap?.Release()
-                    pixelMap = Option<PixelMap>.None
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+                return
             }
             callback(pixelMap, width, height)
         }
@@ -193,11 +193,11 @@ class MarkdownParseImageUtil {
             } finally {
                 imageSource?.Release()
                 imageSource = Option<ImageSource>.None
-                if (Thread.currentThread.hasPendingCancellation) {
-                    pixelMap?.Release()
-                    pixelMap = Option<PixelMap>.None
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+                return
             }
             callback(pixelMap, width, height)
         }

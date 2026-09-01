@@ -273,7 +273,7 @@ class MarkdownCodeBlockListComponent {
     /**
      * 代码数据高亮解析
      */
-    public func refreshData(newNodeView: NodeView) {
+    public func refreshData(newNodeView: NodeView): Unit {
         this.nodeView = newNodeView
         let res = toCodeList(newNodeView)
         this.strInfos = res[0]
@@ -287,6 +287,6 @@ class MarkdownCodeBlockListComponent {
         lines = strText[idxSelect].lines().count()
         lineArray.set(Array<Int64>(lines, repeat: 0))
         future?.cancel()
-        future = MarkdownParseCodeUtil.stringToResLists(nodeView, markdownConfiguration, strText, psh, callback)
+        future = MarkdownParseCodeUtil.stringToResLists(nodeView, strText, psh, callback)
     }
 }

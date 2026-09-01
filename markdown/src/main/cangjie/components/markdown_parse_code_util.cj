@@ -5,7 +5,6 @@ class MarkdownParseCodeUtil {
      * 通过异步的方式将代码转换成带有颜色的列表 - 组合代码
      *
      * @param nodeView 传入围栏代码列表的Node
-     * @param markdownConfiguration 传入MarkdownConfiguration
      * @param strText 代码列表数据
      * @param psh PrismSyntaxHighlight对象
      * @param callback 回调接口
@@ -13,7 +12,6 @@ class MarkdownParseCodeUtil {
      */
     static func stringToResLists(
         nodeView: NodeView,
-        markdownConfiguration: MarkdownConfiguration,
         strText: ArrayList<String>,
         psh: ?PrismSyntaxHighlight,
         callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit
@@ -42,10 +40,9 @@ class MarkdownParseCodeUtil {
                     prismNodesParseResList.add(prismNodesParseRes)
                     prismNodesParseResLists.add(prismNodesParseResList)
                 }
-            } finally {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
             }
             callback(prismNodesParseResLists)
         }
@@ -96,10 +93,9 @@ class MarkdownParseCodeUtil {
                 lines = arr.size
                 let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: code, alias: Option<String>.None, color: Option<Color>.None)
                 prismNodesParseResUIList.add(prismNodesParseResUI)
-            } finally {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
             }
             callback(prismNodesParseResUIList, lines)
         }
@@ -133,10 +129,9 @@ class MarkdownParseCodeUtil {
             } catch (e: Exception) {
                 let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
                 prismNodesParseResUIList.add(prismNodesParseResUI)
-            } finally {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
             }
             callback(prismNodesParseResUIList)
         }

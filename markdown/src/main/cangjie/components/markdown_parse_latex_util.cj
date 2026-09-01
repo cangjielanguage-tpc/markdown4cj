@@ -95,11 +95,11 @@ class MarkdownParseLatexUtil {
                     r = Option<Render>.None
                     latex?.release()
                     latex = Option<LaTeX>.None
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap?.Release()
-                        pixelMap = Option<PixelMap>.None
-                        return
-                    }
+                }
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
+                    return
                 }
                 callback(pixelMap, imageHeight, imageWidth, arr)
             }
@@ -209,11 +209,11 @@ class MarkdownParseLatexUtil {
                     r = Option<Render>.None
                     latex?.release()
                     latex = Option<LaTeX>.None
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap?.Release()
-                        pixelMap = Option<PixelMap>.None
-                        return
-                    }
+                }
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
+                    return
                 }
                 callback(pixelMap, height, width, arr)
             }
