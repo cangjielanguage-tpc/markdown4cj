@@ -20,13 +20,13 @@ export class LatexMathTheme implements MarkdownBaseTheme {
   latexMathDefaultTextFontSize: number | string | Resource = 14.0 // 未加载状态文本尺寸
   latexMathDefaultTextFontStyle: FontStyle = FontStyle.Normal // 未加载状态文本字体样式
   latexMathDefaultTextFontWeight: number | FontWeight = FontWeight.Normal // 未加载状态文本字体粗细
-  latexMathDefaultTextFontFamily: string | Resource | undefined = undefined // 未加载状态文本字体
+  latexMathDefaultTextFontFamily: string | Resource = "HarmonyOS Sans" // 未加载状态文本字体
   latexMathTextSize: number = 14.0 // 数学公式文本大小 - 单位fp
   latexMathBackgroundColor: ResourceColor = COLOR_TRANSPARENT_SCB // 数学公式背景颜色
   latexMathTextColor: ResourceColor = COLOR_BLACK // 数学公式文本颜色
   latexMathColorFormat: number = 1 // 数学公式生成图片格式 - 0:RGB_565, 1:BGRA_8888
   latexMathBlockCenter: boolean = false // 块结构的数学公式是否居中
-  latexMathResPath: string | undefined = undefined // 数学公式资源路径
+  latexMathResPath: string = "/data/storage/el1/bundle/entry/resources/resfile/res" // 数学公式资源路径
 
   /**
    * 设置LaTeX数学公式外边距
