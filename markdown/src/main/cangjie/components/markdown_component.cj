@@ -85,12 +85,10 @@ public class MarkdownComponent {
     var lastViewIndex: Int64 = 0 // 最后一条数据的位置
 
     protected override func aboutToAppear(): Unit {
-        if (let Some(v) <- markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsDark) {
-            if (v) {
-                markdownConfiguration.markdownTheme.prismTheme = PrismThemeDarcula.create()
-            } else {
-                markdownConfiguration.markdownTheme.prismTheme = PrismThemeDefault.create()
-            }
+        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsDark) {
+            markdownConfiguration.markdownTheme.prismTheme = PrismThemeDarcula.create()
+        } else {
+            markdownConfiguration.markdownTheme.prismTheme = PrismThemeDefault.create()
         }
         incBase = IncreaseParserV2(markdownPlugin) // 加载插件
         componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value // 默认控件宽度等于屏幕宽度
