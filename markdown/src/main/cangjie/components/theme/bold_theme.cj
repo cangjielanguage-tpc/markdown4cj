@@ -14,7 +14,7 @@ public class BoldTheme {
     @Publish
     public var boldTextFontStyle: ?FontStyle = Option<FontStyle>.None // 加粗文本字体样式
     @Publish
-    public var boldTextFontWeight: FontWeight = FontWeight.W600 // 加粗文本字体粗细
+    public var boldTextFontWeight: FontWeight = FontWeight.Bold // 加粗文本字体粗细
     @Publish
     public var boldTextFontFamily: ?String = Option<String>.None // 加粗文本字体
     @Publish

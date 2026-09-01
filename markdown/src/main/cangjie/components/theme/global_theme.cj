@@ -38,7 +38,7 @@ public class GlobalTheme {
     @Publish
     public var paragraphHeadingAnimationEnabled: Bool = false // 是否启用标题段落加载动画
     @Publish
-    public var paragraphHeadingAnimationDuration: Int32 = 300 // 标题段落加载动画时长（毫秒）
+    public var paragraphHeadingAnimationDuration: Int32 = 0 // 标题段落加载动画时长（毫秒）
 
     /**
      * 设置markdown上下文 - 互操作

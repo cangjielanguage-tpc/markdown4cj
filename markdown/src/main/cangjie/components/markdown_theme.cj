@@ -904,30 +904,6 @@ public class MarkdownTheme {
         return this
     }
 
-    /**
-     * 设置是否启用解析节流
-     *
-     * @param enableParseThrottle 是否启用解析节流 - 默认false
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用GlobalTheme.setEnableParseThrottle方法代替", since: "1.4.0"]
-    public func setEnableParseThrottle(enableParseThrottle: Bool): MarkdownTheme {
-        this.globalTheme.enableParseThrottle = enableParseThrottle
-        return this
-    }
-
-    /**
-     * 设置节流间隔
-     *
-     * @param parseThrottleMs 节流间隔（毫秒） - 默认200
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用GlobalTheme.setParseThrottleMs方法代替", since: "1.4.0"]
-    public func setParseThrottleMs(parseThrottleMs: Int64): MarkdownTheme {
-        this.globalTheme.parseThrottleMs = parseThrottleMs
-        return this
-    }
-
       /**
      * 设置是否启用标题段落加载动画
      *

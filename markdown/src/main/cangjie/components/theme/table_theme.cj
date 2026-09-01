@@ -68,7 +68,7 @@ public class TableTheme {
     @Publish
     public var tableTitleTextFontStyle: FontStyle = FontStyle.Normal // 表格标题文本字体样式
     @Publish
-    public var tableTitleTextFontWeight: FontWeight = FontWeight.W600 // 表格标题文本字体粗细
+    public var tableTitleTextFontWeight: FontWeight = FontWeight.Bold // 表格标题文本字体粗细
     @Publish
     public var tableTitleTextFontFamily: String = "HarmonyOS Sans" // 表格标题文本字体
     @Publish

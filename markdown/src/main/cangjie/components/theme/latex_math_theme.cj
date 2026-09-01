@@ -26,9 +26,9 @@ public class LatexMathTheme {
     @Publish
     public var latexMathDefaultText: Bool = true // 数学公式未加载状态是否显示文字
     @Publish
-    public var latexMathDefaultTextFontColor: Color = COLOR_RED // 数学公式未加载状态文本颜色
+    public var latexMathDefaultTextFontColor: Color = COLOR_FF191919 // 数学公式未加载状态文本颜色
     @Publish
-    public var latexMathDefaultTextFontSize: Float64 = 16.0 // 数学公式未加载状态文本尺寸
+    public var latexMathDefaultTextFontSize: Float64 = 14.0 // 数学公式未加载状态文本尺寸
     @Publish
     public var latexMathDefaultTextFontStyle: FontStyle = FontStyle.Normal // 数学公式未加载状态文本字体样式
     @Publish
@@ -36,7 +36,7 @@ public class LatexMathTheme {
     @Publish
     public var latexMathDefaultTextFontFamily: String = "HarmonyOS Sans" // 数学公式未加载状态文本字体
     @Publish
-    public var latexMathTextSize: Float64 = 16.0 // 数学公式文本大小 - 实际使用要转换
+    public var latexMathTextSize: Float64 = 14.0 // 数学公式文本大小 - 实际使用要转换
     @Publish
     public var latexMathBackgroundColor: Color = COLOR_TRANSPARENT // 数学公式背景色
     @Publish
