@@ -47,7 +47,11 @@ class MarkdownTableTitleComponent {
             left: tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableCellPaddingLeft,
             right: tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableCellPaddingRight
         )
-        .backgroundColor(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableTitleBackgroundColor)
+        .backgroundColor(if (tableTitleNode.isQuote) {
+            tableTitleMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor
+        } else {
+            tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableTitleBackgroundColor
+        })
         .justifyContent(FlexAlign.SpaceBetween)
         .alignItems(VerticalAlign.Center)
         .borderStyle(tableTitleMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
@@ -109,7 +113,7 @@ class MarkdownTableTitleComponent {
     func onCopyClicked(): Unit {
         if (let Some(cb) <- tableTitleMarkdownConfiguration.tableCopyCallback) {
             if (let Some(node) <- tableTitleNode.commonmarkNode) {
-                cb(NodeViewStringBuilder(node).toString())
+                cb(NodeViewStringBuilder(node, false).toString())
             }
         }
     }

@@ -382,7 +382,8 @@ class MarkdownHeadingComponent {
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
-                        spanListImageCallback
+                        spanListImageCallback,
+                        Option<(Float64) -> Unit>.None
                         )
                 } else {
                     // 其他节点

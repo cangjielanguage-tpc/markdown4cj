@@ -44,6 +44,7 @@ class MarkdownTableBlockCellComponent {
     var isAlive: Bool = true // 组件是否存活
     var exposureScheduled: Bool = false // 曝光评估是否已调度（防抖标志，避免onVisibleAreaChange多次阈值回调每次都spawn协程）
     var lastVisibleRatio: Float64 = 0.0 // onVisibleAreaChange 最近一次回调的可见比例（0=完全不可见，1=完全可见，已考虑所有祖先裁剪）
+    var prevTextLength: Int64 = 0 // 上次刷新时的子节点文本总长度（内容缩短检测用）
 
     @BuilderParam
     var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
@@ -161,7 +162,13 @@ class MarkdownTableBlockCellComponent {
                     return
                 }
                 if (new.width > 0.0) {
-                    cellWidthTracker.updateCellWidth(tableBlockCellRow, tableBlockCellCell, new.width)
+                    // minWidth=max(columnWidths[col], tableMinCellWidth)，与cell的minWidth约束一致
+                    var minWidth = currentColumnWidth()
+                    let minCellWidth = tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMinCellWidth
+                    if (minWidth < minCellWidth) {
+                        minWidth = minCellWidth
+                    }
+                    cellWidthTracker.updateCellWidth(tableBlockCellRow, tableBlockCellCell, new.width, minWidth)
                 }
         })
     }
@@ -344,7 +351,13 @@ class MarkdownTableBlockCellComponent {
                         latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
                         latexMathInLineLinkCallback: spanListMarkdownConfiguration.linkCallback,
                         latexMathInLineIsLink: spanListNodeView.isLink,
-                        latexMathInLineLinkUrl: spanListNodeView.linkUrl
+                        latexMathInLineLinkUrl: spanListNodeView.linkUrl,
+                        latexMathInLineWidthCallback: { width: Float64 =>
+                            // LaTeX图片解析完成后：先清除该单元格的列宽记录，再记录imageFallback
+                            // 防止列宽在旧测量值与图片宽度之间抖动
+                            cellWidthTracker.clearCellWidth(tableBlockCellRow, tableBlockCellCell)
+                            cellWidthTracker.setFallback(tableBlockCellRow, tableBlockCellCell, width)
+                        }
                     )
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
@@ -364,7 +377,11 @@ class MarkdownTableBlockCellComponent {
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
-                        spanListImageCallback
+                        spanListImageCallback,
+                        { width: Float64 =>
+                            // 图片加载完成后记录imageFallback，防止列宽收缩到图片宽度以下
+                            cellWidthTracker.setFallback(tableBlockCellRow, tableBlockCellCell, width)
+                        }
                         )
                 } else {
                     tableBlockCellCustomTableLineBuilder(spanListNodeView, index)
@@ -452,6 +469,17 @@ class MarkdownTableBlockCellComponent {
                 tableBlockCellNodeViewList.remove(i)
             }
         }
+        // 内容缩短检测：流式输出时原始markdown文本很长，渲染补全后变短。
+        // minWidth卡在旧值→onSizeChange不触发→tracker有stale值→列宽不收缩。
+        // 比较文本总长度，缩短时清除列宽测量值→cell收缩→onSizeChange→重测→列收缩。
+        var totalTextLength: Int64 = 0
+        for (item in refreshNodeViewChildren) {
+            totalTextLength += Int64(item.nodeText.size)
+        }
+        if (totalTextLength < prevTextLength) {
+            cellWidthTracker.clearCellWidth(tableBlockCellRow, tableBlockCellCell)
+        }
+        prevTextLength = totalTextLength
         // 数据变更后重算是否走自定义Cell逻辑（含节点增删/类型变化），缓存到@State避免每次build都遍历列表
         let newUseCustomCellLogic = isBlockLogic(tableBlockCellNodeViewList)
         if (newUseCustomCellLogic != useCustomCellLogic) {

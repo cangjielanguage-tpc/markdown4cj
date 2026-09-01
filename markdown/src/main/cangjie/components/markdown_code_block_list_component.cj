@@ -24,14 +24,20 @@ class MarkdownCodeBlockListComponent {
     var arrayLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>() // 所有数据
     var future: ?Future<Unit> = Option<Future<Unit>>.None // 子线程
     var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
+    var isAlive: Bool = false // 组件是否存活
+    var parseTimer: ?Timer = Option<Timer>.None // 单个定时器调度（清旧调度新，避免重复解析）
 
     protected override func aboutToAppear(): Unit {
+        isAlive = true
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
         MarkdownRefreshRegistry.register(nodeView.nodeHash, refreshData)
         refreshData(nodeView)
     }
 
     protected override func aboutToDisappear(): Unit {
+        isAlive = false
+        parseTimer?.cancel()
+        parseTimer = Option<Timer>.None
         future?.cancel()
         MarkdownRefreshRegistry.unregister(nodeView.nodeHash)
     }
@@ -77,8 +83,7 @@ class MarkdownCodeBlockListComponent {
                             .padding(left: 14, right: 14, top: 5, bottom: 5)
                             .onClick {evt =>
                                 idxSelect = idx
-                                lines = strText[idxSelect].lines().count()
-                                lineArray.set(Array<Int64>(lines, repeat: 0))
+                                updateLineArray()
                             }
                     }
                 )
@@ -271,22 +276,87 @@ class MarkdownCodeBlockListComponent {
     }
 
     /**
-     * 代码数据高亮解析
+     * 代码数据高亮解析（增量加载：单定时器调度 + 源文本比对防过期结果）
      */
     public func refreshData(newNodeView: NodeView): Unit {
         this.nodeView = newNodeView
         let res = toCodeList(newNodeView)
+        let newText = res[1]
+        // 文本未变化且已有高亮结果时无需重新解析
+        let needParse = !codeListEquals(this.strText, newText) || (arrayLists.size == 0 && newText.size > 0)
         this.strInfos = res[0]
-        this.strText = res[1]
+        this.strText = newText
         this.strInfoText = res[2]
-        let callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit = {
-            prismNodesParseResLists => launch {
-                arrayLists = prismNodesParseResLists
-            }
+        updateLineArray()
+        if (!needParse) {
+            return
+        }
+        // 单定时器调度：清除旧定时器，仅保留最新调度，避免重复解析
+        parseTimer?.cancel()
+        parseTimer = Timer.once(0 * Duration.millisecond) {
+            =>
+                parseTimer = None
+                if (!isAlive) {
+                    return
+                }
+                scheduleParse()
+        }
+    }
+
+    /**
+     * 更新当前选中代码块的行号显示数据
+     */
+    func updateLineArray(): Unit {
+        if (strText.size == 0) {
+            lines = 0
+            lineArray.set(Array<Int64>(0, repeat: 0))
+            return
+        }
+        if (idxSelect < 0 || idxSelect >= strText.size) {
+            idxSelect = 0
         }
         lines = strText[idxSelect].lines().count()
         lineArray.set(Array<Int64>(lines, repeat: 0))
+    }
+
+    /**
+     * 发起异步高亮解析，解析完成后比对源文本，过期结果丢弃
+     */
+    func scheduleParse(): Unit {
+        // 快照当前源文本
+        let snapshot: ArrayList<String> = ArrayList<String>()
+        for (t in strText) {
+            snapshot.add(t)
+        }
         future?.cancel()
-        future = MarkdownParseCodeUtil.stringToResLists(nodeView, strText, psh, callback)
+        let callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit = {
+            prismNodesParseResLists => launch {
+                if (!isAlive) {
+                    return
+                }
+                // 源文本比对：文本已变化则丢弃过期解析结果
+                if (!codeListEquals(snapshot, this.strText)) {
+                    return
+                }
+                arrayLists = prismNodesParseResLists
+                updateLineArray()
+            }
+        }
+        future = MarkdownParseCodeUtil.stringToResLists(nodeView, snapshot, psh, callback)
+    }
+
+    /**
+     * 代码文本列表比较
+     */
+    func codeListEquals(a: ArrayList<String>, b: ArrayList<String>): Bool {
+        if (a.size != b.size) {
+            return false
+        }
+        for (i in 0..a.size) {
+            if (a[i] != b[i]) {
+                return false
+            }
+        }
+        return true
     }
 }

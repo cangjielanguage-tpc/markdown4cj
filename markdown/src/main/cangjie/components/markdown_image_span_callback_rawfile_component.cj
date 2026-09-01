@@ -17,6 +17,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
     var rawFileCallbackLinkCallback: ?(String) -> Unit // 链接点击事件
     var rawFileCallbackLink: Bool // 是否是链接
     var rawFileCallbackLinkUrl: Option<String> // 链接URL
+    var rawFileCallbackImageWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.None // 图片加载完成后实际显示宽度回调 - 单位vp（表格列宽跟踪用）
     var rawFileCallbackImageWidth: Option<Length> // 图片宽度
     var rawFileCallbackImageHeight: Option<Length> // 图片高度
     var rawFileCallbackImageRadius: Option<Length> // 图片圆角
@@ -182,6 +183,9 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                     rawFileCallbackReplaceWidth = res[0]
                     rawFileCallbackReplaceHeight = res[1]
                     rawFileCallbackReplaceImageType = 1
+                    if (let Some(rw) <- rawFileCallbackReplaceWidth) {
+                        notifyImageWidthByPx(rw)
+                    }
                 } else {
                     rawFileCallbackReplaceImageType = 2
                 }
@@ -216,6 +220,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                     rawFileCallbackWidth = res[0]
                     rawFileCallbackHeight = res[1]
                     rawFileCallbackImageType = 1
+                    notifyImageWidth()
                 } else {
                     rawFileCallbackImageType = 2
                 }
@@ -227,5 +232,20 @@ public class MarkdownSpanImageCallbackRawFileComponent {
             rawFileCallbackMarkdownTheme.globalTheme.stageContext,
             callback
         )
+    }
+
+    /**
+     * 图片加载完成后，回调实际显示宽度（vp），供表格列宽跟踪使用
+     */
+    func notifyImageWidthByPx(widthPx: Float64): Unit {
+        if (widthPx > 0.0) {
+            if (let Some(cb) <- rawFileCallbackImageWidthCallback) {
+                cb(px2vp(widthPx.px).getOrThrow().value)
+            }
+        }
+    }
+
+    func notifyImageWidth(): Unit {
+        notifyImageWidthByPx(rawFileCallbackWidth)
     }
 }

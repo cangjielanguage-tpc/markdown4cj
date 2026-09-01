@@ -15,6 +15,7 @@ public class MarkdownSpanImageUrlComponent {
     var urlLinkCallback: ?(String) -> Unit // 链接点击事件
     var urlLink: Bool // 是否是链接
     var urlLinkUrl: Option<String> // 链接URL
+    var urlImageWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.None // 图片加载完成后实际显示宽度回调 - 单位vp（表格列宽跟踪用）
     var urlImageWidth: Option<Length> // 图片宽度
     var urlImageHeight: Option<Length> // 图片高度
     var urlImageRadius: Option<Length> // 图片圆角
@@ -128,6 +129,7 @@ public class MarkdownSpanImageUrlComponent {
                         urlWidth = res[0]
                         urlHeight = res[1]
                         urlImageType = 1
+                        notifyImageWidth()
                 }
                 .onError {
                     imageError => urlImageType = 2
@@ -173,10 +175,22 @@ public class MarkdownSpanImageUrlComponent {
                         urlWidth = res[0]
                         urlHeight = res[1]
                         urlImageType = 1
+                        notifyImageWidth()
                 }
                 .onError {
                     imageError => urlImageType = 2
                 }
+        }
+    }
+
+    /**
+     * 图片加载完成后，回调实际显示宽度（vp），供表格列宽跟踪使用
+     */
+    func notifyImageWidth(): Unit {
+        if (urlWidth > 0.0) {
+            if (let Some(cb) <- urlImageWidthCallback) {
+                cb(px2vp(urlWidth.px).getOrThrow().value)
+            }
         }
     }
 

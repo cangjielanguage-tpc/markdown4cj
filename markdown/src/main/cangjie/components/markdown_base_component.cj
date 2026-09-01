@@ -277,7 +277,8 @@ func spanImageComponent(
     spanListNodeView: NodeView,
     spanListMarkdownConfiguration: MarkdownConfiguration,
     spanListComponentWidth: Float64,
-    spanListImageCallback: (String) -> Unit
+    spanListImageCallback: (String) -> Unit,
+    spanListImageWidthCallback: ?(Float64) -> Unit
 ) {
     if (spanListMarkdownConfiguration.imageReplaceCallback.isNone()) {
         // 没有图片替换回调接口
@@ -291,6 +292,7 @@ func spanImageComponent(
                 rawFileLinkCallback: spanListMarkdownConfiguration.linkCallback,
                 rawFileLink: spanListNodeView.isLink,
                 rawFileLinkUrl: spanListNodeView.linkUrl,
+                rawFileImageWidthCallback: spanListImageWidthCallback,
                 rawFileImageWidth: spanListNodeView.imageWidth,
                 rawFileImageHeight: spanListNodeView.imageHeight,
                 rawFileImageRadius: spanListNodeView.imageRadius,
@@ -306,6 +308,7 @@ func spanImageComponent(
                 urlLinkCallback: spanListMarkdownConfiguration.linkCallback,
                 urlLink: spanListNodeView.isLink,
                 urlLinkUrl: spanListNodeView.linkUrl,
+                urlImageWidthCallback: spanListImageWidthCallback,
                 urlImageWidth: spanListNodeView.imageWidth,
                 urlImageHeight: spanListNodeView.imageHeight,
                 urlImageRadius: spanListNodeView.imageRadius,
@@ -325,6 +328,7 @@ func spanImageComponent(
                 rawFileCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
                 rawFileCallbackLink: spanListNodeView.isLink,
                 rawFileCallbackLinkUrl: spanListNodeView.linkUrl,
+                rawFileCallbackImageWidthCallback: spanListImageWidthCallback,
                 rawFileCallbackImageWidth: spanListNodeView.imageWidth,
                 rawFileCallbackImageHeight: spanListNodeView.imageHeight,
                 rawFileCallbackImageRadius: spanListNodeView.imageRadius,
@@ -341,6 +345,7 @@ func spanImageComponent(
                 urlCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
                 urlCallbackLink: spanListNodeView.isLink,
                 urlCallbackLinkUrl: spanListNodeView.linkUrl,
+                urlCallbackImageWidthCallback: spanListImageWidthCallback,
                 urlCallbackImageWidth: spanListNodeView.imageWidth,
                 urlCallbackImageHeight: spanListNodeView.imageHeight,
                 urlCallbackImageRadius: spanListNodeView.imageRadius,

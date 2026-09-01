@@ -601,7 +601,7 @@ public class MarkdownComponent {
             }
             oldOutput = output
             if (let Some(v) <- markdownConfiguration.nodeString) {
-                v(NodeViewStringBuilder(doc))
+                v(NodeViewStringBuilder(doc, markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsSeparate))
             }
             imageAndVideoList.clear()
             imageAndVideoList.add(all: getProp<HashSet<String>>(doc, "links", HashSet<String>()).toArray())
