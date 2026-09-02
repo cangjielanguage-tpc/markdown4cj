@@ -1,7 +1,6 @@
 import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
-  // MarkdownScroller,
   MarkdownTheme} from '@cangjie-tpc/markdown_arkui'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
@@ -9,10 +8,10 @@ import { getFileContextStr } from '../utils/FileUtils'
 import { BaseMDData } from '../model/BaseMDData'
 import { hilog } from '@kit.PerformanceAnalysisKit'
 import { ConfigurationConstant } from '@kit.AbilityKit'
-import { COLOR_FF4A90E2, NUM_FFE9967A } from '@cangjie-tpc/markdown_arkui/src/main/ets/base/Constants'
 import {
   MarkdownHighlightParagraph
-} from '@cangjie-tpc/markdown_arkui/src/main/ets/configs/MarkdownHighlightParagraph'
+} from '@cangjie-tpc/markdown_arkui'
+import { COLOR_FF4A90E2, NUM_FFE9967A } from '../base/Constants'
 
 @Entry
 @Component

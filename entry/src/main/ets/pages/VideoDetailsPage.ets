@@ -1,9 +1,9 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
-  // MarkdownScroller,
+import { CJMarkdown,
+  MarkdownConfiguration,
+  MarkdownPlugin,
   MarkdownTheme,
-  // ImageFitType,
   GlobalTheme,
   VideoTheme} from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../utils/FileUtils'

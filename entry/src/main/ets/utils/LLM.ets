@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- */
 import { http } from '@kit.NetworkKit'
 import { JSON } from '@kit.ArkTS'
 import { ChatCompletionChunk } from '../model/ChatCompletionChunk'

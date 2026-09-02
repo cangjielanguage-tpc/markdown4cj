@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- */
 import { getIcon, Message } from "../model/Message"
 import { CJMarkdownWrapSticky } from "./CJMarkdownWrapSticky"
 import { MarkdownScrollController } from '@cangjie-tpc/markdown_arkui'

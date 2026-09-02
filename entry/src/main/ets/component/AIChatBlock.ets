@@ -1,9 +1,5 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- */
 import { getIcon, Message } from "../model/Message"
 import { CJMarkdownWrap } from "./CJMarkdownWrap"
-// import { MarkdownScroller } from '@cangjie-tpc/markdown_arkui'
 
 const SIZE: number = 36
 const MARGIN: number = SIZE * 2 + 25

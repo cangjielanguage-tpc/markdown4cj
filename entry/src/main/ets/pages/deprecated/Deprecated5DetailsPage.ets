@@ -5,7 +5,6 @@ import {
   GlobalTheme,
   MarkdownConfiguration,
   MarkdownPlugin,
-  // MarkdownScroller,
   MarkdownTheme
 } from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../../utils/FileUtils'

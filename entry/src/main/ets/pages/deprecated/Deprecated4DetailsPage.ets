@@ -4,10 +4,7 @@ import {
   CJMarkdown,
   MarkdownConfiguration,
   MarkdownPlugin,
-  // MarkdownScroller,
   MarkdownTheme,
-  // ImageFitType,
-  // LatexMathColorFormat,
   GlobalTheme
 } from '@cangjie-tpc/markdown_arkui'
 import { getFileContextStr } from '../../utils/FileUtils'

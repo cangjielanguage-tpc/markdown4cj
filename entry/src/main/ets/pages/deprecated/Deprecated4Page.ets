@@ -11,7 +11,6 @@ import {
   timeListGeneralData
 } from '../../model/GeneralData'
 import { DeprecatedData } from '../../model/DeprecatedData'
-// import { ImageFitType, LatexMathColorFormat } from '@cangjie-tpc/markdown_arkui'
 
 // 数学公式、图片配置
 @Entry

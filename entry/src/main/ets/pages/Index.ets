@@ -1,5 +1,5 @@
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_arkui'
-import { COLOR_RED } from '@cangjie-tpc/markdown_arkui/src/main/ets/base/Constants';
+import { COLOR_RED } from '../base/Constants';
 
 @Entry
 @Component
