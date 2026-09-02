@@ -113,7 +113,7 @@ class MarkdownTableTitleComponent {
     func onCopyClicked(): Unit {
         if (let Some(cb) <- tableTitleMarkdownConfiguration.tableCopyCallback) {
             if (let Some(node) <- tableTitleNode.commonmarkNode) {
-                cb(NodeViewStringBuilder(node, false).toString())
+                cb(NodeViewStringBuilder(node).toString())
             }
         }
     }

@@ -135,7 +135,7 @@ class MarkdownHeadingComponent {
             Column() {
                   if (!headingMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
                     if (headingMarkdownConfiguration.imageReplaceCallback.isNone()) {
-                        if (headingNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
+                        if (isRawFileImageUrl(headingNodeViewList[0].imageUrl.getOrThrow())) {
                             MarkdownImageRawFileComponent(
                                 rawFileMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
                                 rawFileDestination: headingNodeViewList[0].imageUrl.getOrThrow(),
@@ -167,7 +167,7 @@ class MarkdownHeadingComponent {
                             )
                         }
                     } else {
-                        if (headingNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
+                        if (isRawFileImageUrl(headingNodeViewList[0].imageUrl.getOrThrow())) {
                             MarkdownImageCallbackRawFileComponent(
                                 rawFileCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
                                 rawFileCallbackDestination: headingNodeViewList[0].imageUrl.getOrThrow(),

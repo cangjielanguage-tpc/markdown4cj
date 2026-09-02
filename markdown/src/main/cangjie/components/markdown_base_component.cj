@@ -278,7 +278,7 @@ func spanImageComponent(
 ) {
     if (spanListMarkdownConfiguration.imageReplaceCallback.isNone()) {
         // 没有图片替换回调接口
-        if (spanListNodeView.imageUrl.getOrThrow().startsWith("./")) {
+        if (isRawFileImageUrl(spanListNodeView.imageUrl.getOrThrow())) {
             // 本地图片
             MarkdownSpanImageRawFileComponent(
                 rawFileMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
@@ -313,7 +313,7 @@ func spanImageComponent(
         }
     } else {
         // 有图片替换回调接口
-        if (spanListNodeView.imageUrl.getOrThrow().startsWith("./")) {
+        if (isRawFileImageUrl(spanListNodeView.imageUrl.getOrThrow())) {
             // 本地图片
             MarkdownSpanImageCallbackRawFileComponent(
                 rawFileCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,

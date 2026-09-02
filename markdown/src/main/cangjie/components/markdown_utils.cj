@@ -28,6 +28,18 @@ let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
 
 /**
+ * 判断图片链接是否为本地rawfile相对路径
+ * ./开头：相对md文件所在目录
+ * ../开头：相对md文件所在目录的上级目录
+ *
+ * @param url 图片链接
+ * @return 是否为本地相对路径
+ */
+func isRawFileImageUrl(url: String): Bool {
+    return url.startsWith("./") || url.startsWith("../")
+}
+
+/**
  * 判断软换行是否换行
  *
  * @param isLineBreak 软换行是否需要换行

@@ -598,7 +598,8 @@ public class MarkdownComponent {
             }
             oldOutput = output
             if (let Some(v) <- markdownConfiguration.nodeString) {
-                v(NodeViewStringBuilder(doc, markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsSeparate))
+                // 单独代码块开关通过闭包动态读取，保证配置切换后复制结果与页面显示一致
+                v(NodeViewStringBuilder(doc, { => markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsSeparate }))
             }
             imageAndVideoList.clear()
             imageAndVideoList.add(all: getProp<HashSet<String>>(doc, "links", HashSet<String>()).toArray())
