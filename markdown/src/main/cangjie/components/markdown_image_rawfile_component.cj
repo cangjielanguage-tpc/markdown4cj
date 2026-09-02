@@ -95,13 +95,14 @@ public class MarkdownImageRawFileComponent {
                 if (rawFileImageType == 1) {
                     // 加载图片
                     Image(rawFileImagePixelMap())
-                        .borderRadius(topLeft: rawFileRadiusTopLeft, topRight: rawFileRadiusTopRight, bottomLeft: rawFileRadiusBottomRight, bottomRight: rawFileRadiusBottomLeft)
+                        .borderRadius(topLeft: rawFileRadiusTopLeft, topRight: rawFileRadiusTopRight, bottomLeft: rawFileRadiusBottomLeft, bottomRight: rawFileRadiusBottomRight)
                         .borderWidth(rawFileMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(rawFileMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(rawFileMarkdownTheme.imageTheme.imageBorderStyle)
                         .width(rawFileWidth.px)
                         .height(rawFileHeight.px)
                         .objectFit(rawFileMarkdownTheme.imageTheme.imageFitType)
+                        .autoResize(rawFileMarkdownTheme.imageTheme.imageAutoResize)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
                             evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
@@ -124,6 +125,8 @@ public class MarkdownImageRawFileComponent {
                 }
             }
             .alignItems(rawFileHorizontalAlign)
+            // 边距挂在图片容器上（对齐ArkUI：下载按钮在图片下边距之外）
+            .margin(top: rawFileMarkdownTheme.imageTheme.imageMarginTop, right: rawFileMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileMarkdownTheme.imageTheme.imageMarginLeft)
             if (rawFileMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: rawFileMarkdownTheme,
@@ -132,7 +135,6 @@ public class MarkdownImageRawFileComponent {
                 )
             }
         }
-        .margin(top: rawFileMarkdownTheme.imageTheme.imageMarginTop, right: rawFileMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileMarkdownTheme.imageTheme.imageMarginLeft)
     }
 
     /**

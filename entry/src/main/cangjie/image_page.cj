@@ -95,7 +95,6 @@ class ImagePage {
         .usePlugin(BlockAudioPlugin.create())
         .usePlugin(BlockVideoPlugin.create())
         .usePlugin(LinkifyPlugin.create([]))
-        .usePlugin(ImageSlidePlugin.create())
         .usePlugin(ImageStylePlugin.create())
         .usePlugin(CodeListPlugin.create())
         .usePlugin(FootnotePlugin.create())
