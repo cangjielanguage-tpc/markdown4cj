@@ -225,8 +225,7 @@ public class MarkdownComponent {
                     ListItem() {
                         blockCodeBlockListComponent(
                             markdownConfiguration,
-                            item,
-                            toCodeList(item)
+                            item
                         )
                     }
                 } else if (item.nodeType == "FencedCodeBlock") {

@@ -154,7 +154,7 @@ public class CodeBlockTheme {
     @Publish
     public var codeBlockTextFontStyle: FontStyle = FontStyle.Normal // 代码块代码文本字体样式
     @Publish
-    public var codeBlockTextFontWeight: FontWeight = FontWeight.W400 // 代码块代码文本字体粗细
+    public var codeBlockTextFontWeight: FontWeight = FontWeight.Normal // 代码块代码文本字体粗细
     @Publish
     public var codeBlockTextFontFamily: String = "HarmonyOS Sans" // 代码块代码文本字体
     @Publish

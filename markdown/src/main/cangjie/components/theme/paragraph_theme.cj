@@ -32,7 +32,7 @@ public class ParagraphTheme {
     @Publish
     public var paragraphTextFontStyle: FontStyle = FontStyle.Normal // 段落文本字体样式
     @Publish
-    public var paragraphTextFontWeight: FontWeight = FontWeight.W400 // 段落文本字体粗细
+    public var paragraphTextFontWeight: FontWeight = FontWeight.Normal // 段落文本字体粗细
     @Publish
     public var paragraphTextFontFamily: String = "HarmonyOS Sans" // 段落文本字体
     @Publish

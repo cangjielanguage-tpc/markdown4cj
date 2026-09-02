@@ -253,9 +253,15 @@ class MarkdownCodeComponent {
 
     /**
      * 滑动到底部
+     * LazyForEach 的 addData 触发的渲染是异步的，
+     * scrollEdge 在渲染前调用只能滚到旧底部，需延迟一帧再滚动一次确保到位
      */
     func scroll2Bottom() {
         scroller2.scrollEdge(Edge.Bottom)
+        Timer.once(0 * Duration.millisecond) {
+            =>
+                scroller2.scrollEdge(Edge.Bottom)
+        }
     }
 
     /**

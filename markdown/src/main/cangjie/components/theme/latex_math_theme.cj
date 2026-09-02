@@ -32,7 +32,7 @@ public class LatexMathTheme {
     @Publish
     public var latexMathDefaultTextFontStyle: FontStyle = FontStyle.Normal // 数学公式未加载状态文本字体样式
     @Publish
-    public var latexMathDefaultTextFontWeight: FontWeight = FontWeight.W400 // 数学公式未加载状态文本字体粗细
+    public var latexMathDefaultTextFontWeight: FontWeight = FontWeight.Normal // 数学公式未加载状态文本字体粗细
     @Publish
     public var latexMathDefaultTextFontFamily: String = "HarmonyOS Sans" // 数学公式未加载状态文本字体
     @Publish

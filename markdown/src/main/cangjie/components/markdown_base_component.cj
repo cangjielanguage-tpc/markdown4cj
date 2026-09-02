@@ -188,15 +188,11 @@ func imagePlaceholderComponent(
 @Builder
 func blockCodeBlockListComponent(
     markdownConfiguration: MarkdownConfiguration,
-    item: NodeView,
-    res: (ArrayList<String>, ArrayList<String>, ArrayList<String>)
+    item: NodeView
 ) {
     MarkdownCodeBlockListComponent(
         markdownConfiguration: markdownConfiguration,
-        nodeView: item,
-        strInfos: res[0],
-        strText: res[1],
-        strInfoText: res[2]
+        nodeView: item
     )
 }
 

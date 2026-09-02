@@ -4,41 +4,31 @@ class MarkdownParseCodeUtil {
     /**
      * 通过异步的方式将代码转换成带有颜色的列表 - 组合代码
      *
-     * @param nodeView 传入围栏代码列表的Node
-     * @param strText 代码列表数据
+     * @param strText 代码文本列表（快照）
+     * @param strInfoText 代码语言列表（与strText同源同索引，快照）
      * @param psh PrismSyntaxHighlight对象
      * @param callback 回调接口
      * @return 线程
      */
     static func stringToResLists(
-        nodeView: NodeView,
         strText: ArrayList<String>,
+        strInfoText: ArrayList<String>,
         psh: ?PrismSyntaxHighlight,
         callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit
     ): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
-            // 收集各代码块语言（与toCodeList相同的过滤规则，保证与strText索引对应）
-            var infos: ArrayList<?String> = ArrayList<?String>()
-            for (node in nodeView.children) {
-                if (node.nodeType == "FencedCodeBlock") {
-                    infos.add(node.codeInfo)
-                }
-            }
-            // 直接使用strText逐个解析高亮
-            // 注意：nodeView.children为NodeView包装类，不能强转为commonmark的FencedCodeBlock，
-            // 旧实现强转抛异常被catch吞掉后回退为无高亮纯文本
+            // 直接使用strText逐个解析高亮，语言取自同源的strInfoText（索引严格对应）
             for (i in 0..strText.size) {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
                 let code = strText[i]
                 var info: ?String = Option<String>.None
-                if (i < infos.size) {
-                    if (let Some(v) <- infos[i]) {
-                        if (v.size > 0) {
-                            info = Some(v)
-                        }
+                if (i < strInfoText.size) {
+                    let v = strInfoText[i]
+                    if (v.size > 0) {
+                        info = Some(v)
                     }
                 }
                 var res: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
