@@ -381,7 +381,9 @@ class MarkdownTableBlockCellComponent {
                         { width: Float64 =>
                             // 图片加载完成后记录imageFallback，防止列宽收缩到图片宽度以下
                             cellWidthTracker.setFallback(tableBlockCellRow, tableBlockCellCell, width)
-                        }
+                        },
+                        // 表格场景：以单元格最大宽度为图片宽度计算基准与约束宽度（对齐ArkUI tableMaxCellWidth逻辑）
+                        spanListMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth
                         )
                 } else {
                     tableBlockCellCustomTableLineBuilder(spanListNodeView, index)

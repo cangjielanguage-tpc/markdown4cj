@@ -274,7 +274,8 @@ func spanImageComponent(
     spanListMarkdownConfiguration: MarkdownConfiguration,
     spanListComponentWidth: Float64,
     spanListImageCallback: (String) -> Unit,
-    spanListImageWidthCallback: ?(Float64) -> Unit
+    spanListImageWidthCallback: ?(Float64) -> Unit,
+    spanListImageCellMaxWidth: ?Float64
 ) {
     if (spanListMarkdownConfiguration.imageReplaceCallback.isNone()) {
         // 没有图片替换回调接口
@@ -289,6 +290,7 @@ func spanImageComponent(
                 rawFileLink: spanListNodeView.isLink,
                 rawFileLinkUrl: spanListNodeView.linkUrl,
                 rawFileImageWidthCallback: spanListImageWidthCallback,
+                rawFileImageCellMaxWidth: spanListImageCellMaxWidth,
                 rawFileImageWidth: spanListNodeView.imageWidth,
                 rawFileImageHeight: spanListNodeView.imageHeight,
                 rawFileImageRadius: spanListNodeView.imageRadius,
@@ -305,6 +307,7 @@ func spanImageComponent(
                 urlLink: spanListNodeView.isLink,
                 urlLinkUrl: spanListNodeView.linkUrl,
                 urlImageWidthCallback: spanListImageWidthCallback,
+                urlImageCellMaxWidth: spanListImageCellMaxWidth,
                 urlImageWidth: spanListNodeView.imageWidth,
                 urlImageHeight: spanListNodeView.imageHeight,
                 urlImageRadius: spanListNodeView.imageRadius,
@@ -325,6 +328,7 @@ func spanImageComponent(
                 rawFileCallbackLink: spanListNodeView.isLink,
                 rawFileCallbackLinkUrl: spanListNodeView.linkUrl,
                 rawFileCallbackImageWidthCallback: spanListImageWidthCallback,
+                rawFileCallbackImageCellMaxWidth: spanListImageCellMaxWidth,
                 rawFileCallbackImageWidth: spanListNodeView.imageWidth,
                 rawFileCallbackImageHeight: spanListNodeView.imageHeight,
                 rawFileCallbackImageRadius: spanListNodeView.imageRadius,
@@ -342,6 +346,7 @@ func spanImageComponent(
                 urlCallbackLink: spanListNodeView.isLink,
                 urlCallbackLinkUrl: spanListNodeView.linkUrl,
                 urlCallbackImageWidthCallback: spanListImageWidthCallback,
+                urlCallbackImageCellMaxWidth: spanListImageCellMaxWidth,
                 urlCallbackImageWidth: spanListNodeView.imageWidth,
                 urlCallbackImageHeight: spanListNodeView.imageHeight,
                 urlCallbackImageRadius: spanListNodeView.imageRadius,

@@ -299,6 +299,11 @@ class MarkdownCodeBlockListComponent {
 
                     Blank()
                         .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
+                        .visibility(if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
+                            Visibility.Visible
+                        } else {
+                            Visibility.None
+                        })
 
                     if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
                         Row() {

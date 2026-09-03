@@ -669,7 +669,8 @@ class MarkdownParagraphComponent {
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
                         spanListImageCallback,
-                        Option<(Float64) -> Unit>.None
+                        Option<(Float64) -> Unit>.None,
+                        Option<Float64>.None
                         )
                 } else {
                     // 其他节点

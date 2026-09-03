@@ -17,6 +17,7 @@ public class MarkdownSpanImageCallbackUrlComponent {
     var urlCallbackLink: Bool // 是否是链接
     var urlCallbackLinkUrl: Option<String> // 链接URL
     var urlCallbackImageWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.None // 图片加载完成后实际显示宽度回调 - 单位vp（表格列宽跟踪用）
+    var urlCallbackImageCellMaxWidth: ?Float64 = Option<Float64>.None // 表格单元格最大宽度 - 单位vp（表格场景传入，作为图片宽度计算基准与约束宽度）
     var urlCallbackImageWidth: Option<Length> // 图片宽度
     var urlCallbackImageHeight: Option<Length> // 图片高度
     var urlCallbackImageRadius: Option<Length> // 图片圆角
@@ -44,6 +45,12 @@ public class MarkdownSpanImageCallbackUrlComponent {
 
     protected override func aboutToAppear(): Unit {
         urlCallbackComponentImageWidth = vp2px(urlCallbackComponentWidth.vp)().value // 图片最大宽度单位转换
+        // 表格单元格场景：以单元格最大宽度为图片宽度计算基准（对齐ArkUI tableMaxCellWidth优先逻辑）
+        if (let Some(cellMaxWidth) <- urlCallbackImageCellMaxWidth) {
+            if (cellMaxWidth > 0.0) {
+                urlCallbackComponentImageWidth = vp2px(cellMaxWidth.vp)().value
+            }
+        }
         // 图片圆角
         let radius = imageSpanBorderRadius(
             urlCallbackImageRadius,
@@ -120,7 +127,7 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .height(urlCallbackReplaceHeight().px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(urlCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                     }
@@ -147,7 +154,7 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .height(urlCallbackHeight.px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(urlCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                     }
@@ -195,7 +202,7 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .height(urlCallbackReplaceHeight().px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(urlCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                     }
@@ -221,7 +228,7 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .height(urlCallbackHeight.px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(urlCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                     }

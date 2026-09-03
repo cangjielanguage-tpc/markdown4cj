@@ -1642,6 +1642,21 @@ func length2Float(length: Length): Float64 {
 }
 
 /**
+ * 表格单元格内图片的约束最大宽度
+ *
+ * @param cellMaxWidth 表格单元格最大宽度 - 单位vp
+ * @return Length 有单元格最大宽度时返回该值，否则返回100%
+ */
+func imageSpanConstraintMaxWidth(cellMaxWidth: ?Float64): Length {
+    if (let Some(w) <- cellMaxWidth) {
+        if (w > 0.0) {
+            return w.vp
+        }
+    }
+    return 100.percent
+}
+
+/**
  * 处理图片的宽高
  *
  * @param componentImageWidth 控件宽度

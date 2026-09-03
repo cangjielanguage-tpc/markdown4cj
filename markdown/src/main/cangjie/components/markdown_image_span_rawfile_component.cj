@@ -17,6 +17,7 @@ public class MarkdownSpanImageRawFileComponent {
     var rawFileLink: Bool // 是否是链接
     var rawFileLinkUrl: Option<String> // 链接URL
     var rawFileImageWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.None // 图片加载完成后实际显示宽度回调 - 单位vp（表格列宽跟踪用）
+    var rawFileImageCellMaxWidth: ?Float64 = Option<Float64>.None // 表格单元格最大宽度 - 单位vp（表格场景传入，作为图片宽度计算基准与约束宽度）
     var rawFileImageWidth: Option<Length> // 图片宽度
     var rawFileImageHeight: Option<Length> // 图片高度
     var rawFileImageRadius: Option<Length> // 图片圆角
@@ -49,6 +50,12 @@ public class MarkdownSpanImageRawFileComponent {
 
     protected override func aboutToAppear(): Unit {
         rawFileComponentImageWidth = vp2px(rawFileComponentWidth.vp)().value // 图片最大宽度单位转换
+        // 表格单元格场景：以单元格最大宽度为图片宽度计算基准（对齐ArkUI tableMaxCellWidth优先逻辑）
+        if (let Some(cellMaxWidth) <- rawFileImageCellMaxWidth) {
+            if (cellMaxWidth > 0.0) {
+                rawFileComponentImageWidth = vp2px(cellMaxWidth.vp)().value
+            }
+        }
         // 图片圆角
         let radius = imageSpanBorderRadius(rawFileImageRadius, rawFileMarkdownTheme.imageTheme.imageRadiusTopLeft, rawFileMarkdownTheme.imageTheme.imageRadiusTopRight, rawFileMarkdownTheme.imageTheme.imageRadiusBottomLeft, rawFileMarkdownTheme.imageTheme.imageRadiusBottomRight)
         rawFileRadiusTopLeft =  radius[0] // 图片左上圆角
@@ -93,7 +100,7 @@ public class MarkdownSpanImageRawFileComponent {
                     .height(rawFileHeight.px)
                     .objectFit(rawFileMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(rawFileImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
                     }

@@ -201,6 +201,11 @@ class MarkdownCodeComponent {
 
                     Blank()
                         .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
+                        .visibility(if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
+                            Visibility.Visible
+                        } else {
+                            Visibility.None
+                        })
 
                     if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
                         Row() {
@@ -208,7 +213,6 @@ class MarkdownCodeComponent {
                                 Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
                                     .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
                                     .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
-                                    .margin(left: 4)
                                     .objectFit(ImageFit.Contain)
                             }
 

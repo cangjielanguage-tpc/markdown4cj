@@ -18,6 +18,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
     var rawFileCallbackLink: Bool // 是否是链接
     var rawFileCallbackLinkUrl: Option<String> // 链接URL
     var rawFileCallbackImageWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.None // 图片加载完成后实际显示宽度回调 - 单位vp（表格列宽跟踪用）
+    var rawFileCallbackImageCellMaxWidth: ?Float64 = Option<Float64>.None // 表格单元格最大宽度 - 单位vp（表格场景传入，作为图片宽度计算基准与约束宽度）
     var rawFileCallbackImageWidth: Option<Length> // 图片宽度
     var rawFileCallbackImageHeight: Option<Length> // 图片高度
     var rawFileCallbackImageRadius: Option<Length> // 图片圆角
@@ -61,6 +62,12 @@ public class MarkdownSpanImageCallbackRawFileComponent {
 
     protected override func aboutToAppear(): Unit {
         rawFileCallbackComponentImageWidth = vp2px(rawFileCallbackComponentWidth.vp)().value // 图片最大宽度单位转换
+        // 表格单元格场景：以单元格最大宽度为图片宽度计算基准（对齐ArkUI tableMaxCellWidth优先逻辑）
+        if (let Some(cellMaxWidth) <- rawFileCallbackImageCellMaxWidth) {
+            if (cellMaxWidth > 0.0) {
+                rawFileCallbackComponentImageWidth = vp2px(cellMaxWidth.vp)().value
+            }
+        }
         // 图片圆角
         let radius = imageSpanBorderRadius(rawFileCallbackImageRadius, rawFileCallbackMarkdownTheme.imageTheme.imageRadiusTopLeft, rawFileCallbackMarkdownTheme.imageTheme.imageRadiusTopRight, rawFileCallbackMarkdownTheme.imageTheme.imageRadiusBottomLeft, rawFileCallbackMarkdownTheme.imageTheme.imageRadiusBottomRight)
         rawFileCallbackRadiusTopLeft =  radius[0] // 图片左上圆角
@@ -114,7 +121,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                     .height(rawFileCallbackReplaceHeight().px)
                     .objectFit(rawFileCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(rawFileCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(rawFileCallbackLink, rawFileCallbackImageCallback, rawFileCallbackLinkCallback, rawFileCallbackLinkUrl, rawFileCallbackDestination)
                     }
@@ -136,7 +143,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                         .height(rawFileCallbackHeight.px)
                         .objectFit(rawFileCallbackMarkdownTheme.imageTheme.imageFitType)
                         .verticalAlign(ImageSpanAlignment.CENTER)
-                        .constraintSize(maxWidth: 100.percent)
+                        .constraintSize(maxWidth: imageSpanConstraintMaxWidth(rawFileCallbackImageCellMaxWidth))
                         .onClick {
                             evt => imageSpanOnClick(rawFileCallbackLink, rawFileCallbackImageCallback, rawFileCallbackLinkCallback, rawFileCallbackLinkUrl, rawFileCallbackDestination)
                         }
