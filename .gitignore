@@ -22,3 +22,14 @@ log.txt
 skills-lock.json
 .agents
 .hvigor_local
+.hvigor_cache
+.hvigor_home
+.npm_cache
+_debug_run.ps1
+build_prism.log
+build_prism_debug.log
+build_prism_st.log
+build_full.log
+prism_build.log
+prism_exit.txt
+status_probe.txt
