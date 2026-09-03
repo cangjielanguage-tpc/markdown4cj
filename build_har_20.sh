@@ -74,11 +74,38 @@ esac
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 HAR_OUTPUT_DIR="$PROJECT_ROOT/markdown_arkui/har"
 
-# ---------------- 工具链路径自动探测（不写死本地路径） ----------------
-# 优先级：脚本参数 > 环境变量 > 项目根各级祖先目录中的常见安装布局
+# ---------------- Step 0: manual path setup (optional, interactive) ----------------
+# 交互式运行时先询问用户手动输入路径；留空回车则跳过，后续自动探测。
+# 交互输入优先级：命令行参数 > 交互输入 > 环境变量 > 自动探测
+ask_tool_path() {
+    # $1: prompt, $2: marker path, $3: marker desc; prints accepted path or empty
+    local prompt="$1" marker="$2" desc="$3" i input
+    for i in 1 2 3; do
+        printf '%s' "$prompt"
+        IFS= read -r input || return 0
+        input="${input%\"}"; input="${input#\"}"
+        input="${input%\'}"; input="${input#\'}"
+        input="$(printf '%s' "$input" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+        [ -z "$input" ] && return 0   # user skipped -> auto-detect later
+        if [ -e "$input/$marker" ]; then printf '%s' "$input"; return 0; fi
+        warn "  Invalid path ($desc not found under it): $input"
+    done
+    warn '  Too many invalid inputs; falling back to auto-detection.'
+    return 0
+}
 
-# 提取项目根名称中的版本号（如 6.1.1），用于候选路径排序——
-# 同名版本号的安装目录优先，避免多版本共存时误选旧版本工具链。
+if [ -t 0 ]; then
+    echo ''
+    info '================ Toolchain path setup ================'
+    echo 'You can specify the install paths manually below.'
+    echo 'Leave blank and press Enter to let the script auto-detect them.'
+    if [ -z "$ARG_DEVECO_TOOLS" ]; then
+        ARG_DEVECO_TOOLS="$(ask_tool_path 'DevEco Studio tools dir (e.g. /opt/deveco-studio/tools): ' 'hvigor/bin/hvigorw' 'hvigor/bin/hvigorw')"
+    fi
+    if [ -z "$ARG_CANGJIE_SDK_ROOT" ]; then
+        ARG_CANGJIE_SDK_ROOT="$(ask_tool_path 'Compatibility SDK root (the compatibility dir): ' 'build-tools/tools/hvigor/cangjie-build-support' 'build-tools/tools/hvigor/cangjie-build-support')"
+    fi
+fi
 VERSION_HINT="$(printf '%s' "$PROJECT_ROOT" | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -n 1 || true)"
 
 # 含版本号的候选排前面，其余保持原顺序
@@ -93,18 +120,23 @@ sort_hint() {
     return 0
 }
 
-# 项目根向上最多 3 级祖先目录
+# Search bases: up to 5 ancestor levels above the project root, plus common
+# install locations ($HOME, /opt, /usr/local, /Applications).
 get_search_bases() {
-    local dir i parent
+    local dir i parent p
     dir="$(dirname "$PROJECT_ROOT")"
     i=0
-    while [ $i -lt 3 ] && [ -n "$dir" ] && [ "$dir" != "/" ]; do
+    while [ $i -lt 5 ] && [ -n "$dir" ] && [ "$dir" != "/" ]; do
         printf '%s\n' "$dir"
         parent="$(dirname "$dir")"
         [ "$parent" = "$dir" ] && break
         dir="$parent"
         i=$((i + 1))
     done
+    for p in "$HOME" /opt /usr/local /Applications; do
+        [ -n "$p" ] && [ -d "$p" ] && printf '%s\n' "$p"
+    done
+    return 0
 }
 
 # 探测 DevEco Studio 的 tools 目录
@@ -119,22 +151,33 @@ resolve_deveco_tools() {
     fi
 
     # 2) 由 DEVECO_SDK_HOME（<安装根>/sdk）推导：<安装根>/tools
+    #    macOS .app bundle: <app>/Contents/sdk -> <app>/Contents/tools
     if [ -n "${DEVECO_SDK_HOME:-}" ]; then
         local guess; guess="$(dirname "$DEVECO_SDK_HOME")/tools"
         if [ -f "$guess/$marker" ]; then printf '%s' "$guess"; return 0; fi
     fi
 
-    # 3) 祖先目录自身或其下 'DevEco*' 目录中的 'DevEco Studio*' 安装目录
+    # 2.5) PATH 中的 hvigorw 反推：<tools>/hvigor/bin/hvigorw -> <tools>
+    if command -v hvigorw >/dev/null 2>&1; then
+        local hw guess2
+        hw="$(command -v hvigorw)"
+        guess2="$(dirname "$(dirname "$(dirname "$hw")")")"
+        if [ -f "$guess2/$marker" ]; then printf '%s' "$guess2"; return 0; fi
+    fi
+
+    # 3) 各搜索基目录自身或其下 'DevEco*'/'Huawei*' 目录中的 'DevEco Studio*' 安装目录
+    #    兼容两种布局：<studio>/tools（Windows/Linux）与 <studio>.app/Contents/tools（macOS）
     local base r s roots studios
     for base in $(get_search_bases); do
-        roots="$( { printf '%s\n' "$base"; find "$base" -maxdepth 1 -mindepth 1 -type d -name 'DevEco*' 2>/dev/null; } | sort_hint )"
+        roots="$( { printf '%s\n' "$base"; find "$base" -maxdepth 1 -mindepth 1 -type d \( -name 'DevEco*' -o -name 'Huawei*' -o -name 'huawei*' \) 2>/dev/null; } | sort_hint )"
         while IFS= read -r r; do
             [ -n "$r" ] || continue
             [ -d "$r" ] || continue
-            studios="$(find "$r" -maxdepth 1 -mindepth 1 -type d -name 'DevEco Studio*' 2>/dev/null | sort_hint)"
+            studios="$(find "$r" -maxdepth 1 -mindepth 1 \( -type d -o -type l \) -name 'DevEco Studio*' 2>/dev/null | sort_hint)"
             while IFS= read -r s; do
                 [ -n "$s" ] || continue
                 if [ -f "$s/tools/$marker" ]; then printf '%s' "$s/tools"; return 0; fi
+                if [ -f "$s/Contents/tools/$marker" ]; then printf '%s' "$s/Contents/tools"; return 0; fi
             done <<< "$studios"
         done <<< "$roots"
     done
@@ -152,14 +195,19 @@ resolve_cangjie_sdk_root() {
         printf '%s' "$DEVECO_CANGJIE_PATH"; return 0
     fi
 
-    # 2) 祖先目录自身或其下 'DevEco*' 目录中的 'compatibility-sdk-*' 目录
+    # 2) 由 DEVECO_SDK_HOME 推导：<sdk>/compatibility
+    if [ -n "${DEVECO_SDK_HOME:-}" ] && [ -d "$DEVECO_SDK_HOME/compatibility/$marker" ]; then
+        printf '%s' "$DEVECO_SDK_HOME/compatibility"; return 0
+    fi
+
+    # 3) 各搜索基目录自身或其下 'DevEco*'/'Huawei*' 目录中的 'compatibility-sdk-*' 目录
     local base r sdk_dir roots sdks
     for base in $(get_search_bases); do
-        roots="$( { printf '%s\n' "$base"; find "$base" -maxdepth 1 -mindepth 1 -type d -name 'DevEco*' 2>/dev/null; } | sort_hint )"
+        roots="$( { printf '%s\n' "$base"; find "$base" -maxdepth 1 -mindepth 1 -type d \( -name 'DevEco*' -o -name 'Huawei*' -o -name 'huawei*' \) 2>/dev/null; } | sort_hint )"
         while IFS= read -r r; do
             [ -n "$r" ] || continue
             [ -d "$r" ] || continue
-            sdks="$(find "$r" -maxdepth 1 -mindepth 1 -type d -name 'compatibility-sdk-*' 2>/dev/null | sort_hint)"
+            sdks="$(find "$r" -maxdepth 1 -mindepth 1 \( -type d -o -type l \) -name 'compatibility-sdk-*' 2>/dev/null | sort_hint)"
             while IFS= read -r sdk_dir; do
                 [ -n "$sdk_dir" ] || continue
                 if [ -d "$sdk_dir/compatibility/$marker" ]; then printf '%s' "$sdk_dir/compatibility"; return 0; fi
@@ -238,12 +286,26 @@ else
     done
 
     echo ''
-    echo '>>> 下载子模块（浅克隆，按 .gitmodules 中声明的分支）...'
-    sm_paths=()
-    for sm in "${SUBMODULES[@]}"; do sm_paths+=("modules/$sm"); done
-    # .gitmodules 已声明 shallow = true；update --init 完成注册、克隆并检出主仓库记录的提交
-    git -C "$PROJECT_ROOT" submodule update --init --depth 1 "${sm_paths[@]}" \
-        || fail 'git submodule update 失败，请检查网络或仓库访问权限'
+    echo '>>> 逐个下载子模块（浅克隆，按 .gitmodules 中声明的分支）...'
+    # 逐模块下载，失败时可精确定位问题仓库；浅克隆失败时自动改为完整克隆重试
+    # （部分服务器拒绝 depth=1 请求）
+    for sm in "${SUBMODULES[@]}"; do
+        echo "  --- modules/$sm ---"
+        git -C "$PROJECT_ROOT" submodule sync -- "modules/$sm" >/dev/null 2>&1 || true
+        if ! git -C "$PROJECT_ROOT" submodule update --init --depth 1 -- "modules/$sm"; then
+            warn "  浅克隆失败，改用完整克隆重试: modules/$sm"
+            # 清除失败残留的浅克隆元数据后重新完整克隆
+            rm -rf "$PROJECT_ROOT/.git/modules/modules/$sm"
+            if ! git -C "$PROJECT_ROOT" submodule update --init -- "modules/$sm"; then
+                err '----- git 失败常见原因 -----
+  1. 无法访问 gitcode.com（检查网络 / 防火墙 / DNS）
+  2. 需要配置 HTTP 代理: git config --global http.proxy http://<代理>:<端口>
+  3. 仓库或分支不可用（.gitmodules 中的 url / branch）
+  4. git 版本过旧（建议 2.20+）: git --version'
+                fail "git submodule update 失败: modules/$sm"
+            fi
+        fi
+    done
     echo '>>> 子模块下载完成'
 fi
 
