@@ -1813,9 +1813,9 @@ public class MarkdownTheme {
      * @param codeMultilineMargin 代码块左边距 - 默认8.0vp
      * @return MarkdownTheme MarkdownTheme对象
      */
-    @Deprecated["用CodeBlockTheme.setPadding方法代替", since: "1.4.0"]
+    @Deprecated["用CodeBlockTheme.setMargin方法代替", since: "1.4.0"]
     public func setCodeMultilineMargin(codeMultilineMargin: Float64): MarkdownTheme {
-        this.codeBlockTheme.codeBlockPaddingLeft = codeMultilineMargin
+        this.codeBlockTheme.codeBlockMarginLeft = codeMultilineMargin
         return this
     }
 
