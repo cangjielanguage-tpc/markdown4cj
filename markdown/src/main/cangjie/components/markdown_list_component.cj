@@ -184,10 +184,7 @@ public class MarkdownListComponent {
         Checkbox()
             .height(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight)
             .width(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxWidth)
-            .margin(
-                top: listCheckboxTopMargin(markdownConfiguration.markdownTheme),
-                right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing
-            )
+            .margin(right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
             .shape(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxShape)
             .selectedColor(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSelectedColor)
             .select(item.isTaskListSelected)

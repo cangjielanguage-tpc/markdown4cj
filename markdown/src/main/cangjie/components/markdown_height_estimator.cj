@@ -825,11 +825,11 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         }
     }
     // 前缀高度：无序/任务列表分别使用对应前缀高度；与内容高度取最大值
-    // 普通无序列表用符号文本行高，任务列表用复选框高度+顶部对齐边距（与渲染端 Checkbox().height + margin(top) 一致）
+    // 普通无序列表用符号文本行高，任务列表用复选框高度（与渲染端 Checkbox().height 一致，顶端对齐）
     let prefixHeight: Float64 = if (isOrdered) {
         orderedTheme.orderedListMarkerTextLineHeight
     } else if (isTaskList) {
-        bulletTheme.bulletListCheckboxHeight + listCheckboxTopMargin(theme)
+        bulletTheme.bulletListCheckboxHeight
     } else {
         bulletTheme.bulletListBulletTextLineHeight
     }

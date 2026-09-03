@@ -1354,26 +1354,6 @@ func listPrefixSpacing(isBullet: Bool, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 任务列表多选框顶部边距
- * 段落文本使用 halfLeading(true)，首行文本视觉中心位于 paragraphPaddingTop + paragraphTextLineHeight/2；
- * 多选框视觉中心位于 checkboxTopMargin + bulletListCheckboxHeight/2。
- * 令二者相等解得多选框顶部边距，使多选框与首行文本视觉对齐。
- *
- * @param markdownTheme markdown样式
- * @return 顶部边距（非负）
- */
-func listCheckboxTopMargin(markdownTheme: MarkdownTheme): Float64 {
-    let paragraphPaddingTop = markdownTheme.paragraphTheme.paragraphPaddingTop
-    let paragraphLineHeight = markdownTheme.paragraphTheme.paragraphTextLineHeight
-    let checkboxHeight = markdownTheme.bulletListTheme.bulletListCheckboxHeight
-    let topMargin = paragraphPaddingTop + (paragraphLineHeight - checkboxHeight) / 2.0
-    if (topMargin > 0.0) {
-        return topMargin
-    }
-    return 0.0
-}
-
-/**
  * 设置定义列表定义行间距
  *
  * @param idx 第几条定义行
