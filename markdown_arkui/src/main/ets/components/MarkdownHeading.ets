@@ -801,8 +801,10 @@ export struct MarkdownHeading {
       // 数学公式行内 - 和图片一样直接用ImageSpan
       if (this.isLatexMathEnabled && item.latexPixelMap !== undefined && item.latexImageWidth > 0 && item.latexImageHeight > 0) {
         ImageSpan(item.latexPixelMap)
-          .height(this.latexMathTheme.latexMathTextSize)
-          .width((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize)
+          .height(this.latexSpanHeight(item))
+          .width(this.latexSpanWidth(item))
+          .objectFit(ImageFit.Contain)
+          .constraintSize({ maxWidth: '100%' })
           .verticalAlign(ImageSpanAlignment.CENTER)
           .onClick(() => {
             if (this.latexImageCallback !== undefined && item.latexImageData !== undefined) {
@@ -1033,6 +1035,31 @@ export struct MarkdownHeading {
       this.httpLinksDirty = false
       this.scheduleExposure()
     }
+  }
+
+  /**
+   * 行内数学公式ImageSpan显示宽度（vp）
+   * 按位图实际尺寸显示；宽度超过父布局宽度时等比缩小
+   */
+  private latexSpanWidth(item: NodeView): number {
+    const imgWidth: number = px2vp(item.latexImageWidth)
+    if (imgWidth > 0 && this.componentWidth > 0 && imgWidth > this.componentWidth) {
+      return this.componentWidth
+    }
+    return imgWidth
+  }
+
+  /**
+   * 行内数学公式ImageSpan显示高度（vp）
+   * 与latexSpanWidth保持同一等比缩放比例，避免宽高比失真
+   */
+  private latexSpanHeight(item: NodeView): number {
+    const imgWidth: number = px2vp(item.latexImageWidth)
+    const imgHeight: number = px2vp(item.latexImageHeight)
+    if (imgWidth > 0 && this.componentWidth > 0 && imgWidth > this.componentWidth) {
+      return imgHeight * (this.componentWidth / imgWidth)
+    }
+    return imgHeight
   }
 
   /**

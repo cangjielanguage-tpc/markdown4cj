@@ -971,8 +971,9 @@ export struct MarkdownTableCell {
       // 数学公式行内 - 和图片一样直接用ImageSpan
       if (this.isLatexMathEnabled && item.latexPixelMap !== undefined && item.latexImageWidth > 0 && item.latexImageHeight > 0) {
         ImageSpan(item.latexPixelMap)
-          .height(this.latexMathTheme.latexMathTextSize)
-          .width(Math.min((item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize, lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? 300))
+          .height(this.latexSpanHeight(item))
+          .width(this.latexSpanWidth(item))
+          .objectFit(ImageFit.Contain)
           .verticalAlign(ImageSpanAlignment.CENTER)
           .constraintSize({ maxWidth: this.tableTheme.tableMaxCellWidth })
           .onClick(() => {
@@ -1150,6 +1151,45 @@ export struct MarkdownTableCell {
       this.httpLinksDirty = false
       this.scheduleExposure()
     }
+  }
+
+  /**
+   * 行内数学公式ImageSpan显示宽度上限（vp）
+   * 取表格单元格最大宽度与父布局宽度中较小者，确保公式不超出表格
+   */
+  private latexSpanMaxWidth(): number {
+    const maxCellWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? 300
+    if (this.componentWidth > 0 && this.componentWidth < maxCellWidth) {
+      return this.componentWidth
+    }
+    return maxCellWidth
+  }
+
+  /**
+   * 行内数学公式ImageSpan显示宽度（vp）
+   * 按位图实际尺寸显示；宽度超过单元格可用宽度时等比缩小
+   */
+  private latexSpanWidth(item: NodeView): number {
+    const imgWidth: number = px2vp(item.latexImageWidth)
+    const maxWidth: number = this.latexSpanMaxWidth()
+    if (imgWidth > 0 && maxWidth > 0 && imgWidth > maxWidth) {
+      return maxWidth
+    }
+    return imgWidth
+  }
+
+  /**
+   * 行内数学公式ImageSpan显示高度（vp）
+   * 与latexSpanWidth保持同一等比缩放比例，避免宽高比失真
+   */
+  private latexSpanHeight(item: NodeView): number {
+    const imgWidth: number = px2vp(item.latexImageWidth)
+    const imgHeight: number = px2vp(item.latexImageHeight)
+    const maxWidth: number = this.latexSpanMaxWidth()
+    if (imgWidth > 0 && maxWidth > 0 && imgWidth > maxWidth) {
+      return imgHeight * (maxWidth / imgWidth)
+    }
+    return imgHeight
   }
 
   /**
@@ -1412,11 +1452,7 @@ export struct MarkdownTableCell {
               item.latexImageHeight = info.size.height
               item.latexIsLoading = false
               this.cellWidthTracker.clearCellWidth(this.tableBlockCellRow, this.tableBlockCellCell)
-              const latexWidth: number = Math.min(
-                (item.latexImageWidth / item.latexImageHeight) * this.latexMathTheme.latexMathTextSize,
-                lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? 300
-              )
-              this.cellWidthTracker.setFallback(this.tableBlockCellRow, this.tableBlockCellCell, latexWidth)
+              this.cellWidthTracker.setFallback(this.tableBlockCellRow, this.tableBlockCellCell, this.latexSpanWidth(item))
               this.list = [...this.list] // 触发重渲染
               LatexParseQueue.notifyDone()
             }).catch((e: Error) => {
