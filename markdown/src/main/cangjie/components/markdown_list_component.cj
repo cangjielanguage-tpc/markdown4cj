@@ -184,6 +184,9 @@ public class MarkdownListComponent {
         Checkbox()
             .height(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight)
             .width(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxWidth)
+            // 仓颉引擎首行行框的半行距会把字形下推，复选框顶对齐会偏高；
+            // 下移 (首行行高-复选框高)/2 使其与首行文字视觉居中（ArkUI 引擎无此问题，故 ArkTS 侧无此偏移）
+            .offset(x: 0.0, y: (markdownConfiguration.markdownTheme.paragraphTheme.paragraphTextLineHeight - markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight) / 2.0)
             .margin(right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
             .shape(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxShape)
             .selectedColor(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSelectedColor)
