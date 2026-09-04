@@ -108,7 +108,7 @@ export struct MarkdownLatexMathInline {
     this.imageData = undefined
     this.isParserEnd = false
     const strLatexMath: string = this.latexStrCallback(this.latexMathStr)
-    const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
+    const textSize: number = fp2px(this.latexMathTheme.latexMathTextSize)
     const textColor: number = resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
     const bgColor: number = resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
     const colorFormat: LatexMathColorFormat = this.latexMathTheme.latexMathColorFormat === 0
