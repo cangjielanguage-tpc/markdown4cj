@@ -122,21 +122,33 @@ public class MarkdownSpanImageUrlComponent {
                 }
                 .onComplete {
                     imageLoadResult =>
-                        let res = imageWidthAndHeight(
-                            urlComponentImageWidth,
-                            imageLoadResult.width,
-                            imageLoadResult.height,
-                            urlThemeWidth,
-                            urlThemeHeight,
-                            urlMarkdownTheme.imageTheme.imageMaxWidth,
-                            urlMarkdownTheme.imageTheme.imageMaxHeight,
-                            urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
-                            urlMarkdownTheme.imageTheme.imageMaximumWidth
-                        )
-                        urlWidth = res[0]
-                        urlHeight = res[1]
-                        urlImageType = 1
-                        notifyImageWidth()
+                        // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
+                        var urlBaseWidth = urlComponentImageWidth
+                        if (let Some(cellMaxWidth) <- urlImageCellMaxWidth) {
+                            if (cellMaxWidth > 0.0) {
+                                urlBaseWidth = vp2px(cellMaxWidth.vp)().value
+                            }
+                        }
+                        if (urlBaseWidth <= 0.0) {
+                            urlBaseWidth = imageLoadResult.width
+                        }
+                        if (urlBaseWidth > 0.0) {
+                            let res = imageWidthAndHeight(
+                                urlBaseWidth,
+                                imageLoadResult.width,
+                                imageLoadResult.height,
+                                urlThemeWidth,
+                                urlThemeHeight,
+                                urlMarkdownTheme.imageTheme.imageMaxWidth,
+                                urlMarkdownTheme.imageTheme.imageMaxHeight,
+                                urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                                urlMarkdownTheme.imageTheme.imageMaximumWidth
+                            )
+                            urlWidth = res[0]
+                            urlHeight = res[1]
+                            urlImageType = 1
+                            notifyImageWidth()
+                        }
                 }
                 .onError {
                     imageError => urlImageType = 2
@@ -168,21 +180,33 @@ public class MarkdownSpanImageUrlComponent {
                 }
                 .onComplete {
                     imageLoadResult =>
-                        let res = imageWidthAndHeight(
-                            urlComponentImageWidth,
-                            imageLoadResult.width,
-                            imageLoadResult.height,
-                            urlThemeWidth,
-                            urlThemeHeight,
-                            urlMarkdownTheme.imageTheme.imageMaxWidth,
-                            urlMarkdownTheme.imageTheme.imageMaxHeight,
-                            urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
-                            urlMarkdownTheme.imageTheme.imageMaximumWidth
-                        )
-                        urlWidth = res[0]
-                        urlHeight = res[1]
-                        urlImageType = 1
-                        notifyImageWidth()
+                        // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
+                        var urlBaseWidth = urlComponentImageWidth
+                        if (let Some(cellMaxWidth) <- urlImageCellMaxWidth) {
+                            if (cellMaxWidth > 0.0) {
+                                urlBaseWidth = vp2px(cellMaxWidth.vp)().value
+                            }
+                        }
+                        if (urlBaseWidth <= 0.0) {
+                            urlBaseWidth = imageLoadResult.width
+                        }
+                        if (urlBaseWidth > 0.0) {
+                            let res = imageWidthAndHeight(
+                                urlBaseWidth,
+                                imageLoadResult.width,
+                                imageLoadResult.height,
+                                urlThemeWidth,
+                                urlThemeHeight,
+                                urlMarkdownTheme.imageTheme.imageMaxWidth,
+                                urlMarkdownTheme.imageTheme.imageMaxHeight,
+                                urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                                urlMarkdownTheme.imageTheme.imageMaximumWidth
+                            )
+                            urlWidth = res[0]
+                            urlHeight = res[1]
+                            urlImageType = 1
+                            notifyImageWidth()
+                        }
                 }
                 .onError {
                     imageError => urlImageType = 2

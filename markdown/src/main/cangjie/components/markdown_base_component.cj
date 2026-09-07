@@ -277,81 +277,84 @@ func spanImageComponent(
     spanListImageWidthCallback: ?(Float64) -> Unit,
     spanListImageCellMaxWidth: ?Float64
 ) {
-    if (spanListMarkdownConfiguration.imageReplaceCallback.isNone()) {
-        // 没有图片替换回调接口
-        if (isRawFileImageUrl(spanListNodeView.imageUrl.getOrThrow())) {
-            // 本地图片
-            MarkdownSpanImageRawFileComponent(
-                rawFileMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                rawFileDestination: spanListNodeView.imageUrl.getOrThrow(),
-                rawFileComponentWidth: spanListComponentWidth,
-                rawFileImageCallback: spanListImageCallback,
-                rawFileLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                rawFileLink: spanListNodeView.isLink,
-                rawFileLinkUrl: spanListNodeView.linkUrl,
-                rawFileImageWidthCallback: spanListImageWidthCallback,
-                rawFileImageCellMaxWidth: spanListImageCellMaxWidth,
-                rawFileImageWidth: spanListNodeView.imageWidth,
-                rawFileImageHeight: spanListNodeView.imageHeight,
-                rawFileImageRadius: spanListNodeView.imageRadius,
-                rawFileImageAlign: spanListNodeView.imageAlign
-            )
+    // 对齐ArkUI：imageUrl为空时不渲染图片（item.imageUrl !== undefined 判断），避免getOrThrow异常
+    if (let Some(imageUrl) <- spanListNodeView.imageUrl) {
+        if (spanListMarkdownConfiguration.imageReplaceCallback.isNone()) {
+            // 没有图片替换回调接口
+            if (isRawFileImageUrl(imageUrl)) {
+                // 本地图片
+                MarkdownSpanImageRawFileComponent(
+                    rawFileMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                    rawFileDestination: imageUrl,
+                    rawFileComponentWidth: spanListComponentWidth,
+                    rawFileImageCallback: spanListImageCallback,
+                    rawFileLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                    rawFileLink: spanListNodeView.isLink,
+                    rawFileLinkUrl: spanListNodeView.linkUrl,
+                    rawFileImageWidthCallback: spanListImageWidthCallback,
+                    rawFileImageCellMaxWidth: spanListImageCellMaxWidth,
+                    rawFileImageWidth: spanListNodeView.imageWidth,
+                    rawFileImageHeight: spanListNodeView.imageHeight,
+                    rawFileImageRadius: spanListNodeView.imageRadius,
+                    rawFileImageAlign: spanListNodeView.imageAlign
+                )
+            } else {
+                // url
+                MarkdownSpanImageUrlComponent(
+                    urlMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                    urlDestination: imageUrl,
+                    urlComponentWidth: spanListComponentWidth,
+                    urlImageCallback: spanListImageCallback,
+                    urlLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                    urlLink: spanListNodeView.isLink,
+                    urlLinkUrl: spanListNodeView.linkUrl,
+                    urlImageWidthCallback: spanListImageWidthCallback,
+                    urlImageCellMaxWidth: spanListImageCellMaxWidth,
+                    urlImageWidth: spanListNodeView.imageWidth,
+                    urlImageHeight: spanListNodeView.imageHeight,
+                    urlImageRadius: spanListNodeView.imageRadius,
+                    urlImageAlign: spanListNodeView.imageAlign
+                )
+            }
         } else {
-            // url
-            MarkdownSpanImageUrlComponent(
-                urlMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                urlDestination: spanListNodeView.imageUrl.getOrThrow(),
-                urlComponentWidth: spanListComponentWidth,
-                urlImageCallback: spanListImageCallback,
-                urlLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                urlLink: spanListNodeView.isLink,
-                urlLinkUrl: spanListNodeView.linkUrl,
-                urlImageWidthCallback: spanListImageWidthCallback,
-                urlImageCellMaxWidth: spanListImageCellMaxWidth,
-                urlImageWidth: spanListNodeView.imageWidth,
-                urlImageHeight: spanListNodeView.imageHeight,
-                urlImageRadius: spanListNodeView.imageRadius,
-                urlImageAlign: spanListNodeView.imageAlign
-            )
-        }
-    } else {
-        // 有图片替换回调接口
-        if (isRawFileImageUrl(spanListNodeView.imageUrl.getOrThrow())) {
-            // 本地图片
-            MarkdownSpanImageCallbackRawFileComponent(
-                rawFileCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                rawFileCallbackDestination: spanListNodeView.imageUrl.getOrThrow(),
-                rawFileCallbackComponentWidth: spanListComponentWidth,
-                rawFileCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
-                rawFileCallbackImageCallback: spanListImageCallback,
-                rawFileCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                rawFileCallbackLink: spanListNodeView.isLink,
-                rawFileCallbackLinkUrl: spanListNodeView.linkUrl,
-                rawFileCallbackImageWidthCallback: spanListImageWidthCallback,
-                rawFileCallbackImageCellMaxWidth: spanListImageCellMaxWidth,
-                rawFileCallbackImageWidth: spanListNodeView.imageWidth,
-                rawFileCallbackImageHeight: spanListNodeView.imageHeight,
-                rawFileCallbackImageRadius: spanListNodeView.imageRadius,
-                rawFileCallbackImageAlign: spanListNodeView.imageAlign
-            )
-        } else {
-            // url
-            MarkdownSpanImageCallbackUrlComponent(
-                urlCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                urlCallbackDestination: spanListNodeView.imageUrl.getOrThrow(),
-                urlCallbackComponentWidth: spanListComponentWidth,
-                urlCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
-                urlCallbackImageCallback: spanListImageCallback,
-                urlCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                urlCallbackLink: spanListNodeView.isLink,
-                urlCallbackLinkUrl: spanListNodeView.linkUrl,
-                urlCallbackImageWidthCallback: spanListImageWidthCallback,
-                urlCallbackImageCellMaxWidth: spanListImageCellMaxWidth,
-                urlCallbackImageWidth: spanListNodeView.imageWidth,
-                urlCallbackImageHeight: spanListNodeView.imageHeight,
-                urlCallbackImageRadius: spanListNodeView.imageRadius,
-                urlCallbackImageAlign: spanListNodeView.imageAlign
-            )
+            // 有图片替换回调接口
+            if (isRawFileImageUrl(imageUrl)) {
+                // 本地图片
+                MarkdownSpanImageCallbackRawFileComponent(
+                    rawFileCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                    rawFileCallbackDestination: imageUrl,
+                    rawFileCallbackComponentWidth: spanListComponentWidth,
+                    rawFileCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
+                    rawFileCallbackImageCallback: spanListImageCallback,
+                    rawFileCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                    rawFileCallbackLink: spanListNodeView.isLink,
+                    rawFileCallbackLinkUrl: spanListNodeView.linkUrl,
+                    rawFileCallbackImageWidthCallback: spanListImageWidthCallback,
+                    rawFileCallbackImageCellMaxWidth: spanListImageCellMaxWidth,
+                    rawFileCallbackImageWidth: spanListNodeView.imageWidth,
+                    rawFileCallbackImageHeight: spanListNodeView.imageHeight,
+                    rawFileCallbackImageRadius: spanListNodeView.imageRadius,
+                    rawFileCallbackImageAlign: spanListNodeView.imageAlign
+                )
+            } else {
+                // url
+                MarkdownSpanImageCallbackUrlComponent(
+                    urlCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                    urlCallbackDestination: imageUrl,
+                    urlCallbackComponentWidth: spanListComponentWidth,
+                    urlCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback.getOrThrow(),
+                    urlCallbackImageCallback: spanListImageCallback,
+                    urlCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                    urlCallbackLink: spanListNodeView.isLink,
+                    urlCallbackLinkUrl: spanListNodeView.linkUrl,
+                    urlCallbackImageWidthCallback: spanListImageWidthCallback,
+                    urlCallbackImageCellMaxWidth: spanListImageCellMaxWidth,
+                    urlCallbackImageWidth: spanListNodeView.imageWidth,
+                    urlCallbackImageHeight: spanListNodeView.imageHeight,
+                    urlCallbackImageRadius: spanListNodeView.imageRadius,
+                    urlCallbackImageAlign: spanListNodeView.imageAlign
+                )
+            }
         }
     }
 }

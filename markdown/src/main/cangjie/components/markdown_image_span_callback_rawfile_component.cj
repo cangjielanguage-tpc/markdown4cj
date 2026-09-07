@@ -148,8 +148,8 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                             evt => imageSpanOnClick(rawFileCallbackLink, rawFileCallbackImageCallback, rawFileCallbackLinkCallback, rawFileCallbackLinkUrl, rawFileCallbackDestination)
                         }
                 }
-                if (rawFileCallbackMarkdownTheme.imageTheme.imagePlaceholder.isSome() && rawFileCallbackImageType != 1) {
-                    // 图片占位图
+                if (rawFileCallbackMarkdownTheme.imageTheme.imagePlaceholder.isSome() && rawFileCallbackImageType != 1 && !isInTableCell()) {
+                    // 图片占位图（表格单元格场景不渲染：对齐ArkUI图片加载前宽度为0、占位图不撑宽单元格的语义）
                     imageSpanPlaceholderComponent(
                         rawFileCallbackMarkdownTheme.imageTheme.imagePlaceholder(),
                         rawFileCallbackMarkdownTheme.imageTheme.imageMarginTop,
@@ -176,22 +176,34 @@ public class MarkdownSpanImageCallbackRawFileComponent {
             imagePixelMap, imageResWidth, imageResHeight => launch {
                 if (imagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
                     this.rawFileCallbackReplaceImagePixelMap = imagePixelMap
-                    let res = imageWidthAndHeight(
-                        rawFileCallbackComponentImageWidth,
-                        imageResWidth(),
-                        imageResHeight(),
-                        rawFileCallbackThemeWidth,
-                        rawFileCallbackThemeHeight,
-                        rawFileCallbackMarkdownTheme.imageTheme.imageMaxWidth,
-                        rawFileCallbackMarkdownTheme.imageTheme.imageMaxHeight,
-                        rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
-                        rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
-                    )
-                    rawFileCallbackReplaceWidth = res[0]
-                    rawFileCallbackReplaceHeight = res[1]
-                    rawFileCallbackReplaceImageType = 1
-                    if (let Some(rw) <- rawFileCallbackReplaceWidth) {
-                        notifyImageWidthByPx(rw)
+                    // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
+                    var rawFileCallbackBaseWidth = rawFileCallbackComponentImageWidth
+                    if (let Some(cellMaxWidth) <- rawFileCallbackImageCellMaxWidth) {
+                        if (cellMaxWidth > 0.0) {
+                            rawFileCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
+                        }
+                    }
+                    if (rawFileCallbackBaseWidth <= 0.0) {
+                        rawFileCallbackBaseWidth = imageResWidth()
+                    }
+                    if (rawFileCallbackBaseWidth > 0.0) {
+                        let res = imageWidthAndHeight(
+                            rawFileCallbackBaseWidth,
+                            imageResWidth(),
+                            imageResHeight(),
+                            rawFileCallbackThemeWidth,
+                            rawFileCallbackThemeHeight,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
+                        )
+                        rawFileCallbackReplaceWidth = res[0]
+                        rawFileCallbackReplaceHeight = res[1]
+                        rawFileCallbackReplaceImageType = 1
+                        if (let Some(rw) <- rawFileCallbackReplaceWidth) {
+                            notifyImageWidthByPx(rw)
+                        }
                     }
                 } else {
                     rawFileCallbackReplaceImageType = 2
@@ -213,21 +225,33 @@ public class MarkdownSpanImageCallbackRawFileComponent {
             rawFileCallbackImagePixelMap, imageResWidth, imageResHeight => launch {
                 if (rawFileCallbackImagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
                     this.rawFileCallbackImagePixelMap = rawFileCallbackImagePixelMap
-                    let res = imageWidthAndHeight(
-                        rawFileCallbackComponentImageWidth,
-                        imageResWidth(),
-                        imageResHeight(),
-                        rawFileCallbackThemeWidth,
-                        rawFileCallbackThemeHeight,
-                        rawFileCallbackMarkdownTheme.imageTheme.imageMaxWidth,
-                        rawFileCallbackMarkdownTheme.imageTheme.imageMaxHeight,
-                        rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
-                        rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
-                    )
-                    rawFileCallbackWidth = res[0]
-                    rawFileCallbackHeight = res[1]
-                    rawFileCallbackImageType = 1
-                    notifyImageWidth()
+                    // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
+                    var rawFileCallbackBaseWidth = rawFileCallbackComponentImageWidth
+                    if (let Some(cellMaxWidth) <- rawFileCallbackImageCellMaxWidth) {
+                        if (cellMaxWidth > 0.0) {
+                            rawFileCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
+                        }
+                    }
+                    if (rawFileCallbackBaseWidth <= 0.0) {
+                        rawFileCallbackBaseWidth = imageResWidth()
+                    }
+                    if (rawFileCallbackBaseWidth > 0.0) {
+                        let res = imageWidthAndHeight(
+                            rawFileCallbackBaseWidth,
+                            imageResWidth(),
+                            imageResHeight(),
+                            rawFileCallbackThemeWidth,
+                            rawFileCallbackThemeHeight,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                            rawFileCallbackMarkdownTheme.imageTheme.imageMaximumWidth
+                        )
+                        rawFileCallbackWidth = res[0]
+                        rawFileCallbackHeight = res[1]
+                        rawFileCallbackImageType = 1
+                        notifyImageWidth()
+                    }
                 } else {
                     rawFileCallbackImageType = 2
                 }
@@ -254,5 +278,15 @@ public class MarkdownSpanImageCallbackRawFileComponent {
 
     func notifyImageWidth(): Unit {
         notifyImageWidthByPx(rawFileCallbackWidth)
+    }
+
+    /**
+     * 是否处于表格单元格场景（单元格最大宽度已传入且有效）
+     */
+    func isInTableCell(): Bool {
+        if (let Some(cellMaxWidth) <- rawFileCallbackImageCellMaxWidth) {
+            return cellMaxWidth > 0.0
+        }
+        return false
     }
 }
