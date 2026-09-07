@@ -28,7 +28,7 @@ public class DefinitionListTheme {
     @Publish
     public var definitionListTermToDescriptionSpacing: Float64 = 8.0 // 定义列表术语和定义行之间间距
     @Publish
-    public var definitionListTermTextFontWeight: FontWeight = FontWeight.W600 // 定义列表术语文本字体粗细
+    public var definitionListTermTextFontWeight: FontWeight = FontWeight.Bold // 定义列表术语文本字体粗细
     @Publish
     public var definitionListTermTextFontStyle: FontStyle = FontStyle.Italic // 定义列表术语文本字体样式
     @Publish

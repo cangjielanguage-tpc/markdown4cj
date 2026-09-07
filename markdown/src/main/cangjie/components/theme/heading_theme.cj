@@ -32,7 +32,7 @@ public class HeadingTheme {
     @Publish
     public var heading1TextFontStyle: FontStyle = FontStyle.Normal // 一级标题文本字体样式
     @Publish
-    public var heading1TextFontWeight: FontWeight = FontWeight.W600 // 一级标题文本字体粗细
+    public var heading1TextFontWeight: FontWeight = FontWeight.Bold // 一级标题文本字体粗细
     @Publish
     public var heading1TextFontFamily: String = "HarmonyOS Sans" // 一级标题文本字体
     @Publish
@@ -70,7 +70,7 @@ public class HeadingTheme {
     @Publish
     public var heading2TextFontStyle: FontStyle = FontStyle.Normal // 二级标题文本字体样式
     @Publish
-    public var heading2TextFontWeight: FontWeight = FontWeight.W600 // 二级标题文本字体粗细
+    public var heading2TextFontWeight: FontWeight = FontWeight.Bold // 二级标题文本字体粗细
     @Publish
     public var heading2TextFontFamily: String = "HarmonyOS Sans" // 二级标题文本字体
     @Publish
@@ -108,7 +108,7 @@ public class HeadingTheme {
     @Publish
     public var heading3TextFontStyle: FontStyle = FontStyle.Normal // 三级标题文本字体样式
     @Publish
-    public var heading3TextFontWeight: FontWeight = FontWeight.W600 // 三级标题文本字体粗细
+    public var heading3TextFontWeight: FontWeight = FontWeight.Bold // 三级标题文本字体粗细
     @Publish
     public var heading3TextFontFamily: String = "HarmonyOS Sans" // 三级标题文本字体
     @Publish
@@ -140,7 +140,7 @@ public class HeadingTheme {
     @Publish
     public var heading4TextFontStyle: FontStyle = FontStyle.Normal // 四级标题文本字体样式
     @Publish
-    public var heading4TextFontWeight: FontWeight = FontWeight.W600 // 四级标题文本字体粗细
+    public var heading4TextFontWeight: FontWeight = FontWeight.Bold // 四级标题文本字体粗细
     @Publish
     public var heading4TextFontFamily: String = "HarmonyOS Sans" // 四级标题文本字体
     @Publish
@@ -172,7 +172,7 @@ public class HeadingTheme {
     @Publish
     public var heading5TextFontStyle: FontStyle = FontStyle.Normal // 五级标题文本字体样式
     @Publish
-    public var heading5TextFontWeight: FontWeight = FontWeight.W600 // 五级标题文本字体粗细
+    public var heading5TextFontWeight: FontWeight = FontWeight.Bold // 五级标题文本字体粗细
     @Publish
     public var heading5TextFontFamily: String = "HarmonyOS Sans" // 五级标题文本字体
     @Publish
@@ -204,7 +204,7 @@ public class HeadingTheme {
     @Publish
     public var heading6TextFontStyle: FontStyle = FontStyle.Normal // 六级标题文本字体样式
     @Publish
-    public var heading6TextFontWeight: FontWeight = FontWeight.W600 // 六级标题文本字体粗细
+    public var heading6TextFontWeight: FontWeight = FontWeight.Bold // 六级标题文本字体粗细
     @Publish
     public var heading6TextFontFamily: String = "HarmonyOS Sans" // 六级标题文本字体
     @Publish

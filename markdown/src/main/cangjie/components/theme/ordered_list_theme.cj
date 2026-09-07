@@ -38,7 +38,7 @@ public class OrderedListTheme {
     @Publish
     public var orderedListMarkerTextFontStyle: FontStyle = FontStyle.Normal // 有序列表列表编号文本字体样式
     @Publish
-    public var orderedListMarkerTextFontWeight: FontWeight = FontWeight.W400 // 有序列表列表编号文本字体粗细
+    public var orderedListMarkerTextFontWeight: FontWeight = FontWeight.Normal // 有序列表列表编号文本字体粗细
     @Publish
     public var orderedListMarkerTextFontFamily: String = "HarmonyOS Sans" // 有序列表列表编号文本字体
     @Publish

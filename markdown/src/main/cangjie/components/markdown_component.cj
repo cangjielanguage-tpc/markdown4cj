@@ -85,12 +85,10 @@ public class MarkdownComponent {
     var lastViewIndex: Int64 = 0 // 最后一条数据的位置
 
     protected override func aboutToAppear(): Unit {
-        if (let Some(v) <- markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsDark) {
-            if (v) {
-                markdownConfiguration.markdownTheme.prismTheme = PrismThemeDarcula.create()
-            } else {
-                markdownConfiguration.markdownTheme.prismTheme = PrismThemeDefault.create()
-            }
+        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsDark) {
+            markdownConfiguration.markdownTheme.prismTheme = PrismThemeDarcula.create()
+        } else {
+            markdownConfiguration.markdownTheme.prismTheme = PrismThemeDefault.create()
         }
         incBase = IncreaseParserV2(markdownPlugin) // 加载插件
         componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value // 默认控件宽度等于屏幕宽度
@@ -227,8 +225,7 @@ public class MarkdownComponent {
                     ListItem() {
                         blockCodeBlockListComponent(
                             markdownConfiguration,
-                            item,
-                            toCodeList(item)
+                            item
                         )
                     }
                 } else if (item.nodeType == "FencedCodeBlock") {
@@ -601,7 +598,8 @@ public class MarkdownComponent {
             }
             oldOutput = output
             if (let Some(v) <- markdownConfiguration.nodeString) {
-                v(NodeViewStringBuilder(doc))
+                // 单独代码块开关通过闭包动态读取，保证配置切换后复制结果与页面显示一致
+                v(NodeViewStringBuilder(doc, { => markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsSeparate }))
             }
             imageAndVideoList.clear()
             imageAndVideoList.add(all: getProp<HashSet<String>>(doc, "links", HashSet<String>()).toArray())

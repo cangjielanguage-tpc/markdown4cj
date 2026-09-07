@@ -72,7 +72,7 @@ public class AudioTheme {
     @Publish
     public var audioTitleTextFontStyle: FontStyle = FontStyle.Normal // 音频标题文本字体样式
     @Publish
-    public var audioTitleTextFontWeight: FontWeight = FontWeight.W700 // 音频标题文本字体粗细
+    public var audioTitleTextFontWeight: FontWeight = FontWeight.Bold // 音频标题文本字体粗细
     @Publish
     public var audioTitleTextFontFamily: String = "HarmonyOS Sans" // 音频标题文本字体
     @Publish
@@ -84,7 +84,7 @@ public class AudioTheme {
     @Publish
     public var audioTypeTextFontStyle: FontStyle = FontStyle.Normal // 音频类型文本字体样式
     @Publish
-    public var audioTypeTextFontWeight: FontWeight = FontWeight.W400 // 音频类型文本字体粗细
+    public var audioTypeTextFontWeight: FontWeight = FontWeight.Normal // 音频类型文本字体粗细
     @Publish
     public var audioTypeTextFontFamily: String = "HarmonyOS Sans" // 音频类型文本字体
     @Publish
@@ -118,7 +118,7 @@ public class AudioTheme {
     @Publish
     public var audioButtonTextFontStyle: FontStyle = FontStyle.Normal // 音频按钮文本字体样式
     @Publish
-    public var audioButtonTextFontWeight: FontWeight = FontWeight.W500 // 音频按钮文本字体粗细
+    public var audioButtonTextFontWeight: FontWeight = FontWeight.Medium // 音频按钮文本字体粗细
     @Publish
     public var audioButtonTextFontFamily: String = "HarmonyOS Sans" // 音频按钮文本字体
     @Publish

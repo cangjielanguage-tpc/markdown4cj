@@ -19,6 +19,8 @@ let COLOR_FF2D2D2D: Color = Color(0xFF2D2D2D)
 let COLOR_FF404040: Color = Color(0xFF404040)
 let COLOR_FF252526: Color = Color(0xFF252526)
 let COLOR_FF4A90E2: Color = Color(0xFF4A90E2)
+let COLOR_FF808080: Color = Color(0xFF808080)
+let COLOR_60000000: Color = Color(0x60000000)
 let COLOR_FFA0A0A0: Color = Color(0xFFA0A0A0)
 let COLOR_40000000: Color = Color(0x40000000)
 let COLOR_FFFFF59D: Color = Color(0xFFFFF59D)
@@ -26,6 +28,18 @@ let COLOR_FF6E6000: Color = Color(0xFF6E6000)
 
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
+
+/**
+ * 判断图片链接是否为本地rawfile相对路径
+ * ./开头：相对md文件所在目录
+ * ../开头：相对md文件所在目录的上级目录
+ *
+ * @param url 图片链接
+ * @return 是否为本地相对路径
+ */
+func isRawFileImageUrl(url: String): Bool {
+    return url.startsWith("./") || url.startsWith("../")
+}
 
 /**
  * 判断软换行是否换行
@@ -1342,26 +1356,6 @@ func listPrefixSpacing(isBullet: Bool, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 任务列表多选框顶部边距
- * 段落文本使用 halfLeading(true)，首行文本视觉中心位于 paragraphPaddingTop + paragraphTextLineHeight/2；
- * 多选框视觉中心位于 checkboxTopMargin + bulletListCheckboxHeight/2。
- * 令二者相等解得多选框顶部边距，使多选框与首行文本视觉对齐。
- *
- * @param markdownTheme markdown样式
- * @return 顶部边距（非负）
- */
-func listCheckboxTopMargin(markdownTheme: MarkdownTheme): Float64 {
-    let paragraphPaddingTop = markdownTheme.paragraphTheme.paragraphPaddingTop
-    let paragraphLineHeight = markdownTheme.paragraphTheme.paragraphTextLineHeight
-    let checkboxHeight = markdownTheme.bulletListTheme.bulletListCheckboxHeight
-    let topMargin = paragraphPaddingTop + (paragraphLineHeight - checkboxHeight) / 2.0
-    if (topMargin > 0.0) {
-        return topMargin
-    }
-    return 0.0
-}
-
-/**
  * 设置定义列表定义行间距
  *
  * @param idx 第几条定义行
@@ -1524,7 +1518,18 @@ func strToLength(str: ?String): ?Length {
     var f: ?Length = Option<Length>.None
     if (let Some(v) <- str) {
         try {
-            f = Float64.parse(v).vp
+            let trimmed = v.trimAscii()
+            if (trimmed.isEmpty()) {
+                return f
+            }
+            if (trimmed.size > 2 && trimmed.toAsciiLower()[trimmed.size - 2..] == "px") {
+                // "100px"按px并换算成vp
+                let num = Float64.parse(trimmed[..trimmed.size - 2])
+                f = px2vp(num.px).getOrThrow().value.vp
+            } else {
+                // "100"按vp
+                f = Float64.parse(trimmed).vp
+            }
         } catch (e: IllegalArgumentException) {
         }
     }
@@ -1619,6 +1624,21 @@ func length2Float(length: Length): Float64 {
 }
 
 /**
+ * 表格单元格内图片的约束最大宽度
+ *
+ * @param cellMaxWidth 表格单元格最大宽度 - 单位vp
+ * @return Length 有单元格最大宽度时返回该值，否则返回100%
+ */
+func imageSpanConstraintMaxWidth(cellMaxWidth: ?Float64): Length {
+    if (let Some(w) <- cellMaxWidth) {
+        if (w > 0.0) {
+            return w.vp
+        }
+    }
+    return 100.percent
+}
+
+/**
  * 处理图片的宽高
  *
  * @param componentImageWidth 控件宽度
@@ -1654,112 +1674,63 @@ func imageWidthAndHeight(
     } else {
         componentImageWidth
     }
+    if (!(imageResWidth > 0.0) || !(imageResHeight > 0.0)) {
+        return (0.0, 0.0)
+    }
     let aspectRatio: Float64 = imageResHeight / imageResWidth // 原图宽高比
+
+    // 根据传入的 imageWidthPx/imageHeightPx 组合确定 baseWidth 和 aspectRatioNew
+    // 4 个分支仅在这两个变量上有差异，其余计算逻辑完全相同（消除原 4x 重复）
+    var baseWidth: Float64 = 0.0
+    var aspectRatioNew: Float64 = aspectRatio
     if (imageWidthPx.isSome() && imageHeightPx.isSome()) {
-        let aspectRatioNew: Float64 = imageHeightPx() / imageWidthPx()
-        var widthNew = if (imageFixedRatioWidth.isSome()) {
-            componentImageWidth * imageFixedRatioWidth()
+        baseWidth = imageWidthPx()
+        aspectRatioNew = if (imageWidthPx() > 0.0) {
+            imageHeightPx() / imageWidthPx()
         } else {
-            imageWidthPx() * imageMaximumWidth
+            aspectRatio
         }
-        widthNew = if (componentImageWidthNew > widthNew) {
-            widthNew
+    } else if (imageWidthPx.isSome()) {
+        baseWidth = imageWidthPx()
+    } else if (imageHeightPx.isSome()) {
+        baseWidth = imageHeightPx() / aspectRatio
+    } else {
+        baseWidth = imageResWidth
+    }
+
+    // 共享的 widthNew / heightNew / imageMaxHeight 约束计算
+    var widthNew = if (imageFixedRatioWidth.isSome()) {
+        componentImageWidth * imageFixedRatioWidth()
+    } else {
+        let baseClamped = if (baseWidth < componentImageWidthNew) {
+            baseWidth
         } else {
             componentImageWidthNew
         }
-        var heightNew: Float64 = widthNew * aspectRatioNew
-        if (imageMaxHeight.isSome()) {
-            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
-            if (heightNew < imageMaxHeightPX) {
-                width = widthNew
-                height = heightNew
-            } else {
-                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
-                width = widthNew * aspectRatioHeightNew
-                height = imageMaxHeightPX
-            }
-        } else {
+        baseClamped * imageMaximumWidth
+    }
+    widthNew = if (widthNew < componentImageWidthNew) {
+        widthNew
+    } else {
+        componentImageWidthNew
+    }
+    let heightNew: Float64 = widthNew * aspectRatioNew
+    if (imageMaxHeight.isSome()) {
+        let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+        if (heightNew < imageMaxHeightPX) {
             width = widthNew
             height = heightNew
-        }
-    } else if (imageWidthPx.isSome() && imageHeightPx.isNone()) {
-        var widthNew = if (imageFixedRatioWidth.isSome()) {
-            componentImageWidth * imageFixedRatioWidth()
+        } else if (heightNew > 0.0) {
+            let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+            width = widthNew * aspectRatioHeightNew
+            height = imageMaxHeightPX
         } else {
-            imageWidthPx() * imageMaximumWidth
-        }
-        widthNew = if (componentImageWidthNew > widthNew) {
-            widthNew
-        } else {
-            componentImageWidthNew
-        }
-        var heightNew: Float64 = widthNew * aspectRatio
-        if (imageMaxHeight.isSome()) {
-            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
-            if (heightNew < imageMaxHeightPX) {
-                width = widthNew
-                height = heightNew
-            } else {
-                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
-                width = widthNew * aspectRatioHeightNew
-                height = imageMaxHeightPX
-            }
-        } else {
-            width = widthNew
-            height = heightNew
-        }
-    } else if (imageWidthPx.isNone() && imageHeightPx.isSome()) {
-        var widthNew = if (imageFixedRatioWidth.isSome()) {
-            componentImageWidth * imageFixedRatioWidth()
-        } else {
-            imageHeightPx() / aspectRatio * imageMaximumWidth
-        }
-        widthNew = if (componentImageWidthNew > widthNew) {
-            widthNew
-        } else {
-            componentImageWidthNew
-        }
-        var heightNew: Float64 = widthNew * aspectRatio
-        if (imageMaxHeight.isSome()) {
-            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
-            if (heightNew < imageMaxHeightPX) {
-                width = widthNew
-                height = heightNew
-            } else {
-                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
-                width = widthNew * aspectRatioHeightNew
-                height = imageMaxHeightPX
-            }
-        } else {
-            width = widthNew
-            height = heightNew
+            width = 0.0
+            height = 0.0
         }
     } else {
-        var widthNew = if (imageFixedRatioWidth.isSome()) {
-            componentImageWidth * imageFixedRatioWidth()
-        } else {
-            imageResWidth * imageMaximumWidth
-        }
-        widthNew = if (componentImageWidthNew > widthNew) {
-            widthNew
-        } else {
-            componentImageWidthNew
-        }
-        var heightNew: Float64 = widthNew * aspectRatio
-        if (imageMaxHeight.isSome()) {
-            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
-            if (heightNew < imageMaxHeightPX) {
-                width = widthNew
-                height = heightNew
-            } else {
-                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
-                width = widthNew * aspectRatioHeightNew
-                height = imageMaxHeightPX
-            }
-        } else {
-            width = widthNew
-            height = heightNew
-        }
+        width = widthNew
+        height = heightNew
     }
     return (width, height)
 }

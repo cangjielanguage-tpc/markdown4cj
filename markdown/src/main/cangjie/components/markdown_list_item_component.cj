@@ -80,8 +80,7 @@ class MarkdownListItemComponent {
                             // 围栏代码块列表
                             blockCodeBlockListComponent(
                                 listItemMarkdownConfiguration,
-                                item,
-                                toCodeList(item)
+                                item
                             )
                         } else if (item.nodeType == "FencedCodeBlock") {
                             // 围栏代码块

@@ -45,6 +45,7 @@ class MarkdownTableBlockComponent {
     var tablePaddingTopNum: Float64 = 0.0 // tablePaddingTop的数值
     var tableBorderTopNum: Float64 = 0.0 // tableBorderWidth的数值
     var blockMarginTopNum: Float64 = 0.0 // globalTheme.blockMarginTop的数值
+    var prevEvenWidth: Float64 = 0.0 // 上次的evenWidth（componentWidth/列数），用于判断是否需要重置列宽
     var stickyListenerId: Int64 = -1 // 吸顶监听器ID（用于removeListener）
     let headerScroller: Scroller = Scroller() // 吸顶模式header横向Scroll控制器
     let bodyScroller: Scroller = Scroller() // 吸顶模式body横向Scroll控制器
@@ -296,6 +297,8 @@ class MarkdownTableBlockComponent {
             cellWidthTracker.resize(0)
             columnWidths = Array<Float64>(0, repeat: 0.0)
             oldStickyRowCount = 0
+            syncManager.reset()
+            prevEvenWidth = 0.0
             return
         }
         var cellSize = 0
@@ -305,6 +308,15 @@ class MarkdownTableBlockComponent {
         if (cellSize != tableBlockCellSize) {
             tableBlockCellSize = cellSize
             cellWidthTracker.resize(cellSize)
+        }
+        // evenWidth缩小（容器变窄或列数增加）时才reset，避免每次增量更新都重置导致图片闪屏
+        let evenWidth = if (tableBlockCellSize > 0 && tableBlockComponentWidth > 0.0) {
+            tableBlockComponentWidth / Float64(tableBlockCellSize)
+        } else {
+            0.0
+        }
+        if (prevEvenWidth > 0.0 && evenWidth < prevEvenWidth - 1.0) {
+            cellWidthTracker.saveFallbackAndClear()
         }
         if (tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableStickyHeader && useOffsetSticky) {
             tableBlockHeaderNodeView = refreshNodeViewChildren[0]
@@ -317,9 +329,18 @@ class MarkdownTableBlockComponent {
             oldStickyRowCount = newRowCount
             updateBodyRows(refreshNodeViewChildren, 1, refreshNodeViewSize)
         } else {
+            let oldRowCount = tableBlockBodyRows.size
             updateBodyRows(refreshNodeViewChildren, 0, refreshNodeViewSize)
+            // 行减少时清理列宽记录（对齐ArkUI：避免已删除行的宽度继续支撑列宽）
+            if (oldRowCount > refreshNodeViewSize) {
+                for (i in refreshNodeViewSize..oldRowCount) {
+                    cellWidthTracker.clearRow(i)
+                }
+            }
         }
+        // 立即应用列宽：applyColumnWidths内部有变化检测，宽度未变时不会触发重渲染
         applyColumnWidths()
+        prevEvenWidth = evenWidth
     }
 
     /**
@@ -349,10 +370,10 @@ class MarkdownTableBlockComponent {
 
     /**
      * 对比tracker中的列宽与当前@State，仅在变化时更新以避免不必要重渲染
-     * 每列宽度 = max(tracker测量值, componentWidth均分值)
-     * - tracker有数据时：列宽≥内容最大宽度（列对齐）且≥evenWidth（充满屏幕）
-     * - tracker无数据时：列宽=evenWidth（充满屏幕，待cell渲染后tracker更新）
-     * - tracker宽度>evenWidth时：列宽=tracker宽度（内容超宽，横向滚动）
+     * 每列宽度 = max(tracker测量值, tableMinCellWidth, componentWidth均分值)
+     * - tracker有数据时：列宽≥内容最大宽度（列对齐）且≥minCellWidth（用户配置）且≥evenWidth（充满屏幕）
+     * - tracker无数据时：列宽=max(minCellWidth, evenWidth)（充满屏幕，待cell渲染后tracker更新）
+     * - tracker宽度>evenWidth/minCellWidth时：列宽=tracker宽度（内容超宽，横向滚动）
      */
     func applyColumnWidths(): Unit {
         let trackerWidths = cellWidthTracker.getWidths()
@@ -367,7 +388,15 @@ class MarkdownTableBlockComponent {
         for (i in 0..size) {
             newWidths[i] = trackerWidths[i]
         }
-        if (tableBlockComponentWidth > 0.0 && size > 0) {
+        // 先以配置的最小单元格宽度为下限
+        let minCellWidth = tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMinCellWidth
+        for (i in 0..size) {
+            if (newWidths[i] < minCellWidth) {
+                newWidths[i] = minCellWidth
+            }
+        }
+        // 再以均分宽度为下限（仅在容器宽度已知时），确保空/窄列仍占满容器
+        if (tableBlockComponentWidth > 0.0) {
             let evenWidth = tableBlockComponentWidth / Float64(size)
             for (i in 0..size) {
                 if (newWidths[i] < evenWidth) {
@@ -404,10 +433,24 @@ class MarkdownTableBlockComponent {
     }
 
     /**
-     * 控件宽度变化时重新应用列宽
+     * componentWidth变化时立即应用列宽
+     * evenWidth缩小（容器变窄或列数增加）时：saveFallbackAndClear清零cellWidths，
+     * fallback保留宽cell的内容宽度（width>minWidth时记录的=contentWidth）。
+     * - 宽cell：fallback=contentWidth→widths=contentWidth→列宽不变→cell不变→无闪屏
+     * - 窄cell：fallback=0→widths=0→列宽=evenWidth→cell收缩→onSizeChange→重测
+     * evenWidth不变或增大时：tracker值仍有效，无需重置，直接applyColumnWidths
      */
     func onComponentWidthChanged(): Unit {
+        let evenWidth = if (tableBlockCellSize > 0) {
+            tableBlockComponentWidth / Float64(tableBlockCellSize)
+        } else {
+            0.0
+        }
+        if (prevEvenWidth > 0.0 && evenWidth < prevEvenWidth - 1.0) {
+            cellWidthTracker.saveFallbackAndClear()
+        }
         applyColumnWidths()
+        prevEvenWidth = evenWidth
     }
 
     /**

@@ -84,13 +84,14 @@ public class MarkdownImageUrlComponent {
                 if (urlImageType != 2) {
                     // 加载图片
                     Image(urlDestination)
-                        .borderRadius(topLeft: urlRadiusTopLeft, topRight: urlRadiusTopRight, bottomLeft: urlRadiusBottomRight, bottomRight: urlRadiusBottomLeft)
+                        .borderRadius(topLeft: urlRadiusTopLeft, topRight: urlRadiusTopRight, bottomLeft: urlRadiusBottomLeft, bottomRight: urlRadiusBottomRight)
                         .borderWidth(urlMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(urlMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(urlMarkdownTheme.imageTheme.imageBorderStyle)
                         .width(urlWidth.px)
                         .height(urlHeight.px)
                         .objectFit(urlMarkdownTheme.imageTheme.imageFitType)
+                        .autoResize(urlMarkdownTheme.imageTheme.imageAutoResize)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
                             evt => imageSpanOnClick(urlLink, urlImageCallback, urlLinkCallback, urlLinkUrl, urlDestination)
@@ -133,6 +134,8 @@ public class MarkdownImageUrlComponent {
                 }
             }
             .alignItems(urlHorizontalAlign)
+            // 边距挂在图片容器上（对齐ArkUI：下载按钮在图片下边距之外）
+            .margin(top: urlMarkdownTheme.imageTheme.imageMarginTop, right: urlMarkdownTheme.imageTheme.imageMarginRight, bottom: urlMarkdownTheme.imageTheme.imageMarginBottom, left: urlMarkdownTheme.imageTheme.imageMarginLeft)
             if (urlMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: urlMarkdownTheme,
@@ -141,6 +144,5 @@ public class MarkdownImageUrlComponent {
                 )
             }
         }
-        .margin(top: urlMarkdownTheme.imageTheme.imageMarginTop, right: urlMarkdownTheme.imageTheme.imageMarginRight, bottom: urlMarkdownTheme.imageTheme.imageMarginBottom, left: urlMarkdownTheme.imageTheme.imageMarginLeft)
     }
 }

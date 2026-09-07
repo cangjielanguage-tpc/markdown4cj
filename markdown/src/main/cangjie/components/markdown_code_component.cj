@@ -201,6 +201,11 @@ class MarkdownCodeComponent {
 
                     Blank()
                         .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
+                        .visibility(if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
+                            Visibility.Visible
+                        } else {
+                            Visibility.None
+                        })
 
                     if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
                         Row() {
@@ -208,7 +213,6 @@ class MarkdownCodeComponent {
                                 Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
                                     .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
                                     .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
-                                    .margin(left: 4)
                                     .objectFit(ImageFit.Contain)
                             }
 
@@ -253,9 +257,15 @@ class MarkdownCodeComponent {
 
     /**
      * 滑动到底部
+     * LazyForEach 的 addData 触发的渲染是异步的，
+     * scrollEdge 在渲染前调用只能滚到旧底部，需延迟一帧再滚动一次确保到位
      */
     func scroll2Bottom() {
         scroller2.scrollEdge(Edge.Bottom)
+        Timer.once(0 * Duration.millisecond) {
+            =>
+                scroller2.scrollEdge(Edge.Bottom)
+        }
     }
 
     /**

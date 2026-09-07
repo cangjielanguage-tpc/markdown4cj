@@ -4,48 +4,48 @@ class MarkdownParseCodeUtil {
     /**
      * 通过异步的方式将代码转换成带有颜色的列表 - 组合代码
      *
-     * @param nodeView 传入围栏代码列表的Node
-     * @param markdownConfiguration 传入MarkdownConfiguration
-     * @param strText 代码列表数据
+     * @param strText 代码文本列表（快照）
+     * @param strInfoText 代码语言列表（与strText同源同索引，快照）
      * @param psh PrismSyntaxHighlight对象
      * @param callback 回调接口
      * @return 线程
      */
     static func stringToResLists(
-        nodeView: NodeView,
-        markdownConfiguration: MarkdownConfiguration,
         strText: ArrayList<String>,
+        strInfoText: ArrayList<String>,
         psh: ?PrismSyntaxHighlight,
         callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit
     ): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
-            try (codeLoadLimiter = CodeLoadLimiter()) {
-                for (node in nodeView.children) {
-                    if (node.nodeType == "FencedCodeBlock") {
-                        if (Thread.currentThread.hasPendingCancellation) {
-                            return
-                        }
-                        if (let Some(v) <- psh) {
-                            let res: ArrayList<PrismNodesParseResUI> = v.highlight((node as FencedCodeBlock)().getInfo(), (node as FencedCodeBlock)().getLiteral())
-                            prismNodesParseResLists.add(res)
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                for (str in strText) {
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
-                    }
-                    let prismNodesParseResList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
-                    let prismNodesParseRes: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: str, alias: Option<String>.None, color: Option<Color>.None)
-                    prismNodesParseResList.add(prismNodesParseRes)
-                    prismNodesParseResLists.add(prismNodesParseResList)
-                }
-            } finally {
+            // 直接使用strText逐个解析高亮，语言取自同源的strInfoText（索引严格对应）
+            for (i in 0..strText.size) {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
+                let code = strText[i]
+                var info: ?String = Option<String>.None
+                if (i < strInfoText.size) {
+                    let v = strInfoText[i]
+                    if (v.size > 0) {
+                        info = Some(v)
+                    }
+                }
+                var res: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
+                try (codeLoadLimiter = CodeLoadLimiter()) {
+                    if (let Some(v) <- psh) {
+                        res = v.highlight(info, code)
+                    }
+                } catch (e: Exception) {
+                    res.add(PrismNodesParseResUI(types: "", text: code, alias: Option<String>.None, color: Option<Color>.None))
+                }
+                if (res.size == 0) {
+                    res.add(PrismNodesParseResUI(types: "", text: code, alias: Option<String>.None, color: Option<Color>.None))
+                }
+                prismNodesParseResLists.add(res)
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
             }
             callback(prismNodesParseResLists)
         }
@@ -96,10 +96,9 @@ class MarkdownParseCodeUtil {
                 lines = arr.size
                 let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: code, alias: Option<String>.None, color: Option<Color>.None)
                 prismNodesParseResUIList.add(prismNodesParseResUI)
-            } finally {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
             }
             callback(prismNodesParseResUIList, lines)
         }
@@ -133,10 +132,9 @@ class MarkdownParseCodeUtil {
             } catch (e: Exception) {
                 let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
                 prismNodesParseResUIList.add(prismNodesParseResUI)
-            } finally {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
             }
             callback(prismNodesParseResUIList)
         }

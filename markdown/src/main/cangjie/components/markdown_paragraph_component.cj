@@ -362,7 +362,7 @@ class MarkdownParagraphComponent {
             Column() {
                  if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
                     if (paragraphMarkdownConfiguration.imageReplaceCallback.isNone()) {
-                        if (paragraphNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
+                        if (isRawFileImageUrl(paragraphNodeViewList[0].imageUrl.getOrThrow())) {
                             MarkdownImageRawFileComponent(
                                 rawFileMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
                                 rawFileDestination: paragraphNodeViewList[0].imageUrl.getOrThrow(),
@@ -394,7 +394,7 @@ class MarkdownParagraphComponent {
                             )
                         }
                     } else {
-                        if (paragraphNodeViewList[0].imageUrl.getOrThrow().startsWith("./")) {
+                        if (isRawFileImageUrl(paragraphNodeViewList[0].imageUrl.getOrThrow())) {
                             MarkdownImageCallbackRawFileComponent(
                                 rawFileCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
                                 rawFileCallbackDestination: paragraphNodeViewList[0].imageUrl.getOrThrow(),
@@ -668,7 +668,9 @@ class MarkdownParagraphComponent {
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
-                        spanListImageCallback
+                        spanListImageCallback,
+                        Option<(Float64) -> Unit>.None,
+                        Option<Float64>.None
                         )
                 } else {
                     // 其他节点

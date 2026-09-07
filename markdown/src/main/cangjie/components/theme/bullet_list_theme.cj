@@ -40,7 +40,7 @@ public class BulletListTheme {
     @Publish
     public var bulletListBulletTextFontStyle: FontStyle = FontStyle.Normal // 无序列表列表符号文本字体样式
     @Publish
-    public var bulletListBulletTextFontWeight: FontWeight = FontWeight.W400 // 无序列表列表符号文本字体粗细
+    public var bulletListBulletTextFontWeight: FontWeight = FontWeight.Normal // 无序列表列表符号文本字体粗细
     @Publish
     public var bulletListBulletTextFontFamily: String = "HarmonyOS Sans" // 无序列表列表符号文本字体
     @Publish

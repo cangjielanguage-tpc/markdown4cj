@@ -4,19 +4,42 @@ package markdown.plugin
  * 节点树纯文本提取
  */
 public class NodeViewStringBuilder <: ToString {
-    public NodeViewStringBuilder(let root: Node) {}
-
-    let builder = StringBuilder()
+    /**
+     * @param root 根节点
+     * @param codeBlockIsSeparate 单独代码块开关；true时仅提取第一个代码块节点
+     */
+    public NodeViewStringBuilder(let root: Node, let codeBlockIsSeparate: () -> Bool) {}
 
     /**
-     * 提取纯文本
+     * 全量提取（保持原始用法兼容）
+     *
+     * @param root 根节点
+     */
+    public init(root: Node) {
+        this(root, { => false })
+    }
+
+    var builder = StringBuilder()
+
+    /**
+     * 提取纯文本（每次调用基于当前单独代码块开关重新提取，保证与页面显示一致）
      * - 处理缩进
      * - 处理行内节点
      * - 处理行内节点间隔
      * - block: 尾插换行
+     * - codeBlockIsSeparate: 单独代码块模式下，仅复制第一个代码块节点；第一个节点不是代码块则为空
      */
     public func toString(): String {
-        if (builder.size == 0) {
+        builder = StringBuilder()
+        if (codeBlockIsSeparate()) {
+            // 单独代码块模式: 页面仅显示第一条代码块，全文复制也只复制第一个节点
+            if (let Some(firstChild) <- root.getFirstChild()) {
+                if (firstChild is FencedCodeBlock || firstChild is IndentedCodeBlock) {
+                    traverse(firstChild)
+                }
+                // 第一个节点不是代码块，直接为空
+            }
+        } else {
             traverse(root)
         }
         return builder.toString()

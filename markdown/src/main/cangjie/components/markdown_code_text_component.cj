@@ -19,13 +19,21 @@ class MarkdownCodeTextComponent {
     var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>() // 高亮代码列表
     var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
     var future: ?Future<Unit> = Option<Future<Unit>>.None // 子线程
+    var isAlive: Bool = false // 组件是否存活
+    var parseVersion: Int64 = 0 // 解析版本号，每次解析递增
+    var appliedVersion: Int64 = 0 // 已应用的版本号，用于丢弃过期的异步解析结果
+    var parseTimer: ?Timer = Option<Timer>.None // 定时器调度（清旧调度新，避免重复解析）
 
     protected override func aboutToAppear(): Unit {
+        isAlive = true
         psh = PrismSyntaxHighlight.create(prism, markdownTheme.prismTheme)
         refreshData() // 初始化刷新数据
     }
 
     protected override func aboutToDisappear(): Unit {
+        isAlive = false
+        parseTimer?.cancel()
+        parseTimer = Option<Timer>.None
         future?.cancel()
     }
 
@@ -81,20 +89,46 @@ class MarkdownCodeTextComponent {
             let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
             prismNodesParseResLists.add(prismNodesParseResUI)
         }
+        if (prismNodesParseResLists.size == 0) {
+            prismNodesParseResLists.add(PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None))
+        }
         refreshCodeDatas(prismNodesParseResLists)
     }
 
     /**
-     * 异步代码高亮解析
+     * 异步代码高亮解析（单定时器调度 + 版本号防过期结果应用）
+     * 流式增量期间该行文本高频变化时，清旧调度新仅保留最新一次解析，
+     * 解析完成后比对版本号，过期结果丢弃，防止旧结果覆盖新结果。
      */
     func stringCodeToResList() {
-        future?.cancel()
-        let callback: (ArrayList<PrismNodesParseResUI>) -> Unit = {
-            prismNodesParseResLists => launch {
-                refreshCodeDatas(prismNodesParseResLists)
-            }
+        parseVersion++ // 版本号递增
+        let currentVersion = parseVersion
+        // 快照当前源文本
+        let snapshot = codeText
+        // 单定时器：清旧调度新
+        parseTimer?.cancel()
+        parseTimer = Timer.once(0 * Duration.millisecond) {
+            =>
+                parseTimer = None
+                if (!isAlive || currentVersion <= appliedVersion) {
+                    return
+                }
+                future?.cancel()
+                let callback: (ArrayList<PrismNodesParseResUI>) -> Unit = {
+                    prismNodesParseResLists => launch {
+                        if (!isAlive || currentVersion <= appliedVersion) {
+                            return
+                        }
+                        // 源文本比对：文本已变化则丢弃过期解析结果
+                        if (this.codeText != snapshot) {
+                            return
+                        }
+                        appliedVersion = currentVersion
+                        refreshCodeDatas(prismNodesParseResLists)
+                    }
+                }
+                future = MarkdownParseCodeUtil.stringToResList(snapshot, this.info, psh, callback)
         }
-        future = MarkdownParseCodeUtil.stringToResList(this.codeText, this.info, psh, callback)
     }
 
     /**

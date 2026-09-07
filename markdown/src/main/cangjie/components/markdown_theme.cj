@@ -152,14 +152,14 @@ public class MarkdownTheme {
 
         // 无序列表主题
         this.bulletListTheme.setBulletListBulletTextFontColor(COLOR_FF191919) // 无序列表标记文本颜色
-            .setBulletListCheckboxSelectedColor(COLOR_GRAY) // 无序列表复选框选中颜色
+            .setBulletListCheckboxSelectedColor(COLOR_FF808080) // 无序列表复选框选中颜色
 
         // 代码块主题
         this.codeBlockTheme.setCodeBlockBorderColor(COLOR_TRANSPARENT) // 代码块边框颜色
             .setCodeBlockIsDark(false) // 代码块暗色主题
             .setCodeBlockListTitleSelectTextColor(COLOR_RED) // 列表标题选中文本颜色
             .setCodeBlockListTitleUnselectTextColor(COLOR_BLACK) // 列表标题未选中文本颜色
-            .setCodeBlockListTitleSelectBackgroundColor(COLOR_GRAY) // 列表标题选中背景颜色
+            .setCodeBlockListTitleSelectBackgroundColor(COLOR_FF808080) // 列表标题选中背景颜色
             .setCodeBlockListTitleUnselectBackgroundColor(COLOR_TRANSPARENT) // 列表标题未选背景颜色
 
         // 音频主题
@@ -177,9 +177,9 @@ public class MarkdownTheme {
             .setVideoBorderColor(COLOR_TRANSPARENT) // 视频边框颜色
             .setVideoTimeTextFontColor(COLOR_WHITE) // 视频时间文本颜色
             .setVideoReleaseButtonBackgroundColor(COLOR_FFF5F5F5) // 视频发布按钮背景颜色
-            .setVideoReleaseButtonTextFontColor(COLOR_E6000000) // 视频发布按钮文本颜色
+            .setVideoReleaseButtonTextFontColor(COLOR_60000000) // 视频发布按钮文本颜色
             .setVideoDownloadButtonBackgroundColor(COLOR_FFF5F5F5) // 视频下载按钮背景颜色
-            .setVideoDownloadButtonTextFontColor(COLOR_E6000000) // 视频下载按钮文本颜色
+            .setVideoDownloadButtonTextFontColor(COLOR_60000000) // 视频下载按钮文本颜色
 
         // 脚注引用主题
         this.footnoteRefTheme.setFootnoteRefTextFontColor(COLOR_RED) // 脚注引用文本颜色
@@ -190,9 +190,9 @@ public class MarkdownTheme {
         this.inlineCodeTheme.setInlineCodeTextBackgroundColor(COLOR_FFEAEAEA) // 行内代码文本背景颜色
 
         // LaTeX数学公式主题
-        this.latexMathTheme.setLatexMathDefaultTextFontColor(COLOR_RED) // 数学公式未加载状态文本颜色
+        this.latexMathTheme.setLatexMathDefaultTextFontColor(COLOR_FF191919) // 数学公式未加载状态文本颜色
             .setLatexMathBackgroundColor(COLOR_TRANSPARENT) // 数学公式背景颜色
-            .setLatexMathTextColor(COLOR_BLACK) // 数学公式文本颜色
+            .setLatexMathTextColor(COLOR_FF191919) // 数学公式文本颜色
 
         // HTML下划线主题
         this.htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(COLOR_FF191919) // HTML下划线文本下划线颜色
@@ -304,7 +304,7 @@ public class MarkdownTheme {
         this.inlineCodeTheme.setInlineCodeTextBackgroundColor(COLOR_FF252526) // 行内代码背景颜色
 
         // LaTeX数学公式主题
-        this.latexMathTheme.setLatexMathDefaultTextFontColor(COLOR_FF4A90E2) // 数学公式未加载状态文本颜色
+        this.latexMathTheme.setLatexMathDefaultTextFontColor(COLOR_FFE0E0E0) // 数学公式未加载状态文本颜色
             .setLatexMathBackgroundColor(COLOR_TRANSPARENT) // 数学公式背景颜色
             .setLatexMathTextColor(COLOR_FFE0E0E0) // 数学公式文本颜色
 
@@ -333,7 +333,7 @@ public class MarkdownTheme {
         this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF404040) // 删除线文本装饰线颜色
 
         // 高亮主题
-        this.highlightTheme.setHighlightTextBackgroundColor(COLOR_FF6E6000) // 高亮文本背景颜色
+        this.highlightTheme.setHighlightTextBackgroundColor(COLOR_FFFFF59D) // 高亮文本背景颜色
 
         // 代码高亮主题
         this.prismTheme = PrismThemeDarcula.create() // 代码高亮主题
@@ -901,30 +901,6 @@ public class MarkdownTheme {
     @Deprecated["用GlobalTheme.setIsMarkdownParserSync方法代替", since: "1.4.0"]
     public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): MarkdownTheme {
         this.globalTheme.isMarkdownParserSync = isMarkdownParserSync
-        return this
-    }
-
-    /**
-     * 设置是否启用解析节流
-     *
-     * @param enableParseThrottle 是否启用解析节流 - 默认false
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用GlobalTheme.setEnableParseThrottle方法代替", since: "1.4.0"]
-    public func setEnableParseThrottle(enableParseThrottle: Bool): MarkdownTheme {
-        this.globalTheme.enableParseThrottle = enableParseThrottle
-        return this
-    }
-
-    /**
-     * 设置节流间隔
-     *
-     * @param parseThrottleMs 节流间隔（毫秒） - 默认200
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用GlobalTheme.setParseThrottleMs方法代替", since: "1.4.0"]
-    public func setParseThrottleMs(parseThrottleMs: Int64): MarkdownTheme {
-        this.globalTheme.parseThrottleMs = parseThrottleMs
         return this
     }
 
@@ -1837,9 +1813,9 @@ public class MarkdownTheme {
      * @param codeMultilineMargin 代码块左边距 - 默认8.0vp
      * @return MarkdownTheme MarkdownTheme对象
      */
-    @Deprecated["用CodeBlockTheme.setPadding方法代替", since: "1.4.0"]
+    @Deprecated["用CodeBlockTheme.setMargin方法代替", since: "1.4.0"]
     public func setCodeMultilineMargin(codeMultilineMargin: Float64): MarkdownTheme {
-        this.codeBlockTheme.codeBlockPaddingLeft = codeMultilineMargin
+        this.codeBlockTheme.codeBlockMarginLeft = codeMultilineMargin
         return this
     }
 

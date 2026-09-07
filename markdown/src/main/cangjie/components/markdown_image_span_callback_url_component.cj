@@ -16,6 +16,8 @@ public class MarkdownSpanImageCallbackUrlComponent {
     var urlCallbackLinkCallback: ?(String) -> Unit // 链接点击事件
     var urlCallbackLink: Bool // 是否是链接
     var urlCallbackLinkUrl: Option<String> // 链接URL
+    var urlCallbackImageWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.None // 图片加载完成后实际显示宽度回调 - 单位vp（表格列宽跟踪用）
+    var urlCallbackImageCellMaxWidth: ?Float64 = Option<Float64>.None // 表格单元格最大宽度 - 单位vp（表格场景传入，作为图片宽度计算基准与约束宽度）
     var urlCallbackImageWidth: Option<Length> // 图片宽度
     var urlCallbackImageHeight: Option<Length> // 图片高度
     var urlCallbackImageRadius: Option<Length> // 图片圆角
@@ -43,6 +45,12 @@ public class MarkdownSpanImageCallbackUrlComponent {
 
     protected override func aboutToAppear(): Unit {
         urlCallbackComponentImageWidth = vp2px(urlCallbackComponentWidth.vp)().value // 图片最大宽度单位转换
+        // 表格单元格场景：以单元格最大宽度为图片宽度计算基准（对齐ArkUI tableMaxCellWidth优先逻辑）
+        if (let Some(cellMaxWidth) <- urlCallbackImageCellMaxWidth) {
+            if (cellMaxWidth > 0.0) {
+                urlCallbackComponentImageWidth = vp2px(cellMaxWidth.vp)().value
+            }
+        }
         // 图片圆角
         let radius = imageSpanBorderRadius(
             urlCallbackImageRadius,
@@ -119,7 +127,7 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .height(urlCallbackReplaceHeight().px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(urlCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                     }
@@ -146,26 +154,41 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .height(urlCallbackHeight.px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(urlCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                     }
                     .onComplete {
                         imageLoadResult =>
-                            let res = imageWidthAndHeight(
-                                urlCallbackComponentImageWidth,
-                                imageLoadResult.width,
-                                imageLoadResult.height,
-                                urlCallbackThemeWidth,
-                                urlCallbackThemeHeight,
-                                urlCallbackMarkdownTheme.imageTheme.imageMaxWidth,
-                                urlCallbackMarkdownTheme.imageTheme.imageMaxHeight,
-                                urlCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
-                                urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
-                            )
-                            urlCallbackWidth = res[0]
-                            urlCallbackHeight = res[1]
-                            urlCallbackImageType = 1
+                            // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
+                            var urlCallbackBaseWidth = 0.0
+                            if (let Some(cellMaxWidth) <- urlCallbackImageCellMaxWidth) {
+                                if (cellMaxWidth > 0.0) {
+                                    urlCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
+                                }
+                            }
+                            if (urlCallbackBaseWidth <= 0.0 && urlCallbackComponentWidth > 0.0) {
+                                urlCallbackBaseWidth = vp2px(urlCallbackComponentWidth.vp)().value
+                            }
+                            if (urlCallbackBaseWidth <= 0.0) {
+                                urlCallbackBaseWidth = imageLoadResult.width
+                            }
+                            if (urlCallbackBaseWidth > 0.0) {
+                                let res = imageWidthAndHeight(
+                                    urlCallbackBaseWidth,
+                                    imageLoadResult.width,
+                                    imageLoadResult.height,
+                                    urlCallbackThemeWidth,
+                                    urlCallbackThemeHeight,
+                                    urlCallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                                    urlCallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                                    urlCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                                    urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
+                                )
+                                urlCallbackWidth = res[0]
+                                urlCallbackHeight = res[1]
+                                urlCallbackImageType = 1
+                            }
                     }
                     .onError {
                         imageError => urlCallbackImageType = 2
@@ -194,7 +217,7 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .height(urlCallbackReplaceHeight().px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(urlCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                     }
@@ -220,27 +243,43 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .height(urlCallbackHeight.px)
                     .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(urlCallbackImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                     }
                     .onComplete {
                         imageLoadResult =>
-                            let res = imageWidthAndHeight(
-                                urlCallbackComponentImageWidth,
-                                imageLoadResult.width,
-                                imageLoadResult.height,
-                                urlCallbackThemeWidth,
-                                urlCallbackThemeHeight,
-                                urlCallbackMarkdownTheme.imageTheme.imageMaxWidth,
-                                urlCallbackMarkdownTheme.imageTheme.imageMaxHeight,
-                                urlCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
-                                urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
-                            )
-                            if (urlCallbackReplaceImageType != 1) {
-                                urlCallbackWidth = res[0]
-                                urlCallbackHeight = res[1]
-                                urlCallbackImageType = 1
+                            // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
+                            var urlCallbackBaseWidth = 0.0
+                            if (let Some(cellMaxWidth) <- urlCallbackImageCellMaxWidth) {
+                                if (cellMaxWidth > 0.0) {
+                                    urlCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
+                                }
+                            }
+                            if (urlCallbackBaseWidth <= 0.0 && urlCallbackComponentWidth > 0.0) {
+                                urlCallbackBaseWidth = vp2px(urlCallbackComponentWidth.vp)().value
+                            }
+                            if (urlCallbackBaseWidth <= 0.0) {
+                                urlCallbackBaseWidth = imageLoadResult.width
+                            }
+                            if (urlCallbackBaseWidth > 0.0) {
+                                let res = imageWidthAndHeight(
+                                    urlCallbackBaseWidth,
+                                    imageLoadResult.width,
+                                    imageLoadResult.height,
+                                    urlCallbackThemeWidth,
+                                    urlCallbackThemeHeight,
+                                    urlCallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                                    urlCallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                                    urlCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                                    urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
+                                )
+                                if (urlCallbackReplaceImageType != 1) {
+                                    urlCallbackWidth = res[0]
+                                    urlCallbackHeight = res[1]
+                                    urlCallbackImageType = 1
+                                    notifyImageWidth()
+                                }
                             }
                     }
                     .onError {
@@ -255,20 +294,38 @@ public class MarkdownSpanImageCallbackUrlComponent {
             imagePixelMap, imageResWidth, imageResHeight => launch {
                 if (imagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
                     this.urlCallbackReplaceImagePixelMap = imagePixelMap
-                    let res = imageWidthAndHeight(
-                        urlCallbackComponentImageWidth,
-                        imageResWidth(),
-                        imageResHeight(),
-                        urlCallbackThemeWidth,
-                        urlCallbackThemeHeight,
-                        urlCallbackMarkdownTheme.imageTheme.imageMaxWidth,
-                        urlCallbackMarkdownTheme.imageTheme.imageMaxHeight,
-                        urlCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
-                        urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
-                    )
-                    urlCallbackReplaceWidth = res[0]
-                    urlCallbackReplaceHeight = res[1]
-                    urlCallbackReplaceImageType = 1
+                    // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
+                    var urlCallbackBaseWidth = 0.0
+                    if (let Some(cellMaxWidth) <- urlCallbackImageCellMaxWidth) {
+                        if (cellMaxWidth > 0.0) {
+                            urlCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
+                        }
+                    }
+                    if (urlCallbackBaseWidth <= 0.0 && urlCallbackComponentWidth > 0.0) {
+                        urlCallbackBaseWidth = vp2px(urlCallbackComponentWidth.vp)().value
+                    }
+                    if (urlCallbackBaseWidth <= 0.0) {
+                        urlCallbackBaseWidth = imageResWidth()
+                    }
+                    if (urlCallbackBaseWidth > 0.0) {
+                        let res = imageWidthAndHeight(
+                            urlCallbackBaseWidth,
+                            imageResWidth(),
+                            imageResHeight(),
+                            urlCallbackThemeWidth,
+                            urlCallbackThemeHeight,
+                            urlCallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                            urlCallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                            urlCallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                            urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
+                        )
+                        urlCallbackReplaceWidth = res[0]
+                        urlCallbackReplaceHeight = res[1]
+                        urlCallbackReplaceImageType = 1
+                        if (let Some(rw) <- urlCallbackReplaceWidth) {
+                            notifyImageWidthByPx(rw)
+                        }
+                    }
                 } else {
                     urlCallbackReplaceImageType = 2
                 }
@@ -279,6 +336,21 @@ public class MarkdownSpanImageCallbackUrlComponent {
             urlCallbackImageReplaceCallback,
             callback
         )
+    }
+
+    /**
+     * 图片加载完成后，回调实际显示宽度（vp），供表格列宽跟踪使用
+     */
+    func notifyImageWidthByPx(widthPx: Float64): Unit {
+        if (widthPx > 0.0) {
+            if (let Some(cb) <- urlCallbackImageWidthCallback) {
+                cb(px2vp(widthPx.px).getOrThrow().value)
+            }
+        }
+    }
+
+    func notifyImageWidth(): Unit {
+        notifyImageWidthByPx(urlCallbackWidth)
     }
 
     /**

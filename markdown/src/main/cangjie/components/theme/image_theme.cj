@@ -84,7 +84,7 @@ public class ImageTheme {
     @Publish
     public var imageDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal // 图片下载按钮文本字体样式
     @Publish
-    public var imageDownloadButtonTextFontWeight: FontWeight = FontWeight.W500 // 图片下载按钮文本字体粗细
+    public var imageDownloadButtonTextFontWeight: FontWeight = FontWeight.Medium // 图片下载按钮文本字体粗细
     @Publish
     public var imageDownloadButtonTextFontFamily: String = "HarmonyOS Sans" // 图片下载按钮文本字体
     @Publish

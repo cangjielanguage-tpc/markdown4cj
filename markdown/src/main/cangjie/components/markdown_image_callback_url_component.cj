@@ -102,13 +102,14 @@ public class MarkdownImageCallbackUrlComponent {
                 if (urlCallbackReplaceImageType == 1) {
                     // 替换之后的图片
                     Image(urlCallbackReplaceImagePixelMap())
-                        .borderRadius(topLeft: urlCallbackRadiusTopLeft, topRight: urlCallbackRadiusTopRight, bottomLeft: urlCallbackRadiusBottomRight, bottomRight: urlCallbackRadiusBottomLeft)
+                        .borderRadius(topLeft: urlCallbackRadiusTopLeft, topRight: urlCallbackRadiusTopRight, bottomLeft: urlCallbackRadiusBottomLeft, bottomRight: urlCallbackRadiusBottomRight)
                         .borderWidth(urlCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(urlCallbackMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(urlCallbackMarkdownTheme.imageTheme.imageBorderStyle)
                         .width(urlCallbackReplaceWidth().px)
                         .height(urlCallbackReplaceHeight().px)
                         .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
+                        .autoResize(urlCallbackMarkdownTheme.imageTheme.imageAutoResize)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
                             evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
@@ -117,13 +118,14 @@ public class MarkdownImageCallbackUrlComponent {
                     if (urlCallbackImageType != 2) {
                         // 加载图片
                         Image(urlCallbackDestination)
-                            .borderRadius(topLeft: urlCallbackRadiusTopLeft, topRight: urlCallbackRadiusTopRight, bottomLeft: urlCallbackRadiusBottomRight, bottomRight: urlCallbackRadiusBottomLeft)
+                            .borderRadius(topLeft: urlCallbackRadiusTopLeft, topRight: urlCallbackRadiusTopRight, bottomLeft: urlCallbackRadiusBottomLeft, bottomRight: urlCallbackRadiusBottomRight)
                             .borderWidth(urlCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                             .borderColor(urlCallbackMarkdownTheme.imageTheme.imageBorderColor)
                             .borderStyle(urlCallbackMarkdownTheme.imageTheme.imageBorderStyle)
                             .width(urlCallbackWidth.px)
                             .height(urlCallbackHeight.px)
                             .objectFit(urlCallbackMarkdownTheme.imageTheme.imageFitType)
+                            .autoResize(urlCallbackMarkdownTheme.imageTheme.imageAutoResize)
                             .constraintSize(maxWidth: 100.percent)
                             .onClick {
                                 evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
@@ -167,6 +169,8 @@ public class MarkdownImageCallbackUrlComponent {
                 }
             }
             .alignItems(urlCallbackHorizontalAlign)
+            // 边距挂在图片容器上（对齐ArkUI：下载按钮在图片下边距之外）
+            .margin(top: urlCallbackMarkdownTheme.imageTheme.imageMarginTop, right: urlCallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: urlCallbackMarkdownTheme.imageTheme.imageMarginBottom, left: urlCallbackMarkdownTheme.imageTheme.imageMarginLeft)
             if (urlCallbackMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: urlCallbackMarkdownTheme,
@@ -175,7 +179,6 @@ public class MarkdownImageCallbackUrlComponent {
                 )
             }
         }
-        .margin(top: urlCallbackMarkdownTheme.imageTheme.imageMarginTop, right: urlCallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: urlCallbackMarkdownTheme.imageTheme.imageMarginBottom, left: urlCallbackMarkdownTheme.imageTheme.imageMarginLeft)
     }
 
     func imageCallbackPixelmap() {

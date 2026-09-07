@@ -19,6 +19,7 @@ public class MarkdownLatexMathInLineComponent {
     var latexMathInLineLinkCallback: ?(String) -> Unit // 链接点击事件
     var latexMathInLineIsLink: Bool = false // 是否是链接
     var latexMathInLineLinkUrl: ?String = Option<String>.None // 链接url
+    var latexMathInLineWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.None // 数学公式图片解析完成后最终显示宽度回调 - 单位vp（表格列宽跟踪用）
     var latexMathInLineData: ?Array<UInt8> = Option<Array<UInt8>>.None // 数学公式列表数据
     @State
     var latexMathInLinePixelMap: ?PixelMap = Option<PixelMap>.None // 数学公式PixelMap
@@ -96,9 +97,28 @@ public class MarkdownLatexMathInLineComponent {
                 latexMathInLinePixelMap = pixelMap
                 latexMathInLineData = arr
                 isLatexMathInLineParserEnd = true
+                notifyLatexWidth()
             }
         }
         latexMathInLineFut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(latexMathInLineStr, markdownTheme, latexMathTextSize, componentWidth, latexStrCallback, callback)
+    }
+
+    /**
+     * 数学公式图片解析完成后，回调实际显示宽度（vp），供表格列宽跟踪使用
+     * 宽度上限受tableMaxCellWidth约束，与cell的maxWidth约束一致
+     */
+    func notifyLatexWidth(): Unit {
+        if (latexMathInLineWidth.isNone()) {
+            return
+        }
+        if (let Some(cb) <- latexMathInLineWidthCallback) {
+            var wVp = px2vp(latexMathInLineWidth().px).getOrThrow().value
+            let maxW = markdownTheme.tableTheme.tableMaxCellWidth
+            if (wVp > maxW) {
+                wVp = maxW
+            }
+            cb(wVp)
+        }
     }
 
     public func refreshData(newNodeView: NodeView): Unit {

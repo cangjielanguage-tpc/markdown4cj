@@ -2,7 +2,8 @@ package markdown.components
 
 class MarkdownParseImageUtil {
     /**
-     * 本地图片路径转换成PixelMap (./开头)
+     * 本地图片路径转换成PixelMap (./或../开头)
+     * 对齐ArkUI实现：剥离./、../前缀后按rawfile根路径加载
      *
      * @param destination 图片路径
      * @param uiAbilityContext UIAbilityContext
@@ -37,7 +38,7 @@ class MarkdownParseImageUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var arrayUInt8: Array<UInt8> = v.getRawFileContent(destination.replace("./", ""))
+                    var arrayUInt8: Array<UInt8> = v.getRawFileContent(resolveRawfilePath(destination))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -63,15 +64,46 @@ class MarkdownParseImageUtil {
             } finally {
                 imageSource?.Release()
                 imageSource = Option<ImageSource>.None
-                if (Thread.currentThread.hasPendingCancellation) {
-                    pixelMap?.Release()
-                    pixelMap = Option<PixelMap>.None
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+                return
             }
             callback(pixelMap, width, height)
         }
         return fut
+    }
+
+    /**
+     * 解析本地图片的rawfile路径
+     * 剥离路径中的./、../相对段，按rawfile根路径解析（对齐ArkUI的$rawfile(url.substring(2))行为）
+     *
+     * @param destination 图片相对路径
+     * @return rawfile路径
+     */
+    static func resolveRawfilePath(destination: String): String {
+        let stack = ArrayList<String>()
+        for (p in destination.split("/")) {
+            if (p == "" || p == ".") {
+                continue
+            }
+            if (p == "..") {
+                if (stack.size > 0) {
+                    stack.remove(at: stack.size - 1)
+                }
+            } else {
+                stack.add(p)
+            }
+        }
+        let sb = StringBuilder()
+        for (i in 0..stack.size) {
+            if (i > 0) {
+                sb.append("/")
+            }
+            sb.append(stack[i])
+        }
+        return sb.toString()
     }
 
     /**
@@ -123,11 +155,11 @@ class MarkdownParseImageUtil {
             } finally {
                 imageSource?.Release()
                 imageSource = Option<ImageSource>.None
-                if (Thread.currentThread.hasPendingCancellation) {
-                    pixelMap?.Release()
-                    pixelMap = Option<PixelMap>.None
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+                return
             }
             callback(pixelMap, width, height)
         }
@@ -193,11 +225,11 @@ class MarkdownParseImageUtil {
             } finally {
                 imageSource?.Release()
                 imageSource = Option<ImageSource>.None
-                if (Thread.currentThread.hasPendingCancellation) {
-                    pixelMap?.Release()
-                    pixelMap = Option<PixelMap>.None
-                    return
-                }
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+                return
             }
             callback(pixelMap, width, height)
         }

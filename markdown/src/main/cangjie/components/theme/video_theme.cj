@@ -58,7 +58,7 @@ public class VideoTheme {
     @Publish
     public var videoTimeTextFontStyle: FontStyle = FontStyle.Normal // 视频时间文本字体样式
     @Publish
-    public var videoTimeTextFontWeight: FontWeight = FontWeight.W400 // 视频时间文本字体粗细
+    public var videoTimeTextFontWeight: FontWeight = FontWeight.Normal // 视频时间文本字体粗细
     @Publish
     public var videoTimeTextFontFamily: String = "HarmonyOS Sans" // 视频时间文本字体
     @Publish
@@ -104,7 +104,7 @@ public class VideoTheme {
     @Publish
     public var videoReleaseButtonTextFontStyle: FontStyle = FontStyle.Normal // 视频发布按钮文本字体样式
     @Publish
-    public var videoReleaseButtonTextFontWeight: FontWeight = FontWeight.W500 // 视频发布按钮文本字体粗细
+    public var videoReleaseButtonTextFontWeight: FontWeight = FontWeight.Medium // 视频发布按钮文本字体粗细
     @Publish
     public var videoReleaseButtonTextFontFamily: String = "HarmonyOS Sans" // 视频发布按钮文本字体
     @Publish
@@ -142,7 +142,7 @@ public class VideoTheme {
     @Publish
     public var videoDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal // 视频下载按钮文本字体样式
     @Publish
-    public var videoDownloadButtonTextFontWeight: FontWeight = FontWeight.W500 // 视频下载按钮文本字体粗细
+    public var videoDownloadButtonTextFontWeight: FontWeight = FontWeight.Medium // 视频下载按钮文本字体粗细
     @Publish
     public var videoDownloadButtonTextFontFamily: String = "HarmonyOS Sans" // 视频下载按钮文本字体
     @Publish

@@ -10,7 +10,7 @@ public class CodeBlockTheme {
     @Publish
     public var codeBlockIsCodeFormat: Bool = false // 是否格式化围栏代码块内容
     @Publish
-    public var codeBlockIsDark: ?Bool = Option<Bool>.None // 代码块是否暗色主题
+    public var codeBlockIsDark: Bool = false // 代码块是否暗色主题
     @Publish
     public var codeBlockUseTab: Bool = false // codeformat是否用制表符
     @Publish
@@ -154,7 +154,7 @@ public class CodeBlockTheme {
     @Publish
     public var codeBlockTextFontStyle: FontStyle = FontStyle.Normal // 代码块代码文本字体样式
     @Publish
-    public var codeBlockTextFontWeight: FontWeight = FontWeight.W400 // 代码块代码文本字体粗细
+    public var codeBlockTextFontWeight: FontWeight = FontWeight.Normal // 代码块代码文本字体粗细
     @Publish
     public var codeBlockTextFontFamily: String = "HarmonyOS Sans" // 代码块代码文本字体
     @Publish

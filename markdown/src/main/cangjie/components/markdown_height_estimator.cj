@@ -81,11 +81,11 @@ func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, compone
         case _: ThematicBreak =>
             return estimateDividerHeight(theme)
         case bq: BlockQuote =>
-            return estimateBlockquoteNodeHeight(bq, theme, componentWidth, blockSpacing)
+            return estimateBlockquoteNodeHeight(bq, theme, componentWidth)
         case bl: BulletList =>
-            return estimateListNodeHeight(bl, theme, componentWidth, blockSpacing, false)
+            return estimateListNodeHeight(bl, theme, componentWidth, false)
         case ol: OrderedList =>
-            return estimateListNodeHeight(ol, theme, componentWidth, blockSpacing, true)
+            return estimateListNodeHeight(ol, theme, componentWidth, true)
         case tb: TableBlock =>
             return estimateTableNodeHeight(tb, theme)
         case fb: FootnoteBlock =>
@@ -115,7 +115,7 @@ func estimateBlockNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, compone
         case _: SlideBlock =>
             return estimateBannerNodeHeight(theme)
         case _: ImageSingleBlock =>
-            return estimateImageSingleBlockNodeHeight(theme)
+            return estimateImageSingleBlockNodeHeight()
         case _: IgnoreBlockNode =>
             var h: Float64 = 0.0
             for (child in node.iterateChildren()) {
@@ -396,13 +396,11 @@ func fontStyleValue(fs: FontStyle): Int64 {
  * 实际 W700 宽约 8%），提升含加粗文本的高度估算精度。
  *
  * @param segments 文本片段列表（含粗细信息）
- * @param fontSize 字号
  * @param lineHeight 行高
  * @param componentWidth 控件宽度
- * @param letterSpacing 字符间距
  * @return 内容高度（vp）
  */
-func measureTextHeightBySegments(segments: ArrayList<TextSegment>, fontSize: Float64, lineHeight: Float64, componentWidth: Float64, letterSpacing: Float64): Float64 {
+func measureTextHeightBySegments(segments: ArrayList<TextSegment>, lineHeight: Float64, componentWidth: Float64): Float64 {
     // 无实际文本内容（空段落/空标题/空单元格）不占高度，与渲染端空 Text() 行为一致
     // 任务列表 - [ ] 空内容项的空段落会走到此分支，避免多算一个行高
     var hasText: Bool = false
@@ -564,39 +562,39 @@ func calcHeadingHeight(node: Heading, theme: MarkdownTheme, componentWidth: Floa
         case 1 =>
             let textWidth: Float64 = componentWidth - ht.heading1MarginLeft - ht.heading1MarginRight -
                 ht.heading1PaddingLeft - ht.heading1PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading1TextFontWeight, boldWeight, isLineBreak, ht.heading1TextFontSize, ht.heading1TextLineHeight, ht.heading1TextFontStyle, ht.heading1TextLetterSpacing, theme), ht.heading1TextFontSize, ht.heading1TextLineHeight, textWidth, ht.heading1TextLetterSpacing)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading1TextFontWeight, boldWeight, isLineBreak, ht.heading1TextFontSize, ht.heading1TextLineHeight, ht.heading1TextFontStyle, ht.heading1TextLetterSpacing, theme), ht.heading1TextLineHeight, textWidth)
             result = ht.heading1MarginTop + ht.heading1PaddingTop + contentHeight +
                 ht.heading1UnderlineHeight + ht.heading1UnderlineSpacing +
                 ht.heading1PaddingBottom + ht.heading1MarginBottom
         case 2 =>
             let textWidth: Float64 = componentWidth - ht.heading2MarginLeft - ht.heading2MarginRight -
                 ht.heading2PaddingLeft - ht.heading2PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading2TextFontWeight, boldWeight, isLineBreak, ht.heading2TextFontSize, ht.heading2TextLineHeight, ht.heading2TextFontStyle, ht.heading2TextLetterSpacing, theme), ht.heading2TextFontSize, ht.heading2TextLineHeight, textWidth, ht.heading2TextLetterSpacing)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading2TextFontWeight, boldWeight, isLineBreak, ht.heading2TextFontSize, ht.heading2TextLineHeight, ht.heading2TextFontStyle, ht.heading2TextLetterSpacing, theme), ht.heading2TextLineHeight, textWidth)
             result = ht.heading2MarginTop + ht.heading2PaddingTop + contentHeight +
                 ht.heading2UnderlineHeight + ht.heading2UnderlineSpacing +
                 ht.heading2PaddingBottom + ht.heading2MarginBottom
          case 3 =>
             let textWidth: Float64 = componentWidth - ht.heading3MarginLeft - ht.heading3MarginRight -
                 ht.heading3PaddingLeft - ht.heading3PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading3TextFontWeight, boldWeight, isLineBreak, ht.heading3TextFontSize, ht.heading3TextLineHeight, ht.heading3TextFontStyle, ht.heading3TextLetterSpacing, theme), ht.heading3TextFontSize, ht.heading3TextLineHeight, textWidth, ht.heading3TextLetterSpacing)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading3TextFontWeight, boldWeight, isLineBreak, ht.heading3TextFontSize, ht.heading3TextLineHeight, ht.heading3TextFontStyle, ht.heading3TextLetterSpacing, theme), ht.heading3TextLineHeight, textWidth)
             result = ht.heading3MarginTop + ht.heading3PaddingTop + contentHeight +
                 ht.heading3PaddingBottom + ht.heading3MarginBottom
         case 4 =>
             let textWidth: Float64 = componentWidth - ht.heading4MarginLeft - ht.heading4MarginRight -
                 ht.heading4PaddingLeft - ht.heading4PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading4TextFontWeight, boldWeight, isLineBreak, ht.heading4TextFontSize, ht.heading4TextLineHeight, ht.heading4TextFontStyle, ht.heading4TextLetterSpacing, theme), ht.heading4TextFontSize, ht.heading4TextLineHeight, textWidth, ht.heading4TextLetterSpacing)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading4TextFontWeight, boldWeight, isLineBreak, ht.heading4TextFontSize, ht.heading4TextLineHeight, ht.heading4TextFontStyle, ht.heading4TextLetterSpacing, theme), ht.heading4TextLineHeight, textWidth)
             result = ht.heading4MarginTop + ht.heading4PaddingTop + contentHeight +
                 ht.heading4PaddingBottom + ht.heading4MarginBottom
         case 5 =>
             let textWidth: Float64 = componentWidth - ht.heading5MarginLeft - ht.heading5MarginRight -
                 ht.heading5PaddingLeft - ht.heading5PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading5TextFontWeight, boldWeight, isLineBreak, ht.heading5TextFontSize, ht.heading5TextLineHeight, ht.heading5TextFontStyle, ht.heading5TextLetterSpacing, theme), ht.heading5TextFontSize, ht.heading5TextLineHeight, textWidth, ht.heading5TextLetterSpacing)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading5TextFontWeight, boldWeight, isLineBreak, ht.heading5TextFontSize, ht.heading5TextLineHeight, ht.heading5TextFontStyle, ht.heading5TextLetterSpacing, theme), ht.heading5TextLineHeight, textWidth)
             result = ht.heading5MarginTop + ht.heading5PaddingTop + contentHeight +
                 ht.heading5PaddingBottom + ht.heading5MarginBottom
         case 6 =>
             let textWidth: Float64 = componentWidth - ht.heading6MarginLeft - ht.heading6MarginRight -
                 ht.heading6PaddingLeft - ht.heading6PaddingRight
-            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading6TextFontWeight, boldWeight, isLineBreak, ht.heading6TextFontSize, ht.heading6TextLineHeight, ht.heading6TextFontStyle, ht.heading6TextLetterSpacing, theme), ht.heading6TextFontSize, ht.heading6TextLineHeight, textWidth, ht.heading6TextLetterSpacing)
+            let contentHeight = measureTextHeightBySegments(collectInlineSegments(node, ht.heading6TextFontWeight, boldWeight, isLineBreak, ht.heading6TextFontSize, ht.heading6TextLineHeight, ht.heading6TextFontStyle, ht.heading6TextLetterSpacing, theme), ht.heading6TextLineHeight, textWidth)
             result = ht.heading6MarginTop + ht.heading6PaddingTop + contentHeight +
                 ht.heading6PaddingBottom + ht.heading6MarginBottom
         case _ =>
@@ -635,13 +633,11 @@ public func getMarkdownComponentWidth(paddingH!: Float64 = 0.0): Float64 {
  */
 func estimateParagraphNodeHeight(p: Paragraph, theme: MarkdownTheme, componentWidth: Float64): Float64 {
     let pt: ParagraphTheme = theme.paragraphTheme
-    let fontSize: Float64 = pt.paragraphTextFontSize
     let lineHeight: Float64 = pt.paragraphTextLineHeight
-    let letterSpacing: Float64 = pt.paragraphTextLetterSpacing
     let segments = collectInlineSegments(p, pt.paragraphTextFontWeight, theme.boldTheme.boldTextFontWeight, theme.globalTheme.isLineBreak, pt.paragraphTextFontSize, pt.paragraphTextLineHeight, pt.paragraphTextFontStyle, pt.paragraphTextLetterSpacing, theme)
     let textWidth: Float64 = componentWidth - pt.paragraphMarginLeft - pt.paragraphMarginRight -
         pt.paragraphPaddingLeft - pt.paragraphPaddingRight
-    let contentHeight: Float64 = measureTextHeightBySegments(segments, fontSize, lineHeight, textWidth, letterSpacing)
+    let contentHeight: Float64 = measureTextHeightBySegments(segments, lineHeight, textWidth)
     let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
         pt.paragraphPaddingBottom + pt.paragraphMarginBottom
     return result
@@ -651,7 +647,6 @@ func estimateParagraphNodeHeightWithFootnote(p: Paragraph, theme: MarkdownTheme,
     let pt: ParagraphTheme = theme.paragraphTheme
     let fontSize: Float64 = pt.paragraphTextFontSize
     let lineHeight: Float64 = pt.paragraphTextLineHeight
-    let letterSpacing: Float64 = pt.paragraphTextLetterSpacing
     let segments = collectInlineSegments(p, pt.paragraphTextFontWeight, theme.boldTheme.boldTextFontWeight, theme.globalTheme.isLineBreak, pt.paragraphTextFontSize, pt.paragraphTextLineHeight, pt.paragraphTextFontStyle, pt.paragraphTextLetterSpacing, theme)
     let prefixed = ArrayList<TextSegment>()
     prefixed.add(TextSegment("[^${footnoteId}]: ", pt.paragraphTextFontWeight, fontSize, lineHeight, FontStyle.Normal, 0.0))
@@ -660,7 +655,7 @@ func estimateParagraphNodeHeightWithFootnote(p: Paragraph, theme: MarkdownTheme,
     }
     let textWidth: Float64 = componentWidth - pt.paragraphMarginLeft - pt.paragraphMarginRight -
         pt.paragraphPaddingLeft - pt.paragraphPaddingRight
-    let contentHeight: Float64 = measureTextHeightBySegments(prefixed, fontSize, lineHeight, textWidth, letterSpacing)
+    let contentHeight: Float64 = measureTextHeightBySegments(prefixed, lineHeight, textWidth)
     let result: Float64 = pt.paragraphMarginTop + pt.paragraphPaddingTop + contentHeight +
         pt.paragraphPaddingBottom + pt.paragraphMarginBottom
     return result
@@ -758,10 +753,9 @@ func estimateCodeBlockNodeHeight(literal: String, theme: MarkdownTheme, info: St
  * @param bq BlockQuote节点
  * @param theme MarkdownTheme
  * @param componentWidth 控件宽度
- * @param blockSpacing 块间距（外层，未使用，内部使用 blockQuoteChildSpacing）
  * @return 块高度（vp）
  */
-func estimateBlockquoteNodeHeight(bq: BlockQuote, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64): Float64 {
+func estimateBlockquoteNodeHeight(bq: BlockQuote, theme: MarkdownTheme, componentWidth: Float64): Float64 {
     let bqt: BlockQuoteTheme = theme.blockQuoteTheme
     let innerBlockSpacing: Float64 = Float64(bqt.blockQuoteChildSpacing)
     let innerWidth: Float64 = componentWidth - bqt.blockQuoteMarginLeft - bqt.blockQuoteMarginRight -
@@ -805,11 +799,10 @@ func estimateBlockquoteNodeHeight(bq: BlockQuote, theme: MarkdownTheme, componen
  * @param node 列表节点（BulletList/OrderedList）
  * @param theme MarkdownTheme
  * @param componentWidth 控件宽度
- * @param blockSpacing 块间距（未使用，列表内部使用 childSpacing/childChildSpacing）
  * @param isOrdered 是否有序列表
  * @return 块高度（vp）
  */
-func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componentWidth: Float64, blockSpacing: Float64, isOrdered: Bool): Float64 {
+func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componentWidth: Float64, isOrdered: Bool): Float64 {
     let orderedTheme: OrderedListTheme = theme.orderedListTheme
     let bulletTheme: BulletListTheme = theme.bulletListTheme
     let childSpacing: Float64 = if (isOrdered) {
@@ -822,7 +815,6 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
     } else {
         Float64(bulletTheme.bulletListChildChildSpacing)
     }
-    let paragraphLineHeight: Float64 = theme.paragraphTheme.paragraphTextLineHeight
     // 检测是否为任务列表（BulletList 子节点为 TaskListItem）
     // BulletList 子节点要么全是普通 ListItem，要么全是 TaskListItem，检查首个子节点即可
     var isTaskList: Bool = false
@@ -833,11 +825,11 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         }
     }
     // 前缀高度：无序/任务列表分别使用对应前缀高度；与内容高度取最大值
-    // 普通无序列表用符号文本行高，任务列表用复选框高度+顶部对齐边距（与渲染端 Checkbox().height + margin(top) 一致）
+    // 普通无序列表用符号文本行高，任务列表用复选框高度（与渲染端 Checkbox().height 一致，顶端对齐）
     let prefixHeight: Float64 = if (isOrdered) {
         orderedTheme.orderedListMarkerTextLineHeight
     } else if (isTaskList) {
-        bulletTheme.bulletListCheckboxHeight + listCheckboxTopMargin(theme)
+        bulletTheme.bulletListCheckboxHeight
     } else {
         bulletTheme.bulletListBulletTextLineHeight
     }
@@ -902,7 +894,7 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
                 innerHeight += childSpacing
             }
             first = false
-            let itemHeight = estimateListItemContentHeight(child, theme, effectiveContentWidth, childChildSpacing, paragraphLineHeight, prefixHeight)
+            let itemHeight = estimateListItemContentHeight(child, theme, effectiveContentWidth, childChildSpacing, prefixHeight)
             innerHeight += itemHeight
             itemIndex++
         }
@@ -926,11 +918,10 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
  * @param theme MarkdownTheme
  * @param componentWidth 控件宽度
  * @param childChildSpacing 列表项子模块上下间距
- * @param paragraphLineHeight 段落文本行高（未使用，保留以明确语义）
  * @param prefixHeight 前缀（列表符号/序号）高度
  * @return 列表项高度（vp）
  */
-func estimateListItemContentHeight(item: CommonmarkNode, theme: MarkdownTheme, componentWidth: Float64, childChildSpacing: Float64, paragraphLineHeight: Float64, prefixHeight: Float64): Float64 {
+func estimateListItemContentHeight(item: CommonmarkNode, theme: MarkdownTheme, componentWidth: Float64, childChildSpacing: Float64, prefixHeight: Float64): Float64 {
     var contentHeight: Float64 = 0.0
     let children = ArrayList<CommonmarkNode>()
     for (child in item.iterateChildren()) {
@@ -1016,7 +1007,7 @@ func estimateTableRowContentHeight(row: CommonmarkNode, tt: TableTheme, isHeader
     for (cell in row.iterateChildren()) {
         if (cell is TableCell) {
             let segments = collectInlineSegments(cell, fontWeight, boldWeight, isLineBreak, fontSize, lineHeight, fontStyle, letterSpacing, theme)
-            let textHeight: Float64 = measureTextHeightBySegments(segments, fontSize, lineHeight, cellContentWidth, letterSpacing)
+            let textHeight: Float64 = measureTextHeightBySegments(segments, lineHeight, cellContentWidth)
             let lines: Float64 = textHeight / lineHeight
             if (lines > maxLines) {
                 maxLines = lines
@@ -1324,9 +1315,8 @@ func estimateBannerNodeHeight(theme: MarkdownTheme): Float64 {
  * 渲染端 node_view.cj 中 ImageSingleBlock 标记为 "无需处理"（未创建 NodeView），
  * 因此该块不参与渲染，高度返回 0。
  *
- * @param theme MarkdownTheme
  * @return 块高度（vp）
  */
-func estimateImageSingleBlockNodeHeight(theme: MarkdownTheme): Float64 {
+func estimateImageSingleBlockNodeHeight(): Float64 {
     return 0.0
 }

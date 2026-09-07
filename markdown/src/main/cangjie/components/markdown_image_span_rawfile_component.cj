@@ -16,6 +16,8 @@ public class MarkdownSpanImageRawFileComponent {
     var rawFileLinkCallback: ?(String) -> Unit // 链接点击事件
     var rawFileLink: Bool // 是否是链接
     var rawFileLinkUrl: Option<String> // 链接URL
+    var rawFileImageWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.None // 图片加载完成后实际显示宽度回调 - 单位vp（表格列宽跟踪用）
+    var rawFileImageCellMaxWidth: ?Float64 = Option<Float64>.None // 表格单元格最大宽度 - 单位vp（表格场景传入，作为图片宽度计算基准与约束宽度）
     var rawFileImageWidth: Option<Length> // 图片宽度
     var rawFileImageHeight: Option<Length> // 图片高度
     var rawFileImageRadius: Option<Length> // 图片圆角
@@ -48,6 +50,12 @@ public class MarkdownSpanImageRawFileComponent {
 
     protected override func aboutToAppear(): Unit {
         rawFileComponentImageWidth = vp2px(rawFileComponentWidth.vp)().value // 图片最大宽度单位转换
+        // 表格单元格场景：以单元格最大宽度为图片宽度计算基准（对齐ArkUI tableMaxCellWidth优先逻辑）
+        if (let Some(cellMaxWidth) <- rawFileImageCellMaxWidth) {
+            if (cellMaxWidth > 0.0) {
+                rawFileComponentImageWidth = vp2px(cellMaxWidth.vp)().value
+            }
+        }
         // 图片圆角
         let radius = imageSpanBorderRadius(rawFileImageRadius, rawFileMarkdownTheme.imageTheme.imageRadiusTopLeft, rawFileMarkdownTheme.imageTheme.imageRadiusTopRight, rawFileMarkdownTheme.imageTheme.imageRadiusBottomLeft, rawFileMarkdownTheme.imageTheme.imageRadiusBottomRight)
         rawFileRadiusTopLeft =  radius[0] // 图片左上圆角
@@ -92,13 +100,13 @@ public class MarkdownSpanImageRawFileComponent {
                     .height(rawFileHeight.px)
                     .objectFit(rawFileMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: 100.percent)
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(rawFileImageCellMaxWidth))
                     .onClick {
                         evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
                     }
             }
-            if (rawFileMarkdownTheme.imageTheme.imagePlaceholder.isSome() && rawFileImageType != 1) {
-                // 图片占位图
+            if (rawFileMarkdownTheme.imageTheme.imagePlaceholder.isSome() && rawFileImageType != 1 && !isInTableCell()) {
+                // 图片占位图（表格单元格场景不渲染：对齐ArkUI图片加载前宽度为0、占位图不撑宽单元格的语义）
                 imageSpanPlaceholderComponent(
                     rawFileMarkdownTheme.imageTheme.imagePlaceholder(),
                     rawFileMarkdownTheme.imageTheme.imageMarginTop,
@@ -120,6 +128,16 @@ public class MarkdownSpanImageRawFileComponent {
     }
 
     /**
+     * 是否处于表格单元格场景（单元格最大宽度已传入且有效）
+     */
+    func isInTableCell(): Bool {
+        if (let Some(cellMaxWidth) <- rawFileImageCellMaxWidth) {
+            return cellMaxWidth > 0.0
+        }
+        return false
+    }
+
+    /**
      * 本地图片加载
      */
     func imageRawFilePixelMap() {
@@ -127,20 +145,36 @@ public class MarkdownSpanImageRawFileComponent {
             rawFileImagePixelMap, imageResWidth, imageResHeight => launch {
                 if (rawFileImagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
                     this.rawFileImagePixelMap = rawFileImagePixelMap
-                    let res = imageWidthAndHeight(
-                        rawFileComponentImageWidth,
-                        imageResWidth(),
-                        imageResHeight(),
-                        rawFileThemeWidth,
-                        rawFileThemeHeight,
-                        rawFileMarkdownTheme.imageTheme.imageMaxWidth,
-                        rawFileMarkdownTheme.imageTheme.imageMaxHeight,
-                        rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth,
-                        rawFileMarkdownTheme.imageTheme.imageMaximumWidth
-                    )
-                    rawFileWidth = res[0]
-                    rawFileHeight = res[1]
-                    rawFileImageType = 1
+                    // 对齐ArkUI：实时取宽度基准（单元格最大宽度 → 实时控件宽度 → 兜底图片自然宽度）
+                    var rawFileBaseWidth = 0.0
+                    if (let Some(cellMaxWidth) <- rawFileImageCellMaxWidth) {
+                        if (cellMaxWidth > 0.0) {
+                            rawFileBaseWidth = vp2px(cellMaxWidth.vp)().value
+                        }
+                    }
+                    if (rawFileBaseWidth <= 0.0 && rawFileComponentWidth > 0.0) {
+                        rawFileBaseWidth = vp2px(rawFileComponentWidth.vp)().value
+                    }
+                    if (rawFileBaseWidth <= 0.0) {
+                        rawFileBaseWidth = imageResWidth()
+                    }
+                    if (rawFileBaseWidth > 0.0) {
+                        let res = imageWidthAndHeight(
+                            rawFileBaseWidth,
+                            imageResWidth(),
+                            imageResHeight(),
+                            rawFileThemeWidth,
+                            rawFileThemeHeight,
+                            rawFileMarkdownTheme.imageTheme.imageMaxWidth,
+                            rawFileMarkdownTheme.imageTheme.imageMaxHeight,
+                            rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                            rawFileMarkdownTheme.imageTheme.imageMaximumWidth
+                        )
+                        rawFileWidth = res[0]
+                        rawFileHeight = res[1]
+                        rawFileImageType = 1
+                        notifyImageWidth()
+                    }
                 } else {
                     rawFileImageType = 2
                 }
@@ -152,5 +186,16 @@ public class MarkdownSpanImageRawFileComponent {
             rawFileMarkdownTheme.globalTheme.stageContext,
             callback
         )
+    }
+
+    /**
+     * 图片加载完成后，回调实际显示宽度（vp），供表格列宽跟踪使用
+     */
+    func notifyImageWidth(): Unit {
+        if (rawFileWidth > 0.0) {
+            if (let Some(cb) <- rawFileImageWidthCallback) {
+                cb(px2vp(rawFileWidth.px).getOrThrow().value)
+            }
+        }
     }
 }

@@ -109,13 +109,14 @@ public class MarkdownImageCallbackRawFileComponent {
                 if (rawFileCallbackReplaceImageType == 1) {
                     // 替换之后的图片
                     Image(rawFileCallbackReplaceImagePixelMap())
-                        .borderRadius(topLeft: rawFileCallbackRadiusTopLeft, topRight: rawFileCallbackRadiusTopRight, bottomLeft: rawFileCallbackRadiusBottomRight, bottomRight: rawFileCallbackRadiusBottomLeft)
+                        .borderRadius(topLeft: rawFileCallbackRadiusTopLeft, topRight: rawFileCallbackRadiusTopRight, bottomLeft: rawFileCallbackRadiusBottomLeft, bottomRight: rawFileCallbackRadiusBottomRight)
                         .borderWidth(rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle)
                         .width(rawFileCallbackReplaceWidth().px)
                         .height(rawFileCallbackReplaceHeight().px)
                         .objectFit(rawFileCallbackMarkdownTheme.imageTheme.imageFitType)
+                        .autoResize(rawFileCallbackMarkdownTheme.imageTheme.imageAutoResize)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
                             evt => imageSpanOnClick(rawFileCallbackLink, rawFileCallbackImageCallback, rawFileCallbackLinkCallback, rawFileCallbackLinkUrl, rawFileCallbackDestination)
@@ -124,13 +125,14 @@ public class MarkdownImageCallbackRawFileComponent {
                     if (rawFileCallbackImageType == 1) {
                         // 加载图片
                         Image(rawFileCallbackImagePixelMap())
-                            .borderRadius(topLeft: rawFileCallbackRadiusTopLeft, topRight: rawFileCallbackRadiusTopRight, bottomLeft: rawFileCallbackRadiusBottomRight, bottomRight: rawFileCallbackRadiusBottomLeft)
+                            .borderRadius(topLeft: rawFileCallbackRadiusTopLeft, topRight: rawFileCallbackRadiusTopRight, bottomLeft: rawFileCallbackRadiusBottomLeft, bottomRight: rawFileCallbackRadiusBottomRight)
                             .borderWidth(rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                             .borderColor(rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor)
                             .borderStyle(rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle)
                             .width(rawFileCallbackWidth.px)
                             .height(rawFileCallbackHeight.px)
                             .objectFit(rawFileCallbackMarkdownTheme.imageTheme.imageFitType)
+                            .autoResize(rawFileCallbackMarkdownTheme.imageTheme.imageAutoResize)
                             .constraintSize(maxWidth: 100.percent)
                             .onClick {
                                 evt => imageSpanOnClick(rawFileCallbackLink, rawFileCallbackImageCallback, rawFileCallbackLinkCallback, rawFileCallbackLinkUrl, rawFileCallbackDestination)
@@ -154,6 +156,8 @@ public class MarkdownImageCallbackRawFileComponent {
                 }
             }
             .alignItems(rawFileCallbackHorizontalAlign)
+            // 边距挂在图片容器上（对齐ArkUI：下载按钮在图片下边距之外）
+            .margin(top: rawFileCallbackMarkdownTheme.imageTheme.imageMarginTop, right: rawFileCallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileCallbackMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileCallbackMarkdownTheme.imageTheme.imageMarginLeft)
             if (rawFileCallbackMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: rawFileCallbackMarkdownTheme,
@@ -162,7 +166,6 @@ public class MarkdownImageCallbackRawFileComponent {
                 )
             }
         }
-        .margin(top: rawFileCallbackMarkdownTheme.imageTheme.imageMarginTop, right: rawFileCallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileCallbackMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileCallbackMarkdownTheme.imageTheme.imageMarginLeft)
     }
 
     func imageCallbackPixelmap() {
