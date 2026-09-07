@@ -177,11 +177,14 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                 if (imagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
                     this.rawFileCallbackReplaceImagePixelMap = imagePixelMap
                     // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
-                    var rawFileCallbackBaseWidth = rawFileCallbackComponentImageWidth
+                    var rawFileCallbackBaseWidth = 0.0
                     if (let Some(cellMaxWidth) <- rawFileCallbackImageCellMaxWidth) {
                         if (cellMaxWidth > 0.0) {
                             rawFileCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
                         }
+                    }
+                    if (rawFileCallbackBaseWidth <= 0.0 && rawFileCallbackComponentWidth > 0.0) {
+                        rawFileCallbackBaseWidth = vp2px(rawFileCallbackComponentWidth.vp)().value
                     }
                     if (rawFileCallbackBaseWidth <= 0.0) {
                         rawFileCallbackBaseWidth = imageResWidth()
@@ -226,11 +229,14 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                 if (rawFileCallbackImagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
                     this.rawFileCallbackImagePixelMap = rawFileCallbackImagePixelMap
                     // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
-                    var rawFileCallbackBaseWidth = rawFileCallbackComponentImageWidth
+                    var rawFileCallbackBaseWidth = 0.0
                     if (let Some(cellMaxWidth) <- rawFileCallbackImageCellMaxWidth) {
                         if (cellMaxWidth > 0.0) {
                             rawFileCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
                         }
+                    }
+                    if (rawFileCallbackBaseWidth <= 0.0 && rawFileCallbackComponentWidth > 0.0) {
+                        rawFileCallbackBaseWidth = vp2px(rawFileCallbackComponentWidth.vp)().value
                     }
                     if (rawFileCallbackBaseWidth <= 0.0) {
                         rawFileCallbackBaseWidth = imageResWidth()

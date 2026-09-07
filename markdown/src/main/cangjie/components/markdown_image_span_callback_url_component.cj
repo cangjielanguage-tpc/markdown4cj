@@ -161,11 +161,14 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .onComplete {
                         imageLoadResult =>
                             // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
-                            var urlCallbackBaseWidth = urlCallbackComponentImageWidth
+                            var urlCallbackBaseWidth = 0.0
                             if (let Some(cellMaxWidth) <- urlCallbackImageCellMaxWidth) {
                                 if (cellMaxWidth > 0.0) {
                                     urlCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
                                 }
+                            }
+                            if (urlCallbackBaseWidth <= 0.0 && urlCallbackComponentWidth > 0.0) {
+                                urlCallbackBaseWidth = vp2px(urlCallbackComponentWidth.vp)().value
                             }
                             if (urlCallbackBaseWidth <= 0.0) {
                                 urlCallbackBaseWidth = imageLoadResult.width
@@ -247,11 +250,14 @@ public class MarkdownSpanImageCallbackUrlComponent {
                     .onComplete {
                         imageLoadResult =>
                             // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
-                            var urlCallbackBaseWidth = urlCallbackComponentImageWidth
+                            var urlCallbackBaseWidth = 0.0
                             if (let Some(cellMaxWidth) <- urlCallbackImageCellMaxWidth) {
                                 if (cellMaxWidth > 0.0) {
                                     urlCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
                                 }
+                            }
+                            if (urlCallbackBaseWidth <= 0.0 && urlCallbackComponentWidth > 0.0) {
+                                urlCallbackBaseWidth = vp2px(urlCallbackComponentWidth.vp)().value
                             }
                             if (urlCallbackBaseWidth <= 0.0) {
                                 urlCallbackBaseWidth = imageLoadResult.width
@@ -289,11 +295,14 @@ public class MarkdownSpanImageCallbackUrlComponent {
                 if (imagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
                     this.urlCallbackReplaceImagePixelMap = imagePixelMap
                     // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
-                    var urlCallbackBaseWidth = urlCallbackComponentImageWidth
+                    var urlCallbackBaseWidth = 0.0
                     if (let Some(cellMaxWidth) <- urlCallbackImageCellMaxWidth) {
                         if (cellMaxWidth > 0.0) {
                             urlCallbackBaseWidth = vp2px(cellMaxWidth.vp)().value
                         }
+                    }
+                    if (urlCallbackBaseWidth <= 0.0 && urlCallbackComponentWidth > 0.0) {
+                        urlCallbackBaseWidth = vp2px(urlCallbackComponentWidth.vp)().value
                     }
                     if (urlCallbackBaseWidth <= 0.0) {
                         urlCallbackBaseWidth = imageResWidth()

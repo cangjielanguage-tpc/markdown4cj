@@ -122,12 +122,15 @@ public class MarkdownSpanImageUrlComponent {
                 }
                 .onComplete {
                     imageLoadResult =>
-                        // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
-                        var urlBaseWidth = urlComponentImageWidth
+                        // 对齐ArkUI：实时取宽度基准（单元格最大宽度 → 实时控件宽度 → 兜底图片自然宽度）
+                        var urlBaseWidth = 0.0
                         if (let Some(cellMaxWidth) <- urlImageCellMaxWidth) {
                             if (cellMaxWidth > 0.0) {
                                 urlBaseWidth = vp2px(cellMaxWidth.vp)().value
                             }
+                        }
+                        if (urlBaseWidth <= 0.0 && urlComponentWidth > 0.0) {
+                            urlBaseWidth = vp2px(urlComponentWidth.vp)().value
                         }
                         if (urlBaseWidth <= 0.0) {
                             urlBaseWidth = imageLoadResult.width
@@ -180,12 +183,15 @@ public class MarkdownSpanImageUrlComponent {
                 }
                 .onComplete {
                     imageLoadResult =>
-                        // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
-                        var urlBaseWidth = urlComponentImageWidth
+                        // 对齐ArkUI：实时取宽度基准（单元格最大宽度 → 实时控件宽度 → 兜底图片自然宽度）
+                        var urlBaseWidth = 0.0
                         if (let Some(cellMaxWidth) <- urlImageCellMaxWidth) {
                             if (cellMaxWidth > 0.0) {
                                 urlBaseWidth = vp2px(cellMaxWidth.vp)().value
                             }
+                        }
+                        if (urlBaseWidth <= 0.0 && urlComponentWidth > 0.0) {
+                            urlBaseWidth = vp2px(urlComponentWidth.vp)().value
                         }
                         if (urlBaseWidth <= 0.0) {
                             urlBaseWidth = imageLoadResult.width

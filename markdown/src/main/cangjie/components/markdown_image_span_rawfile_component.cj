@@ -145,12 +145,15 @@ public class MarkdownSpanImageRawFileComponent {
             rawFileImagePixelMap, imageResWidth, imageResHeight => launch {
                 if (rawFileImagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
                     this.rawFileImagePixelMap = rawFileImagePixelMap
-                    // 对齐ArkUI：优先单元格最大宽度，其次控件宽度，兜底图片自然宽度
-                    var rawFileBaseWidth = rawFileComponentImageWidth
+                    // 对齐ArkUI：实时取宽度基准（单元格最大宽度 → 实时控件宽度 → 兜底图片自然宽度）
+                    var rawFileBaseWidth = 0.0
                     if (let Some(cellMaxWidth) <- rawFileImageCellMaxWidth) {
                         if (cellMaxWidth > 0.0) {
                             rawFileBaseWidth = vp2px(cellMaxWidth.vp)().value
                         }
+                    }
+                    if (rawFileBaseWidth <= 0.0 && rawFileComponentWidth > 0.0) {
+                        rawFileBaseWidth = vp2px(rawFileComponentWidth.vp)().value
                     }
                     if (rawFileBaseWidth <= 0.0) {
                         rawFileBaseWidth = imageResWidth()
