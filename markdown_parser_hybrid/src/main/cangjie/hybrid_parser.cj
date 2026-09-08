@@ -1,7 +1,5 @@
 package markdown_parser_hybrid
 
-import ohos.ark_interop_macro.Interop
-
 public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
     static init() {
         JSModule.registerClass("HybridParser") {

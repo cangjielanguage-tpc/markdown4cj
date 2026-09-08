@@ -1,12 +1,12 @@
 {
   "name": "@cangjie-tpc/markdown_parser_hybrid",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "markdown parser hybrid.",
   "main": "Index.ets",
   "author": "cangjie-tpc",
   "license": "Apache-2.0",
-  "repository": "https://gitcode.com/Cangjie-TPC/markdown4cj.git",
-  "homepage": "https://gitcode.com/Cangjie-TPC/markdown4cj",
+  "repository": "https://gitcode.com/Cangjie-TPC/markdown4cj/tree/markdown_parser_hybrid_cangjie-plugin-6.1.1_compatibility",
+  "homepage": "https://gitcode.com/Cangjie-TPC",
   "keywords": [
     "markdown",
     "commonmark",
