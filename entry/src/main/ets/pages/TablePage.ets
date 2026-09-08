@@ -259,6 +259,58 @@ struct TablePage {
   tableContentTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 表格内容文本字符间距
   tableContentTextLetterSpacing: number = 0
+  // 表格首行是否吸顶列表
+  tableStickyHeaderList: Array<boolean> = booleanListGeneralData
+  @State // 表格首行是否吸顶
+  tableStickyHeader: boolean = false
+  // 表格头是否显示列表
+  tableHeadIsShowList: Array<boolean> = booleanListGeneralData
+  @State // 表格头是否显示
+  tableHeadIsShow: boolean = false
+  // 表格头标题文本列表
+  tableHeadTitleTextList: Array<string> = ['复制表格', '拷贝数据', '']
+  @State // 表格头标题文本
+  tableHeadTitleText: string = ''
+  // 表格头标题文本左外边距列表
+  tableHeadTitleTextMarginLeftList: Array<number> = marginListGeneralData
+  @State // 表格头标题文本左外边距
+  tableHeadTitleTextMarginLeft: number = 0
+  // 表格头复制图标宽度列表
+  tableHeadCopyIconWidthList: Array<number> = widthOrHeightListGeneralData
+  @State // 表格头复制图标宽度
+  tableHeadCopyIconWidth: number = 24
+  // 表格头复制图标高度列表
+  tableHeadCopyIconHeightList: Array<number> = widthOrHeightListGeneralData
+  @State // 表格头复制图标高度
+  tableHeadCopyIconHeight: number = 24
+  // 表格头复制图标右外边距列表
+  tableHeadCopyIconMarginRightList: Array<number> = marginListGeneralData
+  @State // 表格头复制图标右外边距
+  tableHeadCopyIconMarginRight: number = 0
+  // 表格头标题文本颜色列表
+  tableHeadTitleTextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State // 表格头标题文本颜色
+  tableHeadTitleTextFontColor: number | undefined = undefined
+  // 表格头标题文本尺寸列表
+  tableHeadTitleTextFontSizeList: Array<number | undefined> = [undefined, ...textSizeListGeneralData]
+  @State // 表格头标题文本尺寸
+  tableHeadTitleTextFontSize: number | undefined = undefined
+  // 表格头标题文本字体样式列表
+  tableHeadTitleTextFontStyleList: Array<FontStyle | undefined> = [undefined, ...fontStyleListGeneraData]
+  @State // 表格头标题文本字体样式
+  tableHeadTitleTextFontStyle: FontStyle | undefined = undefined
+  // 表格头标题文本字体粗细列表
+  tableHeadTitleTextFontWeightList: Array<FontWeight | undefined> = [undefined, ...fontWeightListGeneraData]
+  @State // 表格头标题文本字体粗细
+  tableHeadTitleTextFontWeight: FontWeight | undefined = undefined
+  // 表格头标题文本字体列表
+  tableHeadTitleTextFontFamilyList: Array<string | undefined> = [undefined, ...textTypefaceListGeneralData]
+  @State // 表格头标题文本字体
+  tableHeadTitleTextFontFamily: string | undefined = undefined
+  // 表格头标题文本行高列表
+  tableHeadTitleTextLineHeightList: Array<number | undefined> = [undefined, ...textLineHeightListGeneralData]
+  @State // 表格头标题文本行高
+  tableHeadTitleTextLineHeight: number | undefined = undefined
   @State // 配置数据内容
   tableData: TableData = new TableData()
   heightMD: number = 30 * 1 // 乘以行数
@@ -268,6 +320,7 @@ struct TablePage {
   @State isExpanded4: boolean = false // 控制展开/折叠状态 - 滚动条和其他设置
   @State isExpanded5: boolean = false // 控制展开/折叠状态 - 标题文本设置
   @State isExpanded6: boolean = false // 控制展开/折叠状态 - 内容文本设置
+  @State isExpanded7: boolean = false // 控制展开/折叠状态 - 表格头和吸顶设置
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -365,6 +418,20 @@ struct TablePage {
                   this.tableData.tableContentTextFontFamily = this.tableContentTextFontFamily
                   this.tableData.tableContentTextLineHeight = this.tableContentTextLineHeight
                   this.tableData.tableContentTextLetterSpacing = this.tableContentTextLetterSpacing
+                  this.tableData.tableStickyHeader = this.tableStickyHeader
+                  this.tableData.tableHeadIsShow = this.tableHeadIsShow
+                  this.tableData.tableHeadTitleText = this.tableHeadTitleText
+                  this.tableData.tableHeadTitleTextMarginLeft = this.tableHeadTitleTextMarginLeft
+                  this.tableData.tableHeadCopyIcon = $r('app.media.startIcon')
+                  this.tableData.tableHeadCopyIconWidth = this.tableHeadCopyIconWidth
+                  this.tableData.tableHeadCopyIconHeight = this.tableHeadCopyIconHeight
+                  this.tableData.tableHeadCopyIconMarginRight = this.tableHeadCopyIconMarginRight
+                  this.tableData.tableHeadTitleTextFontColor = this.tableHeadTitleTextFontColor
+                  this.tableData.tableHeadTitleTextFontSize = this.tableHeadTitleTextFontSize
+                  this.tableData.tableHeadTitleTextFontStyle = this.tableHeadTitleTextFontStyle
+                  this.tableData.tableHeadTitleTextFontWeight = this.tableHeadTitleTextFontWeight
+                  this.tableData.tableHeadTitleTextFontFamily = this.tableHeadTitleTextFontFamily
+                  this.tableData.tableHeadTitleTextLineHeight = this.tableHeadTitleTextLineHeight
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/TableDetailsPage", params: this.tableData })
                 })
@@ -896,6 +963,120 @@ struct TablePage {
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.tableContentTextLetterSpacingList,
                   allData: this.tableContentTextLetterSpacing
+                })
+              }
+              .width('100%')
+              .padding({ bottom: 5, left: 5, right: 5 })
+              .margin({ bottom: 5, left: 5, right: 5 })
+            }
+          }
+          .width('100%')
+          .margin(5)
+          .borderRadius(5)
+          .backgroundColor(0xFF317AFF)
+
+          // 表格头和吸顶设置
+          Column() {
+            Row() {
+              Text("表格头和吸顶设置")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .fontWeight(FontWeight.Bold)
+                .layoutWeight(1)
+              Text(this.isExpanded7 ? "▲" : "▼")
+                .fontSize(16)
+                .fontColor(0xFFF5F5F5)
+                .padding({ right: 20 })
+                .onClick(() => {
+                  this.isExpanded7 = !this.isExpanded7
+                })
+            }
+            .width('100%')
+            .padding(5)
+            .margin(5)
+            .onClick(() => {
+              this.isExpanded7 = !this.isExpanded7
+            })
+
+            if (this.isExpanded7) {
+              Column() {
+                BaseTabComponent({
+                  titleStr: "表格首行是否吸顶 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.tableStickyHeaderList,
+                  allData: this.tableStickyHeader
+                })
+                BaseTabComponent({
+                  titleStr: "表格头是否显示 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.tableHeadIsShowList,
+                  allData: this.tableHeadIsShow
+                })
+                BaseTabComponent({
+                  titleStr: "表格头标题文本 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.tableHeadTitleTextList,
+                  allData: this.tableHeadTitleText
+                })
+                BaseTabComponent({
+                  titleStr: "表格头标题文本左外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.tableHeadTitleTextMarginLeftList,
+                  allData: this.tableHeadTitleTextMarginLeft
+                })
+                BaseTabComponent({
+                  titleStr: "表格头复制图标宽度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.tableHeadCopyIconWidthList,
+                  allData: this.tableHeadCopyIconWidth
+                })
+                BaseTabComponent({
+                  titleStr: "表格头复制图标高度 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.tableHeadCopyIconHeightList,
+                  allData: this.tableHeadCopyIconHeight
+                })
+                BaseTabComponent({
+                  titleStr: "表格头复制图标右外边距 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.tableHeadCopyIconMarginRightList,
+                  allData: this.tableHeadCopyIconMarginRight
+                })
+                BaseTabComponent({
+                  titleStr: "表格头标题文本颜色 - ",
+                  typeEnum: TypeEnum.IS_COLOR,
+                  allListData: this.tableHeadTitleTextFontColorList,
+                  allData: this.tableHeadTitleTextFontColor
+                })
+                BaseTabComponent({
+                  titleStr: "表格头标题文本尺寸 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.tableHeadTitleTextFontSizeList,
+                  allData: this.tableHeadTitleTextFontSize
+                })
+                BaseTabComponent({
+                  titleStr: "表格头标题文本字体样式 - ",
+                  typeEnum: TypeEnum.IS_FONT_STYLE,
+                  allListData: this.tableHeadTitleTextFontStyleList,
+                  allData: this.tableHeadTitleTextFontStyle
+                })
+                BaseTabComponent({
+                  titleStr: "表格头标题文本字体粗细 - ",
+                  typeEnum: TypeEnum.IS_FONT_WEIGHT,
+                  allListData: this.tableHeadTitleTextFontWeightList,
+                  allData: this.tableHeadTitleTextFontWeight
+                })
+                BaseTabComponent({
+                  titleStr: "表格头标题文本字体 - ",
+                  typeEnum: TypeEnum.IS_STRING,
+                  allListData: this.tableHeadTitleTextFontFamilyList,
+                  allData: this.tableHeadTitleTextFontFamily
+                })
+                BaseTabComponent({
+                  titleStr: "表格头标题文本行高 - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.tableHeadTitleTextLineHeightList,
+                  allData: this.tableHeadTitleTextLineHeight
                 })
               }
               .width('100%')

@@ -42,6 +42,20 @@ export class TableData extends BaseMDData {
   _tableContentTextFontFamily: string = 'HarmonyOS Sans' // 表格内容文本字体
   _tableContentTextLineHeight: number = 22 // 表格内容文本行高
   _tableContentTextLetterSpacing: number = 0 // 表格内容文本字符间距
+  _tableStickyHeader: boolean = false // 表格首行是否吸顶
+  _tableHeadIsShow: boolean = false // 表格头是否显示
+  _tableHeadTitleText: string = '' // 表格头标题文本
+  _tableHeadTitleTextMarginLeft: number = 0 // 表格头标题文本左外边距
+  _tableHeadCopyIcon: Resource | undefined = undefined // 表格头复制图标
+  _tableHeadCopyIconWidth: number = 24 // 表格头复制图标宽度
+  _tableHeadCopyIconHeight: number = 24 // 表格头复制图标高度
+  _tableHeadCopyIconMarginRight: number = 0 // 表格头复制图标右外边距
+  _tableHeadTitleTextFontColor: number | undefined = undefined // 表格头标题文本颜色
+  _tableHeadTitleTextFontSize: number | undefined = undefined // 表格头标题文本尺寸
+  _tableHeadTitleTextFontStyle: FontStyle | undefined = undefined // 表格头标题文本字体样式
+  _tableHeadTitleTextFontWeight: FontWeight | undefined = undefined // 表格头标题文本字体粗细
+  _tableHeadTitleTextFontFamily: string | undefined = undefined // 表格头标题文本字体
+  _tableHeadTitleTextLineHeight: number | undefined = undefined // 表格头标题文本行高
 
   public set tableTitleBackgroundColor(value: number | undefined) {
     this._tableTitleBackgroundColor = value
@@ -205,6 +219,62 @@ export class TableData extends BaseMDData {
 
   public set tableContentTextLetterSpacing(value: number) {
     this._tableContentTextLetterSpacing = value
+  }
+
+  public set tableStickyHeader(value: boolean) {
+    this._tableStickyHeader = value
+  }
+
+  public set tableHeadIsShow(value: boolean) {
+    this._tableHeadIsShow = value
+  }
+
+  public set tableHeadTitleText(value: string) {
+    this._tableHeadTitleText = value
+  }
+
+  public set tableHeadTitleTextMarginLeft(value: number) {
+    this._tableHeadTitleTextMarginLeft = value
+  }
+
+  public set tableHeadCopyIcon(value: Resource | undefined) {
+    this._tableHeadCopyIcon = value
+  }
+
+  public set tableHeadCopyIconWidth(value: number) {
+    this._tableHeadCopyIconWidth = value
+  }
+
+  public set tableHeadCopyIconHeight(value: number) {
+    this._tableHeadCopyIconHeight = value
+  }
+
+  public set tableHeadCopyIconMarginRight(value: number) {
+    this._tableHeadCopyIconMarginRight = value
+  }
+
+  public set tableHeadTitleTextFontColor(value: number | undefined) {
+    this._tableHeadTitleTextFontColor = value
+  }
+
+  public set tableHeadTitleTextFontSize(value: number | undefined) {
+    this._tableHeadTitleTextFontSize = value
+  }
+
+  public set tableHeadTitleTextFontStyle(value: FontStyle | undefined) {
+    this._tableHeadTitleTextFontStyle = value
+  }
+
+  public set tableHeadTitleTextFontWeight(value: FontWeight | undefined) {
+    this._tableHeadTitleTextFontWeight = value
+  }
+
+  public set tableHeadTitleTextFontFamily(value: string | undefined) {
+    this._tableHeadTitleTextFontFamily = value
+  }
+
+  public set tableHeadTitleTextLineHeight(value: number | undefined) {
+    this._tableHeadTitleTextLineHeight = value
   }
 
   constructor() {

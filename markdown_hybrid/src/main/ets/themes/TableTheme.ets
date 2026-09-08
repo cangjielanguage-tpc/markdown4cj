@@ -210,6 +210,76 @@ export class TableTheme {
   private tableContentTextLetterSpacing?: number = undefined
 
   /**
+   * 表格标题行是否吸顶
+   */
+  private tableStickyHeader?: boolean = undefined
+
+  /**
+   * 表格头复制按钮是否显示
+   */
+  private tableHeadIsShow?: boolean = undefined
+
+  /**
+   * 表格头标题文字
+   */
+  private tableHeadTitleText?: string = undefined
+
+  /**
+   * 表格头标题文本字体族
+   */
+  private tableHeadTitleTextFontFamily?: string = undefined
+
+  /**
+   * 表格头标题文本字体大小
+   */
+  private tableHeadTitleTextFontSize?: number = undefined
+
+  /**
+   * 表格头标题文本字体粗细
+   */
+  private tableHeadTitleTextFontWeight?: FontWeight = undefined
+
+  /**
+   * 表格头标题文本字体样式
+   */
+  private tableHeadTitleTextFontStyle?: FontStyle = undefined
+
+  /**
+   * 表格头标题文本字体颜色
+   */
+  private tableHeadTitleTextFontColor?: number = undefined
+
+  /**
+   * 表格头标题文本行高
+   */
+  private tableHeadTitleTextLineHeight?: number = undefined
+
+  /**
+   * 表格头标题左外边距
+   */
+  private tableHeadTitleTextMarginLeft?: number = undefined
+
+  /**
+   * 表格头复制图标
+   */
+  private tableHeadCopyIcon?: Resource = undefined
+
+  /**
+   * 表格头复制图标宽度
+   */
+  private tableHeadCopyIconWidth?: number = undefined
+
+  /**
+   * 表格头复制图标高度
+   */
+  private tableHeadCopyIconHeight?: number = undefined
+
+  /**
+   * 表格头复制图标右外边距
+   */
+  private tableHeadCopyIconMarginRight?: number = undefined
+
+  /**
    * 设置外边距
    *
    * @param options MarkdownMarginOptions | number 类型
@@ -946,5 +1016,271 @@ export class TableTheme {
    */
   getTableContentTextLetterSpacing(): number | undefined {
     return this.tableContentTextLetterSpacing
+  }
+
+  /**
+   * 设置表格标题行是否吸顶
+   *
+   * @param enable 是否吸顶
+   */
+  setTableStickyHeader(enable: boolean): TableTheme {
+    this.tableStickyHeader = enable
+    return this
+  }
+
+  /**
+   * 获取表格标题行是否吸顶
+   *
+   * @returns 是否吸顶
+   */
+  getTableStickyHeader(): boolean | undefined {
+    return this.tableStickyHeader
+  }
+
+  /**
+   * 设置表格头复制按钮是否显示
+   *
+   * @param enable 是否显示
+   */
+  setTableHeadIsShow(enable: boolean): TableTheme {
+    this.tableHeadIsShow = enable
+    return this
+  }
+
+  /**
+   * 获取表格头复制按钮是否显示
+   *
+   * @returns 是否显示
+   */
+  getTableHeadIsShow(): boolean | undefined {
+    return this.tableHeadIsShow
+  }
+
+  /**
+   * 设置表格头标题文字
+   *
+   * @param text 标题文字
+   */
+  setTableHeadTitleText(text: string): TableTheme {
+    this.tableHeadTitleText = text
+    return this
+  }
+
+  /**
+   * 获取表格头标题文字
+   *
+   * @returns 标题文字
+   */
+  getTableHeadTitleText(): string | undefined {
+    return this.tableHeadTitleText
+  }
+
+  /**
+   * 设置表格头标题文本字体族
+   *
+   * @param family 字体族
+   */
+  setTableHeadTitleTextFontFamily(family: string): TableTheme {
+    this.tableHeadTitleTextFontFamily = family
+    return this
+  }
+
+  /**
+   * 获取表格头标题文本字体族
+   *
+   * @returns 字体族
+   */
+  getTableHeadTitleTextFontFamily(): string | undefined {
+    return this.tableHeadTitleTextFontFamily
+  }
+
+  /**
+   * 设置表格头标题文本字体大小
+   *
+   * @param size 字体大小
+   */
+  setTableHeadTitleTextFontSize(size: number): TableTheme {
+    this.tableHeadTitleTextFontSize = size
+    return this
+  }
+
+  /**
+   * 获取表格头标题文本字体大小
+   *
+   * @returns 字体大小
+   */
+  getTableHeadTitleTextFontSize(): number | undefined {
+    return this.tableHeadTitleTextFontSize
+  }
+
+  /**
+   * 设置表格头标题文本字体粗细
+   *
+   * @param weight 字体粗细
+   */
+  setTableHeadTitleTextFontWeight(weight: FontWeight): TableTheme {
+    this.tableHeadTitleTextFontWeight = weight
+    return this
+  }
+
+  /**
+   * 获取表格头标题文本字体粗细
+   *
+   * @returns 字体粗细
+   */
+  getTableHeadTitleTextFontWeight(): FontWeight | undefined {
+    return this.tableHeadTitleTextFontWeight
+  }
+
+  /**
+   * 设置表格头标题文本字体样式
+   *
+   * @param style 字体样式
+   */
+  setTableHeadTitleTextFontStyle(style: FontStyle): TableTheme {
+    this.tableHeadTitleTextFontStyle = style
+    return this
+  }
+
+  /**
+   * 获取表格头标题文本字体样式
+   *
+   * @returns 字体样式
+   */
+  getTableHeadTitleTextFontStyle(): FontStyle | undefined {
+    return this.tableHeadTitleTextFontStyle
+  }
+
+  /**
+   * 设置表格头标题文本字体颜色
+   *
+   * @param color 颜色
+   */
+  setTableHeadTitleTextFontColor(color: number): TableTheme {
+    this.tableHeadTitleTextFontColor = color
+    return this
+  }
+
+  /**
+   * 获取表格头标题文本字体颜色
+   *
+   * @returns 颜色
+   */
+  getTableHeadTitleTextFontColor(): number | undefined {
+    return this.tableHeadTitleTextFontColor
+  }
+
+  /**
+   * 设置表格头标题文本行高
+   *
+   * @param lineHeight 行高
+   */
+  setTableHeadTitleTextLineHeight(lineHeight: number): TableTheme {
+    this.tableHeadTitleTextLineHeight = lineHeight
+    return this
+  }
+
+  /**
+   * 获取表格头标题文本行高
+   *
+   * @returns 行高
+   */
+  getTableHeadTitleTextLineHeight(): number | undefined {
+    return this.tableHeadTitleTextLineHeight
+  }
+
+  /**
+   * 设置表格头标题左外边距
+   *
+   * @param marginLeft 左外边距
+   */
+  setTableHeadTitleTextMarginLeft(marginLeft: number): TableTheme {
+    this.tableHeadTitleTextMarginLeft = marginLeft
+    return this
+  }
+
+  /**
+   * 获取表格头标题左外边距
+   *
+   * @returns 左外边距
+   */
+  getTableHeadTitleTextMarginLeft(): number | undefined {
+    return this.tableHeadTitleTextMarginLeft
+  }
+
+  /**
+   * 设置表格头复制图标
+   *
+   * @param icon 复制图标资源
+   */
+  setTableHeadCopyIcon(icon: Resource): TableTheme {
+    this.tableHeadCopyIcon = icon
+    return this
+  }
+
+  /**
+   * 获取表格头复制图标
+   *
+   * @returns 复制图标资源
+   */
+  getTableHeadCopyIcon(): Resource | undefined {
+    return this.tableHeadCopyIcon
+  }
+
+  /**
+   * 设置表格头复制图标宽度
+   *
+   * @param width 宽度
+   */
+  setTableHeadCopyIconWidth(width: number): TableTheme {
+    this.tableHeadCopyIconWidth = width
+    return this
+  }
+
+  /**
+   * 获取表格头复制图标宽度
+   *
+   * @returns 宽度
+   */
+  getTableHeadCopyIconWidth(): number | undefined {
+    return this.tableHeadCopyIconWidth
+  }
+
+  /**
+   * 设置表格头复制图标高度
+   *
+   * @param height 高度
+   */
+  setTableHeadCopyIconHeight(height: number): TableTheme {
+    this.tableHeadCopyIconHeight = height
+    return this
+  }
+
+  /**
+   * 获取表格头复制图标高度
+   *
+   * @returns 高度
+   */
+  getTableHeadCopyIconHeight(): number | undefined {
+    return this.tableHeadCopyIconHeight
+  }
+
+  /**
+   * 设置表格头复制图标右外边距
+   *
+   * @param marginRight 右外边距
+   */
+  setTableHeadCopyIconMarginRight(marginRight: number): TableTheme {
+    this.tableHeadCopyIconMarginRight = marginRight
+    return this
+  }
+
+  /**
+   * 获取表格头复制图标右外边距
+   *
+   * @returns 右外边距
+   */
+  getTableHeadCopyIconMarginRight(): number | undefined {
+    return this.tableHeadCopyIconMarginRight
   }
 }

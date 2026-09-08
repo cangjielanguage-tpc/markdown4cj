@@ -115,6 +115,7 @@ var imageResource: ?AppResource = None
 var videoReleaseImage: ?AppResource = None
 var videoDownloadImage: ?AppResource = None
 var imageDownloadImage: ?AppResource = None
+var tableHeadCopyIcon: ?AppResource = None
 
 public func getCJResource(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     if (callInfo[0].typeof() != JSType.UNDEFINED) {
@@ -166,6 +167,11 @@ public func getCJResource(ctx: JSContext, callInfo: JSCallInfo): JSValue {
         imageDownloadImage = arktsRes2CJResource(ctx, callInfo[9])
     } else {
         imageDownloadImage = None
+    }
+    if (callInfo[10].typeof() != JSType.UNDEFINED) {
+        tableHeadCopyIcon = arktsRes2CJResource(ctx, callInfo[10])
+    } else {
+        tableHeadCopyIcon = None
     }
     return ctx.undefined().toJSValue()
 }

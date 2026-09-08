@@ -8,6 +8,12 @@ func setGlobalTheme(globalTheme: CJMarkdownGlobalTheme): GlobalTheme {
     if (let Some(v) <- globalTheme.isMarkdownParserSync) {
         theme.setIsMarkdownParserSync(v) // 设置markdown是否同步解析
     }
+    if (let Some(v) <- globalTheme.enableParseThrottle) {
+        theme.setEnableParseThrottle(v) // 是否启用解析节流
+    }
+    if (let Some(v) <- globalTheme.parseThrottleMs) {
+        theme.setParseThrottleMs(v) // 解析节流间隔
+    }
     if (let Some(v) <- globalTheme.isOnCopy) {
         theme.setIsOnCopy(v)
     }
@@ -40,6 +46,12 @@ func setGlobalTheme(globalTheme: CJMarkdownGlobalTheme): GlobalTheme {
     }
     if (let Some(v) <- globalTheme.backgroundColor) {
         theme.setBackgroundColor(v)
+    }
+    if (let Some(v) <- globalTheme.paragraphHeadingAnimationEnabled) {
+        theme.setParagraphHeadingAnimationEnabled(v) // 是否启用标题段落出现动画
+    }
+    if (let Some(v) <- globalTheme.paragraphHeadingAnimationDuration) {
+        theme.setParagraphHeadingAnimationDuration(Int32(v)) // 标题段落出现动画时长
     }
     return theme
 }

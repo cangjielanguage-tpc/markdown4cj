@@ -116,6 +116,21 @@ export class MarkdownPlugin {
   private whitelist: Array<string> = []
 
   /**
+   * 是否启用自定义卡片插件
+   */
+  private isBlockCustomCardPlugin: boolean = false
+
+  /**
+   * 满足块级图片自定义卡片条件 (desc, imageSrc, title)
+   */
+  private blockImageCard?: (desc: string, imageSrc: string, title: string) => boolean = undefined
+
+  /**
+   * 满足块级链接自定义卡片条件 (desc, link, title)
+   */
+  private blockLinkCard?: (desc: string, link: string, title: string) => boolean = undefined
+
+  /**
    * 设置音频插件
    *
    * @param isBlockAudioPlugin 是否设置音频插件 - true：设置音频插件；false：不设置音频插件。默认false
@@ -360,6 +375,49 @@ export class MarkdownPlugin {
       this.mode = mode
     }
     return this
+  }
+
+  /**
+   * 设置自定义卡片插件
+   *
+   * @param isBlockCustomCardPlugin 是否设置自定义卡片插件 - true：设置插件；false：不设置插件。默认false
+   * @param blockImageCard 满足块级图片自定义卡片条件
+   * @param blockLinkCard 满足块级链接自定义卡片条件
+   */
+  setIsBlockCustomCardPlugin(isBlockCustomCardPlugin: boolean,
+    blockImageCard?: (desc: string, imageSrc: string, title: string) => boolean,
+    blockLinkCard?: (desc: string, link: string, title: string) => boolean): MarkdownPlugin {
+    this.isBlockCustomCardPlugin = isBlockCustomCardPlugin
+    this.blockImageCard = blockImageCard
+    this.blockLinkCard = blockLinkCard
+    return this
+  }
+
+  /**
+   * 获取是否启用自定义卡片插件
+   *
+   * @returns 是否启用自定义卡片插件
+   */
+  getIsBlockCustomCardPlugin(): boolean {
+    return this.isBlockCustomCardPlugin
+  }
+
+  /**
+   * 获取满足块级图片自定义卡片条件
+   *
+   * @returns 满足块级图片自定义卡片条件
+   */
+  getBlockImageCard(): ((desc: string, imageSrc: string, title: string) => boolean) | undefined {
+    return this.blockImageCard
+  }
+
+  /**
+   * 获取满足块级链接自定义卡片条件
+   *
+   * @returns 满足块级链接自定义卡片条件
+   */
+  getBlockLinkCard(): ((desc: string, link: string, title: string) => boolean) | undefined {
+    return this.blockLinkCard
   }
 
   /**

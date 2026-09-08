@@ -86,6 +86,76 @@ public class CJMarkdownConfig {
      */
     var cjMarkdownTheme: CJMarkdownTheme = CJMarkdownTheme()
 
+    /**
+     * 表格复制按钮的点击事件
+     */
+    var tableCopyCallback: ?(String) -> Unit = None
+
+    /**
+     * 元素曝光回调（链接显示/消失时触发）
+     */
+    var elementExposureCallback: ?(CJMarkdownExposureEvent) -> Unit = None
+
+    /**
+     * 曝光可见阈值（0~1）
+     */
+    var exposureThreshold: Float64 = 0.5
+
+    /**
+     * 段落高亮配置
+     */
+    var cjMarkdownHighlightParagraph: CJMarkdownHighlightParagraph = CJMarkdownHighlightParagraph()
+
+    /**
+     * 外层滚动控制器（用于不固定高度模式下吸顶）
+     */
+    var cjScrollController: ?CJMarkdownScrollController = None
+
+    /**
+     * 段落动画开始回调
+     */
+    var paragraphHeadingAnimationStart: ?() -> Unit = None
+
+    /**
+     * 段落动画结束回调
+     */
+    var paragraphHeadingAnimationEnd: ?() -> Unit = None
+
+    /**
+     * 段落长按回调（返回段落纯文本内容）
+     */
+    var customLongPressCallback: ?(String) -> Unit = None
+
+    /**
+     * 满足自定义块级图片的条件
+     */
+    var isBlockImageCustom: ?(String) -> Bool = None
+
+    /**
+     * 满足自定义行内图片的条件
+     */
+    var isInLineImageCustom: ?(String) -> Bool = None
+
+    /**
+     * 满足自定义行内链接的条件
+     */
+    var isInLineLinkCustom: ?(String) -> Bool = None
+
+    /**
+     * 是否启用自定义卡片插件
+     */
+    var isBlockCustomCardPlugin: Bool = false
+
+    /**
+     * 满足块级图片自定义卡片条件 (desc, imageSrc, title)
+     */
+    var blockImageCard: ?(String, String, String) -> Bool = None
+
+    /**
+     * 满足块级链接自定义卡片条件 (desc, link, title)
+     */
+    var blockLinkCard: ?(String, String, String) -> Bool = None
+
     public init() {}
 
     /**
@@ -247,5 +317,151 @@ public class CJMarkdownConfig {
      */
     public func setCJMarkdownTheme(cjMarkdownTheme: CJMarkdownTheme): Unit {
         this.cjMarkdownTheme = cjMarkdownTheme
+    }
+
+    /**
+     * 设置表格复制按钮的点击事件
+     *
+     * @param cb 表格复制点击回调接口 (String:表格纯文本内容)
+     */
+    public func setTableCopyCallback(cb: (String) -> Unit): Unit {
+        this.tableCopyCallback = cb
+    }
+
+    /**
+     * 设置元素曝光回调
+     * 链接进入屏幕可见区域时回调 visible=true，离开时回调 visible=false
+     *
+     * @param cb 曝光回调 (CJMarkdownExposureEvent: { eventType, visible, data })
+     */
+    public func setElementExposureCallback(cb: (CJMarkdownExposureEvent) -> Unit): Unit {
+        this.elementExposureCallback = cb
+    }
+
+    /**
+     * 设置曝光可见阈值
+     * 阈值范围 [0, 1]：>1 按 1 处理（完全可见才报），<0 按 0 处理（漏出即报）
+     *
+     * @param threshold 0~1，0=漏出任意像素即可见
+     */
+    public func setExposureThreshold(threshold: Float64): Unit {
+        var t = threshold
+        if (t > 1.0) {
+            t = 1.0
+        } else if (t < 0.0) {
+            t = 0.0
+        }
+        this.exposureThreshold = t
+    }
+
+    /**
+     * 设置段落高亮配置
+     *
+     * @param highlightParagraph 段落高亮配置对象
+     */
+    public func setMarkdownHighlightParagraph(highlightParagraph: CJMarkdownHighlightParagraph): Unit {
+        this.cjMarkdownHighlightParagraph = highlightParagraph
+    }
+
+    /**
+     * 获取段落高亮配置
+     *
+     * @return CJMarkdownHighlightParagraph 段落高亮配置对象
+     */
+    public func getMarkdownHighlightParagraph(): CJMarkdownHighlightParagraph {
+        return this.cjMarkdownHighlightParagraph
+    }
+
+    /**
+     * 设置外层滚动控制器
+     * 不固定高度模式下，页面通过此控制器将外层Scroll的滚动Y传递给MarkdownComponent，
+     * 实现表格吸顶功能。固定高度模式下无需设置。
+     *
+     * @param scrollController 外层滚动控制器
+     */
+    public func setScrollController(scrollController: CJMarkdownScrollController): Unit {
+        this.cjScrollController = scrollController
+    }
+
+    /**
+     * 设置段落动画开始回调
+     *
+     * @param cb 段落动画开始回调
+     */
+    public func setParagraphHeadingAnimationStart(cb: () -> Unit): Unit {
+        this.paragraphHeadingAnimationStart = cb
+    }
+
+    /**
+     * 设置段落动画结束回调
+     *
+     * @param cb 段落动画结束回调
+     */
+    public func setParagraphHeadingAnimationEnd(cb: () -> Unit): Unit {
+        this.paragraphHeadingAnimationEnd = cb
+    }
+
+    /**
+     * 设置段落长按回调
+     * 长按段落时触发，回调参数为当前段落的纯文本内容
+     *
+     * @param cb 段落长按回调，参数为当前段落的纯文本内容
+     */
+    public func setCustomLongPressCallback(cb: (String) -> Unit): Unit {
+        this.customLongPressCallback = cb
+    }
+
+    /**
+     * 设置满足自定义块级图片的条件
+     *
+     * @param cb 满足自定义块级图片的条件 (图片alt或url)
+     */
+    public func setIsBlockImageCustom(cb: (String) -> Bool): Unit {
+        this.isBlockImageCustom = cb
+    }
+
+    /**
+     * 设置满足自定义行内图片的条件
+     *
+     * @param cb 满足自定义行内图片的条件 (图片alt或url)
+     */
+    public func setIsInLineImageCustom(cb: (String) -> Bool): Unit {
+        this.isInLineImageCustom = cb
+    }
+
+    /**
+     * 设置满足自定义行内链接的条件
+     *
+     * @param cb 满足自定义行内链接的条件 (链接描述或url)
+     */
+    public func setIsInLineLinkCustom(cb: (String) -> Bool): Unit {
+        this.isInLineLinkCustom = cb
+    }
+
+    /**
+     * 设置是否启用自定义卡片插件
+     *
+     * @param isBlockCustomCardPlugin 是否启用自定义卡片插件
+     */
+    public func setIsBlockCustomCardPlugin(isBlockCustomCardPlugin: Bool): Unit {
+        this.isBlockCustomCardPlugin = isBlockCustomCardPlugin
+    }
+
+    /**
+     * 设置块级图片自定义卡片条件回调
+     *
+     * @param cb 满足块级图片自定义卡片条件 (desc, imageSrc, title)
+     */
+    public func setBlockImageCard(cb: (String, String, String) -> Bool): Unit {
+        this.blockImageCard = Some(cb)
+    }
+
+    /**
+     * 设置块级链接自定义卡片条件回调
+     *
+     * @param cb 满足块级链接自定义卡片条件 (desc, link, title)
+     */
+    public func setBlockLinkCard(cb: (String, String, String) -> Bool): Unit {
+        this.blockLinkCard = Some(cb)
     }
 }

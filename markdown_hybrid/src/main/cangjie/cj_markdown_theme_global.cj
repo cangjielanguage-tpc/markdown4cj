@@ -54,6 +54,26 @@ public class CJMarkdownGlobalTheme {
      */
     var backgroundColor: ?Color = None
 
+    /**
+     * 是否启用标题段落出现动画
+     */
+    var paragraphHeadingAnimationEnabled: ?Bool = None
+
+    /**
+     * 标题段落出现动画时长
+     */
+    var paragraphHeadingAnimationDuration: ?Int64 = None
+
+    /**
+     * 是否启用解析节流（流式输出时控制解析频率）
+     */
+    var enableParseThrottle: ?Bool = None
+
+    /**
+     * 解析节流间隔（毫秒）
+     */
+    var parseThrottleMs: ?Int64 = None
+
     public init() {}
 
     /**
@@ -63,6 +83,24 @@ public class CJMarkdownGlobalTheme {
      */
     public func setIsMarkdownParserSync(isSync: Bool): Unit {
         isMarkdownParserSync = isSync
+    }
+
+    /**
+     * 设置是否启用解析节流
+     *
+     * @param enable 是否启用
+     */
+    public func setEnableParseThrottle(enable: Bool): Unit {
+        enableParseThrottle = enable
+    }
+
+    /**
+     * 设置解析节流间隔
+     *
+     * @param throttleMs 节流间隔（毫秒）
+     */
+    public func setParseThrottleMs(throttleMs: Int64): Unit {
+        parseThrottleMs = throttleMs
     }
 
     /**
@@ -135,5 +173,23 @@ public class CJMarkdownGlobalTheme {
      */
     public func setBackgroundColor(color: UInt32): Unit {
         backgroundColor = transColorForTransparent(color)
+    }
+
+    /**
+     * 设置是否启用标题段落出现动画
+     *
+     * @param enable 是否启用
+     */
+    public func setParagraphHeadingAnimationEnabled(enable: Bool): Unit {
+        paragraphHeadingAnimationEnabled = enable
+    }
+
+    /**
+     * 设置标题段落出现动画时长
+     *
+     * @param duration 动画时长（毫秒）
+     */
+    public func setParagraphHeadingAnimationDuration(duration: Int64): Unit {
+        paragraphHeadingAnimationDuration = duration
     }
 }

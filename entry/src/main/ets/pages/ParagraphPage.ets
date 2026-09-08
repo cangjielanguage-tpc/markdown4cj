@@ -155,6 +155,14 @@ struct ParagraphPage {
   paragraphTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 段落文本字符间距
   paragraphTextLetterSpacing: number = 0
+  // 是否启用段落出现动画列表
+  paragraphAnimationEnabledList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用段落出现动画
+  paragraphAnimationEnabled: boolean = false
+  // 段落出现动画时长列表
+  paragraphAnimationDurationList: Array<number> = timeListGeneralData
+  @State // 段落出现动画时长
+  paragraphAnimationDuration: number = 300
   @State // 配置数据内容
   paragraphData: ParagraphData = new ParagraphData()
   heightMD: number = 30 * 1 // 乘以行数
@@ -232,6 +240,8 @@ struct ParagraphPage {
                   this.paragraphData.paragraphTextFontFamily = this.paragraphTextFontFamily
                   this.paragraphData.paragraphTextLineHeight = this.paragraphTextLineHeight
                   this.paragraphData.paragraphTextLetterSpacing = this.paragraphTextLetterSpacing
+                  this.paragraphData.paragraphHeadingAnimationEnabled = this.paragraphAnimationEnabled
+                  this.paragraphData.paragraphHeadingAnimationDuration = this.paragraphAnimationDuration
                   // ---------- 跳转到详情
                   router.pushUrl({ url: "pages/ParagraphDetailsPage", params: this.paragraphData })
                 })
@@ -480,6 +490,18 @@ struct ParagraphPage {
                   typeEnum: TypeEnum.IS_NUMBER,
                   allListData: this.paragraphTextLetterSpacingList,
                   allData: this.paragraphTextLetterSpacing
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用段落出现动画 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.paragraphAnimationEnabledList,
+                  allData: this.paragraphAnimationEnabled
+                })
+                BaseTabComponent({
+                  titleStr: "段落出现动画时长(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.paragraphAnimationDurationList,
+                  allData: this.paragraphAnimationDuration
                 })
               }
               .width('100%')

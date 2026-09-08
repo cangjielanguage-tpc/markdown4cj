@@ -5,6 +5,12 @@ func setParagraphTheme(paragraphTheme: CJMarkdownParagraphTheme): ParagraphTheme
     if (let Some(v) <- paragraphTheme.paragraphBackgroundColor) {
         theme.setParagraphBackgroundColor(v)
     }
+    if (let Some(v) <- paragraphTheme.paragraphBeforeSelectedBackgroundColor) {
+        theme.setParagraphBeforeSelectedBackgroundColor(v) // 长按前段落默认背景色
+    }
+    if (let Some(v) <- paragraphTheme.paragraphSelectedBackgroundColor) {
+        theme.setParagraphSelectedBackgroundColor(v) // 长按选中段落背景色
+    }
     var paragraphMarginTop: Float64 = 0.0
     var paragraphMarginRight: Float64 = 0.0
     var paragraphMarginBottom: Float64 = 0.0

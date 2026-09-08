@@ -93,5 +93,24 @@ func setTableTheme(tableTheme: CJMarkdownTableTheme): TableTheme {
     if (let Some(v) <- tableTheme.tableContentTextLineHeight) { theme.setTableContentTextLineHeight(v) }
     if (let Some(v) <- tableTheme.tableContentTextLetterSpacing) { theme.setTableContentTextLetterSpacing(v) }
 
+    // 表格标题行吸顶
+    if (let Some(v) <- tableTheme.tableStickyHeader) { theme.setTableStickyHeader(v) }
+    // 表格头复制按钮
+    if (let Some(v) <- tableTheme.tableHeadIsShow) { theme.setTableHeadIsShow(v) }
+    if (let Some(v) <- tableTheme.tableHeadTitleText) { theme.setTableHeadTitleText(v) }
+    if (let Some(v) <- tableTheme.tableHeadTitleTextFontFamily) { theme.setTableHeadTitleTextFontFamily(v) }
+    if (let Some(v) <- tableTheme.tableHeadTitleTextFontSize) { theme.setTableHeadTitleTextFontSize(v) }
+    if (let Some(v) <- tableTheme.tableHeadTitleTextFontWeight) { theme.setTableHeadTitleTextFontWeight(v) }
+    if (let Some(v) <- tableTheme.tableHeadTitleTextFontStyle) { theme.setTableHeadTitleTextFontStyle(v) }
+    if (let Some(v) <- tableTheme.tableHeadTitleTextFontColor) { theme.setTableHeadTitleTextFontColor(v) }
+    if (let Some(v) <- tableTheme.tableHeadTitleTextLineHeight) { theme.setTableHeadTitleTextLineHeight(v) }
+    if (let Some(v) <- tableTheme.tableHeadTitleTextMarginLeft) { theme.setTableHeadTitleTextMarginLeft(v) }
+    if (let Some(v) <- tableTheme.tableHeadCopyIconWidth) { theme.setTableHeadCopyIconWidth(v) }
+    if (let Some(v) <- tableTheme.tableHeadCopyIconHeight) { theme.setTableHeadCopyIconHeight(v) }
+    if (let Some(v) <- tableTheme.tableHeadCopyIconMarginRight) { theme.setTableHeadCopyIconMarginRight(v) }
+
+    // 表格头复制图标
+    if (let Some(v) <- tableHeadCopyIcon) { theme.setTableHeadCopyIcon(v) }
+
     return theme
 }

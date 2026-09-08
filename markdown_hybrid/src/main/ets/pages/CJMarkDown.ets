@@ -32,11 +32,17 @@ import {
   CJMarkdownLinkTheme,
   CJMarkdownLatexMathTheme,
   CJNodeViewStringBuilder,
-  CJMarkdownHighlightTheme
+  CJMarkdownHighlightTheme,
+  CJMarkdownHighlightParagraph,
+  CJMarkdownExposureEvent,
+  CJMarkdownScrollController
 } from 'libark_interop_api_markdown_hybrid.so'
 import { MarkdownRectResult } from '../configs/MarkdownRectResult'
 import { MarkdownPlugin } from '../configs/MarkdownPlugin'
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
+import { MarkdownHighlightParagraph } from '../configs/MarkdownHighlightParagraph'
+import { MarkdownExposureEvent } from '../configs/MarkdownExposureEvent'
+import { MarkdownScrollController } from '../configs/MarkdownScrollController'
 import { AudioTheme } from '../themes/AudioTheme'
 import { BannerTheme } from '../themes/BannerTheme'
 import { BlockQuoteTheme } from '../themes/BlockQuoteTheme'
@@ -301,7 +307,7 @@ export struct CJMarkdown {
       if (global_customLib === undefined) {
         global_customLib = requireCJLib("libmarkdown_hybrid.so") as CustomLib
       }
-      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
+      this.markdownNode = new CJNodeController(this.getProcessedContent(), this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
     } else {
       global_customLib = undefined
     }
@@ -373,6 +379,66 @@ export struct CJMarkdown {
       }
       cjMarkdownConfig.setNodeString(this.config.getMarkdownNodeViewString().getCJNodeViewStringBuilder())
       cjMarkdownConfig.setCJMarkdownTheme(this.getTheme())
+      // 表格复制回调
+      if (this.config.getTableCopyCallback() !== undefined) {
+        cjMarkdownConfig.setTableCopyCallback(this.config.getTableCopyCallback())
+      }
+      // 元素曝光回调 - 需要将 CJMarkdownExposureEvent 转换为 MarkdownExposureEvent
+      let exposureCb = this.config.getElementExposureCallback()
+      if (exposureCb) {
+        let cb = exposureCb
+        cjMarkdownConfig.setElementExposureCallback((cjEvent: CJMarkdownExposureEvent) => {
+          let event = new MarkdownExposureEvent()
+          event.eventType = cjEvent.eventType
+          event.visible = cjEvent.visible
+          event.data = cjEvent.data
+          cb(event)
+        })
+      }
+      // 曝光可见阈值
+      if (this.config.getExposureThreshold() !== undefined) {
+        cjMarkdownConfig.setExposureThreshold(this.config.getExposureThreshold())
+      }
+      // 段落高亮配置
+      let highlightParagraph = this.config.getMarkdownHighlightParagraph()
+      if (highlightParagraph !== undefined) {
+        let cjHighlightParagraph = highlightParagraph.getCJHighlightParagraph()
+        if (cjHighlightParagraph !== undefined) {
+          cjMarkdownConfig.setMarkdownHighlightParagraph(cjHighlightParagraph)
+        }
+      }
+      // 外层滚动控制器
+      let scrollController = this.config.getScrollController()
+      if (scrollController !== undefined) {
+        let cjScrollController = scrollController.getCJScrollController()
+        if (cjScrollController !== undefined) {
+          cjMarkdownConfig.setScrollController(cjScrollController)
+        }
+      }
+      // 段落动画开始回调
+      if (this.config.getParagraphHeadingAnimationStart() !== undefined) {
+        cjMarkdownConfig.setParagraphHeadingAnimationStart(this.config.getParagraphHeadingAnimationStart())
+      }
+      // 段落动画结束回调
+      if (this.config.getParagraphHeadingAnimationEnd() !== undefined) {
+        cjMarkdownConfig.setParagraphHeadingAnimationEnd(this.config.getParagraphHeadingAnimationEnd())
+      }
+      // 段落长按回调
+      if (this.config.getCustomLongPressCallback() !== undefined) {
+        cjMarkdownConfig.setCustomLongPressCallback(this.config.getCustomLongPressCallback())
+      }
+      // 自定义块级图片条件
+      if (this.config.getIsBlockImageCustom() !== undefined) {
+        cjMarkdownConfig.setIsBlockImageCustom(this.config.getIsBlockImageCustom())
+      }
+      // 自定义行内图片条件
+      if (this.config.getIsInLineImageCustom() !== undefined) {
+        cjMarkdownConfig.setIsInLineImageCustom(this.config.getIsInLineImageCustom())
+      }
+      // 自定义行内链接条件
+      if (this.config.getIsInLineLinkCustom() !== undefined) {
+        cjMarkdownConfig.setIsInLineLinkCustom(this.config.getIsInLineLinkCustom())
+      }
     }
     return cjMarkdownConfig
   }
@@ -406,6 +472,16 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.getIsEmojiPlugin(), this.plugin.getIsEmojiLight())
       cjMarkdownPlugin.setIsHighlightPlugin(this.plugin.getIsHighlightPlugin())
       cjMarkdownPlugin.setIsWhitelistPlugin(this.plugin.getIsWhitelistPlugin(), this.plugin.getMode(), this.plugin.getWhitelist())
+      // 自定义卡片插件（图片/链接满足回调条件时渲染为自定义卡片）
+      cjMarkdownPlugin.setIsBlockCustomCardPlugin(this.plugin.getIsBlockCustomCardPlugin())
+      const imageCard = this.plugin.getBlockImageCard()
+      if (imageCard !== undefined) {
+        cjMarkdownPlugin.setBlockImageCard(imageCard)
+      }
+      const linkCard = this.plugin.getBlockLinkCard()
+      if (linkCard !== undefined) {
+        cjMarkdownPlugin.setBlockLinkCard(linkCard)
+      }
     }
     return cjMarkdownPlugin
   }
@@ -433,7 +509,8 @@ export struct CJMarkdown {
           markdownTheme.getImageTheme().getImagePlaceholder(),
           markdownTheme.getVideoTheme().getVideoReleaseButtonIcon(),
           markdownTheme.getVideoTheme().getVideoDownloadButtonIcon(),
-          markdownTheme.getImageTheme().getImageDownloadButtonIcon()
+          markdownTheme.getImageTheme().getImageDownloadButtonIcon(),
+          markdownTheme.getTableTheme().getTableHeadCopyIcon()
         )
         cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(markdownTheme.getGlobalTheme()))
         cjMarkdownTheme.setCJMarkdownAudioTheme(this.getAudioTheme(markdownTheme.getAudioTheme()))
@@ -1153,6 +1230,12 @@ export struct CJMarkdown {
     if (theme.getIsMarkdownParserSync() !== undefined) {
       cjMarkdownTheme.setIsMarkdownParserSync(theme.getIsMarkdownParserSync())
     }
+    if (theme.getEnableParseThrottle() !== undefined) {
+      cjMarkdownTheme.setEnableParseThrottle(theme.getEnableParseThrottle())
+    }
+    if (theme.getParseThrottleMs() !== undefined) {
+      cjMarkdownTheme.setParseThrottleMs(theme.getParseThrottleMs())
+    }
     if (theme.getIsOnCopy() !== undefined) {
       cjMarkdownTheme.setIsOnCopy(theme.getIsOnCopy())
     }
@@ -1172,6 +1255,12 @@ export struct CJMarkdown {
     }
     if (theme.getOpenGestureSwipe() !== undefined) {
       cjMarkdownTheme.setOpenGestureSwipe(theme.getOpenGestureSwipe())
+    }
+    if (theme.getParagraphHeadingAnimationEnabled() !== undefined) {
+      cjMarkdownTheme.setParagraphHeadingAnimationEnabled(theme.getParagraphHeadingAnimationEnabled())
+    }
+    if (theme.getParagraphHeadingAnimationDuration() !== undefined) {
+      cjMarkdownTheme.setParagraphHeadingAnimationDuration(theme.getParagraphHeadingAnimationDuration())
     }
     return cjMarkdownTheme
   }
@@ -1881,6 +1970,12 @@ export struct CJMarkdown {
     if (theme.getParagraphBackgroundColor() !== undefined) {
       cjMarkdownTheme.setParagraphBackgroundColor(theme.getParagraphBackgroundColor())
     }
+    if (theme.getParagraphBeforeSelectedBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setParagraphBeforeSelectedBackgroundColor(theme.getParagraphBeforeSelectedBackgroundColor())
+    }
+    if (theme.getParagraphSelectedBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setParagraphSelectedBackgroundColor(theme.getParagraphSelectedBackgroundColor())
+    }
     let paragraphMarginTop: number = theme.getParagraphMarginTop() ?? 0
     let paragraphMarginRight: number = theme.getParagraphMarginRight() ?? 0
     let paragraphMarginBottom: number = theme.getParagraphMarginBottom() ?? 0
@@ -2110,6 +2205,58 @@ export struct CJMarkdown {
     }
     if (theme.getTableContentTextLetterSpacing() !== undefined) {
       cjMarkdownTheme.setTableContentTextLetterSpacing(theme.getTableContentTextLetterSpacing())
+    }
+    // 表格标题行吸顶
+    if (theme.getTableStickyHeader() !== undefined) {
+      cjMarkdownTheme.setTableStickyHeader(theme.getTableStickyHeader())
+    }
+    // 表格头复制按钮显示
+    if (theme.getTableHeadIsShow() !== undefined) {
+      cjMarkdownTheme.setTableHeadIsShow(theme.getTableHeadIsShow())
+    }
+    // 表格头标题文字
+    if (theme.getTableHeadTitleText() !== undefined) {
+      cjMarkdownTheme.setTableHeadTitleText(theme.getTableHeadTitleText())
+    }
+    // 表格头标题文本字体族
+    if (theme.getTableHeadTitleTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTableHeadTitleTextFontFamily(theme.getTableHeadTitleTextFontFamily())
+    }
+    // 表格头标题文本字体大小
+    if (theme.getTableHeadTitleTextFontSize() !== undefined) {
+      cjMarkdownTheme.setTableHeadTitleTextFontSize(theme.getTableHeadTitleTextFontSize())
+    }
+    // 表格头标题文本字体粗细
+    if (theme.getTableHeadTitleTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTableHeadTitleTextFontWeight(this.convertFontWeight(theme.getTableHeadTitleTextFontWeight() ?? FontWeight.Normal))
+    }
+    // 表格头标题文本字体样式
+    if (theme.getTableHeadTitleTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTableHeadTitleTextFontStyle(theme.getTableHeadTitleTextFontStyle())
+    }
+    // 表格头标题文本字体颜色
+    if (theme.getTableHeadTitleTextFontColor() !== undefined) {
+      cjMarkdownTheme.setTableHeadTitleTextFontColor(theme.getTableHeadTitleTextFontColor())
+    }
+    // 表格头标题文本行高
+    if (theme.getTableHeadTitleTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTableHeadTitleTextLineHeight(theme.getTableHeadTitleTextLineHeight())
+    }
+    // 表格头标题左外边距
+    if (theme.getTableHeadTitleTextMarginLeft() !== undefined) {
+      cjMarkdownTheme.setTableHeadTitleTextMarginLeft(theme.getTableHeadTitleTextMarginLeft())
+    }
+    // 表格头复制图标宽度
+    if (theme.getTableHeadCopyIconWidth() !== undefined) {
+      cjMarkdownTheme.setTableHeadCopyIconWidth(theme.getTableHeadCopyIconWidth())
+    }
+    // 表格头复制图标高度
+    if (theme.getTableHeadCopyIconHeight() !== undefined) {
+      cjMarkdownTheme.setTableHeadCopyIconHeight(theme.getTableHeadCopyIconHeight())
+    }
+    // 表格头复制图标右外边距
+    if (theme.getTableHeadCopyIconMarginRight() !== undefined) {
+      cjMarkdownTheme.setTableHeadCopyIconMarginRight(theme.getTableHeadCopyIconMarginRight())
     }
     return cjMarkdownTheme
   }

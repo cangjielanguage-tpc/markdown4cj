@@ -326,6 +326,34 @@ struct IndexPage {
               "pages/CardPage"
             )
           }
+          ListItem() {
+            itemListComponent(
+              "37、段落高亮",
+              0xFFFF0000,
+              "pages/HighlightParagraphPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "38、全文复制",
+              0xFFFF0000,
+              "pages/AllPageCopyPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "39、超链接曝光",
+              0xFFFF0000,
+              "pages/LinkExposurePage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "40、自定义卡片",
+              0xFFFF0000,
+              "pages/CustomCardPage"
+            )
+          }
 
           ListItem() {
             itemListComponent(

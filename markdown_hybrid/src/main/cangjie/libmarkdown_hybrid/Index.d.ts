@@ -47,6 +47,12 @@ export declare class CJMarkdownPlugin {
   setIsHighlightPlugin(isHighlightPlugin: boolean): void
 
   setIsWhitelistPlugin(isWhitelistPlugin: boolean, mode: number, whitelist: Array<string>): void
+
+  setIsBlockCustomCardPlugin(isBlockCustomCardPlugin: boolean): void
+
+  setBlockImageCard(cb: (desc: string, imageSrc: string, title: string) => boolean): void
+
+  setBlockLinkCard(cb: (desc: string, link: string, title: string) => boolean): void
 }
 
 export declare class CJMarkdownTheme {
@@ -106,6 +112,10 @@ export declare class CJMarkdownTheme {
 export declare class CJMarkdownGlobalTheme {
   setIsMarkdownParserSync(isSync: boolean): void
 
+  setEnableParseThrottle(enable: boolean): void
+
+  setParseThrottleMs(throttleMs: number): void
+
   setIsOnCopy(onCopy: boolean): void
 
   setBackgroundColor(color: number): void
@@ -119,6 +129,10 @@ export declare class CJMarkdownGlobalTheme {
   setIsLineBreak(isLineBreak: boolean): void
 
   setOpenGestureSwipe(openGestureSwipe: boolean): void
+
+  setParagraphHeadingAnimationEnabled(enable: boolean): void
+
+  setParagraphHeadingAnimationDuration(duration: number): void
 }
 
 export declare class CJMarkdownAudioTheme {
@@ -902,6 +916,10 @@ export declare class CJMarkdownOrderedListTheme {
 export declare class CJMarkdownParagraphTheme {
   setParagraphBackgroundColor(color: number): void
 
+  setParagraphBeforeSelectedBackgroundColor(color: number): void
+
+  setParagraphSelectedBackgroundColor(color: number): void
+
   setParagraphAllMargin(margin: number): void
 
   setParagraphMargin(top?: number, right?: number, bottom?: number, left?: number): void
@@ -1043,6 +1061,32 @@ export declare class CJMarkdownTableTheme {
   setTableContentTextLineHeight(lineHeight: number): void
 
   setTableContentTextLetterSpacing(spacing: number): void
+
+  setTableStickyHeader(enable: boolean): void
+
+  setTableHeadIsShow(enable: boolean): void
+
+  setTableHeadTitleText(text: string): void
+
+  setTableHeadTitleTextFontFamily(family?: string): void
+
+  setTableHeadTitleTextFontSize(size?: number): void
+
+  setTableHeadTitleTextFontWeight(weight?: number): void
+
+  setTableHeadTitleTextFontStyle(style?: number): void
+
+  setTableHeadTitleTextFontColor(color?: number): void
+
+  setTableHeadTitleTextLineHeight(lineHeight?: number): void
+
+  setTableHeadTitleTextMarginLeft(marginLeft: number): void
+
+    setTableHeadCopyIconWidth(width: number): void
+
+    setTableHeadCopyIconHeight(height: number): void
+
+    setTableHeadCopyIconMarginRight(marginRight: number): void
 }
 
 export declare class CJMarkdownVideoTheme {
@@ -1181,6 +1225,28 @@ export declare class CJMarkdownHighlightTheme {
   setHighlightTextBackgroundRadius(topLeft: number, topRight: number, bottomLeft: number, bottomRight: number): void
 }
 
+export declare class CJMarkdownHighlightParagraph {
+  getAllParagraphItems(): Array<string>
+
+  setParagraphHighlight(nodeHash: string, color: number): void
+
+  clearParagraphHighlight(nodeHash: string): void
+
+  clearAllParagraphHighlights(): void
+}
+
+export declare class CJMarkdownExposureEvent {
+  eventType: string
+
+  visible: boolean
+
+  data: string
+}
+
+export declare class CJMarkdownScrollController {
+  setScrollY(y: number): void
+}
+
 export declare class CJMarkdownConfig {
   setLinkCallback(cb: (url: string) => void): void
 
@@ -1215,6 +1281,30 @@ export declare class CJMarkdownConfig {
   setNodeString(nodeString: CJNodeViewStringBuilder): void
 
   setCJMarkdownTheme(cjMarkdownTheme: CJMarkdownTheme): void
+
+  setTableCopyCallback(cb: (text: string) => void): void
+
+  setElementExposureCallback(cb: (event: CJMarkdownExposureEvent) => void): void
+
+  setExposureThreshold(threshold: number): void
+
+  setMarkdownHighlightParagraph(highlightParagraph: CJMarkdownHighlightParagraph): void
+
+  getMarkdownHighlightParagraph(): CJMarkdownHighlightParagraph
+
+  setScrollController(scrollController: CJMarkdownScrollController): void
+
+  setParagraphHeadingAnimationStart(cb: () => void): void
+
+  setParagraphHeadingAnimationEnd(cb: () => void): void
+
+  setCustomLongPressCallback(cb: (text: string) => void): void
+
+  setIsBlockImageCustom(cb: (url: string) => boolean): void
+
+  setIsInLineImageCustom(cb: (url: string) => boolean): void
+
+  setIsInLineLinkCustom(cb: (url: string) => boolean): void
 }
 
 export declare class CJNodeViewStringBuilder {
@@ -1311,6 +1401,10 @@ export declare interface CustomLib {
 
   CJMarkdownHighlightTheme: {new (): CJMarkdownHighlightTheme}
 
+  CJMarkdownHighlightParagraph: typeof CJMarkdownHighlightParagraph
+
+  CJMarkdownScrollController: {new (): CJMarkdownScrollController}
+
   setGlobalContext(context?: Context): void
 
   getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin, listScroller?: CJMarkdownScroller): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
@@ -1328,5 +1422,6 @@ export declare interface CustomLib {
     videoReleaseImage?: resourceManager.Resource,
     videoDownloadImage?: resourceManager.Resource,
     imageDownloadImage?: resourceManager.Resource,
+    tableHeadCopyIcon?: resourceManager.Resource,
   ): void
 }

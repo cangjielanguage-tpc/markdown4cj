@@ -8,6 +8,8 @@ export class ParagraphTheme {
    * 段落背景颜色
    */
   private paragraphBackgroundColor?: number = undefined
+  private paragraphBeforeSelectedBackgroundColor?: number = undefined
+  private paragraphSelectedBackgroundColor?: number = undefined
 
   /**
    * 段落上外边距
@@ -91,6 +93,26 @@ export class ParagraphTheme {
    */
   setParagraphBackgroundColor(color: number): ParagraphTheme {
     this.paragraphBackgroundColor = color
+    return this
+  }
+
+  /**
+   * 设置长按前段落默认背景色（用于长按后恢复）
+   *
+   * @param color 背景颜色
+   */
+  setParagraphBeforeSelectedBackgroundColor(color: number): ParagraphTheme {
+    this.paragraphBeforeSelectedBackgroundColor = color
+    return this
+  }
+
+  /**
+   * 设置长按选中段落的背景色
+   *
+   * @param color 背景颜色
+   */
+  setParagraphSelectedBackgroundColor(color: number): ParagraphTheme {
+    this.paragraphSelectedBackgroundColor = color
     return this
   }
 
@@ -231,6 +253,24 @@ export class ParagraphTheme {
    */
   getParagraphBackgroundColor(): number | undefined {
     return this.paragraphBackgroundColor
+  }
+
+  /**
+   * 获取长按前段落默认背景色
+   *
+   * @returns 长按前段落默认背景色
+   */
+  getParagraphBeforeSelectedBackgroundColor(): number | undefined {
+    return this.paragraphBeforeSelectedBackgroundColor
+  }
+
+  /**
+   * 获取长按选中段落的背景色
+   *
+   * @returns 长按选中段落的背景色
+   */
+  getParagraphSelectedBackgroundColor(): number | undefined {
+    return this.paragraphSelectedBackgroundColor
   }
 
   /**

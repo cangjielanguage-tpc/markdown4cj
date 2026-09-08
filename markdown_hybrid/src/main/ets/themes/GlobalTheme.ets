@@ -60,6 +60,18 @@ export class GlobalTheme {
   private backgroundColor?: number = undefined
 
   /**
+   * 是否启用标题段落出现动画
+   */
+  private paragraphHeadingAnimationEnabled?: boolean = undefined
+
+  /**
+   * 标题段落出现动画时长
+   */
+  private paragraphHeadingAnimationDuration?: number = undefined
+  private enableParseThrottle?: boolean = undefined
+  private parseThrottleMs?: number = undefined
+
+  /**
    * 设置上下文
    *
    * @param context 上下文
@@ -160,6 +172,46 @@ export class GlobalTheme {
   }
 
   /**
+   * 设置是否启用标题段落出现动画
+   *
+   * @param enable 是否启用
+   */
+  setParagraphHeadingAnimationEnabled(enable: boolean): GlobalTheme {
+    this.paragraphHeadingAnimationEnabled = enable
+    return this
+  }
+
+  /**
+   * 设置标题段落出现动画时长
+   *
+   * @param duration 动画时长（毫秒）
+   */
+  setParagraphHeadingAnimationDuration(duration: number): GlobalTheme {
+    this.paragraphHeadingAnimationDuration = duration
+    return this
+  }
+
+  /**
+   * 设置是否启用解析节流（流式输出时控制解析频率）
+   *
+   * @param enable 是否启用
+   */
+  setEnableParseThrottle(enable: boolean): GlobalTheme {
+    this.enableParseThrottle = enable
+    return this
+  }
+
+  /**
+   * 设置解析节流间隔
+   *
+   * @param throttleMs 节流间隔（毫秒）
+   */
+  setParseThrottleMs(throttleMs: number): GlobalTheme {
+    this.parseThrottleMs = throttleMs
+    return this
+  }
+
+  /**
    * 获取stageContext
    *
    * @returns stageContext
@@ -175,6 +227,24 @@ export class GlobalTheme {
    */
   getIsMarkdownParserSync(): boolean | undefined {
     return this.isMarkdownParserSync
+  }
+
+  /**
+   * 获取enableParseThrottle
+   *
+   * @returns enableParseThrottle
+   */
+  getEnableParseThrottle(): boolean | undefined {
+    return this.enableParseThrottle
+  }
+
+  /**
+   * 获取parseThrottleMs
+   *
+   * @returns parseThrottleMs
+   */
+  getParseThrottleMs(): number | undefined {
+    return this.parseThrottleMs
   }
 
   /**
@@ -256,5 +326,23 @@ export class GlobalTheme {
    */
   getBackgroundColor(): number | undefined {
     return this.backgroundColor
+  }
+
+  /**
+   * 获取是否启用标题段落出现动画
+   *
+   * @returns 是否启用
+   */
+  getParagraphHeadingAnimationEnabled(): boolean | undefined {
+    return this.paragraphHeadingAnimationEnabled
+  }
+
+  /**
+   * 获取标题段落出现动画时长
+   *
+   * @returns 动画时长（毫秒）
+   */
+  getParagraphHeadingAnimationDuration(): number | undefined {
+    return this.paragraphHeadingAnimationDuration
   }
 }

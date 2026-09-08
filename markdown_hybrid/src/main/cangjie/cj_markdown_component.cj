@@ -151,8 +151,57 @@ class CJMarkdownComponent {
             if (v.isWhitelistPlugin) {
                 markdownBuilder.usePlugin(WhitelistLooseDelimiterPlugin.create(v.mode))
             }
+            // 自定义卡片插件（图片/链接满足回调条件时渲染为自定义卡片）
+            if (v.isBlockCustomCardPlugin || v.blockImageCard.isSome() || v.blockLinkCard.isSome()) {
+                var blockImage: ?(CardBean) -> Bool = None
+                var blockLink: ?(CardBean) -> Bool = None
+                if (let Some(cb) <- v.blockImageCard) {
+                    blockImage = { bean: CardBean =>
+                        cb(bean.getDescription() ?? (bean.getDestination() ?? ""),
+                            bean.getDestination() ?? "",
+                            bean.getTitle() ?? "")
+                    }
+                }
+                if (let Some(cb) <- v.blockLinkCard) {
+                    blockLink = { bean: CardBean =>
+                        cb(bean.getDescription() ?? (bean.getDestination() ?? ""),
+                            bean.getDestination() ?? "",
+                            bean.getTitle() ?? "")
+                    }
+                }
+                markdownBuilder.usePlugin(BlockCustomCardPlugin.create(blockImage: blockImage, blockLink: blockLink))
+            }
         }
         markdownBuilder.usePlugin(NodeIdPlugin.create()) // 唯一ID标识插件
+        // 自定义块级卡片（图片/链接满足回调条件时渲染为自定义卡片）
+        if (let Some(w) <- cfg) {
+            var blockImage: ?(CardBean) -> Bool = None
+            var blockLink: ?(CardBean) -> Bool = None
+            // 兼容旧接口：满足自定义块级图片的条件（图片alt/description）
+            if (let Some(v) <- w.isBlockImageCustom) {
+                blockImage = { bean: CardBean => v(bean.getDescription() ?? (bean.getDestination() ?? "")) }
+            }
+            // 新接口：自定义卡片插件（desc, url, title 三参回调）
+            if (w.isBlockCustomCardPlugin || w.blockImageCard.isSome() || w.blockLinkCard.isSome()) {
+                if (let Some(v) <- w.blockImageCard) {
+                    blockImage = { bean: CardBean =>
+                        v(bean.getDescription() ?? (bean.getDestination() ?? ""),
+                            bean.getDestination() ?? "",
+                            bean.getTitle() ?? "")
+                    }
+                }
+                if (let Some(v) <- w.blockLinkCard) {
+                    blockLink = { bean: CardBean =>
+                        v(bean.getDescription() ?? (bean.getDestination() ?? ""),
+                            bean.getDestination() ?? "",
+                            bean.getTitle() ?? "")
+                    }
+                }
+            }
+            if (blockImage.isSome() || blockLink.isSome()) {
+                markdownBuilder.usePlugin(BlockCustomCardPlugin.create(blockImage: blockImage, blockLink: blockLink))
+            }
+        }
         if (incrementalAnalysis) {
             markdownBuilder.includeSourceSpans(2) // BLOCKS_AND_INLINES
         }
@@ -213,6 +262,33 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.nodeString) {
                 markdownConfiguration.setNodeString(v) // 设置全局文本对象
+            }
+            if (let Some(v) <- w.tableCopyCallback) {
+                markdownConfiguration.setTableCopyCallback(v) // 设置表格复制按钮的点击事件
+            }
+            if (let Some(v) <- w.elementExposureCallback) {
+                // 设置元素曝光回调 - 将底层事件转换为互操作事件
+                markdownConfiguration.setElementExposureCallback({ event: MarkdownExposureEvent =>
+                    let cjEvent = CJMarkdownExposureEvent()
+                    cjEvent.eventType = event.eventType
+                    cjEvent.visible = event.visible
+                    cjEvent.data = event.data
+                    v(cjEvent)
+                })
+            }
+            markdownConfiguration.setExposureThreshold(w.exposureThreshold) // 曝光可见阈值
+            markdownConfiguration.setMarkdownHighlightParagraph(w.cjMarkdownHighlightParagraph.highlightParagraph) // 段落高亮配置
+            if (let Some(v) <- w.cjScrollController) {
+                markdownConfiguration.setScrollController(v.scrollController) // 外层滚动控制器
+            }
+            if (let Some(v) <- w.paragraphHeadingAnimationStart) {
+                markdownConfiguration.setParagraphHeadingAnimationStart(v) // 段落动画开始回调
+            }
+            if (let Some(v) <- w.paragraphHeadingAnimationEnd) {
+                markdownConfiguration.setParagraphHeadingAnimationEnd(v) // 段落动画结束回调
+            }
+            if (let Some(v) <- w.customLongPressCallback) {
+                markdownConfiguration.setCustomLongPressCallback(v) // 段落长按回调
             }
         }
         return markdownConfiguration

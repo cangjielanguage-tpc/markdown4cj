@@ -134,6 +134,21 @@ public class CJMarkdownPlugin {
      */
     var mode: DelimiterFilterMode = DelimiterFilterMode.Selective([])
 
+    /**
+     * 是否启用自定义卡片插件
+     */
+    var isBlockCustomCardPlugin: Bool = false
+
+    /**
+     * 满足块级图片自定义卡片条件 (desc, imageSrc, title)
+     */
+    var blockImageCard: ?(String, String, String) -> Bool = None
+
+    /**
+     * 满足块级链接自定义卡片条件 (desc, link, title)
+     */
+    var blockLinkCard: ?(String, String, String) -> Bool = None
+
     public init() {}
 
     /**
@@ -348,5 +363,32 @@ public class CJMarkdownPlugin {
     public func setIsWhitelistPlugin(isWhitelistPlugin: Bool, mode: Int64, whitelist: JSArrayEx<String>): Unit {
         this.isWhitelistPlugin = isWhitelistPlugin
         this.mode = DelimiterFilterMode.fromInt64(mode, whitelist.toArray())
+    }
+
+    /**
+     * 设置是否启用自定义卡片插件
+     *
+     * @param isBlockCustomCardPlugin 是否启用自定义卡片插件
+     */
+    public func setIsBlockCustomCardPlugin(isBlockCustomCardPlugin: Bool): Unit {
+        this.isBlockCustomCardPlugin = isBlockCustomCardPlugin
+    }
+
+    /**
+     * 设置块级图片自定义卡片条件回调
+     *
+     * @param cb 满足块级图片自定义卡片条件 (desc, imageSrc, title)
+     */
+    public func setBlockImageCard(cb: (String, String, String) -> Bool): Unit {
+        this.blockImageCard = Some(cb)
+    }
+
+    /**
+     * 设置块级链接自定义卡片条件回调
+     *
+     * @param cb 满足块级链接自定义卡片条件 (desc, link, title)
+     */
+    public func setBlockLinkCard(cb: (String, String, String) -> Bool): Unit {
+        this.blockLinkCard = Some(cb)
     }
 }

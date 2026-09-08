@@ -209,6 +209,71 @@ public class CJMarkdownTableTheme {
      */
     var tableContentTextLetterSpacing: ?Float64 = None
 
+    /**
+     * 表格标题行是否吸顶
+     */
+    var tableStickyHeader: ?Bool = None
+
+    /**
+     * 表格头复制按钮是否显示
+     */
+    var tableHeadIsShow: ?Bool = None
+
+    /**
+     * 表格头标题文字
+     */
+    var tableHeadTitleText: ?String = None
+
+    /**
+     * 表格头标题文本字体族
+     */
+    var tableHeadTitleTextFontFamily: ?String = None
+
+    /**
+     * 表格头标题文本字体大小
+     */
+    var tableHeadTitleTextFontSize: ?Float64 = None
+
+    /**
+     * 表格头标题文本字体粗细
+     */
+    var tableHeadTitleTextFontWeight: ?FontWeight = None
+
+    /**
+     * 表格头标题文本字体样式
+     */
+    var tableHeadTitleTextFontStyle: ?FontStyle = None
+
+    /**
+     * 表格头标题文本字体颜色
+     */
+    var tableHeadTitleTextFontColor: ?Color = None
+
+    /**
+     * 表格头标题文本行高
+     */
+    var tableHeadTitleTextLineHeight: ?Float64 = None
+
+    /**
+     * 表格头标题文本左外边距
+     */
+    var tableHeadTitleTextMarginLeft: ?Float64 = None
+
+    /**
+     * 表格头复制图标宽度
+     */
+    var tableHeadCopyIconWidth: ?Float64 = None
+
+    /**
+     * 表格头复制图标高度
+     */
+    var tableHeadCopyIconHeight: ?Float64 = None
+
+    /**
+     * 表格头复制图标右外边距
+     */
+    var tableHeadCopyIconMarginRight: ?Float64 = None
+
     public init() {}
 
     /**
@@ -542,5 +607,122 @@ public class CJMarkdownTableTheme {
      */
     public func setTableContentTextLetterSpacing(spacing: Float64): Unit {
         tableContentTextLetterSpacing = spacing
+    }
+
+    /**
+     * 设置表格标题行是否吸顶
+     *
+     * @param enable 是否吸顶
+     */
+    public func setTableStickyHeader(enable: Bool): Unit {
+        tableStickyHeader = enable
+    }
+
+    /**
+     * 设置表格头复制按钮是否显示
+     *
+     * @param enable 是否显示
+     */
+    public func setTableHeadIsShow(enable: Bool): Unit {
+        tableHeadIsShow = enable
+    }
+
+    /**
+     * 设置表格头标题文字
+     *
+     * @param text 标题文字
+     */
+    public func setTableHeadTitleText(text: String): Unit {
+        tableHeadTitleText = text
+    }
+
+    /**
+     * 设置表格头标题文本字体族
+     *
+     * @param family 文本字体族
+     */
+    public func setTableHeadTitleTextFontFamily(family: String): Unit {
+        tableHeadTitleTextFontFamily = family
+    }
+
+    /**
+     * 设置表格头标题文本字体大小
+     *
+     * @param size 文本字体大小
+     */
+    public func setTableHeadTitleTextFontSize(size: Float64): Unit {
+        tableHeadTitleTextFontSize = size
+    }
+
+    /**
+     * 设置表格头标题文本字体粗细
+     *
+     * @param weight 文本字体粗细
+     */
+    public func setTableHeadTitleTextFontWeight(weight: Int64): Unit {
+        tableHeadTitleTextFontWeight = convertFontWeight(weight)
+    }
+
+    /**
+     * 设置表格头标题文本字体样式
+     *
+     * @param style 文本字体样式
+     */
+    public func setTableHeadTitleTextFontStyle(style: Int64): Unit {
+        tableHeadTitleTextFontStyle = convertFontStyle(style)
+    }
+
+    /**
+     * 设置表格头标题文本字体颜色
+     *
+     * @param color 文本字体颜色
+     */
+    public func setTableHeadTitleTextFontColor(color: UInt32): Unit {
+        tableHeadTitleTextFontColor = transColorForTransparent(color)
+    }
+
+    /**
+     * 设置表格头标题文本行高
+     *
+     * @param lineHeight 文本行高
+     */
+    public func setTableHeadTitleTextLineHeight(lineHeight: Float64): Unit {
+        tableHeadTitleTextLineHeight = lineHeight
+    }
+
+    /**
+     * 设置表格头标题文本左外边距
+     *
+     * @param marginLeft 文本左外边距
+     */
+    public func setTableHeadTitleTextMarginLeft(marginLeft: Float64): Unit {
+        tableHeadTitleTextMarginLeft = marginLeft
+    }
+
+    /**
+     * 设置表格头复制图标宽度
+     *
+     * @param width 图标宽度
+     */
+    public func setTableHeadCopyIconWidth(width: Float64): Unit {
+        tableHeadCopyIconWidth = width
+    }
+
+    /**
+     * 设置表格头复制图标高度
+     *
+     * @param height 图标高度
+     */
+    public func setTableHeadCopyIconHeight(height: Float64): Unit {
+        tableHeadCopyIconHeight = height
+    }
+
+    /**
+     * 设置表格头复制图标右外边距
+     *
+     * @param marginRight 图标右外边距
+     */
+    public func setTableHeadCopyIconMarginRight(marginRight: Float64): Unit {
+        tableHeadCopyIconMarginRight = marginRight
     }
 }

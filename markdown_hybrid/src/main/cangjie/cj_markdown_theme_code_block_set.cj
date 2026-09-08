@@ -20,6 +20,9 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockParserSync) {
         theme.setCodeBlockParserSync(v)
     }
+    if (let Some(v) <- codeBlockTheme.codeBlockIsDark) {
+        theme.setCodeBlockIsDark(v)
+    }
     if (let Some(v) <- codeBlockTheme.codeBlockBackgroundColor) {
         theme.setCodeBlockBackgroundColor(v)
     }
@@ -31,7 +34,7 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockMarginRight) { codeBlockMarginRight = v }
     if (let Some(v) <- codeBlockTheme.codeBlockMarginBottom) { codeBlockMarginBottom = v }
     if (let Some(v) <- codeBlockTheme.codeBlockMarginLeft) { codeBlockMarginLeft = v }
-    theme.setCodeBlockPadding(top: codeBlockMarginTop, right: codeBlockMarginRight, bottom: codeBlockMarginBottom, left: codeBlockMarginLeft)
+    theme.setCodeBlockMargin(top: codeBlockMarginTop, right: codeBlockMarginRight, bottom: codeBlockMarginBottom, left: codeBlockMarginLeft)
 
     var codeBlockPaddingTop: Float64 = 0.0
     var codeBlockPaddingRight: Float64 = 8.0

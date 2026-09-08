@@ -1,5 +1,8 @@
 import { MarkdownNodeViewString } from "../pages/CJMarkDown"
 import { MarkdownTheme } from "../themes/MarkdownTheme"
+import { MarkdownHighlightParagraph } from "./MarkdownHighlightParagraph"
+import { MarkdownExposureEvent } from "./MarkdownExposureEvent"
+import { MarkdownScrollController } from "./MarkdownScrollController"
 
 /**
  * markdown配置
@@ -77,6 +80,61 @@ export class MarkdownConfiguration {
    * markdown默认样式
    */
   private markdownTheme?: MarkdownTheme = undefined
+
+  /**
+   * 表格复制回调
+   */
+  private tableCopyCallback?: (text: string) => void = undefined
+
+  /**
+   * 元素曝光回调
+   */
+  private elementExposureCallback?: (event: MarkdownExposureEvent) => void = undefined
+
+  /**
+   * 曝光可见阈值
+   */
+  private exposureThreshold?: number = undefined
+
+  /**
+   * 段落高亮配置
+   */
+  private markdownHighlightParagraph?: MarkdownHighlightParagraph = undefined
+
+  /**
+   * 外层滚动控制器
+   */
+  private scrollController?: MarkdownScrollController = undefined
+
+  /**
+   * 段落动画开始回调
+   */
+  private paragraphAnimationStart?: () => void = undefined
+
+  /**
+   * 段落动画结束回调
+   */
+  private paragraphAnimationEnd?: () => void = undefined
+
+  /**
+   * 长按段落回调
+   */
+  private customLongPressCallback?: (text: string) => void = undefined
+
+  /**
+   * 满足自定义块级图片的条件
+   */
+  private isBlockImageCustom?: (url: string) => boolean = undefined
+
+  /**
+   * 满足自定义行内图片的条件
+   */
+  private isInLineImageCustom?: (url: string) => boolean = undefined
+
+  /**
+   * 满足自定义行内链接的条件
+   */
+  private isInLineLinkCustom?: (url: string) => boolean = undefined
 
   /**
    * 设置链接点击回调
@@ -430,5 +488,219 @@ export class MarkdownConfiguration {
    */
   getMarkdownTheme(): MarkdownTheme | undefined {
     return this.markdownTheme
+  }
+
+  /**
+   * 设置表格复制点击回调
+   *
+   * @param cb 表格复制点击回调(text：表格纯文本内容)
+   */
+  setTableCopyCallback(cb: (text: string) => void): MarkdownConfiguration {
+    this.tableCopyCallback = cb
+    return this
+  }
+
+  /**
+   * 获取表格复制点击回调
+   *
+   * @returns 表格复制点击回调函数
+   */
+  getTableCopyCallback(): ((text: string) => void) | undefined {
+    return this.tableCopyCallback
+  }
+
+  /**
+   * 设置元素曝光回调
+   *
+   * 链接进入屏幕可见区域时回调 visible=true，离开时回调 visible=false。
+   *
+   * @param cb 曝光回调(event：{ type, visible, data })
+   */
+  setElementExposureCallback(cb: (event: MarkdownExposureEvent) => void): MarkdownConfiguration {
+    this.elementExposureCallback = cb
+    return this
+  }
+
+  /**
+   * 获取元素曝光回调
+   *
+   * @returns 曝光回调函数
+   */
+  getElementExposureCallback(): ((event: MarkdownExposureEvent) => void) | undefined {
+    return this.elementExposureCallback
+  }
+
+  /**
+   * 设置曝光可见阈值
+   *
+   * @param threshold 0~1，链接与可见区交集面积 / 链接面积 ≥ 此值才算可见
+   */
+  setExposureThreshold(threshold: number): MarkdownConfiguration {
+    this.exposureThreshold = threshold
+    return this
+  }
+
+  /**
+   * 获取曝光可见阈值
+   *
+   * @returns 曝光可见阈值
+   */
+  getExposureThreshold(): number | undefined {
+    return this.exposureThreshold
+  }
+
+  /**
+   * 设置高亮段落配置
+   *
+   * @param highlightParagraph 高亮段落配置对象
+   */
+  setMarkdownHighlightParagraph(highlightParagraph: MarkdownHighlightParagraph): MarkdownConfiguration {
+    this.markdownHighlightParagraph = highlightParagraph
+    return this
+  }
+
+  /**
+   * 获取高亮段落配置
+   *
+   * @returns 高亮段落配置对象
+   */
+  getMarkdownHighlightParagraph(): MarkdownHighlightParagraph | undefined {
+    return this.markdownHighlightParagraph
+  }
+
+  /**
+   * 设置外层滚动控制器
+   *
+   * 不固定高度模式下，页面通过此控制器将外层Scroll的滚动Y传递给MarkdownComponent，
+   * 实现表格吸顶功能。
+   *
+   * @param scrollController 外层滚动控制器
+   */
+  setScrollController(scrollController: MarkdownScrollController): MarkdownConfiguration {
+    this.scrollController = scrollController
+    return this
+  }
+
+  /**
+   * 获取外层滚动控制器
+   *
+   * @returns 外层滚动控制器
+   */
+  getScrollController(): MarkdownScrollController | undefined {
+    return this.scrollController
+  }
+
+  /**
+   * 设置段落动画开始回调
+   *
+   * @param cb 段落动画开始回调
+   */
+  setParagraphHeadingAnimationStart(cb: () => void): MarkdownConfiguration {
+    this.paragraphAnimationStart = cb
+    return this
+  }
+
+  /**
+   * 获取段落动画开始回调
+   *
+   * @returns 段落动画开始回调函数
+   */
+  getParagraphHeadingAnimationStart(): (() => void) | undefined {
+    return this.paragraphAnimationStart
+  }
+
+  /**
+   * 设置段落动画结束回调
+   *
+   * @param cb 段落动画结束回调
+   */
+  setParagraphHeadingAnimationEnd(cb: () => void): MarkdownConfiguration {
+    this.paragraphAnimationEnd = cb
+    return this
+  }
+
+  /**
+   * 获取段落动画结束回调
+   *
+   * @returns 段落动画结束回调函数
+   */
+  getParagraphHeadingAnimationEnd(): (() => void) | undefined {
+    return this.paragraphAnimationEnd
+  }
+
+  /**
+   * 设置段落长按回调
+   *
+   * @param cb 长按段落回调，参数为当前段落的纯文本内容
+   */
+  setCustomLongPressCallback(cb: (text: string) => void): MarkdownConfiguration {
+    this.customLongPressCallback = cb
+    return this
+  }
+
+  /**
+   * 获取段落长按回调
+   *
+   * @returns 长按段落回调函数
+   */
+  getCustomLongPressCallback(): ((text: string) => void) | undefined {
+    return this.customLongPressCallback
+  }
+
+  /**
+   * 设置满足自定义块级图片的条件
+   *
+   * @param cb 满足自定义块级图片的条件
+   */
+  setIsBlockImageCustom(cb: (url: string) => boolean): MarkdownConfiguration {
+    this.isBlockImageCustom = cb
+    return this
+  }
+
+  /**
+   * 获取满足自定义块级图片的条件
+   *
+   * @returns 满足自定义块级图片的条件
+   */
+  getIsBlockImageCustom(): ((url: string) => boolean) | undefined {
+    return this.isBlockImageCustom
+  }
+
+  /**
+   * 设置满足自定义行内图片的条件
+   *
+   * @param cb 满足自定义行内图片的条件
+   */
+  setIsInLineImageCustom(cb: (url: string) => boolean): MarkdownConfiguration {
+    this.isInLineImageCustom = cb
+    return this
+  }
+
+  /**
+   * 获取满足自定义行内图片的条件
+   *
+   * @returns 满足自定义行内图片的条件
+   */
+  getIsInLineImageCustom(): ((url: string) => boolean) | undefined {
+    return this.isInLineImageCustom
+  }
+
+  /**
+   * 设置满足自定义行内链接的条件
+   *
+   * @param cb 满足自定义行内链接的条件
+   */
+  setIsInLineLinkCustom(cb: (url: string) => boolean): MarkdownConfiguration {
+    this.isInLineLinkCustom = cb
+    return this
+  }
+
+  /**
+   * 获取满足自定义行内链接的条件
+   *
+   * @returns 满足自定义行内链接的条件
+   */
+  getIsInLineLinkCustom(): ((url: string) => boolean) | undefined {
+    return this.isInLineLinkCustom
   }
 }

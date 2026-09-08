@@ -94,6 +94,10 @@ struct ParagraphDetailsPage {
   paragraphTextLineHeight: number = 22
   @State // 段落文本字符间距
   paragraphTextLetterSpacing: number = 0
+  @State // 是否启用段落出现动画
+  paragraphAnimationEnabled: boolean = false
+  @State // 段落出现动画时长
+  paragraphAnimationDuration: number = 300
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -157,6 +161,8 @@ struct ParagraphDetailsPage {
       this.paragraphTextFontFamily = paragraphData._paragraphTextFontFamily
       this.paragraphTextLineHeight = paragraphData._paragraphTextLineHeight
       this.paragraphTextLetterSpacing = paragraphData._paragraphTextLetterSpacing
+      this.paragraphAnimationEnabled = paragraphData._paragraphHeadingAnimationEnabled
+      this.paragraphAnimationDuration = paragraphData._paragraphHeadingAnimationDuration
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -284,6 +290,11 @@ struct ParagraphDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    // 段落出现动画
+    if (this.paragraphAnimationEnabled) {
+      globalTheme.setParagraphHeadingAnimationEnabled(this.paragraphAnimationEnabled)
+      globalTheme.setParagraphHeadingAnimationDuration(this.paragraphAnimationDuration)
+    }
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Paragraph

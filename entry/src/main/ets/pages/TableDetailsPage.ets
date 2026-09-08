@@ -4,6 +4,7 @@ import { CJMarkdown,
   GlobalTheme,
   MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
+  MarkdownScrollController,
   MarkdownTheme,
   TableTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -17,6 +18,7 @@ struct TableDetailsPage {
   // ---------- 通用
   scroller: Scroller = new Scroller() // 滑动控制器
   markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  markdownScrollController: MarkdownScrollController = new MarkdownScrollController() // 外层滚动控制器（表格吸顶）
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode')
@@ -142,6 +144,34 @@ struct TableDetailsPage {
   tableContentTextLineHeight: number = 22
   @State // 表格内容文本字符间距
   tableContentTextLetterSpacing: number = 0
+  @State // 表格首行是否吸顶
+  tableStickyHeader: boolean = false
+  @State // 表格头是否显示
+  tableHeadIsShow: boolean = false
+  @State // 表格头标题文本
+  tableHeadTitleText: string = ''
+  @State // 表格头标题文本左外边距
+  tableHeadTitleTextMarginLeft: number = 0
+  @State // 表格头复制图标
+  tableHeadCopyIcon: Resource | undefined = undefined
+  @State // 表格头复制图标宽度
+  tableHeadCopyIconWidth: number = 24
+  @State // 表格头复制图标高度
+  tableHeadCopyIconHeight: number = 24
+  @State // 表格头复制图标右外边距
+  tableHeadCopyIconMarginRight: number = 0
+  @State // 表格头标题文本颜色
+  tableHeadTitleTextFontColor: number | undefined = undefined
+  @State // 表格头标题文本尺寸
+  tableHeadTitleTextFontSize: number | undefined = undefined
+  @State // 表格头标题文本字体样式
+  tableHeadTitleTextFontStyle: FontStyle | undefined = undefined
+  @State // 表格头标题文本字体粗细
+  tableHeadTitleTextFontWeight: FontWeight | undefined = undefined
+  @State // 表格头标题文本字体
+  tableHeadTitleTextFontFamily: string | undefined = undefined
+  @State // 表格头标题文本行高
+  tableHeadTitleTextLineHeight: number | undefined = undefined
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -230,6 +260,20 @@ struct TableDetailsPage {
       this.tableContentTextFontFamily = tableData._tableContentTextFontFamily
       this.tableContentTextLineHeight = tableData._tableContentTextLineHeight
       this.tableContentTextLetterSpacing = tableData._tableContentTextLetterSpacing
+      this.tableStickyHeader = tableData._tableStickyHeader
+      this.tableHeadIsShow = tableData._tableHeadIsShow
+      this.tableHeadTitleText = tableData._tableHeadTitleText
+      this.tableHeadTitleTextMarginLeft = tableData._tableHeadTitleTextMarginLeft
+      this.tableHeadCopyIcon = tableData._tableHeadCopyIcon
+      this.tableHeadCopyIconWidth = tableData._tableHeadCopyIconWidth
+      this.tableHeadCopyIconHeight = tableData._tableHeadCopyIconHeight
+      this.tableHeadCopyIconMarginRight = tableData._tableHeadCopyIconMarginRight
+      this.tableHeadTitleTextFontColor = tableData._tableHeadTitleTextFontColor
+      this.tableHeadTitleTextFontSize = tableData._tableHeadTitleTextFontSize
+      this.tableHeadTitleTextFontStyle = tableData._tableHeadTitleTextFontStyle
+      this.tableHeadTitleTextFontWeight = tableData._tableHeadTitleTextFontWeight
+      this.tableHeadTitleTextFontFamily = tableData._tableHeadTitleTextFontFamily
+      this.tableHeadTitleTextLineHeight = tableData._tableHeadTitleTextLineHeight
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -336,6 +380,15 @@ struct TableDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    // 表格复制回调 - 表格头显示时点击复制按钮触发
+    config.setTableCopyCallback((text: string) => {
+      hilog.error(1, "tableCopy", `---tableText:${text}`)
+      this.getUIContext().getPromptAction().showToast({ message: "表格内容已复制", duration: 2000 })
+    })
+    // 外层滚动控制器 - 非固定高度模式下表格吸顶需要
+    if (!this.openGestureSwipe) {
+      config.setScrollController(this.markdownScrollController)
+    }
     return config
   }
 
@@ -404,6 +457,34 @@ struct TableDetailsPage {
     tableTheme.setTableContentTextFontFamily(this.tableContentTextFontFamily)
     tableTheme.setTableContentTextLineHeight(this.tableContentTextLineHeight)
     tableTheme.setTableContentTextLetterSpacing(this.tableContentTextLetterSpacing)
+    tableTheme.setTableStickyHeader(this.tableStickyHeader)
+    tableTheme.setTableHeadIsShow(this.tableHeadIsShow)
+    tableTheme.setTableHeadTitleText(this.tableHeadTitleText)
+    tableTheme.setTableHeadTitleTextMarginLeft(this.tableHeadTitleTextMarginLeft)
+    if (this.tableHeadCopyIcon !== undefined) {
+      tableTheme.setTableHeadCopyIcon(this.tableHeadCopyIcon)
+    }
+    tableTheme.setTableHeadCopyIconWidth(this.tableHeadCopyIconWidth)
+    tableTheme.setTableHeadCopyIconHeight(this.tableHeadCopyIconHeight)
+    tableTheme.setTableHeadCopyIconMarginRight(this.tableHeadCopyIconMarginRight)
+    if (this.tableHeadTitleTextFontColor !== undefined) {
+      tableTheme.setTableHeadTitleTextFontColor(this.tableHeadTitleTextFontColor)
+    }
+    if (this.tableHeadTitleTextFontSize !== undefined) {
+      tableTheme.setTableHeadTitleTextFontSize(this.tableHeadTitleTextFontSize)
+    }
+    if (this.tableHeadTitleTextFontStyle !== undefined) {
+      tableTheme.setTableHeadTitleTextFontStyle(this.tableHeadTitleTextFontStyle)
+    }
+    if (this.tableHeadTitleTextFontWeight !== undefined) {
+      tableTheme.setTableHeadTitleTextFontWeight(this.tableHeadTitleTextFontWeight)
+    }
+    if (this.tableHeadTitleTextFontFamily !== undefined) {
+      tableTheme.setTableHeadTitleTextFontFamily(this.tableHeadTitleTextFontFamily)
+    }
+    if (this.tableHeadTitleTextLineHeight !== undefined) {
+      tableTheme.setTableHeadTitleTextLineHeight(this.tableHeadTitleTextLineHeight)
+    }
     theme.setTableTheme(tableTheme)
     
     return theme
