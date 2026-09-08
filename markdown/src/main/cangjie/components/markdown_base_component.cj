@@ -197,10 +197,14 @@ func blockCodeBlockListComponent(
 }
 
 /**
- * 行号文本显示
+ * 代码类型文本显示
+ *
+ * @param str 类型文本内容
+ * @param markdownConfiguration markdown配置
+ * @param isShow 是否显示（代码内容为空时隐藏，与ArkUI一致）
  */
 @Builder
-func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfiguration) {
+func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfiguration, isShow: Bool) {
     Row() {
         Text(str)
             .fontFamily(codeTypeTextFontFamily(markdownConfiguration.markdownTheme))
@@ -215,6 +219,7 @@ func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfigur
     .width(30.percent)
     .justifyContent(FlexAlign.Start)
     .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeTextMarginLeft)
+    .visibility(isVisibility(isShow))
 }
 
 /**

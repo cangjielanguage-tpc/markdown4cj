@@ -259,89 +259,102 @@ class MarkdownCodeBlockListComponent {
 
     /**
      * 复制按钮和全屏按钮部分
+     * 与ArkUI CodeTitleComponent(showTypeText=false)一致：按钮始终创建，用visibility控制显隐
      */
     @Builder
     func codeBlockButtonComponent() {
         Row() {
-            if (strText.size > 0 && idxSelect < strText.size && strText[idxSelect].trimAscii().size > 0) {
-                Row()
-                    .width(30.percent)
-                    .justifyContent(FlexAlign.Start)
-                Row() {
-                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow) {
-                        Row() {
-                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
-                                Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())
-                                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconWidth)
-                                    .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconHeight)
-                                    .objectFit(ImageFit.Contain)
-                            }
+            Blank()
+                .layoutWeight(1)
 
-                            Blank()
-                                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconTextSpacing)
-
-                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow) {
-                                Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyText)
-                                    .fontFamily(codeCopyTextFontFamily(markdownConfiguration.markdownTheme))
-                                    .fontSize(codeCopyTextFontSize(markdownConfiguration.markdownTheme))
-                                    .fontWeight(codeCopyTextFontWeight(markdownConfiguration.markdownTheme))
-                                    .fontStyle(codeCopyTextFontStyle(markdownConfiguration.markdownTheme))
-                                    .fontColor(codeCopyTextFontColor(markdownConfiguration.markdownTheme))
-                                    .lineHeight(codeCopyTextLineHeight(markdownConfiguration.markdownTheme))
-                                    .align(Alignment.End)
-                                    .maxLines(1)
-                                    .textOverflow(TextOverflow.Ellipsis)
-                            }
-                        }
-                        .justifyContent(FlexAlign.End)
-                        .onClick {evt => codeCopyOnClick(strText[idxSelect], markdownConfiguration.codeCopyCallback)}
-                    }
-
-                    Blank()
-                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
-                        .visibility(if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
-                            Visibility.Visible
-                        } else {
-                            Visibility.None
-                        })
-
-                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow) {
-                        Row() {
-                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome()) {
-                                Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
-                                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
-                                    .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
-                                    .objectFit(ImageFit.Contain)
-                            }
-
-                            Blank()
-                                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
-
-                            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow) {
-                                Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenText)
-                                    .fontFamily(codeFullScreenTextFontFamily(markdownConfiguration.markdownTheme))
-                                    .fontSize(codeFullScreenTextFontSize(markdownConfiguration.markdownTheme))
-                                    .fontWeight(codeFullScreenTextFontWeight(markdownConfiguration.markdownTheme))
-                                    .fontStyle(codeFullScreenTextFontStyle(markdownConfiguration.markdownTheme))
-                                    .fontColor(codeFullScreenTextFontColor(markdownConfiguration.markdownTheme))
-                                    .lineHeight(codeFullScreenTextLineHeight(markdownConfiguration.markdownTheme))
-                                    .align(Alignment.End)
-                                    .maxLines(1)
-                                    .textOverflow(TextOverflow.Ellipsis)
-                            }
-                        }
-                        .justifyContent(FlexAlign.End)
-                        .onClick {
-                            evt => codeFullScreenOnClick(strText[idxSelect], strInfoText[idxSelect], markdownConfiguration.codeFullScreenCallback)
-                        }
-                    }
+            // 复制按钮（始终创建，用visibility控制显隐）
+            Row() {
+                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
+                    Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())
+                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconWidth)
+                        .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconHeight)
+                        .objectFit(ImageFit.Contain)
                 }
-                .width(70.percent)
-                .justifyContent(FlexAlign.End)
+
+                Blank()
+                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconTextSpacing)
+                    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow))
+
+                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow) {
+                    Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyText)
+                        .fontFamily(codeCopyTextFontFamily(markdownConfiguration.markdownTheme))
+                        .fontSize(codeCopyTextFontSize(markdownConfiguration.markdownTheme))
+                        .fontWeight(codeCopyTextFontWeight(markdownConfiguration.markdownTheme))
+                        .fontStyle(codeCopyTextFontStyle(markdownConfiguration.markdownTheme))
+                        .fontColor(codeCopyTextFontColor(markdownConfiguration.markdownTheme))
+                        .lineHeight(codeCopyTextLineHeight(markdownConfiguration.markdownTheme))
+                        .align(Alignment.End)
+                        .maxLines(1)
+                        .textOverflow(TextOverflow.Ellipsis)
+                }
             }
+            .justifyContent(FlexAlign.End)
+            .onClick {evt => codeCopyOnClick(selectCodeText(), markdownConfiguration.codeCopyCallback)}
+            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow))
+
+            Blank()
+                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
+
+            // 全屏按钮（始终创建，用visibility控制显隐）
+            Row() {
+                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome()) {
+                    Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
+                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
+                        .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
+                        .objectFit(ImageFit.Contain)
+                }
+
+                Blank()
+                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
+                    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow))
+
+                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow) {
+                    Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenText)
+                        .fontFamily(codeFullScreenTextFontFamily(markdownConfiguration.markdownTheme))
+                        .fontSize(codeFullScreenTextFontSize(markdownConfiguration.markdownTheme))
+                        .fontWeight(codeFullScreenTextFontWeight(markdownConfiguration.markdownTheme))
+                        .fontStyle(codeFullScreenTextFontStyle(markdownConfiguration.markdownTheme))
+                        .fontColor(codeFullScreenTextFontColor(markdownConfiguration.markdownTheme))
+                        .lineHeight(codeFullScreenTextLineHeight(markdownConfiguration.markdownTheme))
+                        .align(Alignment.End)
+                        .maxLines(1)
+                        .textOverflow(TextOverflow.Ellipsis)
+                }
+            }
+            .justifyContent(FlexAlign.End)
+            .onClick {
+                evt => codeFullScreenOnClick(selectCodeText(), selectInfoText(), markdownConfiguration.codeFullScreenCallback)
+            }
+            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
         }
         .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTitleLayoutMarginBottom)
         .alignItems(VerticalAlign.Center)
+    }
+
+    /**
+     * 获取当前选中代码块文本（安全访问，避免越界）
+     */
+    func selectCodeText(): String {
+        if (strText.size > 0 && idxSelect < strText.size) {
+            return strText[idxSelect]
+        }
+        return ""
+    }
+
+    /**
+     * 获取当前选中代码块类型（安全访问，避免越界）
+     */
+    func selectInfoText(): String {
+        if (strInfoText.size > 0 && idxSelect < strInfoText.size) {
+            return strInfoText[idxSelect]
+        }
+        return ""
     }
 
     /**
