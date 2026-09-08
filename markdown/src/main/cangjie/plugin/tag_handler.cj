@@ -406,7 +406,22 @@ public class TableHeadHandler <: TagHandler {
     public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let tableHead: TableHead = TableHead()
         visitChildren(visitor, renderer, tag, tableHead)
+        // HTML 语义：thead 内的所有单元格均为表头单元格，标记为 header 以加粗显示首行
+        markCellsAsHeader(tableHead)
         return tableHead
+    }
+
+    // 递归标记节点树中所有 TableCell 为表头单元格
+    private static func markCellsAsHeader(node: Node): Unit {
+        var child = node.getFirstChild()
+        while (let Some(current) <- child) {
+            match (current) {
+                case cell: TableCell => cell.setHeader(true)
+                case _ => ()
+            }
+            markCellsAsHeader(current)
+            child = current.getNext()
+        }
     }
 
     public override func supportedTags(): Collection<String> {
@@ -450,6 +465,10 @@ public class TableCellHandler <: TagHandler {
 
     public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let tableCell: TableCell = TableCell()
+        // th 标签为表头单元格，标记为 header 以加粗显示
+        if (tag.name() == "th") {
+            tableCell.setHeader(true)
+        }
         visitChildren(visitor, renderer, tag, tableCell)
         return tableCell
     }
