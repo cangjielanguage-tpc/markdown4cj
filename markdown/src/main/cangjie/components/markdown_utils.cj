@@ -2441,13 +2441,71 @@ func fontWeightToValue(weightString: String): ?FontWeight {
 }
 
 /**
+ * 判断字符串是否仅由十六进制字符组成（0-9、a-f，小写）
+ *
+ * @param s 输入字符串
+ * @return true表示全是十六进制字符
+ */
+func isHexString(s: String): Bool {
+    for (b in s.toArray()) {
+        let isDigit = b >= 48 && b <= 57 // 0-9
+        let isLowerHex = b >= 97 && b <= 102 // a-f
+        if (!isDigit && !isLowerHex) {
+            return false
+        }
+    }
+    return true
+}
+
+/**
+ * 将小写十六进制字符串解析为UInt32数值
+ *
+ * @param s 十六进制字符串（如 "ff0000"）
+ * @return 对应数值（非法字符返回None）
+ */
+func hexStringToUInt32(s: String): ?UInt32 {
+    var result: UInt32 = 0
+    for (b in s.toArray()) {
+        var v: UInt32
+        if (b >= 48 && b <= 57) { // 0-9
+            v = UInt32(b - 48)
+        } else if (b >= 97 && b <= 102) { // a-f
+            v = UInt32(b - 87)
+        } else {
+            return Option<UInt32>.None
+        }
+        result = result * 16 + v
+    }
+    return Some(result)
+}
+
+/**
+ * 将#RGB扩展为#RRGGBB
+ *
+ * @param hex 3位十六进制颜色（如 "f00"）
+ * @return 6位十六进制颜色（如 "ff0000"）
+ */
+func expandHex3(hex: String): String {
+    let sb = StringBuilder()
+    for (c in hex) {
+        sb.append(c)
+        sb.append(c)
+    }
+    return sb.toString()
+}
+
+/**
  * HTML类型Span标签color属性转换Color对象
+ * 支持格式：颜色名（如 "red"）、#RRGGBB、#AARRGGBB、#RGB、0xARGB、纯十进制数字
  *
  * @param colorString color属性
  * @return Color对象
  */
 func colorStringToColor(colorString: String): ?Color {
     let colorStr = colorString.toAsciiLower().trimAscii()
+    if (colorStr.size == 0) {
+        return Option<Color>.None
+    }
     var color: ?Color = match (colorStr) {
         // 通用16种颜色（CSS基础色）
         case "black" => Color(0xFF000000)
@@ -2591,7 +2649,51 @@ func colorStringToColor(colorString: String): ?Color {
         case "wheat" => Color(0xFFF5DEB3)
         case "whitesmoke" => Color(0xFFF5F5F5)
         case "yellowgreen" => Color(0xFF9ACD32)
+        // HarmonyOS Color枚举
+        case "transparent" => Color(0x00000000)
         case _ => Option<Color>.None
     }
-    return color
+    if (color.isSome()) {
+        return color
+    }
+    // 0xARGB 格式（如 "0xFFFF0000"）
+    if (colorStr.startsWith("0x")) {
+        let value = hexStringToUInt32(colorStr[2..])
+        if (let Some(v) <- value) {
+            return Color(v)
+        }
+        return Option<Color>.None
+    }
+    // #RRGGBB 或 #AARRGGBB 格式（如 "#FF0000"、"#FFFF0000"）
+    if (colorStr.startsWith("#")) {
+        let hex = colorStr[1..]
+        if (isHexString(hex)) {
+            if (hex.size == 6) {
+                // #RRGGBB 补 FF alpha
+                let rgb = hexStringToUInt32(hex)
+                if (let Some(v) <- rgb) {
+                    return Color(UInt32(0xFF000000) | v)
+                }
+            } else if (hex.size == 8) {
+                // #AARRGGBB
+                let argb = hexStringToUInt32(hex)
+                if (let Some(v) <- argb) {
+                    return Color(v)
+                }
+            } else if (hex.size == 3) {
+                // #RGB 扩展为 #RRGGBB
+                let rgb = hexStringToUInt32(expandHex3(hex))
+                if (let Some(v) <- rgb) {
+                    return Color(UInt32(0xFF000000) | v)
+                }
+            }
+        }
+        return Option<Color>.None
+    }
+    // 纯数字（如 "123"）按十进制处理
+    try {
+        return Color(UInt32.parse(colorStr))
+    } catch (_: Exception) {
+    }
+    return Option<Color>.None
 }

@@ -212,8 +212,10 @@ public func nodeToNodeView(
                         try {
                             let colorString: ?String = fontNode.getColor()
                             if (colorString.isSome()) {
-                                let colorUInt32: UInt32 = UInt32.parse(colorString().replace("#", "0x"))
-                                childrenNodeView.fontNodeColor = Color(colorUInt32)
+                                let color: ?Color = colorStringToColor(colorString())
+                                if (let Some(m) <- color) {
+                                    childrenNodeView.fontNodeColor = m
+                                }
                             }
                         } catch (_: Exception) {
                         }
@@ -248,11 +250,6 @@ public func nodeToNodeView(
                                     let color: ?Color = colorStringToColor(n)
                                     if (let Some(m) <- color) {
                                         childrenNodeView.spanNodeColor = m
-                                    } else {
-                                        if (n.startsWith("#")) {
-                                            let colorUInt32: UInt32 = UInt32.parse(n.replace("#", "0x"))
-                                            childrenNodeView.spanNodeColor = Color(colorUInt32)
-                                        }
                                     }
                                 }
                             } catch (_: Exception) {
