@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.4.0-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v2.0.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.1.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -68,6 +68,16 @@ Markdown_arkui是一个用arkts语言编写的适用于鸿蒙系统的Markdown�
 42. 支持文本长按选中复制粘贴
 43. 支持图文混排和图文不混排功能
 44. 支持自定义正则实现自定义自动链接
+45. 支持段落高亮功能
+46. 支持划选文字复制功能
+47. 支持长按段落背景效果功能
+48. 支持表格复制能力
+49. 支持全文复制能力
+50. 支持表格的表头功能
+51. 支持表格首行吸顶功能
+52. 支持段落出现效果功能
+53. 支持超链接样式以及曝光功能
+54. 支持自定义卡片功能
 
 ## 软件架构
 
@@ -99,72 +109,38 @@ Markdown_arkui是一个用arkts语言编写的适用于鸿蒙系统的Markdown�
 
 ### 编译构建
 
-1. 下载安装
+1. 准备环境并获取源码：准备好 DevEco Studio 6.1.1.280 环境（Windows / Linux / macOS）
 
-   1.本地编译安装 - 准备好DevEco Studio 6.1.1.280环境（Windows / Linux / macOS）
+   ```bash
+   git clone -b markdown_arkui-6.1.1 https://gitcode.com/Cangjie-TPC/markdown4cj.git 
+   ```
 
-      ```bash
-      git clone -b markdown_arkui-6.1.1 https://gitcode.com/Cangjie-TPC/markdown4cj.git 
-      ```
+2. 下载依赖 HAR：项目根目录提供了 2 个下载脚本，仅从 OBS 下载 4 个预编译依赖 HAR（`prism_hybrid` / `codeformat_hybrid` / `markdown_parser_hybrid` / `formula_hybrid`，版本 v2.0.0）到 `markdown_arkui/har` 目录，不做其他任何操作：
 
-   2.使用命令行脚本一键编译（自动完成全部流程）
+   | 脚本                | 平台            | 说明                            |
+   | ------------------- | --------------- | ------------------------------ |
+   | `build_har_20.ps1`  | Windows         | 下载 4 个预编译依赖 HAR（API 20） |
+   | `build_har_20.sh`   | Linux / macOS   | 同 `build_har_20.ps1`           |
 
-      项目根目录下提供了 4 个构建脚本，覆盖 Windows（PowerShell）与 Linux/macOS（Bash）平台：
+   Windows 用法：
 
-      | 脚本 | 平台 | 说明 |
-      | --- | --- | --- |
-      | `build_har_15.ps1` | Windows | 将子模块 `compatibleSdkVersion` 统一改为 `5.0.3(15)` 后打包（兼容 API 15） |
-      | `build_har_20.ps1` | Windows | 保持子模块默认 `compatibleSdkVersion` 为 `6.0.0(20)` 打包（API 20） |
-      | `build_har_15.sh` | Linux / macOS | 同 `build_har_15.ps1` |
-      | `build_har_20.sh` | Linux / macOS | 同 `build_har_20.ps1` |
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\build_har_20.ps1
+   ```
 
-      脚本执行流程（按顺序）：
+   Linux / macOS 用法：
 
-      1. 依据 `.gitmodules` 从零下载 4 个子模块源码（`prism4cj` / `codeformat4cj` / `markdown4cj` / `formula4cj`，浅克隆，按 `.gitmodules` 中声明的分支）
-      2. （仅 15 版脚本）将根项目及全部子模块中所有 `build-profile.json5` 的 `compatibleSdkVersion` 统一改为 `5.0.3(15)`
-      3. 依次打包 4 个子模块的 HAR 并复制到 `markdown_arkui/har` 目录
-      4. 编译根项目 `markdown_arkui` 模块，产物为 `markdown_arkui/build/default/outputs/default/markdown_arkui.har`
+   ```bash
+   bash build_har_20.sh
+   ```
 
-      Windows 用法：
+3. 编译工程：用 DevEco Studio 打开工程，编译 `markdown_arkui` 模块，产物为 `markdown_arkui/build/default/outputs/default/markdown_arkui.har`
 
-      ```powershell
-      powershell -ExecutionPolicy Bypass -File .\build_har_15.ps1
-      ```
+4. 在项目中使用markdown项目
 
-      Linux / macOS 用法：
-
-      ```bash
-      bash build_har_15.sh
-      ```
-
-      可选参数（两种平台一一对应）：
-
-      | 参数（ps1 / sh） | 说明 |
-      | --- | --- |
-      | `-Only` / `--only` | 第 3 步只打包指定子模块，逗号分隔，如 `-Only prism4cj,formula4cj` |
-      | `-Clean` / `--clean` | 打包前删除各模块的旧 build 目录 |
-      | `-SkipDownload` / `--skip-download` | 子模块已就绪时跳过清理与下载，加速打包 |
-      | `-BuildMode` / `--build-mode` | 构建模式：`debug` / `release`（默认 `release`） |
-      | `-DevEcoTools` / `--deveco-tools` | 显式指定 DevEco Studio 的 tools 目录（含 node/ohpm/hvigor） |
-      | `-CangjieSdkRoot` / `--cangjie-sdk-root` | 显式指定兼容性 SDK 的 compatibility 根目录 |
-
-      工具链路径不写死：未显式指定时，脚本按 `环境变量 -> 项目根各级祖先目录` 的顺序自动探测 DevEco Studio tools 目录（`DEVECO_TOOLS_HOME` / 由 `DEVECO_SDK_HOME` 推导 / `DevEco Studio*` 安装目录）与兼容性 SDK（`DEVECO_CANGJIE_PATH` / `compatibility-sdk-*` 目录），多版本共存时优先匹配与项目名相同版本号的目录。
-
-      示例（子模块已就绪时只重打 prism4cj）：
-
-      ```powershell
-      powershell -ExecutionPolicy Bypass -File .\build_har_15.ps1 -SkipDownload -Only prism4cj
-      ```
-
-      ```bash
-      bash build_har_15.sh --skip-download --only prism4cj
-      ```
-
-      在项目中使用markdown项目
-
-      ```arkts
-      import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_arkui'
-      ```
+   ```arkts
+   import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_arkui'
+   ```
 
 ### 使用仓颉组件功能示例
 
