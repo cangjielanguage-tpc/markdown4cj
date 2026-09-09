@@ -19,6 +19,8 @@ struct TableDetailsPage {
   scroller: Scroller = new Scroller() // 滑动控制器
   markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
   markdownScrollController: MarkdownScrollController = new MarkdownScrollController() // 外层滚动控制器（表格吸顶）
+  private contentHeight: number = 0 // Scroll 内容高度（表格吸顶）
+  private viewportHeight: number = 0 // Scroll 视口高度（表格吸顶）
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode')
@@ -346,6 +348,9 @@ struct TableDetailsPage {
                 plugin: this.markdownPlugin
               })
             }
+            .onAreaChange((oldValue: Area, newValue: Area) => {
+              this.contentHeight = newValue.height as number
+            })
           }
         } else {
           if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
@@ -369,10 +374,34 @@ struct TableDetailsPage {
                 plugin: this.markdownPlugin
               })
             }
+            .onAreaChange((oldValue: Area, newValue: Area) => {
+              this.contentHeight = newValue.height as number
+            })
           }
         }
       }
       .align(Alignment.TopStart)
+      .edgeEffect(EdgeEffect.None) // 禁用弹跳，防止 overscroll 时表头跟随内容弹跳
+      .onAreaChange((oldValue: Area, newValue: Area) => {
+        this.viewportHeight = newValue.height as number
+      })
+      .onScrollFrameBegin((offset: number, scrollState: ScrollState) => {
+        // 滚动前预测（消除一帧延迟，同帧渲染）
+        const currentY = this.scroller.currentOffset().yOffset
+        let newY = currentY + offset
+        if (newY < 0) newY = 0
+        const maxScrollY = this.contentHeight > this.viewportHeight
+          ? this.contentHeight - this.viewportHeight : 0
+        if (maxScrollY > 0 && newY > maxScrollY) {
+          newY = maxScrollY
+        }
+        this.markdownScrollController.setScrollY(newY)
+        return { offsetRemain: offset }
+      })
+      .onDidScroll((xOffset: number, yOffset: number, scrollState: ScrollState) => {
+        // 滚动后用实际位置修正（解决预测偏差）
+        this.markdownScrollController.setScrollY(this.scroller.currentOffset().yOffset)
+      })
       .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
@@ -386,7 +415,8 @@ struct TableDetailsPage {
       this.getUIContext().getPromptAction().showToast({ message: "表格内容已复制", duration: 2000 })
     })
     // 外层滚动控制器 - 非固定高度模式下表格吸顶需要
-    if (!this.openGestureSwipe) {
+    // openGestureSwipe/openGestureSwipeTest 时由组件内部滚动驱动吸顶，不设置控制器
+    if (!this.openGestureSwipe && !this.openGestureSwipeTest) {
       config.setScrollController(this.markdownScrollController)
     }
     return config

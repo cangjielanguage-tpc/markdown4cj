@@ -307,7 +307,7 @@ export struct CJMarkdown {
       if (global_customLib === undefined) {
         global_customLib = requireCJLib("libmarkdown_hybrid.so") as CustomLib
       }
-      this.markdownNode = new CJNodeController(this.getProcessedContent(), this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
+      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
     } else {
       global_customLib = undefined
     }
