@@ -1624,18 +1624,121 @@ func length2Float(length: Length): Float64 {
 }
 
 /**
- * 表格单元格内图片的约束最大宽度
+ * 图片的约束最大宽度（对齐ArkUI：maxWidth: imageMaxWidth ?? '100%'）
  *
- * @param cellMaxWidth 表格单元格最大宽度 - 单位vp
- * @return Length 有单元格最大宽度时返回该值，否则返回100%
+ * @param cellMaxWidth 表格单元格最大宽度（优先级最高） - 单位vp
+ * @param themeMaxWidth 主题配置的最大图片宽度（单元格无约束时兜底，对齐ArkUI imageTheme.imageMaxWidth） - 单位vp
+ * @return Length 依次取单元格最大宽度、主题最大宽度，均无则返回100%
  */
-func imageSpanConstraintMaxWidth(cellMaxWidth: ?Float64): Length {
+func imageSpanConstraintMaxWidth(cellMaxWidth: ?Float64, themeMaxWidth: ?Float64): Length {
     if (let Some(w) <- cellMaxWidth) {
         if (w > 0.0) {
             return w.vp
         }
     }
+    if (let Some(w) <- themeMaxWidth) {
+        if (w > 0.0) {
+            return w.vp
+        }
+    }
     return 100.percent
+}
+
+/**
+ * 图片最大高度约束（对齐ArkUI constraintSize({maxHeight: imageMaxHeight})）
+ * 仓颉constraintSize的maxHeight为非可选Length，主题未设置imageMaxHeight时
+ * 返回极大值等效于不约束（与ArkUI undefined行为一致，图片总有显式高度，该值不生效）
+ *
+ * @param maxHeight 主题图片最大高度 - 单位vp
+ * @return 约束高度；未设置时返回极大值（等效不约束）
+ */
+func imageMaxHeightLength(maxHeight: ?Float64): Length {
+    if (let Some(h) <- maxHeight) {
+        if (h > 0.0) {
+            return h.vp
+        }
+    }
+    return 1000000.0.vp
+}
+
+/**
+ * 块级图片最终显示宽度（对齐ArkUI .width(item.imageWidth ?? componentWidth * imageMaximumWidth)）
+ * 优先级：已计算的显示宽度（px）→ 父容器宽度×imageMaximumWidth（父布局百分比）→ 父布局100%
+ *
+ * @param displayPx 已计算的显示宽度 - 单位px
+ * @param componentVp 控件宽度 - 单位vp
+ * @param maximumWidth 图片最大宽度比例
+ * @return 宽度Length
+ */
+func imageBlockDisplayWidth(displayPx: Float64, componentVp: Float64, maximumWidth: Float64): Length {
+    if (displayPx > 0.0) {
+        return displayPx.px
+    }
+    if (componentVp > 0.0) {
+        return (componentVp * maximumWidth).vp
+    }
+    return 100.percent
+}
+
+/**
+ * 用节点缓存的图片原始尺寸重算最终显示宽高（对齐ArkUI recalculateImageDimensions）
+ * 增量刷新时图片URL不变→组件重建后onComplete不回调，需用缓存的原始尺寸重新计算
+ *
+ * @param componentImageWidth 控件最大宽度 - 单位px
+ * @param imageNode 图片节点（携带 imageNaturalWidth/Height 缓存）
+ * @return [宽度px, 高度px]；无缓存或不可计算时返回空数组
+ */
+func recalcImageSizeFromCache(
+    componentImageWidth: Float64,
+    imageNode: NodeView,
+    themeWidth: Option<Float64>,
+    themeHeight: Option<Float64>,
+    markdownTheme: MarkdownTheme
+): Array<Float64> {
+    if (let Some(naturalWidth) <- imageNode.imageNaturalWidth) {
+        if (let Some(naturalHeight) <- imageNode.imageNaturalHeight) {
+            if (naturalWidth > 0.0 && naturalHeight > 0.0 && componentImageWidth > 0.0) {
+                let res = imageWidthAndHeight(
+                    componentImageWidth,
+                    naturalWidth,
+                    naturalHeight,
+                    themeWidth,
+                    themeHeight,
+                    markdownTheme.imageTheme.imageMaxWidth,
+                    markdownTheme.imageTheme.imageMaxHeight,
+                    markdownTheme.imageTheme.imageFixedRatioWidth,
+                    markdownTheme.imageTheme.imageMaximumWidth
+                )
+                if (res[0] > 0.0 && res[1] > 0.0) {
+                    // imageWidthAndHeight返回元组，转换为数组返回
+                    return [res[0], res[1]]
+                }
+            }
+        }
+    }
+    return Array<Float64>()
+}
+
+/**
+ * 图片加载完成后把原始尺寸与最终显示宽高写回节点缓存（对齐ArkUI：item.imageNaturalWidth/Height 及最终宽高写回）
+ *
+ * @param imageNode 图片节点
+ * @param naturalWidth 图片原始宽度 - 单位px
+ * @param naturalHeight 图片原始高度 - 单位px
+ * @param displayWidth 最终显示宽度 - 单位px
+ * @param displayHeight 最终显示高度 - 单位px
+ */
+func cacheImageSizeToNode(
+    imageNode: NodeView,
+    naturalWidth: Float64,
+    naturalHeight: Float64,
+    displayWidth: Float64,
+    displayHeight: Float64
+): Unit {
+    imageNode.imageNaturalWidth = Some(naturalWidth)
+    imageNode.imageNaturalHeight = Some(naturalHeight)
+    imageNode.imageDisplayWidth = Some(displayWidth)
+    imageNode.imageDisplayHeight = Some(displayHeight)
 }
 
 /**

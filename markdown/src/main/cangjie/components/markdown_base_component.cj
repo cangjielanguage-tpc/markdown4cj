@@ -301,7 +301,8 @@ func spanImageComponent(
                     rawFileImageWidth: spanListNodeView.imageWidth,
                     rawFileImageHeight: spanListNodeView.imageHeight,
                     rawFileImageRadius: spanListNodeView.imageRadius,
-                    rawFileImageAlign: spanListNodeView.imageAlign
+                    rawFileImageAlign: spanListNodeView.imageAlign,
+                    rawFileImageNode: spanListNodeView
                 )
             } else {
                 // url
@@ -318,7 +319,8 @@ func spanImageComponent(
                     urlImageWidth: spanListNodeView.imageWidth,
                     urlImageHeight: spanListNodeView.imageHeight,
                     urlImageRadius: spanListNodeView.imageRadius,
-                    urlImageAlign: spanListNodeView.imageAlign
+                    urlImageAlign: spanListNodeView.imageAlign,
+                    urlImageNode: spanListNodeView
                 )
             }
         } else {
@@ -339,7 +341,8 @@ func spanImageComponent(
                     rawFileCallbackImageWidth: spanListNodeView.imageWidth,
                     rawFileCallbackImageHeight: spanListNodeView.imageHeight,
                     rawFileCallbackImageRadius: spanListNodeView.imageRadius,
-                    rawFileCallbackImageAlign: spanListNodeView.imageAlign
+                    rawFileCallbackImageAlign: spanListNodeView.imageAlign,
+                    rawFileCallbackImageNode: spanListNodeView
                 )
             } else {
                 // url
@@ -357,7 +360,8 @@ func spanImageComponent(
                     urlCallbackImageWidth: spanListNodeView.imageWidth,
                     urlCallbackImageHeight: spanListNodeView.imageHeight,
                     urlCallbackImageRadius: spanListNodeView.imageRadius,
-                    urlCallbackImageAlign: spanListNodeView.imageAlign
+                    urlCallbackImageAlign: spanListNodeView.imageAlign,
+                    urlCallbackImageNode: spanListNodeView
                 )
             }
         }

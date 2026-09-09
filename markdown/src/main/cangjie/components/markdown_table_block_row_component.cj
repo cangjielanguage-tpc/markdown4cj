@@ -89,6 +89,8 @@ class MarkdownTableBlockRowComponent {
             let oldNode = tableBlockRowNodeViewList[i]
             let newNode = refreshNodeViewChildren[i]
             if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
+                // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
+                carryOverImageSizeCache(oldNode, newNode)
                 tableBlockRowNodeViewList[i] = newNode
             }
         }

@@ -21,6 +21,7 @@ public class MarkdownImageRawFileComponent {
     var rawFileImageHeight: Option<Length> // 图片高度
     var rawFileImageRadius: Option<Length> // 图片圆角
     var rawFileImageAlign: Option<HorizontalAlign> // 图片对齐方式
+    var rawFileImageNode: NodeView // 图片节点（缓存原始尺寸与最终显示宽高，对齐ArkUI item引用）
     @State
     var rawFileImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
     @State
@@ -79,6 +80,19 @@ public class MarkdownImageRawFileComponent {
         } else {
             HorizontalAlign.Start
         }
+        // 读取缓存：优先用缓存原始尺寸重算宽高（对齐ArkUI item.imageNaturalWidth复用）
+        let rawFileCachedSize = recalcImageSizeFromCache(rawFileComponentImageWidth, rawFileImageNode, rawFileThemeWidth, rawFileThemeHeight, rawFileMarkdownTheme)
+        if (rawFileCachedSize.size == 2) {
+            rawFileWidth = rawFileCachedSize[0]
+            rawFileHeight = rawFileCachedSize[1]
+        } else {
+            if (let Some(cacheWidth) <- rawFileImageNode.imageDisplayWidth) {
+                rawFileWidth = cacheWidth
+            }
+            if (let Some(cacheHeight) <- rawFileImageNode.imageDisplayHeight) {
+                rawFileHeight = cacheHeight
+            }
+        }
         imageRawFilePixelMap()
     }
 
@@ -99,11 +113,11 @@ public class MarkdownImageRawFileComponent {
                         .borderWidth(rawFileMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(rawFileMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(rawFileMarkdownTheme.imageTheme.imageBorderStyle)
-                        .width(rawFileWidth.px)
+                        .width(imageBlockDisplayWidth(rawFileWidth, rawFileComponentWidth, rawFileMarkdownTheme.imageTheme.imageMaximumWidth))
                         .height(rawFileHeight.px)
                         .objectFit(rawFileMarkdownTheme.imageTheme.imageFitType)
                         .autoResize(rawFileMarkdownTheme.imageTheme.imageAutoResize)
-                        .constraintSize(maxWidth: 100.percent)
+                        .constraintSize(maxWidth: imageSpanConstraintMaxWidth(Option<Float64>.None, rawFileMarkdownTheme.imageTheme.imageMaxWidth), maxHeight: imageMaxHeightLength(rawFileMarkdownTheme.imageTheme.imageMaxHeight))
                         .onClick {
                             evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
                         }
@@ -156,9 +170,16 @@ public class MarkdownImageRawFileComponent {
                         rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth,
                         rawFileMarkdownTheme.imageTheme.imageMaximumWidth
                     )
-                    rawFileWidth = res[0]
-                    rawFileHeight = res[1]
-                    rawFileImageType = 1
+                    // 对齐ArkUI：仅计算结果有效时写回，避免异常结果覆盖已有宽高
+                    if (res[0] > 0.0 && res[1] > 0.0) {
+                        rawFileWidth = res[0]
+                        rawFileHeight = res[1]
+                        // 对齐ArkUI：原始尺寸与最终显示宽高写回节点缓存，供增量刷新复用
+                        cacheImageSizeToNode(rawFileImageNode, imageResWidth(), imageResHeight(), res[0], res[1])
+                        rawFileImageType = 1
+                    } else {
+                        rawFileImageType = 1
+                    }
                 } else {
                     rawFileImageType = 2
                 }
