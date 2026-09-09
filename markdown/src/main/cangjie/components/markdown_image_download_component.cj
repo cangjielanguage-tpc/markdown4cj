@@ -27,6 +27,9 @@ public class MarkdownImageDownloadComponent {
                 .fontStyle(markdownTheme.imageTheme.imageDownloadButtonTextFontStyle)
                 .fontColor(markdownTheme.imageTheme.imageDownloadButtonTextFontColor)
                 .lineHeight(markdownTheme.imageTheme.imageDownloadButtonTextLineHeight)
+                .align(Alignment.Center)
+                .maxLines(1)
+                .textOverflow(TextOverflow.Ellipsis) // 文本尺寸过大时截断省略，与ArkUI行为一致
         }
         .justifyContent(FlexAlign.Center)
         .alignItems(VerticalAlign.Center)
