@@ -86,6 +86,10 @@ class MarkdownCodeComponent {
                                                 index: idx
                                             )
                                         }
+                                        // 事件驱动置底：条目挂载（首次布局/流式新增/滚动后重建）时若处于置底模式且在末尾，则滚动到底
+                                        .onAppear({ =>
+                                            scrollChatIfAtBottom()
+                                        })
                                     },
                                     keyGeneratorFunc: {
                                         item: String, idx: Int64 => "${idx}-${item}"
@@ -225,24 +229,21 @@ class MarkdownCodeComponent {
 
     /**
      * 是否滑动到底部
+     * 置底模式开启且用户未上滑离开末尾时才滚动
      */
     func scrollChatIfAtBottom() {
-        if (reachBottom) {
+        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockSeparateIsBottom && reachBottom) {
             scroll2Bottom()
         }
     }
 
     /**
      * 滑动到底部
-     * LazyForEach 的 addData 触发的渲染是异步的，
-     * scrollEdge 在渲染前调用只能滚到旧底部，需延迟一帧再滚动一次确保到位
+     * 由条目 onAppear 事件驱动：LazyForEach 每批新条目挂载后触发一次滚动，
+     * 滚动又使后续条目挂载，循环收敛到真实底部，无需定时器
      */
     func scroll2Bottom() {
         scroller2.scrollEdge(Edge.Bottom)
-        Timer.once(0 * Duration.millisecond) {
-            =>
-                scroller2.scrollEdge(Edge.Bottom)
-        }
     }
 
     /**
@@ -323,10 +324,6 @@ class MarkdownCodeComponent {
                 lineStrArray.deleteData(i)
                 lineInt64Array.deleteData(i)
             }
-        }
-        // 列表是否置底
-        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockSeparateIsBottom) {
-            scrollChatIfAtBottom()
         }
     }
 }
