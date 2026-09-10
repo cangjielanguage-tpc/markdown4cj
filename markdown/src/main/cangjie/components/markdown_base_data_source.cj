@@ -415,9 +415,13 @@ public class NodeViewDataSource <: MarkdownBaseDataSource<NodeView> {
             let newNode = newData[i]
             if (oldNode.nodeHash != newNode.nodeHash) {
                 // nodeHash变化 → 框架重建组件
+                // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
+                carryOverImageSizeCache(oldNode, newNode)
                 replaceData(i, newNode)
             } else if (oldNode.contentHash != newNode.contentHash) {
                 // contentHash变化（nodeHash不变）→ 就地更新，不触发框架重建
+                // 图片节点：同URL时保留旧节点的尺寸缓存
+                carryOverImageSizeCache(oldNode, newNode)
                 data_[i] = newNode
                 MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)
             }

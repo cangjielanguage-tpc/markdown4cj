@@ -55,11 +55,34 @@ public class NodeView {
     var imageHeight: Option<Length> = Option<Length>.None // 图片高度
     var imageRadius: Option<Length> = Option<Length>.None // 图片圆角
     var imageAlign: Option<HorizontalAlign> = Option<HorizontalAlign>.None // 图片对齐方式
+    var imageNaturalWidth: Option<Float64> = Option<Float64>.None // 图片原始宽度（px，加载后缓存，对齐ArkUI imageNaturalWidth）
+    var imageNaturalHeight: Option<Float64> = Option<Float64>.None // 图片原始高度（px，加载后缓存，对齐ArkUI imageNaturalHeight）
+    var imageDisplayWidth: Option<Float64> = Option<Float64>.None // 图片最终显示宽度（px，加载后缓存，流式刷新时复用避免宽度闪变）
+    var imageDisplayHeight: Option<Float64> = Option<Float64>.None // 图片最终显示高度（px，加载后缓存，流式刷新时复用避免高度闪变）
     var codeInfo: Option<String> = Option<String>.None // 代码块的代码类型
     var codeListTab: Option<ArrayList<String>> = Option<ArrayList<String>>.None // 代码块列表标题
     var cardName: Option<String> = Option<String>.None // 卡片名称
     var cardData: Option<String> = Option<String>.None // 卡片内容
     var commonmarkNode: Option<CommonmarkNode> = Option<CommonmarkNode>.None // Node
+}
+
+/**
+ * 图片节点替换时保留旧节点的图片尺寸缓存（对齐ArkUI：同URL图片流式刷新不丢失已测量的宽高）
+ * 仅当新旧节点均为图片节点且URL相同时才保留，避免不同图片之间串缓存
+ */
+public func carryOverImageSizeCache(oldNode: NodeView, newNode: NodeView): Unit {
+    let isImageNode = newNode.nodeType == "Image" || newNode.nodeType == "StyleImage" || newNode.nodeType == "ImageHtmlNode"
+    if (!isImageNode) {
+        return
+    }
+    let isSameUrl = oldNode.imageUrl.isSome() && newNode.imageUrl.isSome() && oldNode.imageUrl.getOrThrow() == newNode.imageUrl.getOrThrow()
+    if (!isSameUrl) {
+        return
+    }
+    newNode.imageNaturalWidth = oldNode.imageNaturalWidth
+    newNode.imageNaturalHeight = oldNode.imageNaturalHeight
+    newNode.imageDisplayWidth = oldNode.imageDisplayWidth
+    newNode.imageDisplayHeight = oldNode.imageDisplayHeight
 }
 
 public func nodeToNodeView(
@@ -212,8 +235,10 @@ public func nodeToNodeView(
                         try {
                             let colorString: ?String = fontNode.getColor()
                             if (colorString.isSome()) {
-                                let colorUInt32: UInt32 = UInt32.parse(colorString().replace("#", "0x"))
-                                childrenNodeView.fontNodeColor = Color(colorUInt32)
+                                let color: ?Color = colorStringToColor(colorString())
+                                if (let Some(m) <- color) {
+                                    childrenNodeView.fontNodeColor = m
+                                }
                             }
                         } catch (_: Exception) {
                         }
@@ -248,11 +273,6 @@ public func nodeToNodeView(
                                     let color: ?Color = colorStringToColor(n)
                                     if (let Some(m) <- color) {
                                         childrenNodeView.spanNodeColor = m
-                                    } else {
-                                        if (n.startsWith("#")) {
-                                            let colorUInt32: UInt32 = UInt32.parse(n.replace("#", "0x"))
-                                            childrenNodeView.spanNodeColor = Color(colorUInt32)
-                                        }
                                     }
                                 }
                             } catch (_: Exception) {

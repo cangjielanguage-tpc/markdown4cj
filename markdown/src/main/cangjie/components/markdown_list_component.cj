@@ -187,7 +187,9 @@ public class MarkdownListComponent {
             // 仓颉引擎首行行框的半行距会把字形下推，复选框顶对齐会偏高；
             // 下移 (首行行高-复选框高)/2 使其与首行文字视觉居中（ArkUI 引擎无此问题，故 ArkTS 侧无此偏移）
             .offset(x: 0.0, y: (markdownConfiguration.markdownTheme.paragraphTheme.paragraphTextLineHeight - markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight) / 2.0)
-            .margin(right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
+            // ArkUI 引擎 Checkbox 的 mark 自带约4vp内边距（实测 mark 位于行起点+4,+4，内容起点=4+15+8=27）；
+            // 仓颉引擎 Checkbox 无此内边距（实测位于0,0，内容起点=23），补4vp左边距对齐 ArkUI 的复选框位置与内容缩进
+            .margin(left: 4.0, right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
             .shape(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxShape)
             .selectedColor(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSelectedColor)
             .select(item.isTaskListSelected)

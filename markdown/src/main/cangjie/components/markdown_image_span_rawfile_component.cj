@@ -22,6 +22,7 @@ public class MarkdownSpanImageRawFileComponent {
     var rawFileImageHeight: Option<Length> // 图片高度
     var rawFileImageRadius: Option<Length> // 图片圆角
     var rawFileImageAlign: Option<HorizontalAlign> // 图片对齐方式
+    var rawFileImageNode: NodeView // 图片节点（缓存原始尺寸与最终显示宽高，对齐ArkUI item引用）
     @State var rawFileHeight: Float64 = 0.0 // 图片最终高度 - 单位px
     @State var rawFileWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
     @State
@@ -76,6 +77,20 @@ public class MarkdownSpanImageRawFileComponent {
         } else {
             rawFileComponentImageWidth * 9.0 / 16.0 * rawFileMarkdownTheme.imageTheme.imageMaximumWidth
         }
+        // 对齐ArkUI：用节点缓存重算/复用最终显示宽高（增量刷新时onComplete不回调）
+        let rawFileCachedSize = recalcImageSizeFromCache(rawFileComponentImageWidth, rawFileImageNode, rawFileThemeWidth, rawFileThemeHeight, rawFileMarkdownTheme)
+        if (rawFileCachedSize.size == 2) {
+            rawFileWidth = rawFileCachedSize[0]
+            rawFileHeight = rawFileCachedSize[1]
+        } else {
+            // 兜底：直接复用节点缓存的最终显示宽高
+            if (let Some(cacheWidth) <- rawFileImageNode.imageDisplayWidth) {
+                rawFileWidth = cacheWidth
+            }
+            if (let Some(cacheHeight) <- rawFileImageNode.imageDisplayHeight) {
+                rawFileHeight = cacheHeight
+            }
+        }
         imageRawFilePixelMap()
     }
 
@@ -100,7 +115,7 @@ public class MarkdownSpanImageRawFileComponent {
                     .height(rawFileHeight.px)
                     .objectFit(rawFileMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
-                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(rawFileImageCellMaxWidth))
+                    .constraintSize(maxWidth: imageSpanConstraintMaxWidth(rawFileImageCellMaxWidth, rawFileMarkdownTheme.imageTheme.imageMaxWidth), maxHeight: imageMaxHeightLength(rawFileMarkdownTheme.imageTheme.imageMaxHeight))
                     .onClick {
                         evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
                     }
@@ -170,10 +185,15 @@ public class MarkdownSpanImageRawFileComponent {
                             rawFileMarkdownTheme.imageTheme.imageFixedRatioWidth,
                             rawFileMarkdownTheme.imageTheme.imageMaximumWidth
                         )
-                        rawFileWidth = res[0]
-                        rawFileHeight = res[1]
-                        rawFileImageType = 1
-                        notifyImageWidth()
+                        // 对齐ArkUI：仅计算结果有效时写回，避免异常结果覆盖已有宽高
+                        if (res[0] > 0.0 && res[1] > 0.0) {
+                            rawFileWidth = res[0]
+                            rawFileHeight = res[1]
+                            // 写回尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
+                            cacheImageSizeToNode(rawFileImageNode, imageResWidth(), imageResHeight(), res[0], res[1])
+                            rawFileImageType = 1
+                            notifyImageWidth()
+                        }
                     }
                 } else {
                     rawFileImageType = 2

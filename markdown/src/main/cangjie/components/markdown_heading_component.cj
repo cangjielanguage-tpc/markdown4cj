@@ -148,7 +148,8 @@ class MarkdownHeadingComponent {
                                 rawFileImageWidth: headingNodeViewList[0].imageWidth,
                                 rawFileImageHeight: headingNodeViewList[0].imageHeight,
                                 rawFileImageRadius: headingNodeViewList[0].imageRadius,
-                                rawFileImageAlign: headingNodeViewList[0].imageAlign
+                                rawFileImageAlign: headingNodeViewList[0].imageAlign,
+                                rawFileImageNode: headingNodeViewList[0]
                             )
                         } else {
                             MarkdownImageUrlComponent(
@@ -163,7 +164,8 @@ class MarkdownHeadingComponent {
                                 urlImageWidth: headingNodeViewList[0].imageWidth,
                                 urlImageHeight: headingNodeViewList[0].imageHeight,
                                 urlImageRadius: headingNodeViewList[0].imageRadius,
-                                urlImageAlign: headingNodeViewList[0].imageAlign
+                                urlImageAlign: headingNodeViewList[0].imageAlign,
+                                urlImageNode: headingNodeViewList[0]
                             )
                         }
                     } else {
@@ -181,7 +183,8 @@ class MarkdownHeadingComponent {
                                 rawFileCallbackImageWidth: headingNodeViewList[0].imageWidth,
                                 rawFileCallbackImageHeight: headingNodeViewList[0].imageHeight,
                                 rawFileCallbackImageRadius: headingNodeViewList[0].imageRadius,
-                                rawFileCallbackImageAlign: headingNodeViewList[0].imageAlign
+                                rawFileCallbackImageAlign: headingNodeViewList[0].imageAlign,
+                                rawFileCallbackImageNode: headingNodeViewList[0]
                             )
                         } else {
                             MarkdownImageCallbackUrlComponent(
@@ -197,7 +200,8 @@ class MarkdownHeadingComponent {
                                 urlCallbackImageWidth: headingNodeViewList[0].imageWidth,
                                 urlCallbackImageHeight: headingNodeViewList[0].imageHeight,
                                 urlCallbackImageRadius: headingNodeViewList[0].imageRadius,
-                                urlCallbackImageAlign: headingNodeViewList[0].imageAlign
+                                urlCallbackImageAlign: headingNodeViewList[0].imageAlign,
+                                urlCallbackImageNode: headingNodeViewList[0]
                             )
                         }
                     }
@@ -431,6 +435,8 @@ class MarkdownHeadingComponent {
                 if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
                     // 自身节点唯一ID不相同需要刷新数据
                     // 子节点唯一ID不相同需要刷新子节点数据
+                    // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
+                    carryOverImageSizeCache(dataSourceNode, refreshNodeView)
                     headingNodeViewList[i] = refreshNodeView
                     if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
                         MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)
@@ -454,6 +460,8 @@ class MarkdownHeadingComponent {
                 if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
                     // 自身节点唯一ID不相同需要刷新数据
                     // 子节点唯一ID不相同需要刷新子节点数据
+                    // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
+                    carryOverImageSizeCache(dataSourceNode, refreshNodeView)
                     headingNodeViewList[i] = refreshNodeView
                     if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
                         MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)
@@ -473,6 +481,8 @@ class MarkdownHeadingComponent {
                 if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
                     // 自身节点唯一ID不相同需要刷新数据
                     // 子节点唯一ID不相同需要刷新子节点数据
+                    // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
+                    carryOverImageSizeCache(dataSourceNode, refreshNodeView)
                     headingNodeViewList[i] = refreshNodeView
                     if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
                         MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)

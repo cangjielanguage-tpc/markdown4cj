@@ -1624,18 +1624,121 @@ func length2Float(length: Length): Float64 {
 }
 
 /**
- * 表格单元格内图片的约束最大宽度
+ * 图片的约束最大宽度（对齐ArkUI：maxWidth: imageMaxWidth ?? '100%'）
  *
- * @param cellMaxWidth 表格单元格最大宽度 - 单位vp
- * @return Length 有单元格最大宽度时返回该值，否则返回100%
+ * @param cellMaxWidth 表格单元格最大宽度（优先级最高） - 单位vp
+ * @param themeMaxWidth 主题配置的最大图片宽度（单元格无约束时兜底，对齐ArkUI imageTheme.imageMaxWidth） - 单位vp
+ * @return Length 依次取单元格最大宽度、主题最大宽度，均无则返回100%
  */
-func imageSpanConstraintMaxWidth(cellMaxWidth: ?Float64): Length {
+func imageSpanConstraintMaxWidth(cellMaxWidth: ?Float64, themeMaxWidth: ?Float64): Length {
     if (let Some(w) <- cellMaxWidth) {
         if (w > 0.0) {
             return w.vp
         }
     }
+    if (let Some(w) <- themeMaxWidth) {
+        if (w > 0.0) {
+            return w.vp
+        }
+    }
     return 100.percent
+}
+
+/**
+ * 图片最大高度约束（对齐ArkUI constraintSize({maxHeight: imageMaxHeight})）
+ * 仓颉constraintSize的maxHeight为非可选Length，主题未设置imageMaxHeight时
+ * 返回极大值等效于不约束（与ArkUI undefined行为一致，图片总有显式高度，该值不生效）
+ *
+ * @param maxHeight 主题图片最大高度 - 单位vp
+ * @return 约束高度；未设置时返回极大值（等效不约束）
+ */
+func imageMaxHeightLength(maxHeight: ?Float64): Length {
+    if (let Some(h) <- maxHeight) {
+        if (h > 0.0) {
+            return h.vp
+        }
+    }
+    return 1000000.0.vp
+}
+
+/**
+ * 块级图片最终显示宽度（对齐ArkUI .width(item.imageWidth ?? componentWidth * imageMaximumWidth)）
+ * 优先级：已计算的显示宽度（px）→ 父容器宽度×imageMaximumWidth（父布局百分比）→ 父布局100%
+ *
+ * @param displayPx 已计算的显示宽度 - 单位px
+ * @param componentVp 控件宽度 - 单位vp
+ * @param maximumWidth 图片最大宽度比例
+ * @return 宽度Length
+ */
+func imageBlockDisplayWidth(displayPx: Float64, componentVp: Float64, maximumWidth: Float64): Length {
+    if (displayPx > 0.0) {
+        return displayPx.px
+    }
+    if (componentVp > 0.0) {
+        return (componentVp * maximumWidth).vp
+    }
+    return 100.percent
+}
+
+/**
+ * 用节点缓存的图片原始尺寸重算最终显示宽高（对齐ArkUI recalculateImageDimensions）
+ * 增量刷新时图片URL不变→组件重建后onComplete不回调，需用缓存的原始尺寸重新计算
+ *
+ * @param componentImageWidth 控件最大宽度 - 单位px
+ * @param imageNode 图片节点（携带 imageNaturalWidth/Height 缓存）
+ * @return [宽度px, 高度px]；无缓存或不可计算时返回空数组
+ */
+func recalcImageSizeFromCache(
+    componentImageWidth: Float64,
+    imageNode: NodeView,
+    themeWidth: Option<Float64>,
+    themeHeight: Option<Float64>,
+    markdownTheme: MarkdownTheme
+): Array<Float64> {
+    if (let Some(naturalWidth) <- imageNode.imageNaturalWidth) {
+        if (let Some(naturalHeight) <- imageNode.imageNaturalHeight) {
+            if (naturalWidth > 0.0 && naturalHeight > 0.0 && componentImageWidth > 0.0) {
+                let res = imageWidthAndHeight(
+                    componentImageWidth,
+                    naturalWidth,
+                    naturalHeight,
+                    themeWidth,
+                    themeHeight,
+                    markdownTheme.imageTheme.imageMaxWidth,
+                    markdownTheme.imageTheme.imageMaxHeight,
+                    markdownTheme.imageTheme.imageFixedRatioWidth,
+                    markdownTheme.imageTheme.imageMaximumWidth
+                )
+                if (res[0] > 0.0 && res[1] > 0.0) {
+                    // imageWidthAndHeight返回元组，转换为数组返回
+                    return [res[0], res[1]]
+                }
+            }
+        }
+    }
+    return Array<Float64>()
+}
+
+/**
+ * 图片加载完成后把原始尺寸与最终显示宽高写回节点缓存（对齐ArkUI：item.imageNaturalWidth/Height 及最终宽高写回）
+ *
+ * @param imageNode 图片节点
+ * @param naturalWidth 图片原始宽度 - 单位px
+ * @param naturalHeight 图片原始高度 - 单位px
+ * @param displayWidth 最终显示宽度 - 单位px
+ * @param displayHeight 最终显示高度 - 单位px
+ */
+func cacheImageSizeToNode(
+    imageNode: NodeView,
+    naturalWidth: Float64,
+    naturalHeight: Float64,
+    displayWidth: Float64,
+    displayHeight: Float64
+): Unit {
+    imageNode.imageNaturalWidth = Some(naturalWidth)
+    imageNode.imageNaturalHeight = Some(naturalHeight)
+    imageNode.imageDisplayWidth = Some(displayWidth)
+    imageNode.imageDisplayHeight = Some(displayHeight)
 }
 
 /**
@@ -2441,13 +2544,71 @@ func fontWeightToValue(weightString: String): ?FontWeight {
 }
 
 /**
+ * 判断字符串是否仅由十六进制字符组成（0-9、a-f，小写）
+ *
+ * @param s 输入字符串
+ * @return true表示全是十六进制字符
+ */
+func isHexString(s: String): Bool {
+    for (b in s.toArray()) {
+        let isDigit = b >= 48 && b <= 57 // 0-9
+        let isLowerHex = b >= 97 && b <= 102 // a-f
+        if (!isDigit && !isLowerHex) {
+            return false
+        }
+    }
+    return true
+}
+
+/**
+ * 将小写十六进制字符串解析为UInt32数值
+ *
+ * @param s 十六进制字符串（如 "ff0000"）
+ * @return 对应数值（非法字符返回None）
+ */
+func hexStringToUInt32(s: String): ?UInt32 {
+    var result: UInt32 = 0
+    for (b in s.toArray()) {
+        var v: UInt32
+        if (b >= 48 && b <= 57) { // 0-9
+            v = UInt32(b - 48)
+        } else if (b >= 97 && b <= 102) { // a-f
+            v = UInt32(b - 87)
+        } else {
+            return Option<UInt32>.None
+        }
+        result = result * 16 + v
+    }
+    return Some(result)
+}
+
+/**
+ * 将#RGB扩展为#RRGGBB
+ *
+ * @param hex 3位十六进制颜色（如 "f00"）
+ * @return 6位十六进制颜色（如 "ff0000"）
+ */
+func expandHex3(hex: String): String {
+    let sb = StringBuilder()
+    for (c in hex) {
+        sb.append(c)
+        sb.append(c)
+    }
+    return sb.toString()
+}
+
+/**
  * HTML类型Span标签color属性转换Color对象
+ * 支持格式：颜色名（如 "red"）、#RRGGBB、#AARRGGBB、#RGB、0xARGB、纯十进制数字
  *
  * @param colorString color属性
  * @return Color对象
  */
 func colorStringToColor(colorString: String): ?Color {
     let colorStr = colorString.toAsciiLower().trimAscii()
+    if (colorStr.size == 0) {
+        return Option<Color>.None
+    }
     var color: ?Color = match (colorStr) {
         // 通用16种颜色（CSS基础色）
         case "black" => Color(0xFF000000)
@@ -2591,7 +2752,51 @@ func colorStringToColor(colorString: String): ?Color {
         case "wheat" => Color(0xFFF5DEB3)
         case "whitesmoke" => Color(0xFFF5F5F5)
         case "yellowgreen" => Color(0xFF9ACD32)
+        // HarmonyOS Color枚举
+        case "transparent" => Color(0x00000000)
         case _ => Option<Color>.None
     }
-    return color
+    if (color.isSome()) {
+        return color
+    }
+    // 0xARGB 格式（如 "0xFFFF0000"）
+    if (colorStr.startsWith("0x")) {
+        let value = hexStringToUInt32(colorStr[2..])
+        if (let Some(v) <- value) {
+            return Color(v)
+        }
+        return Option<Color>.None
+    }
+    // #RRGGBB 或 #AARRGGBB 格式（如 "#FF0000"、"#FFFF0000"）
+    if (colorStr.startsWith("#")) {
+        let hex = colorStr[1..]
+        if (isHexString(hex)) {
+            if (hex.size == 6) {
+                // #RRGGBB 补 FF alpha
+                let rgb = hexStringToUInt32(hex)
+                if (let Some(v) <- rgb) {
+                    return Color(UInt32(0xFF000000) | v)
+                }
+            } else if (hex.size == 8) {
+                // #AARRGGBB
+                let argb = hexStringToUInt32(hex)
+                if (let Some(v) <- argb) {
+                    return Color(v)
+                }
+            } else if (hex.size == 3) {
+                // #RGB 扩展为 #RRGGBB
+                let rgb = hexStringToUInt32(expandHex3(hex))
+                if (let Some(v) <- rgb) {
+                    return Color(UInt32(0xFF000000) | v)
+                }
+            }
+        }
+        return Option<Color>.None
+    }
+    // 纯数字（如 "123"）按十进制处理
+    try {
+        return Color(UInt32.parse(colorStr))
+    } catch (_: Exception) {
+    }
+    return Option<Color>.None
 }

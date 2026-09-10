@@ -456,6 +456,8 @@ class MarkdownTableBlockCellComponent {
             let oldNode = tableBlockCellNodeViewList[i]
             let newNode = refreshNodeViewChildren[i]
             if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
+                // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
+                carryOverImageSizeCache(oldNode, newNode)
                 tableBlockCellNodeViewList[i] = newNode
                 if (newNode.nodeType == "LatexMathNode" && oldNode.nodeHash == newNode.nodeHash) {
                     MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)

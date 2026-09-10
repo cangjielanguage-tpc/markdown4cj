@@ -21,6 +21,7 @@ public class MarkdownImageUrlComponent {
     var urlImageHeight: Option<Length> // 图片高度
     var urlImageRadius: Option<Length> // 图片圆角
     var urlImageAlign: Option<HorizontalAlign> // 图片对齐方式
+    var urlImageNode: NodeView // 图片节点（缓存原始尺寸与最终显示宽高，对齐ArkUI item引用）
     @State
     var urlImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
     @State
@@ -76,6 +77,23 @@ public class MarkdownImageUrlComponent {
         } else {
             HorizontalAlign.Start
         }
+        // 对齐ArkUI recalculateImageDimensions：用节点缓存的原始尺寸重算最终宽高（增量刷新时onComplete不回调）
+        let urlCachedSize = recalcImageSizeFromCache(urlComponentImageWidth, urlImageNode, urlThemeWidth, urlThemeHeight, urlMarkdownTheme)
+        if (urlCachedSize.size == 2) {
+            urlWidth = urlCachedSize[0]
+            urlHeight = urlCachedSize[1]
+        } else {
+            // 兜底1：直接复用节点缓存的最终显示宽高
+            if (let Some(cacheWidth) <- urlImageNode.imageDisplayWidth) {
+                urlWidth = cacheWidth
+            } else if (urlComponentImageWidth > 0.0) {
+                // 兜底2：控件宽度*图片缩放百分比（对齐ArkUI .width兜底链）
+                urlWidth = urlComponentImageWidth * urlMarkdownTheme.imageTheme.imageMaximumWidth
+            }
+            if (let Some(cacheHeight) <- urlImageNode.imageDisplayHeight) {
+                urlHeight = cacheHeight
+            }
+        }
     }
 
     func build() {
@@ -88,18 +106,24 @@ public class MarkdownImageUrlComponent {
                         .borderWidth(urlMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(urlMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(urlMarkdownTheme.imageTheme.imageBorderStyle)
-                        .width(urlWidth.px)
+                        .width(imageBlockDisplayWidth(urlWidth, urlComponentWidth, urlMarkdownTheme.imageTheme.imageMaximumWidth))
                         .height(urlHeight.px)
                         .objectFit(urlMarkdownTheme.imageTheme.imageFitType)
                         .autoResize(urlMarkdownTheme.imageTheme.imageAutoResize)
-                        .constraintSize(maxWidth: 100.percent)
+                        .constraintSize(maxWidth: imageSpanConstraintMaxWidth(Option<Float64>.None, urlMarkdownTheme.imageTheme.imageMaxWidth), maxHeight: imageMaxHeightLength(urlMarkdownTheme.imageTheme.imageMaxHeight))
                         .onClick {
                             evt => imageSpanOnClick(urlLink, urlImageCallback, urlLinkCallback, urlLinkUrl, urlDestination)
                         }
                         .onComplete {
                             imageLoadResult =>
+                                // 对齐ArkUI：控件宽度未测量时兜底用图片自身渲染宽度（px，函数内部按px处理）
+                                let urlBaseWidth = if (urlComponentWidth > 0.0) {
+                                    urlComponentImageWidth
+                                } else {
+                                    imageLoadResult.componentWidth
+                                }
                                 let res = imageWidthAndHeight(
-                                    urlComponentImageWidth,
+                                    urlBaseWidth,
                                     imageLoadResult.width,
                                     imageLoadResult.height,
                                     urlThemeWidth,
@@ -109,9 +133,14 @@ public class MarkdownImageUrlComponent {
                                     urlMarkdownTheme.imageTheme.imageFixedRatioWidth,
                                     urlMarkdownTheme.imageTheme.imageMaximumWidth
                                 )
-                                urlWidth = res[0]
-                                urlHeight = res[1]
-                                urlImageType = 1
+                                // 对齐ArkUI：仅计算结果有效时写回，避免异常结果覆盖已有宽高
+                                if (res[0] > 0.0 && res[1] > 0.0) {
+                                    urlWidth = res[0]
+                                    urlHeight = res[1]
+                                    // 对齐ArkUI：原始尺寸与最终显示宽高写回节点缓存，供增量刷新复用
+                                    cacheImageSizeToNode(urlImageNode, imageLoadResult.width, imageLoadResult.height, res[0], res[1])
+                                    urlImageType = 1
+                                }
                         }
                         .onError {
                             imageError => urlImageType = 2

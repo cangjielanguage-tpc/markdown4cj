@@ -197,10 +197,14 @@ func blockCodeBlockListComponent(
 }
 
 /**
- * 行号文本显示
+ * 代码类型文本显示
+ *
+ * @param str 类型文本内容
+ * @param markdownConfiguration markdown配置
+ * @param isShow 是否显示（代码内容为空时隐藏，与ArkUI一致）
  */
 @Builder
-func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfiguration) {
+func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfiguration, isShow: Bool) {
     Row() {
         Text(str)
             .fontFamily(codeTypeTextFontFamily(markdownConfiguration.markdownTheme))
@@ -215,6 +219,7 @@ func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfigur
     .width(30.percent)
     .justifyContent(FlexAlign.Start)
     .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeTextMarginLeft)
+    .visibility(isVisibility(isShow))
 }
 
 /**
@@ -296,7 +301,8 @@ func spanImageComponent(
                     rawFileImageWidth: spanListNodeView.imageWidth,
                     rawFileImageHeight: spanListNodeView.imageHeight,
                     rawFileImageRadius: spanListNodeView.imageRadius,
-                    rawFileImageAlign: spanListNodeView.imageAlign
+                    rawFileImageAlign: spanListNodeView.imageAlign,
+                    rawFileImageNode: spanListNodeView
                 )
             } else {
                 // url
@@ -313,7 +319,8 @@ func spanImageComponent(
                     urlImageWidth: spanListNodeView.imageWidth,
                     urlImageHeight: spanListNodeView.imageHeight,
                     urlImageRadius: spanListNodeView.imageRadius,
-                    urlImageAlign: spanListNodeView.imageAlign
+                    urlImageAlign: spanListNodeView.imageAlign,
+                    urlImageNode: spanListNodeView
                 )
             }
         } else {
@@ -334,7 +341,8 @@ func spanImageComponent(
                     rawFileCallbackImageWidth: spanListNodeView.imageWidth,
                     rawFileCallbackImageHeight: spanListNodeView.imageHeight,
                     rawFileCallbackImageRadius: spanListNodeView.imageRadius,
-                    rawFileCallbackImageAlign: spanListNodeView.imageAlign
+                    rawFileCallbackImageAlign: spanListNodeView.imageAlign,
+                    rawFileCallbackImageNode: spanListNodeView
                 )
             } else {
                 // url
@@ -352,7 +360,8 @@ func spanImageComponent(
                     urlCallbackImageWidth: spanListNodeView.imageWidth,
                     urlCallbackImageHeight: spanListNodeView.imageHeight,
                     urlCallbackImageRadius: spanListNodeView.imageRadius,
-                    urlCallbackImageAlign: spanListNodeView.imageAlign
+                    urlCallbackImageAlign: spanListNodeView.imageAlign,
+                    urlCallbackImageNode: spanListNodeView
                 )
             }
         }

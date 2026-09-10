@@ -375,7 +375,8 @@ class MarkdownParagraphComponent {
                                 rawFileImageWidth: paragraphNodeViewList[0].imageWidth,
                                 rawFileImageHeight: paragraphNodeViewList[0].imageHeight,
                                 rawFileImageRadius: paragraphNodeViewList[0].imageRadius,
-                                rawFileImageAlign: paragraphNodeViewList[0].imageAlign
+                                rawFileImageAlign: paragraphNodeViewList[0].imageAlign,
+                                rawFileImageNode: paragraphNodeViewList[0]
                             )
                         } else {
                             MarkdownImageUrlComponent(
@@ -390,7 +391,8 @@ class MarkdownParagraphComponent {
                                 urlImageWidth: paragraphNodeViewList[0].imageWidth,
                                 urlImageHeight: paragraphNodeViewList[0].imageHeight,
                                 urlImageRadius: paragraphNodeViewList[0].imageRadius,
-                                urlImageAlign: paragraphNodeViewList[0].imageAlign
+                                urlImageAlign: paragraphNodeViewList[0].imageAlign,
+                                urlImageNode: paragraphNodeViewList[0]
                             )
                         }
                     } else {
@@ -408,7 +410,8 @@ class MarkdownParagraphComponent {
                                 rawFileCallbackImageWidth: paragraphNodeViewList[0].imageWidth,
                                 rawFileCallbackImageHeight: paragraphNodeViewList[0].imageHeight,
                                 rawFileCallbackImageRadius: paragraphNodeViewList[0].imageRadius,
-                                rawFileCallbackImageAlign: paragraphNodeViewList[0].imageAlign
+                                rawFileCallbackImageAlign: paragraphNodeViewList[0].imageAlign,
+                                rawFileCallbackImageNode: paragraphNodeViewList[0]
                             )
                         } else {
                             MarkdownImageCallbackUrlComponent(
@@ -424,7 +427,8 @@ class MarkdownParagraphComponent {
                                 urlCallbackImageWidth: paragraphNodeViewList[0].imageWidth,
                                 urlCallbackImageHeight: paragraphNodeViewList[0].imageHeight,
                                 urlCallbackImageRadius: paragraphNodeViewList[0].imageRadius,
-                                urlCallbackImageAlign: paragraphNodeViewList[0].imageAlign
+                                urlCallbackImageAlign: paragraphNodeViewList[0].imageAlign,
+                                urlCallbackImageNode: paragraphNodeViewList[0]
                             )
                         }
                     }
@@ -709,6 +713,8 @@ class MarkdownParagraphComponent {
             let oldNode = paragraphNodeViewList[i]
             let newNode = refreshNodeViewChildren[i]
             if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
+                // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
+                carryOverImageSizeCache(oldNode, newNode)
                 paragraphNodeViewList[i] = newNode
                 if (newNode.nodeType == "LatexMathNode" && oldNode.nodeHash == newNode.nodeHash) {
                     MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)
