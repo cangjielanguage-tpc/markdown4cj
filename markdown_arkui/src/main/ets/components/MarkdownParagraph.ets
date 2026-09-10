@@ -234,6 +234,11 @@ export struct MarkdownParagraph {
       this.httpLinks = computeLinkRanges(this.list, this.globalTheme.isLineBreak, footnotePrefixLen)
       this.httpLinksDirty = false
     }
+    // 仍无http链接的段落不参与曝光评估（省性能）：滚动期不再开 setTimeout、
+    // 不跑 getRectangleById/evaluateLinkExposure。与 MarkdownHeading/MarkdownTableCell 对称。
+    if (this.httpLinks.length === 0) {
+      return
+    }
     if (this.exposureTimerId !== -1) {
       clearTimeout(this.exposureTimerId)
     }
