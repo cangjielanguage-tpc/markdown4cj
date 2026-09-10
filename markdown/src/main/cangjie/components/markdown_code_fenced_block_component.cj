@@ -18,6 +18,8 @@ class MarkdownCodeFencedBlockComponent {
     @State
     var isCodeNone: Bool = false
     @State
+    var hasHighlightResult: Bool = false // 是否已有高亮结果（@State标志位驱动代码内容/rawText兜底切换显示）
+    @State
     var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>() // 高亮代码列表
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
@@ -88,6 +90,19 @@ class MarkdownCodeFencedBlockComponent {
                         .fontStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
                         .lineHeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
                         .textAlign(TextAlign.Start)
+                        // 高亮结果显隐由@State标志位驱动，保证解析完成后可靠刷新
+                        .visibility(isVisibility(hasHighlightResult))
+
+                        // rawText fallback：高亮未完成时显示原始文本，避免初始空白（与ArkUI一致）
+                        Text(codeText)
+                            .fontFamily(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
+                            .fontSize(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontSize)
+                            .fontWeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
+                            .fontStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+                            .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme))
+                            .lineHeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
+                            .textAlign(TextAlign.Start)
+                            .visibility(isVisibility(!hasHighlightResult))
                     }
                 }
                 .scrollable(ScrollDirection.Horizontal)
@@ -96,6 +111,7 @@ class MarkdownCodeFencedBlockComponent {
                 .layoutWeight(1)
                 .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginLeft, right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextMarginRight)
             }
+            .alignItems(VerticalAlign.Top) // 与ArkUI一致：行号列与代码区顶部对齐
         }
         .borderRadius(topLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopLeft, topRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopRight, bottomLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomLeft, bottomRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomRight)
         .borderColor(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderColor)
@@ -271,12 +287,15 @@ class MarkdownCodeFencedBlockComponent {
                 arrayList.remove(i)
             }
         }
+        hasHighlightResult = arrayList.size > 0
     }
 
     /**
      * 代码数据高亮解析
      */
     func stringCodeToResList(str: String) {
+        // 与ArkUI一致：行号随内容同步刷新，不等待异步高亮结果（回调中再按格式化后行数校正）
+        refreshLines(str.split("\n").size)
         future?.cancel()
         let callback: (ArrayList<PrismNodesParseResUI>, Int64) -> Unit = {
             prismNodesParseResLists, lines => launch {
@@ -309,6 +328,7 @@ class MarkdownCodeFencedBlockComponent {
                         arrayList.remove(i)
                     }
                 }
+                hasHighlightResult = arrayList.size > 0
             }
         }
         future = MarkdownParseCodeUtil.stringToResList(str, info, markdownConfiguration, formatConfig, psh, callback)
@@ -322,9 +342,9 @@ class MarkdownCodeFencedBlockComponent {
         let oldSize = lineArray.size
         if (newSize == oldSize) {
         } else if (newSize > oldSize) {
-            // 循环添加新数据
+            // 循环添加新数据（与ArkUI一致存储1..N行号）
             for (i in oldSize..newSize) {
-                lineArray.append(oldSize + i)
+                lineArray.append(i + 1)
             }
         } else {
             // 循环删除多余的旧数据

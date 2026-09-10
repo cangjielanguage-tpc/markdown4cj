@@ -17,6 +17,8 @@ class MarkdownCodeTextComponent {
     var index: Int64 = -1 // hash
     @State
     var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>() // 高亮代码列表
+    @State
+    var hasHighlightResult: Bool = false // 是否已有高亮结果（@State标志位驱动代码内容/rawText兜底切换显示）
     var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
     var future: ?Future<Unit> = Option<Future<Unit>>.None // 子线程
     var isAlive: Bool = false // 组件是否存活
@@ -38,25 +40,41 @@ class MarkdownCodeTextComponent {
     }
 
     func build() {
-        Text() {
-            ForEach(
-                arrayList,
-                itemGeneratorFunc: {
-                    item: PrismNodesParseResUI, idx: Int64 => Span(item.getText())
-                        .fontColor(codeTextColor(item, markdownTheme))
-                        .letterSpacing(markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
-                },
-                keyGeneratorFunc: {
-                    item: PrismNodesParseResUI, idx: Int64 => "${idx}-${item.getText()}"
-                }
-            )
+        Column() {
+            Text() {
+                ForEach(
+                    arrayList,
+                    itemGeneratorFunc: {
+                        item: PrismNodesParseResUI, idx: Int64 => Span(item.getText())
+                            .fontColor(codeTextColor(item, markdownTheme))
+                            .letterSpacing(markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
+                    },
+                    keyGeneratorFunc: {
+                        item: PrismNodesParseResUI, idx: Int64 => "${idx}-${item.getText()}"
+                    }
+                )
+            }
+            .fontFamily(markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
+            .fontSize(markdownTheme.codeBlockTheme.codeBlockTextFontSize)
+            .fontWeight(markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
+            .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+            .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
+            .textAlign(TextAlign.Start)
+            // 高亮结果显隐由@State标志位驱动，保证解析完成后可靠刷新
+            .visibility(isVisibility(hasHighlightResult))
+
+            // rawText fallback：高亮未完成时显示原始文本，避免行高塌陷与行号错位（与ArkUI一致）
+            Text(codeText)
+                .fontFamily(markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
+                .fontSize(markdownTheme.codeBlockTheme.codeBlockTextFontSize)
+                .fontWeight(markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
+                .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+                .fontColor(indentedCodeTextColor(markdownTheme))
+                .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
+                .textAlign(TextAlign.Start)
+                .visibility(isVisibility(!hasHighlightResult))
         }
-        .fontFamily(markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
-        .fontSize(markdownTheme.codeBlockTheme.codeBlockTextFontSize)
-        .fontWeight(markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
-        .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
-        .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
-        .textAlign(TextAlign.Start)
+        .alignItems(HorizontalAlign.Start)
     }
 
     /**
@@ -69,6 +87,7 @@ class MarkdownCodeTextComponent {
         if (this.codeText.size == 0) {
             // 空行数据需要空格文本填充Text控件使其在布局上占位
             arrayList.append(PrismNodesParseResUI(types: "", text: " ", alias: Option<String>.None, color: Option<Color>.None))
+            hasHighlightResult = true
             return
         }
         if (markdownTheme.codeBlockTheme.codeBlockParserSync) {
@@ -168,5 +187,6 @@ class MarkdownCodeTextComponent {
                 arrayList.remove(i)
             }
         }
+        hasHighlightResult = arrayList.size > 0
     }
 }

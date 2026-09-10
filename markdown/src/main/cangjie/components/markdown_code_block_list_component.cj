@@ -144,6 +144,7 @@ class MarkdownCodeBlockListComponent {
                 .alignItems(HorizontalAlign.End)
                 codeBlockCodeComponent()
             }
+            .alignItems(VerticalAlign.Top) // 与ArkUI一致：行号列与代码区顶部对齐
         }
         .width(100.percent)
         .borderRadius(topLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopLeft, topRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopRight, bottomLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomLeft, bottomRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomRight)
@@ -479,7 +480,8 @@ class MarkdownCodeBlockListComponent {
         if (idxSelect < 0 || idxSelect >= strText.size) {
             idxSelect = 0
         }
-        lines = strText[idxSelect].lines().count()
+        // 与ArkUI一致用split统计行数（空文本算1行）
+        lines = strText[idxSelect].split("\n").size
         lineArray.set(Array<Int64>(lines, repeat: 0))
     }
 

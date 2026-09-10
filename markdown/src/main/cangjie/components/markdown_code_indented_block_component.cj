@@ -60,6 +60,7 @@ class MarkdownCodeIndentedBlockComponent {
                 .alignItems(HorizontalAlign.End)
                 codeBlockComponent()
             }
+            .alignItems(VerticalAlign.Top) // 与ArkUI一致：行号列与代码区顶部对齐（代码行高大于行号行高时行号不居中）
         }
         .borderRadius(topLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopLeft, topRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusTopRight, bottomLeft: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomLeft, bottomRight: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockRadiusBottomRight)
         .borderColor(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockBorderColor)
