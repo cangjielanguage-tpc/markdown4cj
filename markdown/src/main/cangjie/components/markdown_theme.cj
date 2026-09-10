@@ -1771,27 +1771,27 @@ public class MarkdownTheme {
     }
 
     /**
-     * 设置代码块复制、全屏图片文本是否显示
+     * 设置代码块复制、全屏图片文本是否隐藏
      *
-     * @param codeBlockIconTextHide 代码块复制、全屏图片文本是否显示 - true:显示;false:不显示。默认true
+     * @param codeBlockIconTextHide 代码块复制、全屏图片文本是否隐藏 - true:隐藏;false:显示。默认false
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockCopyTextIsShow和setCodeBlockFullScreenTextIsShow方法代替", since: "1.4.0"]
     public func setCodeBlockIconTextHide(codeBlockIconTextHide: Bool): MarkdownTheme {
-        this.codeBlockTheme.codeBlockCopyTextIsShow = codeBlockIconTextHide
-        this.codeBlockTheme.codeBlockFullScreenTextIsShow = codeBlockIconTextHide
+        this.codeBlockTheme.codeBlockCopyTextIsShow = !codeBlockIconTextHide
+        this.codeBlockTheme.codeBlockFullScreenTextIsShow = !codeBlockIconTextHide
         return this
     }
 
     /**
-     * 设置代码块代码行号是否显示
+     * 设置代码块代码行号是否隐藏
      *
-     * @param codeBlockLineNumberHide 代码块代码行号是否显示 - true:显示;false:不显示。默认true
+     * @param codeBlockLineNumberHide 代码块代码行号是否隐藏 - true:隐藏;false:显示。默认false
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockLineNumberIsShow方法代替", since: "1.4.0"]
     public func setCodeBlockLineNumberHide(codeBlockLineNumberHide: Bool): MarkdownTheme {
-        this.codeBlockTheme.codeBlockLineNumberIsShow = codeBlockLineNumberHide
+        this.codeBlockTheme.codeBlockLineNumberIsShow = !codeBlockLineNumberHide
         return this
     }
 
