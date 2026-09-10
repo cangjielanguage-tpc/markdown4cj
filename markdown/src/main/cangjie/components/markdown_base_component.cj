@@ -223,6 +223,100 @@ func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfigur
 }
 
 /**
+ * 代码块标题栏（类型文本 + 复制按钮 + 全屏按钮）
+ * 与ArkUI CodeTitleComponent结构一致：类型文本(30%) + Blank + 复制按钮 + 间距 + 全屏按钮
+ * 按钮始终创建，用visibility控制显隐
+ *
+ * @param codeText 代码内容
+ * @param infoText 代码类型（空字符串时显示默认类型文本）
+ * @param markdownConfiguration markdown配置
+ * @param showTypeText 是否显示代码块类型文本（组合代码块列表已用Tab展示，传false避免重复）
+ */
+@Builder
+func codeTitleComponent(codeText: String, infoText: String, markdownConfiguration: MarkdownConfiguration, showTypeText: Bool) {
+    Row() {
+        // 代码类型文本（showTypeText=false 或代码内容为空时隐藏）
+        codeBlockTextComponent(if (infoText != "") {
+            infoText
+        } else {
+            markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeText
+        }, markdownConfiguration, showTypeText && codeText.trimAscii().size > 0)
+        Blank()
+            .layoutWeight(1)
+
+        // 复制按钮（始终创建，用visibility控制显隐）
+        Row() {
+            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
+                Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())
+                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconWidth)
+                    .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconHeight)
+                    .objectFit(ImageFit.Contain)
+            }
+
+            Blank()
+                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconTextSpacing)
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow))
+
+            // 复制文本（始终创建，用visibility控制显隐，与ArkUI一致）
+            Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyText)
+                .fontFamily(codeCopyTextFontFamily(markdownConfiguration.markdownTheme))
+                .fontSize(codeCopyTextFontSize(markdownConfiguration.markdownTheme))
+                .fontWeight(codeCopyTextFontWeight(markdownConfiguration.markdownTheme))
+                .fontStyle(codeCopyTextFontStyle(markdownConfiguration.markdownTheme))
+                .fontColor(codeCopyTextFontColor(markdownConfiguration.markdownTheme))
+                .lineHeight(codeCopyTextLineHeight(markdownConfiguration.markdownTheme))
+                .align(Alignment.End)
+                .maxLines(1)
+                .textOverflow(TextOverflow.Ellipsis)
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow))
+        }
+        .justifyContent(FlexAlign.End)
+        .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
+        .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow))
+
+        Blank()
+            .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
+            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
+
+        // 全屏按钮（始终创建，用visibility控制显隐）
+        Row() {
+            if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome()) {
+                Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
+                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
+                    .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
+                    .objectFit(ImageFit.Contain)
+            }
+
+            Blank()
+                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow))
+
+            // 全屏文本（始终创建，用visibility控制显隐，与ArkUI一致）
+            Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenText)
+                .fontFamily(codeFullScreenTextFontFamily(markdownConfiguration.markdownTheme))
+                .fontSize(codeFullScreenTextFontSize(markdownConfiguration.markdownTheme))
+                .fontWeight(codeFullScreenTextFontWeight(markdownConfiguration.markdownTheme))
+                .fontStyle(codeFullScreenTextFontStyle(markdownConfiguration.markdownTheme))
+                .fontColor(codeFullScreenTextFontColor(markdownConfiguration.markdownTheme))
+                .lineHeight(codeFullScreenTextLineHeight(markdownConfiguration.markdownTheme))
+                .align(Alignment.End)
+                .maxLines(1)
+                .textOverflow(TextOverflow.Ellipsis)
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow))
+        }
+        .justifyContent(FlexAlign.End)
+        .onClick {evt => codeFullScreenOnClick(codeText, if (infoText != "") {
+            Some(infoText)
+        } else {
+            Option<String>.None
+        }, markdownConfiguration.codeFullScreenCallback)}
+        .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
+    }
+    .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTitleLayoutMarginBottom)
+    .alignItems(VerticalAlign.Center)
+}
+
+/**
  * 链接, TOC列表链接
  */
 @Builder

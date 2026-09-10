@@ -19,7 +19,7 @@ class MarkdownCodeBlockListComponent {
     @State
     var strInfos: ObservedArrayList<String> = ObservedArrayList<String>() // 代码类型列表标题（Tab）
     @State
-    var strText: ObservedArrayList<String> = ObservedArrayList<String>() // 代码内容列表（@State 触发 codeBlockButtonComponent 刷新）
+    var strText: ObservedArrayList<String> = ObservedArrayList<String>() // 代码内容列表（@State 触发标题栏/代码区刷新）
     @State
     var strInfoText: ObservedArrayList<String> = ObservedArrayList<String>() // 代码真实类型列表
     @State
@@ -115,13 +115,13 @@ class MarkdownCodeBlockListComponent {
     @Builder
     func codeBlockComponent() {
         Column() {
-            codeBlockButtonComponent()
+            codeTitleComponent(selectCodeText(), selectInfoText(), markdownConfiguration, false)
             Row() {
                 Column() {
                     ForEach(
                         lineArray,
                         itemGeneratorFunc: {
-                            num: Int64, idx: Int64 => Text((idx + 1).toString())
+                            num: Int64, idx: Int64 => Text(num.toString())
                                 .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
                                 .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
                                 .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
@@ -132,7 +132,7 @@ class MarkdownCodeBlockListComponent {
                                 .textOverflow(TextOverflow.Ellipsis)
                         },
                         keyGeneratorFunc: {
-                            num: Int64, idx: Int64 => return "${idx}-${num}"
+                            num: Int64, idx: Int64 => return "${num}"
                         }
                     )
                 }
@@ -256,86 +256,6 @@ class MarkdownCodeBlockListComponent {
             return v
         }
         return markdownTheme.prismTheme.textColor()
-    }
-
-    /**
-     * 复制按钮和全屏按钮部分
-     * 与ArkUI CodeTitleComponent(showTypeText=false)一致：按钮始终创建，用visibility控制显隐
-     */
-    @Builder
-    func codeBlockButtonComponent() {
-        Row() {
-            Blank()
-                .layoutWeight(1)
-
-            // 复制按钮（始终创建，用visibility控制显隐）
-            Row() {
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
-                    Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())
-                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconWidth)
-                        .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconHeight)
-                        .objectFit(ImageFit.Contain)
-                }
-
-                Blank()
-                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconTextSpacing)
-                    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow))
-
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow) {
-                    Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyText)
-                        .fontFamily(codeCopyTextFontFamily(markdownConfiguration.markdownTheme))
-                        .fontSize(codeCopyTextFontSize(markdownConfiguration.markdownTheme))
-                        .fontWeight(codeCopyTextFontWeight(markdownConfiguration.markdownTheme))
-                        .fontStyle(codeCopyTextFontStyle(markdownConfiguration.markdownTheme))
-                        .fontColor(codeCopyTextFontColor(markdownConfiguration.markdownTheme))
-                        .lineHeight(codeCopyTextLineHeight(markdownConfiguration.markdownTheme))
-                        .align(Alignment.End)
-                        .maxLines(1)
-                        .textOverflow(TextOverflow.Ellipsis)
-                }
-            }
-            .justifyContent(FlexAlign.End)
-            .onClick {evt => codeCopyOnClick(selectCodeText(), markdownConfiguration.codeCopyCallback)}
-            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow))
-
-            Blank()
-                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
-                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
-
-            // 全屏按钮（始终创建，用visibility控制显隐）
-            Row() {
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome()) {
-                    Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
-                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
-                        .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
-                        .objectFit(ImageFit.Contain)
-                }
-
-                Blank()
-                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
-                    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow))
-
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow) {
-                    Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenText)
-                        .fontFamily(codeFullScreenTextFontFamily(markdownConfiguration.markdownTheme))
-                        .fontSize(codeFullScreenTextFontSize(markdownConfiguration.markdownTheme))
-                        .fontWeight(codeFullScreenTextFontWeight(markdownConfiguration.markdownTheme))
-                        .fontStyle(codeFullScreenTextFontStyle(markdownConfiguration.markdownTheme))
-                        .fontColor(codeFullScreenTextFontColor(markdownConfiguration.markdownTheme))
-                        .lineHeight(codeFullScreenTextLineHeight(markdownConfiguration.markdownTheme))
-                        .align(Alignment.End)
-                        .maxLines(1)
-                        .textOverflow(TextOverflow.Ellipsis)
-                }
-            }
-            .justifyContent(FlexAlign.End)
-            .onClick {
-                evt => codeFullScreenOnClick(selectCodeText(), selectInfoText(), markdownConfiguration.codeFullScreenCallback)
-            }
-            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
-        }
-        .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTitleLayoutMarginBottom)
-        .alignItems(VerticalAlign.Center)
     }
 
     /**
@@ -480,9 +400,9 @@ class MarkdownCodeBlockListComponent {
         if (idxSelect < 0 || idxSelect >= strText.size) {
             idxSelect = 0
         }
-        // 与ArkUI一致用split统计行数（空文本算1行）
+        // 与ArkUI一致用split统计行数（空文本算1行），行号数据存1..N
         lines = strText[idxSelect].split("\n").size
-        lineArray.set(Array<Int64>(lines, repeat: 0))
+        lineArray.set(Array<Int64>(lines, {i: Int64 => i + 1}))
     }
 
     /**

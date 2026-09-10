@@ -16,8 +16,6 @@ class MarkdownCodeFencedBlockComponent {
     @State
     var nodeHash: Int64 = 0 // hash
     @State
-    var isCodeNone: Bool = false
-    @State
     var hasHighlightResult: Bool = false // 是否已有高亮结果（@State标志位驱动代码内容/rawText兜底切换显示）
     @State
     var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>() // 高亮代码列表
@@ -42,13 +40,13 @@ class MarkdownCodeFencedBlockComponent {
 
     func build() {
         Column() {
-            codeBlockButtonComponent()
+            codeTitleComponent(codeText, info, markdownConfiguration, true)
             Row() {
                 Column() {
                     ForEach(
                         lineArray,
                         itemGeneratorFunc: {
-                            item: Int64, idx: Int64 => Text((idx + 1).toString())
+                            item: Int64, idx: Int64 => Text(item.toString())
                                 .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
                                 .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
                                 .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
@@ -59,7 +57,7 @@ class MarkdownCodeFencedBlockComponent {
                                 .textOverflow(TextOverflow.Ellipsis)
                         },
                         keyGeneratorFunc: {
-                            item: Int64, idx: Int64 => return "${idx}-${item}"
+                            item: Int64, idx: Int64 => return "${item}"
                         }
                     )
                 }
@@ -104,6 +102,7 @@ class MarkdownCodeFencedBlockComponent {
                             .textAlign(TextAlign.Start)
                             .visibility(isVisibility(!hasHighlightResult))
                     }
+                    .alignItems(HorizontalAlign.Start) // 与ArkUI一致：代码文本左对齐（Column默认居中会导致内容偏右）
                 }
                 .scrollable(ScrollDirection.Horizontal)
                 .scrollBar(BarState.Off)
@@ -133,92 +132,6 @@ class MarkdownCodeFencedBlockComponent {
     }
 
     /**
-     * 复制按钮和全屏按钮部分
-     * 与ArkUI CodeTitleComponent一致：按钮始终创建，用visibility控制显隐，代码为空时仅隐藏类型文本
-     */
-    @Builder
-    func codeBlockButtonComponent() {
-        Row() {
-            // 代码类型文本（代码内容为空时隐藏）
-            codeBlockTextComponent(if (info != "") {
-                info
-            } else {
-                markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeText
-            }, markdownConfiguration, isCodeNone)
-            Blank()
-                .layoutWeight(1)
-
-            // 复制按钮（始终创建，用visibility控制显隐）
-            Row() {
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
-                    Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())
-                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconWidth)
-                        .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconHeight)
-                        .objectFit(ImageFit.Contain)
-                }
-
-                Blank()
-                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconTextSpacing)
-                    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow))
-
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow) {
-                    Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyText)
-                        .fontFamily(codeCopyTextFontFamily(markdownConfiguration.markdownTheme))
-                        .fontSize(codeCopyTextFontSize(markdownConfiguration.markdownTheme))
-                        .fontWeight(codeCopyTextFontWeight(markdownConfiguration.markdownTheme))
-                        .fontStyle(codeCopyTextFontStyle(markdownConfiguration.markdownTheme))
-                        .fontColor(codeCopyTextFontColor(markdownConfiguration.markdownTheme))
-                        .lineHeight(codeCopyTextLineHeight(markdownConfiguration.markdownTheme))
-                        .align(Alignment.End)
-                        .maxLines(1)
-                        .textOverflow(TextOverflow.Ellipsis)
-                }
-            }
-            .justifyContent(FlexAlign.End)
-            .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
-            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow))
-
-            Blank()
-                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
-                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
-
-            // 全屏按钮（始终创建，用visibility控制显隐）
-            Row() {
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome()) {
-                    Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
-                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
-                        .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
-                        .objectFit(ImageFit.Contain)
-                }
-
-                Blank()
-                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
-                    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow))
-
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow) {
-                    Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenText)
-                        .fontFamily(codeFullScreenTextFontFamily(markdownConfiguration.markdownTheme))
-                        .fontSize(codeFullScreenTextFontSize(markdownConfiguration.markdownTheme))
-                        .fontWeight(codeFullScreenTextFontWeight(markdownConfiguration.markdownTheme))
-                        .fontStyle(codeFullScreenTextFontStyle(markdownConfiguration.markdownTheme))
-                        .fontColor(codeFullScreenTextFontColor(markdownConfiguration.markdownTheme))
-                        .lineHeight(codeFullScreenTextLineHeight(markdownConfiguration.markdownTheme))
-                        .align(Alignment.End)
-                        .maxLines(1)
-                        .textOverflow(TextOverflow.Ellipsis)
-                }
-            }
-            .justifyContent(FlexAlign.End)
-            .onClick {
-                evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
-            }
-            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
-        }
-        .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTitleLayoutMarginBottom)
-        .alignItems(VerticalAlign.Center)
-    }
-
-    /**
      * 数据刷新
      */
     public func refreshData(newNodeView: NodeView): Unit {
@@ -229,7 +142,6 @@ class MarkdownCodeFencedBlockComponent {
     }
 
     public func refreshDataInternal(): Unit {
-        this.isCodeNone = this.codeText.trimAscii().size > 0
         if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockParserSync) {
             stringCodeToResListSync(this.codeText)
         } else {
