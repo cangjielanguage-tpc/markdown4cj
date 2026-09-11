@@ -664,7 +664,7 @@ func estimateParagraphNodeHeightWithFootnote(p: Paragraph, theme: MarkdownTheme,
 /**
  * 估算代码块按钮栏高度（代码类型文本 + 复制按钮 + 全屏按钮）
  *
- * 渲染端 codeBlockButtonComponent 为 Row(alignItems=Center)，外层 margin:
+ * 渲染端 codeTitleComponent 为 Row(alignItems=Center)，外层 margin:
  * top=8.0, bottom=codeBlockTitleLayoutMarginBottom。内容高度取各子元素最大值：
  * - 代码类型文本（codeTypeTextLineHeight，仅当代码非空时显示）
  * - 复制按钮（codeBlockCopyIconHeight 或 codeCopyTextLineHeight）
@@ -1166,7 +1166,7 @@ func estimateLatexMathBlockNodeHeight(lmb: LatexMathBlock, theme: MarkdownTheme,
  *   Row > Column(margin, padding) {
  *     codeBlockTitleComponent (标签栏, margin(bottom: codeBlockTitleLayoutMarginBottom))
  *     codeBlockComponent: Column(border) {
- *       codeBlockButtonComponent (按钮栏, margin(top:8, bottom: codeBlockTitleLayoutMarginBottom))
+ *       codeTitleComponent (按钮栏, margin(top:8, bottom: codeBlockTitleLayoutMarginBottom))
  *       Row(行号 + 代码文本)
  *     }
  *   }

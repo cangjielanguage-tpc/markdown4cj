@@ -17,8 +17,6 @@ class MarkdownCodeComponent {
     var nodeHash: Int64 = 0 // hash
     @State
     var lineStrArray: StringDataSource = StringDataSource(ArrayList<String>()) // 代码列表
-    @State
-    var lineInt64Array: StringDataSource = StringDataSource(ArrayList<String>()) // 代码列表
     let scroller1: Scroller = Scroller() // list控制器
     let scroller2: Scroller = Scroller() // list控制器
     @State
@@ -37,11 +35,11 @@ class MarkdownCodeComponent {
     func build() {
         Row() {
             Column() {
-                codeBlockButtonComponent()
+                codeTitleComponent(codeText, if (info.isSome()) { info() } else { "" }, markdownConfiguration, true)
                 Row() {
                     List(scroller: scroller1) {
                         LazyForEach(
-                            lineInt64Array,
+                            lineStrArray,
                             itemGeneratorFunc: {
                                 item: String, idx: Int64 => ListItem() {
                                     Text((idx + 1).toString())
@@ -86,6 +84,10 @@ class MarkdownCodeComponent {
                                                 index: idx
                                             )
                                         }
+                                        // 事件驱动置底：条目挂载（首次布局/流式新增/滚动后重建）时若处于置底模式且在末尾，则滚动到底
+                                        .onAppear({ =>
+                                            scrollChatIfAtBottom()
+                                        })
                                     },
                                     keyGeneratorFunc: {
                                         item: String, idx: Int64 => "${idx}-${item}"
@@ -108,6 +110,7 @@ class MarkdownCodeComponent {
                             }
                             .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
                         }
+                        .alignItems(HorizontalAlign.Start) // 与ArkUI一致：代码文本左对齐（Column默认居中会导致内容偏右）
                         .layoutWeight(1)
                     }
                     .layoutWeight(1)
@@ -142,107 +145,22 @@ class MarkdownCodeComponent {
     }
 
     /**
-     * 复制按钮和全屏按钮部分
-     * 与ArkUI CodeTitleComponent一致：按钮始终创建，用visibility控制显隐，代码为空时仅隐藏类型文本
-     */
-    @Builder
-    func codeBlockButtonComponent() {
-        Row() {
-            // 代码类型文本（代码内容为空时隐藏）
-            codeBlockTextComponent(if (let Some(i) <- info) { i } else { markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeText }, markdownConfiguration, codeText.trimAscii().size > 0)
-            Blank()
-                .layoutWeight(1)
-
-            // 复制按钮（始终创建，用visibility控制显隐）
-            Row() {
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
-                    Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())
-                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconWidth)
-                        .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconHeight)
-                        .objectFit(ImageFit.Contain)
-                }
-
-                Blank()
-                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIconTextSpacing)
-                    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow))
-
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyTextIsShow) {
-                    Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyText)
-                        .fontFamily(codeCopyTextFontFamily(markdownConfiguration.markdownTheme))
-                        .fontSize(codeCopyTextFontSize(markdownConfiguration.markdownTheme))
-                        .fontWeight(codeCopyTextFontWeight(markdownConfiguration.markdownTheme))
-                        .fontStyle(codeCopyTextFontStyle(markdownConfiguration.markdownTheme))
-                        .fontColor(codeCopyTextFontColor(markdownConfiguration.markdownTheme))
-                        .lineHeight(codeCopyTextLineHeight(markdownConfiguration.markdownTheme))
-                        .align(Alignment.End)
-                        .maxLines(1)
-                        .textOverflow(TextOverflow.Ellipsis)
-                }
-            }
-            .justifyContent(FlexAlign.End)
-            .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
-            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow))
-
-            Blank()
-                .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyFullScreenSpacing)
-                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
-
-            // 全屏按钮（始终创建，用visibility控制显隐）
-            Row() {
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome()) {
-                    Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon())
-                        .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconWidth)
-                        .height(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconHeight)
-                        .objectFit(ImageFit.Contain)
-                }
-
-                Blank()
-                    .width(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIconTextSpacing)
-                    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenIcon.isSome() && markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow))
-
-                if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenTextIsShow) {
-                    Text(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenText)
-                        .fontFamily(codeFullScreenTextFontFamily(markdownConfiguration.markdownTheme))
-                        .fontSize(codeFullScreenTextFontSize(markdownConfiguration.markdownTheme))
-                        .fontWeight(codeFullScreenTextFontWeight(markdownConfiguration.markdownTheme))
-                        .fontStyle(codeFullScreenTextFontStyle(markdownConfiguration.markdownTheme))
-                        .fontColor(codeFullScreenTextFontColor(markdownConfiguration.markdownTheme))
-                        .lineHeight(codeFullScreenTextLineHeight(markdownConfiguration.markdownTheme))
-                        .align(Alignment.End)
-                        .maxLines(1)
-                        .textOverflow(TextOverflow.Ellipsis)
-                }
-            }
-            .justifyContent(FlexAlign.End)
-            .onClick {
-                evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
-            }
-            .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockFullScreenButtonIsShow))
-        }
-        .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTitleLayoutMarginBottom)
-        .alignItems(VerticalAlign.Center)
-    }
-
-    /**
      * 是否滑动到底部
+     * 置底模式开启且用户未上滑离开末尾时才滚动
      */
     func scrollChatIfAtBottom() {
-        if (reachBottom) {
+        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockSeparateIsBottom && reachBottom) {
             scroll2Bottom()
         }
     }
 
     /**
      * 滑动到底部
-     * LazyForEach 的 addData 触发的渲染是异步的，
-     * scrollEdge 在渲染前调用只能滚到旧底部，需延迟一帧再滚动一次确保到位
+     * 由条目 onAppear 事件驱动：LazyForEach 每批新条目挂载后触发一次滚动，
+     * 滚动又使后续条目挂载，循环收敛到真实底部，无需定时器
      */
     func scroll2Bottom() {
         scroller2.scrollEdge(Edge.Bottom)
-        Timer.once(0 * Duration.millisecond) {
-            =>
-                scroller2.scrollEdge(Edge.Bottom)
-        }
     }
 
     /**
@@ -290,13 +208,11 @@ class MarkdownCodeComponent {
                 if (lineStrArray.getData(i) != arr[i]) {
                     // 数据变化时直接替换数据源
                     lineStrArray.replaceData(i, arr[i])
-                    lineInt64Array.replaceData(i, arr[i])
                 }
             }
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
                 lineStrArray.addData(arr[i])
-                lineInt64Array.addData(arr[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
@@ -305,7 +221,6 @@ class MarkdownCodeComponent {
                 if (lineStrArray.getData(i) != arr[i]) {
                     // 数据变化时直接替换数据源
                     lineStrArray.replaceData(i, arr[i])
-                    lineInt64Array.replaceData(i, arr[i])
                 }
             }
         } else {
@@ -315,18 +230,12 @@ class MarkdownCodeComponent {
                 if (lineStrArray.getData(i) != arr[i]) {
                     // 数据变化时直接替换数据源
                     lineStrArray.replaceData(i, arr[i])
-                    lineInt64Array.replaceData(i, arr[i])
                 }
             }
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 lineStrArray.deleteData(i)
-                lineInt64Array.deleteData(i)
             }
-        }
-        // 列表是否置底
-        if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockSeparateIsBottom) {
-            scrollChatIfAtBottom()
         }
     }
 }
