@@ -36,6 +36,18 @@ struct AllPageCopyDetailsPage {
   isFull: boolean = true
   @State
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State
   time: number = 50
   @State
@@ -74,6 +86,8 @@ struct AllPageCopyDetailsPage {
       this.fileStr = getFileContextStr(baseData._pagePath)
       this.isFull = baseData._isFull
       this.incrementalAnalysis = baseData._incrementalAnalysis
+      this.enableParseThrottle = baseData._enableParseThrottle
+      this.parseThrottleMs = baseData._parseThrottleMs
       this.time = baseData._time
       this.textNumber = baseData._textNumber
     } catch (e) {
@@ -82,6 +96,26 @@ struct AllPageCopyDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   /**
@@ -103,39 +137,6 @@ struct AllPageCopyDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Button("获取全文文本并复制")
         .height(40)
         .width("80%")

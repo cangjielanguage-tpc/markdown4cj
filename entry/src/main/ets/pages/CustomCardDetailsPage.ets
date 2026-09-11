@@ -64,12 +64,16 @@ struct CustomCardDetailsPage {
       let baseData: BaseMDData = router.getParams() as BaseMDData
       this.fileStr = getFileContextStr(baseData._pagePath)
       this.isFull = baseData._isFull
+      this.enableParseThrottle = baseData._enableParseThrottle
+      this.parseThrottleMs = baseData._parseThrottleMs
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+    this.isInputEnded = true
+    this.content = this.fileStr
   }
 
   /**
@@ -154,21 +158,6 @@ struct CustomCardDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            this.isInputEnded = true
-            this.content = this.fileStr
-          }
-        )
       Scroll(this.scroller) {
         Column() {
           CJMarkdown({

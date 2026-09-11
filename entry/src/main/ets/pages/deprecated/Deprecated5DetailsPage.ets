@@ -84,6 +84,8 @@ struct Deprecated5DetailsPage {
       this.fileStr = getFileContextStr(deprecatedData._pagePath)
       this.isFull = deprecatedData._isFull
       this.incrementalAnalysis = deprecatedData._incrementalAnalysis
+      this.enableParseThrottle = deprecatedData._enableParseThrottle
+      this.parseThrottleMs = deprecatedData._parseThrottleMs
       this.time = deprecatedData._time
       this.textNumber = deprecatedData._textNumber
       this.isMarkdownParserSync = deprecatedData._isMarkdownParserSync
@@ -131,33 +133,28 @@ struct Deprecated5DetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr[index]
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index === this.fileStr.length - 1) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        index++
+      }, this.time)
+    }
   }
 
   build() {
     Column() {
       titleComponent("废弃接口用例5", 0xFF317AFF, true, this.safeTop)
-      Button("点击加载markdown")
-        .height(40).width("80%").type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 }).fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF).align(Alignment.Center).fontSize(16)
-        .onClick(() => {
-          if (this.isFull) {
-            this.isInputEnded = true
-            this.content = this.fileStr
-          } else {
-            this.isInputEnded = false
-            let index = 0
-            let id = setInterval(() => {
-              this.content = this.content + this.fileStr[index]
-              this.scroller.scrollEdge(Edge.Bottom)
-              if (index === this.fileStr.length - 1) {
-                this.isInputEnded = true
-                clearInterval(id)
-              }
-              index++
-            }, this.time)
-          }
-        })
       Scroll(this.scroller) {
         if (this.isRefresh) {
           if (this.openGestureSwipeTest) {
@@ -212,6 +209,8 @@ struct Deprecated5DetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     if (this.codeFullScreenIcon !== undefined) theme.setCodeFullScreenIcon(this.codeFullScreenIcon)

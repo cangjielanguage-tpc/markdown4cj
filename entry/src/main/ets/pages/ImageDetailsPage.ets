@@ -32,6 +32,18 @@ struct ImageDetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -179,6 +191,8 @@ struct ImageDetailsPage {
       // ---------- 通用
       this.isFull = imageDataMD._isFull
       this.incrementalAnalysis = imageDataMD._incrementalAnalysis
+      this.enableParseThrottle = imageDataMD._enableParseThrottle
+      this.parseThrottleMs = imageDataMD._parseThrottleMs
       this.time = imageDataMD._time
       this.textNumber = imageDataMD._textNumber
       this.isMarkdownParserSync = imageDataMD._isMarkdownParserSync
@@ -241,6 +255,27 @@ struct ImageDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -251,39 +286,6 @@ struct ImageDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
         if (this.isRefresh) {
           if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
@@ -371,6 +373,8 @@ struct ImageDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Image

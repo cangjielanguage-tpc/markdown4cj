@@ -93,7 +93,6 @@ struct BannerPage {
   bannerPaddingLeftList: Array<number> = marginListGeneralData
   @State bannerPaddingLeft: number = 0 // banner左内边距
   @State bannerData: BannerData = new BannerData() // 配置数据内容
-  heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
   @State isExpanded2: boolean = false // 控制展开/折叠状态
 
@@ -111,23 +110,15 @@ struct BannerPage {
       )
 
       // md文档展示部分
-      Column() {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
+      Scroll() {
+        Grid() {
           ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+            GridItem() {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
                 .backgroundColor(0xFFEE82EE)
-                .height(25).width('100%')
+                .height(25)
                 .padding(5)
                 .borderRadius(5)
                 .maxLines(1)
@@ -136,6 +127,8 @@ struct BannerPage {
                   // ---------- 通用
                   this.bannerData._isFull = this.isFull
                   this.bannerData._incrementalAnalysis = this.incrementalAnalysis
+                  this.bannerData._enableParseThrottle = this.enableParseThrottle
+                  this.bannerData._parseThrottleMs = this.parseThrottleMs
                   this.bannerData._time = this.time
                   this.bannerData._textNumber = this.textNumber
                   this.bannerData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -164,8 +157,18 @@ struct BannerPage {
                 })
             }
           })
-        }.width('100%').height('100%')
-      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+        }
+        .columnsGap(5)
+        .rowsGap(5)
+        .maxCount(5)
+        .minCount(1)
+        .cellLength(30)
+        .layoutDirection(GridDirection.Row)
+        .padding(5)
+      }
+      .constraintSize({ maxHeight: 200 })
+      .width('100%')
+      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -204,6 +207,18 @@ struct BannerPage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

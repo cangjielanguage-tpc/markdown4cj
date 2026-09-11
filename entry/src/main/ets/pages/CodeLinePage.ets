@@ -39,6 +39,14 @@ struct CodeLinePage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -141,7 +149,6 @@ struct CodeLinePage {
   inlineCodeTextBackgroundRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State // 内联代码文本背景右下圆角
   inlineCodeTextBackgroundRadiusBottomRight: number = 0
-  heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
   @State isExpanded2: boolean = false // 控制展开/折叠状态
 
@@ -159,23 +166,15 @@ struct CodeLinePage {
       )
 
       // md文档展示部分
-      Column() {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
+      Scroll() {
+        Grid() {
           ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+            GridItem() {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
                 .backgroundColor(0xFFEE82EE)
-                .height(25).width('100%')
+                .height(25)
                 .padding(5)
                 .borderRadius(5)
                 .maxLines(1)
@@ -184,6 +183,8 @@ struct CodeLinePage {
                   // ---------- 通用
                   this.codeLineData._isFull = this.isFull
                   this.codeLineData._incrementalAnalysis = this.incrementalAnalysis
+                  this.codeLineData._enableParseThrottle = this.enableParseThrottle
+                  this.codeLineData._parseThrottleMs = this.parseThrottleMs
                   this.codeLineData._time = this.time
                   this.codeLineData._textNumber = this.textNumber
                   this.codeLineData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -217,8 +218,18 @@ struct CodeLinePage {
                 })
             }
           })
-        }.width('100%').height('100%')
-      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+        }
+        .columnsGap(5)
+        .rowsGap(5)
+        .maxCount(5)
+        .minCount(1)
+        .cellLength(30)
+        .layoutDirection(GridDirection.Row)
+        .padding(5)
+      }
+      .constraintSize({ maxHeight: 200 })
+      .width('100%')
+      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -257,6 +268,18 @@ struct CodeLinePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

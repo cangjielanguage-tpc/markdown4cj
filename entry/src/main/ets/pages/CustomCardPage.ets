@@ -27,7 +27,6 @@ struct CustomCardPage {
   isCustomCardList: Array<boolean> = booleanListGeneralData
   @State
   isCustomCard: boolean = true
-  heightMD: number = 30
   @State
   baseData: BaseMDData = new BaseMDData()
   @State isExpanded1: boolean = false
@@ -46,18 +45,10 @@ struct CustomCardPage {
       )
 
       // md文档选择部分
-      Column() {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
+      Scroll() {
+        Grid() {
           ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+            GridItem() {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
@@ -77,8 +68,18 @@ struct CustomCardPage {
                 })
             }
           })
-        }.width('100%').height('100%')
-      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+        }
+        .columnsGap(5)
+        .rowsGap(5)
+        .maxCount(5)
+        .minCount(1)
+        .cellLength(30)
+        .layoutDirection(GridDirection.Row)
+        .padding(5)
+      }
+      .constraintSize({ maxHeight: 200 })
+      .width('100%')
+      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {

@@ -42,6 +42,14 @@ struct TablePage {
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
   @State // 增量加载每次间隔时间
@@ -313,7 +321,6 @@ struct TablePage {
   tableHeadTitleTextLineHeight: number | undefined = undefined
   @State // 配置数据内容
   tableData: TableData = new TableData()
-  heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态 - 通用样式配置
   @State isExpanded2: boolean = false // 控制展开/折叠状态 - 边距设置
   @State isExpanded3: boolean = false // 控制展开/折叠状态 - 边框设置
@@ -336,23 +343,15 @@ struct TablePage {
       )
 
       // md文档展示部分
-      Column() {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
+      Scroll() {
+        Grid() {
           ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+            GridItem() {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
                 .backgroundColor(0xFF2196F3)
-                .height(25).width('100%')
+                .height(25)
                 .padding(5)
                 .borderRadius(5)
                 .maxLines(1)
@@ -361,6 +360,8 @@ struct TablePage {
                   // ---------- 通用
                   this.tableData._isFull = this.isFull
                   this.tableData._incrementalAnalysis = this.incrementalAnalysis
+                  this.tableData._enableParseThrottle = this.enableParseThrottle
+                  this.tableData._parseThrottleMs = this.parseThrottleMs
                   this.tableData._time = this.time
                   this.tableData._textNumber = this.textNumber
                   this.tableData._isMarkdownParserSync = this.isMarkdownParserSync
@@ -437,8 +438,18 @@ struct TablePage {
                 })
             }
           })
-        }.width('100%').height('100%')
-      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+        }
+        .columnsGap(5)
+        .rowsGap(5)
+        .maxCount(5)
+        .minCount(1)
+        .cellLength(30)
+        .layoutDirection(GridDirection.Row)
+        .padding(5)
+      }
+      .constraintSize({ maxHeight: 200 })
+      .width('100%')
+      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -477,6 +488,18 @@ struct TablePage {
                   typeEnum: TypeEnum.IS_BOOLEAN,
                   allListData: this.incrementalAnalysisList,
                   allData: this.incrementalAnalysis
+                })
+                BaseTabComponent({
+                  titleStr: "是否启用解析节流 - ",
+                  typeEnum: TypeEnum.IS_BOOLEAN,
+                  allListData: this.enableParseThrottleList,
+                  allData: this.enableParseThrottle
+                })
+                BaseTabComponent({
+                  titleStr: "解析节流间隔(ms) - ",
+                  typeEnum: TypeEnum.IS_NUMBER,
+                  allListData: this.parseThrottleMsList,
+                  allData: this.parseThrottleMs
                 })
                 BaseTabComponent({
                   titleStr: "增量加载每次间隔时间 - ",

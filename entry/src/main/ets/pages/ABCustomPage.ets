@@ -42,6 +42,14 @@ struct ABCustomPage {
    */
   @State
   incrementalAnalysis: boolean = false
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   /**
    * 增量加载每次间隔时间列表
    */

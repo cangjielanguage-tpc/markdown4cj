@@ -32,6 +32,18 @@ struct LineBreakDetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
+  // 是否启用解析节流列表
+  enableParseThrottleList: Array<boolean> = booleanListGeneralData
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  // 解析节流间隔列表
+  parseThrottleMsList: Array<number> = timeListGeneralData
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -97,6 +109,8 @@ struct LineBreakDetailsPage {
       // ---------- 通用
       this.isFull = lineBreakData._isFull
       this.incrementalAnalysis = lineBreakData._incrementalAnalysis
+      this.enableParseThrottle = lineBreakData._enableParseThrottle
+      this.parseThrottleMs = lineBreakData._parseThrottleMs
       this.time = lineBreakData._time
       this.textNumber = lineBreakData._textNumber
       this.isMarkdownParserSync = lineBreakData._isMarkdownParserSync
@@ -118,6 +132,27 @@ struct LineBreakDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -128,39 +163,6 @@ struct LineBreakDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
         if (this.isRefresh) {
           if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
@@ -239,6 +241,8 @@ struct LineBreakDetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     return theme
