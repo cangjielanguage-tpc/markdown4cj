@@ -29,18 +29,6 @@ struct Deprecated2DetailsPage {
   isFull: boolean = true
   @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  @State // 是否启用解析节流
-  enableParseThrottle: boolean = false
-  @State // 解析节流间隔（ms）
-  parseThrottleMs: number = 200
-  // 是否启用解析节流列表
-  enableParseThrottleList: Array<boolean> = booleanListGeneralData
-  @State // 是否启用解析节流
-  enableParseThrottle: boolean = false
-  // 解析节流间隔列表
-  parseThrottleMsList: Array<number> = timeListGeneralData
-  @State // 解析节流间隔（ms）
-  parseThrottleMs: number = 200
   @State // 增量加载每次间隔时间
   time: number = 50
   @State // 增量每次增量文本数量
@@ -189,8 +177,6 @@ struct Deprecated2DetailsPage {
       // ---------- 通用
       this.isFull = deprecatedData._isFull
       this.incrementalAnalysis = deprecatedData._incrementalAnalysis
-      this.enableParseThrottle = deprecatedData._enableParseThrottle
-      this.parseThrottleMs = deprecatedData._parseThrottleMs
       this.time = deprecatedData._time
       this.textNumber = deprecatedData._textNumber
       this.isMarkdownParserSync = deprecatedData._isMarkdownParserSync
@@ -361,8 +347,6 @@ struct Deprecated2DetailsPage {
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     
     // ---------- 资源图标配置

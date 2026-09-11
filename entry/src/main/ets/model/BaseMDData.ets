@@ -5,6 +5,8 @@ export class BaseMDData {
   _isFull: boolean = true // 是否全量加载Markdown文本
   _incrementalAnalysis: boolean = false // 是否增量解析Markdown文本
   _time: number = 50 // 增量加载每次间隔时间
+  _enableParseThrottle: boolean = false // 是否启用解析节流，true为markdown控制节流，false为用户自行控制 - 默认false
+  _parseThrottleMs: number = 200 // 解析节流间隔（ms），enableParseThrottle为true时生效，0表示不节流
   _textNumber: number = 10 // 增量每次增量文本数量
   _isMarkdownParserSync: boolean = false // 是否同步解析Markdown文本
   _isOnCopy: boolean = false // 是否打开长按复制粘贴效果
@@ -30,6 +32,14 @@ export class BaseMDData {
 
   public set time(value: number) {
     this._time = value
+  }
+
+  public set enableParseThrottle(value: boolean) {
+    this._enableParseThrottle = value
+  }
+
+  public set parseThrottleMs(value: number) {
+    this._parseThrottleMs = value
   }
 
   public set textNumber(value: number) {

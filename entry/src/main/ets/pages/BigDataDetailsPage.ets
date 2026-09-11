@@ -41,6 +41,16 @@ struct BigDataDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * 是否启用解析节流
+   */
+  @State
+  enableParseThrottle: boolean = false
+  /**
+   * 解析节流间隔（ms）
+   */
+  @State
+  parseThrottleMs: number = 200
+  /**
    * 增量加载每次间隔时间
    */
   @State
@@ -64,6 +74,8 @@ struct BigDataDetailsPage {
       this.fileStr = getFileContextStr(bigData._pagePath)
       // ---------- 通用
       this.isFull = bigData._isFull
+      this.enableParseThrottle = bigData._enableParseThrottle
+      this.parseThrottleMs = bigData._parseThrottleMs
       this.time = bigData._time
       this.textNumber = bigData._textNumber
       // ---------- 专有

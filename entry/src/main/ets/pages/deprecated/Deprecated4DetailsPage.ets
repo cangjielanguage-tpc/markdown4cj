@@ -19,6 +19,8 @@ struct Deprecated4DetailsPage {
   @State content: string = ""
   @State isFull: boolean = true
   @State incrementalAnalysis: boolean = false
+  @State enableParseThrottle: boolean = false // 是否启用解析节流
+  @State parseThrottleMs: number = 200 // 解析节流间隔（ms）
   @State time: number = 50
   @State textNumber: number = 10
   @State isMarkdownParserSync: boolean = false

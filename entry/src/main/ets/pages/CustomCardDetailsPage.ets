@@ -45,6 +45,10 @@ struct CustomCardDetailsPage {
   markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
   @State
   isRefresh: boolean = true
+  @State // 是否启用解析节流
+  enableParseThrottle: boolean = false
+  @State // 解析节流间隔（ms）
+  parseThrottleMs: number = 200
   // 是否启用自定义卡片
   isCustomCard: boolean = true
 
@@ -203,6 +207,8 @@ struct CustomCardDetailsPage {
     }
     let globalTheme: GlobalTheme = new GlobalTheme()
     globalTheme.setIsMarkdownParserSync(true)
+    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    globalTheme.setParseThrottleMs(this.parseThrottleMs)
     theme.setGlobalTheme(globalTheme)
     return theme
   }
