@@ -17,6 +17,9 @@ export class ParsedCustomTag {
  */
 export class CustomViewRegistry {
   private static tags: Set<string> = new Set<string>()
+  // 已编译的标签匹配正则缓存（key=标签名）：preprocessCustomTags 在流式输出下每个解析
+  // chunk 都会调用，避免每次对每个已注册标签重复做转义+new RegExp（编译结果恒相同）
+  private static tagPatterns: Map<string, RegExp> = new Map<string, RegExp>()
 
   /**
    * 注册自定义标签（仅标签名，渲染由 customTagViewComponent 回调完成）
@@ -86,13 +89,17 @@ export class CustomViewRegistry {
       if (work.indexOf(`<${tag}`) < 0) {
         return
       }
-      // 转义 tag 中的正则特殊字符，防止正则注入导致误匹配或语法错误
-      const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, (c: string) => '\\' + c)
-      // 完整开闭标签（内容限单行）或自闭合
-      const pattern = new RegExp(
-        `<${escapedTag}(\\s[^>]*?)?>([^\\n]*?)</${escapedTag}\\s*>|<${escapedTag}(\\s[^>]*?)?/>`,
-        'g'
-      )
+      // 完整开闭标签（内容限单行）或自闭合；正则按标签名缓存（编译结果只取决于标签名）
+      let pattern = CustomViewRegistry.tagPatterns.get(tag)
+      if (pattern === undefined) {
+        // 转义 tag 中的正则特殊字符，防止正则注入导致误匹配或语法错误
+        const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, (c: string) => '\\' + c)
+        pattern = new RegExp(
+          `<${escapedTag}(\\s[^>]*?)?>([^\\n]*?)</${escapedTag}\\s*>|<${escapedTag}(\\s[^>]*?)?/>`,
+          'g'
+        )
+        CustomViewRegistry.tagPatterns.set(tag, pattern)
+      }
       work = work.replace(pattern, (m: string) => {
         return `\n\`\`\`\n${m}\n\`\`\`\n`
       })

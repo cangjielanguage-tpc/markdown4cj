@@ -210,7 +210,14 @@ export class MarkdownDataSource implements IDataSource {
    */
   public smartUpdateDataArray(newData: Array<NodeView>): void {
     if (this.dataArray.length === 0) {
-      this.pushDataArray(newData)
+      // 初始/全量加载：整表赋值 + 单次onDataReloaded（与replaceAll同模式）。
+      // 原逐条onDataAdd对大文档（数百块）产生N次JS→Native通知；LazyForEach两种方式
+      // 都只构建可见项，最终状态一致，仅通知次数不同。
+      // slice()拷贝：保持dataArray为私有数组实例（与旧pushDataArray逐条push的隔离语义
+      // 一致），避免与调用方传入的node.children数组产生别名，杜绝后续mutator误改node.children
+      this.dataArray = newData.slice()
+      this.notifyChange()
+      this.saveCurrentHashes()
       return
     }
 

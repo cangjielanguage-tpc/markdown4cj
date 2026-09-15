@@ -28,6 +28,10 @@ export struct MarkdownCodeSeparate {
   private parseVersion: number = 0 // 解析版本号，每次解析递增
   private appliedVersion: number = 0 // 已应用的版本号，用于丢弃过期的异步解析结果
   private timerId: number = -1 // setTimeout定时器ID
+  // 内容签名缓存：增量/流式场景 @Watch 因节点其他 observed 属性变化触发时，
+  // 代码原文/语言未变则 split+行号+高亮解析结果恒相同，可整体跳过
+  private signedCodeText: string | undefined = undefined // 上次处理的代码原文（undefined=尚未初始化，首次必执行）
+  private signedCodeInfo: string | undefined = undefined // 上次代码语言
   private lineScroller: Scroller = new Scroller() // 行号list控制器
   private codeScroller: Scroller = new Scroller() // 代码list控制器
 
@@ -205,10 +209,20 @@ export struct MarkdownCodeSeparate {
 
   /**
    * 刷新数据
+   * 增量/流式优化：代码原文与语言均未变时直接返回，
+   * 避免每次 @Watch 触发都重跑 split + 行号数组重建 + 高亮重解析（结果恒相同）
    */
   refreshData(): void {
-    this.codeText = this.node.nodeText
-    this.info = this.node.codeInfo
+    const newText = this.node.nodeText
+    const newInfo = this.node.codeInfo
+    if (this.signedCodeText !== undefined &&
+      newText === this.signedCodeText && newInfo === this.signedCodeInfo) {
+      return
+    }
+    this.signedCodeText = newText
+    this.signedCodeInfo = newInfo
+    this.codeText = newText
+    this.info = newInfo
     let arr = this.codeText.split("\n") // 代码块数据分割，nodeText已去除末尾换行，无需再pop
     let lineArr: number[] = []
     for (let i = 1; i <= arr.length; i++) {

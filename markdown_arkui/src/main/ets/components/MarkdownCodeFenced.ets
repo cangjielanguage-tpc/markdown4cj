@@ -24,6 +24,13 @@ export struct MarkdownCodeFenced {
   private appliedVersion: number = 0 // 已应用的版本号，用于丢弃过期的异步解析结果
   private timerId: number = -1 // setTimeout定时器ID
   private codeFormatTS: CodeFormatTS | null = null // 代码格式化工具实例
+  // 内容签名缓存：增量/流式场景 @Watch 常因节点其他 observed 属性变化而触发，
+  // 但代码原文/语言/格式化配置未变时，split+行号重建+高亮重解析结果恒相同，可整体跳过
+  private signedCodeText: string | undefined = undefined // 上次处理的代码原文（undefined=尚未初始化，首次必执行）
+  private signedCodeInfo: string | undefined = undefined // 上次代码语言
+  private signedFormat: boolean = false // 上次 codeBlockIsCodeFormat
+  private signedUseTab: boolean = false // 上次 codeBlockUseTab
+  private signedIndentWidth: Length = '' // 上次 codeBlockIndentWidth（参与格式化输出）
 
   aboutToAppear(): void {
     this.isAlive = true
@@ -135,11 +142,29 @@ export struct MarkdownCodeFenced {
 
   /**
    * 刷新数据
+   * 增量/流式优化：代码原文、语言与格式化相关配置均未变时直接返回，
+   * 避免每次 @Watch 触发都重跑 split + 行号数组重建 + 高亮重解析（结果恒相同）
    */
   refreshData(): void {
-    this.codeText = this.node.nodeText
-    this.info = this.node.codeInfo
-    if (this.codeBlockTheme.codeBlockIsCodeFormat) {
+    const newText = this.node.nodeText
+    const newInfo = this.node.codeInfo
+    const newFormat = this.codeBlockTheme.codeBlockIsCodeFormat
+    const newUseTab = this.codeBlockTheme.codeBlockUseTab
+    const newIndentWidth = this.codeBlockTheme.codeBlockIndentWidth
+    if (this.signedCodeText !== undefined &&
+      newText === this.signedCodeText && newInfo === this.signedCodeInfo &&
+      newFormat === this.signedFormat && newUseTab === this.signedUseTab &&
+      newIndentWidth === this.signedIndentWidth) {
+      return
+    }
+    this.signedCodeText = newText
+    this.signedCodeInfo = newInfo
+    this.signedFormat = newFormat
+    this.signedUseTab = newUseTab
+    this.signedIndentWidth = newIndentWidth
+    this.codeText = newText
+    this.info = newInfo
+    if (newFormat) {
       this.codeText = this.formatCode(this.info, this.codeText)
     }
     let arr = this.codeText.split("\n") // 代码块数据分割，nodeText已去除末尾换行，无需再pop

@@ -615,7 +615,7 @@ export function nodeToNodeView(
 
       // ===== 块级结构容器（子节点挂到 currentView） =====
       case 'Paragraph': // 段落
-        highlightSelectedList?.add(currentView.nodeHash.toString())
+        highlightSelectedList?.add(currentView.nodeHash)
         if (currentView.isParagraph) {
           nodeToNodeView(currentJsNode, targetParentView, currentView, previousChildren, highlightSelectedList, usedIndices)
         } else {
@@ -625,14 +625,14 @@ export function nodeToNodeView(
         }
         break
       case 'Heading': // 标题
-        highlightSelectedList?.add(currentView.nodeHash.toString())
+        highlightSelectedList?.add(currentView.nodeHash)
         currentView.isHeading = true
         currentView.headingLevel = currentJsNode.level ?? 1
         nodeToNodeView(currentJsNode, currentView, currentView, prevChild?.children, highlightSelectedList)
         targetParentView.children.push(currentView)
         break
       case 'IdHeading': // 标题ID
-        highlightSelectedList?.add(currentView.nodeHash.toString())
+        highlightSelectedList?.add(currentView.nodeHash)
         currentView.isHeading = true
         currentView.headingLevel = currentJsNode.level ?? 1
         const headingProp = currentJsNode.getProps()
