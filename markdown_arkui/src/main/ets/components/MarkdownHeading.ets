@@ -133,7 +133,6 @@ export struct MarkdownHeading {
   @State selectBackgroundColor: ResourceColor = COLOR_FF4A90E2 // 选中文本的背景颜色
   @State selectStart: number = 0 // 选中文本的开始位置
   @State selectEnd: number = 0 // 选中文本的结束位置
-  private textContent: string = "" // 文本内容
   private promptAction: PromptAction = this.getUIContext().getPromptAction()
   private delayTime: number = 300 // 自定义菜单关闭延时时间（毫秒）
   private timerId: number = -1 // 自定义菜单关闭延时定时器 ID
@@ -297,7 +296,8 @@ export struct MarkdownHeading {
               this.headingInlineItem(item, index)
             },
             (item: NodeView, index: number) => {
-              this.updateTextContent(item) // 整理出当前所有的文本
+              // 纯函数key：不在keygen里做textContent累加等副作用（框架每次diff都会重跑keygen，
+              // 副作用会导致文本重复累加与O(n²)字符串拷贝）。文本内容改为使用点惰性计算buildTextContent()
               return `${index}-${item.nodeHash}-${item.contentHash}-${item.isEmphasis}-${item.isStrongEmphasis}-${item.isInLineCode}-${item.isStrikethrough}-${item.isHighlight}-${item.isUnderlineNode}-${item.isSubNode}-${item.isSupNode}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
             }
           )
@@ -348,7 +348,7 @@ export struct MarkdownHeading {
             .onActionEnd((event: GestureEvent) => {
               if (!this.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
                 this.textBackgroundColor = COLOR_TRANSPARENT
-                this.customLongPressCallback?.(this.textContent) // 调用用户自定义长按回调方法
+                this.customLongPressCallback?.(this.buildTextContent()) // 调用用户自定义长按回调方法
               }
             })
         )
@@ -852,7 +852,7 @@ export struct MarkdownHeading {
       .padding({ left: 10, right: 10, top: 8, bottom: 8 })
       .onClick(() => {
         // 获取选中文本并复制到剪贴板
-        let selectedText = this.textContent.substring(this.selectStart, this.selectEnd)
+        let selectedText = this.buildTextContent().substring(this.selectStart, this.selectEnd)
         let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, selectedText)
         pasteboard.getSystemPasteboard().setData(pasteData)
         this.textCopyCallback?.(selectedText)
@@ -1346,20 +1346,38 @@ export struct MarkdownHeading {
   }
 
   // 更新文本内容
-  private updateTextContent(item: NodeView): void {
+  /**
+   * 惰性计算标题纯文本内容（长按复制/自定义菜单使用）
+   * 之前在ForEach keygen中用 string += 逐段累加：框架每次diff重跑keygen导致
+   * 文本重复累加和O(n²)字符串拷贝。改为使用点单次计算（parts数组 + join）。
+   *
+   * @return 标题文本内容
+   */
+  private buildTextContent(): string {
+    const parts: string[] = []
+    for (const item of this.list) {
+      this.appendTextContent(item, parts)
+    }
+    return parts.join("")
+  }
+
+  /**
+   * 按节点类型将单个内联节点的文本追加到parts
+   */
+  private appendTextContent(item: NodeView, parts: string[]): void {
     if (item.nodeType === "Text" || item.nodeType === "Code" || item.nodeType === "Footnote") {
-      this.textContent =  this.textContent + item.nodeText
+      parts.push(item.nodeText)
     } else if (item.nodeType === "SoftLineBreak") {
       // 软换行
-      this.textContent =  this.textContent + spanSoftLineBreak(this.globalTheme.isLineBreak)
+      parts.push(spanSoftLineBreak(this.globalTheme.isLineBreak))
     } else if (item.nodeType === "HardLineBreak") {
       // 硬换行
-      this.textContent =  this.textContent + "\n"
+      parts.push("\n")
     } else if (item.nodeType === "Link" || item.nodeType === "HeadLink" || item.nodeType === "LatexMathNode" ||
       item.nodeType === "Image" || item.nodeType === "StyleImage" || item.nodeType === "ImageHtmlNode") {
       // 非文本节点，不处理
     } else {
-      this.textContent =  this.textContent + item.nodeText
+      parts.push(item.nodeText)
     }
   }
 

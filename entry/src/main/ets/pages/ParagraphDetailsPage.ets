@@ -295,6 +295,7 @@ struct ParagraphDetailsPage {
       config.getMarkdownHighlightParagraph().setSelectedParagraphBackgroundColor(this.selectedParagraphBackgroundColor)
     }
     config.setCustomLongPressCallback(this.longPressCallback.bind(this))
+    config.setTextCopyCallback(this.setTextCopyCallback.bind(this))
     return config
   }
 
@@ -359,5 +360,9 @@ struct ParagraphDetailsPage {
 
   longPressCallback(str: string): void {
     hilog.error(1, "1", `-----> 自定义长按回调方法触发 <-----`+str)
+  }
+
+  setTextCopyCallback(str: string): void {
+    hilog.error(1, "1", `-----> 复制 <-----`+str)
   }
 }

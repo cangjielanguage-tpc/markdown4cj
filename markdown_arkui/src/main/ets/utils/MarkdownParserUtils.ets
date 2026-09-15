@@ -103,13 +103,24 @@ function getLinkText(node: JsNodeImpl | undefined): string {
 }
 
 /**
- * 从 JsNode 的 props 中读取 nodeHash 与 contentHash
+ * nodeHash/contentHash 读取暂存对象
+ * 避免每个节点分配一次 [string, string] 元组数组（长文档数千节点时产生等量小对象，加重GC）。
+ * nodeToNodeView 为同步单线程遍历：读入后立即拷贝到局部常量再进入递归分支，无交叉污染。
  */
-function readNodeHashes(node: JsNodeImpl): [string, string] {
+class NodeHashScratch {
+  nodeHash: string = "0"
+  contentHash: string = "0"
+}
+
+const NODE_HASH_SCRATCH: NodeHashScratch = new NodeHashScratch()
+
+/**
+ * 从 JsNode 的 props 中读取 nodeHash 与 contentHash 到 out（避免每次分配元组数组）
+ */
+function readNodeHashesInto(node: JsNodeImpl, out: NodeHashScratch): void {
   const prop = node.getProps()
-  const nodeHash = prop !== undefined ? (prop.get("nodeHash") ?? "0") : "0"
-  const contentHash = prop !== undefined ? (prop.get("contentHash") ?? "0") : "0"
-  return [nodeHash, contentHash]
+  out.nodeHash = prop !== undefined ? (prop.get("nodeHash") ?? "0") : "0"
+  out.contentHash = prop !== undefined ? (prop.get("contentHash") ?? "0") : "0"
 }
 
 /**
@@ -344,16 +355,20 @@ function updateReusedLinkNode(
 
 /**
  * 就地更新可复用的叶子节点
+ *
+ * @param newNodeHash 当前节点hash（调用方已读取，避免重复getProps）
+ * @param newContentHash 当前子节点hash（调用方已读取）
  */
 function updateReusedLeafNode(
   prevChild: NodeView,
   currentJsNode: JsNodeImpl,
   nodeType: string,
-  inheritedStyleView: NodeView
+  inheritedStyleView: NodeView,
+  newNodeHash: string,
+  newContentHash: string
 ): void {
-  const hashResult = readNodeHashes(currentJsNode)
-  prevChild.nodeHash = hashResult[0]
-  prevChild.contentHash = hashResult[1]
+  prevChild.nodeHash = newNodeHash
+  prevChild.contentHash = newContentHash
   prevChild.sourceSpan = currentJsNode.getSourceSpans()
   prevChild.copyStyleFrom(inheritedStyleView)
 
@@ -440,9 +455,9 @@ export function nodeToNodeView(
 
   while (currentJsNode !== undefined) {
     const nodeType = currentJsNode.nodeType
-    const hashResult = readNodeHashes(currentJsNode)
-    const newNodeHash = hashResult[0]
-    const newContentHash = hashResult[1]
+    readNodeHashesInto(currentJsNode, NODE_HASH_SCRATCH)
+    const newNodeHash = NODE_HASH_SCRATCH.nodeHash
+    const newContentHash = NODE_HASH_SCRATCH.contentHash
     const prevChildPos = targetParentView.children.length
     const prevChild = findReusablePreviousChild(
       previousChildren, prevChildPos, nodeType, usedIndices, newNodeHash, newContentHash
@@ -450,7 +465,8 @@ export function nodeToNodeView(
 
     // 增量复用：仅叶子节点可复用，容器节点走新建/递归分支
     if (canReuseLeafNode(nodeType, prevChild, inheritedStyleView.isLinkStyle) && prevChild !== undefined) {
-      updateReusedLeafNode(prevChild, currentJsNode, nodeType, inheritedStyleView)
+      // 复用分支直接传入已读取的hash，避免重复调用getProps()
+      updateReusedLeafNode(prevChild, currentJsNode, nodeType, inheritedStyleView, newNodeHash, newContentHash)
       targetParentView.children.push(prevChild)
       currentJsNode = currentJsNode.next
       continue
@@ -913,15 +929,26 @@ function splitInlineContainerByCustomTags(node: NodeView, out: Array<NodeView>):
  * 仅提升段落/标题；表格单元格内的自定义标签保持原位（表格结构不可插块）。
  */
 export function liftCustomTagBlocks(parent: NodeView): void {
-  const rebuilt: Array<NodeView> = []
-  for (let i = 0; i < parent.children.length; i++) {
-    const child = parent.children[i]
+  const children = parent.children
+  // 惰性重建：绝大多数文档不含自定义标签，本层无变更时保持原children数组引用，
+  // 避免每轮解析对树上每一层都分配新数组（原实现无条件rebuilt+整体重赋值parent.children）
+  let rebuilt: Array<NodeView> | undefined = undefined
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i]
     if ((child.isParagraph || child.isHeading) && hasCustomTagChild(child)) {
+      if (rebuilt === undefined) {
+        // 首次变更时才复制前缀，后续节点统一push进rebuilt
+        rebuilt = children.slice(0, i)
+      }
       splitInlineContainerByCustomTags(child, rebuilt)
     } else {
       liftCustomTagBlocks(child)
-      rebuilt.push(child)
+      if (rebuilt !== undefined) {
+        rebuilt.push(child)
+      }
     }
   }
-  parent.children = rebuilt
+  if (rebuilt !== undefined) {
+    parent.children = rebuilt
+  }
 }

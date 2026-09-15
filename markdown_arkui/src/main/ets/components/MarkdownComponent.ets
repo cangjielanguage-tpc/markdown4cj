@@ -965,12 +965,12 @@ export struct CJMarkdown {
   /**
    * 异步触发解析数据
    * 流式输出时content高频变化，parseVersion/appliedVersion确保仅应用最新结果
+   * Options/MarkdownParser延迟到setTimeout回调内创建：被后续刷新取消（clearTimeout）的
+   * 请求不再白白分配Options（含JsNodeTreeBuilder）与Parser对象，降低流式场景GC压力
    */
   refreshAsyncData(): void {
     this.parseVersion++ // 版本号递增
     const currentVersion = this.parseVersion
-    let op: Options = this.plugin.buildOptions()
-    let markdownParser: MarkdownParser = new MarkdownParser(op)
     if (this.parseTimerId !== -1) {
       clearTimeout(this.parseTimerId)
     }
@@ -980,6 +980,8 @@ export struct CJMarkdown {
         return
       }
       try {
+        let op: Options = this.plugin.buildOptions()
+        let markdownParser: MarkdownParser = new MarkdownParser(op)
         markdownParser.parse(CustomViewRegistry.preprocessCustomTags(this.content)).then((node) => {
           if (!this.isAlive) {
             return

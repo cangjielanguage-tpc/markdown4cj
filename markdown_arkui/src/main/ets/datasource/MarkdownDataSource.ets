@@ -3,6 +3,10 @@ import { NodeView } from "../model/NodeView"
 export class MarkdownDataSource implements IDataSource {
   dataArray: NodeView[] = []
   listener: DataChangeListener | undefined
+  // 越界降级用的共享空NodeView（懒创建）。LazyForEach在数据变化瞬间可能短暂请求越界index，
+  // 原实现每次new NodeView()（@Observed代理对象）产生无谓分配；共享单例零成本降级。
+  // 该实例只读：nodeType为空串在所有渲染分支只落到空Text，无人写入其属性。
+  private static emptyNodeView: NodeView | undefined = undefined
   // 上一次smartUpdateDataArray结束时的hash快照（"nodeHash|contentHash"）
   // nodeToNodeView复用分支会就地修改dataArray对象的hash，导致下次对比时新旧hash恒等。
   // 保存上一次的hash快照，下次调用时对比当前hash和快照，即可检测就地修改的变更。
@@ -95,7 +99,10 @@ export class MarkdownDataSource implements IDataSource {
    */
   public getData(index: number): NodeView {
     if (index < 0 || index >= this.dataArray.length) {
-      return new NodeView()
+      if (MarkdownDataSource.emptyNodeView === undefined) {
+        MarkdownDataSource.emptyNodeView = new NodeView()
+      }
+      return MarkdownDataSource.emptyNodeView
     }
     return this.dataArray[index]
   }
