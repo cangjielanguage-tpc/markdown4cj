@@ -7,6 +7,10 @@ import { COLOR_FF4A90E2, COLOR_FFE0E0E0, COLOR_TRANSPARENT } from "../base/Const
 @Observed
 export class MarkdownHighlightParagraph {
   private allParagraphItems: ArrayList<string> = new ArrayList<string>() // 所有可以设置高亮的段落nodeHash集合
+  // allParagraphItems 的成员镜像。ArrayList.has为线性扫描，setAllParagraphItems外层forEach
+  // 组合成O(n²)：大文档（数百段落）每轮解析重扫全量→数十万次字符串比较，流式每chunk都发生。
+  // Set镜像使判重O(1)，整体O(n)。成员语义与ArrayList.has一致（SameValueZero值比较）。
+  private allParagraphItemSet: Set<string> = new Set<string>()
   private selectedParagraphItems: ArrayList<string> = new ArrayList<string>() // 当前高亮显示的段落集合
   selectedParagraphItem: string = "" // 当前高亮显示的段落的nodeHash
   selectedParagraphItemColor: ResourceColor = "" // 当前高亮显示的段落的背景色
@@ -20,8 +24,9 @@ export class MarkdownHighlightParagraph {
   setAllParagraphItems(itemNodeHashList: ArrayList<string>): void {
     // 去重，保留第一次出现的位置
     itemNodeHashList.forEach(item => {
-      if (item !== undefined && !this.allParagraphItems.has(item)) {
+      if (item !== undefined && !this.allParagraphItemSet.has(item)) {
         this.allParagraphItems.add(item)
+        this.allParagraphItemSet.add(item)
       }
     })
   }

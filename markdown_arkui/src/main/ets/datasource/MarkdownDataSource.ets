@@ -7,11 +7,13 @@ export class MarkdownDataSource implements IDataSource {
   // 原实现每次new NodeView()（@Observed代理对象）产生无谓分配；共享单例零成本降级。
   // 该实例只读：nodeType为空串在所有渲染分支只落到空Text，无人写入其属性。
   private static emptyNodeView: NodeView | undefined = undefined
-  // 上一次smartUpdateDataArray结束时的hash快照（"nodeHash|contentHash"）
+  // 上一次smartUpdateDataArray结束时的hash快照（nodeHash与contentHash分存两个数组）。
   // nodeToNodeView复用分支会就地修改dataArray对象的hash，导致下次对比时新旧hash恒等。
   // 保存上一次的hash快照，下次调用时对比当前hash和快照，即可检测就地修改的变更。
   // 顶层和嵌套DataSource都自动生效，无需调用方传参。
-  private savedHashes: string[] = []
+  // 拆分两数组避免每轮对每项做 hash+'|'+contentHash 拼接分配（大文档流式每chunk省N次）。
+  private savedNodeHashes: string[] = []
+  private savedContentHashes: string[] = []
 
   constructor(dataArray: NodeView[]) {
     this.dataArray = dataArray
@@ -183,7 +185,8 @@ export class MarkdownDataSource implements IDataSource {
       this.dataArray[i].releaseChildrenPixelMaps()
     }
     this.dataArray = []
-    this.savedHashes = []
+    this.savedNodeHashes = []
+    this.savedContentHashes = []
   }
 
   /**
@@ -227,11 +230,12 @@ export class MarkdownDataSource implements IDataSource {
 
     for (let i = 0; i < minLen; i++) {
       if (this.dataArray[i] === newData[i]) {
-        // 同一对象（复用分支就地修改了属性）：对比savedHashes和当前hash
+        // 同一对象（复用分支就地修改了属性）：对比saved快照和当前hash
+        // 等价于旧版 currentHash(hash+'|'+contentHash) === savedHashes[i]，省去每项一次拼接
         let isStable: boolean
-        if (i < this.savedHashes.length) {
-          const currentHash = this.dataArray[i].nodeHash + '|' + this.dataArray[i].contentHash
-          isStable = currentHash === this.savedHashes[i]
+        if (i < this.savedNodeHashes.length && i < this.savedContentHashes.length) {
+          isStable = this.dataArray[i].nodeHash === this.savedNodeHashes[i] &&
+            this.dataArray[i].contentHash === this.savedContentHashes[i]
         } else {
           isStable = true
         }
@@ -263,10 +267,12 @@ export class MarkdownDataSource implements IDataSource {
   }
 
   private saveCurrentHashes(): void {
-    this.savedHashes = []
+    this.savedNodeHashes = []
+    this.savedContentHashes = []
     for (let i = 0; i < this.dataArray.length; i++) {
       const item = this.dataArray[i]
-      this.savedHashes.push(item.nodeHash + '|' + item.contentHash)
+      this.savedNodeHashes.push(item.nodeHash)
+      this.savedContentHashes.push(item.contentHash)
     }
   }
 }

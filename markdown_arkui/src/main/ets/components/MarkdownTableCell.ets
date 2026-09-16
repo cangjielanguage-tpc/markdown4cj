@@ -1065,67 +1065,89 @@ export struct MarkdownTableCell {
       this.httpLinksDirty = true
       return
     }
-    const oldImageSizes: Map<string, number[]> = new Map()
-    const oldImageNaturalSizes: Map<string, number[]> = new Map()
-    const oldImageStyles: Map<string, string> = new Map()
+    // 图片尺寸保留仅当旧列表（含grandChild层）有图片子节点时才有意义（无图时恢复循环本就是
+    // 空转）——纯文本单元格（占绝大多数）跳过3个Map的分配与填充
+    let hasImageChildren = false
     for (const oldChild of this.list) {
       if (oldChild.imageUrl !== undefined) {
-        if (oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
-          oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
-        }
-        if (oldChild.imageNaturalWidth !== undefined && oldChild.imageNaturalHeight !== undefined) {
-          oldImageNaturalSizes.set(oldChild.imageUrl, [oldChild.imageNaturalWidth, oldChild.imageNaturalHeight])
-        }
-        oldImageStyles.set(oldChild.imageUrl,
-          `${oldChild.imageStyleWidth ?? ''}|${oldChild.imageStyleHeight ?? ''}|${oldChild.imageRadius ?? ''}`)
+        hasImageChildren = true
+        break
       }
       if (oldChild.children) {
         for (const grandChild of oldChild.children) {
           if (grandChild.imageUrl !== undefined) {
-            if (grandChild.imageWidth !== undefined && grandChild.imageWidth > 0 && grandChild.imageHeight !== undefined) {
-              oldImageSizes.set(grandChild.imageUrl, [grandChild.imageWidth, grandChild.imageHeight])
-            }
-            if (grandChild.imageNaturalWidth !== undefined && grandChild.imageNaturalHeight !== undefined) {
-              oldImageNaturalSizes.set(grandChild.imageUrl, [grandChild.imageNaturalWidth, grandChild.imageNaturalHeight])
-            }
-            oldImageStyles.set(grandChild.imageUrl,
-              `${grandChild.imageStyleWidth ?? ''}|${grandChild.imageStyleHeight ?? ''}|${grandChild.imageRadius ?? ''}`)
+            hasImageChildren = true
+            break
           }
+        }
+        if (hasImageChildren) {
+          break
         }
       }
     }
-    for (const newChild of children) {
-      if (newChild.imageUrl !== undefined) {
-        const oldNaturalSize = oldImageNaturalSizes.get(newChild.imageUrl)
-        if (oldNaturalSize) {
-          newChild.imageNaturalWidth = oldNaturalSize[0]
-          newChild.imageNaturalHeight = oldNaturalSize[1]
+    if (hasImageChildren) {
+      const oldImageSizes: Map<string, number[]> = new Map()
+      const oldImageNaturalSizes: Map<string, number[]> = new Map()
+      const oldImageStyles: Map<string, string> = new Map()
+      for (const oldChild of this.list) {
+        if (oldChild.imageUrl !== undefined) {
+          if (oldChild.imageWidth !== undefined && oldChild.imageWidth > 0 && oldChild.imageHeight !== undefined) {
+            oldImageSizes.set(oldChild.imageUrl, [oldChild.imageWidth, oldChild.imageHeight])
+          }
+          if (oldChild.imageNaturalWidth !== undefined && oldChild.imageNaturalHeight !== undefined) {
+            oldImageNaturalSizes.set(oldChild.imageUrl, [oldChild.imageNaturalWidth, oldChild.imageNaturalHeight])
+          }
+          oldImageStyles.set(oldChild.imageUrl,
+            `${oldChild.imageStyleWidth ?? ''}|${oldChild.imageStyleHeight ?? ''}|${oldChild.imageRadius ?? ''}`)
         }
-        const oldStyleKey = oldImageStyles.get(newChild.imageUrl)
-        const newStyleKey = `${newChild.imageStyleWidth ?? ''}|${newChild.imageStyleHeight ?? ''}|${newChild.imageRadius ?? ''}`
-        if (oldStyleKey === newStyleKey) {
-          const oldSize = oldImageSizes.get(newChild.imageUrl)
-          if (oldSize) {
-            newChild.imageWidth = oldSize[0]
-            newChild.imageHeight = oldSize[1]
+        if (oldChild.children) {
+          for (const grandChild of oldChild.children) {
+            if (grandChild.imageUrl !== undefined) {
+              if (grandChild.imageWidth !== undefined && grandChild.imageWidth > 0 && grandChild.imageHeight !== undefined) {
+                oldImageSizes.set(grandChild.imageUrl, [grandChild.imageWidth, grandChild.imageHeight])
+              }
+              if (grandChild.imageNaturalWidth !== undefined && grandChild.imageNaturalHeight !== undefined) {
+                oldImageNaturalSizes.set(grandChild.imageUrl, [grandChild.imageNaturalWidth, grandChild.imageNaturalHeight])
+              }
+              oldImageStyles.set(grandChild.imageUrl,
+                `${grandChild.imageStyleWidth ?? ''}|${grandChild.imageStyleHeight ?? ''}|${grandChild.imageRadius ?? ''}`)
+            }
           }
         }
       }
-      if (newChild.children) {
-        for (const grandChild of newChild.children) {
-          if (grandChild.imageUrl !== undefined) {
-            const oldNaturalSize = oldImageNaturalSizes.get(grandChild.imageUrl)
-            if (oldNaturalSize) {
-              grandChild.imageNaturalWidth = oldNaturalSize[0]
-              grandChild.imageNaturalHeight = oldNaturalSize[1]
+      for (const newChild of children) {
+        if (newChild.imageUrl !== undefined) {
+          const oldNaturalSize = oldImageNaturalSizes.get(newChild.imageUrl)
+          if (oldNaturalSize) {
+            newChild.imageNaturalWidth = oldNaturalSize[0]
+            newChild.imageNaturalHeight = oldNaturalSize[1]
+          }
+          const oldStyleKey = oldImageStyles.get(newChild.imageUrl)
+          const newStyleKey = `${newChild.imageStyleWidth ?? ''}|${newChild.imageStyleHeight ?? ''}|${newChild.imageRadius ?? ''}`
+          if (oldStyleKey === newStyleKey) {
+            const oldSize = oldImageSizes.get(newChild.imageUrl)
+            if (oldSize) {
+              newChild.imageWidth = oldSize[0]
+              newChild.imageHeight = oldSize[1]
             }
-            const oldStyleKey = oldImageStyles.get(grandChild.imageUrl)
-            const newStyleKey = `${grandChild.imageStyleWidth ?? ''}|${grandChild.imageStyleHeight ?? ''}|${grandChild.imageRadius ?? ''}`
-            if (oldStyleKey === newStyleKey) {
-              const oldSize = oldImageSizes.get(grandChild.imageUrl)
-              if (oldSize) {
-                grandChild.imageWidth = oldSize[0]
-                grandChild.imageHeight = oldSize[1]
+          }
+        }
+        if (newChild.children) {
+          for (const grandChild of newChild.children) {
+            if (grandChild.imageUrl !== undefined) {
+              const oldNaturalSize = oldImageNaturalSizes.get(grandChild.imageUrl)
+              if (oldNaturalSize) {
+                grandChild.imageNaturalWidth = oldNaturalSize[0]
+                grandChild.imageNaturalHeight = oldNaturalSize[1]
+              }
+              const oldStyleKey = oldImageStyles.get(grandChild.imageUrl)
+              const newStyleKey = `${grandChild.imageStyleWidth ?? ''}|${grandChild.imageStyleHeight ?? ''}|${grandChild.imageRadius ?? ''}`
+              if (oldStyleKey === newStyleKey) {
+                const oldSize = oldImageSizes.get(grandChild.imageUrl)
+                if (oldSize) {
+                  grandChild.imageWidth = oldSize[0]
+                  grandChild.imageHeight = oldSize[1]
+                }
               }
             }
           }
@@ -1134,10 +1156,12 @@ export struct MarkdownTableCell {
     }
     const oldList = this.list
     this.list = [...children]
-    const newSet: Set<NodeView> = new Set<NodeView>(children)
-    for (const old of oldList) {
-      if (!newSet.has(old)) {
-        old.releaseOwnPixelMaps()
+    if (oldList.length > 0) {
+      const newSet: Set<NodeView> = new Set<NodeView>(children)
+      for (const old of oldList) {
+        if (!newSet.has(old)) {
+          old.releaseOwnPixelMaps()
+        }
       }
     }
     this.tryEnqueueLatexLoading()
