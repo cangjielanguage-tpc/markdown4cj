@@ -39,17 +39,34 @@ public class CJMarkdownHighlightParagraph {
     @Interop[ArkTS, Invisible]
     public var highlightParagraph: MarkdownHighlightParagraph = MarkdownHighlightParagraph.create()
 
+    /**
+     * 段落nodeHash现算器（对ArkTS不可见）。
+     * 核心MarkdownComponent的@Prop配置被拷贝，rebuildIndexes写回的段落集合落在副本上，
+     * 本实例读不到；getAllParagraphItems优先通过该现算器从解析树获取最新集合。
+     */
+    @Interop[ArkTS, Invisible]
+    public var hashCollector: ?() -> ArrayList<String> = None
+
     public init() {}
 
     /**
      * 获取所有可以设置高亮的段落的nodeHash集合
      *
+     * 优先通过现算器从解析树获取（与核心rebuildIndexes同源同规则，流式场景自动跟随最新解析结果）；
+     * 未设置现算器时回退读实例字段（核心写回路径）。
+     *
      * @return 段落nodeHash集合
      */
     public func getAllParagraphItems(): JSArrayEx<String> {
         let result = ArrayList<String>()
-        for (item in this.highlightParagraph.getAllParagraphItems()) {
-            result.add(item)
+        if (let Some(c) <- hashCollector) {
+            for (item in c()) {
+                result.add(item)
+            }
+        } else {
+            for (item in this.highlightParagraph.getAllParagraphItems()) {
+                result.add(item)
+            }
         }
         return JSArrayEx<String>(result.toArray())
     }

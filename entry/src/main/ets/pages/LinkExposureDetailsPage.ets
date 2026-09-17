@@ -100,6 +100,33 @@ struct LinkExposureDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+    this.loadContent()
+  }
+
+  /**
+   * 加载markdown内容（全量/流式）
+   */
+  loadContent(): void {
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, 50)
+    }
   }
 
   /**
@@ -121,27 +148,6 @@ struct LinkExposureDetailsPage {
       next = next.slice(next.length - 100)
     }
     this.exposureEvents = next
-
-    if (this.isFull) {
-      this.isInputEnded = true
-      this.content = this.fileStr
-    } else {
-      this.isInputEnded = false
-      let index = 0
-      let id = setInterval(() => {
-        this.content = this.content + this.fileStr.substring(this.content.length, index)
-        this.scroller.scrollEdge(Edge.Bottom)
-        if (index >= this.fileStr.length) {
-          this.isInputEnded = true
-          clearInterval(id)
-        }
-        if (this.fileStr.length > index + this.textNumber) {
-          index = index + this.textNumber
-        } else {
-          index = this.fileStr.length
-        }
-      }, 50)
-    }
   }
 
   build() {

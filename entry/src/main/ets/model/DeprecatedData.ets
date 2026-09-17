@@ -7,6 +7,10 @@ export class DeprecatedData {
   _incrementalAnalysis: boolean = false
   // 增量加载每次间隔时间
   _time: number = 50
+  // 是否启用解析节流，true为markdown控制节流，false为用户自行控制 - 默认false
+  _enableParseThrottle: boolean = false
+  // 解析节流间隔（ms），enableParseThrottle为true时生效，0表示不节流
+  _parseThrottleMs: number = 200
   // 增量每次增量文本数量
   _textNumber: number = 10
   // 是否同步解析Markdown文本
@@ -506,6 +510,14 @@ export class DeprecatedData {
 
   public set time(value: number) {
     this._time = value
+  }
+
+  public set enableParseThrottle(value: boolean) {
+    this._enableParseThrottle = value
+  }
+
+  public set parseThrottleMs(value: number) {
+    this._parseThrottleMs = value
   }
 
   public set textNumber(value: number) {

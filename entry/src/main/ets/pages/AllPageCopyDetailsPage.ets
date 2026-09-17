@@ -60,6 +60,8 @@ struct AllPageCopyDetailsPage {
   nodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString()
   @State
   allText: string = ""
+  @State // 是否显示Markdown内容（点击复制后隐藏，改为在Scroll内显示全文，对齐ArkUI用例）
+  beforeVisable: boolean = true
 
   onColorModeChange(): void {
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -119,6 +121,7 @@ struct AllPageCopyDetailsPage {
     let systemPasteboard = pasteboard.getSystemPasteboard()
     systemPasteboard.setData(pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.allText))
     this.getUIContext().getPromptAction().showToast({ message: "全文已复制", duration: 2000 })
+    this.beforeVisable = false
   }
 
   build() {
@@ -141,32 +144,20 @@ struct AllPageCopyDetailsPage {
         .onClick(() => {
           this.getAllText()
         })
-      if (this.allText !== "") {
-        Text(`全文文本（${this.allText.length}字符）：`)
-          .fontSize(12)
-          .fontColor(0xFF666666)
-          .margin({ left: 10 })
-          .width('100%')
-        Text(this.allText)
-          .fontSize(12)
-          .fontColor(0xFF333333)
-          .padding(10)
-          .margin({ left: 10, right: 10, bottom: 5 })
-          .backgroundColor(0xFFFFFFFF)
-          .borderRadius(5)
-          .maxLines(5)
-          .width('calc(100% - 20)')
-      }
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            listScroller: this.markdownScroller,
-            config: this.markdownConfiguration,
-            plugin: this.markdownPlugin
-          })
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.markdownConfiguration,
+              plugin: this.markdownPlugin
+            })
+          }
+          .visibility(this.beforeVisable ? Visibility.Visible : Visibility.None)
+          Text(this.allText)
         }
       }
       .align(Alignment.TopStart)

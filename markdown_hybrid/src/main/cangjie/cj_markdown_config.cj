@@ -82,6 +82,12 @@ public class CJMarkdownConfig {
     var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
 
     /**
+     * 全局文本桥对象引用（用于段落高亮从解析树现算段落集合，对ArkTS不可见）
+     */
+    @Interop[ArkTS, Invisible]
+    var cjNodeViewStringBuilder: ?CJNodeViewStringBuilder = None
+
+    /**
      * markdown默认样式
      */
     var cjMarkdownTheme: CJMarkdownTheme = CJMarkdownTheme()
@@ -305,6 +311,7 @@ public class CJMarkdownConfig {
      * @param nodeString 用于接收markdown全文的对象
      */
     public func setNodeString(nodeString: CJNodeViewStringBuilder): Unit {
+        this.cjNodeViewStringBuilder = Some(nodeString)
         this.nodeString = {
             builder => nodeString.nodeViewStringBuilder = builder
         }

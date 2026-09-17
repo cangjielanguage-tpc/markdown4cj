@@ -40,6 +40,11 @@ class CJMarkdownComponent {
      */
     var listScroller: ?CJMarkdownScroller
 
+    /**
+     * 组件构建的解析器实例（供段落高亮从解析树现算段落集合，对ArkTS不可见）
+     */
+    var builtMarkdown: ?Markdown = None
+
     protected func aboutToAppear(): Unit {
     }
 
@@ -205,7 +210,43 @@ class CJMarkdownComponent {
         if (incrementalAnalysis) {
             markdownBuilder.includeSourceSpans(2) // BLOCKS_AND_INLINES
         }
-        return markdownBuilder.build()
+        let markdown = markdownBuilder.build()
+        builtMarkdown = markdown // 供段落高亮现算复用同一解析器
+        return markdown
+    }
+
+    /**
+     * 从解析树现算可高亮段落的nodeHash集合
+     *
+     * 核心MarkdownComponent的@Prop配置在组件初始化时被拷贝，rebuildIndexes写回的
+     * 段落集合落在副本上，页面持有的原实例读不到。改为用组件解析器对当前mdStr重新
+     * 解析：nodeHash与核心同源（NodeIdPlugin写入的props），类型集合与其保持一致。
+     * 每次调用返回当前最新解析结果（流式场景自动跟随）。
+     *
+     * @return 段落nodeHash集合
+     */
+    func collectHighlightHashes(): ArrayList<String> {
+        let result = ArrayList<String>()
+        if (let Some(m) <- builtMarkdown) {
+            try {
+                let doc = m.toMarkdown(mdStr)
+                var child = doc.getFirstChild()
+                while (let Some(n) <- child) {
+                    let nodeType = n.getNodeType()
+                    if (nodeType == "Heading" || nodeType == "IdHeading" || nodeType == "Paragraph" || nodeType == "TableBlock" || nodeType == "BlockQuote" || nodeType == "OrderedList" || nodeType == "BulletList") {
+                        if (let props: HashMap<String, Any> <- n.custom) {
+                            if (let Some(hash: Int64) <- props.get("nodeHash")) {
+                                result.add("${hash}")
+                            }
+                        }
+                    }
+                    child = n.getNext()
+                }
+            } catch (e: Exception) {
+                // 解析异常时返回已收集内容，页面走空集合处理
+            }
+        }
+        return result
     }
 
     func setConfig(): MarkdownConfiguration {
@@ -278,6 +319,9 @@ class CJMarkdownComponent {
             }
             markdownConfiguration.setExposureThreshold(w.exposureThreshold) // 曝光可见阈值
             markdownConfiguration.setMarkdownHighlightParagraph(w.cjMarkdownHighlightParagraph.highlightParagraph) // 段落高亮配置
+            // 段落高亮现算关联：核心@Prop配置拷贝导致rebuildIndexes写回副本不可达，
+            // getAllParagraphItems改用组件解析器对当前mdStr重新解析现算段落集合
+            w.cjMarkdownHighlightParagraph.hashCollector = { => this.collectHighlightHashes() }
             if (let Some(v) <- w.cjScrollController) {
                 markdownConfiguration.setScrollController(v.scrollController) // 外层滚动控制器
             }
