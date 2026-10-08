@@ -24,6 +24,10 @@ export struct MarkdownCodeBlockList {
   @State blocksDataList: Array<CodeBlockData> = [] // 所有代码块的高亮数据（@Observed，子组件@ObjectLink原地监听）
   private isAlive: boolean = false // 组件是否存活
   private timerId: number = -1 // 单个setTimeout定时器ID（与MarkdownCodeFenced一致）
+  // 待解析索引累积：changedIndices先并入pending，定时器回调一次性take-all解析。
+  // 必须累积——单定时器"清旧调度新"时，尚未解析的旧索引若不保留会被永久漏掉
+  // （流式中块A变化后、定时器触发前块B又变化：清掉旧调度只解析B，A的高亮永不更新）
+  private pendingParseIndices: Set<number> = new Set<number>()
 
   aboutToAppear(): void {
     this.isAlive = true
@@ -222,10 +226,12 @@ export struct MarkdownCodeBlockList {
    * 解析变化的代码块高亮
    * 调整blocksDataList大小后，原地修改CodeBlockData属性触发子组件@ObjectLink刷新
    *
-   * 单定时器+暴力全量解析：流式新增代码块时只需调度一次setTimeout，
-   * 回调中遍历所有代码块逐个解析。源文本比对保证过期解析结果（流式期间文本已变化）不应用。
+   * 单定时器+增量解析：changedIndices并入pendingParseIndices，回调中只解析变化块
+   * （原生prism调用从每轮全量O(N)降为只解析变化块，流式追加第N块不再重解析前N-1块）。
+   * pending跨多次refreshData累积——定时器被新调度清掉时未解析的旧索引不丢失。
+   * 源文本比对保证过期解析结果（流式期间文本已变化）不应用。
    *
-   * @param changedIndices 变化的索引数组（仅用于判断是否需要解析，实际解析全量）
+   * @param changedIndices 本次内容（文本/语言）发生变化的代码块索引
    */
   parseChangedCode(changedIndices: number[]): void {
     // 调整数组大小：保留已有CodeBlockData实例（保持@ObjectLink绑定），新增空的
@@ -239,11 +245,15 @@ export struct MarkdownCodeBlockList {
     }
     this.blocksDataList = dataList
 
-    if (changedIndices.length === 0) {
+    for (let i = 0; i < changedIndices.length; i++) {
+      this.pendingParseIndices.add(changedIndices[i])
+    }
+    if (this.pendingParseIndices.size === 0) {
       return
     }
 
-    // 单定时器：清旧调度新（与MarkdownCodeFenced一致的模式）
+    // 单定时器：清旧调度新（与MarkdownCodeFenced一致的模式）；旧调度未解析的
+    // 索引仍在pending中，新回调会取走继续解析
     if (this.timerId !== -1) {
       clearTimeout(this.timerId)
       this.timerId = -1
@@ -256,9 +266,10 @@ export struct MarkdownCodeBlockList {
   }
 
   /**
-   * 异步解析所有代码块高亮（暴力全量）
-   * 单定时器回调中遍历strText逐个解析，原地修改CodeBlockData.blocks属性，
-   * @ObjectLink触发子组件原地刷新。源文本比对防止流式期间过期解析结果应用。
+   * 异步解析变化的代码块高亮
+   * 单定时器回调中一次性take-all取走pendingParseIndices逐个解析，原地修改
+   * CodeBlockData.blocks属性，@ObjectLink触发子组件原地刷新。
+   * 源文本比对防止流式期间过期解析结果应用。
    */
   parseChangedCodeAsync(): void {
     this.timerId = setTimeout(() => {
@@ -266,7 +277,17 @@ export struct MarkdownCodeBlockList {
       if (!this.isAlive) {
         return
       }
-      for (let idx = 0; idx < this.strText.length; idx++) {
+      // take-all取走全部待解析索引：本轮调度到触发之间新并入的索引一并处理；
+      // 取走后新refreshData的变化索引重新累积到pending，由下一次调度解析，
+      // 不会丢失也不会与本轮重复
+      const indices: number[] = Array.from(this.pendingParseIndices)
+      this.pendingParseIndices.clear()
+      for (let i = 0; i < indices.length; i++) {
+        const idx: number = indices[i]
+        // 索引入队后strText可能收缩（内容整体替换为更少块），越界索引直接跳过
+        if (idx < 0 || idx >= this.strText.length) {
+          continue
+        }
         let codeText = this.strText[idx]
         if (codeText.length === 0) {
           continue
@@ -282,7 +303,8 @@ export struct MarkdownCodeBlockList {
           if (!this.isAlive) {
             return
           }
-          // 流式期间文本可能已变化，比对源文本，过期解析结果丢弃
+          // 流式期间文本可能已变化，比对源文本，过期解析结果丢弃；
+          // 丢弃后该块的新文本必经refreshData重新入pending，由下一轮解析补上
           if (idx >= this.strText.length || this.strText[idx] !== codeText) {
             return
           }
@@ -300,14 +322,23 @@ export struct MarkdownCodeBlockList {
   }
 
   /**
-   * 同步解析所有代码块高亮（暴力全量）
-   * 遍历strText逐个await解析，原地修改CodeBlockData.blocks属性，
+   * 同步解析变化的代码块高亮
+   * 一次性take-all取走pendingParseIndices逐个await解析，原地修改CodeBlockData.blocks属性，
    * @ObjectLink触发子组件原地刷新。源文本比对防止await期间文本变化后应用过期结果。
    *
    * @return Promise<void>，解析完成后resolve
    */
   async parseChangedCodeSync(): Promise<void> {
-    for (let idx = 0; idx < this.strText.length; idx++) {
+    // 同步取走全部待解析索引（原子）：本轮await期间新的refreshData会把新变化索引
+    // 重新累积到pending并可能并发启动下一轮，两轮解析的索引集不相交，不会重复解析
+    const indices: number[] = Array.from(this.pendingParseIndices)
+    this.pendingParseIndices.clear()
+    for (let i = 0; i < indices.length; i++) {
+      const idx: number = indices[i]
+      // 索引入队后strText可能收缩，越界索引直接跳过
+      if (idx < 0 || idx >= this.strText.length) {
+        continue
+      }
       let codeText = this.strText[idx]
       if (codeText.length === 0) {
         continue
@@ -327,7 +358,8 @@ export struct MarkdownCodeBlockList {
         if (!this.isAlive) {
           break
         }
-        // await期间本idx文本可能又变化，比对源文本，过期解析结果跳过
+        // await期间本idx文本可能又变化，比对源文本，过期解析结果跳过；
+        // 丢弃后该块的新文本必经refreshData重新入pending，由下一轮解析补上
         if (idx >= this.strText.length || this.strText[idx] !== codeText) {
           continue
         }
