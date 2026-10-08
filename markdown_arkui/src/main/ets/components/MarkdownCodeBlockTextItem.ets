@@ -1,6 +1,7 @@
 import { PrismBlock, PrismNode } from "@cangjie-tpc/prism_hybrid"
 import { CodeBlockData } from "../model/CodeBlockData"
 import { CodeBlockTheme } from "../theme/CodeBlockTheme"
+import { getPrismNodes } from "../utils/MarkdownUtils"
 
 /**
  * 单个代码块文本内容组件
@@ -23,7 +24,7 @@ export struct MarkdownCodeBlockTextItem {
         (block: PrismBlock, lineIdx: number) => {
           Text() {
             ForEach(
-              Array.from(block.getList()),
+              getPrismNodes(block),
               (node: PrismNode) => {
                 Span(node.text)
                   .fontColor(node.color ?? this.data.defaultFontColor)

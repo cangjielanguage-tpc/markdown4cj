@@ -2,6 +2,7 @@ import { codeStringToColorString, PrismBlock, PrismNode, PrismRes } from "@cangj
 import { NodeView } from "../model/NodeView"
 import { CodeBlockTheme } from "../theme/CodeBlockTheme"
 import { CodeTitleComponent } from "./MarkdownCodeTitle"
+import { getPrismNodes } from "../utils/MarkdownUtils"
 
 /**
  * 单独代码块控件
@@ -107,10 +108,10 @@ export struct MarkdownCodeSeparate {
                   this.prismBlocks,
                   (block: PrismBlock, index: number) => {
                     ListItem() {
-                      if (block.getList().length > 0) {
+                      if (getPrismNodes(block).length > 0) {
                         Text() {
                           ForEach(
-                            Array.from(block.getList()),
+                            getPrismNodes(block),
                             (node: PrismNode) => {
                               Span(node.text)
                                 .fontColor(node.color ?? this.defaultFontColor)

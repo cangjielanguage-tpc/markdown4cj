@@ -141,6 +141,7 @@ import {
   NUM_FF9ACD32
 } from "../base/Constants"
 import { BulletListTheme } from "../theme/BulletListTheme"
+import { PrismBlock, PrismNode } from "@cangjie-tpc/prism_hybrid"
 
 /**
  * 判断软换行是否换行
@@ -1212,5 +1213,27 @@ function marginVpValue(value: Length): number | undefined {
     }
   }
   return undefined
+}
+
+/**
+ * PrismBlock的高亮token数组缓存（WeakMap按块实例记忆）。
+ * 背景：代码块组件在build的ForEach item builder内调用Array.from(block.getList())
+ * 拷贝token数组，item随key变化（流式增长/内容变化）重建时反复分配大数组，
+ * 长代码数千token时制造GC垃圾。
+ * PrismBlock实例不可变（流式增长产生新实例而非修改旧实例），按实例缓存安全；
+ * WeakMap弱引用不阻止块实例被回收，无内存泄漏。
+ *
+ * @param block 高亮块
+ * @return 该块的token数组（缓存复用）
+ */
+const prismNodeCache: WeakMap<PrismBlock, Array<PrismNode>> = new WeakMap()
+
+export function getPrismNodes(block: PrismBlock): Array<PrismNode> {
+  let nodes: Array<PrismNode> | undefined = prismNodeCache.get(block)
+  if (nodes === undefined) {
+    nodes = Array.from(block.getList())
+    prismNodeCache.set(block, nodes)
+  }
+  return nodes
 }
 

@@ -4,6 +4,7 @@ import { NodeView } from "../model/NodeView"
 import { CodeBlockTheme } from "../theme/CodeBlockTheme"
 import { CodeLineComponent } from "./MarkdownCodeLine"
 import { CodeTitleComponent } from "./MarkdownCodeTitle"
+import { getPrismNodes } from "../utils/MarkdownUtils"
 
 /**
  * 围栏代码块控件
@@ -97,7 +98,7 @@ export struct MarkdownCodeFenced {
           (block: PrismBlock, index: number) => {
             Text() {
               ForEach(
-                Array.from(block.getList()),
+                getPrismNodes(block),
                 (node: PrismNode) => {
                   Span(node.text)
                     .fontColor(node.color ?? this.defaultFontColor)
