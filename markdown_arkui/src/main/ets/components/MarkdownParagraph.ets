@@ -117,9 +117,9 @@ export struct MarkdownParagraph {
   private exposureTimerId: number = -1 // 曝光评估防抖定时器
   // 段落在屏可见视口相关：段落全局rect ∩ CJMarkdown根可见矩形（窗口坐标系px）→ 平移到Text原点
   private paragraphId: string = '' // 段落Text的唯一id（用于componentUtils.getRectangleById，aboutToAppear赋值）
-  private paragraphWidthPx: number = 0 // Text自身宽度（px，onAreaChange的vp转px，水平方向链接截断用）
+  private paragraphWidthPx: number = 0 // Text自身宽度（px，onSizeChange的vp转px，水平方向链接截断用）
   private screenHeightPx: number = 0 // 屏幕高度（px，兜底用：visibleRectHolder未就绪时退化裁剪窗口）
-  private viewportReady: boolean = false // onAreaChange是否触发过（尺寸已就绪）
+  private viewportReady: boolean = false // onSizeChange是否触发过（尺寸已就绪）
   // CJMarkdown根可见矩形变化监听器（滚动/根尺寸变化时重算曝光）。aboutToAppear注册/aboutToDisappear注销。
   private visibleRectListener: (r: MarkdownVisibleRectSnapshot) => void = () => {}
 
@@ -208,18 +208,18 @@ export struct MarkdownParagraph {
   }
 
   /**
-   * 防抖触发曝光评估。合并连续的 onAreaChange/onVisibleAreaChange/refreshData 触发。
+    * 防抖触发曝光评估。合并连续的 onSizeChange/onVisibleAreaChange/holder矩形移动通知/refreshData 触发。
    * 评估后对「本次显示」的链接回调 visible=true，「本次消失」的回调 visible=false。
    *
    * 视口来源：componentUtils.getRectangleById(paragraphId) 拿段落相对窗口的全局 rect（px），
    * 与屏幕高度求交得段落在屏可见区，再平移到 Text 内容区原点坐标系（与 getRectsForRange 同源）。
-   * 首屏在屏内的段落也能被覆盖：onAreaChange 首帧触发 → scheduleExposure → getRectangleById 拿到位置。
+    * 首屏在屏内的段落也能被覆盖：onSizeChange 首帧触发 → scheduleExposure → getRectangleById 拿到位置。
    */
   private scheduleExposure(): void {
     if (!this.isAlive) {
       return
     }
-    // 未设曝光回调时直接短路（兜底：onAreaChange/onVisibleAreaChange 仍会触发本方法）
+    // 未设曝光回调时直接短路（兜底：onSizeChange/onVisibleAreaChange/holder通知 仍会触发本方法）
     if (!this.isExposureEnabled()) {
       return
     }
@@ -366,13 +366,16 @@ export struct MarkdownParagraph {
           }
           this.scheduleExposure()
         })
-        .onAreaChange((_old: Area, newArea: Area) => {
+        .onSizeChange((_oldValue: SizeOptions, newValue: SizeOptions) => {
           // 段落Text自身宽度（vp→px）。全局位置由 componentUtils.getRectangleById 实时拿，
           // 故此处只更新宽度（水平方向链接截断用）并触发评估。未启用曝光时跳过。
+          // 用onSizeChange不用onAreaChange：onAreaChange在位置变化（滚动）时也触发，
+          // 每帧沿父链累加全局坐标是白花开销；滚动期曝光评估由holder的矩形移动通知驱动
+          // （MarkdownVisibleRectHolder.applyRect：movedUp/movedDown即notify）。
           if (!this.isExposureEnabled()) {
             return
           }
-          const w: number = (newArea.width as number) ?? 0
+          const w: number = (newValue.width as number) ?? 0
           this.paragraphWidthPx = vp2px(w)
           this.viewportReady = true
           this.scheduleExposure()

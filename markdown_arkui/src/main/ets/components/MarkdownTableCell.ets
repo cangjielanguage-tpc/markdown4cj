@@ -219,7 +219,7 @@ export struct MarkdownTableCell {
   }
 
   /**
-   * 防抖触发曝光评估。合并连续的 onAreaChange/onVisibleAreaChange/refreshData 触发。
+    * 防抖触发曝光评估。合并连续的 onSizeChange/onVisibleAreaChange/holder矩形移动通知/refreshData 触发。
    * 评估后对「本次显示」的链接回调 visible=true，「本次消失」的回调 visible=false。
    *
    * 视口来源：componentUtils.getRectangleById(cellId) 拿格内Text相对窗口的全局 rect（px），
@@ -230,7 +230,7 @@ export struct MarkdownTableCell {
     if (!this.isAlive) {
       return
     }
-    // 未设曝光回调时直接短路（兜底：onAreaChange/onVisibleAreaChange 仍会触发本方法）
+    // 未设曝光回调时直接短路（兜底：onSizeChange/onVisibleAreaChange/holder通知 仍会触发本方法）
     if (!this.isExposureEnabled()) {
       return
     }
@@ -440,13 +440,16 @@ export struct MarkdownTableCell {
       }
       this.scheduleExposure()
     })
-    .onAreaChange((_old: Area, newArea: Area) => {
+    .onSizeChange((_oldValue: SizeOptions, newValue: SizeOptions) => {
       // 格内Text自身宽度（vp→px）。全局位置由 componentUtils.getRectangleById 实时拿，
       // 故此处只更新宽度并触发评估。未启用曝光时跳过。
+      // 用onSizeChange不用onAreaChange：onAreaChange在位置变化（滚动）时也触发，
+      // 每帧沿父链累加全局坐标是白花开销；滚动期曝光评估由holder的矩形移动通知驱动
+      // （MarkdownVisibleRectHolder.applyRect：movedUp/movedDown即notify）。
       if (!this.isExposureEnabled()) {
         return
       }
-      const w: number = (newArea.width as number) ?? 0
+      const w: number = (newValue.width as number) ?? 0
       this.cellWidthPx = vp2px(w)
       this.viewportReady = true
       this.scheduleExposure()

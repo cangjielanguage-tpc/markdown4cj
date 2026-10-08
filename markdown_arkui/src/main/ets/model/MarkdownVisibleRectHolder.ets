@@ -48,9 +48,9 @@ export class MarkdownVisibleRectHolder {
   }
 
   /**
-   * 每 50ms 由 CJMarkdown 调用：传入最新矩形（窗口 px）+ ratio，运行算法更新可见区域。
+   * 由 CJMarkdown 定期调用：传入最新矩形（窗口 px）+ ratio，运行算法更新可见区域。
    * 首次调用=初始化（visHeight=rectHeight×ratio）。后续按方向/ratio 变化收缩。
-   * 变化时通知监听者。
+   * vis变化或矩形移动（滚动）时通知监听者。
    */
   applyRect(rectTop: number, rectBottom: number, ratio: number): void {
     this.rectTop = rectTop
@@ -124,7 +124,13 @@ export class MarkdownVisibleRectHolder {
     // else 未移动 → 可见区域不变
     this.prevRectTop = rectTop
     this.prevRatio = ratio
-    if (changed) {
+    // 通知条件：vis变化（changed）或 矩形移动（movedUp/movedDown）。
+    // rect移动补偿：段落/标题/单元格Text的尺寸触发已从onAreaChange收窄为onSizeChange
+    // （滚动时只变位置不变尺寸），滚动期曝光评估改由本通知驱动——rectTop每tick变化
+    // 即通知消费方用新鲜段落位置重算「链接rect ∩ 可见窗口」，否则ratio稳定的慢速
+    // 滚动期间链接进出裁剪窗口会漏报。vis未变也通知的成本=消费方一次防抖后的
+    // getRectangleById重估，远低于原先onAreaChange每帧触发的开销。
+    if (changed || movedUp || movedDown) {
       this.notify()
     }
   }

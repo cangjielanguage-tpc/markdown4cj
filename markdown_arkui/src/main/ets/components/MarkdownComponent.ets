@@ -45,14 +45,15 @@ class MarkdownRootIdGenerator {
 }
 
 /**
- * 曝光tick节奏：活跃期50ms保证滑动中rect采样；页面静止（rect与ratio连续无变化）
- * 后降频到200ms，把空闲期原生getRectangleById轮询从20次/秒降到5次/秒。
- * 任何变化（rect/ratio）立即恢复50ms；滑动检测最坏延迟=降频间隔200ms
- * （曝光本身是阈值+防抖统计，段落侧onVisibleAreaChange阈值触发不受影响）。
+ * 曝光tick节奏（三态）：滚动活跃期100ms保证滑动中rect采样与曝光评估；
+ * 页面可见但静止（rect与ratio连续无变化）降频到200ms；
+ * 整个组件滑出屏幕（ratio==0）完全停止tick（屏外零开销），回屏自动恢复。
+ * 任何变化（rect/ratio）立即恢复活跃间隔。曝光为阈值+防抖统计，
+ * 状态切换的最坏检测延迟=当前间隔（200ms），段落侧onVisibleAreaChange阈值触发不受影响。
  */
-const TICK_INTERVAL_FAST: number = 50
+const TICK_INTERVAL_FAST: number = 100
 const TICK_INTERVAL_IDLE: number = 200
-const IDLE_TICKS_TO_SLOW: number = 4
+const IDLE_TICKS_TO_SLOW: number = 2
 
 @Component
 export struct CJMarkdown {
@@ -68,8 +69,9 @@ export struct CJMarkdown {
   @Provide('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder = new MarkdownVisibleRectHolder()
   private rootId: string = '' // CJMarkdown 根 List 的唯一 id（componentUtils.getRectangleById 用）。在 aboutToAppear 中赋值，避免 struct 字段初始化调用静态方法。
   private lastRatio: number = 0 // onVisibleAreaChange 最近一次 ratio（tick 与 rect 一起喂给 holder）
-  private visibleTickId: number = -1 // 曝光轮询定时器（仅 exposureEnabled 时启动）：读根 rect + lastRatio → holder.applyRect
-  private visibleTickInterval: number = TICK_INTERVAL_FAST // 当前tick间隔：活跃50ms，空闲降频200ms（见TICK_*常量注释）
+  private visibleTickId: number = -1 // 曝光轮询定时器（仅 exposureEnabled 且在屏时启动）：读根 rect + lastRatio → holder.applyRect
+  private visibleTickInterval: number = TICK_INTERVAL_FAST // 当前tick间隔：滚动活跃100ms，可见静止降频200ms（见TICK_*常量注释）
+  private onScreen: boolean = true // 根List是否在屏（onVisibleAreaChange ratio>0）。初始true：首帧回调前假设在屏，若实际离屏首个ratio=0回调即停
   private lastTickTop: number = Number.NaN // 上次喂入holder的窗口rect顶（空闲短路判等；NaN保证首次必不短路）
   private lastTickBottom: number = Number.NaN // 上次喂入holder的窗口rect底
   private lastTickRatio: number = Number.NaN // 上次喂入holder的ratio
@@ -187,19 +189,27 @@ export struct CJMarkdown {
   }
 
   /**
+   * 按运行时状态启停tick定时器：曝光启用 且 组件在屏 才运行（屏外完全停止，回屏自动恢复）。
+   * start幂等；stop幂等。aboutToAppear/onConfigChanged/onVisibleAreaChange统一走这里。
+   */
+  private updateTickTimerState(): void {
+    if (!this.isAlive) {
+      return
+    }
+    if (this.isExposureEnabled() && this.onScreen) {
+      this.startVisibleTickTimer()
+    } else {
+      this.stopVisibleTickTimer()
+    }
+  }
+
+  /**
    * @Watch('onConfigChanged') 回调：config 属性变化时按运行时状态启停定时器。
    * 解决 aboutToAppear 时刻 config 尚未同步（elementExposureCallback=undefined），
    * config 同步后定时器自动启动的问题。
    */
   private onConfigChanged(): void {
-    if (!this.isAlive) {
-      return
-    }
-    if (this.isExposureEnabled()) {
-      this.startVisibleTickTimer()
-    } else {
-      this.stopVisibleTickTimer()
-    }
+    this.updateTickTimerState()
   }
 
   /**
@@ -220,9 +230,9 @@ export struct CJMarkdown {
     if (!this.isAlive) {
       return
     }
-    // 防御：onConfigChanged 已确保仅在 exposureEnabled 时启动定时器，
+    // 防御：updateTickTimerState 已确保仅在 exposureEnabled 且在屏时启动定时器，
     // 此处再校验一次兜底（config 运行时被置空或 @Watch 未触发时）。
-    if (!this.isExposureEnabled()) {
+    if (!this.isExposureEnabled() || !this.onScreen) {
       return
     }
     try {
@@ -264,10 +274,8 @@ export struct CJMarkdown {
     // 定时器条件启动：aboutToAppear 时刻 config 可能尚未与父组件同步
     //（详情页在自身 aboutToAppear 才给 markdownConfiguration 赋带回调的新对象），
     // 此刻 elementExposureCallback 可能是 undefined。config 同步后
-    // @Watch('onConfigChanged') 触发 onConfigChanged，按运行时状态启动定时器。
-    if (this.isExposureEnabled()) {
-      this.startVisibleTickTimer()
-    }
+    // @Watch('onConfigChanged') 触发，按运行时状态（曝光启用+在屏）启停定时器。
+    this.updateTickTimerState()
   }
 
   aboutToDisappear(): void {
@@ -354,7 +362,11 @@ export struct CJMarkdown {
         if (!this.isExposureEnabled()) {
           return
         }
+        // 屏外暂停：ratio==0（整体滑出屏幕）停tick，回屏（ratio>0）恢复。
+        // 屏外期间曝光消费方（段落/标题/单元格）同样不可见，无评估必要。
+        this.onScreen = currentRatio > 0
         this.lastRatio = currentRatio
+        this.updateTickTimerState()
       })
       .onSizeChange((oldValue, newValue) => {
         let newWidth: number = 0
@@ -952,7 +964,11 @@ export struct CJMarkdown {
         if (!this.isExposureEnabled()) {
           return
         }
+        // 屏外暂停：ratio==0（整体滑出屏幕）停tick，回屏（ratio>0）恢复。
+        // 屏外期间曝光消费方（段落/标题/单元格）同样不可见，无评估必要。
+        this.onScreen = currentRatio > 0
         this.lastRatio = currentRatio
+        this.updateTickTimerState()
       })
       .onSizeChange((oldValue, newValue) => {
         let newWidth: number = 0

@@ -165,7 +165,7 @@ export struct MarkdownTable {
    */
   private recalculateOffset(scrollY: number): void {
     if (scrollY < 0 || this.tableY === Number.MAX_SAFE_INTEGER) {
-      this.offsetHolder.offset = 0
+      this.setStickyOffset(0)
       return
     }
     const offset = scrollY - this.tableY
@@ -174,12 +174,24 @@ export struct MarkdownTable {
     const upperBound = this.tableHeight - this.tableBorderTopNum - this.tablePaddingTopNum
       - this.stickyContentHeight
     if (offset <= 0 || upperBound <= 0) {
-      this.offsetHolder.offset = 0
+      this.setStickyOffset(0)
     } else if (offset >= upperBound) {
-      this.offsetHolder.offset = upperBound
+      this.setStickyOffset(upperBound)
     } else {
-      this.offsetHolder.offset = offset
+      this.setStickyOffset(offset)
     }
+  }
+
+  /**
+   * 写回吸顶偏移（值相等时跳过）：偏移未变不再触发@Observed代理写与
+   * StickyOffsetApplier重渲染。表格未吸顶（0锁定）/已到上界锁定等阶段，
+   * 连续滚动帧会算出相同偏移，判等省掉这些帧的写回与重渲染。
+   */
+  private setStickyOffset(value: number): void {
+    if (this.offsetHolder.offset === value) {
+      return
+    }
+    this.offsetHolder.offset = value
   }
 
   /**
