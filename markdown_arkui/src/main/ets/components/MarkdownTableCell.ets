@@ -294,7 +294,7 @@ export struct MarkdownTableCell {
       const hIntersectRight: number = Math.min(cellRight, contRight)
       const hVisible: boolean = hIntersectRight > hIntersectLeft
       // 垂直裁剪窗口 = holder 推算的可见区域 [visTop, visBottom]（窗口 px，见 MarkdownVisibleRectHolder 算法）：
-      //   onAreaChange 拿矩形区域，onVisibleAreaChange 拿 ratio，每 50ms 按「移动方向 + ratio 变化」收缩可见区域。
+      //   onAreaChange 拿矩形区域，onVisibleAreaChange 拿 ratio，轮询按「移动方向 + ratio 变化」收缩可见区域。
       // holder.visReady=false（ratio 首次>0 前）退化用整屏 [0, screenH]，避免漏报。
       const useVis: boolean = this.visibleRectHolder.visReady
       const vpTop: number = useVis ? this.visibleRectHolder.visTop : 0

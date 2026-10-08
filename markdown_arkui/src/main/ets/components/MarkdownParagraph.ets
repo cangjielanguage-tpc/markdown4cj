@@ -31,6 +31,7 @@ import { SubTheme } from "../theme/SubTheme"
 import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import {
+  blockFillWidth,
   imageUrlHandle,
   imageWidthAndHeight,
   spanSoftLineBreak
@@ -267,7 +268,7 @@ export struct MarkdownParagraph {
       }
       // 段落在屏可见视口（相对Text内容区原点，px）：
       // 垂直裁剪窗口 = holder 推算的可见区域 [visTop, visBottom]（窗口 px，见 MarkdownVisibleRectHolder 算法）：
-      //   onAreaChange 拿矩形区域，onVisibleAreaChange 拿 ratio，每 50ms 按「移动方向 + ratio 变化」收缩可见区域。
+      //   onAreaChange 拿矩形区域，onVisibleAreaChange 拿 ratio，轮询按「移动方向 + ratio 变化」收缩可见区域。
       // 段落Text不横滚，水平方向整宽可见：clipLeftPx=0, clipRightPx=widthPx
       // holder.visReady=false（ratio 首次>0 前）退化用整屏 [0, screenH]，避免漏报。
       const useVis: boolean = this.visibleRectHolder.visReady
@@ -294,58 +295,24 @@ export struct MarkdownParagraph {
   }
 
   build() {
-    Row() {
-      this.paragraphColumn()
-    }
-    .backgroundColor(paragraphBackgroundColor(
-      this.globalTheme,
-      this.blockQuoteTheme,
-      this.paragraphTheme,
-      this.markdownHighlightParagraph,
-      this.node.isQuote,
-      this.node.nodeHash
-    ))
-    .padding({
-      top: this.paragraphTheme.paragraphPaddingTop,
-      right: this.paragraphTheme.paragraphPaddingRight,
-      bottom: this.paragraphTheme.paragraphPaddingBottom,
-      left: this.paragraphTheme.paragraphPaddingLeft
-    })
-    .margin({
-      top: this.paragraphTheme.paragraphMarginTop,
-      right: this.paragraphTheme.paragraphMarginRight,
-      bottom: this.paragraphTheme.paragraphMarginBottom,
-      left: this.paragraphTheme.paragraphMarginLeft
-    })
-    .transition(
-      TransitionEffect.asymmetric(
-        this.globalTheme.paragraphHeadingAnimationEnabled
-          ? TransitionEffect.opacity(0).animation({ duration: this.globalTheme.paragraphHeadingAnimationDuration })
-          : TransitionEffect.IDENTITY,
-        TransitionEffect.IDENTITY
-      )
-    )
-    .onAppear(() => {
-      if (this.globalTheme.paragraphHeadingAnimationEnabled) {
-        this.paragraphHeadingAnimationStart?.()
-        if (this.animationTimerId !== -1) {
-          clearTimeout(this.animationTimerId)
-        }
-        this.animationTimerId = setTimeout(() => {
-          this.animationTimerId = -1
-          if (!this.isAlive) {
-            return
-          }
-          this.paragraphHeadingAnimationEnd?.()
-        }, this.globalTheme.paragraphHeadingAnimationDuration)
-      }
-    })
+    this.paragraphColumn()
   }
 
   /**
    * 段落文本数据循环
    * 注意：顶层ForEach直接引用this.list(@State)，不通过@Builder参数传递
    * 因为@Builder参数会创建本地副本，导致@State变化无法同步到ForEach
+   *
+   * 层级压缩：原结构为 Row(背景/边距/动画) > Column(layoutWeight(1)撑宽) > Text，
+   * Row仅承载样式且只有Column一个孩子，其属性平移到Column上减少一层渲染节点。
+   * Column直接作为ListItem子节点后layoutWeight(1)不再生效（layoutWeight仅在
+   * Row/Column/Flex主轴生效，见SDK common.d.ts），改用blockFillWidth撑满宽度
+   * （width('100%')百分比基数不扣自身margin，margin>0时节点右移溢出父容器，
+   * 实测文本偏移出屏幕右边界，故用calc显式扣除水平margin，margin=0时等价'100%'）。
+   *
+   * 使用契约：本组件按「ListItem直接子节点」设计。若未来放进Row/Column且存在
+   * 兄弟节点，width('100%')会占满父宽而非layoutWeight语义的「剩余空间」，
+   * 两者行为分叉，届时需改回layoutWeight或恢复双容器结构。
    */
   @Builder
   paragraphColumn() {
@@ -459,7 +426,55 @@ export struct MarkdownParagraph {
     }
     .alignItems(HorizontalAlign.Start)
     .justifyContent(FlexAlign.Center)
-    .layoutWeight(1)
+    // 原内层Column靠layoutWeight(1)在外层Row内撑满宽度；去掉外层Row后直接挂
+    // ListItem，layoutWeight失效，需width撑满。实测width('100%')百分比基数不扣
+    // 自身margin，margin.left右移节点导致右边缘溢出（文本偏移出屏幕右边界），
+    // 故用blockFillWidth显式扣除水平margin（margin=0时仍为'100%'，默认主题不变）。
+    // Text仍为自适应宽度，曝光getRectangleById坐标系、长按背景区域不变。
+    .width(blockFillWidth(this.paragraphTheme.paragraphMarginLeft, this.paragraphTheme.paragraphMarginRight))
+    .backgroundColor(paragraphBackgroundColor(
+      this.globalTheme,
+      this.blockQuoteTheme,
+      this.paragraphTheme,
+      this.markdownHighlightParagraph,
+      this.node.isQuote,
+      this.node.nodeHash
+    ))
+    .padding({
+      top: this.paragraphTheme.paragraphPaddingTop,
+      right: this.paragraphTheme.paragraphPaddingRight,
+      bottom: this.paragraphTheme.paragraphPaddingBottom,
+      left: this.paragraphTheme.paragraphPaddingLeft
+    })
+    .margin({
+      top: this.paragraphTheme.paragraphMarginTop,
+      right: this.paragraphTheme.paragraphMarginRight,
+      bottom: this.paragraphTheme.paragraphMarginBottom,
+      left: this.paragraphTheme.paragraphMarginLeft
+    })
+    .transition(
+      TransitionEffect.asymmetric(
+        this.globalTheme.paragraphHeadingAnimationEnabled
+          ? TransitionEffect.opacity(0).animation({ duration: this.globalTheme.paragraphHeadingAnimationDuration })
+          : TransitionEffect.IDENTITY,
+        TransitionEffect.IDENTITY
+      )
+    )
+    .onAppear(() => {
+      if (this.globalTheme.paragraphHeadingAnimationEnabled) {
+        this.paragraphHeadingAnimationStart?.()
+        if (this.animationTimerId !== -1) {
+          clearTimeout(this.animationTimerId)
+        }
+        this.animationTimerId = setTimeout(() => {
+          this.animationTimerId = -1
+          if (!this.isAlive) {
+            return
+          }
+          this.paragraphHeadingAnimationEnd?.()
+        }, this.globalTheme.paragraphHeadingAnimationDuration)
+      }
+    })
   }
 
   /**

@@ -44,6 +44,16 @@ class MarkdownRootIdGenerator {
   }
 }
 
+/**
+ * 曝光tick节奏：活跃期50ms保证滑动中rect采样；页面静止（rect与ratio连续无变化）
+ * 后降频到200ms，把空闲期原生getRectangleById轮询从20次/秒降到5次/秒。
+ * 任何变化（rect/ratio）立即恢复50ms；滑动检测最坏延迟=降频间隔200ms
+ * （曝光本身是阈值+防抖统计，段落侧onVisibleAreaChange阈值触发不受影响）。
+ */
+const TICK_INTERVAL_FAST: number = 50
+const TICK_INTERVAL_IDLE: number = 200
+const IDLE_TICKS_TO_SLOW: number = 4
+
 @Component
 export struct CJMarkdown {
   @Prop @Watch('refreshData') content: string // 外部传入的Markdown文档
@@ -52,13 +62,18 @@ export struct CJMarkdown {
   @Provide isLatexMathEnabled: boolean = false // 数学公式插件是否启用（控制是否调用latexStringToImage）
   @Provide('mdStickyHolder') stickyHolder: StickyScrollYHolder = new StickyScrollYHolder() // 引用不变，不触发build()；通过setY+监听器通知MarkdownTable
   // CJMarkdown 根节点可见矩形持有者：根 List 经 .id + onVisibleAreaChange(缓存ratio) +
-  // 50ms 轮询 componentUtils(读窗口rect) 喂给 holder.applyRect，推算可见区域 visTop/visBottom，
+  // 轮询 componentUtils(读窗口rect，活跃50ms/空闲降频200ms) 喂给 holder.applyRect，推算可见区域 visTop/visBottom，
   // 下发给 MarkdownParagraph/MarkdownTableCell 作链接曝光判定的「正交裁剪窗口」
   // （替代整屏高度，避免被标题栏/面板/系统栏遮挡区域误判可见）。
   @Provide('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder = new MarkdownVisibleRectHolder()
   private rootId: string = '' // CJMarkdown 根 List 的唯一 id（componentUtils.getRectangleById 用）。在 aboutToAppear 中赋值，避免 struct 字段初始化调用静态方法。
-  private lastRatio: number = 0 // onVisibleAreaChange 最近一次 ratio（50ms tick 与 rect 一起喂给 holder）
-  private visibleTickId: number = -1 // 50ms 轮询定时器（仅 exposureEnabled 时启动）：读根 rect + lastRatio → holder.applyRect
+  private lastRatio: number = 0 // onVisibleAreaChange 最近一次 ratio（tick 与 rect 一起喂给 holder）
+  private visibleTickId: number = -1 // 曝光轮询定时器（仅 exposureEnabled 时启动）：读根 rect + lastRatio → holder.applyRect
+  private visibleTickInterval: number = TICK_INTERVAL_FAST // 当前tick间隔：活跃50ms，空闲降频200ms（见TICK_*常量注释）
+  private lastTickTop: number = Number.NaN // 上次喂入holder的窗口rect顶（空闲短路判等；NaN保证首次必不短路）
+  private lastTickBottom: number = Number.NaN // 上次喂入holder的窗口rect底
+  private lastTickRatio: number = Number.NaN // 上次喂入holder的ratio
+  private idleTickCount: number = 0 // 连续无变化tick数（达到IDLE_TICKS_TO_SLOW后降频）
   @State componentWidth: number = 0.0 // markdown控件宽度
   scroller: Scroller = new Scroller() // list控制器
   scrollController?: MarkdownScrollController // 外层滚动控制器（不固定高度模式由页面传入）
@@ -130,7 +145,7 @@ export struct CJMarkdown {
   }
 
   // 是否启用元素曝光统计：仅当 config.elementExposureCallback 已设置时为 true。
-  // 整条曝光链路（CJMarkdown 的 50ms 轮询 + holder，以及 MarkdownParagraph/MarkdownTableCell/
+  // 整条曝光链路（CJMarkdown 的轮询 tick + holder，以及 MarkdownParagraph/MarkdownTableCell/
   // MarkdownHeading 的 computeLinkRanges/getRectsForRange/监听器）都以此为开关，未设回调时全部短路不执行。
   // 用方法而非 getter：@Component struct 内 `private get exposureEnabled` 在运行时返回 undefined
   //（实测 cbDefined=true 但 tick#N disabled SKIP 持续 200+ tick），导致运行时门控永久判 false、整条链路死。
@@ -139,19 +154,30 @@ export struct CJMarkdown {
   }
 
   /**
-   * 启动 50ms 轮询定时器（幂等：已运行则跳过）。
+   * 启动曝光轮询定时器（幂等：已运行则跳过），以活跃间隔起步。
    */
   private startVisibleTickTimer(): void {
     if (this.visibleTickId !== -1) {
       return
     }
-    this.visibleTickId = setInterval(() => {
-      this.tickVisibleRect()
-    }, 50)
+    this.restartTickTimer(TICK_INTERVAL_FAST)
   }
 
   /**
-   * 停止 50ms 轮询定时器（幂等：未运行则跳过）。
+   * 按指定间隔重建tick定时器（不改变启停语义，仅换间隔；调用方保证isAlive状态）。
+   */
+  private restartTickTimer(interval: number): void {
+    if (this.visibleTickId !== -1) {
+      clearInterval(this.visibleTickId)
+    }
+    this.visibleTickInterval = interval
+    this.visibleTickId = setInterval(() => {
+      this.tickVisibleRect()
+    }, interval)
+  }
+
+  /**
+   * 停止曝光轮询定时器（幂等：未运行则跳过）。
    */
   private stopVisibleTickTimer(): void {
     if (this.visibleTickId !== -1) {
@@ -177,10 +203,18 @@ export struct CJMarkdown {
   }
 
   /**
-   * 50ms tick：用 componentUtils.getRectangleById 拿根 List 窗口 rect（px），
+   * 曝光tick：用 componentUtils.getRectangleById 拿根 List 窗口 rect（px），
    * 配 lastRatio（onVisibleAreaChange 缓存），喂给 holder.applyRect 运行方向/ratio 算法。
    * onAreaChange/onVisibleAreaChange 在外层 Scroll 滑动时未必逐帧触发（离散 ratio 阈值 +
    * onAreaChange 只在自身尺寸变时触发），故主动轮询保证滑动中 rectTop 采样。
+   *
+   * 空闲优化（两级，均不改定时器启停语义）：
+   * 1. 短路：rect与ratio与上次喂入严格相等 → holder对相同输入是确定性的
+   *    （changed=false不通知监听者），跳过本次applyRect的全部代理字段写与比较逻辑。
+   *    用严格相等而非容差：holder只响应≥0.5px移动（必然严格不等，绝不漏喂）；
+   *    <0.5px抖动今天喂入也是惰性（不产生vis变化），跳过无行为差异。
+   * 2. 降频：连续IDLE_TICKS_TO_SLOW次无变化 → 间隔降到TICK_INTERVAL_IDLE，
+   *    空闲原生调用20次/秒→5次/秒；任何变化立即恢复TICK_INTERVAL_FAST。
    */
   private tickVisibleRect(): void {
     if (!this.isAlive) {
@@ -195,6 +229,21 @@ export struct CJMarkdown {
       const info = componentUtils.getRectangleById(this.rootId)
       const top: number = info.windowOffset.y
       const bottom: number = info.windowOffset.y + info.size.height
+      if (top === this.lastTickTop && bottom === this.lastTickBottom && this.lastRatio === this.lastTickRatio) {
+        // 空闲短路：输入与上次完全一致，喂入不会有任何新输出
+        this.idleTickCount++
+        if (this.idleTickCount >= IDLE_TICKS_TO_SLOW && this.visibleTickInterval !== TICK_INTERVAL_IDLE) {
+          this.restartTickTimer(TICK_INTERVAL_IDLE)
+        }
+        return
+      }
+      this.lastTickTop = top
+      this.lastTickBottom = bottom
+      this.lastTickRatio = this.lastRatio
+      this.idleTickCount = 0
+      if (this.visibleTickInterval !== TICK_INTERVAL_FAST) {
+        this.restartTickTimer(TICK_INTERVAL_FAST)
+      }
       this.visibleRectHolder.applyRect(top, bottom, this.lastRatio)
     } catch (_e) {
       // 组件未挂载/id 未就绪，本次跳过

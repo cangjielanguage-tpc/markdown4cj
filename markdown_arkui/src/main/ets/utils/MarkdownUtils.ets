@@ -1163,3 +1163,54 @@ export function safeString(str: string | null | undefined): string {
   return str;
 }
 
+/**
+ * 块级容器撑满父宽并扣除水平margin后的width值。
+ * 背景：层级压缩后段落/标题Column直接挂ListItem，撑宽由layoutWeight(1)改为百分比宽度。
+ * 实测width('100%')百分比基数不扣除组件自身margin：margin.left同时使节点右移，
+ * 宽度仍为父全宽，右边缘溢出父容器（标题/段落文本偏移出屏幕右边界）。
+ * 改用calc显式扣除水平margin（margin偏移语义保留，最终几何=左右各缩进对应margin，
+ * 与压缩前layoutWeight「约束扣除margin后分配」的几何一致）。
+ * 仅处理数值类margin（number、纯数字串、'Nvp'串，单位vp）；Resource/'Npx'/'N%'等
+ * 非数值场景回退'100%'（不引入新问题，待后续按需扩展）。
+ *
+ * @param marginLeft 左外边距
+ * @param marginRight 右外边距
+ * @return width值：'calc(100% - Nvp)'或'100%'
+ */
+export function blockFillWidth(marginLeft: Length, marginRight: Length): string {
+  const left = marginVpValue(marginLeft)
+  const right = marginVpValue(marginRight)
+  if (left === undefined || right === undefined) {
+    return '100%'
+  }
+  const total: number = left + right
+  if (total <= 0) {
+    return '100%'
+  }
+  return `calc(100% - ${total}vp)`
+}
+
+/**
+ * 提取margin的vp数值：number默认单位vp；字符串仅接受纯数字与'Nvp'。
+ * 其余（Resource/'Npx'/'N%'等）返回undefined，由调用方回退'100%'。
+ *
+ * @param value margin值
+ * @return vp数值，无法解析时返回undefined
+ */
+function marginVpValue(value: Length): number | undefined {
+  if (typeof value === 'number') {
+    return value
+  }
+  if (typeof value === 'string') {
+    const trimmed: string = value.trim()
+    const vpStr: string = trimmed.endsWith('vp') ? trimmed.substring(0, trimmed.length - 2) : trimmed
+    if (vpStr.length > 0) {
+      const parsed: number = Number(vpStr)
+      if (!isNaN(parsed)) {
+        return parsed
+      }
+    }
+  }
+  return undefined
+}
+
