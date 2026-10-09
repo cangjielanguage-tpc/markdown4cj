@@ -32,6 +32,7 @@ import { SupTheme } from "../theme/SupTheme"
 import { TableTheme } from "../theme/TableTheme"
 import {
   blockFillWidth,
+  buildInlineItemKey,
   imageUrlHandle,
   imageWidthAndHeight,
   spanSoftLineBreak
@@ -344,7 +345,9 @@ export struct MarkdownParagraph {
             (item: NodeView, index: number) => {
               // 纯函数key：不在keygen里做textContent累加等副作用（框架每次diff都会重跑keygen，
               // 副作用会导致文本重复累加与O(n²)字符串拷贝）。文本内容改为使用点惰性计算buildTextContent()
-              return `${index}-${item.nodeHash}-${item.contentHash}-${item.isEmphasis}-${item.isStrongEmphasis}-${item.isInLineCode}-${item.isStrikethrough}-${item.isHighlight}-${item.isUnderlineNode}-${item.isSubNode}-${item.isSupNode}-${item.imageWidth}-${item.imageHeight}-${item.latexImageWidth}-${item.latexImageHeight}-${item.latexPixelMap !== undefined}-${item.imageReplacePixelMap !== undefined}-${item.linkIconPixelMap !== undefined}-${item.linkIconType}-${item.linkIconWidth}-${item.linkIconHeight}-${this.linkTheme.linkCircleIconMargin}-${this.linkTheme.linkRectIconMargin}-${this.linkTheme.linkRectToolIconMargin}`
+              // key改用共享位打包编码（MarkdownUtils.buildInlineItemKey）：字段信息与原20+字段模板等价
+              return buildInlineItemKey(index, item, true,
+                this.linkTheme.linkCircleIconMargin, this.linkTheme.linkRectIconMargin, this.linkTheme.linkRectToolIconMargin)
             }
           )
         }

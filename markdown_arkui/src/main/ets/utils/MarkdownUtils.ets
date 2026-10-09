@@ -142,6 +142,7 @@ import {
 } from "../base/Constants"
 import { BulletListTheme } from "../theme/BulletListTheme"
 import { PrismBlock, PrismNode } from "@cangjie-tpc/prism_hybrid"
+import { NodeView } from "../model/NodeView"
 
 /**
  * 判断软换行是否换行
@@ -1235,5 +1236,73 @@ export function getPrismNodes(block: PrismBlock): Array<PrismNode> {
     prismNodeCache.set(block, nodes)
   }
   return nodes
+}
+
+/**
+ * 构造内联节点的ForEach key（段落/标题/单元格共用，统一编码）。
+ *
+ * 与原20+字段模板拼接信息完全等价：所有影响Span重建的字段仍然逐个读取并编码——
+ * 位段打包只是更紧凑的编码形式，不存在漏字段导致的"异步图片/公式/图标加载后不刷新"风险。
+ * 字符串长度从~200字符降到~100字符，keygen的字符串构建开销约减半。
+ * b/i/l/k/m段前缀让各字段段自定界，比原纯'-'拼接的跨段歧义更小。
+ *
+ * 位段布局：
+ *   bit0-7   样式flag（withStyleFlags=true时编码，false时恒0——嵌套格keygen本就不含这些字段）
+ *   bit8     latexPixelMap存在
+ *   bit9     imageReplacePixelMap存在
+ *   bit10    linkIconPixelMap存在
+ * 尺寸/类型/主题边距无法放进位段（数值/Length），保持模板段编码。
+ *
+ * @param index ForEach索引
+ * @param item 内联节点
+ * @param withStyleFlags 是否编码8个样式flag（段落/标题/主格true；嵌套格false）
+ * @param circleMargin linkCircleIconMargin
+ * @param rectMargin linkRectIconMargin
+ * @param toolMargin linkRectToolIconMargin
+ * @return ForEach key字符串
+ */
+export function buildInlineItemKey(index: number, item: NodeView, withStyleFlags: boolean,
+  circleMargin: Length, rectMargin: Length, toolMargin: Length): string {
+  let bits = 0
+  if (withStyleFlags) {
+    if (item.isEmphasis) {
+      bits |= 1
+    }
+    if (item.isStrongEmphasis) {
+      bits |= 2
+    }
+    if (item.isInLineCode) {
+      bits |= 4
+    }
+    if (item.isStrikethrough) {
+      bits |= 8
+    }
+    if (item.isHighlight) {
+      bits |= 16
+    }
+    if (item.isUnderlineNode) {
+      bits |= 32
+    }
+    if (item.isSubNode) {
+      bits |= 64
+    }
+    if (item.isSupNode) {
+      bits |= 128
+    }
+  }
+  if (item.latexPixelMap !== undefined) {
+    bits |= 256
+  }
+  if (item.imageReplacePixelMap !== undefined) {
+    bits |= 512
+  }
+  if (item.linkIconPixelMap !== undefined) {
+    bits |= 1024
+  }
+  return `${index}-${item.nodeHash}-${item.contentHash}-b${bits}` +
+    `-i${item.imageWidth}x${item.imageHeight}` +
+    `-l${item.latexImageWidth}x${item.latexImageHeight}` +
+    `-k${item.linkIconType}.${item.linkIconWidth}.${item.linkIconHeight}` +
+    `-m${circleMargin}.${rectMargin}.${toolMargin}`
 }
 
