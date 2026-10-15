@@ -25,3 +25,4 @@ target
 test_temp
 ci_test
 /test/
+.trae/

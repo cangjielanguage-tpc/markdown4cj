@@ -1,5 +1,4 @@
 package markdown_parser.plugin
-import ohos.hilog.Hilog
 
 public class BlockCustomCardPlugin <: AbstractMarkdownPlugin {
     var mBlockImage: ?(CardBean) -> Bool = None
