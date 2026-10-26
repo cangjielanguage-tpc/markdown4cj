@@ -147,6 +147,22 @@ struct HighlightParagraphDetailsPage {
   }
 
   /**
+   * 全部段落高亮（交替两种颜色，验证多段落同时高亮）
+   */
+  highlightAllParagraphs(): void {
+    if (this.paragraphItems.length === 0) {
+      this.getParagraphItems()
+    }
+    for (let i = 0; i < this.paragraphItems.length; i++) {
+      if (i % 2 === 0) {
+        this.highlightParagraph.setParagraphHighlight(this.paragraphItems[i], 0xFFFA8072)
+      } else {
+        this.highlightParagraph.setParagraphHighlight(this.paragraphItems[i], 0xFFFFD700)
+      }
+    }
+  }
+
+  /**
    * 清除所有段落的高亮
    */
   clearAllParagraphHighlights(): void {
@@ -162,37 +178,48 @@ struct HighlightParagraphDetailsPage {
         true,
         this.safeTop
       )
-      Row() {
-        Button("获取段落列表")
+      Flex({ wrap: FlexWrap.Wrap }) {
+        Button("获取段落")
           .height(35)
-          .layoutWeight(1)
           .type(ButtonType.Capsule)
+          .padding({ left: 8, right: 8 })
           .margin({ left: 5, right: 5 })
           .fontColor(0xFFFFFFFF)
           .backgroundColor(0xFF317AFF)
-          .fontSize(14)
+          .fontSize(12)
           .onClick(() => {
             this.getParagraphItems()
           })
-        Button("高亮下一段")
+        Button("下一段")
           .height(35)
-          .layoutWeight(1)
           .type(ButtonType.Capsule)
+          .padding({ left: 8, right: 8 })
           .margin({ left: 5, right: 5 })
           .fontColor(0xFFFFFFFF)
           .backgroundColor(0xFF317AFF)
-          .fontSize(14)
+          .fontSize(12)
           .onClick(() => {
             this.highlightNextParagraph()
           })
-        Button("清除所有高亮")
+        Button("全部高亮")
           .height(35)
-          .layoutWeight(1)
           .type(ButtonType.Capsule)
+          .padding({ left: 8, right: 8 })
           .margin({ left: 5, right: 5 })
           .fontColor(0xFFFFFFFF)
           .backgroundColor(0xFF317AFF)
-          .fontSize(14)
+          .fontSize(12)
+          .onClick(() => {
+            this.highlightAllParagraphs()
+          })
+        Button("清除高亮")
+          .height(35)
+          .type(ButtonType.Capsule)
+          .padding({ left: 8, right: 8 })
+          .margin({ left: 5, right: 5 })
+          .fontColor(0xFFFFFFFF)
+          .backgroundColor(0xFF317AFF)
+          .fontSize(12)
           .onClick(() => {
             this.clearAllParagraphHighlights()
           })

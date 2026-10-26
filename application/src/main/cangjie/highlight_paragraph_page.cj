@@ -226,12 +226,12 @@ class HighlightParagraphPage {
                     .borderRadius(5.0)
                     .backgroundColor(0xFF317AFF)
 
-                    Row {
-                        Button("获取所有段落")
+                    Flex(FlexOptions(direction: FlexDirection.Row, wrap: FlexWrap.Wrap)) {
+                        Button("获取段落")
                             .shape(ButtonType.ROUNDED_RECTANGLE)
                             .stateEffect(true)
-                            .margin(3).padding(2)
-                            .layoutWeight(1)
+                            .margin(3).padding(left: 8.0, right: 8.0)
+                            .fontSize(12.0)
                             .onClick {
                                 evt =>
                                     let highlightParagraph = markdownConfiguration.getMarkdownHighlightParagraph()
@@ -241,11 +241,28 @@ class HighlightParagraphPage {
                                     Hilog.error(111, "test", "--------> 获取段落id集合：${allParagraphNodeHashList.size}")
                             }
 
+                        Button("全部高亮")
+                            .shape(ButtonType.ROUNDED_RECTANGLE)
+                            .stateEffect(true)
+                            .margin(3).padding(left: 8.0, right: 8.0)
+                            .fontSize(12.0)
+                            .onClick {
+                                evt =>
+                                    var successCount = 0
+                                    for (i in 0..allParagraphNodeHashList.size) {
+                                        var color = if (i % 2 == 0) { Color(0xFFFA8072) } else { Color(0xFFFFD700) }
+                                        if (markdownHighlightParagraph.setParagraphHighlight(allParagraphNodeHashList[i], color)) {
+                                            successCount++
+                                        }
+                                    }
+                                    Hilog.error(111, "test", "--------> 全部高亮：${successCount}/${allParagraphNodeHashList.size}")
+                            }
+
                         Button("下一条")
                             .shape(ButtonType.ROUNDED_RECTANGLE)
                             .stateEffect(true)
-                            .margin(3).padding(2)
-                            .layoutWeight(1)
+                            .margin(3).padding(left: 8.0, right: 8.0)
+                            .fontSize(12.0)
                             .onClick {
                                 evt =>
                                     Hilog.error(111, "test", "--------> 下一条：${nodeHashIndex}")
@@ -265,8 +282,8 @@ class HighlightParagraphPage {
                         Button("上一条")
                             .shape(ButtonType.ROUNDED_RECTANGLE)
                             .stateEffect(true)
-                            .margin(3).padding(2)
-                            .layoutWeight(1)
+                            .margin(3).padding(left: 8.0, right: 8.0)
+                            .fontSize(12.0)
                             .onClick {
                                 evt =>
                                     Hilog.error(111, "test", "--------> 上一条：${nodeHashIndex}")
@@ -279,11 +296,11 @@ class HighlightParagraphPage {
                                     }
                             }
 
-                        Button("清除所有背景")
+                        Button("清除背景")
                             .shape(ButtonType.ROUNDED_RECTANGLE)
                             .stateEffect(true)
-                            .margin(3).padding(2)
-                            .layoutWeight(1)
+                            .margin(3).padding(left: 8.0, right: 8.0)
+                            .fontSize(12.0)
                             .onClick {
                                 evt =>
                                     Hilog.error(111, "test", "--------> 清除所有背景")
