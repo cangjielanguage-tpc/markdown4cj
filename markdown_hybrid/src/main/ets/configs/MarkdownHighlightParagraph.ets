@@ -85,11 +85,11 @@ export class MarkdownHighlightParagraph {
 
   /**
    * 设置段落高亮
-   * 多次设置时先清除已有高亮，全局仅保留最后一次设置的段落和颜色
+   * 已高亮的段落重复设置返回false（幂等），不同段落可同时保持高亮
    *
    * @param nodeHash 段落的nodeHash
    * @param color 高亮颜色（ARGB值，如0xFFFA8072）
-   * @returns 是否设置成功 false表示未找到nodeHash
+   * @returns 是否设置成功 false表示已经设置过或设置失败（未找到nodeHash）
    */
   setParagraphHighlight(nodeHash: string, color: number): boolean {
     this.selectedParagraphItem = nodeHash
