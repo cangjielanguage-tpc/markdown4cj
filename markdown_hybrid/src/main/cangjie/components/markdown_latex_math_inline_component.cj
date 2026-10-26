@@ -62,21 +62,21 @@ public class MarkdownLatexMathInLineComponent {
                         }
                     }
             } else {
-                Span(latexMathInLineStr)
-                    .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
-                    .fontSize(markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
-                    .fontWeight(markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
-                    .fontStyle(markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
-                    .fontColor(markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
+//                Span(latexMathInLineStr)
+//                    .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
+//                    .fontSize(markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
+//                    .fontWeight(markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
+//                    .fontStyle(markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
+//                    .fontColor(markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
             }
         } else {
             if (markdownTheme.latexMathTheme.latexMathDefaultText) {
-                Span(latexMathInLineStr)
-                    .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
-                    .fontSize(markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
-                    .fontWeight(markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
-                    .fontStyle(markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
-                    .fontColor(markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
+//                Span(latexMathInLineStr)
+//                    .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
+//                    .fontSize(markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
+//                    .fontWeight(markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
+//                    .fontStyle(markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
+//                    .fontColor(markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
             }
         }
     }
