@@ -296,6 +296,20 @@ class HighlightParagraphPage {
                                     }
                             }
 
+                        Button("双段高亮")
+                            .shape(ButtonType.ROUNDED_RECTANGLE)
+                            .stateEffect(true)
+                            .margin(3).padding(left: 8.0, right: 8.0)
+                            .fontSize(12.0)
+                            .onClick {
+                                evt =>
+                                    if (allParagraphNodeHashList.size >= 2) {
+                                        let r1 = markdownHighlightParagraph.setParagraphHighlight(allParagraphNodeHashList[0], Color(0xFF2E7D32))
+                                        let r2 = markdownHighlightParagraph.setParagraphHighlight(allParagraphNodeHashList[1], Color(0xFFFFE0B2))
+                                        Hilog.error(111, "test", "--------> 双段高亮结果：${r1},${r2}")
+                                    }
+                            }
+
                         Button("清除背景")
                             .shape(ButtonType.ROUNDED_RECTANGLE)
                             .stateEffect(true)

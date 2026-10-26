@@ -163,6 +163,20 @@ struct HighlightParagraphDetailsPage {
   }
 
   /**
+   * 双段高亮（前两条段落设置两种不同颜色，验证多段共存）
+   */
+  highlightTwoParagraphs(): void {
+    if (this.paragraphItems.length === 0) {
+      this.getParagraphItems()
+    }
+    if (this.paragraphItems.length < 2) {
+      return
+    }
+    this.highlightParagraph.setParagraphHighlight(this.paragraphItems[0], 0xFF2E7D32)
+    this.highlightParagraph.setParagraphHighlight(this.paragraphItems[1], 0xFFFFE0B2)
+  }
+
+  /**
    * 清除所有段落的高亮
    */
   clearAllParagraphHighlights(): void {
@@ -211,6 +225,17 @@ struct HighlightParagraphDetailsPage {
           .fontSize(12)
           .onClick(() => {
             this.highlightAllParagraphs()
+          })
+        Button("双段高亮")
+          .height(35)
+          .type(ButtonType.Capsule)
+          .padding({ left: 8, right: 8 })
+          .margin({ left: 5, right: 5 })
+          .fontColor(0xFFFFFFFF)
+          .backgroundColor(0xFF317AFF)
+          .fontSize(12)
+          .onClick(() => {
+            this.highlightTwoParagraphs()
           })
         Button("清除高亮")
           .height(35)
