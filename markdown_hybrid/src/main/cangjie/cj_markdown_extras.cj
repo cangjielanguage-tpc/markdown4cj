@@ -72,6 +72,19 @@ public class CJMarkdownHighlightParagraph {
     }
 
     /**
+     * 获取当前高亮显示的段落nodeHash集合
+     *
+     * @return 当前高亮的段落nodeHash集合
+     */
+    public func getSelectedParagraphItems(): JSArrayEx<String> {
+        let result = ArrayList<String>()
+        for (item in this.highlightParagraph.getSelectedParagraphItemList()) {
+            result.add(item)
+        }
+        return JSArrayEx<String>(result.toArray())
+    }
+
+    /**
      * 设置指定段落高亮显示
      * 多次设置时先清除已有高亮，全局仅保留最后一次设置的段落和颜色
      *
@@ -81,6 +94,24 @@ public class CJMarkdownHighlightParagraph {
      */
     public func setParagraphHighlight(nodeHash: String, color: Float64): Bool {
         return this.highlightParagraph.setParagraphHighlight(nodeHash, transColorForTransparent(UInt32(color)))
+    }
+
+    /**
+     * 设置当前长按未触发弹窗时段落前的背景色
+     *
+     * @param color 段落背景色（ARGB值，如0xFFE0E0E0）
+     */
+    public func setBeforeSelectedParagraphBackgroundColor(color: Float64): Unit {
+        this.highlightParagraph.setBeforeSelectedParagraphBackgroundColor(transColorForTransparent(UInt32(color)))
+    }
+
+    /**
+     * 设置当前长按放手后选中文字的背景色
+     *
+     * @param color 选中文字的背景色（ARGB值，如0xFF4A90E2）
+     */
+    public func setSelectedParagraphBackgroundColor(color: Float64): Unit {
+        this.highlightParagraph.setSelectedParagraphBackgroundColor(transColorForTransparent(UInt32(color)))
     }
 
     /**

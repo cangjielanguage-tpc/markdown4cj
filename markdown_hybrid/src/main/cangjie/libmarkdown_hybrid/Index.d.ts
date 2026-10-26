@@ -1228,9 +1228,15 @@ export declare class CJMarkdownHighlightTheme {
 export declare class CJMarkdownHighlightParagraph {
   getAllParagraphItems(): Array<string>
 
-  setParagraphHighlight(nodeHash: string, color: number): void
+  setParagraphHighlight(nodeHash: string, color: number): boolean
 
-  clearParagraphHighlight(nodeHash: string): void
+  getSelectedParagraphItems(): string[]
+
+  setBeforeSelectedParagraphBackgroundColor(color: number): void
+
+  setSelectedParagraphBackgroundColor(color: number): void
+
+  clearParagraphHighlight(nodeHash: string): boolean
 
   clearAllParagraphHighlights(): void
 }

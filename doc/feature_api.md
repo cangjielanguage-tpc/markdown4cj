@@ -365,6 +365,83 @@ public class MarkdownConfiguration {
 }
 ```
 
+### class MarkdownHighlightParagraph
+
+markdown 段落高亮配置（通过 MarkdownConfiguration#getMarkdownHighlightParagraph 获取）
+
+```ets
+export class MarkdownHighlightParagraph {
+  /**
+   * 获取所有可以设置高亮的段落的nodeHash集合
+   * @return 段落nodeHash集合
+   */
+  getAllParagraphItems(): Array<string>
+
+  /**
+   * 获取当前高亮显示的段落nodeHash集合
+   * @return 段落nodeHash集合
+   */
+  getSelectedParagraphItems(): Array<string>
+
+  /**
+   * 获取当前高亮段落的nodeHash
+   * @return 当前高亮段落的nodeHash，无高亮时为空字符串
+   */
+  getSelectedParagraphItem(): string
+
+  /**
+   * 获取当前高亮段落的背景色
+   * @return 当前高亮段落的背景色（ARGB值），无高亮时为undefined
+   */
+  getSelectedParagraphItemColor(): number | undefined
+
+  /**
+   * 获取长按前段落默认背景色
+   * @return 长按前段落默认背景色（ARGB值），未设置时为undefined
+   */
+  getBeforeSelectedParagraphBackgroundColor(): number | undefined
+
+  /**
+   * 获取长按选中段落的背景色
+   * @return 长按选中段落的背景色（ARGB值），未设置时为undefined
+   */
+  getSelectedParagraphBackgroundColor(): number | undefined
+
+  /**
+   * 设置指定段落高亮显示
+   * 多次设置时先清除已有高亮，全局仅保留最后一次设置的段落和颜色
+   * @param nodeHash 段落nodeHash
+   * @param color 段落高亮颜色（ARGB值，如0xFFFA8072）
+   * @return 是否设置成功 false表示未找到nodeHash
+   */
+  setParagraphHighlight(nodeHash: string, color: number): boolean
+
+  /**
+   * 设置当前长按未触发弹窗时段落前的背景色
+   * @param color 段落背景色（ARGB值，如0xFFE0E0E0）
+   */
+  setBeforeSelectedParagraphBackgroundColor(color: number): void
+
+  /**
+   * 设置当前长按放手后选中文字的背景色
+   * @param color 选中文字的背景色（ARGB值，如0xFF4A90E2）
+   */
+  setSelectedParagraphBackgroundColor(color: number): void
+
+  /**
+   * 取消指定段落的高亮
+   * @param nodeHash 段落nodeHash
+   * @return 是否取消成功 false表示该段落没有高亮或者未找到nodeHash
+   */
+  clearParagraphHighlight(nodeHash: string): boolean
+
+  /**
+   * 取消所有段落高亮
+   */
+  clearAllParagraphHighlights(): void
+}
+```
+
 ## Markdown基础样式配置类
 
 ### class MarkdownTheme
