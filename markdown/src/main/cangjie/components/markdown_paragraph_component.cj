@@ -459,21 +459,22 @@ class MarkdownParagraphComponent {
  	         }else{ TransitionEffect.IDENTITY}
  	         ,
  	         TransitionEffect.IDENTITY
- 	       )
+ 	       ),
+            { isExit: Bool =>
+                // isExit=true：出现动画结束；false：消失动画结束。渲染管线UI线程回调，无需定时器模拟
+                if (isExit && paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
+                    if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphHeadingAnimationEnd) {
+                        cb()
+                    }
+                }
+            }
  	     )
         .onAppear({ =>
-            // 段落加载动画开始回调在组件显示时触发
+            // 段落加载动画开始回调在组件显示时触发（转场启动时机，UI线程）
             if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
                 if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphHeadingAnimationStart) {
                     cb()
                 }
-                let duration = paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
-                let endCb = paragraphMarkdownConfiguration.paragraphHeadingAnimationEnd
-                Timer.once(Int64(duration) * Duration.millisecond, { =>
-                    if (let Some(cb) <- endCb) {
-                        cb()
-                    }
-                })
             }
         })
     }
