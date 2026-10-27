@@ -18,6 +18,11 @@ public class MarkdownHighlightRegistry {
     static var highlightColors: HashMap<Int64, Color> = HashMap<Int64, Color>()
     static var listeners: HashMap<Int64, (?Color) -> Unit> = HashMap<Int64, (?Color) -> Unit>()
 
+    // 长按前段落默认背景色（配置型，静态中转：核心@Prop配置深拷贝导致实例脱钩，渲染侧从静态读取）
+    public static var beforeSelectedBackgroundColor: ?Color = Option<Color>.None
+    // 长按选中段落的背景色（配置型，静态中转：核心@Prop配置深拷贝导致实例脱钩，渲染侧从静态读取）
+    public static var selectedBackgroundColor: ?Color = Option<Color>.None
+
     /**
      * 注册段落高亮监听器
      * 若该nodeHash已有缓存的高亮颜色，立即调用listener应用
@@ -85,11 +90,13 @@ public class MarkdownHighlightRegistry {
     }
 
     /**
-     * 清空所有数据（监听器+高亮颜色）
+     * 清空所有数据（监听器+高亮颜色+背景色配置）
      * 由MarkdownComponent在aboutToDisappear时调用
      */
     public static func clear(): Unit {
         highlightColors.clear()
         listeners.clear()
+        beforeSelectedBackgroundColor = Option<Color>.None
+        selectedBackgroundColor = Option<Color>.None
     }
 }

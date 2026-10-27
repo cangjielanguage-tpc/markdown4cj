@@ -34,6 +34,8 @@ public class MarkdownHighlightParagraph {
       */
      public func setBeforeSelectedParagraphBackgroundColor(color: ?Color): Unit {
          this.beforeSelectedParagraphBackgroundColor = color
+         // 静态中转：核心@Prop配置深拷贝导致渲染侧实例与本实例脱钩，渲染侧从Registry读取
+         MarkdownHighlightRegistry.beforeSelectedBackgroundColor = color
      }
 
      /**
@@ -52,6 +54,8 @@ public class MarkdownHighlightParagraph {
      */
     public func setSelectedParagraphBackgroundColor(color: ?Color): Unit {
         this.selectedParagraphBackgroundColor = color
+        // 静态中转：核心@Prop配置深拷贝导致渲染侧实例与本实例脱钩，渲染侧从Registry读取
+        MarkdownHighlightRegistry.selectedBackgroundColor = color
     }
 
     /**
