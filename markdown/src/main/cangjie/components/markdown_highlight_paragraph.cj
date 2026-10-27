@@ -113,28 +113,25 @@ public class MarkdownHighlightParagraph {
     /**
      * 设置指定段落高亮显示
      * 同时通知MarkdownHighlightRegistry触发已注册组件的UI更新
-     * 多次设置时先清除已有高亮，全局仅保留最后一次设置的段落和颜色
+     * 已高亮的段落重复设置返回false（幂等），不同段落可同时保持高亮
      *
      * @param nodeHash 段落nodeHash
      * @param color 段落高亮颜色
      *
-     * @return 是否设置成功 false表示未找到nodeHash
+     * @return 是否设置成功 false表示已经设置过或设置失败（未找到nodeHash）
      */
     public func setParagraphHighlight(nodeHash: String, color: Color): Bool {
-        // 先清除已有高亮，保证仅保留最后一次设置的段落和颜色
-        for (item in selectedParagraphItemList) {
-            try {
-                MarkdownHighlightRegistry.clearHighlight(Int64.parse(item))
-            } catch (e: Exception) {
-                ()
-            }
+        if (selectedParagraphItemList.contains(nodeHash)) {
+            return false
         }
-        selectedParagraphItemList.clear()
         selectedParagraphItem = nodeHash
         selectedParagraphItemColor = color
-        selectedParagraphItemList.add(nodeHash)
         try {
-            return MarkdownHighlightRegistry.highlight(Int64.parse(nodeHash), color)
+            if (MarkdownHighlightRegistry.highlight(Int64.parse(nodeHash), color)) {
+                selectedParagraphItemList.add(nodeHash)
+                return true
+            }
+            return false
         } catch (e: Exception) {
             return false
         }
