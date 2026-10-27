@@ -99,7 +99,7 @@ export class MarkdownConfiguration {
   /**
    * 段落高亮配置
    */
-  private markdownHighlightParagraph?: MarkdownHighlightParagraph = undefined
+  private markdownHighlightParagraph: MarkdownHighlightParagraph = new MarkdownHighlightParagraph()
 
   /**
    * 外层滚动控制器
@@ -564,7 +564,7 @@ export class MarkdownConfiguration {
    *
    * @returns 高亮段落配置对象
    */
-  getMarkdownHighlightParagraph(): MarkdownHighlightParagraph | undefined {
+  getMarkdownHighlightParagraph(): MarkdownHighlightParagraph {
     return this.markdownHighlightParagraph
   }
 

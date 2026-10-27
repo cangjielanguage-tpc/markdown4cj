@@ -8,7 +8,7 @@ import { global_customLib } from '../pages/CJMarkDown'
  * 用于对Markdown段落进行高亮/取消高亮操作
  */
 export class MarkdownHighlightParagraph {
-  private cjHighlightParagraph: CJMarkdownHighlightParagraph | undefined = undefined
+  private cjHighlightParagraph: CJMarkdownHighlightParagraph
   // 当前高亮段落的nodeHash（对齐ArkUI原版公开字段，由本类维护：set记录、clear置空）
   private selectedParagraphItem: string = ''
   // 当前高亮段落的背景色（对齐ArkUI原版公开字段，由本类维护）
@@ -35,7 +35,7 @@ export class MarkdownHighlightParagraph {
    * @returns 段落nodeHash集合
    */
   getAllParagraphItems(): Array<string> {
-    return this.cjHighlightParagraph?.getAllParagraphItems() ?? []
+    return this.cjHighlightParagraph.getAllParagraphItems()
   }
 
   /**
@@ -44,7 +44,7 @@ export class MarkdownHighlightParagraph {
    * @returns 当前高亮的段落nodeHash集合
    */
   getSelectedParagraphItems(): Array<string> {
-    return this.cjHighlightParagraph?.getSelectedParagraphItems() ?? []
+    return this.cjHighlightParagraph.getSelectedParagraphItems()
   }
 
   /**
@@ -94,7 +94,7 @@ export class MarkdownHighlightParagraph {
   setParagraphHighlight(nodeHash: string, color: number): boolean {
     this.selectedParagraphItem = nodeHash
     this.selectedParagraphItemColor = color
-    return this.cjHighlightParagraph?.setParagraphHighlight(nodeHash, color) ?? false
+    return this.cjHighlightParagraph.setParagraphHighlight(nodeHash, color)
   }
 
   /**
@@ -104,7 +104,7 @@ export class MarkdownHighlightParagraph {
    */
   setBeforeSelectedParagraphBackgroundColor(color: number): void {
     this.beforeSelectedParagraphBackgroundColor = color
-    this.cjHighlightParagraph?.setBeforeSelectedParagraphBackgroundColor(color)
+    this.cjHighlightParagraph.setBeforeSelectedParagraphBackgroundColor(color)
   }
 
   /**
@@ -114,7 +114,7 @@ export class MarkdownHighlightParagraph {
    */
   setSelectedParagraphBackgroundColor(color: number): void {
     this.selectedParagraphBackgroundColor = color
-    this.cjHighlightParagraph?.setSelectedParagraphBackgroundColor(color)
+    this.cjHighlightParagraph.setSelectedParagraphBackgroundColor(color)
   }
 
   /**
@@ -125,7 +125,7 @@ export class MarkdownHighlightParagraph {
    */
   clearParagraphHighlight(nodeHash: string): boolean {
     this.selectedParagraphItem = ''
-    return this.cjHighlightParagraph?.clearParagraphHighlight(nodeHash) ?? false
+    return this.cjHighlightParagraph.clearParagraphHighlight(nodeHash)
   }
 
   /**
@@ -134,7 +134,7 @@ export class MarkdownHighlightParagraph {
   clearAllParagraphHighlights(): void {
     this.selectedParagraphItem = ''
     this.selectedParagraphItemColor = undefined
-    this.cjHighlightParagraph?.clearAllParagraphHighlights()
+    this.cjHighlightParagraph.clearAllParagraphHighlights()
   }
 
   /**
@@ -142,7 +142,7 @@ export class MarkdownHighlightParagraph {
    *
    * @returns CJMarkdownHighlightParagraph实例
    */
-  getCJHighlightParagraph(): CJMarkdownHighlightParagraph | undefined {
+  getCJHighlightParagraph(): CJMarkdownHighlightParagraph {
     return this.cjHighlightParagraph
   }
 }

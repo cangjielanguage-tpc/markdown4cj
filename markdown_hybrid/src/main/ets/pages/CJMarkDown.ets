@@ -401,12 +401,8 @@ export struct CJMarkdown {
       }
       // 段落高亮配置
       let highlightParagraph = this.config.getMarkdownHighlightParagraph()
-      if (highlightParagraph !== undefined) {
-        let cjHighlightParagraph = highlightParagraph.getCJHighlightParagraph()
-        if (cjHighlightParagraph !== undefined) {
-          cjMarkdownConfig.setMarkdownHighlightParagraph(cjHighlightParagraph)
-        }
-      }
+      let cjHighlightParagraph = highlightParagraph.getCJHighlightParagraph()
+      cjMarkdownConfig.setMarkdownHighlightParagraph(cjHighlightParagraph)
       // 外层滚动控制器
       let scrollController = this.config.getScrollController()
       if (scrollController !== undefined) {
