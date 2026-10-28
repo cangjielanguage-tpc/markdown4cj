@@ -246,30 +246,6 @@ public class MarkdownConfiguration {
     public func setFootnoteCallback(footnoteCallback: (?Int64) -> Unit): MarkdownConfiguration
 
     /**
-     * 设置满足自定义块级图片的条件
-     *
-     * @param isBlockImageCustom 满足自定义块级图片的条件
-     * @return MarkdownConfiguration MarkdownConfiguration对象
-     */
-    public func setIsBlockImageCustom(isBlockImageCustom: (String) -> Bool): MarkdownConfiguration
-
-    /**
-     * 设置满足自定义行内图片的条件
-     *
-     * @param isInLineImageCustom 满足自定义行内图片的条件
-     * @return MarkdownConfiguration MarkdownConfiguration对象
-     */
-    public func setIsInLineImageCustom(isInLineImageCustom: (String) -> Bool): MarkdownConfiguration
-
-    /**
-     * 设置满足自定义行内链接的条件
-     *
-     * @param setIsInLineLinkCustom 满足自定义行内链接的条件
-     * @return MarkdownConfiguration MarkdownConfiguration对象
-     */
-    public func setIsInLineLinkCustom(isInLineLinkCustom: (String) -> Bool): MarkdownConfiguration
-
-    /**
      * 设置获取markdown全部文本
      *
      * @param nodeString markdown全部文本对象
@@ -697,6 +673,141 @@ public class MarkdownTheme {
      * @return MarkdownTheme MarkdownTheme对象
      */
     public func setDarculaTheme(): MarkdownTheme
+
+    /**
+     * 获取浅色主题整体样式对象
+     */
+    public func getGlobalTheme(): GlobalTheme
+
+    /**
+     * 获取段落样式对象
+     */
+    public func getParagraphTheme(): ParagraphTheme
+
+    /**
+     * 获取标题样式对象
+     */
+    public func getHeadingTheme(): HeadingTheme
+
+    /**
+     * 获取表格样式对象
+     */
+    public func getTableTheme(): TableTheme
+
+    /**
+     * 获取分割线样式对象
+     */
+    public func getDividerTheme(): DividerTheme
+
+    /**
+     * 获取引用样式对象
+     */
+    public func getBlockQuoteTheme(): BlockQuoteTheme
+
+    /**
+     * 获取有序列表样式对象
+     */
+    public func getOrderedListTheme(): OrderedListTheme
+
+    /**
+     * 获取无序/任务列表样式对象
+     */
+    public func getBulletListTheme(): BulletListTheme
+
+    /**
+     * 获取定义列表样式对象
+     */
+    public func getDefinitionListTheme(): DefinitionListTheme
+
+    /**
+     * 获取代码块样式对象
+     */
+    public func getCodeBlockTheme(): CodeBlockTheme
+
+    /**
+     * 获取音频样式对象
+     */
+    public func getAudioTheme(): AudioTheme
+
+    /**
+     * 获取视频样式对象
+     */
+    public func getVideoTheme(): VideoTheme
+
+    /**
+     * 获取Banner样式对象
+     */
+    public func getBannerTheme(): BannerTheme
+
+    /**
+     * 获取脚注定义样式对象
+     */
+    public func getFootnoteDefTheme(): FootnoteDefTheme
+
+    /**
+     * 获取脚注引用样式对象
+     */
+    public func getFootnoteRefTheme(): FootnoteRefTheme
+
+    /**
+     * 获取行内代码样式对象
+     */
+    public func getInlineCodeTheme(): InlineCodeTheme
+
+    /**
+     * 获取加粗样式对象
+     */
+    public func getBoldTheme(): BoldTheme
+
+    /**
+     * 获取数学公式样式对象
+     */
+    public func getLatexMathTheme(): LatexMathTheme
+
+    /**
+     * 获取HTML下划线样式对象
+     */
+    public func getHtmlUnderlineTheme(): HtmlUnderlineTheme
+
+    /**
+     * 获取图片样式对象
+     */
+    public func getImageTheme(): ImageTheme
+
+    /**
+     * 获取斜体样式对象
+     */
+    public func getItalicTheme(): ItalicTheme
+
+    /**
+     * 获取链接样式对象
+     */
+    public func getLinkTheme(): LinkTheme
+
+    /**
+     * 获取删除线样式对象
+     */
+    public func getStrikethroughTheme(): StrikethroughTheme
+
+    /**
+     * 获取高亮样式对象
+     */
+    public func getHighlightTheme(): HighlightTheme
+
+    /**
+     * 获取下标样式对象
+     */
+    public func getSubTheme(): SubTheme
+
+    /**
+     * 获取上标样式对象
+     */
+    public func getSupTheme(): SupTheme
+
+    /**
+     * 获取代码高亮样式对象
+     */
+    public func getPrismTheme(): PrismTheme
 }
 ```
 
@@ -943,31 +1054,13 @@ public class MarkdownTheme {
     public func setContext(context: StageContext): MarkdownTheme
 
     /**
-     * 设置是否启用解析节流
-     *
-     * @param enableParseThrottle 是否启用解析节流 - 默认false
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用GlobalTheme.setEnableParseThrottle方法代替", since: "1.4.0"]
-    public func setEnableParseThrottle(enableParseThrottle: Bool): MarkdownTheme
-
-    /**
-     * 设置节流间隔
-     *
-     * @param parseThrottleMs 节流间隔（毫秒） - 默认200
-     * @return MarkdownTheme MarkdownTheme对象
-     */
-    @Deprecated["用GlobalTheme.setParseThrottleMs方法代替", since: "1.4.0"]
-    public func setParseThrottleMs(parseThrottleMs: Int64): MarkdownTheme
-
-    /**
      * 设置是否启用标题段落加载动画
      *
      * @param enable 是否启用 - 默认false
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setParagraphHeadingAnimationEnabled方法代替", since: "1.4.0"]
-    public func setParagraphAnimationEnabled(enable: Bool): MarkdownTheme
+    public func setParagraphHeadingAnimationEnabled(enable: Bool): MarkdownTheme
 
     /**
      * 设置标题段落加载动画时长
@@ -976,7 +1069,7 @@ public class MarkdownTheme {
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用GlobalTheme.setParagraphHeadingAnimationDuration方法代替", since: "1.4.0"]
-    public func setParagraphAnimationDuration(duration: Int32): MarkdownTheme
+    public func setParagraphHeadingAnimationDuration(duration: Int32): MarkdownTheme
 
     /**
      * 设置代码块是否暗色主题
@@ -2826,20 +2919,20 @@ public class MarkdownTheme {
     /**
      * 设置图片下载按钮文本大小
      *
-     * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+     * @param imageDownloadTextSize 图片下载按钮文本大小 - 默认16.0
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonTextFontSize方法代替", since: "1.4.0"]
-    public func setImageDownloadTexSize(imageDownloadTexSize: Float64): MarkdownTheme
+    public func setImageDownloadTextSize(imageDownloadTextSize: Float64): MarkdownTheme
 
     /**
      * 设置图片下载按钮文本颜色
      *
-     * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0xE6000000
+     * @param imageDownloadTextColor 图片下载按钮文本颜色 - 默认0xE6000000
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonTextFontColor方法代替", since: "1.4.0"]
-    public func setImageDownloadTexColor(imageDownloadTexColor: Color): MarkdownTheme
+    public func setImageDownloadTextColor(imageDownloadTextColor: Color): MarkdownTheme
 
     /**
      * 设置图片下载按钮背景颜色
@@ -2983,7 +3076,7 @@ public class MarkdownTheme {
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableMinCellWidth方法代替", since: "1.4.0"]
-    public func setTableMinTextWidth(width: Float64): MarkdownTheme
+    public func setTableMinTextWidth(tableMinTextWidth: Float64): MarkdownTheme
 
     /**
      * 设置表格最大宽度
@@ -2992,7 +3085,7 @@ public class MarkdownTheme {
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableMaxCellWidth方法代替", since: "1.4.0"]
-    public func setTableMaxTextWidth(width: Float64): MarkdownTheme
+    public func setTableMaxTextWidth(tableMaxTextWidth: Float64): MarkdownTheme
 
     /**
      * 设置表格第一列是否加粗
@@ -3001,7 +3094,7 @@ public class MarkdownTheme {
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableFirstColumnIsBold方法代替", since: "1.4.0"]
-    public func setTableFirstColumnBold(isBold: Bool): MarkdownTheme
+    public func setTableFirstColumnBold(tableFirstColumnBold: Bool): MarkdownTheme
 
     /**
      * 设置表格是否显示滚动条
@@ -3010,7 +3103,7 @@ public class MarkdownTheme {
      * @return MarkdownTheme MarkdownTheme对象
      */
     @Deprecated["用TableTheme.setTableScrollBarState方法代替", since: "1.4.0"]
-    public func setTableScrollBarShow(state: BarState): MarkdownTheme
+    public func setTableScrollBarShow(tableScrollBarShow: Bool): MarkdownTheme
 
     /**
      * 设置表格滚动条颜色
@@ -3024,7 +3117,7 @@ public class MarkdownTheme {
     /**
      * 设置markdown代码高亮样式
      *
-     * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDarkula.create()
+     * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDefault.create()
      * @return MarkdownTheme MarkdownTheme对象
      */
     public func setPrismTheme(prismTheme: PrismTheme): MarkdownTheme
@@ -3910,6 +4003,17 @@ public class DividerTheme {
     public func setDividerPadding(padding: Float64): DividerTheme
 
     /**
+     * 分别设置分割线四个内边距
+     *
+     * @param top 上内边距 命名参数
+     * @param right 右内边距 命名参数
+     * @param bottom 下内边距 命名参数
+     * @param left 左内边距 命名参数
+     * @return 当前DividerTheme对象
+     */
+    public func setDividerPadding(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): DividerTheme
+
+    /**
      * 设置分割线颜色
      *
      * @param color 分割线颜色
@@ -4447,10 +4551,10 @@ public class LatexMathTheme {
     /**
      * 设置数学公式生成图片格式
      *
-     * @param format 生成图片格式
+     * @param colorFormat 生成图片格式
      * @return 当前LatexMathTheme对象
      */
-    public func setLatexMathColorFormat(format: LatexMathColorFormat): LatexMathTheme
+    public func setLatexMathColorFormat(colorFormat: LatexMathColorFormat): LatexMathTheme
 
     /**
      * 设置块结构的数学公式是否居中
@@ -4467,6 +4571,25 @@ public class LatexMathTheme {
      * @return 当前LatexMathTheme对象
      */
     public func setLatexMathResPath(path: String): LatexMathTheme
+
+    /**
+     * 统一设置块结构数学公式内边距
+     *
+     * @param padding 内边距
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathPadding(padding: Float64): LatexMathTheme
+
+    /**
+     * 分别设置块结构数学公式四个内边距
+     *
+     * @param top 上内边距 命名参数
+     * @param right 右内边距 命名参数
+     * @param bottom 下内边距 命名参数
+     * @param left 左内边距 命名参数
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathPadding(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): LatexMathTheme
 }
 ```
 
@@ -4685,14 +4808,6 @@ public class AudioTheme {
     public func setAudioBorderRadius(radius: Float64): AudioTheme
 
     /**
-     * 统一设置音频整体圆角
-     *
-     * @param radius 圆角
-     * @return 当前AudioTheme对象
-     */
-    public func setAudioRadius(radius: Float64): AudioTheme
-
-    /**
      * 分别设置音频四个圆角
      *
      * @param topLeft 左上圆角 命名参数
@@ -4701,7 +4816,7 @@ public class AudioTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前AudioTheme对象
      */
-    public func setAudioRadius(topLeft!: Float64 = 12.0, topRight!: Float64 = 12.0, bottomLeft!: Float64 = 12.0, bottomRight!: Float64 = 12.0): AudioTheme
+    public func setAudioBorderRadius(topLeft!: Float64 = 12.0, topRight!: Float64 = 12.0, bottomLeft!: Float64 = 12.0, bottomRight!: Float64 = 12.0): AudioTheme
 
     /**
      * 设置音频阴影模糊半径
@@ -5614,28 +5729,12 @@ public class ImageTheme {
     public func setImageFixedRatioWidth(fixedRatioWidth: Float64): ImageTheme
 
     /**
-     * 设置图片高度
-     *
-     * @param height 图片高度
-     * @return 当前ImageTheme对象
-     */
-    public func setImageHeight(height: Float64): ImageTheme
-
-    /**
      * 设置图片最大宽度
      *
      * @param maxWidth 图片最大宽度
      * @return 当前ImageTheme对象
      */
     public func setImageMaxWidth(maxWidth: Float64): ImageTheme
-
-    /**
-     * 设置图片宽度
-     *
-     * @param width 图片宽度
-     * @return 当前ImageTheme对象
-     */
-    public func setImageWidth(width: Float64): ImageTheme
 
     /**
      * 设置底部布局距离图片上边距
@@ -5703,6 +5802,46 @@ public class ImageTheme {
      * @return 当前ImageTheme对象
      */
     public func setImageDownloadButtonIconHeight(height: Float64): ImageTheme
+
+    /**
+     * 设置图片下载按钮图标
+     *
+     * @param icon 图片下载按钮图标
+     * @return 当前ImageTheme对象
+     */
+    public func setImageDownloadButtonIcon(icon: AppResource): ImageTheme
+
+    /**
+     * 设置图片下载按钮背景颜色
+     *
+     * @param color 图片下载按钮背景颜色
+     * @return 当前ImageTheme对象
+     */
+    public func setImageDownloadButtonBackgroundColor(color: Color): ImageTheme
+
+    /**
+     * 设置图片下载按钮默认文本内容
+     *
+     * @param text 图片下载按钮默认文本内容
+     * @return 当前ImageTheme对象
+     */
+    public func setImageDownloadButtonText(text: String): ImageTheme
+
+    /**
+     * 设置图片下载按钮文本颜色
+     *
+     * @param color 图片下载按钮文本颜色
+     * @return 当前ImageTheme对象
+     */
+    public func setImageDownloadButtonTextFontColor(color: Color): ImageTheme
+
+    /**
+     * 设置图片下载按钮文本尺寸
+     *
+     * @param size 图片下载按钮文本尺寸
+     * @return 当前ImageTheme对象
+     */
+    public func setImageDownloadButtonTextFontSize(size: Float64): ImageTheme
 
     /**
      * 设置图片下载按钮文本字体样式
@@ -6184,12 +6323,23 @@ public class HeadingTheme {
     public func setBackgroundColorForDesignateHeading(level: Int64, color: Color): HeadingTheme
 
     /**
-     * 设置标题的4个外边距:设置H1-H6级标题所有4个外边距为统一值
+     * 设置标题的4个外边距：设置H1-H6级标题所有4个外边距为统一值
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前HeadingTheme对象
+     */
+    public func setMarginForAllHeadingEachLevel(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): HeadingTheme
+
+    /**
+     * 设置标题的4个外边距：设置H1-H6级标题所有4个外边距为统一值
      *
      * @param margin 外边距
      * @return 当前HeadingTheme对象
      */
-    public func setMarginForAllHeading(margin: Float64): HeadingTheme
+    public func setMarginForAllHeadingEachLevel(margin: Float64): HeadingTheme
 
     /**
      * 设置标题的4个外边距:指定标题等级,设置标题的4个外边距为统一值
@@ -6282,7 +6432,7 @@ public class HeadingTheme {
      * @param left 左外边距 命名参数
      * @return 当前HeadingTheme对象
      */
-    public func setMarginForEachHeading(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme
+    public func setMarginForEachHeadingDetail(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme
 
     /**
      * 设置标题的4个外边距：指定标题等级，分别设置该标题的每个外边距
@@ -6299,10 +6449,21 @@ public class HeadingTheme {
     /**
      * 设置标题的4个内边距：设置H1-H6级标题所有4个内边距为统一值
      *
+     * @param top 上内边距 命名参数
+     * @param right 右内边距 命名参数
+     * @param bottom 下内边距 命名参数
+     * @param left 左内边距 命名参数
+     * @return 当前HeadingTheme对象
+     */
+    public func setPaddingForAllHeadingEachLevel(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): HeadingTheme
+
+    /**
+     * 设置标题的4个内边距：设置H1-H6级标题所有4个内边距为统一值
+     *
      * @param padding 内边距
      * @return 当前HeadingTheme对象
      */
-    public func setPaddingForAllHeading(padding: Float64): HeadingTheme
+    public func setPaddingForAllHeadingEachLevel(padding: Float64): HeadingTheme
 
     /**
      * 设置标题的4个内边距：设置H1-H6级标题，每级标题自己的4个内边距为统一值
@@ -6330,7 +6491,7 @@ public class HeadingTheme {
      * @param left 左内边距 命名参数
      * @return 当前HeadingTheme对象
      */
-    public func setPaddingForEachHeading(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme
+    public func setPaddingForEachHeadingDetail(top!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], right!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], bottom!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], left!: Array<Float64> = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]): HeadingTheme
 
     /**
      * 设置标题的4个内边距：指定标题等级，分别设置该标题的每个内边距
@@ -6523,6 +6684,14 @@ public class CodeBlockTheme {
      * @return 当前CodeBlockTheme对象
      */
     public func setCodeBlockIsCodeFormat(isCodeFormat: Bool): CodeBlockTheme
+
+    /**
+     * 设置代码块是否暗色主题
+     *
+     * @param isDark 是否暗色
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockIsDark(isDark: Bool): CodeBlockTheme
 
     /**
      * 设置codeformat是否用制表符
@@ -7289,7 +7458,7 @@ public class LinkTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前LinkTheme对象
      */
-    public func setLinkTextBackgroundRadius(topLeft!: Float64, topRight!: Float64, bottomLeft!: Float64, bottomRight!: Float64): LinkTheme
+    public func setLinkTextBackgroundRadius(topLeft!: Float64 = 0.0, topRight!: Float64 = 0.0, bottomLeft!: Float64 = 0.0, bottomRight!: Float64 = 0.0): LinkTheme
 
     /**
      * 设置圆形图片格式链接主题背景颜色
@@ -7616,6 +7785,17 @@ public class BulletListTheme {
     public func setBulletListPadding(padding: Float64): BulletListTheme
 
     /**
+     * 分别设置无序/任务四个内边距
+     *
+     * @param top 上内边距 命名参数
+     * @param right 右内边距 命名参数
+     * @param bottom 下内边距 命名参数
+     * @param left 左内边距 命名参数
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListPadding(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): BulletListTheme
+
+    /**
      * 设置无序/任务子模块上下间距
      *
      * @param spacing 无序/任务子模块上下间距
@@ -7870,7 +8050,7 @@ public enum MarkdownTextDecorationStyle <: Equatable<MarkdownTextDecorationStyle
 
     public operator func ==(that: MarkdownTextDecorationStyle): Bool
 
-    public operator func !=(that: MarkdownTextDecorationStyle): Boo
+    public operator func !=(that: MarkdownTextDecorationStyle): Bool
 
     public static func fromInt64(int: Int64): ?MarkdownTextDecorationStyle
 
@@ -8007,7 +8187,7 @@ public class PrismThemeDefault <: PrismThemeBase {
 }
 ```
 
-### class PrismThemeDarkula
+### class PrismThemeDarcula
 
 高亮暗黑主题(黑色主题)
 
@@ -8015,13 +8195,13 @@ public class PrismThemeDefault <: PrismThemeBase {
 /**
  *  prism 暗黑主题类
  */
-public class PrismThemeDarkula <: PrismThemeBase {
+public class PrismThemeDarcula <: PrismThemeBase {
     /**
-     * 创建 PrismThemeDarkula 对象的静态方法
+     * 创建 PrismThemeDarcula 对象的静态方法
      *
      * @return 返回一个默认背景色的暗黑主题
      */
-    public static func create(): PrismThemeDarkula
+    public static func create(): PrismThemeDarcula
 
     /**
      * 获取背景色
@@ -8176,18 +8356,18 @@ public abstract class Markdown {
     public func parse(input: String): Node
 
     /**
-     * 将节点树渲染成 NodeView
+     * 渲染节点树
      * @param node 节点树的根节点
-     * @return 返回 NodeView
+     * @return 返回 Node
      */
-    public func render(node: Node): NodeView
+    public func render(node: Node): Node
 
     /**
-     * 解析 markdown 字符串，并渲染成 NodeView
+     * 解析 markdown 字符串，并渲染
      * @param input markdown 字符串
-     * @return 返回 NodeView
+     * @return 返回 Node
      */
-    public func toMarkdown(input: String): NodeView
+    public func toMarkdown(input: String): Node
 
     /**
      * 是否启用插件
@@ -8248,6 +8428,12 @@ public interface MarkdownBuilder {
     func fallbackToRawInputWhenEmpty(fallbackToRawInputWhenEmpty: Bool): MarkdownBuilder
 
     /**
+     * 包含SourceSpan信息
+     * @param flag 0:不包含(默认) 1:仅Block节点 2:全部节点
+     */
+    func includeSourceSpans(flag: Int): MarkdownBuilder
+
+    /**
      * 构建 Markdown 实例
      */
     func build(): Markdown
@@ -8264,7 +8450,13 @@ public interface MarkdownPlugin <: Hashable & Equatable<MarkdownPlugin> & ToStri
     func getClassType(): String
 
     /**
-     * 配置commonmark解析器 
+     * 在Markdown实例构建时最先被调用，用于注册插件间依赖
+     * @param registry 插件注册表
+     */
+    func configure(registry: Registry): Unit
+
+    /**
+     * 配置commonmark解析器
      * @param builder commonmark.ParserBuilder
      */
     func configureParser(builder: ParserBuilder): Unit
@@ -8499,6 +8691,14 @@ public class EmojiPlugin <: AbstractMarkdownPlugin {
      * @return EmojiPlugin
      */
     public static func create(light: Bool): EmojiPlugin
+
+    /**
+     * 创建Emoji插件
+     *
+     * @param opt 自定义选项
+     * @return EmojiPlugin
+     */
+    public static func create(opt: Options): EmojiPlugin
 }
 ```
 
@@ -8549,6 +8749,19 @@ public enum DelimiterFilterMode {
     | Permissive   // 宽松模式（全部允许）
     | Strict      // 严格模式（全部禁止）
     | Selective(Array<String>) // 白名单模式
+
+    /**
+     * 从Int64转换
+     * @param int 0:Permissive 1:Strict 2:Selective
+     * @param allowedDelimiters 白名单分隔符集合
+     */
+    public static func fromInt64(int: Int64, allowedDelimiters: Array<String>): DelimiterFilterMode
+
+    /**
+     * 转换为Int64
+     * @return 0:Permissive 1:Strict 2:Selective
+     */
+    public func toInt64(): Int64
 }
 ```
 
@@ -8556,6 +8769,20 @@ public enum DelimiterFilterMode {
 
 ```cangjie
 public class NodeViewStringBuilder <: ToString {
+    /**
+     * 构造函数
+     * @param root 根节点
+     * @param codeBlockIsSeparate 单独代码块开关；true时仅提取第一个代码块节点
+     */
+    public NodeViewStringBuilder(let root: Node, let codeBlockIsSeparate: () -> Bool)
+
+    /**
+     * 全量提取（保持原始用法兼容）
+     *
+     * @param root 根节点
+     */
+    public init(root: Node)
+
     /**
      * 提取纯文本
      * - 处理缩进
@@ -8677,6 +8904,77 @@ public class MarkdownLinkExposureRegistry {
      * @param threshold 0~1，链接与可见区交集面积 / 链接面积 ≥ 此值才算可见
      */
     public static func setExposureThreshold(threshold: Float64): Unit
+
+    /**
+     * 生成根 List 的唯一 id（MarkdownComponent aboutToAppear 时调用一次）
+     * @return 形如 "md-list-0" 的唯一 id
+     */
+    public static func generateListId(): String
+
+    /**
+     * 设置根 List 的 id
+     * @param id 由 generateListId 生成
+     */
+    public static func setListRootId(id: String): Unit
+
+    /**
+     * 获取根 List 的 id
+     * @return 根 List 的 id
+     */
+    public static func getListRootId(): String
+
+    /**
+     * 是否已设置曝光回调
+     * 子组件用此方法判断是否启用曝光，不依赖 @Prop 的 MarkdownConfiguration.elementExposureCallback
+     *（@Prop 对 @Observed 类的深拷贝可能丢失 Option<Function> 字段）
+     */
+    public static func isExposureEnabled(): Bool
+
+    /**
+     * 获取曝光阈值
+     * 子组件用此方法获取阈值，不依赖 @Prop 的 MarkdownConfiguration.exposureThreshold
+     */
+    public static func getExposureThreshold(): Float64
+
+    /**
+     * 注册组件包含的http链接
+     * count从0→1的URL报visible=true
+     * 幂等：同一nodeHash重复register直接返回（用于onVisibleAreaChange多次触发场景）
+     *
+     * @param nodeHash 组件节点hash
+     * @param urls 组件包含的http链接URL列表
+     */
+    public static func register(nodeHash: Int64, urls: ArrayList<String>): Unit
+
+    /**
+     * 注销组件包含的http链接
+     * count从1→0的URL报visible=false
+     *
+     * @param nodeHash 组件节点hash
+     */
+    public static func unregister(nodeHash: Int64): Unit
+
+    /**
+     * 清空组件数据（linkCounts + componentUrls），但保留回调
+     * 由MarkdownComponent在aboutToDisappear时调用
+     * 不清 exposureCallback：避免 MarkdownComponent 重建后 @Prop 深拷贝丢失回调导致 registry 为空
+     */
+    public static func clearData(): Unit
+
+    /**
+     * 清空所有数据（含回调+阈值+根 List id）
+     * 由页面在aboutToDisappear时调用（非 MarkdownComponent 的 aboutToDisappear）
+     */
+    public static func clear(): Unit
+
+    /**
+     * 递归提取NodeView子树中所有http链接URL（去重）
+     * 优化：用HashSet做去重，避免ArrayList.contains的O(K)线性查找（原O(K²)→现O(K)）
+     *
+     * @param node 节点
+     * @return 去重后的http链接URL列表
+     */
+    public static func extractHttpLinks(node: NodeView): ArrayList<String>
 }
 ```
 

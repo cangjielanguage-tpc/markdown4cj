@@ -1,11 +1,11 @@
 {
   "name": "@cangjie-tpc/markdown",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库。",
   "main": "Index.ets",
   "author": "cangjie-tpc",
   "license": "Apache-2.0",
-  "repository": "https://gitcode.com/Cangjie-TPC/markdown4cj/tree/markdown4cj_cangjie-plugin-5.1.1",
+  "repository": "https://gitcode.com/Cangjie-TPC/markdown4cj/tree/markdown4cj_cangjie-plugin-6.1.1_compatibility",
   "homepage": "https://gitcode.com/Cangjie-TPC",
   "keywords": [
     "Markdown",
@@ -15,5 +15,6 @@
     "Latex"
   ],
   "dependencies": {
+    "@cangjie-tpc/formula": "file:./har/formula.har"
   }
 }

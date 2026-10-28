@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.4.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v2.0.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.1.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -77,7 +77,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ## 软件架构
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin-5.1.1/doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin-6.1.1_compatibility/doc/assets/img.png)
 
 ### 源码目录
 
@@ -109,7 +109,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin-5.1.1/doc/feature_api.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin-6.1.1_compatibility/doc/feature_api.md)
 
 ## 使用说明
 
@@ -132,8 +132,23 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
       ```git
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
-      git checkout markdown4cj_cangjie-plugin-5.1.1
+      git checkout markdown4cj_cangjie-plugin-6.1.1_compatibility
       ```
+
+      首次编译前执行依赖下载脚本，自动下载 stdx 二进制库与 formula har 包（ohpm install 时也会通过 preInstall 钩子自动执行）：
+
+      ```sh
+      node ./scripts/pre_stdx_install.mjs
+      ```
+
+      配置 formula 原生库环境变量（cjpm.toml 通过 `${cangjie_tpc_formula}` 引用 formula 原生 cjbins）。克隆 formula-ffi 仓库并切换到 v1.4.1 标签：
+
+      ```git
+      git clone https://gitcode.com/Cangjie-TPC/formula-ffi.git
+      git checkout v1.4.1
+      ```
+
+      并设置环境变量 `cangjie_tpc_formula` 指向 formula-ffi 仓库根目录。
 
       编译markdown
       build -> Make Module `markdown`
@@ -150,15 +165,14 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 ### 功能示例
 
 ```cangjie
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import markdown.components.*
 
 @Entry
 @Component
 class ARHeading1Page {
+    var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
+
     func build() {
         Scroll() {
             Column {
@@ -166,7 +180,8 @@ class ARHeading1Page {
                     output: mdStr,
                     isInputEnded: true,
                     incrementalAnalysis: false,
-                    scroller: Scroller()
+                    scroller: Scroller(),
+                    markdownConfiguration: markdownConfiguration
                 )
             }
         }
@@ -229,7 +244,7 @@ Heading level 2
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin-5.1.1/doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin-6.1.1_compatibility/doc/assets/img1.png)
 
 ## 约束与限制
 
@@ -250,8 +265,8 @@ markdown依赖三方库：
 | 1  | stdx          | v1.1.3.1 |
 | 2  | commonmark4cj | v1.1.1   |
 | 3  | prism4cj      | v1.0.6   |
-| 4  | formula       | v1.5.2   |
-| 5  | codeformat    | v1.0.4   |
+| 4  | formula       | v1.4.1   |
+| 5  | codeformat    | v1.0.7   |
 
 1、三方库静态链接和动态链接区别
 
@@ -263,38 +278,30 @@ markdown依赖三方库：
 
   **缺点**：由于stdx版本之前存在不兼容，因此三方库和hap包依赖的stdx版本不一致情况下，存在运行crash情况。
 
-当前三方库默认通过静态链接方式，如果有动态链接需求可以通过修改库代码中的cjpm.toml文件链接到stdx动态链接库目录，
-
-```
-[target]
-  [target.aarch64-linux-ohos]
-  	  ...
-      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "../stdx_bin/linux_ohos_aarch64_llvm/static/stdx" ]
-      [target.aarch64-linux-ohos.bin-dependencies.package-option]
-  [target.x86_64-linux-ohos]
-      ...
-      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "../stdx_bin/linux_ohos_x86_64_llvm/static/stdx" ]
-  [target.x86_64-unknown-windows-gnu]
-    [target.x86_64-unknown-windows-gnu.bin-dependencies]
-      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "../stdx_bin/windows_x86_64_llvm/static/stdx" ]
-      [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
-```
-
-修改如下：
+当前三方库默认通过动态链接方式（cjpm.toml 的 compile-option 已启用 `--dy-std`，path-option 已链接到 stdx 动态链接库目录），
 
 ```
 [target]
   [target.aarch64-linux-ohos]
       ...
-      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "../stdx_bin/linux_ohos_aarch64_llvm/dynamic/stdx" ]
+      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "./stdx_bin/linux_ohos_aarch64_cjnative/dynamic/stdx", "${cangjie_tpc_formula}/libs/arm64-v8a/cjbins/formula" ]
       [target.aarch64-linux-ohos.bin-dependencies.package-option]
   [target.x86_64-linux-ohos]
       ...
-      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "../stdx_bin/linux_ohos_x86_64_llvm/dynamic/stdx" ]
-  [target.x86_64-unknown-windows-gnu]
-    [target.x86_64-unknown-windows-gnu.bin-dependencies]
-      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "../stdx_bin/windows_x86_64_llvm/dynamic/stdx" ]
-      [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
+      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "./stdx_bin/linux_ohos_x86_64_cjnative/dynamic/stdx", "${cangjie_tpc_formula}/libs/x86_64/cjbins/formula" ]
+```
+
+如果有静态链接需求，可以通过修改库代码中的cjpm.toml文件，去掉 compile-option 中的 `--dy-std`，并将path-option链接到stdx静态链接库目录，修改如下：
+
+```
+[target]
+  [target.aarch64-linux-ohos]
+      ...
+      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "./stdx_bin/linux_ohos_aarch64_cjnative/static/stdx", "${cangjie_tpc_formula}/libs/arm64-v8a/cjbins/formula" ]
+      [target.aarch64-linux-ohos.bin-dependencies.package-option]
+  [target.x86_64-linux-ohos]
+      ...
+      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "./stdx_bin/linux_ohos_x86_64_cjnative/static/stdx", "${cangjie_tpc_formula}/libs/x86_64/cjbins/formula" ]
 ```
 
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
@@ -381,7 +388,7 @@ markdown依赖三方库：
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin-5.1.1/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin-6.1.1_compatibility/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 

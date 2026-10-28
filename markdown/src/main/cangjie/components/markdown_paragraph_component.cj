@@ -284,20 +284,19 @@ class MarkdownParagraphComponent {
 
     /**
      * 获取长按但未触发选中弹窗时的段落的背景色
-     * 优先使用 MarkdownHighlightParagraph 中的配置，其次使用 ParagraphTheme 配置，最后使用默认浅灰色
+     * 优先使用 MarkdownHighlightParagraph 中的配置（经Registry静态中转，@Prop拷贝后实例脱钩），其次使用 ParagraphTheme 配置，最后使用默认浅灰色
      *
      * @return 段落的背景色
      */
     func getLongPressBeforeSelectedBackgroundColor(): Color {
         let theme = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme
-        let highlightParagraph = paragraphMarkdownConfiguration.markdownHighlightParagraph
-        if (highlightParagraph.selectedParagraphBackgroundColor.isSome()) { // 设置选中的背景色
-            paragraphSelectedBackgroundColor = highlightParagraph.selectedParagraphBackgroundColor.getOrThrow()
+        if (MarkdownHighlightRegistry.selectedBackgroundColor.isSome()) { // 设置选中的背景色
+            paragraphSelectedBackgroundColor = MarkdownHighlightRegistry.selectedBackgroundColor.getOrThrow()
         } else {
             paragraphSelectedBackgroundColor = COLOR_FF4A90E2 // 默认选中背景色
         }
-        if (highlightParagraph.beforeSelectedParagraphBackgroundColor.isSome()) {
-            return highlightParagraph.beforeSelectedParagraphBackgroundColor.getOrThrow()
+        if (MarkdownHighlightRegistry.beforeSelectedBackgroundColor.isSome()) {
+            return MarkdownHighlightRegistry.beforeSelectedBackgroundColor.getOrThrow()
         }
         if (theme.paragraphSelectedBackgroundColor.isSome()) {
             return theme.paragraphSelectedBackgroundColor.getOrThrow()
@@ -307,13 +306,15 @@ class MarkdownParagraphComponent {
 
     /**
      * 获取长按前段落默认背景色
-     * 优先使用 MarkdownHighlightParagraph 中的配置，其次使用 ParagraphTheme 配置，最后使用当前背景色
+     * 优先使用 MarkdownHighlightParagraph 中的配置（经Registry静态中转），其次使用 ParagraphTheme 配置，最后使用当前背景色
      *
      * @return 长按前段落默认背景色
      */
     func getLongPressBeforeBackgroundColor(): Color {
         let theme = paragraphMarkdownConfiguration.markdownTheme.paragraphTheme
-        let highlightParagraph = paragraphMarkdownConfiguration.markdownHighlightParagraph
+        if (MarkdownHighlightRegistry.beforeSelectedBackgroundColor.isSome()) {
+            return MarkdownHighlightRegistry.beforeSelectedBackgroundColor.getOrThrow()
+        }
         if (theme.paragraphBeforeSelectedBackgroundColor.isSome()) {
             return theme.paragraphBeforeSelectedBackgroundColor.getOrThrow()
         }
@@ -459,21 +460,22 @@ class MarkdownParagraphComponent {
  	         }else{ TransitionEffect.IDENTITY}
  	         ,
  	         TransitionEffect.IDENTITY
- 	       )
+ 	       ),
+            { isExit: Bool =>
+                // isExit=true：出现动画结束；false：消失动画结束。渲染管线UI线程回调，无需定时器模拟
+                if (isExit && paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
+                    if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphHeadingAnimationEnd) {
+                        cb()
+                    }
+                }
+            }
  	     )
         .onAppear({ =>
-            // 段落加载动画开始回调在组件显示时触发
+            // 段落加载动画开始回调在组件显示时触发（转场启动时机，UI线程）
             if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationEnabled) {
                 if (let Some(cb) <- paragraphMarkdownConfiguration.paragraphHeadingAnimationStart) {
                     cb()
                 }
-                let duration = paragraphMarkdownConfiguration.markdownTheme.globalTheme.paragraphHeadingAnimationDuration
-                let endCb = paragraphMarkdownConfiguration.paragraphHeadingAnimationEnd
-                Timer.once(Int64(duration) * Duration.millisecond, { =>
-                    if (let Some(cb) <- endCb) {
-                        cb()
-                    }
-                })
             }
         })
     }

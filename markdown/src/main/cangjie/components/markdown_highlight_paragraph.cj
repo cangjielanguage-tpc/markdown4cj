@@ -34,6 +34,8 @@ public class MarkdownHighlightParagraph {
       */
      public func setBeforeSelectedParagraphBackgroundColor(color: ?Color): Unit {
          this.beforeSelectedParagraphBackgroundColor = color
+         // 静态中转：核心@Prop配置深拷贝导致渲染侧实例与本实例脱钩，渲染侧从Registry读取
+         MarkdownHighlightRegistry.beforeSelectedBackgroundColor = color
      }
 
      /**
@@ -52,6 +54,8 @@ public class MarkdownHighlightParagraph {
      */
     public func setSelectedParagraphBackgroundColor(color: ?Color): Unit {
         this.selectedParagraphBackgroundColor = color
+        // 静态中转：核心@Prop配置深拷贝导致渲染侧实例与本实例脱钩，渲染侧从Registry读取
+        MarkdownHighlightRegistry.selectedBackgroundColor = color
     }
 
     /**
@@ -114,6 +118,8 @@ public class MarkdownHighlightParagraph {
      * 设置指定段落高亮显示
      * 同时通知MarkdownHighlightRegistry触发已注册组件的UI更新
      * 已高亮的段落重复设置返回false（幂等），不同段落可同时保持高亮
+     * 对齐ArkUI原版语义：所有高亮段落渲染取色统一读最后一次设置的颜色，
+     * 因此每次设置成功时将全部已高亮段落刷新为本次颜色
      *
      * @param nodeHash 段落nodeHash
      * @param color 段落高亮颜色
@@ -127,6 +133,10 @@ public class MarkdownHighlightParagraph {
         selectedParagraphItem = nodeHash
         selectedParagraphItemColor = color
         try {
+            // 多段高亮同色：先把所有已高亮段落刷新为最新颜色，再高亮新段落
+            for (item in selectedParagraphItemList) {
+                let _ = MarkdownHighlightRegistry.highlight(Int64.parse(item), color)
+            }
             if (MarkdownHighlightRegistry.highlight(Int64.parse(nodeHash), color)) {
                 selectedParagraphItemList.add(nodeHash)
                 return true

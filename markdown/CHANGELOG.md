@@ -1,6 +1,8 @@
-# 1.4.1
+# 2.0.0
 
 1. deveco版本从5.1.1升级到6.1.1
+2. formula依赖从cjpm git依赖(v1.5.2)调整为本地har包(v1.4.1)引入，由preInstall脚本自动下载
+3. codeformat依赖版本从v1.0.4升级到v1.0.7
 
 # 1.4.0
 
@@ -47,7 +49,7 @@
 41. MarkdownTheme 中的接口 setImageDownloadTexColor(imageDownloadTexColor: Color): MarkdownThemeBuilder 替换成 setImageDownloadTextColor(imageDownloadTextColor: Color): MarkdownThemeBuilder
 42. MarkdownTheme 中的接口 setVideoReleaseTexSize(videoReleaseTexSize: Float64): MarkdownThemeBuilder 替换成 setVideoReleaseTextSize(videoReleaseTextSize: Float64): MarkdownThemeBuilder
 43. MarkdownTheme 中的接口 setVideoDownloadTexSize(videoDownloadTexSize: Float64): MarkdownThemeBuilder 替换成 setVideoDownloadTextSize(videoDownloadTextSize: Float64): MarkdownThemeBuilder
-44. MarkdownTheme 中的接口 setImageDownloadTexSize(imageDownloadTexSize: Float64): MarkdownThemeBuilder 替换成 setImageDownloadTextSize(imageDownloadTextSize: Float64): MarkdownThemeBuilder 
+44. MarkdownTheme 中的接口 setImageDownloadTexSize(imageDownloadTexSize: Float64): MarkdownThemeBuilder 替换成 setImageDownloadTextSize(imageDownloadTextSize: Float64): MarkdownThemeBuilder
 45. 支持宽松/严格/白名单限定符设置
 
 # 1.3.3
