@@ -1,11 +1,12 @@
 /**
- * CJMarkdown 根节点可见矩形持有者（窗口坐标系 px）。
+ * CJMarkdown 根节点可见矩形持有者（页面坐标系 px）。
  *
- * 算法（消费方=MarkdownParagraph/MarkdownTableCell 用 visTop/visBottom 作垂直裁剪窗口）：
- *   - CJMarkdown 每 50ms 用 componentUtils 拿「矩形区域」= 根 List 的窗口 rect [rectTop, rectBottom]
- *     （rectHeight=bottom-top），ratio 取 onVisibleAreaChange 最近一次值（CJMarkdown 缓存 lastRatio）。
+ * 算法（消费方=MarkdownParagraph/MarkdownHeading/MarkdownTableCell 用 visTop/visBottom 作垂直裁剪窗口）：
+ *   - CJMarkdown 用根 List 的 onAreaChange 拿「矩形区域」= 根 List 的窗口 rect [rectTop, rectBottom]
+ *     （rectHeight=bottom-top，滚动/尺寸变化时框架逐帧推送），ratio 取 onVisibleAreaChange 最近一次值
+ *     （CJMarkdown 缓存 lastRatio；ratio 变化时用缓存矩形补喂）。
  *   - 初始可见区域 = 矩形区域 × ratio（顶部对齐、静止：visTop=rectTop, visHeight=rectHeight×ratio）。
- *   - 每 50ms tick 一次，按「矩形区域移动方向」+「ratio 变化」更新可见区域：
+ *   - 每次喂入按「矩形区域移动方向」+「ratio 变化」更新可见区域：
  *       一 向上滑（rectTop 减小）：
  *         1 ratio 不变：ratio==1 → 可见区域=矩形区域；否则可见区域不变（静止）。
  *         2 ratio 变小：被遮挡，visHeight 减去 (prevRatio-curRatio)×rectHeight，底部收缩。
@@ -21,7 +22,7 @@
  */
 @Observed
 export class MarkdownVisibleRectHolder {
-  // 矩形区域（componentUtils 来源，窗口 px）——applyRect 每次更新
+  // 矩形区域（onAreaChange 来源，窗口 px）——applyRect 每次更新
   rectTop: number = 0
   rectBottom: number = 0
   rectHeight: number = 0
@@ -37,10 +38,15 @@ export class MarkdownVisibleRectHolder {
   private inited: boolean = false
   private prevRectTop: number = Number.NaN
   private prevRatio: number = Number.NaN
-  private listeners: Set<(r: MarkdownVisibleRectSnapshot) => void> = new Set()
+  // 订阅者 → 其相对根矩形的边界（用于 notify 前过滤视口外订阅者，避免整篇文档全量广播）
+  private listeners: Map<(r: MarkdownVisibleRectSnapshot) => void, MarkdownVisibleRectBounds> =
+    new Map<(r: MarkdownVisibleRectSnapshot) => void, MarkdownVisibleRectBounds>()
 
   addListener(fn: (r: MarkdownVisibleRectSnapshot) => void): void {
-    this.listeners.add(fn)
+    if (!this.listeners.has(fn)) {
+      const bounds: MarkdownVisibleRectBounds = { topInRoot: Number.NaN, height: 0 }
+      this.listeners.set(fn, bounds)
+    }
   }
 
   removeListener(fn: (r: MarkdownVisibleRectSnapshot) => void): void {
@@ -48,7 +54,30 @@ export class MarkdownVisibleRectHolder {
   }
 
   /**
-   * 由 CJMarkdown 定期调用：传入最新矩形（窗口 px）+ ratio，运行算法更新可见区域。
+   * 订阅者拿到自己的真实页面矩形后回填边界，供 notify 做视口外过滤。
+   * topInRoot 为 NaN 或 height <= 0 表示未知 → 该订阅者不被过滤，全量通知。
+   * 注意 topInRoot 可以为负（块已滚到根矩形顶之上），属正常值，照常参与过滤。
+   *
+   * @param fn 订阅时注册的同一个监听器引用
+   * @param topInRoot 订阅者窗口顶相对根矩形顶的偏移（px）
+   * @param height 订阅者高度（px）
+   */
+  updateBounds(fn: (r: MarkdownVisibleRectSnapshot) => void, topInRoot: number, height: number): void {
+    const bounds: MarkdownVisibleRectBounds | undefined = this.listeners.get(fn)
+    if (bounds === undefined) {
+      return
+    }
+    if (Number.isNaN(topInRoot) || height <= 0) {
+      bounds.topInRoot = Number.NaN
+      bounds.height = 0
+      return
+    }
+    bounds.topInRoot = topInRoot
+    bounds.height = height
+  }
+
+  /**
+   * 由 CJMarkdown 定期调用：传入最新矩形（页面 px）+ ratio，运行算法更新可见区域。
    * 首次调用=初始化（visHeight=rectHeight×ratio）。后续按方向/ratio 变化收缩。
    * vis变化或矩形移动（滚动）时通知监听者。
    */
@@ -125,16 +154,24 @@ export class MarkdownVisibleRectHolder {
     this.prevRectTop = rectTop
     this.prevRatio = ratio
     // 通知条件：vis变化（changed）或 矩形移动（movedUp/movedDown）。
-    // rect移动补偿：段落/标题/单元格Text的尺寸触发已从onAreaChange收窄为onSizeChange
-    // （滚动时只变位置不变尺寸），滚动期曝光评估改由本通知驱动——rectTop每tick变化
-    // 即通知消费方用新鲜段落位置重算「链接rect ∩ 可见窗口」，否则ratio稳定的慢速
-    // 滚动期间链接进出裁剪窗口会漏报。vis未变也通知的成本=消费方一次防抖后的
-    // getRectangleById重估，远低于原先onAreaChange每帧触发的开销。
+    // rect移动补偿：滚动期曝光评估由本通知驱动——rectTop每次喂入变化即通知消费方，
+    // 消费方用 onAreaChange 推送的新鲜布局快照重算「链接rect ∩ 可见窗口」，
+    // 否则ratio稳定的慢速滚动期间链接进出裁剪窗口会漏报。vis未变也通知的成本=
+    // 消费方一次防抖后的快照平推评估（纯算术），远低于主动查询全树的开销。
     if (changed || movedUp || movedDown) {
       this.notify()
     }
   }
 
+  /**
+   * 广播可见窗口变化。
+   *
+   * 过滤（对应性能方案「缺陷2：广播不做可见性过滤」）：先用订阅者回填的边界做「视口外」判定，
+   * 视口外订阅者连回调都不进。余量取半个可见高度，用于吸收边界快照的滞后（内容高度变化、
+   * 表格吸顶等导致的非刚性位移）——真正跨越视口边界时，订阅者自身 onVisibleAreaChange
+   * 仍会独立触发一次真实评估，因此过滤不会造成漏报。
+   * vis 尚未就绪或订阅者边界未知时不过滤（保守全量通知）。
+   */
   private notify(): void {
     const info: MarkdownVisibleRectSnapshot = {
       visTop: this.visTop,
@@ -145,18 +182,35 @@ export class MarkdownVisibleRectHolder {
       ready: this.ready,
       visReady: this.visReady
     }
-    for (const fn of this.listeners) {
+    const filterable: boolean = this.visReady && this.visHeight > 0
+    const margin: number = this.visHeight * 0.5
+    this.listeners.forEach((bounds: MarkdownVisibleRectBounds, fn: (r: MarkdownVisibleRectSnapshot) => void) => {
+      if (filterable && !Number.isNaN(bounds.topInRoot) && bounds.height > 0) {
+        const estTop: number = this.rectTop + bounds.topInRoot
+        const estBottom: number = estTop + bounds.height
+        if (estBottom < this.visTop - margin || estTop > this.visBottom + margin) {
+          return
+        }
+      }
       try {
         fn(info)
       } catch (e) {
         console.error('MarkdownVisibleRectHolder.notify listener error: ' + (e instanceof Error ? e.stack : String(e)))
       }
-    }
+    })
   }
 }
 
 /**
- * 监听者收到的可见区域快照（窗口 px）。
+ * 订阅者边界（相对根矩形顶的偏移 + 高度，px），供 notify 做视口外过滤。
+ */
+export interface MarkdownVisibleRectBounds {
+  topInRoot: number
+  height: number
+}
+
+/**
+ * 监听者收到的可见区域快照（页面 px）。
  */
 export interface MarkdownVisibleRectSnapshot {
   visTop: number

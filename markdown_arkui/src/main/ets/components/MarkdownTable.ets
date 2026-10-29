@@ -26,6 +26,7 @@ import { MarkdownTableRow } from "./MarkdownTableRow"
 import { MarkDownTableTitle } from "./MarkdownTableTitle"
 import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 import { lengthToVpNumber } from "../utils/MarkdownUtils"
+import { ExposureRectSnapshot } from "../utils/MarkdownExposureUtils"
 
 /**
  * 表格控件
@@ -72,7 +73,7 @@ export struct MarkdownTable {
   @State tableBlockCellSize: number = 0 // 表格总共有几列
   @Provide cellWidthTracker: CellWidthTracker = new CellWidthTracker(0) // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
   @Provide('tableColumnWidths') columnWidths: number[] = [] // 列宽快照（@Provide让TableCell通过@Consume直接读取，避免LazyForEach不刷新@Prop的问题）
-  @Provide tableContainerId: string = '' // 表格横向body Scroll容器id（TableCell曝光水平可见性判定用）
+  @Provide('mdTableContainerSnap') tableContainerSnap: ExposureRectSnapshot = new ExposureRectSnapshot() // 表格横向body Scroll容器页面矩形快照（容器onAreaChange逐帧推送，@Provide共享给TableCell做链接曝光水平裁剪）
   private isAlive: boolean = true // 组件是否存活
   private prevEvenWidth: number = 0 // 上次的evenWidth（componentWidth/列数），用于判断是否需要reset
   // ===== sticky 模式专用 =====
@@ -116,8 +117,13 @@ export struct MarkdownTable {
     this.prevEvenWidth = evenWidth
   }
 
+  // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
+  // 未设回调时容器 onAreaChange 不写快照，省掉 vp2px 换算开销（TableCell 侧也已全链路短路）。
+  private isExposureEnabled(): boolean {
+    return this.elementExposureCallback !== undefined
+  }
+
   aboutToAppear(): void {
-    this.tableContainerId = 'md-tbl-' + this.node.nodeHash
     this.cellWidthTracker.onWidthUpdated = () => {
       this.applyColumnWidths()
     }
@@ -387,7 +393,24 @@ export struct MarkdownTable {
         .scrollable(ScrollDirection.Horizontal)
         .scrollBar(this.tableTheme.tableScrollBarState)
         .scrollBarColor(this.tableTheme.tableScrollBarColor)
-        .id(this.tableContainerId)
+        .onAreaChange((_oldArea: Area, newArea: Area) => {
+          // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化（含横向滚动逐帧）都刷新 tableContainerSnap，
+          // 供 TableCell（@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。
+          // 评估只读快照零查询。rootTop 传 0（不用垂直信息）。
+          if (!this.isExposureEnabled()) {
+            return
+          }
+          const gp: Position = newArea.globalPosition
+          if (!gp || typeof newArea.width !== 'number' || typeof newArea.height !== 'number'
+            || typeof gp.x !== 'number' || typeof gp.y !== 'number') {
+            return
+          }
+          const x: number = gp.x as number
+          const y: number = gp.y as number
+          const w: number = newArea.width as number
+          const h: number = newArea.height as number
+          this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
+        })
       }
       .backgroundColor(this.globalTheme.backgroundColor)
       .borderStyle(this.tableTheme.tableBorderStyle)
@@ -553,7 +576,24 @@ export struct MarkdownTable {
     .scrollable(ScrollDirection.Horizontal)
     .scrollBar(this.tableTheme.tableScrollBarState)
     .scrollBarColor(this.tableTheme.tableScrollBarColor)
-    .id(this.tableContainerId)
+    .onAreaChange((_oldArea: Area, newArea: Area) => {
+      // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化（含横向滚动逐帧）都刷新 tableContainerSnap，
+      // 供 TableCell（@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。
+      // 评估只读快照零查询。rootTop 传 0（不用垂直信息）。
+      if (!this.isExposureEnabled()) {
+        return
+      }
+      const gp: Position = newArea.globalPosition
+      if (!gp || typeof newArea.width !== 'number' || typeof newArea.height !== 'number'
+        || typeof gp.x !== 'number' || typeof gp.y !== 'number') {
+        return
+      }
+      const x: number = gp.x as number
+      const y: number = gp.y as number
+      const w: number = newArea.width as number
+      const h: number = newArea.height as number
+      this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
+    })
     .onScrollFrameBegin((offset: number, state: ScrollState) => {
       if (state !== ScrollState.Idle) {
         const newX = this.bodyScroller.currentOffset().xOffset + offset
@@ -707,7 +747,24 @@ export struct MarkdownTable {
       .scrollable(ScrollDirection.Horizontal)
       .scrollBar(this.tableTheme.tableScrollBarState)
       .scrollBarColor(this.tableTheme.tableScrollBarColor)
-      .id(this.tableContainerId)
+      .onAreaChange((_oldArea: Area, newArea: Area) => {
+        // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化（含横向滚动逐帧）都刷新 tableContainerSnap，
+        // 供 TableCell（@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。
+        // 评估只读快照零查询。rootTop 传 0（不用垂直信息）。
+        if (!this.isExposureEnabled()) {
+          return
+        }
+        const gp: Position = newArea.globalPosition
+        if (!gp || typeof newArea.width !== 'number' || typeof newArea.height !== 'number'
+          || typeof gp.x !== 'number' || typeof gp.y !== 'number') {
+          return
+        }
+        const x: number = gp.x as number
+        const y: number = gp.y as number
+        const w: number = newArea.width as number
+        const h: number = newArea.height as number
+        this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
+      })
       .onScrollFrameBegin((offset: number, state: ScrollState) => {
         if (state !== ScrollState.Idle) {
           const newX = this.bodyScroller.currentOffset().xOffset + offset

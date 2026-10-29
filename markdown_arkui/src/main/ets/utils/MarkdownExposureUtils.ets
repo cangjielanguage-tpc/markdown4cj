@@ -148,6 +148,101 @@ export interface ExposureEvalResult {
 }
 
 /**
+ * 单个组件的布局快照（窗口坐标系 px，来源 getRectangleById 的 windowOffset）。
+ *
+ * 块级矩形既不逐帧推送也不按 id 主动查询（componentUtils/UIContext 版底层都是
+ * Inspector::GetInspectorByKey 全窗口组件树线性查找 + 构建 Inspector JSON，单次≈423µs，
+ * 不能放进逐帧曝光链路）。改为「低频采样 + 刚性平推」：
+ *   - 采样：仅内容/尺寸变化或 ratio 校验发现漂移时，组件 sampleRectBase 调 getRectangleById 一次 capture
+ *     （频率=内容变化频率，滚动全程零查询）；
+ *   - 平推：滚动是刚性的，块相对根 List 的偏移在内容不变时恒定，评估时用 estimateTop 按根矩形
+ *     位移纯算术推算当前位置，评估只读快照。
+ *
+ * 平推位置漂移（前序内容重排移动了本块）由组件 onVisibleAreaChange 的真实 ratio 校验发现并自愈
+ * （理论 ratio 与真实 ratio 偏差>0.02 时重采样，最多两遍循环）。
+ * 根 List 内部滚动（固定高度模式）不改变根矩形、不会触发 holder 广播，这类位移由各块自身
+ * onVisibleAreaChange 跨阈值事件触发评估兜底。
+ */
+export class ExposureRectSnapshot {
+  /** 组件窗口左边界（px） */
+  left: number = Number.NaN
+  /** 组件窗口上边界（px） */
+  top: number = Number.NaN
+  /** 组件宽度（px） */
+  width: number = 0
+  /** 组件高度（px） */
+  height: number = 0
+  /** 记录快照时的根矩形窗口顶（px），用于 estimateTop 平推；无根上下文的快照（表格容器）传 0 */
+  rootTop: number = Number.NaN
+
+  capture(left: number, top: number, width: number, height: number, rootTop: number): void {
+    this.left = left
+    this.top = top
+    this.width = width
+    this.height = height
+    this.rootTop = rootTop
+  }
+
+  /** 快照是否可用于评估（已被 onAreaChange 捕获过、坐标有效） */
+  valid(): boolean {
+    return !Number.isNaN(this.top) && !Number.isNaN(this.rootTop)
+  }
+
+  /** 按当前根矩形顶推算组件当前的窗口上边界（纯算术） */
+  estimateTop(rootTop: number): number {
+    return this.top + (rootTop - this.rootTop)
+  }
+}
+
+/**
+ * 预算每个链接在 Text 内的渲染矩形并缓存（与 httpLinks 一一对应）。
+ *
+ * 链接 TextBox 只与「文本内容/宽度/字号」有关，与滚动无关，因此同一份布局下滚动期间不必重算。
+ * 调用方在 onSizeChange / 内容变更时置脏重算即可。
+ *
+ * @param controller 段落Text的TextController
+ * @param httpLinks 参与曝光的链接列表（含rangeStart/rangeEnd）
+ * @return 与 httpLinks 一一对应的TextBox数组；null 表示文本尚未完成布局（调用方保持脏标记，下次再算）
+ */
+export function computeLinkBoxes(
+  controller: TextController,
+  httpLinks: NodeView[]
+): Array<Array<text.TextBox>> | null {
+  const lm: LayoutManager | null = controller.getLayoutManager()
+  if (lm === null || lm === undefined) {
+    return null
+  }
+  const result: Array<Array<text.TextBox>> = []
+  let hasRange: boolean = false
+  let hasBox: boolean = false
+  for (const link of httpLinks) {
+    const start: number = link.rangeStart
+    const end: number = link.rangeEnd
+    if (end > start) {
+      hasRange = true
+    }
+    let boxes: Array<text.TextBox> = []
+    try {
+      boxes = lm.getRectsForRange(
+        { start: start, end: end },
+        text.RectWidthStyle.TIGHT, text.RectHeightStyle.TIGHT
+      )
+    } catch (e) {
+      return null
+    }
+    if (boxes.length > 0) {
+      hasBox = true
+    }
+    result.push(boxes)
+  }
+  // 存在有效区间却一个矩形都拿不到 → 文本尚未完成布局，缓存空结果会导致链接永远判不可见，故不缓存
+  if (hasRange && !hasBox) {
+    return null
+  }
+  return result
+}
+
+/**
  * 评估当前http链接的可见性，与「段落在屏可见视口」求交 + 阈值判定。
  * - 不可见→可见翻转 → markLinkVisible，进 becameVisible（调用方报 visible=true）
  * - 可见→不可见翻转 → markLinkHidden，进 becameHidden（调用方报 visible=false）
@@ -155,17 +250,17 @@ export interface ExposureEvalResult {
  * 可见判定：链接所有 TextBox 与视口的交集面积之和 / 链接所有 TextBox 面积之和 ≥ threshold。
  * threshold=0 退化为「任意像素相交即可见」（对齐 HTML thresholdPercent=0）。
  *
- * @param controller 段落Text的TextController
  * @param viewport 段落在屏可见视口
  * @param threshold 可见阈值（0~1）
  * @param httpLinks 参与曝光的链接列表（含rangeStart/rangeEnd）
+ * @param boxes 与 httpLinks 一一对应的链接矩形（computeLinkBoxes 预算并缓存；视口无效时可传空数组）
  * @return 本次发生翻转的链接：becameVisible（需报visible=true）、becameHidden（需报visible=false）
  */
 export function evaluateLinkExposure(
-  controller: TextController,
   viewport: ParagraphViewport,
   threshold: number,
-  httpLinks: NodeView[]
+  httpLinks: NodeView[],
+  boxes: Array<Array<text.TextBox>>
 ): ExposureEvalResult {
   const becameVisible: NodeView[] = []
   const becameHidden: NodeView[] = []
@@ -184,25 +279,14 @@ export function evaluateLinkExposure(
     const result: ExposureEvalResult = { becameVisible: becameVisible, becameHidden: becameHidden }
     return result
   }
-  const lm: LayoutManager | null = controller.getLayoutManager()
-  if (lm === null || lm === undefined) {
-    const result: ExposureEvalResult = { becameVisible: becameVisible, becameHidden: becameHidden }
-    return result
-  }
-  for (const link of httpLinks) {
-    let boxes: Array<text.TextBox> = []
-    try {
-      boxes = lm.getRectsForRange(
-        { start: link.rangeStart, end: link.rangeEnd },
-        text.RectWidthStyle.TIGHT, text.RectHeightStyle.TIGHT
-      )
-    } catch (e) {
-      continue
-    }
+  for (let i = 0; i < httpLinks.length; i++) {
+    const link: NodeView = httpLinks[i]
+    // 用缓存好的链接矩形（滚动期间不重算文本布局）
+    const linkBoxes: Array<text.TextBox> = i < boxes.length ? boxes[i] : []
     // 汇总：链接总面积 + 与视口交集面积（多行链接有多个 TextBox）
     let linkArea: number = 0
     let interArea: number = 0
-    for (const box of boxes) {
+    for (const box of linkBoxes) {
       const r = box.rect
       const bw: number = r.right - r.left
       const bh: number = r.bottom - r.top

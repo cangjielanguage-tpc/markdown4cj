@@ -62,15 +62,19 @@ import { DefinitionListTheme } from '../theme/DefinitionListTheme'
 import { ImageTheme } from '../theme/ImageTheme'
 import { MarkdownImageBlock } from './MarkdownImageBlock'
 import display from '@ohos.display'
+import { text } from '@kit.ArkGraphics2D'
 import { MarkdownHighlightParagraph } from '../configs/MarkdownHighlightParagraph'
-import { componentUtils, PromptAction } from '@kit.ArkUI'
+import { PromptAction } from '@kit.ArkUI'
 import { MarkdownExposureEvent } from '../model/MarkdownExposureEvent'
 import {
   computeLinkRanges,
+  computeLinkBoxes,
   evaluateLinkExposure,
+  ExposureRectSnapshot,
   ParagraphViewport
 } from '../utils/MarkdownExposureUtils'
 import { MarkdownVisibleRectHolder, MarkdownVisibleRectSnapshot } from '../model/MarkdownVisibleRectHolder'
+import { MarkdownExposureAttributeModifier } from '../utils/MarkdownExposureAttributeModifier'
 import { pasteboard } from "@kit.BasicServicesKit"
 
 /**
@@ -80,7 +84,7 @@ import { pasteboard } from "@kit.BasicServicesKit"
 export struct MarkdownHeading {
   @Consume placeholderPixelMap: PixelMap | undefined // 图片占位图
   @Consume isLatexMathEnabled: boolean // 数学公式插件是否启用
-  // CJMarkdown 根节点可见矩形（窗口坐标系 px）。链接曝光裁剪窗口=标题全局rect与该矩形求交，
+  // CJMarkdown 根节点可见矩形（页面坐标系 px）。链接曝光裁剪窗口=标题全局rect与该矩形求交，
   // 替代整屏高度——避免标题被标题栏/面板/系统栏遮挡时仍判可见（过报）。
   @Consume('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder
   @ObjectLink @Watch('refreshData') node: NodeView // 标题自身节点数据
@@ -122,12 +126,17 @@ export struct MarkdownHeading {
   private textController: TextController = new TextController() // 标题Text控制器，用于getRectsForRange拿链接矩形
   private httpLinks: NodeView[] = [] // 标题内参与曝光的http链接（含rangeStart/rangeEnd）
   private httpLinksDirty: boolean = true // httpLinks 是否需重算（首次/config同步后/refreshData后置脏）
+  private linkBoxes: Array<Array<text.TextBox>> = [] // 与httpLinks一一对应的链接渲染矩形（滚动期复用，不重算）
+  private linkBoxesDirty: boolean = true // linkBoxes 是否需重算（内容/尺寸变化才置脏）
+  private rectSnap: ExposureRectSnapshot = new ExposureRectSnapshot() // 标题在窗口中的布局快照（低频采样：仅内容变化时查询一次，滚动中由 estimateTop 平推，评估只读快照）
+  private headingId: string = '' // 标题Text组件id：低频位置采样查询（getRectangleById 按 id 定位）用
+  private rectBaseDirty: boolean = true // 布局base是否需重采样（首次/尺寸变化/ratio校验发现漂移时置脏，评估入口采样一次）
+  private pendingRatio: number = -1 // onVisibleAreaChange 最近一次真实可见比例（-1=无），供评估时校验平推位置是否漂移
   private exposureTimerId: number = -1 // 曝光评估防抖定时器
-  // 标题在屏可见视口相关：标题全局rect ∩ CJMarkdown根可见矩形（窗口坐标系px）→ 平移到Text原点
-  private headingId: string = '' // 标题Text的唯一id（用于componentUtils.getRectangleById，aboutToAppear赋值）
-  private headingWidthPx: number = 0 // Text自身宽度（px，onSizeChange的vp转px，水平方向链接截断用）
+  @State exposureModifier: MarkdownExposureAttributeModifier = new MarkdownExposureAttributeModifier() // 曝光回调条件注册（未启用曝光零注册零税）
+  private exposureRegistered: boolean = false // modifier 当前是否已按"启用"注册（翻转检测用）
+  // 标题在屏可见视口相关：标题全局rect ∩ CJMarkdown根可见矩形（页面坐标系px）→ 平移到Text原点
   private screenHeightPx: number = 0 // 屏幕高度（px，兜底用：visibleRectHolder未就绪时退化裁剪窗口）
-  private viewportReady: boolean = false // onSizeChange是否触发过（尺寸已就绪）
   // CJMarkdown根可见矩形变化监听器（滚动/根尺寸变化时重算曝光）。aboutToAppear注册/aboutToDisappear注销。
   private visibleRectListener: (r: MarkdownVisibleRectSnapshot) => void = () => {}
 
@@ -152,8 +161,7 @@ export struct MarkdownHeading {
   }
 
   aboutToAppear(): void {
-    // 标题Text的唯一id：用nodeHash保证流式复用同一节点时id稳定（componentUtils.getRectangleById用它拿全局rect）
-    this.headingId = 'md-exp-h-' + this.node.nodeHash
+    this.headingId = 'md-h-' + this.node.nodeHash // 组件id：供 getRectangleById 低频位置采样定位
     for (const child of this.node.children) {
       if (child.nodeType === "LatexMathNode" && child.latexPixelMap === undefined && child.latexIsLoading) {
         child.latexIsLoading = false
@@ -256,30 +264,9 @@ export struct MarkdownHeading {
           this.textCopyCallback?.(str)
         })
         .id(this.headingId)
-        .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, _currentRatio: number) => {
-          // 仅作触发用：ratio 阈值变化时重算曝光。不使用 isVisible 布尔门控可见性
-          // （实测滑动中 isVisible 会翻转竞态，门控会导致漏报）。真正的可见性由
-          // evaluateLinkExposure 的「链接rect ∩ 标题在屏可见视口」判定。
-          // 未设曝光回调时直接返回，滚动期不再走 scheduleExposure（连 setTimeout 都不开）。
-          if (!this.isExposureEnabled()) {
-            return
-          }
-          this.scheduleExposure()
-        })
-        .onSizeChange((_oldValue: SizeOptions, newValue: SizeOptions) => {
-          // 标题Text自身宽度（vp→px）。全局位置由 componentUtils.getRectangleById 实时拿，
-          // 故此处只更新宽度（水平方向链接截断用）并触发评估。未启用曝光时跳过。
-          // 用onSizeChange不用onAreaChange：onAreaChange在位置变化（滚动）时也触发，
-          // 每帧沿父链累加全局坐标是白花开销；滚动期曝光评估由holder的矩形移动通知驱动
-          // （MarkdownVisibleRectHolder.applyRect：movedUp/movedDown即notify）。
-          if (!this.isExposureEnabled()) {
-            return
-          }
-          const w: number = (newValue.width as number) ?? 0
-          this.headingWidthPx = vp2px(w)
-          this.viewportReady = true
-          this.scheduleExposure()
-        })
+        // 曝光回调条件注册（onSizeChange/onVisibleAreaChange）：未启用曝光的接入方零注册、
+        // 零引擎可见性遍历税。翻转时重建 modifier（@State 引用变化触发 build 重跑重新应用）。
+        .attributeModifier(this.exposureModifier)
         .backgroundColor(this.textBackgroundColor)
         .selectedBackgroundColor(this.selectBackgroundColor)
         .selection(this.selectStart, this.selectEnd)
@@ -335,7 +322,7 @@ export struct MarkdownHeading {
     // ListItem，layoutWeight失效，需width撑满。实测width('100%')百分比基数不扣
     // 自身margin，margin.left右移节点导致右边缘溢出（文本偏移出屏幕右边界），
     // 故用blockFillWidth按当前标题级别显式扣除水平margin（margin=0时仍为'100%'，
-    // 默认主题不变）。Text仍为自适应宽度，曝光getRectangleById坐标系不变；
+    // 默认主题不变）。Text仍为自适应宽度，曝光快照坐标系不变；
     // 下划线Divider显式width('100%')钉在背景内容区内。
     .width(blockFillWidth(
       headingMarginLeft(this.node.headingLevel, this.headingTheme),
@@ -905,7 +892,7 @@ export struct MarkdownHeading {
 
   /**
    * 拿屏幕高度（px）。display.getDefaultDisplaySync 在 aboutToAppear 之前可能拿不到，
-   * 故每次评估前兜底取一次。拿到后缓存。componentUtils.windowOffset 也是 px，单位一致。
+   * 故每次评估前兜底取一次。拿到后缓存。快照坐标经 vp2px 转换后也是 px，单位一致。
    */
   private ensureScreenHeight(): void {
     if (this.screenHeightPx > 0) {
@@ -920,18 +907,71 @@ export struct MarkdownHeading {
   }
 
   /**
+   * 曝光注册状态同步：曝光开关翻转时重建 modifier（@State 引用变化触发 build 重跑，
+   * applyNormalAttribute 按新状态挂/卸 onSizeChange/onVisibleAreaChange）。
+   * 未启用曝光的接入方恒 false、永不翻转，Text 上零注册，引擎可见性遍历税为零。
+   */
+  private syncExposureRegistration(): void {
+    const enabledNow: boolean = this.isExposureEnabled()
+    if (enabledNow === this.exposureRegistered) {
+      return
+    }
+    this.exposureRegistered = enabledNow
+    const mod: MarkdownExposureAttributeModifier = new MarkdownExposureAttributeModifier()
+    mod.setEnabled(enabledNow)
+    mod.setSizeCallback(() => {
+      this.onExposureSizeChanged()
+    })
+    mod.setVisibleRatioCallback((ratio: number) => {
+      this.onExposureVisibleRatio(ratio)
+    })
+    this.exposureModifier = mod
+  }
+
+  /**
+   * modifier 分发的 onVisibleAreaChange 回调（已按曝光开关条件注册，但关曝光后已注册的
+   * 无法撤销，此处仍按运行时开关门控兜底）。仅作触发用：ratio 阈值变化时重算曝光。
+   * 不使用 isVisible 布尔门控可见性（实测滑动中 isVisible 会翻转竞态，门控会导致漏报），
+   * 真正的可见性由 evaluateLinkExposure 的「链接rect ∩ 标题在屏可见视口」判定。
+   */
+  private onExposureVisibleRatio(ratio: number): void {
+    if (!this.isAlive || !this.isExposureEnabled()) {
+      return
+    }
+    this.pendingRatio = ratio // 存下供评估时校验平推位置是否漂移（前序内容重排自愈）
+    this.scheduleExposure()
+  }
+
+  /**
+   * modifier 分发的 onSizeChange 回调：尺寸变化会改变文本布局与自身高度，链接矩形缓存失效。
+   * 窗口位置不在滚动期逐帧获取，由评估入口的 sampleRectBase 低频采样 + estimateTop 平推。
+   */
+  private onExposureSizeChanged(): void {
+    if (!this.isAlive || !this.isExposureEnabled()) {
+      return
+    }
+    this.linkBoxesDirty = true
+    this.rectBaseDirty = true // 尺寸变化=内容重排，布局base需要重新采样
+    this.scheduleExposure()
+  }
+
+  /**
     * 防抖触发曝光评估。合并连续的 onSizeChange/onVisibleAreaChange/holder矩形移动通知/refreshData 触发。
    * 评估后对「本次显示」的链接回调 visible=true，「本次消失」的回调 visible=false。
    *
-   * 视口来源：componentUtils.getRectangleById(headingId) 拿标题相对窗口的全局 rect（px），
-   * 与屏幕高度求交得标题在屏可见区，再平移到 Text 内容区原点坐标系（与 getRectsForRange 同源）。
-    * 首屏在屏内的标题也能被覆盖：onSizeChange 首帧触发 → scheduleExposure → getRectangleById 拿到位置。
+   * 位置来源（对应性能方案「缺陷1/3」）：不做逐帧 onAreaChange 推送——注册即常驻，滚动中所有挂载
+   * 组件每帧触发框架侧 Area 对比+对象构造+跨层分发，未启用曝光的使用方也被迫交税。改为
+   * 「内容变化才低频采样（sampleRectBase，getRectangleById 单次≈423µs，频率=内容变化频率，滚动零查询）
+   * + 滚动平推（estimateTop：滚动是刚性的，标题相对根的偏移在内容不变时恒定）」，
+   * 平推位置漂移（前序内容重排移动了本标题）由 onVisibleAreaChange 的真实 ratio 校验发现并自愈。
+   * 链接矩形走 linkBoxes 缓存，只有内容/尺寸变化才重算 getRectsForRange（缺陷4）。
    */
   private scheduleExposure(): void {
     if (!this.isAlive) {
       return
     }
-    // 未设曝光回调时直接短路（兜底：onSizeChange/onVisibleAreaChange/holder通知 仍会触发本方法）
+    this.syncExposureRegistration()
+    // 未设曝光回调时直接短路（兜底：holder通知 仍会触发本方法；modifier 回调内部也有门控）
     if (!this.isExposureEnabled()) {
       return
     }
@@ -941,63 +981,125 @@ export struct MarkdownHeading {
     if (this.httpLinksDirty && this.list.length > 0) {
       this.httpLinks = computeLinkRanges(this.list, this.globalTheme.isLineBreak, 0)
       this.httpLinksDirty = false
+      this.linkBoxesDirty = true
     }
     if (this.httpLinks.length === 0) {
       return
     }
     if (this.exposureTimerId !== -1) {
-      clearTimeout(this.exposureTimerId)
+      // 已有 pending 评估：本次触发合并掉（省 clearTimeout/setTimeout；滚动期每帧多次触发只开一个 timer，
+      // timer 回调读到的快照/holder 都是最新值，不丢状态）
+      return
     }
     this.exposureTimerId = setTimeout(() => {
       this.exposureTimerId = -1
-      if (!this.isAlive) {
+      this.evaluateExposure()
+    }, 0)
+  }
+
+  /**
+   * 低频采样标题窗口矩形 base（仅 rectBaseDirty 时由评估入口调用）。
+   * getRectangleById 底层是 Inspector 全树查找（单次≈423µs），只在内容变化（首帧/尺寸变化/漂移自愈）
+   * 时调用，滚动全程零查询；采样时的 rootTop 一并存入快照，滚动中由 estimateTop(rootTop) 平推。
+   */
+  private sampleRectBase(): void {
+    this.rectBaseDirty = false
+    try {
+      const rect = this.getUIContext().getComponentUtils().getRectangleById(this.headingId)
+      if (!rect || !rect.windowOffset || !rect.size) {
+        this.rectBaseDirty = true // 组件尚未挂载完成，下次评估再试
         return
       }
-      if (!this.viewportReady) {
-        return
+      this.rectSnap.capture(rect.windowOffset.x, rect.windowOffset.y,
+        rect.size.width, rect.size.height, this.visibleRectHolder.rectTop)
+    } catch (e) {
+      this.rectBaseDirty = true // 查询异常（组件销毁等），下次评估再试
+    }
+  }
+
+  /**
+   * 执行一次曝光评估（防抖后调用）：解算标题在窗口中的位置 → 求交得可见视口 → 评估链接显示/消失翻转。
+   */
+  private evaluateExposure(): void {
+    if (!this.isAlive || !this.isExposureEnabled()) {
+      return
+    }
+    this.ensureScreenHeight()
+    if (this.screenHeightPx <= 0) {
+      return
+    }
+    // 位置解算（最多两遍）：base 脏则低频采样，否则读快照平推；第一遍算完用真实 ratio 校验平推
+    // 是否漂移（前序内容重排移动了本标题，base 过期），漂移则重采样再算一遍。
+    for (let attempt = 0; attempt < 2; attempt++) {
+      if (this.rectBaseDirty) {
+        this.sampleRectBase()
+        if (!this.rectSnap.valid()) {
+          // 首次采样未成功（组件尚未挂载），本次跳过，等下次评估
+          return
+        }
       }
-      this.ensureScreenHeight()
-      if (this.screenHeightPx <= 0) {
-        return
+      const rootTop: number = this.visibleRectHolder.rectTop
+      // 标题相对窗口的全局矩形（px）：快照平推（estimateTop：滚动刚性，相对根偏移恒定）
+      const globalTop: number = Number.isNaN(rootTop) ? this.rectSnap.top : this.rectSnap.estimateTop(rootTop)
+      const globalBottom: number = globalTop + this.rectSnap.height
+      const useVis: boolean = this.visibleRectHolder.visReady
+      // ratio 校验（仅跨阈值触发时 pendingRatio 有效）：引擎真实可见比例 vs 平推位置的理论可见比例。
+      // 校验窗口必须用真实窗口 [0, screenH]（与引擎 onVisibleAreaChange 的可见口径一致），
+      // 不能用 vis 估算窗口——vis 是估算（整文高×ratio 推算），误差可达可见高度级别，
+      // 会把「无漂移」误判成漂移，导致滚动期每次跨阈值都重采样查询（423µs/次），击穿滚动零查询。
+      // 平推位置正确时偏差≈0；真漂移（前序内容重排移动了本标题）偏差>0.02 才重采样自愈。
+      if (attempt === 0 && this.pendingRatio >= 0 && !Number.isNaN(rootTop)
+        && this.rectSnap.height > 0) {
+        const chkClipH: number = Math.max(0, Math.min(this.screenHeightPx, globalBottom)
+          - Math.max(0, globalTop))
+        const theoryRatio: number = chkClipH / this.rectSnap.height
+        if (Math.abs(theoryRatio - this.pendingRatio) > 0.02) {
+          // 平推位置漂移：base 过期，重采样自愈（第二遍重算位置）
+          this.pendingRatio = -1
+          this.rectBaseDirty = true
+          continue
+        }
       }
-      // 标题相对窗口的全局矩形（px）：componentUtils 同步调用，setTimeout(0) 时已 layout 完成
-      let globalTop: number = 0
-      let globalBottom: number = 0
-      try {
-        const info = componentUtils.getRectangleById(this.headingId)
-        // windowOffset 相对应用窗口原点；size 是组件尺寸。均为 px。
-        globalTop = info.windowOffset.y
-        globalBottom = info.windowOffset.y + info.size.height
-      } catch (e) {
-        // 组件未挂载/id 未就绪，本次跳过
-        return
+      this.pendingRatio = -1 // 用完清掉：holder 广播/onSizeChange 触发时无真实 ratio，不做校验
+      if (!Number.isNaN(rootTop)) {
+        // 回填订阅边界：holder 广播时可直接跳过视口外标题（缺陷2）
+        this.visibleRectHolder.updateBounds(this.visibleRectListener, globalTop - rootTop, this.rectSnap.height)
       }
       // 标题在屏可见视口（相对Text内容区原点，px）：
-      // 垂直裁剪窗口 = holder 推算的可见区域 [visTop, visBottom]（窗口 px，见 MarkdownVisibleRectHolder 算法）：
-      //   onAreaChange 拿矩形区域，onVisibleAreaChange 拿 ratio，轮询按「移动方向 + ratio 变化」收缩可见区域。
-      // 标题Text不横滚，水平方向整宽可见：clipLeftPx=0, clipRightPx=widthPx
+      // 垂直裁剪窗口 = holder 推算的可见区域 [visTop, visBottom]（页面 px，见 MarkdownVisibleRectHolder 算法），
       // holder.visReady=false（ratio 首次>0 前）退化用整屏 [0, screenH]，避免漏报。
-      const useVis: boolean = this.visibleRectHolder.visReady
+      // 标题Text不横滚，水平方向整宽可见：clipLeftPx=0, clipRightPx=快照宽度（px）
       const vpTop: number = useVis ? this.visibleRectHolder.visTop : 0
       const vpBottom: number = useVis ? this.visibleRectHolder.visBottom : this.screenHeightPx
       const clipTopPx: number = Math.max(vpTop, Math.min(vpBottom, globalTop))
       const clipBottomPx: number = Math.min(vpBottom, Math.max(vpTop, globalBottom))
       const viewport: ParagraphViewport = {
-        ready: clipBottomPx > clipTopPx && this.headingWidthPx > 0,
+        ready: clipBottomPx > clipTopPx && this.rectSnap.width > 0,
         clipTopPx: clipTopPx - globalTop,
         clipBottomPx: clipBottomPx - globalTop,
         clipLeftPx: 0,
-        clipRightPx: this.headingWidthPx,
-        widthPx: this.headingWidthPx
+        clipRightPx: this.rectSnap.width,
+        widthPx: this.rectSnap.width
       }
-      const result = evaluateLinkExposure(this.textController, viewport, this.exposureThreshold, this.httpLinks)
+      // 链接矩形：缓存命中则直接求交；置脏（内容/尺寸变化）时重算一次
+      if (this.linkBoxesDirty) {
+        const boxes: Array<Array<text.TextBox>> | null = computeLinkBoxes(this.textController, this.httpLinks)
+        if (boxes === null) {
+          // 文本尚未完成布局：保持脏标记，本次不做翻转（避免用空矩形把链接误判为不可见）
+          return
+        }
+        this.linkBoxes = boxes
+        this.linkBoxesDirty = false
+      }
+      const result = evaluateLinkExposure(viewport, this.exposureThreshold, this.httpLinks, this.linkBoxes)
       for (const link of result.becameVisible) {
         this.elementExposureCallback?.({ eventType: 'link', visible: true, data: link.linkUrl ?? '' })
       }
       for (const link of result.becameHidden) {
         this.elementExposureCallback?.({ eventType: 'link', visible: false, data: link.linkUrl ?? '' })
       }
-    }, 0)
+      return
+    }
   }
 
   /**
@@ -1011,7 +1113,10 @@ export struct MarkdownHeading {
       }
       this.list = []
       this.httpLinks = []
+      this.linkBoxes = []
       this.httpLinksDirty = true
+      this.linkBoxesDirty = true
+      this.rectBaseDirty = true // 内容清空=标题重排，布局base需要重新采样
       return
     }
     // 图片尺寸保留仅当旧列表含图片子节点时才有意义（无图时恢复循环本就是空转）——
@@ -1072,6 +1177,8 @@ export struct MarkdownHeading {
     // 标记 httpLinks 脏：list 变了偏移必变。dirty=true 后：已启用→下面立即重算；未启用（config
     // 尚未同步）→跳过，dirty 留 true，待 config 同步后 scheduleExposure 懒补算。
     this.httpLinksDirty = true
+    this.linkBoxesDirty = true // 内容变了：链接字符偏移与渲染矩形都要重算
+    this.rectBaseDirty = true // 内容变了：标题高度/相对位置可能变，布局base需要重新采样
     // 仅在启用曝光时重算http链接字符偏移并触发评估；未设回调时跳过（省遍历开销）
     if (this.isExposureEnabled()) {
       // 标题无脚注前缀，footnotePrefixLen=0；computeLinkRanges 与 headingInlineItem 渲染顺序一致
