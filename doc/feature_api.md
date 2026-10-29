@@ -5,14 +5,16 @@
 ```ets
 @Component
 export struct CJMarkdown {
-  content: string
-  config: new MarkdownConfiguration()
-  plugin: new MarkdownPlugin()
-  scroller: new Scroller()
-  scrollController?: new MarkdownScrollController()
-  @BuilderParam blockImageCardComponent: (desc: string, imageSrc: string, title: string) => void
-  @BuilderParam blockLinkCardComponent: (desc: string, link: string, title: string) => void
-  @BuilderParam customTagViewComponent: (tag: string, attrs: Record<string, string>, content: string) => void
+  @Prop @Watch('refreshData') content: string // 外部传入的Markdown文档
+  @ObjectLink @Watch('onConfigChanged') config: MarkdownConfiguration // markdown配置项
+  scroller: Scroller = new Scroller() // list控制器
+  scrollController?: MarkdownScrollController // 外层滚动控制器（不固定高度模式由页面传入）
+  plugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件配置
+  markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
+  imageAndVideoList: Array<string> = Array<string>() // 所有图片视频的url
+  @BuilderParam blockImageCardComponent: (desc: string, imageSrc: string, title: string) => void = this.CustomBlockImageBuilder // 自定义卡片布局块级图片
+  @BuilderParam blockLinkCardComponent: (desc: string, link: string, title: string) => void = this.CustomBlockLinkBuilder // 自定义卡片布局行内链接
+  @BuilderParam customTagViewComponent: (tag: string, attrs: Record<string, string>, content: string) => void = this.CustomTagViewBuilder // 自定义标签块级视图（如 <sdui data='...'></sdui>）
 }
 ```
 
@@ -188,6 +190,36 @@ Markdown插件配置
 
 ```ets
 export class MarkdownPlugin {
+  isBlockAudioPlugin: boolean = false // 是否加载音频解析插件
+  isBlockVideoPlugin: boolean = false // 是否加载视频解析插件
+  isCodeListPlugin: boolean = false // 是否加载代码列表解析插件
+  isFootnotePlugin: boolean = false // 是否加载脚注解析插件
+  isHtmlPlugin: boolean = false // 是否加载html解析插件
+  isTablePlugin: boolean = false // 是否加载表格解析插件
+  isTocPlugin: boolean = false // 是否加载toc解析插件
+  isBlockCustomCardPlugin: boolean = false // 是否加载自定义卡片解析插件
+  isTaskListPlugin: boolean = false // 是否加载任务列表解析插件
+  isStrikethroughPlugin: boolean = false // 是否加载删除线解析插件
+  isLinkifyPlugin: boolean = false // 是否加载链接自动解析插件
+  regs: Array<string> = [] // 正则列表
+  isLinkViewPlugin: boolean = false // 是否加载链接单独解析插件
+  isLatexMathPlugin: boolean = false // 是否加载数学公式解析插件
+  isImageStylePlugin: boolean = false // 是否加载图片自定义样式解析插件
+  isImageSlidePlugin: boolean = false // 是否加载图片banner解析插件
+  isImageTextMixPlugin: boolean = false // 是否加载图片单独提取到block解析插件
+  isImageCollectPlugin: boolean = false // 是否加载图片视频列表url集合列表解析插件
+  isDescListPlugin: boolean = false // 是否加载定义列表解析插件
+  isHeadIDPlugin: boolean = false // 是否加载标题ID解析插件
+  isSubPlugin: boolean = false // 是否加载下标解析插件
+  isSupPlugin: boolean = false // 是否加载上标解析插件
+  isEmojiPlugin: boolean = false // 是否加载emoji解析插件
+  isEmojiLight: boolean = false // emoji解析插件是否精简加载
+  isHighlightPlugin: boolean = false // 是否加载高亮解析插件
+  isWhitelistPlugin: boolean = false // 是否加载白名单宽松分隔符插件
+  mode: DelimiterFilterMode = DelimiterFilterMode.Permissive // 分隔符过滤模式
+  whitelist: Array<string> = [] // 白名单列表
+  blockImageCard?: (desc: string, imageSrc: string, title: string) => boolean = undefined // 自定义卡片块级图片条件
+  blockLinkCard?: (desc: string, link: string, title: string) => boolean = undefined // 自定义卡片块级链接条件
 
   /**
    * 设置音频插件
@@ -2979,9 +3011,19 @@ export class LinkTheme {
 }
 ```
 
+### interface MarkdownBaseTheme
+
+主题基类（空接口），所有 `XxxTheme` 主题类均实现该接口，便于统一声明主题对象类型
+
+```ets
+export interface MarkdownBaseTheme {}
+```
+
 ### class MarkdownTheme
 
 Markdown样式配置
+
+> 每个主题类（`AudioTheme`、`CodeBlockTheme` 等）的字段同时是公开属性（如 `audioTheme.audioBackgroundColor`），与其同名 setter 等价；推荐使用 setter，便于链式调用并与后续版本保持兼容。
 
 ```ets
 export class MarkdownTheme {
@@ -3412,7 +3454,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkTextFontColor
    */
-  setLinkColor(linkColor: number): MarkdownTheme
+  setLinkColor(linkColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置是否按照链接文本字体大小显示文本
@@ -3448,7 +3490,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkTextBackgroundColor
    */
-  setLinkBackgroundColor(linkBackgroundColor: number): MarkdownTheme
+  setLinkBackgroundColor(linkBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置文本格式是否显示链接下划线
@@ -3466,7 +3508,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconBackgroundColor
    */
-  setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): MarkdownTheme
+  setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置圆形图片格式链接控件背景颜色
@@ -3475,7 +3517,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconButtonBackgroundColor
    */
-  setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): MarkdownTheme
+  setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置圆形图片格式链接文字大小
@@ -3493,7 +3535,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkCircleIconTextColor
    */
-  setLinkCircleImageTextColor(linkCircleImageTextColor: number): MarkdownTheme
+  setLinkCircleImageTextColor(linkCircleImageTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置圆形图片格式链接半径
@@ -3520,7 +3562,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconBackgroundColor
    */
-  setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): MarkdownTheme
+  setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置圆角矩形图片格式链接控件背景颜色
@@ -3529,7 +3571,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconButtonBackgroundColor
    */
-  setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): MarkdownTheme
+  setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置圆角矩形图片格式链接文字大小
@@ -3547,7 +3589,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectIconTextColor
    */
-  setLinkRectImageTextColor(linkRectImageTextColor: number): MarkdownTheme
+  setLinkRectImageTextColor(linkRectImageTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置圆角矩形图片格式链接控件高度
@@ -3592,7 +3634,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconBackgroundColor
    */
-  setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): MarkdownTheme
+  setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置空心圆角矩形图片格式链接控件背景颜色
@@ -3601,7 +3643,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead LinkTheme#setLinkRectToolIconButtonBackgroundColor
    */
-  setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): MarkdownTheme
+  setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置空心圆角矩形图片格式链接文字大小
@@ -3709,7 +3751,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BlockQuoteTheme#setBlockQuoteLeftBorderColor
    */
-  setBlockQuoteColor(blockQuoteColor: number): MarkdownTheme
+  setBlockQuoteColor(blockQuoteColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置块引用背景颜色
@@ -3718,7 +3760,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BlockQuoteTheme#setBlockQuoteBackgroundColor
    */
-  setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): MarkdownTheme
+  setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置块引用子模块上下间距
@@ -3772,7 +3814,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMarkerTextFontColor
    */
-  setOrderedListItemColor(orderedListItemColor: number): MarkdownTheme
+  setOrderedListItemColor(orderedListItemColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置有序列表前缀文本大小
@@ -3808,7 +3850,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead BulletListTheme#setBulletListBulletTextFontColor
    */
-  setBulletListItemColor(bulletListItemColor: number): MarkdownTheme
+  setBulletListItemColor(bulletListItemColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置无序列表前缀文本大小
@@ -3853,7 +3895,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead InlineCodeTheme#setInlineCodeTextFontColor
    */
-  setCodeTextColor(codeTextColor: number): MarkdownTheme
+  setCodeTextColor(codeTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置内联代码背景颜色
@@ -3862,7 +3904,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead InlineCodeTheme#setInlineCodeTextBackgroundColor
    */
-  setCodeBackgroundColor(codeBackgroundColor: number): MarkdownTheme
+  setCodeBackgroundColor(codeBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置内联代码文本大小
@@ -3898,7 +3940,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTextFontColor
    */
-  setCodeBlockTextColor(codeBlockTextColor: number): MarkdownTheme
+  setCodeBlockTextColor(codeBlockTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置代码块代码类型文本颜色
@@ -3907,7 +3949,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockTypeTextFontColor
    */
-  setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): MarkdownTheme
+  setCodeBlockTypeTextColor(codeBlockTypeTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置代码块代码类型文本
@@ -3952,7 +3994,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockBackgroundColor
    */
-  setCodeBlockBackgroundColor(codeBlockBackgroundColor: number): MarkdownTheme
+  setCodeBlockBackgroundColor(codeBlockBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置代码块左边距
@@ -4042,7 +4084,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectTextColor
    */
-  setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: number): MarkdownTheme
+  setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置组合代码未选中标题文本颜色
@@ -4051,7 +4093,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleUnselectTextColor
    */
-  setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: number): MarkdownTheme
+  setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置组合代码选中标题背景颜色
@@ -4060,7 +4102,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectBackgroundColor
    */
-  setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): MarkdownTheme
+  setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置组合代码未选中标题背景颜色
@@ -4069,7 +4111,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockListTitleUnselectBackgroundColor
    */
-  setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): MarkdownTheme
+  setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置是否单独代码块显示
@@ -4204,7 +4246,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForAllHeading
    */
-  setHeadingTextColor(headingTextColor: number): MarkdownTheme
+  setHeadingTextColor(headingTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置H1、H2标题下分割线颜色
@@ -4213,7 +4255,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setUnderlineColorForAllHeading
    */
-  setHeadingBreakColor(headingBreakColor: number): MarkdownTheme
+  setHeadingBreakColor(headingBreakColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置标题文本字间距
@@ -4285,7 +4327,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor1(headingTextColor1: number): MarkdownTheme
+  setHeadingTextColor1(headingTextColor1: ResourceColor): MarkdownTheme
 
   /**
    * 设置H1标题下分割线颜色
@@ -4294,7 +4336,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setUnderlineColorForDesignateHeading
    */
-  setHeadingBreakColor1(headingBreakColor1: number): MarkdownTheme
+  setHeadingBreakColor1(headingBreakColor1: ResourceColor): MarkdownTheme
 
   /**
    * 设置二级标题文本颜色
@@ -4303,7 +4345,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor2(headingTextColor2: number): MarkdownTheme
+  setHeadingTextColor2(headingTextColor2: ResourceColor): MarkdownTheme
 
   /**
    * 设置H2标题下分割线颜色
@@ -4312,7 +4354,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setUnderlineColorForDesignateHeading
    */
-  setHeadingBreakColor2(headingBreakColor2: number): MarkdownTheme
+  setHeadingBreakColor2(headingBreakColor2: ResourceColor): MarkdownTheme
 
   /**
    * 设置三级标题文本颜色
@@ -4321,7 +4363,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor3(headingTextColor3: number): MarkdownTheme
+  setHeadingTextColor3(headingTextColor3: ResourceColor): MarkdownTheme
 
   /**
    * 设置四级标题文本颜色
@@ -4330,7 +4372,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor4(headingTextColor4: number): MarkdownTheme
+  setHeadingTextColor4(headingTextColor4: ResourceColor): MarkdownTheme
 
   /**
    * 设置五级标题文本颜色
@@ -4339,7 +4381,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor5(headingTextColor5: number): MarkdownTheme
+  setHeadingTextColor5(headingTextColor5: ResourceColor): MarkdownTheme
 
   /**
    * 设置六级标题文本颜色
@@ -4348,7 +4390,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
-  setHeadingTextColor6(headingTextColor6: number): MarkdownTheme
+  setHeadingTextColor6(headingTextColor6: ResourceColor): MarkdownTheme
 
   /**
    * 设置段落模块上间距
@@ -4384,7 +4426,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ParagraphTheme#setParagraphTextFontColor
    */
-  setParagraphTextColor(paragraphTextColor: number): MarkdownTheme
+  setParagraphTextColor(paragraphTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置段落文本字间距
@@ -4420,7 +4462,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead DividerTheme#setDividerColor
    */
-  setThematicBreakColor(thematicBreakColor: number): MarkdownTheme
+  setThematicBreakColor(thematicBreakColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置分割线高度
@@ -4465,7 +4507,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioShadowColor
    */
-  setAudioShadowColor(audioShadowColor: number): MarkdownTheme
+  setAudioShadowColor(audioShadowColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置音频边框颜色
@@ -4474,7 +4516,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioBorderColor
    */
-  setAudioBorderColor(audioBorderColor: number): MarkdownTheme
+  setAudioBorderColor(audioBorderColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置音频边框粗细
@@ -4501,7 +4543,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioButtonBackgroundColor
    */
-  setAudioButtonBackgroundColor(audioButtonBackgroundColor: number): MarkdownTheme
+  setAudioButtonBackgroundColor(audioButtonBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置音频按钮文字颜色
@@ -4510,7 +4552,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioButtonTextFontColor
    */
-  setAudioButtonTextColor(audioButtonTextColor: number): MarkdownTheme
+  setAudioButtonTextColor(audioButtonTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置音频按钮文字大小
@@ -4555,7 +4597,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTitleTextFontColor
    */
-  setAudioTitleTextColor(audioTitleTextColor: number): MarkdownTheme
+  setAudioTitleTextColor(audioTitleTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置音频标题文字行高
@@ -4582,7 +4624,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead AudioTheme#setAudioTypeTextFontColor
    */
-  setAudioTypeTextColor(audioTypeTextColor: number): MarkdownTheme
+  setAudioTypeTextColor(audioTypeTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置音频类型文字行高
@@ -4627,7 +4669,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoTimeTextFontColor
    */
-  setVideoTimeTextColor(videoTimeTextColor: number): MarkdownTheme
+  setVideoTimeTextColor(videoTimeTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置视频时间文本大小
@@ -4744,7 +4786,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonTextFontColor
    */
-  setVideoReleaseTextColor(videoReleaseTextColor: number): MarkdownTheme
+  setVideoReleaseTextColor(videoReleaseTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置视频发布按钮背景颜色
@@ -4753,7 +4795,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonBackgroundColor
    */
-  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): MarkdownTheme
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置视频下载按钮图片宽度和高度
@@ -4816,7 +4858,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonTextFontColor
    */
-  setVideoDownloadTextColor(videoDownloadTextColor: number): MarkdownTheme
+  setVideoDownloadTextColor(videoDownloadTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置视频下载按钮背景颜色
@@ -4825,7 +4867,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonBackgroundColor
    */
-  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): MarkdownTheme
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置图片缩放类型
@@ -4897,7 +4939,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageBorderColor
    */
-  setImageBorderColor(imageBorderColor: number): MarkdownTheme
+  setImageBorderColor(imageBorderColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置网络图片是否压缩
@@ -5005,7 +5047,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonTextFontColor
    */
-  setImageDownloadTextColor(imageDownloadTextColor: number): MarkdownTheme
+  setImageDownloadTextColor(imageDownloadTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置图片下载按钮背景颜色
@@ -5014,7 +5056,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonBackgroundColor
    */
-  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): MarkdownTheme
+  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置表格内容内边距
@@ -5032,7 +5074,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableBorderColor
    */
-  setTableBorderColor(tableBorderColor: number): MarkdownTheme
+  setTableBorderColor(tableBorderColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置表格边框宽度
@@ -5050,7 +5092,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentOddRowBackgroundColor
    */
-  setTableOddRowBackgroundColor(tableOddRowBackgroundColor: number): MarkdownTheme
+  setTableOddRowBackgroundColor(tableOddRowBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置表格偶数行背景色
@@ -5059,7 +5101,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentEvenRowBackgroundColor
    */
-  setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): MarkdownTheme
+  setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置表格标题背景色
@@ -5068,7 +5110,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableTitleBackgroundColor
    */
-  setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): MarkdownTheme
+  setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置表格标题文本颜色
@@ -5077,7 +5119,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableTitleTextFontColor
    */
-  setTableTitleTextColor(tableTitleTextColor: number): MarkdownTheme
+  setTableTitleTextColor(tableTitleTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置表格文本行高
@@ -5113,7 +5155,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentTextFontColor
    */
-  setTableContentTextColor(tableContentTextColor: number): MarkdownTheme
+  setTableContentTextColor(tableContentTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置表格内容文本大小
@@ -5185,7 +5227,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableScrollBarColor
    */
-  setTableScrollBarColor(tableScrollBarColor: number): MarkdownTheme
+  setTableScrollBarColor(tableScrollBarColor: Color | number | string): MarkdownTheme
 
   /**
    * 设置代码块深浅色
@@ -5203,7 +5245,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead StrikethroughTheme#setStrikethroughTextDecorationColor
    */
-  setStrikethroughColor(strikethroughColor: number): MarkdownTheme
+  setStrikethroughColor(strikethroughColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置删除线样式
@@ -5248,7 +5290,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead SubTheme#setSubTextFontColor
    */
-  setSubTextColor(subTextColor: number): MarkdownTheme
+  setSubTextColor(subTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置下标字体大小
@@ -5275,7 +5317,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead SupTheme#setSupTextFontColor
    */
-  setSupTextColor(supTextColor: number): MarkdownTheme
+  setSupTextColor(supTextColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置上标字体大小
@@ -5302,7 +5344,7 @@ export class MarkdownTheme {
    * @deprecated since 1.4.0
    * @useinstead HtmlUnderlineTheme#setHtmlUnderlineTextDecorationColor
    */
-  setUnderlineColor(underlineColor: number): MarkdownTheme
+  setUnderlineColor(underlineColor: ResourceColor): MarkdownTheme
 
   /**
    * 设置下划线样式
@@ -6445,6 +6487,13 @@ export class MarkdownNodeViewString {
 
 
   /**
+   * 设置根节点
+   * @param root 根节点
+   * @param codeBlockIsSeparate 是否单独代码块模式 - true：仅复制第一个代码块节点；第一个节点不是代码块则为空
+   */
+  setRoot(root: NodeView, codeBlockIsSeparate: boolean = false): void
+
+  /**
    * 获取全局文本
    * @return 全局文本
    */
@@ -6602,5 +6651,230 @@ export class MarkdownHighlightParagraph {
    * @param backgroundColor 选中文字的背景色
    */
   setSelectedParagraphBackgroundColor(backgroundColor: ResourceColor): void
+}
+```
+
+### class NodeView
+
+MarkdownNodeView（解析后的节点视图模型，CJMarkdown 内部按此模型渲染）
+
+```ets
+export class NodeView {
+  children: Array<NodeView> = Array<NodeView>() // 子节点列表
+  nodeType: string = "" // node类型
+  nodeText: string = "" // node文本内容
+  nodeHash: string = "0" // node自身标识
+  contentHash: string = "0" // node子节点标识
+  isParagraph: boolean = false // 是否在段落中
+  isHeading: boolean = false // 是否在标题中
+  headingLevel: number = 1 // 标题等级
+  headingID: string = "" // 标题ID
+  isTable: boolean = false // 是否在表格中
+  tableAlignment: HorizontalAlign = HorizontalAlign.Start // 表格列对齐方式
+  isTableHead: boolean = false // 是否在表格标题中
+  isTableBody: boolean = false // 是否在表格内容中
+  isTableRow: boolean = false // 是否在表格行中
+  isTableCell: boolean = false // 是否在表格列中
+  isTableCellPart: boolean = false // 是否在表格Part中
+  isDescList: boolean = false // 是否在定义列表中
+  isDescTerm: boolean = false // 是否在定义列表术语中
+  isBulletList: boolean = false // 是否在无序列表中
+  isOrderedList: boolean = false // 是否在有序列表中
+  orderedListNumber: number = 0 // 有序列表编号
+  isTaskList: boolean = false // 是否在任务列表中
+  isTaskListSelected: boolean = false // 任务列表是否选中
+  isQuote: boolean = false // 是否在块引用中
+  isFootnote: boolean = false // 是否在脚注中
+  footnoteID?: string = undefined // 脚注ID
+  isLatexMathBlock: boolean = false // 是否在块结构数学公式中
+  isLatexMathBlockClose: boolean = false // 块结构数学公式是否结束
+  isFontNode: boolean = false // 是否在FontNode中
+  fontNodeSize?: number = undefined // FontNode文本大小
+  fontNodeColor?: ResourceColor = undefined // FontNode文本颜色
+  isSpanNode: boolean = false // 是否在SpanNode中
+  spanNodeSize?: number = undefined // SpanNode文本大小
+  spanNodeWeight?: FontWeight = undefined // SpanNode文本加粗
+  spanNodeColor?: ResourceColor = undefined // SpanNode文本颜色
+  isEmphasis: boolean = false // 是否在斜体中
+  isStrongEmphasis: boolean = false // 是否在粗体中
+  isUnderlineNode: boolean = false // 是否在下划线中
+  isStrikethrough: boolean = false // 是否在删除线中
+  isHighlight: boolean = false // 是否在高亮文本中
+  isSubNode: boolean = false // 是否在下标中
+  isSupNode: boolean = false // 是否在上标中
+  isInLineCode: boolean = false // 是否在内联代码中
+  isLink: boolean = false // 是否在链接中
+  headLinkIndex?: number = undefined // HeadLink标识
+  linkUrl?: string = undefined // 链接URL
+  linkTitle?: string = undefined // 链接标题
+  imageUrl?: string = undefined // 图片URL
+  imageTitle?: string = undefined // 图片标题
+  imageAltText?: string = undefined // 图片Alt
+  imageStyleWidth?: number = undefined // 图片样式宽度（vp）
+  imageStyleHeight?: number = undefined // 图片样式高度（vp）
+  imageWidth?: number = undefined // 控件宽度（vp）
+  imageHeight?: number = undefined // 控件高度（vp）
+  imageNaturalWidth?: number = undefined // 图片原始宽度（px，onComplete回调中存储）
+  imageNaturalHeight?: number = undefined // 图片原始高度（px，onComplete回调中存储）
+  imageRadius?: Length = undefined // 图片圆角
+  imageAlign?: HorizontalAlign = undefined // 图片对齐方式
+  imageReplacePixelMap: PixelMap | undefined = undefined // 图片替换PixelMap（imageReplaceCallback异步加载后设置）
+  imageReplaceTried: boolean = false // 图片替换是否已尝试（防止重复请求）
+  latexPixelMap: PixelMap | undefined = undefined // 数学公式图片PixelMap（异步加载后设置）
+  latexImageData: ArrayBuffer | undefined = undefined // 数学公式图片原始数据
+  latexImageWidth: number = 0 // 数学公式图片宽度 - 单位px
+  latexImageHeight: number = 0 // 数学公式图片高度 - 单位px
+  latexIsLoading: boolean = false // 数学公式是否正在加载
+  codeInfo?: string = undefined // 代码块的代码类型
+  codeListTab?: Array<string> = undefined // 代码块列表标题
+  cardName?: string = undefined // 卡片名称
+  cardData?: string = undefined // 卡片内容
+  customTag?: string = undefined // 已注册的自定义HTML块级标签名（如 sdui）
+  customAttrs?: Record<string, string> = undefined // 自定义标签属性表
+  customContent?: string = undefined // 自定义标签开闭标签之间的内容
+  sourceSpan: Array<SourceSpan> = new Array<SourceSpan>() // 每个节点位置信息
+  isLinkStyle: boolean = false // 链接是否块状化（isLinkStyle=true时Link节点作为独立节点，不扁平化）
+  linkIconType: number = 0 // 链接图标类型（0=圆形,1=方形,2=空心方形带类型标签）
+  linkTypeStr: string = '' // 链接类型字符串（iconType=2时使用）
+  linkIconPixelMap: PixelMap | undefined = undefined // 链接图标PixelMap（C++原生绘图异步加载后设置）
+  linkIconTried: boolean = false // 链接图标是否已尝试生成（防止重复请求）
+  linkIconText: string = '' // 链接图标生成时使用的文本（用于检测流式输出中文本变化，避免显示过期图标）
+  linkIconWidth: number = 0 // 链接图标宽度 - 单位px
+  linkIconHeight: number = 0 // 链接图标高度 - 单位px
+  rangeStart: number = 0 // 链接在段落Text内容中的起始字符偏移（曝光评估前由渲染层写入）
+  rangeEnd: number = 0 // 链接在段落Text内容中的结束字符偏移（exclusive）
+
+  /**
+   * 全量数据拷贝（包括children、nodeType等所有属性）
+   * 用于就地更新NodeView属性，保持对象引用不变
+   * @param source 拷贝的NodeView
+   */
+  copyDataFrom(source: NodeView): void
+
+  /**
+   * 递归释放子树中所有节点持有的PixelMap资源（不含this自身）
+   */
+  releaseChildrenPixelMaps(): void
+
+  /**
+   * 释放自身持有的PixelMap资源（不递归子节点）
+   */
+  releaseOwnPixelMaps(): void
+
+  /**
+   * 属性拷贝
+   * @param source 拷贝的NodeView
+   */
+  copyStyleFrom(source: NodeView): void
+
+  /**
+   * 标记链接进入可见状态
+   * @return 是否本次发生了翻转（true=从不可见→可见，需上报 visible=true；false=已在可见态，不重复上报）
+   */
+  markLinkVisible(): boolean
+
+  /**
+   * 标记链接离开可见状态
+   * @return 是否本次发生了翻转（true=从可见→不可见，需上报 visible=false；false=本就不可见，不重复上报）
+   */
+  markLinkHidden(): boolean
+
+  /**
+   * 链接当前是否处于可见状态
+   */
+  isLinkVisible(): boolean
+}
+```
+
+### class TableHorizontalScrollSync
+
+表格横向滚动同步器（非 @Observed，不触发重渲染）；用于 sticky 表头模式下 header 与 body 的横向滚动联动
+
+```ets
+export class TableHorizontalScrollSync {
+  /**
+   * 注册 header 端 Scroller
+   * @param scroller header Scroll 的控制器
+   */
+  registerHeader(scroller: Scroller): void
+
+  /**
+   * 注册 body 端 Scroller
+   * @param scroller body Scroll 的控制器
+   */
+  registerBody(scroller: Scroller): void
+
+  /**
+   * 注销 header 端 Scroller
+   */
+  unregisterHeader(): void
+
+  /**
+   * 注销 body 端 Scroller
+   */
+  unregisterBody(): void
+
+  /**
+   * 通知 header 端发生了用户手势滚动
+   * @param xOffset header 当前绝对横向偏移
+   */
+  onHeaderScrolled(xOffset: number): void
+
+  /**
+   * 通知 body 端发生了用户手势滚动
+   * @param xOffset body 当前绝对横向偏移
+   */
+  onBodyScrolled(xOffset: number): void
+
+  /**
+   * 获取当前横向偏移
+   * @return 当前横向偏移（vp）
+   */
+  getOffset(): number
+
+  /**
+   * 重置偏移（表格销毁/数据清空时调用）
+   */
+  reset(): void
+}
+```
+
+### class StickyScrollYHolder
+
+外层滚动Y持有者（@Observed + 监听器模式）；通过 @Provide/@Consume 传递对象引用，经监听器通知表格更新吸顶偏移
+
+```ets
+export class StickyScrollYHolder {
+  y: number = -1 // 当前滚动Y
+  enabled: boolean = false // 是否启用 offset sticky 模式（页面传入 scrollController 时为 true）
+
+  /**
+   * 设置当前滚动Y（相同值不重复通知监听器）
+   * @param y 当前滚动Y
+   */
+  setY(y: number): void
+
+  /**
+   * 添加监听器
+   * @param l 监听器
+   */
+  addListener(l: (y: number) => void): void
+
+  /**
+   * 移除监听器
+   * @param l 监听器
+   */
+  removeListener(l: (y: number) => void): void
+}
+```
+
+### enum LatexMathColorFormat
+
+图片格式枚举（由 `@cangjie-tpc/formula_hybrid` 转导出）
+
+```ets
+export declare enum LatexMathColorFormat {
+  COLOR_FORMAT_RGB_565 = 0, // RGB_565
+  COLOR_FORMAT_BGRA_8888 = 1 // BGRA_8888
 }
 ```

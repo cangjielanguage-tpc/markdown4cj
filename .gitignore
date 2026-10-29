@@ -18,6 +18,7 @@
 **/build-script-cache
 oh-package-lock.json5
 log.txt
+/markdown_arkui/har/
 /stdx_bin
 skills-lock.json
 .agents
