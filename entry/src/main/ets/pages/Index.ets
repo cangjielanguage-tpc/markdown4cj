@@ -75,29 +75,35 @@ struct DemoPage {
 
   build() {
     Column() {
-      Row() {
+      Flex({ wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
         Button('获取' + this.indexCount)
+          .margin(3)
           .onClick(() => {
             this.indexList = this.setMarkdownTheme3()
             this.indexCount = this.indexList.length
           })
         Button('第一')
+          .margin(3)
           .onClick(() => {
             this.setMarkdownTheme(this.indexList[0])
           })
         Button('第二')
+          .margin(3)
           .onClick(() => {
             this.setMarkdownTheme(this.indexList[1])
           })
         Button('最后')
+          .margin(3)
           .onClick(() => {
             this.setMarkdownTheme(this.indexList[this.indexList.length - 1])
           })
         Button('清除第二')
+          .margin(3)
           .onClick(() => {
             this.setMarkdownTheme2(this.indexList[1])
           })
       }
+      .width('100%')
 
       Column() {
         CJMarkdown({

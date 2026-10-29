@@ -150,14 +150,14 @@ struct DemoDetailsPage {
         this.safeTop
       )
       if (this.showHighlight) {
-        Row() {
-          Button("获取所有高亮节点").fontSize(14)
+        Flex({ wrap: FlexWrap.Wrap, alignItems: ItemAlign.Center }) {
+          Button("获取所有高亮节点").fontSize(14).margin(3)
             .onClick(() => {
               this.highlightIndexList = this.markdownHighlight.getAllParagraphItems()
               hilog.error(1111, 'MarkdownCX', '所有ID：' + this.highlightIndexList)
             })
 
-          Button("上一个").fontSize(14)
+          Button("上一个").fontSize(14).margin(3)
             .onClick(() => {
               hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
               if (this.currentIndex < 0) {
@@ -172,7 +172,7 @@ struct DemoDetailsPage {
               hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
             })
 
-          Button("下一个").fontSize(14)
+          Button("下一个").fontSize(14).margin(3)
             .onClick(() => {
               hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
               if (this.currentIndex >= this.highlightIndexList.length) {
@@ -187,14 +187,16 @@ struct DemoDetailsPage {
               hilog.error(1111, 'MarkdownCX', '当前id：' + this.currentIndex)
             })
 
-          Button("清除所有").fontSize(14)
+          Button("清除所有").fontSize(14).margin(3)
             .onClick(() => {
               this.markdownHighlight.clearAllParagraphHighlights()
               this.currentIndex = -1
               this.currentItem = ''
             })
         }
-        .padding(3).margin(3).align(Alignment.Start)
+        .width('100%')
+        .padding(3)
+        .margin(3)
       }
       Scroll(this.scroller) {
         if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
