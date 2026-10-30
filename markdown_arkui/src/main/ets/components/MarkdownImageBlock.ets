@@ -92,6 +92,46 @@ export struct MarkdownImageBlock {
     }
   }
 
+  /**
+   * 统一宽高计算：写回图片原始宽高缓存，并用 imageWidthAndHeight 重算最终显示宽高。
+   * URL图onComplete与替换图就绪两条路径共用（对齐仓颉 cacheImageSizeToNode + imageWidthAndHeight）。
+   * fallbackRenderWidthPx：componentWidth未测量时用Image组件实际渲染宽度(px)兜底（仅onComplete路径有）。
+   */
+  private applyImageDimensions(rawWidth: number, rawHeight: number, fallbackRenderWidthPx?: number): void {
+    if (rawWidth <= 0 || rawHeight <= 0) {
+      return
+    }
+    this.item.imageNaturalWidth = rawWidth
+    this.item.imageNaturalHeight = rawHeight
+    const effectiveWidth: number = this.componentWidth > 0
+      ? this.componentWidth
+      : (fallbackRenderWidthPx !== undefined ? px2vp(fallbackRenderWidthPx) : 0)
+    if (effectiveWidth <= 0) {
+      return
+    }
+    const l = imageWidthAndHeight(
+      effectiveWidth,
+      rawWidth,
+      rawHeight,
+      (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
+      (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
+      (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
+      (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
+      this.imageTheme.imageMaxWidth,
+      this.imageTheme.imageMaxHeight,
+      this.imageTheme.imageFixedRatioWidth,
+      this.imageTheme.imageMaximumWidth
+    )
+    if (l[0] > 0 && l[1] > 0) {
+      const newWidth = px2vp(l[0])
+      const newHeight = px2vp(l[1])
+      if (this.item.imageWidth !== newWidth || this.item.imageHeight !== newHeight) {
+        this.item.imageWidth = newWidth
+        this.item.imageHeight = newHeight
+      }
+    }
+  }
+
   aboutToDisappear(): void {
     this.isAlive = false
     if (this.replacePixelMap !== undefined) {
@@ -139,28 +179,7 @@ export struct MarkdownImageBlock {
             if (imageLoadResult === undefined || imageLoadResult === null) {
               return
             }
-            this.item.imageNaturalWidth = imageLoadResult.width
-            this.item.imageNaturalHeight = imageLoadResult.height
-            const effectiveWidth: number = this.componentWidth > 0
-              ? this.componentWidth
-              : px2vp(imageLoadResult.componentWidth)
-            const l = imageWidthAndHeight(
-              effectiveWidth,
-              imageLoadResult.width,
-              imageLoadResult.height,
-              (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
-              (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
-              (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
-              (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
-              this.imageTheme.imageMaxWidth,
-              this.imageTheme.imageMaxHeight,
-              this.imageTheme.imageFixedRatioWidth,
-              this.imageTheme.imageMaximumWidth
-            )
-            if (l[0] > 0 && l[1] > 0) {
-              this.item.imageWidth = px2vp(l[0])
-              this.item.imageHeight = px2vp(l[1])
-            }
+            this.applyImageDimensions(imageLoadResult.width, imageLoadResult.height, imageLoadResult.componentWidth)
           })
       } else if (this.imageReplaceCallback === undefined || this.replaceFailed) {
         // 未配置图片替换 或 替换失败 → 直接用URL加载
@@ -196,28 +215,7 @@ export struct MarkdownImageBlock {
             if (imageLoadResult === undefined || imageLoadResult === null) {
               return
             }
-            this.item.imageNaturalWidth = imageLoadResult.width
-            this.item.imageNaturalHeight = imageLoadResult.height
-            const effectiveWidth: number = this.componentWidth > 0
-              ? this.componentWidth
-              : px2vp(imageLoadResult.componentWidth)
-            const l = imageWidthAndHeight(
-              effectiveWidth,
-              imageLoadResult.width,
-              imageLoadResult.height,
-              (this.item.imageStyleWidth !== undefined ? vp2px(this.item.imageStyleWidth) : undefined) ??
-              (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
-              (this.item.imageStyleHeight !== undefined ? vp2px(this.item.imageStyleHeight) : undefined) ??
-              (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
-              this.imageTheme.imageMaxWidth,
-              this.imageTheme.imageMaxHeight,
-              this.imageTheme.imageFixedRatioWidth,
-              this.imageTheme.imageMaximumWidth
-            )
-            if (l[0] > 0 && l[1] > 0) {
-              this.item.imageWidth = px2vp(l[0])
-              this.item.imageHeight = px2vp(l[1])
-            }
+            this.applyImageDimensions(imageLoadResult.width, imageLoadResult.height, imageLoadResult.componentWidth)
           })
       } else {
         // 图片替换中 → 仅显示占位图，避免先渲染URL图片再切换导致闪屏
@@ -252,7 +250,7 @@ export struct MarkdownImageBlock {
         this.downloadButtonComponent()
       }
     }
-    .alignItems(HorizontalAlign.Center)
+    .alignItems(this.item.imageAlign ?? HorizontalAlign.Start) // 图片对齐：节点值优先，未设置时默认Start（对齐仓颉 urlCallbackHorizontalAlign）
   }
 
   /**
@@ -346,6 +344,10 @@ export struct MarkdownImageBlock {
           }
         }
         this.replacePixelMap = pm
+        // 对齐仓颉 imageCallbackPixelmap：用替换图自身原始宽高重算最终显示尺寸并写回节点缓存
+        //（替换图与原URL图宽高比可能不同，沿用原图尺寸会拉伸变形；写回imageNatural*供增量刷新复用）
+        const pmInfo = pm.getImageInfoSync()
+        this.applyImageDimensions(pmInfo.size.width, pmInfo.size.height)
       }).catch((e: Error) => {
         console.error('ImageBlock createPixelMap failed: ' + (e instanceof Error ? e.stack : String(e)))
         try {
