@@ -27,6 +27,7 @@ import { MarkDownTableTitle } from "./MarkdownTableTitle"
 import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 import { lengthToVpNumber } from "../utils/MarkdownUtils"
 import { ExposureRectSnapshot } from "../utils/MarkdownExposureUtils"
+import { TableScrollState } from "../model/TableScrollState"
 
 /**
  * 表格控件
@@ -74,6 +75,7 @@ export struct MarkdownTable {
   @Provide cellWidthTracker: CellWidthTracker = new CellWidthTracker(0) // 列宽跟踪器（非@Observed，onSizeChange只写不触发重渲染）
   @Provide('tableColumnWidths') columnWidths: number[] = [] // 列宽快照（@Provide让TableCell通过@Consume直接读取，避免LazyForEach不刷新@Prop的问题）
   @Provide('mdTableContainerSnap') tableContainerSnap: ExposureRectSnapshot = new ExposureRectSnapshot() // 表格横向body Scroll容器页面矩形快照（容器onAreaChange逐帧推送，@Provide共享给TableCell做链接曝光水平裁剪）
+  @Provide('mdTableScrollState') tableScrollState: TableScrollState = new TableScrollState() // 表格横滚偏移共享（非@Observed，onScroll只写不广播重渲染；cell注册监听器感知横滚）
   private isAlive: boolean = true // 组件是否存活
   private prevEvenWidth: number = 0 // 上次的evenWidth（componentWidth/列数），用于判断是否需要reset
   // ===== sticky 模式专用 =====
@@ -394,9 +396,10 @@ export struct MarkdownTable {
         .scrollBar(this.tableTheme.tableScrollBarState)
         .scrollBarColor(this.tableTheme.tableScrollBarColor)
         .onAreaChange((_oldArea: Area, newArea: Area) => {
-          // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化（含横向滚动逐帧）都刷新 tableContainerSnap，
-          // 供 TableCell（@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。
-          // 评估只读快照零查询。rootTop 传 0（不用垂直信息）。
+          // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化都刷新 tableContainerSnap，供 TableCell
+          // （@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。评估只读快照零查询。
+          // rootTop 传 0（不用垂直信息）。注：横滚时 Scroll 自身页面矩形不变，本回调不触发，
+          // 横滚感知走下方 onScroll → TableScrollState 广播。
           if (!this.isExposureEnabled()) {
             return
           }
@@ -410,6 +413,16 @@ export struct MarkdownTable {
           const w: number = newArea.width as number
           const h: number = newArea.height as number
           this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
+        })
+        .onScroll((xOffset: number, _yOffset: number) => {
+          // 横滚逐帧广播（垂直 estimateTop 的水平对称）：Scroll 自身页面矩形不随内容滚动变化，
+          // onAreaChange 不会触发；cell 注册监听器收到广播后用「采样时偏移基准」平推 cellLeft。
+          // 未启用曝光时不写偏移也不广播（cell 侧已全链路短路，省 Set 遍历）。
+          if (!this.isExposureEnabled()) {
+            return
+          }
+          this.tableScrollState.x = xOffset
+          this.tableScrollState.notify()
         })
       }
       .backgroundColor(this.globalTheme.backgroundColor)
@@ -577,9 +590,10 @@ export struct MarkdownTable {
     .scrollBar(this.tableTheme.tableScrollBarState)
     .scrollBarColor(this.tableTheme.tableScrollBarColor)
     .onAreaChange((_oldArea: Area, newArea: Area) => {
-      // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化（含横向滚动逐帧）都刷新 tableContainerSnap，
-      // 供 TableCell（@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。
-      // 评估只读快照零查询。rootTop 传 0（不用垂直信息）。
+      // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化都刷新 tableContainerSnap，供 TableCell
+      // （@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。评估只读快照零查询。
+      // rootTop 传 0（不用垂直信息）。注：横滚时 Scroll 自身页面矩形不变，本回调不触发，
+      // 横滚感知走下方 onScroll → TableScrollState 广播。
       if (!this.isExposureEnabled()) {
         return
       }
@@ -593,6 +607,16 @@ export struct MarkdownTable {
       const w: number = newArea.width as number
       const h: number = newArea.height as number
       this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
+    })
+    .onScroll((xOffset: number, _yOffset: number) => {
+      // 横滚逐帧广播（垂直 estimateTop 的水平对称）：Scroll 自身页面矩形不随内容滚动变化，
+      // onAreaChange 不会触发；cell 注册监听器收到广播后用「采样时偏移基准」平推 cellLeft。
+      // 未启用曝光时不写偏移也不广播（cell 侧已全链路短路，省 Set 遍历）。
+      if (!this.isExposureEnabled()) {
+        return
+      }
+      this.tableScrollState.x = xOffset
+      this.tableScrollState.notify()
     })
     .onScrollFrameBegin((offset: number, state: ScrollState) => {
       if (state !== ScrollState.Idle) {
@@ -748,9 +772,10 @@ export struct MarkdownTable {
       .scrollBar(this.tableTheme.tableScrollBarState)
       .scrollBarColor(this.tableTheme.tableScrollBarColor)
       .onAreaChange((_oldArea: Area, newArea: Area) => {
-        // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化（含横向滚动逐帧）都刷新 tableContainerSnap，
-        // 供 TableCell（@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。
-        // 评估只读快照零查询。rootTop 传 0（不用垂直信息）。
+        // 布局事件推送容器快照（缺陷1/3）：位置/尺寸变化都刷新 tableContainerSnap，供 TableCell
+        // （@Consume）做链接曝光的水平裁剪。页面坐标系（globalPosition）。评估只读快照零查询。
+        // rootTop 传 0（不用垂直信息）。注：横滚时 Scroll 自身页面矩形不变，本回调不触发，
+        // 横滚感知走下方 onScroll → TableScrollState 广播。
         if (!this.isExposureEnabled()) {
           return
         }
@@ -764,6 +789,16 @@ export struct MarkdownTable {
         const w: number = newArea.width as number
         const h: number = newArea.height as number
         this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
+      })
+      .onScroll((xOffset: number, _yOffset: number) => {
+        // 横滚逐帧广播（垂直 estimateTop 的水平对称）：Scroll 自身页面矩形不随内容滚动变化，
+        // onAreaChange 不会触发；cell 注册监听器收到广播后用「采样时偏移基准」平推 cellLeft。
+        // 未启用曝光时不写偏移也不广播（cell 侧已全链路短路，省 Set 遍历）。
+        if (!this.isExposureEnabled()) {
+          return
+        }
+        this.tableScrollState.x = xOffset
+        this.tableScrollState.notify()
       })
       .onScrollFrameBegin((offset: number, state: ScrollState) => {
         if (state !== ScrollState.Idle) {

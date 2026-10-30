@@ -22,6 +22,7 @@ import { text } from "@kit.ArkGraphics2D"
 import { PromptAction } from "@kit.ArkUI"
 import { MarkdownVisibleRectHolder, MarkdownVisibleRectSnapshot } from "../model/MarkdownVisibleRectHolder"
 import { MarkdownExposureAttributeModifier } from "../utils/MarkdownExposureAttributeModifier"
+import { TableScrollState } from "../model/TableScrollState"
 import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
 import { BoldTheme } from "../theme/BoldTheme"
 import { DefinitionListTheme } from "../theme/DefinitionListTheme"
@@ -112,6 +113,9 @@ export struct MarkdownTableCell {
   // 表格横向body Scroll容器页面矩形快照（MarkdownTable 的容器 onAreaChange 逐帧推送，@Consume 同步）。
   // cell 滚出容器水平范围 = 被表格横向clip = 不可见。只读 left/width（水平裁剪用）。
   @Consume('mdTableContainerSnap') tableContainerSnap: ExposureRectSnapshot
+  // 表格横滚偏移共享（MarkdownTable 的 body Scroll onScroll 逐帧更新+广播，@Consume 同步引用）。
+  // 非@Observed：引用恒定不触发重渲染；横滚感知走监听器（aboutToAppear 注册）。
+  @Consume('mdTableScrollState') tableScrollState: TableScrollState
   // CJMarkdown 根节点可见矩形（页面坐标系 px）。垂直裁剪窗口=cell全局rect与该矩形求交，
   // 替代整屏高度——避免 cell 被标题栏/面板/系统栏遮挡时仍判可见（过报）。与 MarkdownParagraph 对称。
   @Consume('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder
@@ -129,7 +133,8 @@ export struct MarkdownTableCell {
   private cellId: string = '' // 格内Text组件id：低频位置采样查询（getRectangleById 按 id 定位）用
   private rectBaseDirty: boolean = true // 布局base是否需重采样（首次/尺寸变化/ratio校验发现漂移时置脏，评估入口采样一次）
   private pendingRatio: number = -1 // onVisibleAreaChange 最近一次真实可见比例（-1=无），供评估时校验平推位置是否漂移
-  private contLeftAtSample: number = Number.NaN // 采样base时容器的窗口left（NaN=未就绪）：横滚平推用，cell相对容器的水平偏移在横滚中恒定
+  private contLeftAtSample: number = Number.NaN // 采样base时容器的窗口left（NaN=未就绪）：整表平移修正用，cell相对容器的水平偏移在无重排时恒定
+  private contScrollXAtSample: number = 0 // 采样base时容器横滚偏移（vp）：横滚平推基准，cell相对滚动内容的水平偏移在横滚中恒定
   private exposureTimerId: number = -1 // 曝光评估节流定时器
   @State exposureModifier: MarkdownExposureAttributeModifier = new MarkdownExposureAttributeModifier() // 曝光回调条件注册（未启用曝光零注册零税）
   private exposureRegistered: boolean = false // modifier 当前是否已按"启用"注册（翻转检测用）
@@ -137,6 +142,8 @@ export struct MarkdownTableCell {
   private screenWidthPx: number = 0 // 屏幕宽度(px，兜底用：容器快照未就绪时水平右边界退化)
   // CJMarkdown根可见矩形变化监听器（滚动/根尺寸变化时重算曝光）。aboutToAppear注册/aboutToDisappear注销。
   private visibleRectListener: (r: MarkdownVisibleRectSnapshot) => void = () => {}
+  // 表格横滚变化监听器（横滚逐帧广播触发重评，感知链接水平进出）。aboutToAppear注册/aboutToDisappear注销。
+  private tableScrollListener: () => void = () => {}
   private prevTextLength: number = 0 // 上次list的文本总长度，用于检测内容缩短时清除列宽（如原始markdown→渲染后的链接）
 
   @State textBackgroundColor: ResourceColor = COLOR_TRANSPARENT // 被长按段落实时背景颜色
@@ -174,12 +181,19 @@ export struct MarkdownTableCell {
       this.scheduleExposure()
     }
     this.visibleRectHolder.addListener(this.visibleRectListener)
+    // 横滚监听器无条件注册（同上时序考虑）：onScroll 广播每帧触发，由 scheduleExposure
+    // 的曝光开关门控+防抖合并；未启用曝光时 Table 侧已短路不广播，这里是双保险。
+    this.tableScrollListener = () => {
+      this.scheduleExposure()
+    }
+    this.tableScrollState.addListener(this.tableScrollListener)
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
     // 监听器在 aboutToAppear 无条件注册，故此处无条件移除（removeListener 对未注册者是 no-op，安全）
     this.visibleRectHolder.removeListener(this.visibleRectListener)
+    this.tableScrollState.removeListener(this.tableScrollListener)
     if (this.exposureTimerId !== -1) {
       clearTimeout(this.exposureTimerId)
       this.exposureTimerId = -1
@@ -341,6 +355,7 @@ export struct MarkdownTableCell {
       this.rectSnap.capture(rect.windowOffset.x, rect.windowOffset.y,
         rect.size.width, rect.size.height, this.visibleRectHolder.rectTop)
       this.contLeftAtSample = this.tableContainerSnap.valid() ? this.tableContainerSnap.left : Number.NaN
+      this.contScrollXAtSample = this.tableScrollState.x // 横滚平推基准（与estimateTop的rootTop对称）
     } catch (e) {
       this.rectBaseDirty = true // 查询异常（组件销毁等），下次评估再试
     }
@@ -372,10 +387,15 @@ export struct MarkdownTableCell {
       // 格内Text相对窗口的矩形（px）：垂直平推（estimateTop：滚动刚性，相对根偏移恒定）
       const cellTop: number = Number.isNaN(rootTop) ? this.rectSnap.top : this.rectSnap.estimateTop(rootTop)
       const cellBottom: number = cellTop + this.rectSnap.height
-      // 水平平推（横滚刚性：cell 相对容器的水平偏移恒定）；容器未就绪时退化为采样值
-      let cellLeft: number = this.rectSnap.left
+      // 水平平推（两级正交修正）：
+      // 1. 横滚平推：cell相对滚动内容的水平偏移在横滚中恒定（Scroll内容左移=cell页面x减小），
+      //    cellLeft -= 当前横滚偏移 − 采样时偏移（vp差值经vp2px转px）
+      // 2. 整表平移修正：cell相对容器的水平偏移在无重排时恒定（窗口resize等整表页面平移），
+      //    cellLeft = 容器当前left + (cellLeft修正后 − 采样时容器left)
+      // 容器未就绪时退化为采样值。
+      let cellLeft: number = this.rectSnap.left - vp2px(this.tableScrollState.x - this.contScrollXAtSample)
       if (!Number.isNaN(this.contLeftAtSample) && this.tableContainerSnap.valid()) {
-        cellLeft = this.tableContainerSnap.left + (this.rectSnap.left - this.contLeftAtSample)
+        cellLeft = this.tableContainerSnap.left + (cellLeft - this.contLeftAtSample)
       }
       const cellRight: number = cellLeft + this.rectSnap.width
       const useVis: boolean = this.visibleRectHolder.visReady

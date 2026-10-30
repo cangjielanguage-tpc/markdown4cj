@@ -42,8 +42,9 @@ export class MarkdownExposureAttributeModifier implements AttributeModifier<Text
           (_v: boolean, ratio: number) => this.visibleRatioCallback!(ratio))
       }
     } else {
-      instance.onSizeChange(undefined) // onSizeChange 支持传 undefined 注销
-      // onVisibleAreaChange 已注册过的无法在此注销（无重载），组件回调内门控兜底
+      // onSizeChange 的 SDK 类型参数非可选（common.d.ts: onSizeChange(event: SizeChangeCallback)），
+      // 无法经 modifier 传 undefined 注销（onVisibleAreaChange 同样无 undefined 重载）。
+      // 启用→禁用翻转后已注册回调由组件回调内的 isExposureEnabled 门控短路（回调首行布尔判断）。
     }
   }
 }
