@@ -148,20 +148,16 @@ export interface ExposureEvalResult {
 }
 
 /**
- * 单个组件的布局快照（窗口坐标系 px，来源 getRectangleById 的 windowOffset）。
+ * 单个组件的布局快照（窗口坐标系 px）。
  *
- * 块级矩形既不逐帧推送也不按 id 主动查询（componentUtils/UIContext 版底层都是
+ * 当前唯一用途：表格横向 body Scroll 容器的页面矩形（MarkdownTable @Provide
+ * 'mdTableContainerSnap'，容器 onAreaChange 逐帧推送刷新，TableCell @Consume 消费），
+ * 供链接曝光评估做水平求交裁剪。
+ *
+ * 说明：块级矩形既不逐帧推送也不按 id 主动查询（componentUtils/UIContext 版底层都是
  * Inspector::GetInspectorByKey 全窗口组件树线性查找 + 构建 Inspector JSON，单次≈423µs，
- * 不能放进逐帧曝光链路）。改为「低频采样 + 刚性平推」：
- *   - 采样：仅内容/尺寸变化或 ratio 校验发现漂移时，组件 sampleRectBase 调 getRectangleById 一次 capture
- *     （频率=内容变化频率，滚动全程零查询）；
- *   - 平推：滚动是刚性的，块相对根 List 的偏移在内容不变时恒定，评估时用 estimateTop 按根矩形
- *     位移纯算术推算当前位置，评估只读快照。
- *
- * 平推位置漂移（前序内容重排移动了本块）由组件 onVisibleAreaChange 的真实 ratio 校验发现并自愈
- * （理论 ratio 与真实 ratio 偏差>0.02 时重采样，最多两遍循环）。
- * 根 List 内部滚动（固定高度模式）不改变根矩形、不会触发 holder 广播，这类位移由各块自身
- * onVisibleAreaChange 跨阈值事件触发评估兜底。
+ * 不能放进逐帧曝光链路）——块自身矩形已改由 MarkdownNodeRectReader 句柄直读，
+ * 不再走本快照的「低频采样 + 刚性平推」机制。
  */
 export class ExposureRectSnapshot {
   /** 组件窗口左边界（px） */
@@ -172,7 +168,7 @@ export class ExposureRectSnapshot {
   width: number = 0
   /** 组件高度（px） */
   height: number = 0
-  /** 记录快照时的根矩形窗口顶（px），用于 estimateTop 平推；无根上下文的快照（表格容器）传 0 */
+  /** 记录快照时的根矩形窗口顶（px）；表格容器快照不用垂直信息固定传 0 */
   rootTop: number = Number.NaN
 
   capture(left: number, top: number, width: number, height: number, rootTop: number): void {
@@ -186,11 +182,6 @@ export class ExposureRectSnapshot {
   /** 快照是否可用于评估（已被 onAreaChange 捕获过、坐标有效） */
   valid(): boolean {
     return !Number.isNaN(this.top) && !Number.isNaN(this.rootTop)
-  }
-
-  /** 按当前根矩形顶推算组件当前的窗口上边界（纯算术） */
-  estimateTop(rootTop: number): number {
-    return this.top + (rootTop - this.rootTop)
   }
 }
 

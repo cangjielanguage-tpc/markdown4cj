@@ -415,8 +415,8 @@ export struct MarkdownTable {
           this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
         })
         .onScroll((xOffset: number, _yOffset: number) => {
-          // 横滚逐帧广播（垂直 estimateTop 的水平对称）：Scroll 自身页面矩形不随内容滚动变化，
-          // onAreaChange 不会触发；cell 注册监听器收到广播后用「采样时偏移基准」平推 cellLeft。
+          // 横滚逐帧广播：Scroll 自身页面矩形不随内容滚动变化，onAreaChange 不会触发；
+          // cell 注册监听器收到广播后重评（evaluateExposure 直读实时窗口矩形，天然含横滚位置）。
           // 未启用曝光时不写偏移也不广播（cell 侧已全链路短路，省 Set 遍历）。
           if (!this.isExposureEnabled()) {
             return
@@ -609,8 +609,8 @@ export struct MarkdownTable {
       this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
     })
     .onScroll((xOffset: number, _yOffset: number) => {
-      // 横滚逐帧广播（垂直 estimateTop 的水平对称）：Scroll 自身页面矩形不随内容滚动变化，
-      // onAreaChange 不会触发；cell 注册监听器收到广播后用「采样时偏移基准」平推 cellLeft。
+      // 横滚逐帧广播：Scroll 自身页面矩形不随内容滚动变化，onAreaChange 不会触发；
+      // cell 注册监听器收到广播后重评（evaluateExposure 直读实时窗口矩形，天然含横滚位置）。
       // 未启用曝光时不写偏移也不广播（cell 侧已全链路短路，省 Set 遍历）。
       if (!this.isExposureEnabled()) {
         return
@@ -791,8 +791,8 @@ export struct MarkdownTable {
         this.tableContainerSnap.capture(vp2px(x), vp2px(y), vp2px(w), vp2px(h), 0)
       })
       .onScroll((xOffset: number, _yOffset: number) => {
-        // 横滚逐帧广播（垂直 estimateTop 的水平对称）：Scroll 自身页面矩形不随内容滚动变化，
-        // onAreaChange 不会触发；cell 注册监听器收到广播后用「采样时偏移基准」平推 cellLeft。
+        // 横滚逐帧广播：Scroll 自身页面矩形不随内容滚动变化，onAreaChange 不会触发；
+        // cell 注册监听器收到广播后重评（evaluateExposure 直读实时窗口矩形，天然含横滚位置）。
         // 未启用曝光时不写偏移也不广播（cell 侧已全链路短路，省 Set 遍历）。
         if (!this.isExposureEnabled()) {
           return

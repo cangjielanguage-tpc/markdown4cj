@@ -56,6 +56,7 @@ export struct CJMarkdown {
   private isAlive: boolean = true // 组件是否存活
   private throttleTimerId: number = -1 // 节流定时器ID
   private parseTimerId: number = -1 // 异步解析setTimeout定时器ID
+  private exposureFallbackTimerId: number = -1 // 曝光兜底轮询setInterval定时器ID
   private indexFootnoteHashMap: Map<string, number> = new Map<string, number>() // 脚注ID→列表索引映射
   private indexTocHashMap: Map<number, number> = new Map<number, number>() // TOC标题索引→列表索引映射
 
@@ -170,10 +171,26 @@ export struct CJMarkdown {
     }
     this.refreshData() // 首次加载
     this.loadPlaceholderImage() // 占位图处理
+    // 曝光兜底轮询：holder 广播仅由根 List 布局事件驱动，覆盖不到的位移场景
+    // （固定高度模式根 List 内滚、订阅者边界回填滞后等非框架推送位移）由低频轮询兜底，
+    // 每 100ms 无条件 forceNotify 一次（notify 内部有视口外过滤，未启用曝光时直接短路）。
+    // 无条件启动：aboutToAppear 时刻曝光配置可能尚未同步（refreshData 异步首跑，
+    // 此刻 elementExposureCallback 可能是 undefined），此处门控会永久错过启动时机；
+    // 改由回调内每次 isExposureEnabled 门控——未启用时每 100ms 仅一次布尔判断，零回调税。
+    this.exposureFallbackTimerId = setInterval(() => {
+      if (!this.isAlive || !this.isExposureEnabled()) {
+        return
+      }
+      this.visibleRectHolder.forceNotify()
+    }, 100)
   }
 
   aboutToDisappear(): void {
     this.isAlive = false
+    if (this.exposureFallbackTimerId !== -1) {
+      clearInterval(this.exposureFallbackTimerId)
+      this.exposureFallbackTimerId = -1
+    }
     if (this.scrollController) {
       this.scrollController.setListener(null)
     }
