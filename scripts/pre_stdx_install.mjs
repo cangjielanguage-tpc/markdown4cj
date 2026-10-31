@@ -1,5 +1,5 @@
-// scripts/pre-install.mjs
-import { execSync } from 'child_process';
+// scripts/pre_stdx_install.mjs
+import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,99 +7,99 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
-// stdx configuration for download
-const ARM64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie_stdx/releases/download/v1.1.3.1/cangjie-stdx-ohos-aarch64-1.1.3.1.zip';
-const ARM64_ZIP_FILENAME = 'cangjie-stdx-ohos-aarch64-1.1.3.1.zip';
-const ARM64_ZIP_TEMP_PATH = path.join(PROJECT_ROOT, ARM64_ZIP_FILENAME);
+// ---------- stdx 配置 ----------
+const STDX_VERSION = '1.1.3.1';
+const STDX_BASE_URL = `https://gitcode.com/Cangjie/cangjie_stdx/releases/download/v${STDX_VERSION}`;
+const STDX_EXTRACT_PATH = path.join(PROJECT_ROOT, 'stdx_bin');
+// aarch64 全平台必需；x64 仅 Windows 本机需要
+const STDX_PACKAGES = [
+  { arch: 'aarch64', dir: 'linux_ohos_aarch64_cjnative', required: true },
+  { arch: 'x64', dir: 'linux_ohos_x86_64_cjnative', required: process.platform === 'win32' },
+];
 
-const X64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie_stdx/releases/download/v1.1.3.1/cangjie-stdx-ohos-x64-1.1.3.1.zip';
-const X64_ZIP_FILENAME = 'cangjie-stdx-linux-x64-1.1.3.1.zip';
-const X64_ZIP_TEMP_PATH = path.join(PROJECT_ROOT, X64_ZIP_FILENAME);
+// ---------- formula-ffi har 配置 ----------
+const HAR_URL = 'https://gitcode.com/Cangjie-TPC/formula-ffi/releases/download/v2.0.0/formula_6.1.1-v2.0.0.har';
+// 落盘统一命名 formula.har，与 markdown_hybrid/oh-package.json5 的 file:./har/formula.har 引用保持一致
+const HAR_PATH = path.join(PROJECT_ROOT, 'markdown_hybrid', 'har', 'formula.har');
 
-const EXTRACT_PATH = path.join(PROJECT_ROOT, 'stdx_bin');
-
-// Download and extract stdx bin file
-if (!fs.existsSync(EXTRACT_PATH)) {
-  console.log(`Downloading required files...`);
-  try {
-      // Create directory if it doesn't exist
-      fs.mkdirSync(EXTRACT_PATH, { recursive: true });
-
-      // Download ARM64 version
-      console.log(`Downloading ARM64 version...`);
-      execSync(`curl -L -o ${ARM64_ZIP_TEMP_PATH} ${ARM64_ZIP_URL}`, {
-          stdio: 'inherit',
-          cwd: PROJECT_ROOT
-      });
-
-      // Check if file exists and has content
-      if (fs.existsSync(ARM64_ZIP_TEMP_PATH)) {
-          const stats = fs.statSync(ARM64_ZIP_TEMP_PATH);
-          if (stats.size === 0) {
-              console.error(`ARM64 ZIP file is empty, download failed`);
-              fs.unlinkSync(ARM64_ZIP_TEMP_PATH);
-              process.exit(1);
-          }
-      } else {
-          console.error(`ARM64 ZIP file not found`);
-          process.exit(1);
-      }
-
-      // Extract ARM64 version
-      console.log(`Extracting ARM64 version...`);
-      execSync(`tar -xf ${ARM64_ZIP_TEMP_PATH} -C ${EXTRACT_PATH}`, {
-          stdio: 'inherit',
-          cwd: PROJECT_ROOT
-      });
-
-      // Clean up ARM64 temp file
-      fs.unlinkSync(ARM64_ZIP_TEMP_PATH);
-
-      // Download X64 version if on Windows
-      if (process.platform === 'win32') {
-          console.log(`Downloading X64 version...`);
-          execSync(`curl -L -o ${X64_ZIP_TEMP_PATH} ${X64_ZIP_URL}`, {
-              stdio: 'inherit',
-              cwd: PROJECT_ROOT
-          });
-
-          // Check if file exists and has content
-          if (fs.existsSync(X64_ZIP_TEMP_PATH)) {
-              const stats = fs.statSync(X64_ZIP_TEMP_PATH);
-              if (stats.size === 0) {
-                  console.error(`X64 ZIP file is empty, download failed`);
-                  fs.unlinkSync(X64_ZIP_TEMP_PATH);
-                  process.exit(1);
-              }
-          } else {
-              console.error(`X64 ZIP file not found`);
-              process.exit(1);
-          }
-
-          // Extract X64 version
-          console.log(`Extracting X64 version...`);
-          execSync(`tar -xf ${X64_ZIP_TEMP_PATH} -C ${EXTRACT_PATH}`, {
-              stdio: 'inherit',
-              cwd: PROJECT_ROOT
-          });
-
-          // Clean up X64 temp file
-          fs.unlinkSync(X64_ZIP_TEMP_PATH);
-      }
-
-      console.log(`All files downloaded and extracted successfully`);
-
-  } catch (error) {
-      console.error(`Download or extraction failed: ${error.message}`);
-      // Clean up if partially downloaded
-      if (fs.existsSync(ARM64_ZIP_TEMP_PATH)) {
-          fs.unlinkSync(ARM64_ZIP_TEMP_PATH);
-      }
-      if (fs.existsSync(X64_ZIP_TEMP_PATH)) {
-          fs.unlinkSync(X64_ZIP_TEMP_PATH);
-      }
-      process.exit(1);
-  }
-} else {
-  console.log(`Directory ${EXTRACT_PATH} already exists, skipping.`);
+function download(url, dest) {
+  console.log(`Downloading ${path.basename(dest)} ...`);
+  execFileSync('curl', ['-L', '--fail', '--retry', '3', '-o', dest, url], { stdio: 'inherit' });
 }
+
+function assertDownloaded(file, url) {
+  if (!fs.existsSync(file) || fs.statSync(file).size === 0) {
+    throw new Error(`downloaded file missing or empty: ${url}`);
+  }
+}
+
+function extractZip(zip, destDir) {
+  console.log(`Extracting ${path.basename(zip)} ...`);
+  if (process.platform === 'win32') {
+    // PowerShell 单引号成对转义，防路径特殊字符破坏命令
+    const quote = (p) => `'${p.replace(/'/g, "''")}'`;
+    execFileSync('powershell', ['-NoProfile', '-Command', `Expand-Archive -LiteralPath ${quote(zip)} -DestinationPath ${quote(destDir)} -Force`], { stdio: 'inherit' });
+  } else {
+    execFileSync('unzip', ['-o', zip, '-d', destDir], { stdio: 'inherit' });
+  }
+}
+
+// stdx 解压完整性：各必需架构的 dynamic/stdx 目录必须存在（防解压中断残留残缺目录）
+function stdxReady() {
+  return STDX_PACKAGES
+    .filter((pkg) => pkg.required)
+    .every((pkg) => fs.existsSync(path.join(STDX_EXTRACT_PATH, pkg.dir, 'dynamic', 'stdx')));
+}
+
+// ---------- 1. stdx：已完整则跳过，否则逐包下载解压 ----------
+if (stdxReady()) {
+  console.log(`${STDX_EXTRACT_PATH} already exists and is complete, skipping.`);
+} else {
+  fs.mkdirSync(STDX_EXTRACT_PATH, { recursive: true });
+  try {
+    for (const pkg of STDX_PACKAGES) {
+      if (!pkg.required) {
+        continue;
+      }
+      const url = `${STDX_BASE_URL}/cangjie-stdx-ohos-${pkg.arch}-${STDX_VERSION}.zip`;
+      const tempPath = path.join(PROJECT_ROOT, path.basename(url));
+      try {
+        download(url, tempPath);
+        assertDownloaded(tempPath, url);
+        extractZip(tempPath, STDX_EXTRACT_PATH);
+      } finally {
+        // 无论成功失败都清理临时压缩包
+        if (fs.existsSync(tempPath)) {
+          fs.unlinkSync(tempPath);
+        }
+      }
+    }
+    if (!stdxReady()) {
+      throw new Error('stdx extraction incomplete: dynamic/stdx missing');
+    }
+    console.log('stdx downloaded and extracted successfully.');
+  } catch (error) {
+    console.error(`stdx install failed: ${error.message}`);
+    process.exit(1);
+  }
+}
+
+// ---------- 2. formula-ffi har：已存在则跳过 ----------
+if (fs.existsSync(HAR_PATH) && fs.statSync(HAR_PATH).size > 0) {
+  console.log(`${HAR_PATH} already exists, skipping.`);
+} else {
+  fs.mkdirSync(path.dirname(HAR_PATH), { recursive: true });
+  try {
+    download(HAR_URL, HAR_PATH);
+    assertDownloaded(HAR_PATH, HAR_URL);
+    console.log('formula har downloaded successfully.');
+  } catch (error) {
+    console.error(`har download failed: ${error.message}`);
+    if (fs.existsSync(HAR_PATH)) {
+      fs.unlinkSync(HAR_PATH);
+    }
+    process.exit(1);
+  }
+}
+
+console.log('Pre-install finished.');

@@ -1,6 +1,39 @@
 {
   "apiType": "stageMode",
   "buildOption": {
+    "nativeLib": {
+    "filter": {
+      "enableOverride": true,
+      "pickFirsts": [
+        "**/libcodeformat.so",
+        "**/libcommonmark4cj.so",
+        "**/libcommonmark4cj.commonmark.so",
+        "**/libcommonmark4cj.strikethrough.so",
+        "**/libcommonmark4cj.table.so",
+        "**/libformula.so",
+        "**/liblatex.so",
+        "**/libmarkdown.so",
+        "**/libmarkdown.components.so",
+        "**/libmarkdown.components.theme.so",
+        "**/libmarkdown.core.so",
+        "**/libmarkdown.plugin.so",
+        "**/libmarkdown.plugin.emoji.so",
+        "**/libtext_to_img.so",
+        "**/libmarkdown.texttoimg4cj.so",
+        "**/libprism4cj.so",
+        "**/libprism4cj.prism.so",
+        "**/libprism4cj.languages.so",
+        // Cangjie 运行时/互操作库：本模块构建产物与 ohpm 包
+        // （@cangjie-tpc/markdown、@cangjie-tpc/formula）内置的同名库冲突（00306049）
+        "**/lib*_diff.z.so",
+        "**/libcj_*",
+        "**/libcangjie-std-*.so",
+        "**/libutf16string.z.so",
+        "**/libboundscheck.so",
+        "**/libpcre2-8.so.0"
+      ]
+    }
+  }
   },
   "buildOptionSet": [
     {
