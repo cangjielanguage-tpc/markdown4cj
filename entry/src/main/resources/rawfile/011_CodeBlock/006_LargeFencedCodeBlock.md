@@ -1,7 +1,4 @@
 ```js
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from './BaseComponent'
 import { getFileListStr } from './FileUtils'
 import { booleanToString, numberToColorString, stringToBoolean } from './BaseUtils'

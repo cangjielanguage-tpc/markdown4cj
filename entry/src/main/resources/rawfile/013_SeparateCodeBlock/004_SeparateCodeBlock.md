@@ -1,7 +1,4 @@
 ```cpp
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
 
 #ifndef UTIL_H
 #define UTIL_H

@@ -9,9 +9,6 @@
 
 缩进代码块
 
-    /*
-     * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
-     */
     import { titleComponent } from './BaseComponent'
     import { router } from '@kit.ArkUI'
     import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'

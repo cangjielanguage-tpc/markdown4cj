@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '../Index'
 import { router } from '@kit.ArkUI'
 
