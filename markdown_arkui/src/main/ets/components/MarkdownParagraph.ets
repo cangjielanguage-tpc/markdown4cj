@@ -138,7 +138,6 @@ export struct MarkdownParagraph {
   private promptAction: PromptAction = this.getUIContext().getPromptAction()
   private delayTime: number = 300 // 自定义菜单关闭延时时间（毫秒）
   private timerId: number = -1 // 自定义菜单关闭延时定时器 ID
-  private animationTimerId: number = -1 // 段落加载动画结束定时器 ID
   @State @Watch('onParamChange') needHideMenu: boolean = false // 需要监听的条件参数
 
   // 是否启用元素曝光统计：仅当 elementExposureCallback 已设置时为 true。
@@ -182,10 +181,6 @@ export struct MarkdownParagraph {
     if (this.timerId !== -1) {
       clearTimeout(this.timerId)
       this.timerId = -1
-    }
-    if (this.animationTimerId !== -1) {
-      clearTimeout(this.animationTimerId)
-      this.animationTimerId = -1
     }
     // 组件回收时，对当前可见的链接补发一次 visible=false（保证显示/消失成对），再重置标志。
     // 按运行时 exposureEnabled 门控：没回调则 httpLinks 恒空、无可见链接，跳过。
@@ -503,21 +498,18 @@ export struct MarkdownParagraph {
           ? TransitionEffect.opacity(0).animation({ duration: this.globalTheme.paragraphHeadingAnimationDuration })
           : TransitionEffect.IDENTITY,
         TransitionEffect.IDENTITY
-      )
+      ),
+      // 官方转场结束回调（@since 12）：transitionIn=true 即出现动画结束，由框架精确触发，
+      // 替代 setTimeout 估时（丢帧/动画延迟时估时会误报）
+      (transitionIn: boolean) => {
+        if (transitionIn && this.isAlive && this.globalTheme.paragraphHeadingAnimationEnabled) {
+          this.paragraphHeadingAnimationEnd?.()
+        }
+      }
     )
     .onAppear(() => {
       if (this.globalTheme.paragraphHeadingAnimationEnabled) {
         this.paragraphHeadingAnimationStart?.()
-        if (this.animationTimerId !== -1) {
-          clearTimeout(this.animationTimerId)
-        }
-        this.animationTimerId = setTimeout(() => {
-          this.animationTimerId = -1
-          if (!this.isAlive) {
-            return
-          }
-          this.paragraphHeadingAnimationEnd?.()
-        }, this.globalTheme.paragraphHeadingAnimationDuration)
       }
     })
   }
