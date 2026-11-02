@@ -20,7 +20,7 @@ const STDX_ZIP_SHA256 = {
 // aarch64 全平台必需；x64 仅 Windows 本机需要
 const STDX_PACKAGES = [
   { arch: 'aarch64', dir: 'linux_ohos_aarch64_cjnative', required: true },
-  { arch: 'x64', dir: 'linux_ohos_x86_64_cjnative', required: process.platform === 'win32' },
+  { arch: 'x64', dir: 'linux_ohos_x86_64_cjnative', required: true },
 ];
 
 // cangjie-stdx-ohos v1.1.3.1 各架构 static/stdx 的完整文件清单，与下载 zip 的 SHA256 绑定，
