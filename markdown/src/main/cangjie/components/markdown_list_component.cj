@@ -97,6 +97,8 @@ public class MarkdownListComponent {
                             Row() {
                                 // 任务列表
                                 listPrefixCheckboxINCComponent(item, listMarkdownConfiguration)
+                                // 项目 SDK 的 Row 不支持 space 参数，改用 Blank 间隔器承担 checkbox 与文本间距（先例：markdown_base_component.cj）
+                                Blank().width(listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
                                 MarkdownListItemComponent(
                                     listItemMarkdownConfiguration: listMarkdownConfiguration,
                                     listItemNodeView: item,
@@ -184,12 +186,6 @@ public class MarkdownListComponent {
         Checkbox()
             .height(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight)
             .width(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxWidth)
-            // 仓颉引擎首行行框的半行距会把字形下推，复选框顶对齐会偏高；
-            // 下移 (首行行高-复选框高)/2 使其与首行文字视觉居中（ArkUI 引擎无此问题，故 ArkTS 侧无此偏移）
-            .offset(x: 0.0, y: (markdownConfiguration.markdownTheme.paragraphTheme.paragraphTextLineHeight - markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight) / 2.0)
-            // ArkUI 引擎 Checkbox 的 mark 自带约4vp内边距（实测 mark 位于行起点+4,+4，内容起点=4+15+8=27）；
-            // 仓颉引擎 Checkbox 无此内边距（实测位于0,0，内容起点=23），补4vp左边距对齐 ArkUI 的复选框位置与内容缩进
-            .margin(left: 4.0, right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
             .shape(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxShape)
             .selectedColor(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSelectedColor)
             .select(item.isTaskListSelected)
