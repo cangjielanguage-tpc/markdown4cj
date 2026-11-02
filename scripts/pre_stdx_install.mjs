@@ -21,9 +21,9 @@ const X64_ZIP_SHA256 = '822be67189eaef7d856f2d3bde8fdb68b82bfc44b6a3a67a01a93b40
 const STDX_BIN_PATH = path.join(PROJECT_ROOT, 'stdx_bin');
 
 // formula HAR 包（LaTeX 公式渲染库），供 markdown/oh-package.json5 以 file:./har/formula.har 引用
-const FORMULA_HAR_URL = 'https://gitcode.com/Cangjie-TPC/formula-ffi/releases/download/v1.4.1/formula_6.1.1-v1.4.1.har';
+const FORMULA_HAR_URL = 'https://gitcode.com/Cangjie-TPC/formula-ffi/releases/download/v2.0.0/formula_6.1.1-v2.0.0.har';
 const FORMULA_HAR_TEMP_PATH = path.join(PROJECT_ROOT, 'formula.har.tmp');
-const FORMULA_HAR_SHA256 = '33bf6f922fa4ec9166accfc0d957b5a382d5f4c9166c8e281f4d69134bcd2382';
+const FORMULA_HAR_SHA256 = 'd328942bb70988ba1818a49cab0b7fd8bbcc2ef6d0e840c5e64d71826c91a575';
 const FORMULA_HAR_PATH = path.join(PROJECT_ROOT, 'har', 'formula.har');
 
 // cangjie-stdx-ohos v1.1.3.1 各架构 static/stdx 的完整文件清单，与下载 zip 的 SHA256 绑定，
