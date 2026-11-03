@@ -182,17 +182,17 @@ static napi_value Init(napi_env env, napi_value exports)
     return exports;
 }
 
-static napi_module textToImgModule = {
+static napi_module arkuiTextToImgModule = {
     .nm_version = 1,
     .nm_flags = 0,
     .nm_filename = NULL,
     .nm_register_func = Init,
-    .nm_modname = "text_to_img",
+    .nm_modname = "arkui_texttoimg",
     .nm_priv = NULL,
     .reserved = {0},
 };
 
-extern "C" __attribute__((constructor)) void RegisterTextToImgModule(void)
+extern "C" __attribute__((constructor)) void RegisterArkuiTextToImgModule(void)
 {
-    napi_module_register(&textToImgModule);
+    napi_module_register(&arkuiTextToImgModule);
 }

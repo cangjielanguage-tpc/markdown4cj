@@ -1,5 +1,5 @@
 import { image } from "@kit.ImageKit"
-import { drawCircleImage, drawRectImage, drawRectToolImage } from 'libtext_to_img.so'
+import { drawCircleImage, drawRectImage, drawRectToolImage } from 'libarkui_texttoimg.so'
 import { LinkTheme } from "../theme/LinkTheme"
 import { urlSafeBase64Decode } from "./MarkdownUtils"
 import {

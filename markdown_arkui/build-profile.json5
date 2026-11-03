@@ -17,7 +17,7 @@
           "**/libmarkdown.core.so",
           "**/libmarkdown.plugin.so",
           "**/libmarkdown.plugin.emoji.so",
-          "**/libtext_to_img.so",
+          "**/libarkui_texttoimg.so",
           "**/libmarkdown.texttoimg4cj.so",
           "**/libprism4cj.so",
           "**/libprism4cj.prism.so",
