@@ -19,7 +19,7 @@ public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallIn
                 let ret: cbRet = cbRet()
                 ret.sem.acquire()
                 c.postJSTask {
-                    newScope(context) {
+                    context.newScope() {
                         let _url = url.toJSValue(context)
                         let _ret = arktsCB.call([_url]).asPromise()
                         let onFulfilled = context.function {

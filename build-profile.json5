@@ -42,22 +42,6 @@
     {
       "name": "markdown_hybrid",
       "srcPath": "./markdown_hybrid"
-    },
-    {
-      "name": "markdown",
-      "srcPath": "./markdown"
-    },
-    {
-      "name": "application",
-      "srcPath": "./application",
-      "targets": [
-        {
-          "name": "default",
-          "applyToProducts": [
-            "default"
-          ]
-        }
-      ]
     }
   ]
 }

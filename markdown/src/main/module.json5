@@ -1,9 +1,0 @@
-{
-  "module": {
-    "name": "markdown",
-    "type": "har",
-    "deviceTypes": [
-      "default"
-    ]
-  }
-}
