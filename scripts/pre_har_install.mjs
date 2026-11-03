@@ -18,17 +18,17 @@ const ARTIFACTS = [
     {
         name: 'prism_hybrid.har',
         url: `${OBS_BASE}/prism4cj/prism4cj_hybrid_cangjie-plugin-6.1.1_compatibility/prism_hybrid_6.1.1-v2.0.0.har`,
-        sha256: '1a6559313a536104c4126a5d4c6c6a0d21d180433343d5d15548f8aaae31e271'
+        sha256: '78f27963b821676fa45d806146ab2eef0a7dc78114c50d101789b980635531e4'
     },
     {
         name: 'codeformat_hybrid.har',
         url: `${OBS_BASE}/codeformat4cj/codeformat_hybrid_cangjie-plugin-6.1.1_compatibility/codeformat_hybrid_6.1.1-v2.0.0.har`,
-        sha256: '17a4bf07b5f6212c051876f1ad49d7753dbb1023399c04c00dad7e751204bac1'
+        sha256: '81f7b44060294bf85cf990f4a690258b69c92ec439dab0071caff27c97969c8e'
     },
     {
         name: 'markdown_parser_hybrid.har',
         url: `${OBS_BASE}/markdown4cj/markdown_parser_hybrid_cangjie-plugin-6.1.1_compatibility/markdown_parser_hybrid_6.1.1-v2.0.0.har`,
-        sha256: '244a96317ca7ab1abd077ee38ca058835518438d86f9157ecbbfe3d8d228a6d0'
+        sha256: '669854a8c472b8e9e3823f50d0d1b9b649989531ae397edd10ecb2847dd5e672'
     },
     {
         name: 'formula_hybrid.har',
@@ -55,7 +55,7 @@ function isValid(filePath, expectedSha256) {
 // 以参数数组方式调用外部命令（不经 shell 解析），路径中的空格或特殊字符不影响执行
 function runCommand(command, args) {
     try {
-        execFileSync(command, args, { stdio: 'inherit', cwd: PROJECT_ROOT });
+        execFileSync(command, args, { stdio: 'inherit' });
     } catch (error) {
         if (error.code === 'ENOENT') {
             console.error(`Command "${command}" not found. Please install it and re-run.`);
@@ -69,7 +69,7 @@ function downloadArtifact(artifact) {
     const temp = `${target}.download`;
 
     console.log(`Downloading ${artifact.name} ...`);
-    runCommand('curl', ['-fL', '--retry', '3', '--retry-delay', '2', '-o', temp, artifact.url]);
+    runCommand('curl', ['-L', '--fail', '--retry', '3', '-o', temp, artifact.url]);
 
     if (!fs.existsSync(temp) || fs.statSync(temp).size === 0) {
         throw new Error(`${artifact.name} download is empty`);
@@ -100,6 +100,10 @@ if (pending.length === 0) {
         fs.mkdirSync(HAR_DIR, { recursive: true });
         for (const artifact of pending) {
             downloadArtifact(artifact);
+        }
+        // 下载后整体复查：4 个 HAR 均存在且 SHA256 一致，与 stdx 脚本的解压后完整性复查对齐
+        if (!ARTIFACTS.every((artifact) => isValid(path.join(HAR_DIR, artifact.name), artifact.sha256))) {
+            throw new Error('HAR verification incomplete after download');
         }
         console.log(`All HAR files downloaded and verified: ${HAR_DIR}`);
     } catch (error) {
