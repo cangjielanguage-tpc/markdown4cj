@@ -10,30 +10,28 @@ const PROJECT_ROOT = path.resolve(__dirname, '..');
 // markdown_arkui/oh-package.json5 以 ./har/xxx.har 引用这 4 个预编译依赖
 const HAR_DIR = path.join(PROJECT_ROOT, 'markdown_arkui', 'har');
 
-const OBS_BASE = 'https://cangjie103.obs.cn-north-4.myhuaweicloud.com/CangjieDaily/CangjieTPC/publish';
-
-// cangjie-plugin-6.1.1_compatibility 发布的 v2.0.0 产物清单，与下载内容 SHA256 绑定，
+// Cangjie-TPC 在 gitcode.com 发布的 v2.0.0 hybrid 产物清单，与下载内容 SHA256 绑定，
 // 校验不一致即视为下载损坏或被篡改，不会进入构建
 const ARTIFACTS = [
     {
         name: 'prism_hybrid.har',
-        url: `${OBS_BASE}/prism4cj/prism4cj_hybrid_cangjie-plugin-6.1.1_compatibility/prism_hybrid_6.1.1-v2.0.0.har`,
-        sha256: '78f27963b821676fa45d806146ab2eef0a7dc78114c50d101789b980635531e4'
+        url: 'https://gitcode.com/Cangjie-TPC/prism4cj/releases/download/v2.0.0-hybrid/prism_hybrid_6.1.1-v2.0.0-hybrid.har',
+        sha256: '744216a27da98221bd6c58be30d1ed271b4bf81e73d89d563f104b91508b5fc5'
     },
     {
         name: 'codeformat_hybrid.har',
-        url: `${OBS_BASE}/codeformat4cj/codeformat_hybrid_cangjie-plugin-6.1.1_compatibility/codeformat_hybrid_6.1.1-v2.0.0.har`,
-        sha256: '81f7b44060294bf85cf990f4a690258b69c92ec439dab0071caff27c97969c8e'
+        url: 'https://gitcode.com/Cangjie-TPC/codeformat4cj/releases/download/v2.0.0-hybrid/codeformat_hybrid_6.1.1-v2.0.0-hybrid.har',
+        sha256: '9904e858599e2e938548833863ada40cc03378882c15d1353ef25d20c07c79f4'
     },
     {
         name: 'markdown_parser_hybrid.har',
-        url: `${OBS_BASE}/markdown4cj/markdown_parser_hybrid_cangjie-plugin-6.1.1_compatibility/markdown_parser_hybrid_6.1.1-v2.0.0.har`,
-        sha256: '669854a8c472b8e9e3823f50d0d1b9b649989531ae397edd10ecb2847dd5e672'
+        url: 'https://gitcode.com/Cangjie-TPC/markdown4cj/releases/download/v2.0.0-markdown-parser-hybrid/markdown_parser_hybrid_6.1.1-v2.0.0-markdown-parser-hybrid.har',
+        sha256: '8937fd29846d21fa475fe3f597c3ad81b4dcb78287f9792427a3e97ea3d9f68d'
     },
     {
         name: 'formula_hybrid.har',
-        url: `${OBS_BASE}/formula-ffi/formula-ffi_hybrid_cangjie-plugin-6.1.1_compatibility/formula_hybrid_6.1.1-v2.0.0.har`,
-        sha256: '0327936e6b00a2d3fab684bd9ee6e4b55556201d48e6fb1995c1b3573e508d83'
+        url: 'https://gitcode.com/Cangjie-TPC/formula-ffi/releases/download/v2.0.0-hybrid/formula_hybrid_6.1.1-v2.0.0-hybrid.har',
+        sha256: 'ae88e60f8ba962d686e9bd4e1150a4cbd4d79a7f708f199bea155b65c86f6c91'
     }
 ];
 
