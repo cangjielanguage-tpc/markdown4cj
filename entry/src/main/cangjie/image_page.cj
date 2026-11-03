@@ -4,6 +4,11 @@ import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
 import ohos.resource_manager.ResourceManager
 
+/**
+ * 图片测试用例页面（同页预览模式）
+ *
+ * 上方为配置面板，点击文件名后在当前页面下方直接渲染 Markdown 预览。
+ */
 @HybridComponentEntry
 @Component
 class ImagePage {
@@ -17,6 +22,7 @@ class ImagePage {
     var isExpanded3: Bool = false
     @State
     var isExpanded4: Bool = false
+    // ---------------- 预览相关
     @State
     var mdStr: String = ""
     @State
@@ -25,91 +31,95 @@ class ImagePage {
     var incrementalAnalysis: Bool = false
     @State
     var selectedFileName: String = ""
-    @State var cfg_isFull: String = "true"
-    @State var cfg_incrementalAnalysis: String = "false"
-    @State @Watch[onConfigChanged] var cfg_enableParseThrottle: String = "false"
-    @State @Watch[onConfigChanged] var cfg_parseThrottleMs: String = "200"
-    @State var cfg_time: String = "50"
-    @State var cfg_textNumber: String = "10"
-    @State @Watch[onConfigChanged] var cfg_isMarkdownParserSync: String = "false"
-    @State @Watch[onConfigChanged] var cfg_isOnCopy: String = "true"
-    @State @Watch[onConfigChanged] var cfg_blockMarginTop: String = "0"
-    @State @Watch[onConfigChanged] var cfg_blockMarginRight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_blockMarginBottom: String = "0"
-    @State @Watch[onConfigChanged] var cfg_blockMarginLeft: String = "0"
-    @State @Watch[onConfigChanged] var cfg_markdownBlockSpacing: String = "8"
-    @State @Watch[onConfigChanged] var cfg_isLineBreak: String = "false"
-    @State @Watch[onConfigChanged] var cfg_backgroundColor: String = "#00000000"
-    @State var cfg_openGestureSwipeTest: String = "false"
-    @State @Watch[onConfigChanged] var cfg_openGestureSwipe: String = "false"
-    @State @Watch[onConfigChanged] var cfg_imageBorderColor: String = "#FF000000"
-    @State @Watch[onConfigChanged] var cfg_imageBorderWidth: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageFitType: String = "Contain"
-    @State @Watch[onConfigChanged] var cfg_imageAutoResize: String = "true"
-    @State @Watch[onConfigChanged] var cfg_imagePlaceholder: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageMaximumWidth: String = "100%"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonVisible: String = "false"
-
-    @State @Watch[onConfigChanged] var cfg_imageMarginTop: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageMarginRight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageMarginBottom: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageMarginLeft: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageRadiusTopLeft: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageRadiusTopRight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageRadiusBottomLeft: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageRadiusBottomRight: String = "0"
-    @State @Watch[onConfigChanged] var cfg_imageBorderStyle: String = "Solid"
-    @State @Watch[onConfigChanged] var cfg_imageMixedLayout: String = "true"
-    @State @Watch[onConfigChanged] var cfg_imageFixedRatioWidth: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageMaxHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageHeight: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageMaxWidth: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageWidth: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageBottomLayoutMarginTop: String = "14"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonWidth: String = "296"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonHeight: String = "44"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonRadius: String = "22"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconTextGap: String = "6"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIcon: String = "undefined"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconWidth: String = "18"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonIconHeight: String = "18"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonBackgroundColor: String = "#FFF5F5F5"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonText: String = "下载图片"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontColor: String = "#E6000000"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontSize: String = "16"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontStyle: String = "Normal"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontWeight: String = "Medium"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextFontFamily: String = "HarmonyOS Sans"
-    @State @Watch[onConfigChanged] var cfg_imageDownloadButtonTextLineHeight: String = "22"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
-    var markdownPlugin: Markdown = Markdown
-        .builder()
-        .usePlugin(HtmlPlugin.create())
-        .usePlugin(TaskListPlugin.create())
-        .usePlugin(StrikethroughPlugin.create())
-        .usePlugin(TablePlugin.create())
-        .usePlugin(LatexMathPluginV2.create())
-        .usePlugin(BlockAudioPlugin.create())
-        .usePlugin(BlockVideoPlugin.create())
-        .usePlugin(LinkifyPlugin.create([]))
-        .usePlugin(ImageStylePlugin.create())
-        .usePlugin(CodeListPlugin.create())
-        .usePlugin(FootnotePlugin.create())
-        .usePlugin(ImageTextMixPlugin.create())
-        .usePlugin(TocPlugin.create())
-        .usePlugin(ImageCollectPlugin.create())
-        .usePlugin(NodeIdPlugin.create())
-        .build()
-    @State
-    var estimatedHeightByNode: Float64 = 0.0
+    // 插件按配置构建，对齐 ArkUI setPlugin()
+    var markdownPlugin: Markdown = Markdown.builder().build()
+    @State var cfg_isFull: String = "true"
+    @State var cfg_incrementalAnalysis: String = "false"
+    @State var cfg_enableParseThrottle: String = "false"
+    @State var cfg_parseThrottleMs: String = "200"
+    @State var cfg_time: String = "50"
+    @State var cfg_textNumber: String = "10"
+    @State var cfg_isMarkdownParserSync: String = "false"
+    @State var cfg_isOnCopy: String = "false"
+    @State var cfg_blockMarginTop: String = "8"
+    @State var cfg_blockMarginRight: String = "0"
+    @State var cfg_blockMarginBottom: String = "8"
+    @State var cfg_blockMarginLeft: String = "0"
+    @State var cfg_markdownBlockSpacing: String = "8"
+    @State var cfg_isLineBreak: String = "false"
+    @State var cfg_backgroundColor: String = "#00000000"
+    @State var cfg_openGestureSwipeTest: String = "false"
+    @State var cfg_openGestureSwipe: String = "false"
+    @State var cfg_imageBorderColor: String = "#FF000000"
+    @State var cfg_imageBorderWidth: String = "0"
+    @State var cfg_imageFitType: String = "Contain"
+    @State var cfg_imageAutoResize: String = "true"
+    @State var cfg_imagePlaceholder: String = "undefined"
+    @State var cfg_imageMaximumWidth: String = "100%"
+    @State var cfg_imageDownloadButtonVisible: String = "false"
 
-    protected override func aboutToAppear(): Unit {
-        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
-        markdownConfiguration.setImageCallbackCallback(imageCallbackCallback)
-        updateConfig()
+    @State var cfg_imageMarginTop: String = "0"
+    @State var cfg_imageMarginRight: String = "0"
+    @State var cfg_imageMarginBottom: String = "0"
+    @State var cfg_imageMarginLeft: String = "0"
+    @State var cfg_imageRadiusTopLeft: String = "0"
+    @State var cfg_imageRadiusTopRight: String = "0"
+    @State var cfg_imageRadiusBottomLeft: String = "0"
+    @State var cfg_imageRadiusBottomRight: String = "0"
+    @State var cfg_imageBorderStyle: String = "Solid"
+    @State var cfg_imageMixedLayout: String = "true"
+    @State var cfg_imageReplace: String = "false"
+    @State var cfg_imageFixedRatioWidth: String = "undefined"
+    @State var cfg_imageMaxHeight: String = "undefined"
+    @State var cfg_imageHeight: String = "undefined"
+    @State var cfg_imageMaxWidth: String = "undefined"
+    @State var cfg_imageWidth: String = "undefined"
+    @State var cfg_imageBottomLayoutMarginTop: String = "14"
+    @State var cfg_imageDownloadButtonWidth: String = "296"
+    @State var cfg_imageDownloadButtonHeight: String = "44"
+    @State var cfg_imageDownloadButtonRadius: String = "22"
+    @State var cfg_imageDownloadButtonIconTextGap: String = "6"
+    @State var cfg_imageDownloadButtonIcon: String = "undefined"
+    @State var cfg_imageDownloadButtonIconWidth: String = "18"
+    @State var cfg_imageDownloadButtonIconHeight: String = "18"
+    @State var cfg_imageDownloadButtonBackgroundColor: String = "#FFF5F5F5"
+    @State var cfg_imageDownloadButtonText: String = "下载图片"
+    @State var cfg_imageDownloadButtonTextFontColor: String = "#E6000000"
+    @State var cfg_imageDownloadButtonTextFontSize: String = "16"
+    @State var cfg_imageDownloadButtonTextFontStyle: String = "Normal"
+    @State var cfg_imageDownloadButtonTextFontWeight: String = "Medium"
+    @State var cfg_imageDownloadButtonTextFontFamily: String = "HarmonyOS Sans"
+    @State var cfg_imageDownloadButtonTextLineHeight: String = "22"
+
+    func getFileList(): Array<String> {
+        if (fileListStr == "") {
+            return []
+        }
+        return fileListStr.split(",")
+    }
+
+    /**
+     * 对齐 ArkUI setPlugin()：仅启用 Html/ImageStyle/ImageCollect，
+     * ImageTextMixPlugin（去除图文混排插件）仅在关闭图片混合布局时启用。
+     */
+    func buildPlugin(): Markdown {
+        if (parseBool(cfg_imageMixedLayout)) {
+            return Markdown.builder()
+                .usePlugin(HtmlPlugin.create())
+                .usePlugin(ImageStylePlugin.create())
+                .usePlugin(ImageCollectPlugin.create())
+                .build()
+        }
+        return Markdown.builder()
+            .usePlugin(HtmlPlugin.create())
+            .usePlugin(ImageStylePlugin.create())
+            .usePlugin(ImageCollectPlugin.create())
+            .usePlugin(ImageTextMixPlugin.create())
+            .build()
     }
 
     func imageCallbackCallback(str: String): ?Array<UInt8> {
@@ -124,23 +134,25 @@ class ImagePage {
         return arr
     }
 
-    func onConfigChanged(): Unit {
-        updateConfig()
-    }
-
-    func getFileList(): Array<String> {
-        if (fileListStr == "") {
-            return []
-        }
-        return fileListStr.split(",")
-    }
-
+    // 点击文件名：按当前配置重建插件与配置对象，在当前页面加载预览
     func loadFile(item: String) {
+        selectedFileName = item
+        markdownPlugin = buildPlugin()
+        markdownConfiguration = MarkdownConfiguration.createEmpty()
+        markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
+        // 对齐 ArkUI：仅开启 imageReplace 时才挂图片替换回调
+        if (parseBool(cfg_imageReplace)) {
+            markdownConfiguration.setImageCallbackCallback(imageCallbackCallback)
+        }
+        updateConfig()
+        loadSelectedFile()
+    }
+
+    func loadSelectedFile(): Unit {
         let rawFilePath = getGlobalString("rawFilePath")
-        let fullPath = rawFilePath + "/" + item
+        let fullPath = rawFilePath + "/" + selectedFileName
         callGlobalFunc("loadContent", fullPath)
         let fullContent = getGlobalString("markdownContent")
-        selectedFileName = item
         let isFull = parseBool(cfg_isFull)
         let textNumber = parseInt64(cfg_textNumber)
         let timeMs = parseInt64(cfg_time)
@@ -150,7 +162,6 @@ class ImagePage {
         isInputEnded = isFull
         if (isFull) {
             mdStr = fullContent
-            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
         } else {
             mdStr = ""
             let number = textNumber
@@ -264,7 +275,7 @@ class ImagePage {
 
     public func build() {
         Column {
-            Text("点击文件名加载:")
+            Text("点击文件名加载预览:")
                 .fontSize(14.0)
                 .margin(top: 5.0)
 
@@ -331,10 +342,10 @@ class ImagePage {
                                 ConfigTabSelector(title: "增量加载间隔时间 - ", options: timeList, defaultValue: "50", configKey: "", currentValue: cfg_time, onSelect: { v => cfg_time = v })
                                 ConfigTabSelector(title: "增量文本数量 - ", options: textNumberList, defaultValue: "10", configKey: "", currentValue: cfg_textNumber, onSelect: { v => cfg_textNumber = v })
                                 ConfigTabSelector(title: "是否同步解析 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isMarkdownParserSync, onSelect: { v => cfg_isMarkdownParserSync = v })
-                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
-                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
+                                ConfigTabSelector(title: "长按复制粘贴 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isOnCopy, onSelect: { v => cfg_isOnCopy = v })
+                                ConfigTabSelector(title: "全局上外边距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_blockMarginTop, onSelect: { v => cfg_blockMarginTop = v })
                                 ConfigTabSelector(title: "全局右外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginRight, onSelect: { v => cfg_blockMarginRight = v })
-                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
+                                ConfigTabSelector(title: "全局下外边距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_blockMarginBottom, onSelect: { v => cfg_blockMarginBottom = v })
                                 ConfigTabSelector(title: "全局左外边距 - ", options: marginList, defaultValue: "0", configKey: "", currentValue: cfg_blockMarginLeft, onSelect: { v => cfg_blockMarginLeft = v })
                                 ConfigTabSelector(title: "模块间间距 - ", options: marginList, defaultValue: "8", configKey: "", currentValue: cfg_markdownBlockSpacing, onSelect: { v => cfg_markdownBlockSpacing = v })
                                 ConfigTabSelector(title: "软换行是否换行 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_isLineBreak, onSelect: { v => cfg_isLineBreak = v })
@@ -422,6 +433,7 @@ class ImagePage {
 
                         if (isExpanded3) {
                             Column {
+                                ConfigTabSelector(title: "是否触发图片替换事件 - ", options: booleanList, defaultValue: "false", configKey: "", currentValue: cfg_imageReplace, onSelect: { v => cfg_imageReplace = v })
                                 ConfigTabSelector(title: "图片适应方式 - ", options: imageFitList, defaultValue: "Contain", configKey: "", currentValue: cfg_imageFitType, onSelect: { v => cfg_imageFitType = v })
                                 ConfigTabSelector(title: "图片自动调整 - ", options: booleanList, defaultValue: "true", configKey: "", currentValue: cfg_imageAutoResize, onSelect: { v => cfg_imageAutoResize = v })
                                 ConfigTabSelector(title: "图片默认占位图 - ", options: iconShortList, defaultValue: "undefined", configKey: "", currentValue: cfg_imagePlaceholder, onSelect: { v => cfg_imagePlaceholder = v })
@@ -501,10 +513,6 @@ class ImagePage {
                             .fontColor(0xFF333333)
                             .margin(top: 10.0, left: 5.0)
                         Column {
-                            Text("preMarkwonHeightByNode 估算: " + estimatedHeightByNode.toString() + " vp")
-                                .fontSize(12.0)
-                                .fontColor(0xFF666666)
-                                .margin(top: 3.0, left: 5.0)
                             MarkdownComponent(
                                 output: mdStr,
                                 isInputEnded: isInputEnded,
