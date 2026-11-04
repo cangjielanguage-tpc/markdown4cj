@@ -76,7 +76,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ## 软件架构
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin-5.1.1/doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin-6.1.1-ctrip/doc/assets/img.png)
 
 ### 源码目录
 
@@ -100,7 +100,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin-5.1.1/doc/feature_api.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin-6.1.1-ctrip/doc/feature_api.md)
 
 ## 使用说明
 
@@ -123,7 +123,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
       ```bash
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
-      git checkout markdown4cj_hybrid_cangjie-plugin-5.1.1
+      git checkout markdown4cj_hybrid_cangjie-plugin-6.1.1-ctrip
       ```
 
       编译markdown
@@ -218,7 +218,7 @@ struct DemoPage {
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin-5.1.1/doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin-6.1.1-ctrip/doc/assets/img1.png)
 
 ### 使用三方库内置的ArkTS组件功能示例
 
@@ -275,18 +275,18 @@ build() {
 
 | 编号 | 依赖构建工具                           | 版本号       |
 |----|----------------------------------|-----------|
-| 1  | **DevEco Studio**                | 5.1.1.851 |
-| 2  | **cjc**                          | v1.0.5    |
+| 1  | **DevEco Studio**                | 6.1.1     |
+| 2  | **cjc**                          | v1.1.3    |
 
 markdown依赖三方库：
 
 | 编号 | 依赖三方库         | 版本号      |
 |----|---------------|----------|
-| 1  | stdx          | v1.0.1.1 |
-| 2  | commonmark4cj | v1.1.1   |
-| 3  | prism4cj      | v1.0.4   |
-| 4  | formula       | v1.5.1   |
-| 5  | codeformat    | v1.0.0   |
+| 1  | stdx          | v1.1.3.1 |
+| 2  | commonmark4cj | v1.1.3   |
+| 3  | prism4cj      | v1.0.6   |
+| 4  | formula       | v2.0.0   |
+| 5  | codeformat    | v1.0.7   |
 
 1、三方库静态链接和动态链接区别
 
@@ -298,21 +298,21 @@ markdown依赖三方库：
 
   **缺点**：由于stdx版本之前存在不兼容，因此三方库和hap包依赖的stdx版本不一致情况下，存在运行crash情况。
 
-当前三方库默认通过静态链接方式，如果有动态链接需求可以通过修改库代码中的cjpm.toml文件链接到stdx动态链接库目录，
+当前三方库默认通过动态链接方式，如果有静态链接需求可以通过修改库代码中的cjpm.toml文件链接到stdx静态链接库目录，
 
 ```
 [target]
   [target.aarch64-linux-ohos]
   	  ...
-      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "../stdx_bin/linux_ohos_aarch64_llvm/static/stdx" ]
+      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "./stdx_bin/linux_ohos_aarch64_cjnative/dynamic/stdx", "${cangjie_tpc_formula}/libs/arm64-v8a/cjbins/formula" ]
       [target.aarch64-linux-ohos.bin-dependencies.package-option]
   [target.x86_64-linux-ohos]
       ...
-      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "../stdx_bin/linux_ohos_x86_64_llvm/static/stdx" ]
-  [target.x86_64-unknown-windows-gnu]
-    [target.x86_64-unknown-windows-gnu.bin-dependencies]
-      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "../stdx_bin/windows_x86_64_llvm/static/stdx" ]
-      [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
+      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "./stdx_bin/linux_ohos_x86_64_cjnative/dynamic/stdx", "${cangjie_tpc_formula}/libs/x86_64/cjbins/formula" ]
+  [target.x86_64-w64-mingw32]
+    [target.x86_64-w64-mingw32.bin-dependencies]
+      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "${X86_64_KIT_LIBS}" ]
+      [target.x86_64-w64-mingw32.bin-dependencies.package-option]
 ```
 
 修改如下：
@@ -321,15 +321,15 @@ markdown依赖三方库：
 [target]
   [target.aarch64-linux-ohos]
       ...
-      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "../stdx_bin/linux_ohos_aarch64_llvm/dynamic/stdx" ]
+      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "./stdx_bin/linux_ohos_aarch64_cjnative/static/stdx", "${cangjie_tpc_formula}/libs/arm64-v8a/cjbins/formula" ]
       [target.aarch64-linux-ohos.bin-dependencies.package-option]
   [target.x86_64-linux-ohos]
       ...
-      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "../stdx_bin/linux_ohos_x86_64_llvm/dynamic/stdx" ]
-  [target.x86_64-unknown-windows-gnu]
-    [target.x86_64-unknown-windows-gnu.bin-dependencies]
-      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "../stdx_bin/windows_x86_64_llvm/dynamic/stdx" ]
-      [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
+      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "./stdx_bin/linux_ohos_x86_64_cjnative/static/stdx", "${cangjie_tpc_formula}/libs/x86_64/cjbins/formula" ]
+  [target.x86_64-w64-mingw32]
+    [target.x86_64-w64-mingw32.bin-dependencies]
+      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "${X86_64_KIT_LIBS}" ]
+      [target.x86_64-w64-mingw32.bin-dependencies.package-option]
 ```
 
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
@@ -414,7 +414,7 @@ markdown依赖三方库：
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin-5.1.1/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin-6.1.1-ctrip/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 

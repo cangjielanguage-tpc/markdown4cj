@@ -1,5 +1,4 @@
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '../Index'
-import { router } from '@kit.ArkUI'
+import { CJMarkdown, GlobalTheme, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '../Index'
 
 @Entry
 @Component
@@ -79,7 +78,7 @@ struct DemoDetailsPage {
 
   build() {
     Column() {
-      Button("点击加载markdown")
+      Button(this.isFull ? "点击加载markdown" : "点击增量加载markdown")
         .height(40)// 高度
         .width("80%")// 宽度
         .type(ButtonType.Capsule)// 圆角
@@ -92,14 +91,18 @@ struct DemoDetailsPage {
           () => {
             // 点击动作触发该方法调用
             if (this.isFull) {
+              // 全量加载，下次点击切换为增量加载
               this.content = this.fileStr
+              this.isFull = false
             } else {
+              // 增量加载完成后，下次点击切换回全量加载
               let index = 0
               let id = setInterval(() => {
                 this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
                   clearInterval(id)
+                  this.isFull = true
                 }
                 index++
               }, this.time)
@@ -122,8 +125,10 @@ struct DemoDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    let globalTheme = new GlobalTheme()
+    globalTheme.setStageContext(getContext(this))// 推荐方式(setContext已于1.4.0废弃)
     let theme = new MarkdownTheme()
-    theme.setContext(getContext(this))
+    theme.setGlobalTheme(globalTheme)
     config.setMarkdownTheme(theme)
     return config
   }

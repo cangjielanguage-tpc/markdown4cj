@@ -18,5 +18,5 @@
 **/build-script-cache
 oh-package-lock.json5
 log.txt
-/stdx_bin
+/markdown_hybrid/stdx_bin/
 /markdown_hybrid/har/

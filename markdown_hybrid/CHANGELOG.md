@@ -5,8 +5,10 @@
 3. 新增行内 Span 异步解析 PixelMap 释放机制，在 UI 销毁、数据清空、数据删除、数据替换时统一释放
 4. 行内 Span 异步解析写回按节点版本号增量刷新，修复增量/全量加载场景下图片闪屏
 5. 迁移链接文件类型颜色函数 typeStringColor 至公共工具，支持 PDF/DOC/DOCX/TXT 颜色映射
-6. 版本号升级至 2.0.0，README 中版本号与 cjc 版本标识同步更新
-7. 移除示例源码中的 Copyright 文件头
+6. 优化 pre_stdx_install.mjs 下载脚本：新增 ZIP SHA256 校验与 stdx 文件清单完整性校验，命令改用参数数组执行，修复 X64 压缩包文件名错误
+7. 版本号升级至 2.0.0，README 中版本号与 cjc 版本标识同步更新
+8. 应用 compatibleSdkVersion 由 5.0.3(15) 提升至 6.0.0(20)
+9. 移除示例源码与测试数据中的 Copyright 文件头
 
 # 1.4.0
 

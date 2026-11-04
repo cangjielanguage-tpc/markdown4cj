@@ -2701,6 +2701,13 @@ export class GlobalTheme {
    * @param color 背景颜色
    */
   setBackgroundColor(color: number): GlobalTheme
+
+  /**
+   * 设置上下文
+   *
+   * @param context 上下文
+   */
+  setStageContext(context: Context): GlobalTheme
 }
 ```
 
@@ -2744,6 +2751,13 @@ export class ItalicTheme {
    * @param spacing 斜体文本字符间距
    */
   setItalicTextLetterSpacing(spacing: number): ItalicTheme
+
+  /**
+   * 设置斜体文本颜色
+   *
+   * @param color 斜体文本颜色
+   */
+  setItalicTextFontColor(color: number): ItalicTheme
 }
 ```
 
@@ -2808,6 +2822,13 @@ export class StrikethroughTheme {
    * @param style 删除线文本装饰线样式
    */
   setStrikethroughTextDecorationStyle(style: TextDecorationStyle): StrikethroughTheme
+
+  /**
+   * 设置删除线文本颜色
+   *
+   * @param color 删除线文本颜色
+   */
+  setStrikethroughTextFontColor(color: number): StrikethroughTheme
 }
 ```
 
@@ -2858,6 +2879,13 @@ export class SubTheme {
    * @param offset 下标文本基线的偏移量
    */
   setSubTextBaselineOffset(offset: number): SubTheme
+
+  /**
+   * 设置下标文本颜色
+   *
+   * @param color 下标文本颜色
+   */
+  setSubTextFontColor(color: number): SubTheme
 }
 ```
 
@@ -2908,6 +2936,13 @@ export class SupTheme {
    * @param offset 上标文本基线的偏移量
    */
   setSupTextBaselineOffset(offset: number): SupTheme
+
+  /**
+   * 设置上标文本颜色
+   *
+   * @param color 上标文本颜色
+   */
+  setSupTextFontColor(color: number): SupTheme
 }
 ```
 
@@ -2972,6 +3007,13 @@ export class HtmlUnderlineTheme {
    * @param style HTML下划线文本装饰线样式
    */
   setHtmlUnderlineTextDecorationStyle(style: TextDecorationStyle): HtmlUnderlineTheme
+
+  /**
+   * 设置HTML下划线文本颜色
+   *
+   * @param color HTML下划线文本颜色
+   */
+  setHtmlUnderlineTextFontColor(color: number): HtmlUnderlineTheme
 }
 ```
 
@@ -3241,6 +3283,13 @@ export class LinkTheme {
    * @param padding 空心圆角矩形图片格式分割线和文本右边距
    */
   setLinkRectToolIconLineRightPadding(padding: number): LinkTheme
+
+  /**
+   * 设置链接是否是图片显示
+   *
+   * @param isIcon 链接是否是图片显示
+   */
+  setLinkIsIcon(isIcon: boolean): LinkTheme
 }
 ```
 
@@ -3316,6 +3365,13 @@ export class ParagraphTheme {
    * @param spacing 段落文本字符间距
    */
   setParagraphTextLetterSpacing(spacing: number): ParagraphTheme
+
+  /**
+   * 设置段落背景颜色
+   *
+   * @param color 段落背景颜色
+   */
+  setParagraphBackgroundColor(color: number): ParagraphTheme
 }
 ```
 
@@ -3382,6 +3438,13 @@ export class InlineCodeTheme {
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
   setInlineCodeTextBackgroundRadius(options: MarkdownRadiusOptions | number): InlineCodeTheme
+
+  /**
+   * 设置内联代码文本颜色
+   *
+   * @param color 内联代码文本颜色
+   */
+  setInlineCodeTextFontColor(color: number): InlineCodeTheme
 }
 ```
 
@@ -3704,6 +3767,13 @@ export class LatexMathTheme {
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
   setLatexMathPadding(options: MarkdownPaddingOptions | number): LatexMathTheme
+
+  /**
+   * 设置数学公式未加载状态是否显示文字
+   *
+   * @param showDefaultText 是否显示文字
+   */
+  setLatexMathDefaultText(showDefaultText: boolean): LatexMathTheme
 }
 ```
 
@@ -3791,6 +3861,13 @@ export class FootnoteRefTheme {
    *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
   setFootnoteRefTextBackgroundRadius(options: MarkdownRadiusOptions | number): FootnoteRefTheme
+
+  /**
+   * 设置脚注引用文本颜色
+   *
+   * @param color 脚注引用文本颜色
+   */
+  setFootnoteRefTextFontColor(color: number): FootnoteRefTheme
 }
 ```
 
@@ -3817,6 +3894,13 @@ export class FootnoteDefTheme {
    *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
   setFootnoteDefPadding(options: MarkdownPaddingOptions | number): FootnoteDefTheme 
+
+  /**
+   * 设置脚注定义背景颜色
+   *
+   * @param color 脚注定义背景颜色
+   */
+  setFootnoteDefBackgroundColor(color: number): FootnoteDefTheme
 }
 ```
 
@@ -3974,6 +4058,13 @@ export class OrderedListTheme {
    * @param lineHeight 列表编号文本行高
    */
   setOrderedListMarkerTextLineHeight(lineHeight: number): OrderedListTheme
+
+  /**
+   * 设置有序列表背景颜色
+   *
+   * @param color 有序列表背景颜色
+   */
+  setOrderedListBackgroundColor(color: number): OrderedListTheme
 }
 ```
 
@@ -4105,6 +4196,13 @@ export class BulletListTheme {
    * @param shape 任务列表多选框形状
    */
   setBulletListCheckboxShape(shape: CheckBoxShape): BulletListTheme
+
+  /**
+   * 设置无序/任务背景颜色
+   *
+   * @param color 无序/任务背景颜色
+   */
+  setBulletListBackgroundColor(color: number): BulletListTheme
 }
 ```
 
@@ -4655,6 +4753,13 @@ export class AudioTheme {
    * @param height 音频类型文本行高
    */
   setAudioTypeTextLineHeight(height: number): AudioTheme
+
+  /**
+   * 设置音频背景颜色
+   *
+   * @param color 音频背景颜色
+   */
+  setAudioBackgroundColor(color: number): AudioTheme
 }
 ```
 
@@ -5051,6 +5156,13 @@ export class VideoTheme {
    * @param lineHeight 视频下载按钮文本行高
    */
   setVideoDownloadButtonTextLineHeight(lineHeight: number): VideoTheme
+
+  /**
+   * 设置视频背景颜色
+   *
+   * @param color 视频背景颜色
+   */
+  setVideoBackgroundColor(color: number): VideoTheme
 }
 ```
 
@@ -5597,6 +5709,13 @@ export class CodeBlockTheme {
    * @param isBottom 是否居底
    */
   setCodeBlockSeparateIsBottom(isBottom: boolean): CodeBlockTheme
+
+  /**
+   * 设置代码块深浅色
+   *
+   * @param isDark 是否是深色 - true：深色；false：浅色。默认false
+   */
+  setCodeBlockIsDark(isDark: boolean): CodeBlockTheme
 }
 ```
 
@@ -5885,6 +6004,13 @@ export class HeadingTheme {
    * @param spacing 下划线间距
    */
   setUnderlineSpacingForDesignateHeading(level: number, spacing: number): HeadingTheme
+
+  /**
+   * 设置标题的背景颜色：设置所有标题为统一背景颜色
+   *
+   * @param color 背景颜色
+   */
+  setBackgroundColorForAllHeading(color: number): HeadingTheme
 }
 ```
 
@@ -5974,6 +6100,13 @@ export class BlockQuoteTheme {
    * @param spacing 块引用子模块上下间距
    */
   setBlockQuoteChildSpacing(spacing: number): BlockQuoteTheme
+
+  /**
+   * 设置块引用背景颜色
+   *
+   * @param color 块引用背景颜色
+   */
+  setBlockQuoteBackgroundColor(color: number): BlockQuoteTheme
 }
 ```
 
@@ -6024,6 +6157,13 @@ export class BoldTheme {
    * @param spacing 加粗文本字符间距
    */
   setBoldTextLetterSpacing(spacing: number): BoldTheme
+
+  /**
+   * 设置加粗文本颜色
+   *
+   * @param color 加粗文本颜色
+   */
+  setBoldTextFontColor(color: number): BoldTheme
 }
 ```
 
@@ -6258,7 +6398,7 @@ export class MarkdownPlugin {
   /**
    * 设置图片不混排插件
    *
-   * @param isImageTextMixPlugin 是否图片不混排插件 - true：图片混排；false：图片不混排。默认true
+   * @param isImageTextMixPlugin 是否图片不混排插件 - true：图片不混排；false：图片混排。默认false
    */
   setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): MarkdownPlugin
 
@@ -6301,7 +6441,7 @@ export class MarkdownPlugin {
    * 设置是否加载emoji解析插件
    *
    * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件；false：不设置加载Emoji解析插件。默认false
-   * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
+   * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认false
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): MarkdownPlugin
 
@@ -6461,61 +6601,3 @@ export class MarkdownNodeViewString {
   toString(): string
 }
 ```
-
-### class MarkdownCardComponent
-
-Markdown卡片自定义控件，支持在Markdown文档中通过`<card>`HTML标签嵌入ArkTS自定义组件。
-
-```ets
-/**
- * Markdown卡片自定义控件
- */
-export class MarkdownCardComponent {
-  /**
-   * 构造函数
-   *
-   * @param markdownConfiguration Markdown配置
-   * @param nodeView 卡片节点视图
-   * @param cardName 卡片名称，对应ArkTS端注册的组件类名
-   * @param cardData 卡片数据，JSON字符串，将传递给组件的data属性
-   */
-  constructor(
-    markdownConfiguration: MarkdownConfiguration,
-    nodeView: NodeView,
-    cardName: string,
-    cardData: string
-  )
-}
-```
-
-#### 卡片功能使用说明
-
-卡片功能允许用户在Markdown文档中通过HTML `<card>` 标签嵌入任意的ArkTS自定义组件。
-
-**Markdown语法**
-
-在Markdown文档中使用 `<card>` HTML标签：
-
-```html
-<card name="MyCardComponent" data='{"title":"示例","content":"卡片内容"}'></card>
-```
-
-- `name`（必填）：ArkTS端注册的组件类名，CardWrapper将通过该名称在全局上下文中查找并动态实例化对应组件
-- `data`（可选）：JSON字符串，将作为 `param["data"]` 传递给组件的data属性
-
-**前置条件**
-
-1. 需要启用HTML插件（`setIsHtmlPlugin(true)`），卡片标签通过HtmlPlugin的CardHandler解析。如果未启用HtmlPlugin，`<card>`标签会被当作普通HTML文本忽略
-2. `<card>`标签必须包含`name`属性，否则CardHandler会忽略该标签（返回IgnoreBlockNode）
-3. ArkTS端需将自定义组件类注册到全局上下文中（如`globalThis.XXX = XXXComponent`），确保CardWrapper能通过 `globalCtx.global[cardName]` 查找到组件类
-4. 如果手动创建HtmlPlugin实例，不能调用`excludeDefaults(true)`，否则CardHandler不会被注册
-
-**数据流**
-
-1. Markdown文档中的 `<card name="XXX" data="{...}"/>` 标签被HtmlPlugin解析
-2. CardHandler从标签属性提取 `name` 和 `data`，创建CardNode（CustomBlock子类）
-3. MarkdownVisitor遍历CardNode，nodeToNodeView()转换为NodeView（nodeType="CardNode"）
-4. MarkdownComponent渲染时匹配"CardNode"，实例化MarkdownCardComponent
-5. MarkdownCardComponent.build()创建CardWrapper，传入cardName和cardData
-6. CardWrapper通过JS互操作机制动态实例化cardName对应的ArkTS组件，将cardData作为data参数传入
-

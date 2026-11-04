@@ -6,7 +6,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+// stdx_bin 位于 markdown_hybrid 子目录，由 markdown_hybrid/cjpm.toml 以 ./stdx_bin 相对路径引用
+const PROJECT_ROOT = path.resolve(__dirname, '../markdown_hybrid');
 
 // ---------- stdx 配置 ----------
 const STDX_VERSION = '1.1.3.1';
@@ -143,9 +144,9 @@ const REQUIRED_STDX_FILES = [
 // ---------- formula-ffi har 配置 ----------
 const HAR_URL = 'https://gitcode.com/Cangjie-TPC/formula-ffi/releases/download/v2.0.0/formula_6.1.1-v2.0.0.har';
 // 落盘统一命名 formula.har，与 markdown_hybrid/oh-package.json5 的 file:./har/formula.har 引用保持一致
-const HAR_PATH = path.join(PROJECT_ROOT, 'markdown_hybrid', 'har', 'formula.har');
-// 下载 har 的 SHA256 校验值，与 markdown4cj 仓库的锁定值保持一致，防止损坏或被篡改的 har 进入构建
-const HAR_SHA256 = 'd328942bb70988ba1818a49cab0b7fd8bbcc2ef6d0e840c5e64d71826c91a575';
+const HAR_PATH = path.join(PROJECT_ROOT, 'har', 'formula.har');
+// 下载 har 的 SHA256 校验值（按 curl 实际落盘字节计算，gitcode 对该资产返回 gzip 传输体），防止损坏或被篡改的 har 进入构建
+const HAR_SHA256 = '347e16261ca26c93fcac1b00502d936f78e6f3f1844c23d2e358506a429b7c2e';
 // 先落临时文件，校验通过后再替换，避免下载中断在 har/ 目录残留损坏文件
 const HAR_TEMP_PATH = path.join(PROJECT_ROOT, 'formula.har.tmp');
 
