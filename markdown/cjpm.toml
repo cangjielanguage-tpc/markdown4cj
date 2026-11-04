@@ -15,7 +15,7 @@
 
 [dependencies]
   [dependencies.commonmark4cj]
-    tag = "v1.1.1"
+    tag = "v1.1.3"
     git = "https://gitcode.com/Cangjie-TPC/commonmark4cj.git"
   [dependencies.prism4cj]
     tag = "v1.0.6"
