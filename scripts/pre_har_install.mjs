@@ -26,7 +26,7 @@ const ARTIFACTS = [
     {
         name: 'markdown_parser_hybrid.har',
         url: 'https://gitcode.com/Cangjie-TPC/markdown4cj/releases/download/v2.0.0-markdown-parser-hybrid/markdown_parser_hybrid_6.1.1-v2.0.0-markdown-parser-hybrid.har',
-        sha256: '8937fd29846d21fa475fe3f597c3ad81b4dcb78287f9792427a3e97ea3d9f68d'
+        sha256: 'f013c0fe7646671a234e7a04d53294a1bda22c61b8e10540ce3f38264eb489f7'
     },
     {
         name: 'formula_hybrid.har',
