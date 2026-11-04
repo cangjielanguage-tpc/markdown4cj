@@ -31,7 +31,7 @@ const ARTIFACTS = [
     {
         name: 'formula_hybrid.har',
         url: 'https://gitcode.com/Cangjie-TPC/formula-ffi/releases/download/v2.0.0-hybrid/formula_hybrid_6.1.1-v2.0.0-hybrid.har',
-        sha256: 'ae88e60f8ba962d686e9bd4e1150a4cbd4d79a7f708f199bea155b65c86f6c91'
+        sha256: 'c17e4ed40f84c00bbb55d3d0f74db1c983a09cba9494fe375249f7a25839a3d4'
     }
 ];
 
