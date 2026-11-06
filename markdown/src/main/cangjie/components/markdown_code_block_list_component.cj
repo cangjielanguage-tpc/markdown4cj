@@ -29,7 +29,7 @@ class MarkdownCodeBlockListComponent {
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
     @State
-    var arrayLists: ObservedArrayList<ArrayList<PrismNodesParseResUI>> = ObservedArrayList<ArrayList<PrismNodesParseResUI>>() // 所有代码块高亮数据
+    var arrayLists: ObservedArrayList<ArrayList<ArrayList<PrismNodesParseResUI>>> = ObservedArrayList<ArrayList<ArrayList<PrismNodesParseResUI>>>() // 所有代码块按行分块高亮数据（每个元素=单代码块的行块列表）
     @State
     var highlightVersion: Int64 = 0 // 高亮结果版本号（参与ForEach key，替换arrayLists元素后递增以触发重建）
     var future: ?Future<Unit> = Option<Future<Unit>>.None // 子线程
@@ -181,11 +181,11 @@ class MarkdownCodeBlockListComponent {
             ForEach(
                 arrayLists,
                 itemGeneratorFunc: {
-                    items: ArrayList<PrismNodesParseResUI>, idx: Int64 =>
-                    codeBlockTextComponent(items, idx)
+                    rows: ArrayList<ArrayList<PrismNodesParseResUI>>, idx: Int64 =>
+                    codeBlockTextComponent(rows, idx)
                 },
                 keyGeneratorFunc: {
-                    items: ArrayList<PrismNodesParseResUI>, idx: Int64 => return "${idx}-${highlightVersion}"
+                    rows: ArrayList<ArrayList<PrismNodesParseResUI>>, idx: Int64 => return "${idx}-${highlightVersion}"
                 }
             )
         }
@@ -195,33 +195,42 @@ class MarkdownCodeBlockListComponent {
     /**
      * 组合代码代码文本内容
      * 参考 ArkUI MarkdownCodeBlockTextItem：
-     * - blocks 为空时显示 rawText fallback，避免初始无内容闪烁
+     * - rows 为按行分块列表（每行一个独立Text，横向Scroll内不折行），为空时显示 rawText fallback
      * - 通过 visibility 控制选中代码块显隐
      */
     @Builder
-    func codeBlockTextComponent(items: ArrayList<PrismNodesParseResUI>, idx: Int64) {
+    func codeBlockTextComponent(rows: ArrayList<ArrayList<PrismNodesParseResUI>>, idx: Int64) {
         Column() {
-            Text() {
-                ForEach(
-                    items,
-                    itemGeneratorFunc: {
-                        item: PrismNodesParseResUI, idx1: Int64 =>
-                        Span(item.getText())
-                            .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme))
-                            .letterSpacing(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
-                    },
-                    keyGeneratorFunc: {
-                        item: PrismNodesParseResUI, idx1: Int64 => return "${idx1}-${item.getText()}"
+            // 代码区按行分块渲染（对齐ArkUI MarkdownCodeBlockTextItem：ForEach(blocks)每行一个独立Text）
+            ForEach(
+                rows,
+                itemGeneratorFunc: {
+                    items: ArrayList<PrismNodesParseResUI>, rowIdx: Int64 =>
+                    Text() {
+                        ForEach(
+                            items,
+                            itemGeneratorFunc: {
+                                item: PrismNodesParseResUI, idx1: Int64 =>
+                                Span(item.getText())
+                                    .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme))
+                                    .letterSpacing(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
+                            },
+                            keyGeneratorFunc: {
+                                item: PrismNodesParseResUI, idx1: Int64 => return "${idx1}-${item.getText()}"
+                            }
+                        )
                     }
-                )
-            }
-            .fontFamily(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
-            .fontSize(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontSize)
-            .fontWeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
-            .fontStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
-            .lineHeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
-            .textAlign(TextAlign.Start)
-            .visibility(if (items.size == 0) { Visibility.None } else { Visibility.Visible })
+                    .fontFamily(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
+                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontSize)
+                    .fontWeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
+                    .fontStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+                    .lineHeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
+                    .textAlign(TextAlign.Start)
+                },
+                keyGeneratorFunc: {
+                    items: ArrayList<PrismNodesParseResUI>, rowIdx: Int64 => return "${rowIdx}-${MarkdownParseCodeUtil.rowText(items)}"
+                }
+            )
 
             // rawText fallback：高亮未完成时显示原始文本，避免闪烁
             Text(getRawText(idx))
@@ -229,10 +238,12 @@ class MarkdownCodeBlockListComponent {
                 .fontSize(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontSize)
                 .fontWeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
                 .fontStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+                // issue #730：rawText 兜底样式与高亮路径保持一致，补挂 letterSpacing
+                .letterSpacing(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
                 .fontColor(rawTextFontColor(markdownConfiguration.markdownTheme))
                 .lineHeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
                 .textAlign(TextAlign.Start)
-                .visibility(if (items.size == 0) { Visibility.Visible } else { Visibility.None })
+                .visibility(if (rows.size == 0) { Visibility.Visible } else { Visibility.None })
         }
         .alignItems(HorizontalAlign.Start)
         .visibility(listCodeTextBool(idxSelect, idx))
@@ -319,7 +330,7 @@ class MarkdownCodeBlockListComponent {
         let oldSize = arrayLists.size
         if (newSize > oldSize) {
             for (i in oldSize..newSize) {
-                arrayLists.append(ArrayList<PrismNodesParseResUI>())
+                arrayLists.append(ArrayList<ArrayList<PrismNodesParseResUI>>())
             }
         } else if (newSize < oldSize) {
             for (i in oldSize - 1..=newSize : -1) {
@@ -434,10 +445,11 @@ class MarkdownCodeBlockListComponent {
                     return
                 }
                 // 原地替换每个代码块的高亮结果（ObservedArrayList 逐个替换触发 ForEach 刷新）
+                // 平铺token按\n切行成行块列表，对齐ArkUI prism_hybrid按行返回（每行一个独立Text）
                 let newSize = prismNodesParseResLists.size
                 for (i in 0..newSize) {
                     if (i < arrayLists.size) {
-                        arrayLists[i] = prismNodesParseResLists[i]
+                        arrayLists[i] = MarkdownParseCodeUtil.splitTokensByLines(prismNodesParseResLists[i])
                     }
                 }
                 // 版本号递增：key 变化触发 ForEach 重建该项，否则替换元素后高亮不渲染

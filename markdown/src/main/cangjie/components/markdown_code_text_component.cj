@@ -16,7 +16,7 @@ class MarkdownCodeTextComponent {
     @State
     var index: Int64 = -1 // hash
     @State
-    var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>() // 高亮代码列表
+    var rowBlocks: ObservedArrayList<ArrayList<PrismNodesParseResUI>> = ObservedArrayList<ArrayList<PrismNodesParseResUI>>() // 高亮代码按行分块列表（对齐ArkUI prism_hybrid按行返回，每行一个独立Text）
     @State
     var hasHighlightResult: Bool = false // 是否已有高亮结果（@State标志位驱动代码内容/rawText兜底切换显示）
     var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
@@ -41,34 +41,43 @@ class MarkdownCodeTextComponent {
 
     func build() {
         Column() {
-            Text() {
-                ForEach(
-                    arrayList,
-                    itemGeneratorFunc: {
-                        item: PrismNodesParseResUI, idx: Int64 => Span(item.getText())
-                            .fontColor(codeTextColor(item, markdownTheme))
-                            .letterSpacing(markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
-                    },
-                    keyGeneratorFunc: {
-                        item: PrismNodesParseResUI, idx: Int64 => "${idx}-${item.getText()}"
+            // 代码区按行分块渲染（对齐ArkUI MarkdownCodeSeparate：每行一个独立Text，横向Scroll内不折行）
+            ForEach(
+                rowBlocks,
+                itemGeneratorFunc: {
+                    items: ArrayList<PrismNodesParseResUI>, idx: Int64 =>
+                    Text() {
+                        ForEach(
+                            items,
+                            itemGeneratorFunc: {
+                                item: PrismNodesParseResUI, idx1: Int64 => Span(item.getText())
+                                    .fontColor(codeTextColor(item, markdownTheme))
+                                    .letterSpacing(markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
+                            },
+                            keyGeneratorFunc: {
+                                item: PrismNodesParseResUI, idx1: Int64 => return "${idx1}-${item.getText()}"
+                            }
+                        )
                     }
-                )
-            }
-            .fontFamily(markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
-            .fontSize(markdownTheme.codeBlockTheme.codeBlockTextFontSize)
-            .fontWeight(markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
-            .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
-            .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
-            .textAlign(TextAlign.Start)
-            // 高亮结果显隐由@State标志位驱动，保证解析完成后可靠刷新
-            .visibility(isVisibility(hasHighlightResult))
-
+                    .fontFamily(markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
+                    .fontSize(markdownTheme.codeBlockTheme.codeBlockTextFontSize)
+                    .fontWeight(markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
+                    .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+                    .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
+                    .textAlign(TextAlign.Start)
+                },
+                keyGeneratorFunc: {
+                    items: ArrayList<PrismNodesParseResUI>, idx: Int64 => return "${idx}-${MarkdownParseCodeUtil.rowText(items)}"
+                }
+            )
             // rawText fallback：高亮未完成时显示原始文本，避免行高塌陷与行号错位（与ArkUI一致）
             Text(codeText)
                 .fontFamily(markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
                 .fontSize(markdownTheme.codeBlockTheme.codeBlockTextFontSize)
                 .fontWeight(markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
                 .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+                // issue #730：rawText 兜底样式与高亮路径保持一致，补挂 letterSpacing
+                .letterSpacing(markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
                 .fontColor(indentedCodeTextColor(markdownTheme))
                 .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
                 .textAlign(TextAlign.Start)
@@ -86,7 +95,7 @@ class MarkdownCodeTextComponent {
     public func refreshData(): Unit {
         if (this.codeText.size == 0) {
             // 空行数据需要空格文本填充Text控件使其在布局上占位
-            arrayList.append(PrismNodesParseResUI(types: "", text: " ", alias: Option<String>.None, color: Option<Color>.None))
+            rowBlocks.append(ArrayList<PrismNodesParseResUI>([PrismNodesParseResUI(types: "", text: " ", alias: Option<String>.None, color: Option<Color>.None)]))
             hasHighlightResult = true
             return
         }
@@ -111,7 +120,7 @@ class MarkdownCodeTextComponent {
         if (prismNodesParseResLists.size == 0) {
             prismNodesParseResLists.add(PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None))
         }
-        refreshCodeDatas(prismNodesParseResLists)
+        refreshRowBlocks(prismNodesParseResLists)
     }
 
     /**
@@ -143,7 +152,7 @@ class MarkdownCodeTextComponent {
                             return
                         }
                         appliedVersion = currentVersion
-                        refreshCodeDatas(prismNodesParseResLists)
+                        refreshRowBlocks(prismNodesParseResLists)
                     }
                 }
                 future = MarkdownParseCodeUtil.stringToResList(snapshot, this.info, psh, callback)
@@ -151,42 +160,44 @@ class MarkdownCodeTextComponent {
     }
 
     /**
-     * 列表新老数据对比
+     * 高亮结果按行块更新
+     * 平铺token先按\n切行，再对rowBlocks做三段式对比更新：
+     * 行数一致时逐行内容对比原地替换，行数变化时增删行块（避免clear导致全量刷新）
      */
-    func refreshCodeDatas(prismNodesParseResLists: ArrayList<PrismNodesParseResUI>): Unit {
-        let newSize = prismNodesParseResLists.size
-        let oldSize = arrayList.size
-        if (newSize == oldSize) {
-            // 新数据等于页面数据
-            for (i in 0..oldSize) {
-                if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
-                    arrayList[i] = prismNodesParseResLists[i]
-                }
-            }
-        } else if (newSize > oldSize) {
-            // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..oldSize) {
-                if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
-                    arrayList[i] = prismNodesParseResLists[i]
-                }
-            }
+    func refreshRowBlocks(tokens: ArrayList<PrismNodesParseResUI>): Unit {
+        let newRows = MarkdownParseCodeUtil.splitTokensByLines(tokens)
+        let newSize = newRows.size
+        let oldSize = rowBlocks.size
+        if (newSize > oldSize) {
             for (i in oldSize..newSize) {
-                arrayList.append(prismNodesParseResLists[i])
+                rowBlocks.append(ArrayList<PrismNodesParseResUI>())
             }
-        } else {
-            // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..newSize) {
-                if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
-                    arrayList[i] = prismNodesParseResLists[i]
-                }
-            }
+        } else if (newSize < oldSize) {
             // 循环删除多余的旧数据
             for (i in oldSize - 1..=newSize : -1) {
-                arrayList.remove(i)
+                rowBlocks.remove(i)
             }
         }
-        hasHighlightResult = arrayList.size > 0
+        for (i in 0..newSize) {
+            if (!rowEquals(rowBlocks[i], newRows[i])) {
+                rowBlocks[i] = newRows[i]
+            }
+        }
+        hasHighlightResult = rowBlocks.size > 0
+    }
+
+    /**
+     * 单行块内容对比（只按token文本对比，与既有token级对比口径一致）
+     */
+    func rowEquals(a: ArrayList<PrismNodesParseResUI>, b: ArrayList<PrismNodesParseResUI>): Bool {
+        if (a.size != b.size) {
+            return false
+        }
+        for (i in 0..a.size) {
+            if (a[i].getText() != b[i].getText()) {
+                return false
+            }
+        }
+        return true
     }
 }

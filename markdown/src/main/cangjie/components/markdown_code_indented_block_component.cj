@@ -90,6 +90,8 @@ class MarkdownCodeIndentedBlockComponent {
                 .fontSize(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontSize)
                 .fontWeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
                 .fontStyle(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+                // issue #730：rawText 兜底样式与高亮路径保持一致，补挂 letterSpacing
+                .letterSpacing(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
                 .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme))
                 .lineHeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
                 .textAlign(TextAlign.Start)

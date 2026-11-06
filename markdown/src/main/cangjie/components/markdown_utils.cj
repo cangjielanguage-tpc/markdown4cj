@@ -2571,13 +2571,14 @@ func hexStringToUInt32(s: String): ?UInt32 {
     for (b in s.toArray()) {
         var v: UInt32
         if (b >= 48 && b <= 57) { // 0-9
-            v = UInt32(b - 48)
+            v = UInt32(b) - 48
         } else if (b >= 97 && b <= 102) { // a-f
-            v = UInt32(b - 87)
+            v = UInt32(b) - 87
         } else {
             return Option<UInt32>.None
         }
-        result = result * 16 + v
+        // 移位+或替代乘加：规避仓颉整型乘法运行时溢出检查
+        result = (result << 4) | v
     }
     return Some(result)
 }
@@ -2590,9 +2591,14 @@ func hexStringToUInt32(s: String): ?UInt32 {
  */
 func expandHex3(hex: String): String {
     let sb = StringBuilder()
-    for (c in hex) {
-        sb.append(c)
-        sb.append(c)
+    var i: Int64 = 0
+    while (i < hex.size) {
+        // 仓颉直接迭代 String 得到的是字节值(UInt8)，append 会追加数值的十进制文本；
+        // 必须按字节索引切片取单字符子串，保证字符级翻倍
+        let ch = hex[i..i + 1]
+        sb.append(ch)
+        sb.append(ch)
+        i++
     }
     return sb.toString()
 }
@@ -2771,11 +2777,14 @@ func colorStringToColor(colorString: String): ?Color {
     if (colorStr.startsWith("#")) {
         let hex = colorStr[1..]
         if (isHexString(hex)) {
+            // alpha掩码：编译期直接确定为UInt32字面量，规避UInt32(Int64)运行时转换在仓颉侧抛异常、
+            // 被上层try-catch吞掉后颜色回落默认黑色的问题（8位分支Color(v)直用不受影响）
+            let alphaMask: UInt32 = 0xFF000000
             if (hex.size == 6) {
                 // #RRGGBB 补 FF alpha
                 let rgb = hexStringToUInt32(hex)
                 if (let Some(v) <- rgb) {
-                    return Color(UInt32(0xFF000000) | v)
+                    return Color(alphaMask | v)
                 }
             } else if (hex.size == 8) {
                 // #AARRGGBB
@@ -2787,7 +2796,7 @@ func colorStringToColor(colorString: String): ?Color {
                 // #RGB 扩展为 #RRGGBB
                 let rgb = hexStringToUInt32(expandHex3(hex))
                 if (let Some(v) <- rgb) {
-                    return Color(UInt32(0xFF000000) | v)
+                    return Color(alphaMask | v)
                 }
             }
         }
@@ -2795,8 +2804,10 @@ func colorStringToColor(colorString: String): ?Color {
     }
     // 纯数字（如 "123"）按十进制处理
     try {
-        return Color(UInt32.parse(colorStr))
+        let num = UInt32.parse(colorStr)
+        return Color(num)
     } catch (_: Exception) {
+        // 非纯数字，忽略
     }
     return Option<Color>.None
 }
