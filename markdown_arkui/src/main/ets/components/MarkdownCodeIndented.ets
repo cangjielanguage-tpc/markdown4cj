@@ -74,6 +74,8 @@ export struct MarkdownCodeIndented {
         .fontSize(this.codeBlockTheme.codeBlockTextFontSize)
         .fontWeight(this.codeBlockTheme.codeBlockTextFontWeight)
         .fontStyle(this.codeBlockTheme.codeBlockTextFontStyle)
+        // issue #730：rawText 兜底样式与高亮路径保持一致，补挂 letterSpacing
+        .letterSpacing(this.codeBlockTheme.codeBlockTextLetterSpacing)
         .fontColor(this.codeBlockTheme.codeBlockTextFontColor)
         .lineHeight(this.codeBlockTheme.codeBlockTextLineHeight)
         .textAlign(TextAlign.Start)
