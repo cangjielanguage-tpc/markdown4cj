@@ -115,6 +115,7 @@ export struct MarkdownList {
                 this.listPrefixTextINCComponent(item, index) // 普通列表项
               } else if (item.nodeType === "TaskListItem") {
                 this.listPrefixCheckboxINCComponent(item) // 任务列表项
+                Blank().width(this.bulletListTheme.bulletListCheckboxSpacing) // 复选框与内容间距，与仓颉侧 Blank 间隔器写法对齐
               }
               MarkdownListItem({
                 node: item,
@@ -242,7 +243,6 @@ export struct MarkdownList {
     Checkbox()
       .height(this.bulletListTheme.bulletListCheckboxHeight)
       .width(this.bulletListTheme.bulletListCheckboxWidth)
-      .margin({ right: this.bulletListTheme.bulletListCheckboxSpacing })
       .shape(this.bulletListTheme.bulletListCheckboxShape)
       .selectedColor(this.bulletListTheme.bulletListCheckboxSelectedColor)
       .select(item.isTaskListSelected)
