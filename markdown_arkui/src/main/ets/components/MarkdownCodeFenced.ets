@@ -101,7 +101,7 @@ export struct MarkdownCodeFenced {
                 getPrismNodes(block),
                 (node: PrismNode) => {
                   Span(node.text)
-                    .fontColor(node.color ?? this.defaultFontColor)
+                    .fontColor(node.color ?? this.codeBlockTheme.codeBlockTextFontColor ?? this.defaultFontColor)
                     .letterSpacing(this.codeBlockTheme.codeBlockTextLetterSpacing)
                 },
                 (node: PrismNode, nodeIdx: number) => `${nodeIdx}-${node.text}-${node.color}`

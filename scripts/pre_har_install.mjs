@@ -10,13 +10,13 @@ const PROJECT_ROOT = path.resolve(__dirname, '..');
 // markdown_arkui/oh-package.json5 以 ./har/xxx.har 引用这 4 个预编译依赖
 const HAR_DIR = path.join(PROJECT_ROOT, 'markdown_arkui', 'har');
 
-// Cangjie-TPC 在 gitcode.com 发布的 v2.0.0 hybrid 产物清单，与下载内容 SHA256 绑定，
+// Cangjie-TPC 在 gitcode.com 发布的 hybrid 产物清单（prism 为 v2.0.1，其余为 v2.0.0），与下载内容 SHA256 绑定，
 // 校验不一致即视为下载损坏或被篡改，不会进入构建
 const ARTIFACTS = [
     {
         name: 'prism_hybrid.har',
-        url: 'https://gitcode.com/Cangjie-TPC/prism4cj/releases/download/v2.0.0-hybrid/prism_hybrid_6.1.1-v2.0.0-hybrid.har',
-        sha256: '744216a27da98221bd6c58be30d1ed271b4bf81e73d89d563f104b91508b5fc5'
+        url: 'https://gitcode.com/Cangjie-TPC/prism4cj/releases/download/v2.0.1-hybrid/prism_hybrid_6.1.1-v2.0.1-hybrid.har',
+        sha256: '50f9239926586727fc0052ca121aa760d6e995e75d68f72c0aa9b5a2a12cb6fe'
     },
     {
         name: 'codeformat_hybrid.har',
