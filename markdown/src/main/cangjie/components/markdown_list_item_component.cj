@@ -34,6 +34,7 @@ class MarkdownListItemComponent {
     var listItemImageCallback: (String) -> Unit // 图片点击事件
     var listItemVideoCallback: (String) -> Unit // 视频点击事件
     var listItemDepth: Int64 // 列表深度
+    var listItemIsOrdered: Bool // 父列表是否是有序列表
     var listItemNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
     @BuilderParam
     var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
@@ -50,7 +51,7 @@ class MarkdownListItemComponent {
     }
 
     func build() {
-        List(space: listChildChildSpacing(listItemMarkdownConfiguration.markdownTheme, listItemNodeView)) {
+        List(space: listChildChildSpacing(listItemIsOrdered, listItemMarkdownConfiguration.markdownTheme)) {
             LazyForEach(
                 listItemNodeViewDataSource,
                 itemGeneratorFunc: {

@@ -816,12 +816,14 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         Float64(bulletTheme.bulletListChildChildSpacing)
     }
     // 检测是否为任务列表（BulletList 子节点为 TaskListItem）
-    // BulletList 子节点要么全是普通 ListItem，要么全是 TaskListItem，检查首个子节点即可
+    // 列表可能混合普通项与任务项（渲染端逐项判断前缀），任一 TaskListItem 即按复选框前缀估算
     var isTaskList: Bool = false
     if (!isOrdered) {
         for (child in node.iterateChildren()) {
-            isTaskList = child is TaskListItem
-            break
+            if (child is TaskListItem) {
+                isTaskList = true
+                break
+            }
         }
     }
     // 前缀高度：无序/任务列表分别使用对应前缀高度；与内容高度取最大值
@@ -834,7 +836,7 @@ func estimateListNodeHeight(node: CommonmarkNode, theme: MarkdownTheme, componen
         bulletTheme.bulletListBulletTextLineHeight
     }
     // 前缀宽度：列表符号/序号文本宽度 + 间距，需从内容宽度中扣除
-    // 任务列表前缀为复选框：复选框宽度 + 复选框与内容间距（与渲染端 Checkbox 的 width + right margin 一致）
+    // 任务列表前缀为复选框：复选框宽度 + 复选框与内容间距（与渲染端 Checkbox 的 width + Blank 间隔器宽度一致）
     let prefixWidth: Float64 = if (isOrdered) {
         let markerWidthPx = Measure.MeasureText(MeasureOptions(
             textContent: "1.",

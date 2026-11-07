@@ -61,10 +61,10 @@ public class MarkdownListComponent {
                             Row() {
                                 if (isOrdered) {
                                     // 普通有序列表
-                                    listPrefixTextINCComponent(item, true, listMarkdownConfiguration, listDepth)
+                                    listPrefixTextINCComponent(item, true, listMarkdownConfiguration, listDepth, idx)
                                 } else {
                                     // 普通无序列表
-                                    listPrefixTextINCComponent(item, false, listMarkdownConfiguration, listDepth)
+                                    listPrefixTextINCComponent(item, false, listMarkdownConfiguration, listDepth, idx)
                                 }
                                 MarkdownListItemComponent(
                                     listItemMarkdownConfiguration: listMarkdownConfiguration,
@@ -83,6 +83,7 @@ public class MarkdownListComponent {
                                     listItemImageCallback: listImageCallback,
                                     listItemVideoCallback: listVideoCallback,
                                     listItemDepth: listDepth,
+                                    listItemIsOrdered: isOrdered,
                                     blockImageCardComponent: blockImageCardComponent,
                                     blockLinkCardComponent: blockLinkCardComponent
                                 )
@@ -97,7 +98,7 @@ public class MarkdownListComponent {
                             Row() {
                                 // 任务列表
                                 listPrefixCheckboxINCComponent(item, listMarkdownConfiguration)
-                                // 项目 SDK 的 Row 不支持 space 参数，改用 Blank 间隔器承担 checkbox 与文本间距（先例：markdown_base_component.cj）
+                                // 复选框与内容间距
                                 Blank().width(listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
                                 MarkdownListItemComponent(
                                     listItemMarkdownConfiguration: listMarkdownConfiguration,
@@ -116,6 +117,7 @@ public class MarkdownListComponent {
                                     listItemImageCallback: listImageCallback,
                                     listItemVideoCallback: listVideoCallback,
                                     listItemDepth: listDepth,
+                                    listItemIsOrdered: isOrdered,
                                     blockImageCardComponent: blockImageCardComponent,
                                     blockLinkCardComponent: blockLinkCardComponent
                                 )
@@ -127,8 +129,33 @@ public class MarkdownListComponent {
                     } else {
                         // 其他节点
                         ListItem() {
-                            Text("")
+                            Row() {
+                                MarkdownListItemComponent(
+                                    listItemMarkdownConfiguration: listMarkdownConfiguration,
+                                    listItemNodeView: item,
+                                    listItemComponentWidth: listComponentWidth,
+                                    listItemTableBlockComponentWidth: listTableBlockComponentWidth,
+                                    listItemAdBuilder: listAdBuilder,
+                                    listItemVideoBuilder: listVideoBuilder,
+                                    listItemAudioBuilder: listAudioBuilder,
+                                    listItemCustomBlockBuilder: listCustomBlockBuilder,
+                                    listItemCustomHeadingLineBuilder: listCustomHeadingLineBuilder,
+                                    listItemCustomParagraphLineBuilder: listCustomParagraphLineBuilder,
+                                    listItemCustomTableLineBuilder: listCustomTableLineBuilder,
+                                    listItemFootnoteCallback: listFootnoteCallback,
+                                    listItemTocListOnClick: listTocListOnClick,
+                                    listItemImageCallback: listImageCallback,
+                                    listItemVideoCallback: listVideoCallback,
+                                    listItemDepth: listDepth,
+                                    listItemIsOrdered: isOrdered,
+                                    blockImageCardComponent: blockImageCardComponent,
+                                    blockLinkCardComponent: blockLinkCardComponent
+                                )
+                            }
+                            .alignItems(VerticalAlign.Top)
+                            .justifyContent(FlexAlign.Start)
                         }
+                        .layoutWeight(1)
                     }
                 },
                 keyGeneratorFunc: {
@@ -157,8 +184,8 @@ public class MarkdownListComponent {
      * 无序/有序列表的前缀文本
      */
     @Builder
-    func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
-        Text(listPrefixStr(item, listDepth, isBullet, markdownConfiguration.markdownTheme))
+    func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64, idx: Int64) {
+        Text(listPrefixStr(item, listDepth, isBullet, markdownConfiguration.markdownTheme, idx))
             .fontFamily(listPrefixFontFamily(isBullet, markdownConfiguration.markdownTheme))
             .fontSize(listPrefixSize(isBullet, markdownConfiguration.markdownTheme))
             .fontWeight(listPrefixFontWeight(isBullet, markdownConfiguration.markdownTheme))

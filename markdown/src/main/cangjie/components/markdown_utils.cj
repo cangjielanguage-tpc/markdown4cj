@@ -1176,19 +1176,17 @@ func listChildSpacing(markdownTheme: MarkdownTheme, nodeView: NodeView): Int64 {
 }
 
 /**
- * 设置有序/无序/任务列表子模块中子模块上下间距
+ * 设置有序/无序列表子模块中子模块上下间距
  *
+ * @param isOrdered 是否是有序列表
  * @param markdownTheme markdown样式
- * @param nodeView NodeView
  * @return 列表子模块上下间距
  */
-func listChildChildSpacing(markdownTheme: MarkdownTheme, nodeView: NodeView): Int64 {
-    if (nodeView.isBulletList) {
-        return markdownTheme.bulletListTheme.bulletListChildChildSpacing
-    } else if (nodeView.isOrderedList) {
+func listChildChildSpacing(isOrdered: Bool, markdownTheme: MarkdownTheme): Int64 {
+    if (isOrdered) {
         return markdownTheme.orderedListTheme.orderedListChildChildSpacing
     }
-    return 0
+    return markdownTheme.bulletListTheme.bulletListChildChildSpacing
 }
 
 /**
@@ -1196,14 +1194,18 @@ func listChildChildSpacing(markdownTheme: MarkdownTheme, nodeView: NodeView): In
  *
  * @param item NodeView
  * @param listDepth 列表深度
- * @param isBullet 是否是无序列表
+ * @param isBullet 是否是有序列表
  * @param markdownTheme markdown样式
+ * @param idx 列表项索引
  * @return 前缀文本内容
  */
-func listPrefixStr(item: NodeView, listDepth: Int64, isBullet: Bool, markdownTheme: MarkdownTheme): String {
+func listPrefixStr(item: NodeView, listDepth: Int64, isBullet: Bool, markdownTheme: MarkdownTheme, idx: Int64): String {
     if (isBullet) {
-        // 有序列表
-        return "${item.orderedListNumber}."
+        // 有序列表，序号缺失时兜底为索引+1
+        if (item.orderedListNumber > 0) {
+            return "${item.orderedListNumber}."
+        }
+        return "${idx + 1}."
     }
     if (markdownTheme.bulletListTheme.bulletListBulletIsCircle) {
         return "${solidCircleToUnicode()}"
