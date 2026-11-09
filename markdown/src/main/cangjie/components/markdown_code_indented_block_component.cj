@@ -16,7 +16,7 @@ class MarkdownCodeIndentedBlockComponent {
     @State
     var nodeHash: Int64 = 0 // hash
     @State
-    var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表（存1..N）
+    var lineArray: Array<Int64> = Array<Int64>() // 代码行数显示数据列表（存1..N，行号列整体渲染为单个多行Text）
 
     protected override func aboutToAppear(): Unit {
         MarkdownRefreshRegistry.register(this.nodeHash, refreshData)
@@ -32,23 +32,17 @@ class MarkdownCodeIndentedBlockComponent {
             codeTitleComponent(codeText, if (info.isSome()) { info() } else { "" }, markdownConfiguration, true)
             Row() {
                 Column() {
-                    ForEach(
-                        lineArray,
-                        itemGeneratorFunc: {
-                            item: Int64, idx: Int64 => Text(item.toString())
-                                .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
-                                .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
-                                .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
-                                .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
-                                .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
-                                .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
-                                .maxLines(1)
-                                .textOverflow(TextOverflow.Ellipsis)
-                        },
-                        keyGeneratorFunc: {
-                            item: Int64, idx: Int64 => return "${item}"
-                        }
-                    )
+                    if (lineArray.size > 0) {
+                        // 行号列合并为单个多行Text（对齐ArkUI CodeLineComponent：逐行独立Text的逐子组件布局取整与块级多行文本取整存在亚像素差异，导致行号位置偏差）
+                        Text(joinLineNumbers(lineArray))
+                            .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
+                            .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
+                            .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
+                            .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
+                            .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
+                            .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
+                            .textAlign(TextAlign.End)
+                    }
                 }
                 .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberIsShow))
                 .padding(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberDividerSpacing, left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberTextPaddingLeft)
@@ -116,7 +110,7 @@ class MarkdownCodeIndentedBlockComponent {
     public func refreshDataInternal(): Unit {
         let arr = this.codeText.split("\n") // 代码块数据分割
         let lines = arr.size
-        // 行号数据存1..N（与ArkUI一致）
-        lineArray.set(Array<Int64>(lines, {i: Int64 => i + 1}))
+        // 与ArkUI一致用split统计行数（空文本算1行），行号数据存1..N全量重建
+        lineArray = Array<Int64>(lines, {i: Int64 => i + 1})
     }
 }

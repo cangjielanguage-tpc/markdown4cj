@@ -2093,6 +2093,23 @@ func codeDividerColor(markdownTheme: MarkdownTheme): Color {
 }
 
 /**
+ * 行号数组拼接为多行文本（对齐ArkUI lineArray.join('\n')）
+ *
+ * @param lineArray 行号数组（存1..N）
+ * @return 以\n分隔的行号文本
+ */
+func joinLineNumbers(lineArray: Array<Int64>): String {
+    let sb = StringBuilder()
+    for (i in 0..lineArray.size) {
+        if (i > 0) {
+            sb.append("\n")
+        }
+        sb.append(lineArray[i].toString())
+    }
+    return sb.toString()
+}
+
+/**
  * 代码块代码类型文本颜色
  *
  * @param markdownTheme markdown基础样式

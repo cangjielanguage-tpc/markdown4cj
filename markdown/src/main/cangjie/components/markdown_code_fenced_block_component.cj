@@ -20,7 +20,7 @@ class MarkdownCodeFencedBlockComponent {
     @State
     var rowBlocks: ObservedArrayList<ArrayList<PrismNodesParseResUI>> = ObservedArrayList<ArrayList<PrismNodesParseResUI>>() // 高亮代码按行分块列表（对齐ArkUI prism_hybrid按行返回，每行一个独立Text）
     @State
-    var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
+    var lineArray: Array<Int64> = Array<Int64>() // 代码行数显示数据列表（存1..N，行号列整体渲染为单个多行Text）
     var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
     var future: ?Future<Unit> = Option<Future<Unit>>.None // 子线程
     @State
@@ -43,23 +43,17 @@ class MarkdownCodeFencedBlockComponent {
             codeTitleComponent(codeText, info, markdownConfiguration, true)
             Row() {
                 Column() {
-                    ForEach(
-                        lineArray,
-                        itemGeneratorFunc: {
-                            item: Int64, idx: Int64 => Text(item.toString())
-                                .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
-                                .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
-                                .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
-                                .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
-                                .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
-                                .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
-                                .maxLines(1)
-                                .textOverflow(TextOverflow.Ellipsis)
-                        },
-                        keyGeneratorFunc: {
-                            item: Int64, idx: Int64 => return "${item}"
-                        }
-                    )
+                    if (lineArray.size > 0) {
+                        // 行号列合并为单个多行Text（对齐ArkUI CodeLineComponent：逐行独立Text的逐子组件布局取整与块级多行文本取整存在亚像素差异，导致行号位置偏差）
+                        Text(joinLineNumbers(lineArray))
+                            .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
+                            .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
+                            .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
+                            .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
+                            .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
+                            .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
+                            .textAlign(TextAlign.End)
+                    }
                 }
                 .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberIsShow))
                 .padding(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberDividerSpacing, left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberTextPaddingLeft)
@@ -245,22 +239,9 @@ class MarkdownCodeFencedBlockComponent {
     }
 
     /**
-     * 行号刷新
+     * 行号刷新（与ArkUI一致全量重建1..N行号数组）
      */
     func refreshLines(lines: Int64): Unit {
-        let newSize = lines
-        let oldSize = lineArray.size
-        if (newSize == oldSize) {
-        } else if (newSize > oldSize) {
-            // 循环添加新数据（与ArkUI一致存储1..N行号）
-            for (i in oldSize..newSize) {
-                lineArray.append(i + 1)
-            }
-        } else {
-            // 循环删除多余的旧数据
-            for (i in oldSize - 1..=newSize : -1) {
-                lineArray.remove(i)
-            }
-        }
+        lineArray = Array<Int64>(lines, {i: Int64 => i + 1})
     }
 }

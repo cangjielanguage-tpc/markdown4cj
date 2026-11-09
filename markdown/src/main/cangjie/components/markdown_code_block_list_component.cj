@@ -27,7 +27,7 @@ class MarkdownCodeBlockListComponent {
     @State
     var lines: Int64 = 0 // 代码行数
     @State
-    var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
+    var lineArray: Array<Int64> = Array<Int64>() // 代码行数显示数据列表（存1..N，行号列整体渲染为单个多行Text）
     @State
     var arrayLists: ObservedArrayList<ArrayList<ArrayList<PrismNodesParseResUI>>> = ObservedArrayList<ArrayList<ArrayList<PrismNodesParseResUI>>>() // 所有代码块按行分块高亮数据（每个元素=单代码块的行块列表）
     @State
@@ -118,23 +118,17 @@ class MarkdownCodeBlockListComponent {
             codeTitleComponent(selectCodeText(), selectInfoText(), markdownConfiguration, false)
             Row() {
                 Column() {
-                    ForEach(
-                        lineArray,
-                        itemGeneratorFunc: {
-                            num: Int64, idx: Int64 => Text(num.toString())
-                                .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
-                                .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
-                                .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
-                                .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
-                                .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
-                                .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
-                                .maxLines(1)
-                                .textOverflow(TextOverflow.Ellipsis)
-                        },
-                        keyGeneratorFunc: {
-                            num: Int64, idx: Int64 => return "${num}"
-                        }
-                    )
+                    if (lineArray.size > 0) {
+                        // 行号列合并为单个多行Text（对齐ArkUI CodeLineComponent：逐行独立Text的逐子组件布局取整与块级多行文本取整存在亚像素差异，导致行号位置偏差）
+                        Text(joinLineNumbers(lineArray))
+                            .fontFamily(codeLineNumberTextFontFamily(markdownConfiguration.markdownTheme))
+                            .fontSize(codeLineNumberTextSize(markdownConfiguration.markdownTheme))
+                            .fontWeight(codeLineNumberTextFontWeight(markdownConfiguration.markdownTheme))
+                            .fontStyle(codeLineNumberTextFontStyle(markdownConfiguration.markdownTheme))
+                            .fontColor(codeLineNumberTextColor(markdownConfiguration.markdownTheme))
+                            .lineHeight(codeLineNumberTextLineHeight(markdownConfiguration.markdownTheme))
+                            .textAlign(TextAlign.End)
+                    }
                 }
                 .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberIsShow))
                 .padding(right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberDividerSpacing, left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockLineNumberTextPaddingLeft)
@@ -405,15 +399,15 @@ class MarkdownCodeBlockListComponent {
     func updateLineArray(): Unit {
         if (strText.size == 0) {
             lines = 0
-            lineArray.set(Array<Int64>(0, repeat: 0))
+            lineArray = Array<Int64>()
             return
         }
         if (idxSelect < 0 || idxSelect >= strText.size) {
             idxSelect = 0
         }
-        // 与ArkUI一致用split统计行数（空文本算1行），行号数据存1..N
+        // 与ArkUI一致用split统计行数（空文本算1行），行号数据存1..N全量重建
         lines = strText[idxSelect].split("\n").size
-        lineArray.set(Array<Int64>(lines, {i: Int64 => i + 1}))
+        lineArray = Array<Int64>(lines, {i: Int64 => i + 1})
     }
 
     /**
