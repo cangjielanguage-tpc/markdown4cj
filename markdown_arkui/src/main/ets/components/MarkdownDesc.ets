@@ -160,7 +160,10 @@ export struct MarkdownDesc {
             }
           }
           .margin({
-            top: index === 0 ? 0 : index === 1 ? 0 : this.definitionListTheme.definitionListDescriptionItemSpacing
+            // 与仓颉侧 descDefItemSpacing 对齐：仅释义行（DescDef）加顶部间距（index===1 时为 0），术语行与其它节点无间距
+            top: item.nodeType === "DescDef"
+              ? (index === 1 ? 0 : this.definitionListTheme.definitionListDescriptionItemSpacing)
+              : 0
           })
         },
         (item: NodeView, index: number) => {
