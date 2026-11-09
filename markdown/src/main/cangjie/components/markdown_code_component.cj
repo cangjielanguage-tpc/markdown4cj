@@ -130,7 +130,7 @@ class MarkdownCodeComponent {
                                         lineStrArray,
                                         itemGeneratorFunc: {
                                             item: String, idx: Int64 => ListItem() {
-                                                Text(item.size > 0 ? item : " ")
+                                                Text(if (item.size > 0) { item } else { " " })
                                                     .fontFamily(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
                                                     .fontSize(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontSize)
                                                     .fontWeight(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
