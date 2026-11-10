@@ -1,9 +1,8 @@
-// scripts/pre_stdx_install.mjs
-import { execFileSync } from 'child_process';
-import crypto from 'crypto';
+// scripts/pre_stdx_install.mjs —— 仅负责仓颉 stdx 二进制下载与解压（har 下载见 pre_har_install.mjs）
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { assertDownloaded, runCommand, sha256 } from './pre_install_utils.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // stdx_bin 位于 markdown 子目录，由 markdown/cjpm.toml 以 ./stdx_bin 相对路径引用
@@ -141,37 +140,6 @@ const REQUIRED_STDX_FILES = [
   'stdx.unittest.data.cjo',
 ];
 
-// ---------- formula-ffi har 配置 ----------
-const HAR_URL = 'https://gitcode.com/Cangjie-TPC/formula-ffi/releases/download/v2.0.0/formula_6.1.1-v2.0.0.har';
-// 落盘统一命名 formula.har，与 markdown/oh-package.json5 的 file:./har/formula.har 引用保持一致
-const HAR_PATH = path.join(PROJECT_ROOT, 'har', 'formula.har');
-// 下载 har 的 SHA256 校验值，与 markdown4cj 仓库的锁定值保持一致，防止损坏或被篡改的 har 进入构建
-const HAR_SHA256 = '347e16261ca26c93fcac1b00502d936f78e6f3f1844c23d2e358506a429b7c2e';
-// 先落临时文件，校验通过后再替换，避免下载中断在 har/ 目录残留损坏文件
-const HAR_TEMP_PATH = path.join(PROJECT_ROOT, 'formula.har.tmp');
-
-function sha256(filePath) {
-  return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
-}
-
-// 以参数数组方式调用外部命令（不经 shell 解析），路径中的空格或特殊字符不影响执行
-function runCommand(command, args) {
-  try {
-    execFileSync(command, args, { stdio: 'inherit' });
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      console.error(`Command "${command}" not found. Please install it and re-run.`);
-    }
-    throw error;
-  }
-}
-
-function assertDownloaded(file, url) {
-  if (!fs.existsSync(file) || fs.statSync(file).size === 0) {
-    throw new Error(`downloaded file missing or empty: ${url}`);
-  }
-}
-
 function extractZip(zip, destDir) {
   console.log(`Extracting ${path.basename(zip)} ...`);
   if (process.platform === 'win32') {
@@ -201,7 +169,7 @@ function stdxReady() {
     });
 }
 
-// ---------- 1. stdx：已完整则跳过，否则逐包下载解压 ----------
+// ---------- stdx：已完整则跳过，否则逐包下载解压 ----------
 if (stdxReady()) {
   console.log(`${STDX_EXTRACT_PATH} already exists and is complete, skipping.`);
 } else {
@@ -240,29 +208,4 @@ if (stdxReady()) {
   }
 }
 
-// ---------- 2. formula-ffi har：存在且 SHA256 一致则跳过，否则下载到临时文件校验后替换 ----------
-if (fs.existsSync(HAR_PATH) && sha256(HAR_PATH) === HAR_SHA256) {
-  console.log(`${HAR_PATH} already exists, skipping.`);
-} else {
-  fs.mkdirSync(path.dirname(HAR_PATH), { recursive: true });
-  try {
-    runCommand('curl', ['-L', '--fail', '--retry', '3', '-o', HAR_TEMP_PATH, HAR_URL]);
-    assertDownloaded(HAR_TEMP_PATH, HAR_URL);
-    const actualSha256 = sha256(HAR_TEMP_PATH);
-    if (actualSha256 !== HAR_SHA256) {
-      throw new Error(`HAR SHA256 mismatch: expected ${HAR_SHA256}, got ${actualSha256}`);
-    }
-    console.log('formula har SHA256 verified.');
-    // 校验通过后再替换到最终路径，中断的下载不会残留损坏文件
-    fs.renameSync(HAR_TEMP_PATH, HAR_PATH);
-    console.log('formula har downloaded successfully.');
-  } catch (error) {
-    console.error(`har download failed: ${error.message}`);
-    if (fs.existsSync(HAR_TEMP_PATH)) {
-      fs.unlinkSync(HAR_TEMP_PATH);
-    }
-    process.exit(1);
-  }
-}
-
-console.log('Pre-install finished.');
+console.log('stdx pre-install finished.');
