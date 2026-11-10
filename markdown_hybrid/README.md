@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.4.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v2.0.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.1.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -71,10 +71,16 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 45. 支持文本长按选中复制粘贴
 46. 支持图文混排和图文不混排功能
 47. 支持自定义正则实现自定义自动链接
+48. 支持段落高亮（长按选中段落高亮显示）
+49. 支持元素曝光回调与曝光可见阈值设置
+50. 支持表格标题吸顶与滚动控制（MarkdownScrollController）
+51. 支持自定义卡片插件（块级图片/块级链接条件自定义）
+52. 支持白名单宽松分隔符插件
+53. 支持markdown全量文本提取
 
 ## 软件架构
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin-6.1.1_compatibility/doc/assets/img.png)
 
 ### 源码目录
 
@@ -83,22 +89,20 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
   └─src
       └─main
           ├─cangjie
-          ├─cpp
           ├─ets
           └─resources
 ```
 
-- `markdown` 工程模块 - 编译生成一个har包
-- `markdown src` 模块代码目录
-- `markdown src main` 模块项目目录
-- `markdown src main cangjie` 仓颉代码目录
-- `markdown src main cpp` cpp代码目录
-- `markdown src main ets` ets代码目录
-- `markdown src main resources` 资源文件目录
+- `markdown_hybrid` 工程模块 - 编译生成一个har包
+- `markdown_hybrid src` 模块代码目录
+- `markdown_hybrid src main` 模块项目目录
+- `markdown_hybrid src main cangjie` 仓颉代码目录（含互操作桥接代码）
+- `markdown_hybrid src main ets` ets代码目录
+- `markdown_hybrid src main resources` 资源文件目录
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/feature_api.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin-6.1.1_compatibility/doc/feature_api.md)
 
 ## 使用说明
 
@@ -121,7 +125,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
       ```bash
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
-      git checkout markdown4cj_hybrid_cangjie-plugin_5.1.1
+      git checkout markdown4cj_hybrid_cangjie-plugin-6.1.1_compatibility
       ```
 
       编译markdown
@@ -216,7 +220,7 @@ struct DemoPage {
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin-6.1.1_compatibility/doc/assets/img1.png)
 
 ### 使用三方库内置的ArkTS组件功能示例
 
@@ -281,57 +285,10 @@ build() {
 
 markdown依赖三方库：
 
-| 编号 | 依赖三方库         | 版本号      |
-|----|---------------|----------|
-| 1  | stdx          | v1.1.3.1 |
-| 2  | commonmark4cj | v1.1.1   |
-| 3  | prism4cj      | v1.0.6   |
-| 4  | formula       | v1.5.2   |
-| 5  | codeformat    | v1.0.4   |
-
-1、三方库静态链接和动态链接区别
-
-- 静态链接：在编译期间，将所有依赖stdx的库函数和代码会被链接到最终的可执行文件中；生成的so中包含了所有需要的代码，不需要再依赖外部的stdx库。
-
-  **缺点**： 由于静态链接将所有代码（包括库函数）都包含进最终的可执行文件，因此生成的可执行文件会比动态链接的文件要大。
-
-- 动态链接：编译的har包中，会将所有使用到的stdx的二进制so添加到har的libs文件夹内；动态链接程序依赖于共享库（例如 .dll、.so），这些库在程序启动时或者运行时被加载到内存中。
-
-  **缺点**：由于stdx版本之前存在不兼容，因此三方库和hap包依赖的stdx版本不一致情况下，存在运行crash情况。
-
-当前三方库默认通过静态链接方式，如果有动态链接需求可以通过修改库代码中的cjpm.toml文件链接到stdx动态链接库目录，
-
-```
-[target]
-  [target.aarch64-linux-ohos]
-  	  ...
-      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "../stdx_bin/linux_ohos_aarch64_llvm/static/stdx" ]
-      [target.aarch64-linux-ohos.bin-dependencies.package-option]
-  [target.x86_64-linux-ohos]
-      ...
-      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "../stdx_bin/linux_ohos_x86_64_llvm/static/stdx" ]
-  [target.x86_64-unknown-windows-gnu]
-    [target.x86_64-unknown-windows-gnu.bin-dependencies]
-      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "../stdx_bin/windows_x86_64_llvm/static/stdx" ]
-      [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
-```
-
-修改如下：
-
-```
-[target]
-  [target.aarch64-linux-ohos]
-      ...
-      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "../stdx_bin/linux_ohos_aarch64_llvm/dynamic/stdx" ]
-      [target.aarch64-linux-ohos.bin-dependencies.package-option]
-  [target.x86_64-linux-ohos]
-      ...
-      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "../stdx_bin/linux_ohos_x86_64_llvm/dynamic/stdx" ]
-  [target.x86_64-unknown-windows-gnu]
-    [target.x86_64-unknown-windows-gnu.bin-dependencies]
-      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "../stdx_bin/windows_x86_64_llvm/dynamic/stdx" ]
-      [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
-```
+| 编号 | 依赖三方库            | 版本号                        |
+|----|-------------------|---------------------------|
+| 1  | markdown_parser   | v1.0.1-markdown-parser    |
+| 2  | @cangjie-tpc/markdown | v2.0.0 |
 
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
 2. 链接和删除线同时存在情况，只支持显示删除线的中划线，不显示链接的下划线
@@ -415,7 +372,7 @@ markdown依赖三方库：
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin-6.1.1_compatibility/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 

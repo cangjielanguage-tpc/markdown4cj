@@ -1,3 +1,21 @@
+# 2.0.0
+
+1. deveco版本从5.1.1升级到6.1.1，互操作模块重构
+2. 新增段落高亮功能（MarkdownHighlightParagraph），支持段落背景色、选中段落高亮、取消高亮等接口
+3. 新增元素曝光回调（setElementExposureCallback）与曝光可见阈值（setExposureThreshold）接口，新增MarkdownExposureEvent曝光事件对象
+4. 新增表格标题吸顶（setTableStickyHeader）与滚动控制接口（MarkdownScrollController）
+5. 新增自定义卡片插件（BlockCustomCardPlugin），支持块级图片/块级链接条件自定义
+6. 新增白名单宽松分隔符插件（WhitelistLooseDelimiterPlugin）
+7. 新增块级图片/行内图片/行内链接自定义回调（setIsBlockImageCustom/setIsInLineImageCustom/setIsInLineLinkCustom）
+8. 新增自定义长按回调（setCustomLongPressCallback）与表格复制回调（setTableCopyCallback）接口
+9. 新增标题段落加载动画开关与时长设置接口
+10. 新增MarkdownTheme全部子主题样式获取接口（getGlobalTheme/getParagraphTheme/getTableTheme等27个）
+11. HeadingTheme 边距/内边距接口更名：setMarginForAllHeading→setMarginForAllHeadingEachLevel、setPaddingForAllHeading→setPaddingForAllHeadingEachLevel、setMarginForEachHeading→setMarginForEachHeadingDetail、setPaddingForEachHeading→setPaddingForEachHeadingDetail
+12. AudioTheme 圆角接口更名：setAudioRadius→setAudioBorderRadius
+13. MarkdownTheme 废弃接口清理：删除 setEnableParseThrottle/setParseThrottleMs，setTableScrollBarShow 参数由 BarState 改为 Bool
+14. 删除stdx直接依赖，三方库默认通过动态链接方式随har包提供
+15. 新增markdown_parser v1.0.1-markdown-parser git依赖；har包内核心库依赖同步升级（commonmark4cj v1.1.4-alpha.01、formula v2.0.0、codeformat v1.0.7）
+
 # 1.4.1
 
 1. deveco版本从5.1.1升级到6.1.1

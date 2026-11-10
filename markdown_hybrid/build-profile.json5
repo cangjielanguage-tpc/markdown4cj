@@ -7,7 +7,8 @@
         "arm64-v8a",
         "x86_64"
       ],
-      "flattenLibs": true
+      "flattenLibs": true,
+      "strictCheckDependencies": false
     },
     "nativeLib": {
       "filter": {
@@ -25,6 +26,16 @@
           "**/libmarkdown.core.so",
           "**/libmarkdown.plugin.so",
           "**/libmarkdown.plugin.emoji.so",
+          // markdown_parser（cjpm git依赖本地编译产物）与 har 内置同名库冲突（00306049）
+          "**/libmarkdown_parser.so",
+          "**/libmarkdown_parser.core.so",
+          "**/libmarkdown_parser.plugin.so",
+          "**/libmarkdown_parser.plugin.emoji.so",
+          // stdx 动态库（随 har 内置）与本地构建产物冲突（00306049）
+          "**/libstdx.encoding.base64.so",
+          "**/libstdx.encoding.json.so",
+          "**/libstdx.encoding.url.so",
+          "**/libstdx.serialization.serialization.so",
           "**/libtext_to_img.so",
           "**/libmarkdown.texttoimg4cj.so",
           "**/libprism4cj.so",
