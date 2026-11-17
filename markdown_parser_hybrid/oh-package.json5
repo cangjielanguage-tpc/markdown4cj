@@ -1,6 +1,6 @@
 {
   "name": "@cangjie-tpc/markdown_parser_hybrid",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "markdown parser hybrid.",
   "main": "Index.ets",
   "author": "cangjie-tpc",

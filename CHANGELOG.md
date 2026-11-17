@@ -1,3 +1,10 @@
+# 2.0.1
+
+1. 性能优化: 新增 `JsNodeTreeBuilder.buildNodes` 批量建树接口，仓颉侧每个分片将整棵子树序列化为扁平事件数组单次跨语言调用推送（rest 参数接收，单次调用实参接近 200 时在事件边界自动分块），跨语言回调次数从每节点 4~10 次降为每分片 1 次
+2. 批量能力自动探测：builder 不含 `buildNodes` 时（自定义鸭子类型实现）自动退回旧逐事件回调路径，行为与旧版一致
+3. 修复 parse 阶段异常时 Promise 永不 settle 的问题（catch 块中 throw 使 reject 不可达，ArkTS 侧 await 永久挂死）
+4. 修复 `JsNodeImpl.putImageStyles` 在节点未持有图片样式时把 `undefined` 拼入 `ImageStyles` 数组的问题（与 `JsNodeSendableImpl` 行为对齐）
+
 # 2.0.0
 
 1. 适配 DevEco Studio 6.1.1（compatibility-sdk-6.1.1.280），cjc 版本 v1.1.3

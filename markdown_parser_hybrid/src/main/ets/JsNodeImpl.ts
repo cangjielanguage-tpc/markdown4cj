@@ -84,7 +84,11 @@ export class JsNodeImpl implements JsNode {
   ImageStyles?: Array<string> = undefined
 
   putImageStyles(...styles: Array<string>): void {
-    this.ImageStyles = styles.concat(this.ImageStyles)
+    // 未初始化时 concat(undefined) 会把 undefined 拼成单个尾元素, 与 JsNodeSendable.putImageStyles 对齐
+    if (!this.ImageStyles) {
+      this.ImageStyles = []
+    }
+    this.ImageStyles.push(...styles)
   }
 
   SpanNodeAttr?: Map<string, string> = undefined

@@ -6,8 +6,21 @@ class JsNodeBuilder {
     // 通过 getFirstChild/getNext 沿 Root 的兄弟链表顺序推进, 无需额外数组缓存。
     var nextChild: ?Node = None
 
+    // 批量模式: builder 含 buildNodes 方法(即本仓导出的 JsNodeTreeBuilder)时启用,
+    // 每个分片把整棵子树序列化为扁平事件数组, 单次跨语言调用推送, 由 JsNodeTreeBuilder.buildNodes 解析建树;
+    // 否则退化为旧逐事件 callMethod, 兼容未提供 buildNodes 的自定义 builder, 行为与旧版完全一致。
+    let batchMode: Bool
+
+    // 当前分片累积的事件; 只在单个 postJSTask 内产生并消费(JSValue 不跨 postJSTask 缓存), flush 后清空。
+    let events: ArrayList<JSValue>
+
     // onDone 在构造函数中注入, 无异常参数; 构建过程抛出的异常直接向上抛出, 由调用者 catch。
-    JsNodeBuilder(let builder: JSObject, let context: JSContext, let onDone: () -> Unit) {}
+    JsNodeBuilder(let builder: JSObject, let context: JSContext, let onDone: () -> Unit) {
+        // 批量能力检测: 取属性走 JS [[Get]] 语义, 能取到非 undefined/null 即支持批量。
+        let bn = builder['buildNodes']
+        batchMode = !(bn.isUndefined() || bn.isNull())
+        events = ArrayList<JSValue>()
+    }
 
     /*
      * 开始分片构建节点树。
@@ -28,10 +41,11 @@ class JsNodeBuilder {
     func start(root: Node): Unit {
         // 构建前重置 builder 状态, 支持复用同一个 builder 进行多次 parse。
         builder.callMethod('reset', [])
-        // 第0个分片: 构建 Root 节点本身。
+        // 第0个分片: 构建 Root 节点本身, 并在本 postJSTask 内 flush(JSValue 不跨 postJSTask 缓存)。
         enterNode(root)
         // 从 Root 的第一个 child 开始遍历第一层 children。
         nextChild = root.getFirstChild()
+        flush()
         scheduleNext()
     }
 
@@ -50,8 +64,9 @@ class JsNodeBuilder {
             buildSubtree(child)
             scheduleNext()
         } else {
-            // 所有第一层 children 处理完毕, 结束 Root 节点(回退当前节点指针)。
-            builder.callMethod('endNode', [])
+            // 所有第一层 children 处理完毕, 结束 Root 节点(builder 的当前节点指针回退)并回调。
+            emit("@e", "endNode", [])
+            flush()
             onDone()
         }
     }
@@ -59,14 +74,14 @@ class JsNodeBuilder {
     /*
      * 在单个 postJSTask 内, 用显式栈 while 循环构建某节点及其整棵子树。
      * 栈元素是"事件": Some(node) 表示进入该节点, None 表示离开当前节点(即回退到父节点)。
-     * 注意: 此方法不跨 postJSTask, 局部栈随方法返回而销毁。
+     * 注意: 此方法不跨 postJSTask, 局部栈随方法返回而销毁; 事件在本 task 末尾一次性 flush。
      */
     func buildSubtree(root: Node): Unit {
         let stack = ArrayStack<Option<Node>>()
         stack.add(Some(root))
         while (!stack.isEmpty()) {
             match (stack.remove()) {
-                // 进入事件: 创建 js 节点并挂到当前父节点下, 同时填充节点数据。
+                // 进入事件: 依次发射 beginNode/sourceSpans/props/字段事件, 数据落在 builder 的当前节点上。
                 case Some(Some(node)) =>
                     enterNode(node)
                     // 先压入"离开事件", 保证所有子节点处理完后才 endNode, 使当前节点指针正确回退。
@@ -79,13 +94,14 @@ class JsNodeBuilder {
                     }
                 // 离开事件: 结束当前节点, builder 的当前节点指针回退到父节点。
                 case _ =>
-                    builder.callMethod('endNode', [])
+                    emit("@e", "endNode", [])
             }
         }
+        flush()
     }
 
     func enterNode(node: Node): Unit {
-        builder.callMethod('beginNode', [
+        emit("@b", "beginNode", [
             context.string(node.getNodeType()).toJSValue(),
             context.string(node.toString()).toJSValue()
         ])
@@ -93,7 +109,7 @@ class JsNodeBuilder {
         if (let props: HashMap<String, Any> <- node.custom) {
             for ((k, v) in props) {
                 if (let toStr: ToString <- v) {
-                    builder.callMethod('putProp', [context.string(k).toJSValue(), context.string(toStr.toString()).toJSValue()])
+                    emit("@p", "putProp", [context.string(k).toJSValue(), context.string(toStr.toString()).toJSValue()])
                 }
             }
         }
@@ -190,18 +206,74 @@ class JsNodeBuilder {
         }
     }
 
+    /*
+     * 发射定长参数事件: 批量模式累积 [协议标记, ...args] 到事件数组, 标记须与 JsNodeTreeBuilder.buildNodes
+     * 的 '@x' 事件协议一致; 非批量(兜底)模式直接按旧协议逐次 callMethod 真实方法名。
+     */
+    func emit(marker: String, method: String, args: Array<JSValue>): Unit {
+        if (batchMode) {
+            flushIfFull(Int64(args.size) + 1)
+            events.add(context.string(marker).toJSValue())
+            for (a in args) {
+                events.add(a)
+            }
+        } else {
+            builder.callMethod(method, args)
+        }
+    }
+
+    /*
+     * 发射变长参数事件: 批量模式累积 [协议标记, count, ...values](count 供 buildNodes 定界);
+     * 非批量(兜底)模式直接 callMethod 真实方法名(旧协议无 count 前缀)。
+     */
+    func emitList(marker: String, method: String, values: Array<JSValue>): Unit {
+        if (batchMode) {
+            flushIfFull(Int64(values.size) + 2)
+            events.add(context.string(marker).toJSValue())
+            events.add(context.number(Float64(values.size)).toJSValue())
+            for (v in values) {
+                events.add(v)
+            }
+        } else {
+            builder.callMethod(method, values)
+        }
+    }
+
+    /*
+     * 事件缓冲接近上限时, 在事件边界提前 flush(单事件整体入队, 绝不跨调用拆分)。
+     * 上限 200 对齐旧协议实证安全的最大实参数量(addSourceSpans 50 span 组 = 202 个实参)——
+     * 更大的单次 callMethod 实参列表会触发 ark_interop 的 JSInteropNativeError(不可捕获, 进程终止)。
+     */
+    func flushIfFull(nextEventSize: Int64): Unit {
+        if (batchMode && events.size + nextEventSize > 200) {
+            flush()
+        }
+    }
+
+    /*
+     * 把本分片累积的事件一次性推送给 builder 并清空。
+     * 批量模式单次 callMethod('buildNodes', ...), 跨语言调用次数从每节点 4~10 次降为每分片 1 次;
+     * 非批量模式 events 恒空, 此处仅兜底清空。
+     */
+    func flush(): Unit {
+        if (batchMode && events.size > 0) {
+            builder.callMethod("buildNodes", events.toArray())
+        }
+        events.clear()
+    }
+
     func setField(name: String, value: JSValue): Unit {
-        builder.callMethod('setField', [context.string(name).toJSValue(), value])
+        emit("@f", "setField", [context.string(name).toJSValue(), value])
     }
 
     func putImageStyles(styles: ArrayList<String>): Unit {
-        builder.callMethod('putImageStyles', styles |> map {v => context.string(v).toJSValue()} |> collectArray)
+        emitList("@i", "putImageStyles", styles |> map {v => context.string(v).toJSValue()} |> collectArray)
     }
 
     func putSpanNodeAttr(attrs: ?HashMap<String, String>): Unit {
         if (let Some(attrs) <- attrs) {
             for ((k, v) in attrs) {
-                builder.callMethod('putSpanNodeAttr', [context.string(k).toJSValue(), context.string(v).toJSValue()])
+                emit("@a", "putSpanNodeAttr", [context.string(k).toJSValue(), context.string(v).toJSValue()])
             }
         }
     }
@@ -209,14 +281,14 @@ class JsNodeBuilder {
     func putSpanNodeStyle(style: ?HashMap<String, String>): Unit {
         if (let Some(style) <- style) {
             for ((k, v) in style) {
-                builder.callMethod('putSpanNodeStyle', [context.string(k).toJSValue(), context.string(v).toJSValue()])
+                emit("@s", "putSpanNodeStyle", [context.string(k).toJSValue(), context.string(v).toJSValue()])
             }
         }
     }
 
     func setSourceSpans(node: Node): Unit {
         let sourceSpans = node.getSourceSpans()
-        // 50个一组 批量添加SourceSpan
+        // 50个一组 批量添加SourceSpan(includeSourceSpans=0 时为空数组, 循环零次天然跳过)
         for (start in 0..sourceSpans.size : 50) {
             let end = min(start + 50, sourceSpans.size)
             let sourceSpansFlatten = Array<JSValue>((end - start) * 4) {
@@ -230,7 +302,7 @@ class JsNodeBuilder {
                         case _ => context.number(Float64(span.getLength())).toJSValue()
                     }
             }
-            builder.callMethod('addSourceSpans', sourceSpansFlatten)
+            emitList("@n", "addSourceSpans", sourceSpansFlatten)
         }
     }
 }

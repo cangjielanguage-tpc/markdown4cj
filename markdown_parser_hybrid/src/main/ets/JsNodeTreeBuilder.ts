@@ -136,6 +136,74 @@ export class JsNodeTreeBuilder {
   }
 
   /*
+   * 批量构建节点树: 解析仓颉侧一次性推送的扁平事件数组, 分发到上述逐节点方法。
+   * 事件协议(位置确定性: 仅命令位置读取标记, 数据位置不会误判):
+   *   '@b' nodeType toStr        -> beginNode
+   *   '@e'                       -> endNode
+   *   '@f' key value             -> setField(value 类型保持 string|number|boolean)
+   *   '@p' k v                   -> putProp
+   *   '@a' k v                   -> putSpanNodeAttr
+   *   '@s' k v                   -> putSpanNodeStyle
+   *   '@i' count v1..vN          -> putImageStyles
+   *   '@n' count n1..nN          -> addSourceSpans(数字按 line/column/index/length 四个一组)
+   * 注意: 必须用 rest 参数接收——仓颉侧 callMethod('buildNodes', events) 把数组展开为逐个实参
+   * (与 addSourceSpans/putImageStyles 的既有模式一致), 非 rest 单参数只会收到第一个事件元素。
+   */
+  buildNodes(...items: Array<string | number | boolean>): void {
+    let i = 0
+    try {
+      while (i < items.length) {
+        switch (items[i]) {
+          case '@b':
+            this.beginNode(items[i + 1] as string, items[i + 2] as string)
+            i += 3
+            break
+          case '@e':
+            this.endNode()
+            i += 1
+            break
+          case '@f':
+            this.setField(items[i + 1] as string, items[i + 2])
+            i += 3
+            break
+          case '@p':
+            this.putProp(items[i + 1] as string, items[i + 2] as string)
+            i += 3
+            break
+          case '@a':
+            this.putSpanNodeAttr(items[i + 1] as string, items[i + 2] as string)
+            i += 3
+            break
+          case '@s':
+            this.putSpanNodeStyle(items[i + 1] as string, items[i + 2] as string)
+            i += 3
+            break
+          case '@i': {
+            let count = items[i + 1] as number
+            this.putImageStyles(...(items.slice(i + 2, i + 2 + count) as Array<string>))
+            i += 2 + count
+            break
+          }
+          case '@n': {
+            let count = items[i + 1] as number
+            this.addSourceSpans(...(items.slice(i + 2, i + 2 + count) as Array<number>))
+            i += 2 + count
+            break
+          }
+          default:
+            throw new Error(`buildNodes: unknown event marker at ${i}: ${items[i]}`)
+        }
+      }
+    } catch (e) {
+      // 埋点: callMethod 路径上的 JS 异常会被 ark_interop 包装为不可捕获的 JSInteropNativeError
+      // (进程终止, 错误细节丢失), 这里在终止前把出错位置与上下文打进日志用于定位。
+      console.error(`[JsNodeTreeBuilder] buildNodes error at i=${i}, items.length=${items.length}, ` +
+        `nearby=${JSON.stringify(items.slice(Math.max(0, i - 2), i + 4))}, err=${e}`)
+      throw e
+    }
+  }
+
+  /*
    * 返回构建出的根节点。
    */
   getRoot(): JsNode {

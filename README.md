@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v2.0.0-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v2.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.1.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
@@ -167,13 +167,13 @@ import { MarkdownParser, Options, JsNode, JsNodeImpl, printNode } from "@cangjie
 
 // 1. 初始化解析选项：按需开启插件
 const opt: Options = {
-  jsNodeFactory: () => new JsNodeImpl(),
-  includeSourceSpans: 0,
-  TablePlugin: true,
-  TaskListPlugin: true,
-  StrikethroughPlugin: true,
-  LinkifyPlugin: true,
-  HtmlPlugin: true
+   jsNodeFactory: () => new JsNodeImpl(),
+   includeSourceSpans: 0,
+   TablePlugin: true,
+   TaskListPlugin: true,
+   StrikethroughPlugin: true,
+   LinkifyPlugin: true,
+   HtmlPlugin: true
 }
 
 // 2. 创建解析器
@@ -182,8 +182,8 @@ const parser = new MarkdownParser(opt)
 // 3. 异步解析 markdown 文本，得到节点树
 const md = "# 标题\n\n**加粗** 与 *斜体*\n\n| 列1 | 列2 |\n|----|----|\n| a  | b  |"
 parser.parse(md).then((doc: JsNode) => {
-  // 遍历 doc 节点树，自行构建 UI
-  console.info(printNode(doc))
+   // 遍历 doc 节点树，自行构建 UI
+   console.info(printNode(doc))
 })
 ```
 

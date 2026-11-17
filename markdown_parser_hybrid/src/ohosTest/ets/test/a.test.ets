@@ -81,5 +81,90 @@ https://www.wanuxi.com/为美好的世界献上祝福第三季主视觉图公开
       expect(span.nodeType).assertEqual("SpanNode")
       expect(span.SpanNodeStyle?.get('color')).assertEqual("red")
     })
+    it('buildNodesProtocol', 0, () => {
+      // 批量协议一致性: 同构树分别用 buildNodes 扁平事件与旧逐节点 API 构建, 结果必须完全一致。
+      // 事件覆盖全部 8 种标记, 含 addSourceSpans 的 count 定界。
+      let events: Array<string | number | boolean> = [
+        '@b', 'document', 'doc',
+          '@n', 8, 0, 0, 0, 5, 1, 2, 10, 3,
+          '@b', 'paragraph', 'para',
+            '@f', 'literal', 'hello',
+            '@p', 'data-x', '1',
+            '@a', 'href', 'https://a.com',
+            '@s', 'color', 'red',
+            '@i', 2, 'width=100', 'height=50',
+            '@b', 'text', 'text',
+              '@f', 'literal', 'hello',
+            '@e',
+          '@e',
+        '@e'
+      ]
+      let batchBuilder = new JsNodeTreeBuilder()
+      // buildNodes 为 rest 参数, 与仓颉侧 callMethod 展开传参语义一致, 直接调用需展开事件数组
+      batchBuilder.buildNodes(...events)
+      let batchRoot = batchBuilder.getRoot()
+
+      let legacyBuilder = new JsNodeTreeBuilder()
+      legacyBuilder.beginNode('document', 'doc')
+      legacyBuilder.addSourceSpans(0, 0, 0, 5, 1, 2, 10, 3)
+      legacyBuilder.beginNode('paragraph', 'para')
+      legacyBuilder.setField('literal', 'hello')
+      legacyBuilder.putProp('data-x', '1')
+      legacyBuilder.putSpanNodeAttr('href', 'https://a.com')
+      legacyBuilder.putSpanNodeStyle('color', 'red')
+      legacyBuilder.putImageStyles('width=100', 'height=50')
+      legacyBuilder.beginNode('text', 'text')
+      legacyBuilder.setField('literal', 'hello')
+      legacyBuilder.endNode()
+      legacyBuilder.endNode()
+      legacyBuilder.endNode()
+      let legacyRoot = legacyBuilder.getRoot()
+
+      let batchPara = batchRoot.firstChild as JsNodeImpl
+      let batchText = batchPara.firstChild as JsNodeImpl
+      expect(printNode(batchRoot)).assertEqual(printNode(legacyRoot))
+      expect(batchPara.nodeType).assertEqual('paragraph')
+      expect(batchPara.literal).assertEqual('hello')
+      expect(batchPara.getProps()!.get('data-x')).assertEqual('1')
+      expect(batchPara.SpanNodeStyle?.get('color')).assertEqual('red')
+      expect(batchPara.SpanNodeAttr?.get('href')).assertEqual('https://a.com')
+      expect(batchPara.ImageStyles!.length).assertEqual(2)
+      expect(batchPara.ImageStyles![0]).assertEqual('width=100')
+      expect(batchText.literal).assertEqual('hello')
+      let spans = batchRoot.getSourceSpans()
+      expect(spans.length).assertEqual(2)
+      expect(spans[0].getLineIndex()).assertEqual(0)
+      expect(spans[0].getColumnIndex()).assertEqual(0)
+      expect(spans[0].getInputIndex()).assertEqual(0)
+      expect(spans[0].getLength()).assertEqual(5)
+      expect(spans[1].getLineIndex()).assertEqual(1)
+      expect(spans[1].getColumnIndex()).assertEqual(2)
+      expect(spans[1].getInputIndex()).assertEqual(10)
+      expect(spans[1].getLength()).assertEqual(3)
+    })
+    it('buildNodesLargeDoc', 0, async () => {
+      // 大文档分片: 单个 buildSubtree 事件数远超单次 buildNodes 上限(500),
+      // 验证 flushIfFull 在事件边界拆分后协议仍自洽。
+      // 无分块时数千实参的单次 callMethod 会触发 ark_interop JSInteropNativeError(进程闪退)。
+      let md = ''
+      for (let i = 0; i < 2000; i++) {
+        md += '**加粗** 行内文本节点。'
+      }
+      let parser = getParser({
+        jsNodeTreeBuilder: new JsNodeTreeBuilder(() => new JsNodeSendableImpl()),
+        includeSourceSpans: 0
+      })
+      let doc = await parser.parse(md)
+      let p: JsNode = doc.firstChild!
+      expect(p.nodeType).assertEqual('Paragraph')
+      // 不用 printNode 断言: 它递归遍历, 深兄弟链会爆栈; 改用迭代计数, 2000 组 = 2000 Strong + 2000 Text
+      let count = 0
+      let child = p.firstChild
+      while (child !== undefined) {
+        count++
+        child = child.next
+      }
+      expect(count).assertEqual(4000)
+    })
   })
 }

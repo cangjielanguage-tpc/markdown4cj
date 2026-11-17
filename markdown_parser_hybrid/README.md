@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v2.0.0-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v2.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.1.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
@@ -74,6 +74,7 @@
               ├─JsNode.ts           # JsNode 节点树接口
               ├─JsNodeImpl.ts       # JsNode 默认实现
               ├─JsNodeSendable.ets  # 可跨线程传递的节点实现
+              ├─JsNodeTreeBuilder.ts # 节点树构建器（含 buildNodes 批量建树接口）
               ├─interop.ts          # 仓颉 so 互操作封装
               └─util.ts             # printNode 与索引转换工具
 ```
@@ -93,6 +94,7 @@
 | `JsNode` / `SourceSpan` | 解析结果节点树接口与位置信息 |
 | `JsNodeImpl` | `JsNode` 的默认实现类 |
 | `JsNodeSendableImpl` | 可跨线程（@Sendable）使用的节点实现类 |
+| `JsNodeTreeBuilder` | 节点树构建器：逐节点方法 + `buildNodes` 批量建树接口（扁平事件数组单次推送；自定义 builder 不含该接口时仓颉侧自动退回逐事件回调） |
 | `printNode` | 将节点树打印为字符串，用于调试 |
 | `utf8Index2utf16Index` / `utf16Index2utf8Index` | UTF-8 与 UTF-16 字符索引互相转换 |
 

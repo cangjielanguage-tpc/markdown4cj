@@ -148,7 +148,7 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
                     }
                 }
             } catch (e: Exception) {
-                throw e
+                // 解析失败必须 reject Promise: 此前 throw e 使后续 reject 不可达, ArkTS 侧 await 永久挂死。
                 context.postJSTask {
                     promise.reject(context.string(e.toString()).toJSValue())
                     Hilog.error(0, 'hybrid Exception 2.1', getStackTrace(e))
