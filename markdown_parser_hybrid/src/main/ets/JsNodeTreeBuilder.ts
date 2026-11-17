@@ -7,10 +7,10 @@ import { JsNodeImpl } from "./JsNodeImpl"
  * 从而避免为每个节点创建 js/cangjie 双向绑定的互操作对象。
  */
 export class JsNodeTreeBuilder {
-  private nodeFactory: () => JsNode
-  private root: JsNode | undefined = undefined
-  private current: JsNode | undefined = undefined
-  private stack: Array<JsNode> = []
+  protected nodeFactory: () => JsNode
+  protected root: JsNode | undefined = undefined
+  protected current: JsNode | undefined = undefined
+  protected stack: Array<JsNode> = []
 
   constructor(nodeFactory?: () => JsNode) {
     this.nodeFactory = nodeFactory ?? (() => new JsNodeImpl())
@@ -59,38 +59,101 @@ export class JsNodeTreeBuilder {
       return
     }
     switch (key) {
-      case 'nodeType': node.nodeType = value as string; break
-      case 'toStr': node.toStr = value as string; break
-      case 'isdone': node.isdone = value as boolean; break
-      case 'latex': node.latex = value as string; break
-      case 'isClosed': node.isClosed = value as boolean; break
-      case 'noteid': node.noteid = value as string; break
-      case 'blockIndex': node.blockIndex = value as number; break
-      case 'literal': node.literal = value as string; break
-      case 'destination': node.destination = value as string; break
-      case 'title': node.title = value as string; break
-      case 'text': node.text = value as string; break
-      case 'label': node.label = value as string; break
-      case 'headIndex': node.headIndex = value as number; break
-      case 'delimiter': node.delimiter = value as string; break
-      case 'openingDelimiter': node.openingDelimiter = value as string; break
-      case 'fenceChar': node.fenceChar = value as string; break
-      case 'fenceLength': node.fenceLength = value as number; break
-      case 'fenceIndent': node.fenceIndent = value as number; break
-      case 'info': node.info = value as string; break
-      case 'level': node.level = value as number; break
-      case 'isTight': node.isTight = value as boolean; break
-      case 'bulletMarker': node.bulletMarker = value as string; break
-      case 'startNumber': node.startNumber = value as number; break
-      case 'isHeader': node.isHeader = value as boolean; break
-      case 'alignment': node.alignment = value as string; break
-      case 'width': node.width = value as (number | string); break
-      case 'height': node.height = value as string; break
-      case 'color': node.color = value as string; break
-      case 'size': node.size = value as string; break
-      case 'name': node.name = value as string; break
-      case 'data': node.data = value as string; break
-      default: break
+      case 'nodeType':
+        node.nodeType = value as string;
+        break
+      case 'toStr':
+        node.toStr = value as string;
+        break
+      case 'isdone':
+        node.isdone = value as boolean;
+        break
+      case 'latex':
+        node.latex = value as string;
+        break
+      case 'isClosed':
+        node.isClosed = value as boolean;
+        break
+      case 'noteid':
+        node.noteid = value as string;
+        break
+      case 'blockIndex':
+        node.blockIndex = value as number;
+        break
+      case 'literal':
+        node.literal = value as string;
+        break
+      case 'destination':
+        node.destination = value as string;
+        break
+      case 'title':
+        node.title = value as string;
+        break
+      case 'text':
+        node.text = value as string;
+        break
+      case 'label':
+        node.label = value as string;
+        break
+      case 'headIndex':
+        node.headIndex = value as number;
+        break
+      case 'delimiter':
+        node.delimiter = value as string;
+        break
+      case 'openingDelimiter':
+        node.openingDelimiter = value as string;
+        break
+      case 'fenceChar':
+        node.fenceChar = value as string;
+        break
+      case 'fenceLength':
+        node.fenceLength = value as number;
+        break
+      case 'fenceIndent':
+        node.fenceIndent = value as number;
+        break
+      case 'info':
+        node.info = value as string;
+        break
+      case 'level':
+        node.level = value as number;
+        break
+      case 'isTight':
+        node.isTight = value as boolean;
+        break
+      case 'bulletMarker':
+        node.bulletMarker = value as string;
+        break
+      case 'startNumber':
+        node.startNumber = value as number;
+        break
+      case 'isHeader':
+        node.isHeader = value as boolean;
+        break
+      case 'alignment':
+        node.alignment = value as string;
+        break
+      case 'width':
+        node.width = value as (number | string);
+        break
+      case 'height':
+        node.height = value as string;
+        break
+      case 'color':
+        node.color = value as string;
+        break
+      case 'size':
+        node.size = value as string;
+        break
+      case 'name':
+        node.name = value as string;
+        break
+      case 'data':
+        node.data = value as string;
+        break
+      default:
+        break
     }
   }
 
@@ -136,16 +199,32 @@ export class JsNodeTreeBuilder {
   }
 
   /*
+   * 返回构建出的根节点。
+   */
+  getRoot(): JsNode {
+    return this.root!
+  }
+}
+
+
+/*
+ * 单一 JS 对象形式的节点树构建器。
+ * cangjie 端只持有本对象一个互操作引用, 通过调用其方法驱动节点树的构建,
+ * 从而避免为每个节点创建 js/cangjie 双向绑定的互操作对象。
+ */
+export class JsNodeTreeBuilderBatch extends JsNodeTreeBuilder {
+  /*
    * 批量构建节点树: 解析仓颉侧一次性推送的扁平事件数组, 分发到上述逐节点方法。
-   * 事件协议(位置确定性: 仅命令位置读取标记, 数据位置不会误判):
-   *   '@b' nodeType toStr        -> beginNode
-   *   '@e'                       -> endNode
-   *   '@f' key value             -> setField(value 类型保持 string|number|boolean)
-   *   '@p' k v                   -> putProp
-   *   '@a' k v                   -> putSpanNodeAttr
-   *   '@s' k v                   -> putSpanNodeStyle
-   *   '@i' count v1..vN          -> putImageStyles
-   *   '@n' count n1..nN          -> addSourceSpans(数字按 line/column/index/length 四个一组)
+   * 事件协议(位置确定性: 仅命令位置读取标记, 数据位置不会误判; 标记为数字 1~8,
+   * 避免每事件的字符串分配与比较开销, 与仓颉侧 js_node_builder.cj 的 emit/emitList 对应):
+   *   1 nodeType toStr           -> beginNode
+   *   2                          -> endNode
+   *   3 key value                -> setField(value 类型保持 string|number|boolean)
+   *   4 k v                      -> putProp
+   *   5 k v                      -> putSpanNodeAttr
+   *   6 k v                      -> putSpanNodeStyle
+   *   7 count v1..vN             -> putImageStyles
+   *   8 count n1..nN             -> addSourceSpans(数字按 line/column/index/length 四个一组)
    * 注意: 必须用 rest 参数接收——仓颉侧 callMethod('buildNodes', events) 把数组展开为逐个实参
    * (与 addSourceSpans/putImageStyles 的既有模式一致), 非 rest 单参数只会收到第一个事件元素。
    */
@@ -154,37 +233,37 @@ export class JsNodeTreeBuilder {
     try {
       while (i < items.length) {
         switch (items[i]) {
-          case '@b':
+          case 1:
             this.beginNode(items[i + 1] as string, items[i + 2] as string)
             i += 3
             break
-          case '@e':
+          case 2:
             this.endNode()
             i += 1
             break
-          case '@f':
+          case 3:
             this.setField(items[i + 1] as string, items[i + 2])
             i += 3
             break
-          case '@p':
+          case 4:
             this.putProp(items[i + 1] as string, items[i + 2] as string)
             i += 3
             break
-          case '@a':
+          case 5:
             this.putSpanNodeAttr(items[i + 1] as string, items[i + 2] as string)
             i += 3
             break
-          case '@s':
+          case 6:
             this.putSpanNodeStyle(items[i + 1] as string, items[i + 2] as string)
             i += 3
             break
-          case '@i': {
+          case 7: {
             let count = items[i + 1] as number
             this.putImageStyles(...(items.slice(i + 2, i + 2 + count) as Array<string>))
             i += 2 + count
             break
           }
-          case '@n': {
+          case 8: {
             let count = items[i + 1] as number
             this.addSourceSpans(...(items.slice(i + 2, i + 2 + count) as Array<number>))
             i += 2 + count
@@ -202,11 +281,5 @@ export class JsNodeTreeBuilder {
       throw e
     }
   }
-
-  /*
-   * 返回构建出的根节点。
-   */
-  getRoot(): JsNode {
-    return this.root!
-  }
 }
+

@@ -12,6 +12,11 @@ export interface Options {
    * 是否包含SourceSpan信息 0:不包含(默认) 1:仅Block节点 2:全部节点
    */
   includeSourceSpans: 0 | 1 | 2
+  /*
+   * 批量建树单次推送的事件实参上限(在事件边界分块, 单事件不拆分; 仅对含 buildNodes 的批量 builder 生效)。
+   * 默认 200 对齐旧协议实证安全的最大实参数量; 非正值时仓颉侧回退默认 200。
+   */
+  buildNodesChunkSize?: number
   ADPlugin?: boolean
   BlockAudioPlugin?: boolean
   BlockVideoPlugin?: boolean

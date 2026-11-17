@@ -14,11 +14,17 @@ class JsNodeBuilder {
     // 当前分片累积的事件; 只在单个 postJSTask 内产生并消费(JSValue 不跨 postJSTask 缓存), flush 后清空。
     let events: ArrayList<JSValue>
 
+    // 批量建树单次推送的事件实参上限(事件边界分块, 单事件不拆分)。
+    // 来自 Options.buildNodesChunkSize, 非正值已在 HybridParser 侧回退默认 200。
+    let batchChunkSize: Int64
+
     // onDone 在构造函数中注入, 无异常参数; 构建过程抛出的异常直接向上抛出, 由调用者 catch。
-    JsNodeBuilder(let builder: JSObject, let context: JSContext, let onDone: () -> Unit) {
+    JsNodeBuilder(chunkSize: Int64, let builder: JSObject, let context: JSContext, let onDone: () -> Unit) {
         // 批量能力检测: 取属性走 JS [[Get]] 语义, 能取到非 undefined/null 即支持批量。
         let bn = builder['buildNodes']
         batchMode = !(bn.isUndefined() || bn.isNull())
+        // 参数合法性校验: 非正值(含 0)回退默认 200(对齐旧协议实证安全的最大实参数量)。
+        batchChunkSize = if (chunkSize <= 0) { 200 } else { chunkSize }
         events = ArrayList<JSValue>()
     }
 
@@ -65,7 +71,8 @@ class JsNodeBuilder {
             scheduleNext()
         } else {
             // 所有第一层 children 处理完毕, 结束 Root 节点(builder 的当前节点指针回退)并回调。
-            emit("@e", "endNode", [])
+            // 标记 2=endNode。
+            emit(2, "endNode", [])
             flush()
             onDone()
         }
@@ -92,16 +99,17 @@ class JsNodeBuilder {
                         stack.add(Some(c))
                         child = c.getPrevious()
                     }
-                // 离开事件: 结束当前节点, builder 的当前节点指针回退到父节点。
+                // 离开事件: 结束当前节点, builder 的当前节点指针回退到父节点。标记 2=endNode。
                 case _ =>
-                    emit("@e", "endNode", [])
+                    emit(2, "endNode", [])
             }
         }
         flush()
     }
 
     func enterNode(node: Node): Unit {
-        emit("@b", "beginNode", [
+        // 标记 1=beginNode。
+        emit(1, "beginNode", [
             context.string(node.getNodeType()).toJSValue(),
             context.string(node.toString()).toJSValue()
         ])
@@ -109,7 +117,8 @@ class JsNodeBuilder {
         if (let props: HashMap<String, Any> <- node.custom) {
             for ((k, v) in props) {
                 if (let toStr: ToString <- v) {
-                    emit("@p", "putProp", [context.string(k).toJSValue(), context.string(toStr.toString()).toJSValue()])
+                    // 标记 4=putProp。
+                    emit(4, "putProp", [context.string(k).toJSValue(), context.string(toStr.toString()).toJSValue()])
                 }
             }
         }
@@ -207,13 +216,16 @@ class JsNodeBuilder {
     }
 
     /*
-     * 发射定长参数事件: 批量模式累积 [协议标记, ...args] 到事件数组, 标记须与 JsNodeTreeBuilder.buildNodes
-     * 的 '@x' 事件协议一致; 非批量(兜底)模式直接按旧协议逐次 callMethod 真实方法名。
+     * 发射定长参数事件: 批量模式累积 [数字协议标记, ...args] 到事件数组,
+     * 标记须与 JsNodeTreeBuilder.buildNodes 的数字 case 协议一致(1~8)。
+     * 用数字而非字符串标记: 每个事件省一次 context.string 的 JS 字符串分配与 ArkTS switch 字符串比较,
+     * 大文档事件量大时该成本主导建树耗时(实测批量路径比逐事件慢的主因)。
+     * 非批量(兜底)模式直接按旧协议逐次 callMethod 真实方法名。
      */
-    func emit(marker: String, method: String, args: Array<JSValue>): Unit {
+    func emit(code: Int64, method: String, args: Array<JSValue>): Unit {
         if (batchMode) {
             flushIfFull(Int64(args.size) + 1)
-            events.add(context.string(marker).toJSValue())
+            events.add(context.number(Float64(code)).toJSValue())
             for (a in args) {
                 events.add(a)
             }
@@ -223,13 +235,13 @@ class JsNodeBuilder {
     }
 
     /*
-     * 发射变长参数事件: 批量模式累积 [协议标记, count, ...values](count 供 buildNodes 定界);
+     * 发射变长参数事件: 批量模式累积 [数字协议标记, count, ...values](count 供 buildNodes 定界);
      * 非批量(兜底)模式直接 callMethod 真实方法名(旧协议无 count 前缀)。
      */
-    func emitList(marker: String, method: String, values: Array<JSValue>): Unit {
+    func emitList(code: Int64, method: String, values: Array<JSValue>): Unit {
         if (batchMode) {
             flushIfFull(Int64(values.size) + 2)
-            events.add(context.string(marker).toJSValue())
+            events.add(context.number(Float64(code)).toJSValue())
             events.add(context.number(Float64(values.size)).toJSValue())
             for (v in values) {
                 events.add(v)
@@ -241,11 +253,13 @@ class JsNodeBuilder {
 
     /*
      * 事件缓冲接近上限时, 在事件边界提前 flush(单事件整体入队, 绝不跨调用拆分)。
-     * 上限 200 对齐旧协议实证安全的最大实参数量(addSourceSpans 50 span 组 = 202 个实参)——
-     * 更大的单次 callMethod 实参列表会触发 ark_interop 的 JSInteropNativeError(不可捕获, 进程终止)。
+     * 上限由 Options.buildNodesChunkSize 配置, 默认 200 对齐旧协议实证安全的最大实参数量
+     * (addSourceSpans 50 span 组 = 202 个实参)——更大的单次 callMethod 实参列表会触发
+     * ark_interop 的 JSInteropNativeError(不可捕获, 进程终止)。
+     * 单事件自身超过上限时仍整体入队(单次 callMethod), 不做事件内拆分。
      */
     func flushIfFull(nextEventSize: Int64): Unit {
-        if (batchMode && events.size + nextEventSize > 200) {
+        if (batchMode && events.size + nextEventSize > batchChunkSize) {
             flush()
         }
     }
@@ -263,17 +277,20 @@ class JsNodeBuilder {
     }
 
     func setField(name: String, value: JSValue): Unit {
-        emit("@f", "setField", [context.string(name).toJSValue(), value])
+        // 标记 3=setField。
+        emit(3, "setField", [context.string(name).toJSValue(), value])
     }
 
     func putImageStyles(styles: ArrayList<String>): Unit {
-        emitList("@i", "putImageStyles", styles |> map {v => context.string(v).toJSValue()} |> collectArray)
+        // 标记 7=putImageStyles。
+        emitList(7, "putImageStyles", styles |> map {v => context.string(v).toJSValue()} |> collectArray)
     }
 
     func putSpanNodeAttr(attrs: ?HashMap<String, String>): Unit {
         if (let Some(attrs) <- attrs) {
             for ((k, v) in attrs) {
-                emit("@a", "putSpanNodeAttr", [context.string(k).toJSValue(), context.string(v).toJSValue()])
+                // 标记 5=putSpanNodeAttr。
+                emit(5, "putSpanNodeAttr", [context.string(k).toJSValue(), context.string(v).toJSValue()])
             }
         }
     }
@@ -281,7 +298,8 @@ class JsNodeBuilder {
     func putSpanNodeStyle(style: ?HashMap<String, String>): Unit {
         if (let Some(style) <- style) {
             for ((k, v) in style) {
-                emit("@s", "putSpanNodeStyle", [context.string(k).toJSValue(), context.string(v).toJSValue()])
+                // 标记 6=putSpanNodeStyle。
+                emit(6, "putSpanNodeStyle", [context.string(k).toJSValue(), context.string(v).toJSValue()])
             }
         }
     }
@@ -302,7 +320,8 @@ class JsNodeBuilder {
                         case _ => context.number(Float64(span.getLength())).toJSValue()
                     }
             }
-            emitList("@n", "addSourceSpans", sourceSpansFlatten)
+            // 标记 8=addSourceSpans。
+            emitList(8, "addSourceSpans", sourceSpansFlatten)
         }
     }
 }

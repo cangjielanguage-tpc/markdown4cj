@@ -10,13 +10,27 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         }
     }
 
-    public HybridParser(let parser: Markdown, let jsNodeTreeBuilder: JSObject) {}
+    public HybridParser(chunkSize: Int64, let parser: Markdown, let jsNodeTreeBuilder: JSObject) {
+        // 参数合法性校验: 非正值(含 undefined→0)回退默认 200(对齐旧协议实证安全的最大实参数量)。
+        buildNodesChunkSize = if (chunkSize <= 0) { 200 } else { chunkSize }
+    }
+
+    // 批量建树单次推送的事件实参上限(事件边界分块, 单事件不拆分), 来自 Options.buildNodesChunkSize。
+    let buildNodesChunkSize: Int64
 
     public static func jsConstructor(context: JSContext, callInfo: JSCallInfo): JSValue {
         JSCurrentJSContext.set(context)
         let opt = callInfo[0].asObject()
         let jsNodeTreeBuilder = opt['jsNodeTreeBuilder'].asObject()
         let includeSourceSpans = Int64.fromJSValue(context, opt['includeSourceSpans'])
+        // 批量建树分块阈值(可选): 字段未配置时为 undefined/null, 直接回退默认 200;
+        // 已配置时才做数值转换(Int64.fromJSValue 不接受 undefined, 需先判空)。
+        let chunkSizeValue = opt['buildNodesChunkSize']
+        let buildNodesChunkSize = if (chunkSizeValue.isUndefined() || chunkSizeValue.isNull()) {
+            200
+        } else {
+            Int64.fromJSValue(context, chunkSizeValue)
+        }
         let builder = Markdown.builder().includeSourceSpans(includeSourceSpans)
         if (opt.get('ADPlugin', false, context)) {
             builder.usePlugin(ADPlugin.create())
@@ -118,7 +132,7 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         }
 
         let parser = builder.build()
-        let clazz = HybridParser(parser, jsNodeTreeBuilder)
+        let clazz = HybridParser(buildNodesChunkSize, parser, jsNodeTreeBuilder)
 
         JSCurrentJSContext.unset()
         let thisArg = callInfo.thisArg
@@ -138,7 +152,7 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
                         // 分片构建: 只对 Root 的第一层 children 分片, 每个 postJSTask 处理一个 child 及其整棵子树。
                         // onDone 在构造函数中注入(无异常参数): 构建完成后 resolve undefined;
                         // 构建结果(根节点)由 ArkTS 侧通过 jsNodeTreeBuilder.getRoot() 获取, 异常由本 try/catch 捕获。
-                        let nodeBuilder = JsNodeBuilder(jsNodeTreeBuilder, context) {
+                        let nodeBuilder = JsNodeBuilder(buildNodesChunkSize, jsNodeTreeBuilder, context) {
                             promise.resolve(context.undefined().toJSValue())
                         }
                         nodeBuilder.start(doc)
