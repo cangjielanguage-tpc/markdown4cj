@@ -1,4 +1,4 @@
-﻿import { isMargin, isPadding } from "../base/Constants"
+import { isMargin, isPadding } from "../base/Constants"
 import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
@@ -110,6 +110,28 @@ export class FootnoteDefTheme implements MarkdownBaseTheme {
         this.footnoteDefPaddingLeft = options as Length
       }
     }
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return FootnoteDefTheme
+   */
+  applyFrom(other: FootnoteDefTheme): FootnoteDefTheme {
+    this.footnoteDefBackgroundColor = other.footnoteDefBackgroundColor
+    this.footnoteDefMarginTop = other.footnoteDefMarginTop
+    this.footnoteDefMarginRight = other.footnoteDefMarginRight
+    this.footnoteDefMarginBottom = other.footnoteDefMarginBottom
+    this.footnoteDefMarginLeft = other.footnoteDefMarginLeft
+    this.footnoteDefPaddingTop = other.footnoteDefPaddingTop
+    this.footnoteDefPaddingRight = other.footnoteDefPaddingRight
+    this.footnoteDefPaddingBottom = other.footnoteDefPaddingBottom
+    this.footnoteDefPaddingLeft = other.footnoteDefPaddingLeft
     return this
   }
 }

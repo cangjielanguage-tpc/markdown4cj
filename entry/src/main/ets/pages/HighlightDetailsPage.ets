@@ -25,6 +25,7 @@ struct HighlightDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -207,6 +208,12 @@ struct HighlightDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -214,57 +221,53 @@ struct HighlightDetailsPage {
     } else {
       theme.setDarculaTheme()
     }
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
 
-    let highlightTheme = new HighlightTheme()
     if (this.highlightTextFontColor !== undefined) {
-      highlightTheme.setHighlightTextFontColor(this.highlightTextFontColor)
+      theme.highlightTheme.setHighlightTextFontColor(this.highlightTextFontColor)
     }
     if (this.highlightTextFontSize !== undefined) {
-      highlightTheme.setHighlightTextFontSize(this.highlightTextFontSize)
+      theme.highlightTheme.setHighlightTextFontSize(this.highlightTextFontSize)
     }
     if (this.highlightTextFontStyle !== undefined) {
-      highlightTheme.setHighlightTextFontStyle(this.highlightTextFontStyle)
+      theme.highlightTheme.setHighlightTextFontStyle(this.highlightTextFontStyle)
     }
     if (this.highlightTextFontWeight !== undefined) {
-      highlightTheme.setHighlightTextFontWeight(this.highlightTextFontWeight)
+      theme.highlightTheme.setHighlightTextFontWeight(this.highlightTextFontWeight)
     }
     if (this.highlightTextFontFamily !== undefined) {
-      highlightTheme.setHighlightTextFontFamily(this.highlightTextFontFamily)
+      theme.highlightTheme.setHighlightTextFontFamily(this.highlightTextFontFamily)
     }
     if (this.highlightTextLineHeight !== undefined) {
-      highlightTheme.setHighlightTextLineHeight(this.highlightTextLineHeight)
+      theme.highlightTheme.setHighlightTextLineHeight(this.highlightTextLineHeight)
     }
     if (this.highlightTextLetterSpacing !== undefined) {
-      highlightTheme.setHighlightTextLetterSpacing(this.highlightTextLetterSpacing)
+      theme.highlightTheme.setHighlightTextLetterSpacing(this.highlightTextLetterSpacing)
     }
     if (this.highlightTextBackgroundColor !== undefined) {
-      highlightTheme.setHighlightTextBackgroundColor(this.highlightTextBackgroundColor)
+      theme.highlightTheme.setHighlightTextBackgroundColor(this.highlightTextBackgroundColor)
     }
     if (this.highlightTextBackgroundRadiusTopLeft !== undefined ||
         this.highlightTextBackgroundRadiusTopRight !== undefined ||
         this.highlightTextBackgroundRadiusBottomLeft !== undefined ||
         this.highlightTextBackgroundRadiusBottomRight !== undefined) {
-      highlightTheme.setHighlightTextBackgroundRadius({
+      theme.highlightTheme.setHighlightTextBackgroundRadius({
         topLeft: this.highlightTextBackgroundRadiusTopLeft,
         topRight: this.highlightTextBackgroundRadiusTopRight,
         bottomLeft: this.highlightTextBackgroundRadiusBottomLeft,
         bottomRight: this.highlightTextBackgroundRadiusBottomRight
       })
     }
-    theme.setHighlightTheme(highlightTheme)
 
     return theme
   }

@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
 
 /**
@@ -199,4 +199,33 @@ export class ParagraphTheme implements MarkdownBaseTheme {
   }
 
 
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return ParagraphTheme
+   */
+  applyFrom(other: ParagraphTheme): ParagraphTheme {
+    this.paragraphBackgroundColor = other.paragraphBackgroundColor
+    this.paragraphMarginTop = other.paragraphMarginTop
+    this.paragraphMarginRight = other.paragraphMarginRight
+    this.paragraphMarginBottom = other.paragraphMarginBottom
+    this.paragraphMarginLeft = other.paragraphMarginLeft
+    this.paragraphPaddingTop = other.paragraphPaddingTop
+    this.paragraphPaddingRight = other.paragraphPaddingRight
+    this.paragraphPaddingBottom = other.paragraphPaddingBottom
+    this.paragraphPaddingLeft = other.paragraphPaddingLeft
+    this.paragraphTextFontColor = other.paragraphTextFontColor
+    this.paragraphTextFontSize = other.paragraphTextFontSize
+    this.paragraphTextFontStyle = other.paragraphTextFontStyle
+    this.paragraphTextFontWeight = other.paragraphTextFontWeight
+    this.paragraphTextFontFamily = other.paragraphTextFontFamily
+    this.paragraphTextLineHeight = other.paragraphTextLineHeight
+    this.paragraphTextLetterSpacing = other.paragraphTextLetterSpacing
+    return this
+  }
 }

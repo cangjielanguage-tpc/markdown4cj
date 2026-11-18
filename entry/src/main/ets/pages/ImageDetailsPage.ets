@@ -22,6 +22,7 @@ struct ImageDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -299,6 +300,12 @@ struct ImageDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -307,79 +314,75 @@ struct ImageDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
     const hostContext = this.getUIContext().getHostContext()
     if (hostContext != undefined) {
-      globalTheme.setStageContext(hostContext)
+      theme.globalTheme.setStageContext(hostContext)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - Image
-    let imageTheme: ImageTheme = new ImageTheme()
     if (this.imagePlaceholder !== undefined) {
-      imageTheme.setImagePlaceholder(this.imagePlaceholder)
+      theme.imageTheme.setImagePlaceholder(this.imagePlaceholder)
     }
-    imageTheme.setImageAutoResize(this.imageAutoResize)
-    imageTheme.setIsImageMixedLayout(this.isImageMixedLayout)
-    imageTheme.setImageMargin({top: this.imageMarginTop, right: this.imageMarginRight, bottom: this.imageMarginBottom, left: this.imageMarginLeft})
-    imageTheme.setImageBorderRadius({topLeft: this.imageRadiusTopLeft, topRight: this.imageRadiusTopRight, bottomLeft: this.imageRadiusBottomLeft, bottomRight: this.imageRadiusBottomRight})
-    imageTheme.setImageBorderStyle(this.imageBorderStyle)
-    imageTheme.setImageBorderWidth(this.imageBorderWidth)
+    theme.imageTheme.setImageAutoResize(this.imageAutoResize)
+    theme.imageTheme.setIsImageMixedLayout(this.isImageMixedLayout)
+    theme.imageTheme.setImageMargin({top: this.imageMarginTop, right: this.imageMarginRight, bottom: this.imageMarginBottom, left: this.imageMarginLeft})
+    theme.imageTheme.setImageBorderRadius({topLeft: this.imageRadiusTopLeft, topRight: this.imageRadiusTopRight, bottomLeft: this.imageRadiusBottomLeft, bottomRight: this.imageRadiusBottomRight})
+    theme.imageTheme.setImageBorderStyle(this.imageBorderStyle)
+    theme.imageTheme.setImageBorderWidth(this.imageBorderWidth)
     if (this.imageBorderColor !== undefined) {
-      imageTheme.setImageBorderColor(this.imageBorderColor)
+      theme.imageTheme.setImageBorderColor(this.imageBorderColor)
     }
-    imageTheme.setImageMaximumWidth(this.imageMaximumWidth)
+    theme.imageTheme.setImageMaximumWidth(this.imageMaximumWidth)
     if (this.imageFixedRatioWidth !== undefined) {
-      imageTheme.setImageFixedRatioWidth(this.imageFixedRatioWidth)
+      theme.imageTheme.setImageFixedRatioWidth(this.imageFixedRatioWidth)
     }
     if (this.imageMaxHeight !== undefined) {
-      imageTheme.setImageMaxHeight(this.imageMaxHeight)
+      theme.imageTheme.setImageMaxHeight(this.imageMaxHeight)
     }
     if (this.imageHeight !== undefined) {
-      imageTheme.setImageHeight(this.imageHeight)
+      theme.imageTheme.setImageHeight(this.imageHeight)
     }
     if (this.imageMaxWidth !== undefined) {
-      imageTheme.setImageMaxWidth(this.imageMaxWidth)
+      theme.imageTheme.setImageMaxWidth(this.imageMaxWidth)
     }
     if (this.imageWidth !== undefined) {
-      imageTheme.setImageWidth(this.imageWidth)
+      theme.imageTheme.setImageWidth(this.imageWidth)
     }
-    imageTheme.setImageFitType(this.imageFitType)
-    imageTheme.setImageBottomLayoutMarginTop(this.imageBottomLayoutMarginTop)
-    imageTheme.setImageDownloadButtonVisible(this.imageDownloadButtonVisible)
-    imageTheme.setImageDownloadButtonWidth(this.imageDownloadButtonWidth)
-    imageTheme.setImageDownloadButtonHeight(this.imageDownloadButtonHeight)
-    imageTheme.setImageDownloadButtonRadius({topLeft: this.imageDownloadButtonRadiusTopLeft, topRight: this.imageDownloadButtonRadiusTopRight, bottomLeft: this.imageDownloadButtonRadiusBottomLeft, bottomRight: this.imageDownloadButtonRadiusBottomRight})
+    theme.imageTheme.setImageFitType(this.imageFitType)
+    theme.imageTheme.setImageBottomLayoutMarginTop(this.imageBottomLayoutMarginTop)
+    theme.imageTheme.setImageDownloadButtonVisible(this.imageDownloadButtonVisible)
+    theme.imageTheme.setImageDownloadButtonWidth(this.imageDownloadButtonWidth)
+    theme.imageTheme.setImageDownloadButtonHeight(this.imageDownloadButtonHeight)
+    theme.imageTheme.setImageDownloadButtonRadius({topLeft: this.imageDownloadButtonRadiusTopLeft, topRight: this.imageDownloadButtonRadiusTopRight, bottomLeft: this.imageDownloadButtonRadiusBottomLeft, bottomRight: this.imageDownloadButtonRadiusBottomRight})
     if (this.imageDownloadButtonIcon !== undefined) {
-      imageTheme.setImageDownloadButtonIcon(this.imageDownloadButtonIcon)
+      theme.imageTheme.setImageDownloadButtonIcon(this.imageDownloadButtonIcon)
     }
-    imageTheme.setImageDownloadButtonIconWidth(this.imageDownloadButtonIconWidth)
-    imageTheme.setImageDownloadButtonIconHeight(this.imageDownloadButtonIconHeight)
-    imageTheme.setImageDownloadButtonIconTextGap(this.imageDownloadButtonIconTextGap.valueOf() as number)
+    theme.imageTheme.setImageDownloadButtonIconWidth(this.imageDownloadButtonIconWidth)
+    theme.imageTheme.setImageDownloadButtonIconHeight(this.imageDownloadButtonIconHeight)
+    theme.imageTheme.setImageDownloadButtonIconTextGap(this.imageDownloadButtonIconTextGap.valueOf() as number)
     if (this.imageDownloadButtonBackgroundColor !== undefined) {
-      imageTheme.setImageDownloadButtonBackgroundColor(this.imageDownloadButtonBackgroundColor)
+      theme.imageTheme.setImageDownloadButtonBackgroundColor(this.imageDownloadButtonBackgroundColor)
     }
-    imageTheme.setImageDownloadButtonText(this.imageDownloadButtonText)
+    theme.imageTheme.setImageDownloadButtonText(this.imageDownloadButtonText)
     if (this.imageDownloadButtonTextFontColor !== undefined) {
-      imageTheme.setImageDownloadButtonTextFontColor(this.imageDownloadButtonTextFontColor)
+      theme.imageTheme.setImageDownloadButtonTextFontColor(this.imageDownloadButtonTextFontColor)
     }
-    imageTheme.setImageDownloadButtonTextFontSize(this.imageDownloadButtonTextFontSize)
-    imageTheme.setImageDownloadButtonTextFontStyle(this.imageDownloadButtonTextFontStyle)
-    imageTheme.setImageDownloadButtonTextFontWeight(this.imageDownloadButtonTextFontWeight)
-    imageTheme.setImageDownloadButtonTextFontFamily(this.imageDownloadButtonTextFontFamily)
-    imageTheme.setImageDownloadButtonTextLineHeight(this.imageDownloadButtonTextLineHeight)
-    theme.setImageTheme(imageTheme)
+    theme.imageTheme.setImageDownloadButtonTextFontSize(this.imageDownloadButtonTextFontSize)
+    theme.imageTheme.setImageDownloadButtonTextFontStyle(this.imageDownloadButtonTextFontStyle)
+    theme.imageTheme.setImageDownloadButtonTextFontWeight(this.imageDownloadButtonTextFontWeight)
+    theme.imageTheme.setImageDownloadButtonTextFontFamily(this.imageDownloadButtonTextFontFamily)
+    theme.imageTheme.setImageDownloadButtonTextLineHeight(this.imageDownloadButtonTextLineHeight)
     
     return theme
   }

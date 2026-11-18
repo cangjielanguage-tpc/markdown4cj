@@ -24,6 +24,7 @@ struct CodeLineDetailsPage {
   safeTop: number = 0
   // 深浅色模式
   @StorageProp('currentColorMode')
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   // 文件文本
   @State
@@ -240,6 +241,12 @@ struct CodeLineDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -248,53 +255,49 @@ struct CodeLineDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - InlineCode
-    let inlineCodeTheme = new InlineCodeTheme()
     if (this.inlineCodeTextFontColor !== undefined) {
-      inlineCodeTheme.setInlineCodeTextFontColor(this.inlineCodeTextFontColor)
+      theme.inlineCodeTheme.setInlineCodeTextFontColor(this.inlineCodeTextFontColor)
     }
     if (this.inlineCodeTextFontSize !== undefined) {
-      inlineCodeTheme.setInlineCodeTextFontSize(this.inlineCodeTextFontSize)
+      theme.inlineCodeTheme.setInlineCodeTextFontSize(this.inlineCodeTextFontSize)
     }
     if (this.inlineCodeTextFontStyle !== undefined) {
-      inlineCodeTheme.setInlineCodeTextFontStyle(this.inlineCodeTextFontStyle)
+      theme.inlineCodeTheme.setInlineCodeTextFontStyle(this.inlineCodeTextFontStyle)
     }
     if (this.inlineCodeTextFontWeight !== undefined) {
-      inlineCodeTheme.setInlineCodeTextFontWeight(this.inlineCodeTextFontWeight)
+      theme.inlineCodeTheme.setInlineCodeTextFontWeight(this.inlineCodeTextFontWeight)
     }
     if (this.inlineCodeTextFontFamily !== undefined) {
-      inlineCodeTheme.setInlineCodeTextFontFamily(this.inlineCodeTextFontFamily)
+      theme.inlineCodeTheme.setInlineCodeTextFontFamily(this.inlineCodeTextFontFamily)
     }
     if (this.inlineCodeTextLineHeight !== undefined) {
-      inlineCodeTheme.setInlineCodeTextLineHeight(this.inlineCodeTextLineHeight)
+      theme.inlineCodeTheme.setInlineCodeTextLineHeight(this.inlineCodeTextLineHeight)
     }
     if (this.inlineCodeTextLetterSpacing !== undefined) {
-      inlineCodeTheme.setInlineCodeTextLetterSpacing(this.inlineCodeTextLetterSpacing)
+      theme.inlineCodeTheme.setInlineCodeTextLetterSpacing(this.inlineCodeTextLetterSpacing)
     }
     if (this.inlineCodeTextBackgroundColor !== undefined) {
-      inlineCodeTheme.setInlineCodeTextBackgroundColor(this.inlineCodeTextBackgroundColor)
+      theme.inlineCodeTheme.setInlineCodeTextBackgroundColor(this.inlineCodeTextBackgroundColor)
     }
-    inlineCodeTheme.setInlineCodeTextBackgroundRadius({
+    theme.inlineCodeTheme.setInlineCodeTextBackgroundRadius({
       topLeft: this.inlineCodeTextBackgroundRadiusTopLeft,
       topRight: this.inlineCodeTextBackgroundRadiusTopRight,
       bottomLeft: this.inlineCodeTextBackgroundRadiusBottomLeft,
       bottomRight: this.inlineCodeTextBackgroundRadiusBottomRight
     })
-    theme.setInlineCodeTheme(inlineCodeTheme)
     
     return theme
   }

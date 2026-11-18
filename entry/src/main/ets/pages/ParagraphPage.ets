@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -196,79 +196,81 @@ struct ParagraphPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.paragraphData._isFull = this.isFull
-                  this.paragraphData._incrementalAnalysis = this.incrementalAnalysis
-                  this.paragraphData._enableParseThrottle = this.enableParseThrottle
-                  this.paragraphData._parseThrottleMs = this.parseThrottleMs
-                  this.paragraphData._time = this.time
-                  this.paragraphData._textNumber = this.textNumber
-                  this.paragraphData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.paragraphData._isOnCopy = this.isOnCopy
-                  this.paragraphData._blockMarginTop = this.blockMarginTop
-                  this.paragraphData._blockMarginRight = this.blockMarginRight
-                  this.paragraphData._blockMarginBottom = this.blockMarginBottom
-                  this.paragraphData._blockMarginLeft = this.blockMarginLeft
-                  this.paragraphData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.paragraphData._isLineBreak = this.isLineBreak
-                  this.paragraphData._backgroundColor = this.globalBackgroundColor
-                  this.paragraphData._openGestureSwipe = this.openGestureSwipe
-                  this.paragraphData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.paragraphData._pagePath = `${this.rawFilePath}/${item}`
-                  this.paragraphData._showHighlight = this.showHighlight
-                  this.paragraphData._beforeSelectedParagraphBackgroundColor = this.beforeSelectedParagraphBackgroundColor
-                  this.paragraphData._selectedParagraphBackgroundColor = this.selectedParagraphBackgroundColor
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.paragraphData._isFull = this.isFull
+                    this.paragraphData._incrementalAnalysis = this.incrementalAnalysis
+                    this.paragraphData._enableParseThrottle = this.enableParseThrottle
+                    this.paragraphData._parseThrottleMs = this.parseThrottleMs
+                    this.paragraphData._time = this.time
+                    this.paragraphData._textNumber = this.textNumber
+                    this.paragraphData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.paragraphData._isOnCopy = this.isOnCopy
+                    this.paragraphData._blockMarginTop = this.blockMarginTop
+                    this.paragraphData._blockMarginRight = this.blockMarginRight
+                    this.paragraphData._blockMarginBottom = this.blockMarginBottom
+                    this.paragraphData._blockMarginLeft = this.blockMarginLeft
+                    this.paragraphData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.paragraphData._isLineBreak = this.isLineBreak
+                    this.paragraphData._backgroundColor = this.globalBackgroundColor
+                    this.paragraphData._openGestureSwipe = this.openGestureSwipe
+                    this.paragraphData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.paragraphData._pagePath = `${this.rawFilePath}/${item}`
+                    this.paragraphData._showHighlight = this.showHighlight
+                    this.paragraphData._beforeSelectedParagraphBackgroundColor = this.beforeSelectedParagraphBackgroundColor
+                    this.paragraphData._selectedParagraphBackgroundColor = this.selectedParagraphBackgroundColor
 
-                  // ---------- 专有
-                  this.paragraphData._paragraphBackgroundColor = this.paragraphBackgroundColor
-                  this.paragraphData._paragraphMarginTop = this.paragraphMarginTop
-                  this.paragraphData._paragraphMarginRight = this.paragraphMarginRight
-                  this.paragraphData._paragraphMarginBottom = this.paragraphMarginBottom
-                  this.paragraphData._paragraphMarginLeft = this.paragraphMarginLeft
-                  this.paragraphData._paragraphPaddingTop = this.paragraphPaddingTop
-                  this.paragraphData._paragraphPaddingRight = this.paragraphPaddingRight
-                  this.paragraphData._paragraphPaddingBottom = this.paragraphPaddingBottom
-                  this.paragraphData._paragraphPaddingLeft = this.paragraphPaddingLeft
-                  this.paragraphData._paragraphTextFontColor = this.paragraphTextFontColor
-                  this.paragraphData._paragraphTextFontSize = this.paragraphTextFontSize
-                  this.paragraphData._paragraphTextFontStyle = this.paragraphTextFontStyle
-                  this.paragraphData._paragraphTextFontWeight = this.paragraphTextFontWeight
-                  this.paragraphData._paragraphTextFontFamily = this.paragraphTextFontFamily
-                  this.paragraphData._paragraphTextLineHeight = this.paragraphTextLineHeight
-                  this.paragraphData._paragraphTextLetterSpacing = this.paragraphTextLetterSpacing
-                  this.paragraphData._paragraphHeadingAnimationEnabled = this.paragraphHeadingAnimationEnabled
-                  this.paragraphData._paragraphHeadingAnimationDuration = this.paragraphHeadingAnimationDuration
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/ParagraphDetailsPage", params: this.paragraphData })
-              })
+                    // ---------- 专有
+                    this.paragraphData._paragraphBackgroundColor = this.paragraphBackgroundColor
+                    this.paragraphData._paragraphMarginTop = this.paragraphMarginTop
+                    this.paragraphData._paragraphMarginRight = this.paragraphMarginRight
+                    this.paragraphData._paragraphMarginBottom = this.paragraphMarginBottom
+                    this.paragraphData._paragraphMarginLeft = this.paragraphMarginLeft
+                    this.paragraphData._paragraphPaddingTop = this.paragraphPaddingTop
+                    this.paragraphData._paragraphPaddingRight = this.paragraphPaddingRight
+                    this.paragraphData._paragraphPaddingBottom = this.paragraphPaddingBottom
+                    this.paragraphData._paragraphPaddingLeft = this.paragraphPaddingLeft
+                    this.paragraphData._paragraphTextFontColor = this.paragraphTextFontColor
+                    this.paragraphData._paragraphTextFontSize = this.paragraphTextFontSize
+                    this.paragraphData._paragraphTextFontStyle = this.paragraphTextFontStyle
+                    this.paragraphData._paragraphTextFontWeight = this.paragraphTextFontWeight
+                    this.paragraphData._paragraphTextFontFamily = this.paragraphTextFontFamily
+                    this.paragraphData._paragraphTextLineHeight = this.paragraphTextLineHeight
+                    this.paragraphData._paragraphTextLetterSpacing = this.paragraphTextLetterSpacing
+                    this.paragraphData._paragraphHeadingAnimationEnabled = this.paragraphHeadingAnimationEnabled
+                    this.paragraphData._paragraphHeadingAnimationDuration = this.paragraphHeadingAnimationDuration
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/ParagraphDetailsPage", params: this.paragraphData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -599,10 +601,12 @@ struct ParagraphPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

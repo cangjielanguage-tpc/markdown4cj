@@ -1,4 +1,4 @@
-﻿import { isMargin, isPadding } from "../base/Constants"
+import { isMargin, isPadding } from "../base/Constants"
 import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
@@ -170,6 +170,33 @@ export class DefinitionListTheme implements MarkdownBaseTheme {
    */
   setDefinitionListDescriptionIndent(indent: number): DefinitionListTheme {
     this.definitionListDescriptionIndent = indent
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return DefinitionListTheme
+   */
+  applyFrom(other: DefinitionListTheme): DefinitionListTheme {
+    this.definitionListBackgroundColor = other.definitionListBackgroundColor
+    this.definitionListMarginTop = other.definitionListMarginTop
+    this.definitionListMarginRight = other.definitionListMarginRight
+    this.definitionListMarginBottom = other.definitionListMarginBottom
+    this.definitionListMarginLeft = other.definitionListMarginLeft
+    this.definitionListPaddingTop = other.definitionListPaddingTop
+    this.definitionListPaddingRight = other.definitionListPaddingRight
+    this.definitionListPaddingBottom = other.definitionListPaddingBottom
+    this.definitionListPaddingLeft = other.definitionListPaddingLeft
+    this.definitionListTermToDescriptionSpacing = other.definitionListTermToDescriptionSpacing
+    this.definitionListTermTextFontWeight = other.definitionListTermTextFontWeight
+    this.definitionListTermTextFontStyle = other.definitionListTermTextFontStyle
+    this.definitionListDescriptionItemSpacing = other.definitionListDescriptionItemSpacing
+    this.definitionListDescriptionIndent = other.definitionListDescriptionIndent
     return this
   }
 }

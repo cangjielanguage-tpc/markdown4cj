@@ -1054,4 +1054,103 @@ export class CodeBlockTheme implements MarkdownBaseTheme {
     this.codeBlockSeparateIsBottom = isBottom
     return this
   }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return CodeBlockTheme
+   */
+  applyFrom(other: CodeBlockTheme): CodeBlockTheme {
+    this.codeBlockIsDark = other.codeBlockIsDark
+    this.codeBlockIsCodeFormat = other.codeBlockIsCodeFormat
+    this.codeBlockUseTab = other.codeBlockUseTab
+    this.codeBlockIndentWidth = other.codeBlockIndentWidth
+    this.codeBlockParserSync = other.codeBlockParserSync
+    this.codeBlockBackgroundColor = other.codeBlockBackgroundColor
+    this.codeBlockMarginTop = other.codeBlockMarginTop
+    this.codeBlockMarginRight = other.codeBlockMarginRight
+    this.codeBlockMarginBottom = other.codeBlockMarginBottom
+    this.codeBlockMarginLeft = other.codeBlockMarginLeft
+    this.codeBlockPaddingTop = other.codeBlockPaddingTop
+    this.codeBlockPaddingRight = other.codeBlockPaddingRight
+    this.codeBlockPaddingBottom = other.codeBlockPaddingBottom
+    this.codeBlockPaddingLeft = other.codeBlockPaddingLeft
+    this.codeBlockBorderStyle = other.codeBlockBorderStyle
+    this.codeBlockBorderWidth = other.codeBlockBorderWidth
+    this.codeBlockBorderColor = other.codeBlockBorderColor
+    this.codeBlockRadiusTopLeft = other.codeBlockRadiusTopLeft
+    this.codeBlockRadiusTopRight = other.codeBlockRadiusTopRight
+    this.codeBlockRadiusBottomLeft = other.codeBlockRadiusBottomLeft
+    this.codeBlockRadiusBottomRight = other.codeBlockRadiusBottomRight
+    this.codeBlockTitleLayoutMarginBottom = other.codeBlockTitleLayoutMarginBottom
+    this.codeBlockTypeTextMarginLeft = other.codeBlockTypeTextMarginLeft
+    this.codeBlockTypeText = other.codeBlockTypeText
+    this.codeBlockTypeTextFontColor = other.codeBlockTypeTextFontColor
+    this.codeBlockTypeTextFontSize = other.codeBlockTypeTextFontSize
+    this.codeBlockTypeTextFontStyle = other.codeBlockTypeTextFontStyle
+    this.codeBlockTypeTextFontWeight = other.codeBlockTypeTextFontWeight
+    this.codeBlockTypeTextFontFamily = other.codeBlockTypeTextFontFamily
+    this.codeBlockTypeTextLineHeight = other.codeBlockTypeTextLineHeight
+    this.codeBlockCopyFullScreenSpacing = other.codeBlockCopyFullScreenSpacing
+    this.codeBlockCopyButtonIsShow = other.codeBlockCopyButtonIsShow
+    this.codeBlockCopyTextIsShow = other.codeBlockCopyTextIsShow
+    this.codeBlockCopyIcon = other.codeBlockCopyIcon
+    this.codeBlockCopyIconWidth = other.codeBlockCopyIconWidth
+    this.codeBlockCopyIconHeight = other.codeBlockCopyIconHeight
+    this.codeBlockCopyIconTextSpacing = other.codeBlockCopyIconTextSpacing
+    this.codeBlockCopyText = other.codeBlockCopyText
+    this.codeBlockCopyTextFontColor = other.codeBlockCopyTextFontColor
+    this.codeBlockCopyTextFontSize = other.codeBlockCopyTextFontSize
+    this.codeBlockCopyTextFontStyle = other.codeBlockCopyTextFontStyle
+    this.codeBlockCopyTextFontWeight = other.codeBlockCopyTextFontWeight
+    this.codeBlockCopyTextFontFamily = other.codeBlockCopyTextFontFamily
+    this.codeBlockCopyTextLineHeight = other.codeBlockCopyTextLineHeight
+    this.codeBlockFullScreenButtonIsShow = other.codeBlockFullScreenButtonIsShow
+    this.codeBlockFullScreenTextIsShow = other.codeBlockFullScreenTextIsShow
+    this.codeBlockFullScreenIcon = other.codeBlockFullScreenIcon
+    this.codeBlockFullScreenIconWidth = other.codeBlockFullScreenIconWidth
+    this.codeBlockFullScreenIconHeight = other.codeBlockFullScreenIconHeight
+    this.codeBlockFullScreenIconTextSpacing = other.codeBlockFullScreenIconTextSpacing
+    this.codeBlockFullScreenText = other.codeBlockFullScreenText
+    this.codeBlockFullScreenTextFontColor = other.codeBlockFullScreenTextFontColor
+    this.codeBlockFullScreenTextFontSize = other.codeBlockFullScreenTextFontSize
+    this.codeBlockFullScreenTextFontStyle = other.codeBlockFullScreenTextFontStyle
+    this.codeBlockFullScreenTextFontWeight = other.codeBlockFullScreenTextFontWeight
+    this.codeBlockFullScreenTextFontFamily = other.codeBlockFullScreenTextFontFamily
+    this.codeBlockFullScreenTextLineHeight = other.codeBlockFullScreenTextLineHeight
+    this.codeBlockLineNumberIsShow = other.codeBlockLineNumberIsShow
+    this.codeBlockLineNumberTextPaddingLeft = other.codeBlockLineNumberTextPaddingLeft
+    this.codeBlockLineNumberTextFontColor = other.codeBlockLineNumberTextFontColor
+    this.codeBlockLineNumberTextFontSize = other.codeBlockLineNumberTextFontSize
+    this.codeBlockLineNumberTextFontStyle = other.codeBlockLineNumberTextFontStyle
+    this.codeBlockLineNumberTextFontWeight = other.codeBlockLineNumberTextFontWeight
+    this.codeBlockLineNumberTextFontFamily = other.codeBlockLineNumberTextFontFamily
+    this.codeBlockLineNumberTextLineHeight = other.codeBlockLineNumberTextLineHeight
+    this.codeBlockDividerColor = other.codeBlockDividerColor
+    this.codeBlockDividerStrokeWidth = other.codeBlockDividerStrokeWidth
+    this.codeBlockLineNumberDividerSpacing = other.codeBlockLineNumberDividerSpacing
+    this.codeBlockTextMarginRight = other.codeBlockTextMarginRight
+    this.codeBlockTextMarginLeft = other.codeBlockTextMarginLeft
+    this.codeBlockTextFontColor = other.codeBlockTextFontColor
+    this.codeBlockTextFontSize = other.codeBlockTextFontSize
+    this.codeBlockTextFontStyle = other.codeBlockTextFontStyle
+    this.codeBlockTextFontWeight = other.codeBlockTextFontWeight
+    this.codeBlockTextFontFamily = other.codeBlockTextFontFamily
+    this.codeBlockTextLineHeight = other.codeBlockTextLineHeight
+    this.codeBlockTextLetterSpacing = other.codeBlockTextLetterSpacing
+    this.codeBlockListTitleTextSize = other.codeBlockListTitleTextSize
+    this.codeBlockListTitleSelectTextSize = other.codeBlockListTitleSelectTextSize
+    this.codeBlockListTitleSelectTextColor = other.codeBlockListTitleSelectTextColor
+    this.codeBlockListTitleUnselectTextColor = other.codeBlockListTitleUnselectTextColor
+    this.codeBlockListTitleSelectBackgroundColor = other.codeBlockListTitleSelectBackgroundColor
+    this.codeBlockListTitleUnselectBackgroundColor = other.codeBlockListTitleUnselectBackgroundColor
+    this.codeBlockIsSeparate = other.codeBlockIsSeparate
+    this.codeBlockSeparateWidth = other.codeBlockSeparateWidth
+    this.codeBlockSeparateIsBottom = other.codeBlockSeparateIsBottom
+    return this
+  }
 }

@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BannerData } from '../model/BannerData'
@@ -18,7 +18,7 @@ struct BannerPage {
   // ---------------- 通用
   @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
   // rawfile路径
-  rawFilePath: string = "030_Banner"
+  rawFilePath: string = "031_Banner"
   @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
   // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
@@ -114,65 +114,67 @@ struct BannerPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.bannerData._isFull = this.isFull
-                  this.bannerData._incrementalAnalysis = this.incrementalAnalysis
-                  this.bannerData._enableParseThrottle = this.enableParseThrottle
-                  this.bannerData._parseThrottleMs = this.parseThrottleMs
-                  this.bannerData._time = this.time
-                  this.bannerData._textNumber = this.textNumber
-                  this.bannerData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.bannerData._isOnCopy = this.isOnCopy
-                  this.bannerData._blockMarginTop = this.blockMarginTop
-                  this.bannerData._blockMarginRight = this.blockMarginRight
-                  this.bannerData._blockMarginBottom = this.blockMarginBottom
-                  this.bannerData._blockMarginLeft = this.blockMarginLeft
-                  this.bannerData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.bannerData._isLineBreak = this.isLineBreak
-                  this.bannerData._backgroundColor = this.globalBackgroundColor
-                  this.bannerData._openGestureSwipe = this.openGestureSwipe
-                  this.bannerData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.bannerData._pagePath = `${this.rawFilePath}/${item}`
-                  // ---------- 专有
-                  this.bannerData._bannerMarginTop = this.bannerMarginTop
-                  this.bannerData._bannerMarginRight = this.bannerMarginRight
-                  this.bannerData._bannerMarginBottom = this.bannerMarginBottom
-                  this.bannerData._bannerMarginLeft = this.bannerMarginLeft
-                  this.bannerData._bannerPaddingTop = this.bannerPaddingTop
-                  this.bannerData._bannerPaddingRight = this.bannerPaddingRight
-                  this.bannerData._bannerPaddingBottom = this.bannerPaddingBottom
-                  this.bannerData._bannerPaddingLeft = this.bannerPaddingLeft
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/BannerDetailsPage", params: this.bannerData })
-              })
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.bannerData._isFull = this.isFull
+                    this.bannerData._incrementalAnalysis = this.incrementalAnalysis
+                    this.bannerData._enableParseThrottle = this.enableParseThrottle
+                    this.bannerData._parseThrottleMs = this.parseThrottleMs
+                    this.bannerData._time = this.time
+                    this.bannerData._textNumber = this.textNumber
+                    this.bannerData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.bannerData._isOnCopy = this.isOnCopy
+                    this.bannerData._blockMarginTop = this.blockMarginTop
+                    this.bannerData._blockMarginRight = this.blockMarginRight
+                    this.bannerData._blockMarginBottom = this.blockMarginBottom
+                    this.bannerData._blockMarginLeft = this.blockMarginLeft
+                    this.bannerData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.bannerData._isLineBreak = this.isLineBreak
+                    this.bannerData._backgroundColor = this.globalBackgroundColor
+                    this.bannerData._openGestureSwipe = this.openGestureSwipe
+                    this.bannerData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.bannerData._pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.bannerData._bannerMarginTop = this.bannerMarginTop
+                    this.bannerData._bannerMarginRight = this.bannerMarginRight
+                    this.bannerData._bannerMarginBottom = this.bannerMarginBottom
+                    this.bannerData._bannerMarginLeft = this.bannerMarginLeft
+                    this.bannerData._bannerPaddingTop = this.bannerPaddingTop
+                    this.bannerData._bannerPaddingRight = this.bannerPaddingRight
+                    this.bannerData._bannerPaddingBottom = this.bannerPaddingBottom
+                    this.bannerData._bannerPaddingLeft = this.bannerPaddingLeft
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/BannerDetailsPage", params: this.bannerData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -397,10 +399,12 @@ struct BannerPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor($r('app.color.page_background'))
-    .height("90%")
+    .height("100%")
   }
 }

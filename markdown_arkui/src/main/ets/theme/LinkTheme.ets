@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_RED, COLOR_TRANSPARENT, COLOR_BLACK, COLOR_WHITE, isBorderRadiuses } from "../base/Constants"
 
 /**
@@ -496,6 +496,60 @@ export class LinkTheme implements MarkdownBaseTheme {
    */
   setLinkRectToolIconLineRightPadding(padding: number): LinkTheme {
     this.linkRectToolIconLineRightPadding = padding
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return LinkTheme
+   */
+  applyFrom(other: LinkTheme): LinkTheme {
+    this.linkIsIcon = other.linkIsIcon
+    this.linkListIsIcon = other.linkListIsIcon
+    this.linkTextFontColor = other.linkTextFontColor
+    this.linkTextFontSize = other.linkTextFontSize
+    this.linkTextFontStyle = other.linkTextFontStyle
+    this.linkTextFontWeight = other.linkTextFontWeight
+    this.linkTextFontFamily = other.linkTextFontFamily
+    this.linkTextLineHeight = other.linkTextLineHeight
+    this.linkTextLetterSpacing = other.linkTextLetterSpacing
+    this.linkTextDecorationType = other.linkTextDecorationType
+    this.linkTextDecorationColor = other.linkTextDecorationColor
+    this.linkTextDecorationStyle = other.linkTextDecorationStyle
+    this.linkTextBackgroundColor = other.linkTextBackgroundColor
+    this.linkTextBackgroundRadiusTopLeft = other.linkTextBackgroundRadiusTopLeft
+    this.linkTextBackgroundRadiusTopRight = other.linkTextBackgroundRadiusTopRight
+    this.linkTextBackgroundRadiusBottomLeft = other.linkTextBackgroundRadiusBottomLeft
+    this.linkTextBackgroundRadiusBottomRight = other.linkTextBackgroundRadiusBottomRight
+    this.linkCircleIconBackgroundColor = other.linkCircleIconBackgroundColor
+    this.linkCircleIconButtonBackgroundColor = other.linkCircleIconButtonBackgroundColor
+    this.linkCircleIconTextSize = other.linkCircleIconTextSize
+    this.linkCircleIconTextColor = other.linkCircleIconTextColor
+    this.linkCircleIconRadius = other.linkCircleIconRadius
+    this.linkCircleIconMargin = other.linkCircleIconMargin
+    this.linkRectIconBackgroundColor = other.linkRectIconBackgroundColor
+    this.linkRectIconButtonBackgroundColor = other.linkRectIconButtonBackgroundColor
+    this.linkRectIconTextSize = other.linkRectIconTextSize
+    this.linkRectIconTextColor = other.linkRectIconTextColor
+    this.linkRectIconHeight = other.linkRectIconHeight
+    this.linkRectIconPadding = other.linkRectIconPadding
+    this.linkRectIconRadius = other.linkRectIconRadius
+    this.linkRectIconMargin = other.linkRectIconMargin
+    this.linkRectToolIconBackgroundColor = other.linkRectToolIconBackgroundColor
+    this.linkRectToolIconButtonBackgroundColor = other.linkRectToolIconButtonBackgroundColor
+    this.linkRectToolIconTextSize = other.linkRectToolIconTextSize
+    this.linkRectToolIconHeight = other.linkRectToolIconHeight
+    this.linkRectToolIconPadding = other.linkRectToolIconPadding
+    this.linkRectToolIconBorderWidth = other.linkRectToolIconBorderWidth
+    this.linkRectToolIconDividingLineWidth = other.linkRectToolIconDividingLineWidth
+    this.linkRectToolIconMargin = other.linkRectToolIconMargin
+    this.linkRectToolIconLineLeftPadding = other.linkRectToolIconLineLeftPadding
+    this.linkRectToolIconLineRightPadding = other.linkRectToolIconLineRightPadding
     return this
   }
 }

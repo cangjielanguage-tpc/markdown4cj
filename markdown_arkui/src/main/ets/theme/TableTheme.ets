@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import {
   COLOR_WHITE,
   COLOR_BLACK,
@@ -684,4 +684,72 @@ export class TableTheme implements MarkdownBaseTheme {
   }
 
 
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return TableTheme
+   */
+  applyFrom(other: TableTheme): TableTheme {
+    this.tableTitleBackgroundColor = other.tableTitleBackgroundColor
+    this.tableContentOddRowBackgroundColor = other.tableContentOddRowBackgroundColor
+    this.tableContentEvenRowBackgroundColor = other.tableContentEvenRowBackgroundColor
+    this.tableMarginTop = other.tableMarginTop
+    this.tableMarginRight = other.tableMarginRight
+    this.tableMarginBottom = other.tableMarginBottom
+    this.tableMarginLeft = other.tableMarginLeft
+    this.tablePaddingTop = other.tablePaddingTop
+    this.tablePaddingRight = other.tablePaddingRight
+    this.tablePaddingBottom = other.tablePaddingBottom
+    this.tablePaddingLeft = other.tablePaddingLeft
+    this.tableCellPaddingTop = other.tableCellPaddingTop
+    this.tableCellPaddingRight = other.tableCellPaddingRight
+    this.tableCellPaddingBottom = other.tableCellPaddingBottom
+    this.tableCellPaddingLeft = other.tableCellPaddingLeft
+    this.tableBorderStyle = other.tableBorderStyle
+    this.tableBorderWidth = other.tableBorderWidth
+    this.tableBorderColor = other.tableBorderColor
+    this.tableRadiusTopLeft = other.tableRadiusTopLeft
+    this.tableRadiusTopRight = other.tableRadiusTopRight
+    this.tableRadiusBottomLeft = other.tableRadiusBottomLeft
+    this.tableRadiusBottomRight = other.tableRadiusBottomRight
+    this.tableScrollBarState = other.tableScrollBarState
+    this.tableScrollBarColor = other.tableScrollBarColor
+    this.tableMinCellWidth = other.tableMinCellWidth
+    this.tableMaxCellWidth = other.tableMaxCellWidth
+    this.tableFirstColumnIsBold = other.tableFirstColumnIsBold
+    this.tableTitleTextFontColor = other.tableTitleTextFontColor
+    this.tableTitleTextFontSize = other.tableTitleTextFontSize
+    this.tableTitleTextFontStyle = other.tableTitleTextFontStyle
+    this.tableTitleTextFontWeight = other.tableTitleTextFontWeight
+    this.tableTitleTextFontFamily = other.tableTitleTextFontFamily
+    this.tableTitleTextLineHeight = other.tableTitleTextLineHeight
+    this.tableTitleTextLetterSpacing = other.tableTitleTextLetterSpacing
+    this.tableContentTextFontColor = other.tableContentTextFontColor
+    this.tableContentTextFontSize = other.tableContentTextFontSize
+    this.tableContentTextFontStyle = other.tableContentTextFontStyle
+    this.tableContentTextFontWeight = other.tableContentTextFontWeight
+    this.tableContentTextFontFamily = other.tableContentTextFontFamily
+    this.tableContentTextLineHeight = other.tableContentTextLineHeight
+    this.tableContentTextLetterSpacing = other.tableContentTextLetterSpacing
+    this.tableStickyHeader = other.tableStickyHeader
+    this.tableHeadIsShow = other.tableHeadIsShow
+    this.tableHeadTitleText = other.tableHeadTitleText
+    this.tableHeadTitleTextFontFamily = other.tableHeadTitleTextFontFamily
+    this.tableHeadTitleTextFontSize = other.tableHeadTitleTextFontSize
+    this.tableHeadTitleTextFontWeight = other.tableHeadTitleTextFontWeight
+    this.tableHeadTitleTextFontStyle = other.tableHeadTitleTextFontStyle
+    this.tableHeadTitleTextFontColor = other.tableHeadTitleTextFontColor
+    this.tableHeadTitleTextLineHeight = other.tableHeadTitleTextLineHeight
+    this.tableHeadTitleTextMarginLeft = other.tableHeadTitleTextMarginLeft
+    this.tableHeadCopyIcon = other.tableHeadCopyIcon
+    this.tableHeadCopyIconWidth = other.tableHeadCopyIconWidth
+    this.tableHeadCopyIconHeight = other.tableHeadCopyIconHeight
+    this.tableHeadCopyIconMarginRight = other.tableHeadCopyIconMarginRight
+    return this
+  }
 }

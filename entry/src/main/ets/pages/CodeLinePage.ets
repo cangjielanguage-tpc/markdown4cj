@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -26,7 +26,7 @@ struct CodeLinePage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "010_InlineCode"
+  rawFilePath: string = "012_InlineCode"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -164,70 +164,72 @@ struct CodeLinePage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.codeLineData._isFull = this.isFull
-                  this.codeLineData._incrementalAnalysis = this.incrementalAnalysis
-                  this.codeLineData._enableParseThrottle = this.enableParseThrottle
-                  this.codeLineData._parseThrottleMs = this.parseThrottleMs
-                  this.codeLineData._time = this.time
-                  this.codeLineData._textNumber = this.textNumber
-                  this.codeLineData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.codeLineData._isOnCopy = this.isOnCopy
-                  this.codeLineData._blockMarginTop = this.blockMarginTop
-                  this.codeLineData._blockMarginRight = this.blockMarginRight
-                  this.codeLineData._blockMarginBottom = this.blockMarginBottom
-                  this.codeLineData._blockMarginLeft = this.blockMarginLeft
-                  this.codeLineData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.codeLineData._isLineBreak = this.isLineBreak
-                  this.codeLineData._backgroundColor = this.globalBackgroundColor
-                  this.codeLineData._openGestureSwipe = this.openGestureSwipe
-                  this.codeLineData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.codeLineData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.codeLineData._isFull = this.isFull
+                    this.codeLineData._incrementalAnalysis = this.incrementalAnalysis
+                    this.codeLineData._enableParseThrottle = this.enableParseThrottle
+                    this.codeLineData._parseThrottleMs = this.parseThrottleMs
+                    this.codeLineData._time = this.time
+                    this.codeLineData._textNumber = this.textNumber
+                    this.codeLineData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.codeLineData._isOnCopy = this.isOnCopy
+                    this.codeLineData._blockMarginTop = this.blockMarginTop
+                    this.codeLineData._blockMarginRight = this.blockMarginRight
+                    this.codeLineData._blockMarginBottom = this.blockMarginBottom
+                    this.codeLineData._blockMarginLeft = this.blockMarginLeft
+                    this.codeLineData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.codeLineData._isLineBreak = this.isLineBreak
+                    this.codeLineData._backgroundColor = this.globalBackgroundColor
+                    this.codeLineData._openGestureSwipe = this.openGestureSwipe
+                    this.codeLineData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.codeLineData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.codeLineData._inlineCodeTextFontColor = this.inlineCodeTextFontColor
-                  this.codeLineData._inlineCodeTextFontSize = this.inlineCodeTextFontSize
-                  this.codeLineData._inlineCodeTextFontStyle = this.inlineCodeTextFontStyle
-                  this.codeLineData._inlineCodeTextFontWeight = this.inlineCodeTextFontWeight
-                  this.codeLineData._inlineCodeTextFontFamily = this.inlineCodeTextFontFamily
-                  this.codeLineData._inlineCodeTextLineHeight = this.inlineCodeTextLineHeight
-                  this.codeLineData._inlineCodeTextLetterSpacing = this.inlineCodeTextLetterSpacing
-                  this.codeLineData._inlineCodeTextBackgroundColor = this.inlineCodeTextBackgroundColor
-                  this.codeLineData._inlineCodeTextBackgroundRadiusTopLeft = this.inlineCodeTextBackgroundRadiusTopLeft
-                  this.codeLineData._inlineCodeTextBackgroundRadiusTopRight = this.inlineCodeTextBackgroundRadiusTopRight
-                  this.codeLineData._inlineCodeTextBackgroundRadiusBottomLeft = this.inlineCodeTextBackgroundRadiusBottomLeft
-                  this.codeLineData._inlineCodeTextBackgroundRadiusBottomRight = this.inlineCodeTextBackgroundRadiusBottomRight
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/CodeLineDetailsPage", params: this.codeLineData })
-              })
+                    // ---------- 专有
+                    this.codeLineData._inlineCodeTextFontColor = this.inlineCodeTextFontColor
+                    this.codeLineData._inlineCodeTextFontSize = this.inlineCodeTextFontSize
+                    this.codeLineData._inlineCodeTextFontStyle = this.inlineCodeTextFontStyle
+                    this.codeLineData._inlineCodeTextFontWeight = this.inlineCodeTextFontWeight
+                    this.codeLineData._inlineCodeTextFontFamily = this.inlineCodeTextFontFamily
+                    this.codeLineData._inlineCodeTextLineHeight = this.inlineCodeTextLineHeight
+                    this.codeLineData._inlineCodeTextLetterSpacing = this.inlineCodeTextLetterSpacing
+                    this.codeLineData._inlineCodeTextBackgroundColor = this.inlineCodeTextBackgroundColor
+                    this.codeLineData._inlineCodeTextBackgroundRadiusTopLeft = this.inlineCodeTextBackgroundRadiusTopLeft
+                    this.codeLineData._inlineCodeTextBackgroundRadiusTopRight = this.inlineCodeTextBackgroundRadiusTopRight
+                    this.codeLineData._inlineCodeTextBackgroundRadiusBottomLeft = this.inlineCodeTextBackgroundRadiusBottomLeft
+                    this.codeLineData._inlineCodeTextBackgroundRadiusBottomRight = this.inlineCodeTextBackgroundRadiusBottomRight
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/CodeLineDetailsPage", params: this.codeLineData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -475,11 +477,13 @@ struct CodeLinePage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
 
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

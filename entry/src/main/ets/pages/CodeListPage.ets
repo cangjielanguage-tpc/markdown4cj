@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -31,7 +31,7 @@ struct CodeListPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "012_CodeGroup"
+  rawFilePath: string = "014_CodeGroup"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -464,143 +464,145 @@ struct CodeListPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.codeListData._isFull = this.isFull
-                  this.codeListData._incrementalAnalysis = this.incrementalAnalysis
-                  this.codeListData._enableParseThrottle = this.enableParseThrottle
-                  this.codeListData._parseThrottleMs = this.parseThrottleMs
-                  this.codeListData._time = this.time
-                  this.codeListData._textNumber = this.textNumber
-                  this.codeListData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.codeListData._isOnCopy = this.isOnCopy
-                  this.codeListData._blockMarginTop = this.blockMarginTop
-                  this.codeListData._blockMarginRight = this.blockMarginRight
-                  this.codeListData._blockMarginBottom = this.blockMarginBottom
-                  this.codeListData._blockMarginLeft = this.blockMarginLeft
-                  this.codeListData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.codeListData._isLineBreak = this.isLineBreak
-                  this.codeListData._backgroundColor = this.globalBackgroundColor
-                  this.codeListData._openGestureSwipe = this.openGestureSwipe
-                  this.codeListData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.codeListData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.codeListData._isFull = this.isFull
+                    this.codeListData._incrementalAnalysis = this.incrementalAnalysis
+                    this.codeListData._enableParseThrottle = this.enableParseThrottle
+                    this.codeListData._parseThrottleMs = this.parseThrottleMs
+                    this.codeListData._time = this.time
+                    this.codeListData._textNumber = this.textNumber
+                    this.codeListData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.codeListData._isOnCopy = this.isOnCopy
+                    this.codeListData._blockMarginTop = this.blockMarginTop
+                    this.codeListData._blockMarginRight = this.blockMarginRight
+                    this.codeListData._blockMarginBottom = this.blockMarginBottom
+                    this.codeListData._blockMarginLeft = this.blockMarginLeft
+                    this.codeListData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.codeListData._isLineBreak = this.isLineBreak
+                    this.codeListData._backgroundColor = this.globalBackgroundColor
+                    this.codeListData._openGestureSwipe = this.openGestureSwipe
+                    this.codeListData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.codeListData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.codeListData._codeBlockIsDark = this.codeBlockIsDark
-                  this.codeListData._codeBlockIsCodeFormat = this.codeBlockIsCodeFormat
-                  this.codeListData._codeBlockUseTab = this.codeBlockUseTab
-                  this.codeListData._codeBlockIndentWidth = this.codeBlockIndentWidth
-                  this.codeListData._codeBlockParserSync = this.codeBlockParserSync
-                  this.codeListData._codeBlockBackgroundColor = this.codeBlockBackgroundColor
-                  this.codeListData._codeBlockMarginTop = this.codeBlockMarginTop
-                  this.codeListData._codeBlockMarginRight = this.codeBlockMarginRight
-                  this.codeListData._codeBlockMarginBottom = this.codeBlockMarginBottom
-                  this.codeListData._codeBlockMarginLeft = this.codeBlockMarginLeft
-                  this.codeListData._codeBlockPaddingTop = this.codeBlockPaddingTop
-                  this.codeListData._codeBlockPaddingRight = this.codeBlockPaddingRight
-                  this.codeListData._codeBlockPaddingBottom = this.codeBlockPaddingBottom
-                  this.codeListData._codeBlockPaddingLeft = this.codeBlockPaddingLeft
-                  this.codeListData._codeBlockBorderStyle = this.codeBlockBorderStyle
-                  this.codeListData._codeBlockBorderWidth = this.codeBlockBorderWidth
-                  this.codeListData._codeBlockBorderColor = this.codeBlockBorderColor
-                  this.codeListData._codeBlockRadiusTopLeft = this.codeBlockRadiusTopLeft
-                  this.codeListData._codeBlockRadiusTopRight = this.codeBlockRadiusTopRight
-                  this.codeListData._codeBlockRadiusBottomLeft = this.codeBlockRadiusBottomLeft
-                  this.codeListData._codeBlockRadiusBottomRight = this.codeBlockRadiusBottomRight
-                  this.codeListData._codeBlockTitleLayoutMarginBottom = this.codeBlockTitleLayoutMarginBottom
-                  this.codeListData._codeBlockTypeTextMarginLeft = this.codeBlockTypeTextMarginLeft
-                  this.codeListData._codeBlockTypeText = this.codeBlockTypeText
-                  this.codeListData._codeBlockTypeTextFontColor = this.codeBlockTypeTextFontColor
-                  this.codeListData._codeBlockTypeTextFontSize = this.codeBlockTypeTextFontSize
-                  this.codeListData._codeBlockTypeTextFontStyle = this.codeBlockTypeTextFontStyle
-                  this.codeListData._codeBlockTypeTextFontWeight = this.codeBlockTypeTextFontWeight
-                  this.codeListData._codeBlockTypeTextFontFamily = this.codeBlockTypeTextFontFamily
-                  this.codeListData._codeBlockTypeTextLineHeight = this.codeBlockTypeTextLineHeight
-                  this.codeListData._codeBlockCopyFullScreenSpacing = this.codeBlockCopyFullScreenSpacing
-                  this.codeListData._codeBlockCopyButtonIsShow = this.codeBlockCopyButtonIsShow
-                  this.codeListData._codeBlockCopyTextIsShow = this.codeBlockCopyTextIsShow
-                  this.codeListData._codeBlockCopyIcon = this.codeBlockCopyIcon
-                  this.codeListData._codeBlockCopyIconWidth = this.codeBlockCopyIconWidth
-                  this.codeListData._codeBlockCopyIconHeight = this.codeBlockCopyIconHeight
-                  this.codeListData._codeBlockCopyIconTextSpacing = this.codeBlockCopyIconTextSpacing
-                  this.codeListData._codeBlockCopyText = this.codeBlockCopyText
-                  this.codeListData._codeBlockCopyTextFontColor = this.codeBlockCopyTextFontColor
-                  this.codeListData._codeBlockCopyTextFontSize = this.codeBlockCopyTextFontSize
-                  this.codeListData._codeBlockCopyTextFontStyle = this.codeBlockCopyTextFontStyle
-                  this.codeListData._codeBlockCopyTextFontWeight = this.codeBlockCopyTextFontWeight
-                  this.codeListData._codeBlockCopyTextFontFamily = this.codeBlockCopyTextFontFamily
-                  this.codeListData._codeBlockCopyTextLineHeight = this.codeBlockCopyTextLineHeight
-                  this.codeListData._codeBlockFullScreenButtonIsShow = this.codeBlockFullScreenButtonIsShow
-                  this.codeListData._codeBlockFullScreenTextIsShow = this.codeBlockFullScreenTextIsShow
-                  this.codeListData._codeBlockFullScreenIcon = this.codeBlockFullScreenIcon
-                  this.codeListData._codeBlockFullScreenIconWidth = this.codeBlockFullScreenIconWidth
-                  this.codeListData._codeBlockFullScreenIconHeight = this.codeBlockFullScreenIconHeight
-                  this.codeListData._codeBlockFullScreenIconTextSpacing = this.codeBlockFullScreenIconTextSpacing
-                  this.codeListData._codeBlockFullScreenText = this.codeBlockFullScreenText
-                  this.codeListData._codeBlockFullScreenTextFontColor = this.codeBlockFullScreenTextFontColor
-                  this.codeListData._codeBlockFullScreenTextFontSize = this.codeBlockFullScreenTextFontSize
-                  this.codeListData._codeBlockFullScreenTextFontStyle = this.codeBlockFullScreenTextFontStyle
-                  this.codeListData._codeBlockFullScreenTextFontWeight = this.codeBlockFullScreenTextFontWeight
-                  this.codeListData._codeBlockFullScreenTextFontFamily = this.codeBlockFullScreenTextFontFamily
-                  this.codeListData._codeBlockFullScreenTextLineHeight = this.codeBlockFullScreenTextLineHeight
-                  this.codeListData._codeBlockLineNumberIsShow = this.codeBlockLineNumberIsShow
-                  this.codeListData._codeBlockLineNumberTextPaddingLeft = this.codeBlockLineNumberTextPaddingLeft
-                  this.codeListData._codeBlockLineNumberTextFontColor = this.codeBlockLineNumberTextFontColor
-                  this.codeListData._codeBlockLineNumberTextFontSize = this.codeBlockLineNumberTextFontSize
-                  this.codeListData._codeBlockLineNumberTextFontStyle = this.codeBlockLineNumberTextFontStyle
-                  this.codeListData._codeBlockLineNumberTextFontWeight = this.codeBlockLineNumberTextFontWeight
-                  this.codeListData._codeBlockLineNumberTextFontFamily = this.codeBlockLineNumberTextFontFamily
-                  this.codeListData._codeBlockLineNumberTextLineHeight = this.codeBlockLineNumberTextLineHeight
-                  this.codeListData._codeBlockDividerColor = this.codeBlockDividerColor
-                  this.codeListData._codeBlockDividerStrokeWidth = this.codeBlockDividerStrokeWidth
-                  this.codeListData._codeBlockLineNumberDividerSpacing = this.codeBlockLineNumberDividerSpacing
-                  this.codeListData._codeBlockTextFontColor = this.codeBlockTextFontColor
-                  this.codeListData._codeBlockTextMarginRight = this.codeBlockTextMarginRight
-                  this.codeListData._codeBlockTextMarginLeft = this.codeBlockTextMarginLeft
-                  this.codeListData._codeBlockTextFontSize = this.codeBlockTextFontSize
-                  this.codeListData._codeBlockTextFontStyle = this.codeBlockTextFontStyle
-                  this.codeListData._codeBlockTextFontWeight = this.codeBlockTextFontWeight
-                  this.codeListData._codeBlockTextFontFamily = this.codeBlockTextFontFamily
-                  this.codeListData._codeBlockTextLineHeight = this.codeBlockTextLineHeight
-                  this.codeListData._codeBlockTextLetterSpacing = this.codeBlockTextLetterSpacing
+                    // ---------- 专有
+                    this.codeListData._codeBlockIsDark = this.codeBlockIsDark
+                    this.codeListData._codeBlockIsCodeFormat = this.codeBlockIsCodeFormat
+                    this.codeListData._codeBlockUseTab = this.codeBlockUseTab
+                    this.codeListData._codeBlockIndentWidth = this.codeBlockIndentWidth
+                    this.codeListData._codeBlockParserSync = this.codeBlockParserSync
+                    this.codeListData._codeBlockBackgroundColor = this.codeBlockBackgroundColor
+                    this.codeListData._codeBlockMarginTop = this.codeBlockMarginTop
+                    this.codeListData._codeBlockMarginRight = this.codeBlockMarginRight
+                    this.codeListData._codeBlockMarginBottom = this.codeBlockMarginBottom
+                    this.codeListData._codeBlockMarginLeft = this.codeBlockMarginLeft
+                    this.codeListData._codeBlockPaddingTop = this.codeBlockPaddingTop
+                    this.codeListData._codeBlockPaddingRight = this.codeBlockPaddingRight
+                    this.codeListData._codeBlockPaddingBottom = this.codeBlockPaddingBottom
+                    this.codeListData._codeBlockPaddingLeft = this.codeBlockPaddingLeft
+                    this.codeListData._codeBlockBorderStyle = this.codeBlockBorderStyle
+                    this.codeListData._codeBlockBorderWidth = this.codeBlockBorderWidth
+                    this.codeListData._codeBlockBorderColor = this.codeBlockBorderColor
+                    this.codeListData._codeBlockRadiusTopLeft = this.codeBlockRadiusTopLeft
+                    this.codeListData._codeBlockRadiusTopRight = this.codeBlockRadiusTopRight
+                    this.codeListData._codeBlockRadiusBottomLeft = this.codeBlockRadiusBottomLeft
+                    this.codeListData._codeBlockRadiusBottomRight = this.codeBlockRadiusBottomRight
+                    this.codeListData._codeBlockTitleLayoutMarginBottom = this.codeBlockTitleLayoutMarginBottom
+                    this.codeListData._codeBlockTypeTextMarginLeft = this.codeBlockTypeTextMarginLeft
+                    this.codeListData._codeBlockTypeText = this.codeBlockTypeText
+                    this.codeListData._codeBlockTypeTextFontColor = this.codeBlockTypeTextFontColor
+                    this.codeListData._codeBlockTypeTextFontSize = this.codeBlockTypeTextFontSize
+                    this.codeListData._codeBlockTypeTextFontStyle = this.codeBlockTypeTextFontStyle
+                    this.codeListData._codeBlockTypeTextFontWeight = this.codeBlockTypeTextFontWeight
+                    this.codeListData._codeBlockTypeTextFontFamily = this.codeBlockTypeTextFontFamily
+                    this.codeListData._codeBlockTypeTextLineHeight = this.codeBlockTypeTextLineHeight
+                    this.codeListData._codeBlockCopyFullScreenSpacing = this.codeBlockCopyFullScreenSpacing
+                    this.codeListData._codeBlockCopyButtonIsShow = this.codeBlockCopyButtonIsShow
+                    this.codeListData._codeBlockCopyTextIsShow = this.codeBlockCopyTextIsShow
+                    this.codeListData._codeBlockCopyIcon = this.codeBlockCopyIcon
+                    this.codeListData._codeBlockCopyIconWidth = this.codeBlockCopyIconWidth
+                    this.codeListData._codeBlockCopyIconHeight = this.codeBlockCopyIconHeight
+                    this.codeListData._codeBlockCopyIconTextSpacing = this.codeBlockCopyIconTextSpacing
+                    this.codeListData._codeBlockCopyText = this.codeBlockCopyText
+                    this.codeListData._codeBlockCopyTextFontColor = this.codeBlockCopyTextFontColor
+                    this.codeListData._codeBlockCopyTextFontSize = this.codeBlockCopyTextFontSize
+                    this.codeListData._codeBlockCopyTextFontStyle = this.codeBlockCopyTextFontStyle
+                    this.codeListData._codeBlockCopyTextFontWeight = this.codeBlockCopyTextFontWeight
+                    this.codeListData._codeBlockCopyTextFontFamily = this.codeBlockCopyTextFontFamily
+                    this.codeListData._codeBlockCopyTextLineHeight = this.codeBlockCopyTextLineHeight
+                    this.codeListData._codeBlockFullScreenButtonIsShow = this.codeBlockFullScreenButtonIsShow
+                    this.codeListData._codeBlockFullScreenTextIsShow = this.codeBlockFullScreenTextIsShow
+                    this.codeListData._codeBlockFullScreenIcon = this.codeBlockFullScreenIcon
+                    this.codeListData._codeBlockFullScreenIconWidth = this.codeBlockFullScreenIconWidth
+                    this.codeListData._codeBlockFullScreenIconHeight = this.codeBlockFullScreenIconHeight
+                    this.codeListData._codeBlockFullScreenIconTextSpacing = this.codeBlockFullScreenIconTextSpacing
+                    this.codeListData._codeBlockFullScreenText = this.codeBlockFullScreenText
+                    this.codeListData._codeBlockFullScreenTextFontColor = this.codeBlockFullScreenTextFontColor
+                    this.codeListData._codeBlockFullScreenTextFontSize = this.codeBlockFullScreenTextFontSize
+                    this.codeListData._codeBlockFullScreenTextFontStyle = this.codeBlockFullScreenTextFontStyle
+                    this.codeListData._codeBlockFullScreenTextFontWeight = this.codeBlockFullScreenTextFontWeight
+                    this.codeListData._codeBlockFullScreenTextFontFamily = this.codeBlockFullScreenTextFontFamily
+                    this.codeListData._codeBlockFullScreenTextLineHeight = this.codeBlockFullScreenTextLineHeight
+                    this.codeListData._codeBlockLineNumberIsShow = this.codeBlockLineNumberIsShow
+                    this.codeListData._codeBlockLineNumberTextPaddingLeft = this.codeBlockLineNumberTextPaddingLeft
+                    this.codeListData._codeBlockLineNumberTextFontColor = this.codeBlockLineNumberTextFontColor
+                    this.codeListData._codeBlockLineNumberTextFontSize = this.codeBlockLineNumberTextFontSize
+                    this.codeListData._codeBlockLineNumberTextFontStyle = this.codeBlockLineNumberTextFontStyle
+                    this.codeListData._codeBlockLineNumberTextFontWeight = this.codeBlockLineNumberTextFontWeight
+                    this.codeListData._codeBlockLineNumberTextFontFamily = this.codeBlockLineNumberTextFontFamily
+                    this.codeListData._codeBlockLineNumberTextLineHeight = this.codeBlockLineNumberTextLineHeight
+                    this.codeListData._codeBlockDividerColor = this.codeBlockDividerColor
+                    this.codeListData._codeBlockDividerStrokeWidth = this.codeBlockDividerStrokeWidth
+                    this.codeListData._codeBlockLineNumberDividerSpacing = this.codeBlockLineNumberDividerSpacing
+                    this.codeListData._codeBlockTextFontColor = this.codeBlockTextFontColor
+                    this.codeListData._codeBlockTextMarginRight = this.codeBlockTextMarginRight
+                    this.codeListData._codeBlockTextMarginLeft = this.codeBlockTextMarginLeft
+                    this.codeListData._codeBlockTextFontSize = this.codeBlockTextFontSize
+                    this.codeListData._codeBlockTextFontStyle = this.codeBlockTextFontStyle
+                    this.codeListData._codeBlockTextFontWeight = this.codeBlockTextFontWeight
+                    this.codeListData._codeBlockTextFontFamily = this.codeBlockTextFontFamily
+                    this.codeListData._codeBlockTextLineHeight = this.codeBlockTextLineHeight
+                    this.codeListData._codeBlockTextLetterSpacing = this.codeBlockTextLetterSpacing
 
-                  // ---------- 组合代码专有
-                  this.codeListData._codeBlockListTitleTextSize = this.codeBlockListTitleTextSize
-                  this.codeListData._codeBlockListTitleSelectTextSize = this.codeBlockListTitleSelectTextSize
-                  this.codeListData._codeBlockListTitleSelectTextColor = this.codeBlockListTitleSelectTextColor
-                  this.codeListData._codeBlockListTitleUnselectTextColor = this.codeBlockListTitleUnselectTextColor
-                  this.codeListData._codeBlockListTitleSelectBackgroundColor = this.codeBlockListTitleSelectBackgroundColor
-                  this.codeListData._codeBlockListTitleUnselectBackgroundColor = this.codeBlockListTitleUnselectBackgroundColor
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/CodeListDetailsPage", params: this.codeListData })
-              })
+                    // ---------- 组合代码专有
+                    this.codeListData._codeBlockListTitleTextSize = this.codeBlockListTitleTextSize
+                    this.codeListData._codeBlockListTitleSelectTextSize = this.codeBlockListTitleSelectTextSize
+                    this.codeListData._codeBlockListTitleSelectTextColor = this.codeBlockListTitleSelectTextColor
+                    this.codeListData._codeBlockListTitleUnselectTextColor = this.codeBlockListTitleUnselectTextColor
+                    this.codeListData._codeBlockListTitleSelectBackgroundColor = this.codeBlockListTitleSelectBackgroundColor
+                    this.codeListData._codeBlockListTitleUnselectBackgroundColor = this.codeBlockListTitleUnselectBackgroundColor
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/CodeListDetailsPage", params: this.codeListData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -1491,10 +1493,12 @@ struct CodeListPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

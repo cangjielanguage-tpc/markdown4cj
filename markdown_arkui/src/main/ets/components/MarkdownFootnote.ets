@@ -1,32 +1,7 @@
 import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
-import { AudioTheme } from "../theme/AudioTheme"
-import { BannerTheme } from "../theme/BannerTheme"
-import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
-import { BoldTheme } from "../theme/BoldTheme"
-import { BulletListTheme } from "../theme/BulletListTheme"
-import { CodeBlockTheme } from "../theme/CodeBlockTheme"
-import { DefinitionListTheme } from "../theme/DefinitionListTheme"
-import { DividerTheme } from "../theme/DividerTheme"
-import { FootnoteDefTheme } from "../theme/FootnoteDefTheme"
-import { FootnoteRefTheme } from "../theme/FootnoteRefTheme"
-import { GlobalTheme } from "../theme/GlobalTheme"
-import { HeadingTheme } from "../theme/HeadingTheme"
-import { HighlightTheme } from "../theme/HighlightTheme"
-import { HtmlUnderlineTheme } from "../theme/HtmlUnderlineTheme"
-import { ImageTheme } from "../theme/ImageTheme"
-import { InlineCodeTheme } from "../theme/InlineCodeTheme"
-import { ItalicTheme } from "../theme/ItalicTheme"
-import { LatexMathTheme } from "../theme/LatexMathTheme"
-import { LinkTheme } from "../theme/LinkTheme"
-import { OrderedListTheme } from "../theme/OrderedListTheme"
-import { ParagraphTheme } from "../theme/ParagraphTheme"
-import { StrikethroughTheme } from "../theme/StrikethroughTheme"
-import { SubTheme } from "../theme/SubTheme"
-import { SupTheme } from "../theme/SupTheme"
-import { TableTheme } from "../theme/TableTheme"
-import { VideoTheme } from "../theme/VideoTheme"
+import { MarkdownTheme } from "../theme/MarkdownTheme"
 import { footnoteBackgroundColor } from "../utils/MarkdownThemeUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
@@ -37,32 +12,7 @@ import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 @Component
 export struct MarkdownFootnote {
   @ObjectLink @Watch('refreshData') node: NodeView // 脚注自身节点数据
-  @ObjectLink footnoteDefTheme: FootnoteDefTheme // 脚注定义样式
-  @ObjectLink headingTheme: HeadingTheme // 标题样式
-  @ObjectLink globalTheme: GlobalTheme // 整体样式
-  @ObjectLink blockQuoteTheme: BlockQuoteTheme // 块引用样式
-  @ObjectLink orderedListTheme: OrderedListTheme // 有序列表样式
-  @ObjectLink bulletListTheme: BulletListTheme // 无序列表样式
-  @ObjectLink subTheme: SubTheme // 下标样式
-  @ObjectLink supTheme: SupTheme // 上标样式
-  @ObjectLink inlineCodeTheme: InlineCodeTheme // 内联代码样式
-  @ObjectLink boldTheme: BoldTheme // 加粗样式
-  @ObjectLink italicTheme: ItalicTheme // 斜体样式
-  @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
-  @ObjectLink strikethroughTheme: StrikethroughTheme // 删除线样式
-  @ObjectLink highlightTheme: HighlightTheme // 高亮样式
-  @ObjectLink htmlUnderlineTheme: HtmlUnderlineTheme // 下划线样式
-  @ObjectLink linkTheme: LinkTheme // 链接样式
-  @ObjectLink footnoteRefTheme: FootnoteRefTheme // 内联脚注样式
-  @ObjectLink tableTheme: TableTheme // 表格样式
-  @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
-  @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
-  @ObjectLink imageTheme: ImageTheme // 图片样式
-  @ObjectLink codeBlockTheme: CodeBlockTheme // 代码块样式
-  @ObjectLink dividerTheme: DividerTheme // 分割线样式
-  @ObjectLink bannerTheme: BannerTheme // 轮播图样式
-  @ObjectLink videoTheme: VideoTheme // 视频样式
-  @ObjectLink audioTheme: AudioTheme // 音频样式
+  @ObjectLink theme: MarkdownTheme // 聚合主题（透传块，无 @Watch）：子主题变化由根组件集中观察发布，经 this.theme.xxxTheme 读取
   @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   @Prop tableBlockComponentWidth: number = 0.0 // 表格控件宽度
@@ -105,24 +55,7 @@ export struct MarkdownFootnote {
               // 段落
               MarkdownParagraph({
                 node: item,
-                headingTheme: this.headingTheme,
-                globalTheme: this.globalTheme,
-                subTheme: this.subTheme,
-                supTheme: this.supTheme,
-                inlineCodeTheme: this.inlineCodeTheme,
-                boldTheme: this.boldTheme,
-                italicTheme: this.italicTheme,
-                strikethroughTheme: this.strikethroughTheme,
-                highlightTheme: this.highlightTheme,
-                htmlUnderlineTheme: this.htmlUnderlineTheme,
-                linkTheme: this.linkTheme,
-                footnoteRefTheme: this.footnoteRefTheme,
-                tableTheme: this.tableTheme,
-                paragraphTheme: this.paragraphTheme,
-                blockQuoteTheme: this.blockQuoteTheme,
-                definitionListTheme: this.definitionListTheme,
-                imageTheme: this.imageTheme,
-                latexMathTheme: this.latexMathTheme,
+                theme: this.theme,
                 latexImageCallback: this.latexImageCallback,
                 latexStrCallback: this.latexStrCallback,
                 componentWidth: this.componentWidth,
@@ -150,20 +83,20 @@ export struct MarkdownFootnote {
         }
       )
     }
-    .backgroundColor(footnoteBackgroundColor(this.blockQuoteTheme, this.footnoteDefTheme, this.globalTheme, false))
+    .backgroundColor(footnoteBackgroundColor(this.theme.blockQuoteTheme, this.theme.footnoteDefTheme, this.theme.globalTheme, false))
     .listDirection(Axis.Vertical)
     .alignListItem(ListItemAlign.Start)
     .padding({
-      top: this.footnoteDefTheme.footnoteDefPaddingTop,
-      right: this.footnoteDefTheme.footnoteDefPaddingRight,
-      bottom: this.footnoteDefTheme.footnoteDefPaddingBottom,
-      left: this.footnoteDefTheme.footnoteDefPaddingLeft
+      top: this.theme.footnoteDefTheme.footnoteDefPaddingTop,
+      right: this.theme.footnoteDefTheme.footnoteDefPaddingRight,
+      bottom: this.theme.footnoteDefTheme.footnoteDefPaddingBottom,
+      left: this.theme.footnoteDefTheme.footnoteDefPaddingLeft
     })
     .margin({
-      top: this.footnoteDefTheme.footnoteDefMarginTop,
-      right: this.footnoteDefTheme.footnoteDefMarginRight,
-      bottom: this.footnoteDefTheme.footnoteDefMarginBottom,
-      left: this.footnoteDefTheme.footnoteDefMarginLeft
+      top: this.theme.footnoteDefTheme.footnoteDefMarginTop,
+      right: this.theme.footnoteDefTheme.footnoteDefMarginRight,
+      bottom: this.theme.footnoteDefTheme.footnoteDefMarginBottom,
+      left: this.theme.footnoteDefTheme.footnoteDefMarginLeft
     })
   }
 

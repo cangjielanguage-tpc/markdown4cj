@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_FF191919, COLOR_GRAY, isMargin, isPadding } from "../base/Constants"
 
 /**
@@ -290,6 +290,43 @@ export class BulletListTheme implements MarkdownBaseTheme {
    */
   setBulletListCheckboxShape(shape: CheckBoxShape): BulletListTheme {
     this.bulletListCheckboxShape = shape
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return BulletListTheme
+   */
+  applyFrom(other: BulletListTheme): BulletListTheme {
+    this.bulletListBackgroundColor = other.bulletListBackgroundColor
+    this.bulletListMarginTop = other.bulletListMarginTop
+    this.bulletListMarginRight = other.bulletListMarginRight
+    this.bulletListMarginBottom = other.bulletListMarginBottom
+    this.bulletListMarginLeft = other.bulletListMarginLeft
+    this.bulletListPaddingTop = other.bulletListPaddingTop
+    this.bulletListPaddingRight = other.bulletListPaddingRight
+    this.bulletListPaddingBottom = other.bulletListPaddingBottom
+    this.bulletListPaddingLeft = other.bulletListPaddingLeft
+    this.bulletListChildSpacing = other.bulletListChildSpacing
+    this.bulletListChildChildSpacing = other.bulletListChildChildSpacing
+    this.bulletListBulletSpacing = other.bulletListBulletSpacing
+    this.bulletListBulletIsCircle = other.bulletListBulletIsCircle
+    this.bulletListBulletTextFontColor = other.bulletListBulletTextFontColor
+    this.bulletListBulletTextFontSize = other.bulletListBulletTextFontSize
+    this.bulletListBulletTextFontStyle = other.bulletListBulletTextFontStyle
+    this.bulletListBulletTextFontWeight = other.bulletListBulletTextFontWeight
+    this.bulletListBulletTextFontFamily = other.bulletListBulletTextFontFamily
+    this.bulletListBulletTextLineHeight = other.bulletListBulletTextLineHeight
+    this.bulletListCheckboxSpacing = other.bulletListCheckboxSpacing
+    this.bulletListCheckboxWidth = other.bulletListCheckboxWidth
+    this.bulletListCheckboxHeight = other.bulletListCheckboxHeight
+    this.bulletListCheckboxSelectedColor = other.bulletListCheckboxSelectedColor
+    this.bulletListCheckboxShape = other.bulletListCheckboxShape
     return this
   }
 }

@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseMDData } from '../model/BaseMDData'

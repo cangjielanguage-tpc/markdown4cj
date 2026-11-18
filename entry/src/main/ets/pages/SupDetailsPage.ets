@@ -22,6 +22,7 @@ struct SupDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -185,6 +186,12 @@ struct SupDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -193,40 +200,36 @@ struct SupDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - Sup
-    let supTheme = new SupTheme()
     if (this.supTextFontColor !== undefined) {
-      supTheme.setSupTextFontColor(this.supTextFontColor)
+      theme.supTheme.setSupTextFontColor(this.supTextFontColor)
     }
-    supTheme.setSupTextFontSize(this.supTextFontSize)
+    theme.supTheme.setSupTextFontSize(this.supTextFontSize)
     if (this.supTextFontStyle !== undefined) {
-      supTheme.setSupTextFontStyle(this.supTextFontStyle)
+      theme.supTheme.setSupTextFontStyle(this.supTextFontStyle)
     }
     if (this.supTextFontWeight !== undefined) {
-      supTheme.setSupTextFontWeight(this.supTextFontWeight)
+      theme.supTheme.setSupTextFontWeight(this.supTextFontWeight)
     }
     if (this.supTextFontFamily !== undefined) {
-      supTheme.setSupTextFontFamily(this.supTextFontFamily)
+      theme.supTheme.setSupTextFontFamily(this.supTextFontFamily)
     }
     if (this.supTextLetterSpacing !== undefined) {
-      supTheme.setSupTextLetterSpacing(this.supTextLetterSpacing)
+      theme.supTheme.setSupTextLetterSpacing(this.supTextLetterSpacing)
     }
-    supTheme.setSupTextBaselineOffset(this.supTextBaselineOffset)
-    theme.setSupTheme(supTheme)
+    theme.supTheme.setSupTextBaselineOffset(this.supTextBaselineOffset)
     
     return theme
   }

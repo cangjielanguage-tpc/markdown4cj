@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
 import { MarkdownMarginArrayOptions, MarkdownPaddingArrayOptions } from './MarkdownTheme'
 
@@ -1019,6 +1019,121 @@ export class HeadingTheme implements MarkdownBaseTheme {
         this.heading2UnderlineSpacing = spacing
         break
     }
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return HeadingTheme
+   */
+  applyFrom(other: HeadingTheme): HeadingTheme {
+    this.heading1BackgroundColor = other.heading1BackgroundColor
+    this.heading1MarginTop = other.heading1MarginTop
+    this.heading1MarginRight = other.heading1MarginRight
+    this.heading1MarginBottom = other.heading1MarginBottom
+    this.heading1MarginLeft = other.heading1MarginLeft
+    this.heading1PaddingTop = other.heading1PaddingTop
+    this.heading1PaddingRight = other.heading1PaddingRight
+    this.heading1PaddingBottom = other.heading1PaddingBottom
+    this.heading1PaddingLeft = other.heading1PaddingLeft
+    this.heading1TextFontColor = other.heading1TextFontColor
+    this.heading1TextFontSize = other.heading1TextFontSize
+    this.heading1TextFontStyle = other.heading1TextFontStyle
+    this.heading1TextFontWeight = other.heading1TextFontWeight
+    this.heading1TextFontFamily = other.heading1TextFontFamily
+    this.heading1TextLineHeight = other.heading1TextLineHeight
+    this.heading1TextLetterSpacing = other.heading1TextLetterSpacing
+    this.heading1UnderlineHeight = other.heading1UnderlineHeight
+    this.heading1UnderlineColor = other.heading1UnderlineColor
+    this.heading1UnderlineSpacing = other.heading1UnderlineSpacing
+    this.heading2BackgroundColor = other.heading2BackgroundColor
+    this.heading2MarginTop = other.heading2MarginTop
+    this.heading2MarginRight = other.heading2MarginRight
+    this.heading2MarginBottom = other.heading2MarginBottom
+    this.heading2MarginLeft = other.heading2MarginLeft
+    this.heading2PaddingTop = other.heading2PaddingTop
+    this.heading2PaddingRight = other.heading2PaddingRight
+    this.heading2PaddingBottom = other.heading2PaddingBottom
+    this.heading2PaddingLeft = other.heading2PaddingLeft
+    this.heading2TextFontColor = other.heading2TextFontColor
+    this.heading2TextFontSize = other.heading2TextFontSize
+    this.heading2TextFontStyle = other.heading2TextFontStyle
+    this.heading2TextFontWeight = other.heading2TextFontWeight
+    this.heading2TextFontFamily = other.heading2TextFontFamily
+    this.heading2TextLineHeight = other.heading2TextLineHeight
+    this.heading2TextLetterSpacing = other.heading2TextLetterSpacing
+    this.heading2UnderlineHeight = other.heading2UnderlineHeight
+    this.heading2UnderlineColor = other.heading2UnderlineColor
+    this.heading2UnderlineSpacing = other.heading2UnderlineSpacing
+    this.heading3BackgroundColor = other.heading3BackgroundColor
+    this.heading3MarginTop = other.heading3MarginTop
+    this.heading3MarginRight = other.heading3MarginRight
+    this.heading3MarginBottom = other.heading3MarginBottom
+    this.heading3MarginLeft = other.heading3MarginLeft
+    this.heading3PaddingTop = other.heading3PaddingTop
+    this.heading3PaddingRight = other.heading3PaddingRight
+    this.heading3PaddingBottom = other.heading3PaddingBottom
+    this.heading3PaddingLeft = other.heading3PaddingLeft
+    this.heading3TextFontColor = other.heading3TextFontColor
+    this.heading3TextFontSize = other.heading3TextFontSize
+    this.heading3TextFontStyle = other.heading3TextFontStyle
+    this.heading3TextFontWeight = other.heading3TextFontWeight
+    this.heading3TextFontFamily = other.heading3TextFontFamily
+    this.heading3TextLineHeight = other.heading3TextLineHeight
+    this.heading3TextLetterSpacing = other.heading3TextLetterSpacing
+    this.heading4BackgroundColor = other.heading4BackgroundColor
+    this.heading4MarginTop = other.heading4MarginTop
+    this.heading4MarginRight = other.heading4MarginRight
+    this.heading4MarginBottom = other.heading4MarginBottom
+    this.heading4MarginLeft = other.heading4MarginLeft
+    this.heading4PaddingTop = other.heading4PaddingTop
+    this.heading4PaddingRight = other.heading4PaddingRight
+    this.heading4PaddingBottom = other.heading4PaddingBottom
+    this.heading4PaddingLeft = other.heading4PaddingLeft
+    this.heading4TextFontColor = other.heading4TextFontColor
+    this.heading4TextFontSize = other.heading4TextFontSize
+    this.heading4TextFontStyle = other.heading4TextFontStyle
+    this.heading4TextFontWeight = other.heading4TextFontWeight
+    this.heading4TextFontFamily = other.heading4TextFontFamily
+    this.heading4TextLineHeight = other.heading4TextLineHeight
+    this.heading4TextLetterSpacing = other.heading4TextLetterSpacing
+    this.heading5BackgroundColor = other.heading5BackgroundColor
+    this.heading5MarginTop = other.heading5MarginTop
+    this.heading5MarginRight = other.heading5MarginRight
+    this.heading5MarginBottom = other.heading5MarginBottom
+    this.heading5MarginLeft = other.heading5MarginLeft
+    this.heading5PaddingTop = other.heading5PaddingTop
+    this.heading5PaddingRight = other.heading5PaddingRight
+    this.heading5PaddingBottom = other.heading5PaddingBottom
+    this.heading5PaddingLeft = other.heading5PaddingLeft
+    this.heading5TextFontColor = other.heading5TextFontColor
+    this.heading5TextFontSize = other.heading5TextFontSize
+    this.heading5TextFontStyle = other.heading5TextFontStyle
+    this.heading5TextFontWeight = other.heading5TextFontWeight
+    this.heading5TextFontFamily = other.heading5TextFontFamily
+    this.heading5TextLineHeight = other.heading5TextLineHeight
+    this.heading5TextLetterSpacing = other.heading5TextLetterSpacing
+    this.heading6BackgroundColor = other.heading6BackgroundColor
+    this.heading6MarginTop = other.heading6MarginTop
+    this.heading6MarginRight = other.heading6MarginRight
+    this.heading6MarginBottom = other.heading6MarginBottom
+    this.heading6MarginLeft = other.heading6MarginLeft
+    this.heading6PaddingTop = other.heading6PaddingTop
+    this.heading6PaddingRight = other.heading6PaddingRight
+    this.heading6PaddingBottom = other.heading6PaddingBottom
+    this.heading6PaddingLeft = other.heading6PaddingLeft
+    this.heading6TextFontColor = other.heading6TextFontColor
+    this.heading6TextFontSize = other.heading6TextFontSize
+    this.heading6TextFontStyle = other.heading6TextFontStyle
+    this.heading6TextFontWeight = other.heading6TextFontWeight
+    this.heading6TextFontFamily = other.heading6TextFontFamily
+    this.heading6TextLineHeight = other.heading6TextLineHeight
+    this.heading6TextLetterSpacing = other.heading6TextLetterSpacing
     return this
   }
 }

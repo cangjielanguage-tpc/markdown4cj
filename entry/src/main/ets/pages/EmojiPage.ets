@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -19,7 +19,7 @@ struct EmojiPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "028_emoji"
+  rawFilePath: string = "030_emoji"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -114,59 +114,61 @@ struct EmojiPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.emojiData._isFull = this.isFull
-                  this.emojiData._incrementalAnalysis = this.incrementalAnalysis
-                  this.emojiData._enableParseThrottle = this.enableParseThrottle
-                  this.emojiData._parseThrottleMs = this.parseThrottleMs
-                  this.emojiData._time = this.time
-                  this.emojiData._textNumber = this.textNumber
-                  this.emojiData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.emojiData._isOnCopy = this.isOnCopy
-                  this.emojiData._blockMarginTop = this.blockMarginTop
-                  this.emojiData._blockMarginRight = this.blockMarginRight
-                  this.emojiData._blockMarginBottom = this.blockMarginBottom
-                  this.emojiData._blockMarginLeft = this.blockMarginLeft
-                  this.emojiData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.emojiData._isLineBreak = this.isLineBreak
-                  this.emojiData._backgroundColor = this.globalBackgroundColor
-                  this.emojiData._openGestureSwipe = this.openGestureSwipe
-                  this.emojiData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.emojiData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.emojiData._isFull = this.isFull
+                    this.emojiData._incrementalAnalysis = this.incrementalAnalysis
+                    this.emojiData._enableParseThrottle = this.enableParseThrottle
+                    this.emojiData._parseThrottleMs = this.parseThrottleMs
+                    this.emojiData._time = this.time
+                    this.emojiData._textNumber = this.textNumber
+                    this.emojiData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.emojiData._isOnCopy = this.isOnCopy
+                    this.emojiData._blockMarginTop = this.blockMarginTop
+                    this.emojiData._blockMarginRight = this.blockMarginRight
+                    this.emojiData._blockMarginBottom = this.blockMarginBottom
+                    this.emojiData._blockMarginLeft = this.blockMarginLeft
+                    this.emojiData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.emojiData._isLineBreak = this.isLineBreak
+                    this.emojiData._backgroundColor = this.globalBackgroundColor
+                    this.emojiData._openGestureSwipe = this.openGestureSwipe
+                    this.emojiData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.emojiData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.emojiData._isEmojiLight = this.isEmojiLight
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/EmojiDetailsPage", params: this.emojiData })
-              })
+                    // ---------- 专有
+                    this.emojiData._isEmojiLight = this.isEmojiLight
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/EmojiDetailsPage", params: this.emojiData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -348,10 +350,12 @@ struct EmojiPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

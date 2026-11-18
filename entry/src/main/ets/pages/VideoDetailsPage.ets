@@ -20,6 +20,7 @@ struct VideoDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -376,6 +377,12 @@ struct VideoDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -384,104 +391,100 @@ struct VideoDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - Video
-    let videoTheme = new VideoTheme()
     if (this.videoBackgroundColor !== undefined) {
-      videoTheme.setVideoBackgroundColor(this.videoBackgroundColor)
+      theme.videoTheme.setVideoBackgroundColor(this.videoBackgroundColor)
     }
-    videoTheme.setVideoMargin({top: this.videoMarginTop, right: this.videoMarginRight, bottom: this.videoMarginBottom, left: this.videoMarginLeft})
-    videoTheme.setVideoPadding({top: this.videoPaddingTop, right: this.videoPaddingRight, bottom: this.videoPaddingBottom, left: this.videoPaddingLeft})
-    videoTheme.setVideoBorderRadius({topLeft: this.videoRadiusTopLeft, topRight: this.videoRadiusTopRight, bottomLeft: this.videoRadiusBottomLeft, bottomRight: this.videoRadiusBottomRight})
-    videoTheme.setVideoBorderStyle(this.videoBorderStyle)
-    videoTheme.setVideoBorderWidth(this.videoBorderWidth)
+    theme.videoTheme.setVideoMargin({top: this.videoMarginTop, right: this.videoMarginRight, bottom: this.videoMarginBottom, left: this.videoMarginLeft})
+    theme.videoTheme.setVideoPadding({top: this.videoPaddingTop, right: this.videoPaddingRight, bottom: this.videoPaddingBottom, left: this.videoPaddingLeft})
+    theme.videoTheme.setVideoBorderRadius({topLeft: this.videoRadiusTopLeft, topRight: this.videoRadiusTopRight, bottomLeft: this.videoRadiusBottomLeft, bottomRight: this.videoRadiusBottomRight})
+    theme.videoTheme.setVideoBorderStyle(this.videoBorderStyle)
+    theme.videoTheme.setVideoBorderWidth(this.videoBorderWidth)
     if (this.videoBorderColor !== undefined) {
-      videoTheme.setVideoBorderColor(this.videoBorderColor)
+      theme.videoTheme.setVideoBorderColor(this.videoBorderColor)
     }
     if (this.videoPlaceholder !== undefined) {
-      videoTheme.setVideoPlaceholder(this.videoPlaceholder)
+      theme.videoTheme.setVideoPlaceholder(this.videoPlaceholder)
     }
     if (this.videoImageFitType !== undefined) {
-      videoTheme.setVideoImageFitType(this.videoImageFitType)
+      theme.videoTheme.setVideoImageFitType(this.videoImageFitType)
     }
     if (this.videoPlayIcon !== undefined) {
-      videoTheme.setVideoPlayIcon(this.videoPlayIcon)
+      theme.videoTheme.setVideoPlayIcon(this.videoPlayIcon)
     }
-    videoTheme.setVideoPlayIconWidth(this.videoPlayIconWidth)
-    videoTheme.setVideoPlayIconHeight(this.videoPlayIconHeight)
+    theme.videoTheme.setVideoPlayIconWidth(this.videoPlayIconWidth)
+    theme.videoTheme.setVideoPlayIconHeight(this.videoPlayIconHeight)
     if (this.videoPlayIconFitType !== undefined) {
-      videoTheme.setVideoPlayIconFitType(this.videoPlayIconFitType)
+      theme.videoTheme.setVideoPlayIconFitType(this.videoPlayIconFitType)
     }
     if (this.videoTimeTextFontColor !== undefined) {
-      videoTheme.setVideoTimeTextFontColor(this.videoTimeTextFontColor)
+      theme.videoTheme.setVideoTimeTextFontColor(this.videoTimeTextFontColor)
     }
-    videoTheme.setVideoTimeTextFontSize(this.videoTimeTextFontSize)
-    videoTheme.setVideoTimeTextFontStyle(this.videoTimeTextFontStyle)
-    videoTheme.setVideoTimeTextFontWeight(this.videoTimeTextFontWeight)
-    videoTheme.setVideoTimeTextFontFamily(this.videoTimeTextFontFamily)
-    videoTheme.setVideoTimeTextLineHeight(this.videoTimeTextLineHeight)
-    videoTheme.setVideoTimeTextMarginRight(this.videoTimeTextMarginRight)
-    videoTheme.setVideoTimeTextMarginBottom(this.videoTimeTextMarginBottom)
-    videoTheme.setVideoBottomLayoutVisible(this.videoBottomLayoutVisible)
-    videoTheme.setVideoBottomLayoutMarginTop(this.videoBottomLayoutMarginTop)
-    videoTheme.setVideoReleaseButtonVisible(this.videoReleaseButtonVisible)
+    theme.videoTheme.setVideoTimeTextFontSize(this.videoTimeTextFontSize)
+    theme.videoTheme.setVideoTimeTextFontStyle(this.videoTimeTextFontStyle)
+    theme.videoTheme.setVideoTimeTextFontWeight(this.videoTimeTextFontWeight)
+    theme.videoTheme.setVideoTimeTextFontFamily(this.videoTimeTextFontFamily)
+    theme.videoTheme.setVideoTimeTextLineHeight(this.videoTimeTextLineHeight)
+    theme.videoTheme.setVideoTimeTextMarginRight(this.videoTimeTextMarginRight)
+    theme.videoTheme.setVideoTimeTextMarginBottom(this.videoTimeTextMarginBottom)
+    theme.videoTheme.setVideoBottomLayoutVisible(this.videoBottomLayoutVisible)
+    theme.videoTheme.setVideoBottomLayoutMarginTop(this.videoBottomLayoutMarginTop)
+    theme.videoTheme.setVideoReleaseButtonVisible(this.videoReleaseButtonVisible)
     if (this.videoReleaseButtonBackgroundColor !== undefined) {
-      videoTheme.setVideoReleaseButtonBackgroundColor(this.videoReleaseButtonBackgroundColor)
+      theme.videoTheme.setVideoReleaseButtonBackgroundColor(this.videoReleaseButtonBackgroundColor)
     }
-    videoTheme.setVideoReleaseButtonWidth(this.videoReleaseButtonWidth)
-    videoTheme.setVideoReleaseButtonHeight(this.videoReleaseButtonHeight)
-    videoTheme.setVideoReleaseButtonRadius({topLeft: this.videoReleaseButtonRadiusTopLeft, topRight: this.videoReleaseButtonRadiusTopRight, bottomLeft: this.videoReleaseButtonRadiusBottomLeft, bottomRight: this.videoReleaseButtonRadiusBottomRight})
-    videoTheme.setVideoReleaseButtonIconTextGap(this.videoReleaseButtonIconTextGap)
+    theme.videoTheme.setVideoReleaseButtonWidth(this.videoReleaseButtonWidth)
+    theme.videoTheme.setVideoReleaseButtonHeight(this.videoReleaseButtonHeight)
+    theme.videoTheme.setVideoReleaseButtonRadius({topLeft: this.videoReleaseButtonRadiusTopLeft, topRight: this.videoReleaseButtonRadiusTopRight, bottomLeft: this.videoReleaseButtonRadiusBottomLeft, bottomRight: this.videoReleaseButtonRadiusBottomRight})
+    theme.videoTheme.setVideoReleaseButtonIconTextGap(this.videoReleaseButtonIconTextGap)
     if (this.videoReleaseButtonIcon !== undefined) {
-      videoTheme.setVideoReleaseButtonIcon(this.videoReleaseButtonIcon)
+      theme.videoTheme.setVideoReleaseButtonIcon(this.videoReleaseButtonIcon)
     }
-    videoTheme.setVideoReleaseButtonIconWidth(this.videoReleaseButtonIconWidth)
-    videoTheme.setVideoReleaseButtonIconHeight(this.videoReleaseButtonIconHeight)
-    videoTheme.setVideoReleaseButtonText(this.videoReleaseButtonText)
+    theme.videoTheme.setVideoReleaseButtonIconWidth(this.videoReleaseButtonIconWidth)
+    theme.videoTheme.setVideoReleaseButtonIconHeight(this.videoReleaseButtonIconHeight)
+    theme.videoTheme.setVideoReleaseButtonText(this.videoReleaseButtonText)
     if (this.videoReleaseButtonTextFontColor !== undefined) {
-      videoTheme.setVideoReleaseButtonTextFontColor(this.videoReleaseButtonTextFontColor)
+      theme.videoTheme.setVideoReleaseButtonTextFontColor(this.videoReleaseButtonTextFontColor)
     }
-    videoTheme.setVideoReleaseButtonTextFontSize(this.videoReleaseButtonTextFontSize)
-    videoTheme.setVideoReleaseButtonTextFontStyle(this.videoReleaseButtonTextFontStyle)
-    videoTheme.setVideoReleaseButtonTextFontWeight(this.videoReleaseButtonTextFontWeight)
-    videoTheme.setVideoReleaseButtonTextFontFamily(this.videoReleaseButtonTextFontFamily)
-    videoTheme.setVideoReleaseButtonTextLineHeight(this.videoReleaseButtonTextLineHeight)
-    videoTheme.setVideoDownloadButtonVisible(this.videoDownloadButtonVisible)
+    theme.videoTheme.setVideoReleaseButtonTextFontSize(this.videoReleaseButtonTextFontSize)
+    theme.videoTheme.setVideoReleaseButtonTextFontStyle(this.videoReleaseButtonTextFontStyle)
+    theme.videoTheme.setVideoReleaseButtonTextFontWeight(this.videoReleaseButtonTextFontWeight)
+    theme.videoTheme.setVideoReleaseButtonTextFontFamily(this.videoReleaseButtonTextFontFamily)
+    theme.videoTheme.setVideoReleaseButtonTextLineHeight(this.videoReleaseButtonTextLineHeight)
+    theme.videoTheme.setVideoDownloadButtonVisible(this.videoDownloadButtonVisible)
     if (this.videoDownloadButtonBackgroundColor !== undefined) {
-      videoTheme.setVideoDownloadButtonBackgroundColor(this.videoDownloadButtonBackgroundColor)
+      theme.videoTheme.setVideoDownloadButtonBackgroundColor(this.videoDownloadButtonBackgroundColor)
     }
-    videoTheme.setVideoDownloadButtonWidth(this.videoDownloadButtonWidth)
-    videoTheme.setVideoDownloadButtonHeight(this.videoDownloadButtonHeight)
-    videoTheme.setVideoDownloadButtonRadius({topLeft: this.videoDownloadButtonRadiusTopLeft, topRight: this.videoDownloadButtonRadiusTopRight, bottomLeft: this.videoDownloadButtonRadiusBottomLeft, bottomRight: this.videoDownloadButtonRadiusBottomRight})
-    videoTheme.setVideoDownloadButtonIconTextGap(this.videoDownloadButtonIconTextGap)
+    theme.videoTheme.setVideoDownloadButtonWidth(this.videoDownloadButtonWidth)
+    theme.videoTheme.setVideoDownloadButtonHeight(this.videoDownloadButtonHeight)
+    theme.videoTheme.setVideoDownloadButtonRadius({topLeft: this.videoDownloadButtonRadiusTopLeft, topRight: this.videoDownloadButtonRadiusTopRight, bottomLeft: this.videoDownloadButtonRadiusBottomLeft, bottomRight: this.videoDownloadButtonRadiusBottomRight})
+    theme.videoTheme.setVideoDownloadButtonIconTextGap(this.videoDownloadButtonIconTextGap)
     if (this.videoDownloadButtonIcon !== undefined) {
-      videoTheme.setVideoDownloadButtonIcon(this.videoDownloadButtonIcon)
+      theme.videoTheme.setVideoDownloadButtonIcon(this.videoDownloadButtonIcon)
     }
-    videoTheme.setVideoDownloadButtonIconWidth(this.videoDownloadButtonIconWidth)
-    videoTheme.setVideoDownloadButtonIconHeight(this.videoDownloadButtonIconHeight)
-    videoTheme.setVideoDownloadButtonText(this.videoDownloadButtonText)
+    theme.videoTheme.setVideoDownloadButtonIconWidth(this.videoDownloadButtonIconWidth)
+    theme.videoTheme.setVideoDownloadButtonIconHeight(this.videoDownloadButtonIconHeight)
+    theme.videoTheme.setVideoDownloadButtonText(this.videoDownloadButtonText)
     if (this.videoDownloadButtonTextFontColor !== undefined) {
-      videoTheme.setVideoDownloadButtonTextFontColor(this.videoDownloadButtonTextFontColor)
+      theme.videoTheme.setVideoDownloadButtonTextFontColor(this.videoDownloadButtonTextFontColor)
     }
-    videoTheme.setVideoDownloadButtonTextFontSize(this.videoDownloadButtonTextFontSize)
-    videoTheme.setVideoDownloadButtonTextFontStyle(this.videoDownloadButtonTextFontStyle)
-    videoTheme.setVideoDownloadButtonTextFontWeight(this.videoDownloadButtonTextFontWeight)
-    videoTheme.setVideoDownloadButtonTextFontFamily(this.videoDownloadButtonTextFontFamily)
-    videoTheme.setVideoDownloadButtonTextLineHeight(this.videoDownloadButtonTextLineHeight)
-    theme.setVideoTheme(videoTheme)
+    theme.videoTheme.setVideoDownloadButtonTextFontSize(this.videoDownloadButtonTextFontSize)
+    theme.videoTheme.setVideoDownloadButtonTextFontStyle(this.videoDownloadButtonTextFontStyle)
+    theme.videoTheme.setVideoDownloadButtonTextFontWeight(this.videoDownloadButtonTextFontWeight)
+    theme.videoTheme.setVideoDownloadButtonTextFontFamily(this.videoDownloadButtonTextFontFamily)
+    theme.videoTheme.setVideoDownloadButtonTextLineHeight(this.videoDownloadButtonTextLineHeight)
     
     return theme
   }

@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -196,78 +196,80 @@ struct LatexMathPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                this.latexMathData._isFull = this.isFull
-                this.latexMathData._incrementalAnalysis = this.incrementalAnalysis
-                this.latexMathData._enableParseThrottle = this.enableParseThrottle
-                this.latexMathData._parseThrottleMs = this.parseThrottleMs
-                this.latexMathData._time = this.time
-                this.latexMathData._textNumber = this.textNumber
-                this.latexMathData._isMarkdownParserSync = this.isMarkdownParserSync
-                this.latexMathData._isOnCopy = this.isOnCopy
-                this.latexMathData._blockMarginTop = this.blockMarginTop
-                this.latexMathData._blockMarginRight = this.blockMarginRight
-                this.latexMathData._blockMarginBottom = this.blockMarginBottom
-                this.latexMathData._blockMarginLeft = this.blockMarginLeft
-                this.latexMathData._markdownBlockSpacing = this.markdownBlockSpacing
-                this.latexMathData._isLineBreak = this.isLineBreak
-                this.latexMathData._backgroundColor = this.globalBackgroundColor
-                this.latexMathData._openGestureSwipe = this.openGestureSwipe
-                this.latexMathData._openGestureSwipeTest = this.openGestureSwipeTest
-                this.latexMathData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                  this.latexMathData._isFull = this.isFull
+                  this.latexMathData._incrementalAnalysis = this.incrementalAnalysis
+                  this.latexMathData._enableParseThrottle = this.enableParseThrottle
+                  this.latexMathData._parseThrottleMs = this.parseThrottleMs
+                  this.latexMathData._time = this.time
+                  this.latexMathData._textNumber = this.textNumber
+                  this.latexMathData._isMarkdownParserSync = this.isMarkdownParserSync
+                  this.latexMathData._isOnCopy = this.isOnCopy
+                  this.latexMathData._blockMarginTop = this.blockMarginTop
+                  this.latexMathData._blockMarginRight = this.blockMarginRight
+                  this.latexMathData._blockMarginBottom = this.blockMarginBottom
+                  this.latexMathData._blockMarginLeft = this.blockMarginLeft
+                  this.latexMathData._markdownBlockSpacing = this.markdownBlockSpacing
+                  this.latexMathData._isLineBreak = this.isLineBreak
+                  this.latexMathData._backgroundColor = this.globalBackgroundColor
+                  this.latexMathData._openGestureSwipe = this.openGestureSwipe
+                  this.latexMathData._openGestureSwipeTest = this.openGestureSwipeTest
+                  this.latexMathData._pagePath = `${this.rawFilePath}/${item}`
 
-                // ---------- 专有
-                this.latexMathData._latexMathMarginTop = this.latexMathMarginTop
-                this.latexMathData._latexMathMarginRight = this.latexMathMarginRight
-                this.latexMathData._latexMathMarginBottom = this.latexMathMarginBottom
-                this.latexMathData._latexMathMarginLeft = this.latexMathMarginLeft
-                this.latexMathData._latexMathPaddingTop = this.latexMathPaddingTop
-                this.latexMathData._latexMathPaddingRight = this.latexMathPaddingRight
-                this.latexMathData._latexMathPaddingBottom = this.latexMathPaddingBottom
-                this.latexMathData._latexMathPaddingLeft = this.latexMathPaddingLeft
-                this.latexMathData._latexMathDefaultText = this.latexMathDefaultText
-                this.latexMathData._latexMathDefaultTextFontColor = this.latexMathDefaultTextFontColor
-                this.latexMathData._latexMathDefaultTextFontSize = this.latexMathDefaultTextFontSize
-                this.latexMathData._latexMathDefaultTextFontStyle = this.latexMathDefaultTextFontStyle
-                this.latexMathData._latexMathDefaultTextFontWeight = this.latexMathDefaultTextFontWeight
-                this.latexMathData._latexMathDefaultTextFontFamily = this.latexMathDefaultTextFontFamily
-                this.latexMathData._latexMathTextSize = this.latexMathTextSize
-                this.latexMathData._latexMathBackgroundColor = this.latexMathBackgroundColor
-                this.latexMathData._latexMathTextColor = this.latexMathTextColor
-                this.latexMathData._latexMathColorFormat = this.latexMathColorFormat
-                this.latexMathData._latexMathBlockCenter = this.latexMathBlockCenter
-                this.latexMathData._latexMathResPath = this.latexMathResPath
-                // ---------- 跳转到详情
-                router.pushUrl({ url: "pages/LatexMathDetailsPage", params: this.latexMathData })
-              })
+                  // ---------- 专有
+                  this.latexMathData._latexMathMarginTop = this.latexMathMarginTop
+                  this.latexMathData._latexMathMarginRight = this.latexMathMarginRight
+                  this.latexMathData._latexMathMarginBottom = this.latexMathMarginBottom
+                  this.latexMathData._latexMathMarginLeft = this.latexMathMarginLeft
+                  this.latexMathData._latexMathPaddingTop = this.latexMathPaddingTop
+                  this.latexMathData._latexMathPaddingRight = this.latexMathPaddingRight
+                  this.latexMathData._latexMathPaddingBottom = this.latexMathPaddingBottom
+                  this.latexMathData._latexMathPaddingLeft = this.latexMathPaddingLeft
+                  this.latexMathData._latexMathDefaultText = this.latexMathDefaultText
+                  this.latexMathData._latexMathDefaultTextFontColor = this.latexMathDefaultTextFontColor
+                  this.latexMathData._latexMathDefaultTextFontSize = this.latexMathDefaultTextFontSize
+                  this.latexMathData._latexMathDefaultTextFontStyle = this.latexMathDefaultTextFontStyle
+                  this.latexMathData._latexMathDefaultTextFontWeight = this.latexMathDefaultTextFontWeight
+                  this.latexMathData._latexMathDefaultTextFontFamily = this.latexMathDefaultTextFontFamily
+                  this.latexMathData._latexMathTextSize = this.latexMathTextSize
+                  this.latexMathData._latexMathBackgroundColor = this.latexMathBackgroundColor
+                  this.latexMathData._latexMathTextColor = this.latexMathTextColor
+                  this.latexMathData._latexMathColorFormat = this.latexMathColorFormat
+                  this.latexMathData._latexMathBlockCenter = this.latexMathBlockCenter
+                  this.latexMathData._latexMathResPath = this.latexMathResPath
+                  // ---------- 跳转到详情
+                  router.pushUrl({ url: "pages/LatexMathDetailsPage", params: this.latexMathData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -601,10 +603,12 @@ struct LatexMathPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -26,7 +26,7 @@ struct HTMLPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "025_HTML"
+  rawFilePath: string = "027_HTML"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -152,67 +152,69 @@ struct HTMLPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.htmlData._isFull = this.isFull
-                  this.htmlData._incrementalAnalysis = this.incrementalAnalysis
-                  this.htmlData._enableParseThrottle = this.enableParseThrottle
-                  this.htmlData._parseThrottleMs = this.parseThrottleMs
-                  this.htmlData._time = this.time
-                  this.htmlData._textNumber = this.textNumber
-                  this.htmlData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.htmlData._isOnCopy = this.isOnCopy
-                  this.htmlData._blockMarginTop = this.blockMarginTop
-                  this.htmlData._blockMarginRight = this.blockMarginRight
-                  this.htmlData._blockMarginBottom = this.blockMarginBottom
-                  this.htmlData._blockMarginLeft = this.blockMarginLeft
-                  this.htmlData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.htmlData._isLineBreak = this.isLineBreak
-                  this.htmlData._backgroundColor = this.globalBackgroundColor
-                  this.htmlData._openGestureSwipe = this.openGestureSwipe
-                  this.htmlData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.htmlData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.htmlData._isFull = this.isFull
+                    this.htmlData._incrementalAnalysis = this.incrementalAnalysis
+                    this.htmlData._enableParseThrottle = this.enableParseThrottle
+                    this.htmlData._parseThrottleMs = this.parseThrottleMs
+                    this.htmlData._time = this.time
+                    this.htmlData._textNumber = this.textNumber
+                    this.htmlData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.htmlData._isOnCopy = this.isOnCopy
+                    this.htmlData._blockMarginTop = this.blockMarginTop
+                    this.htmlData._blockMarginRight = this.blockMarginRight
+                    this.htmlData._blockMarginBottom = this.blockMarginBottom
+                    this.htmlData._blockMarginLeft = this.blockMarginLeft
+                    this.htmlData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.htmlData._isLineBreak = this.isLineBreak
+                    this.htmlData._backgroundColor = this.globalBackgroundColor
+                    this.htmlData._openGestureSwipe = this.openGestureSwipe
+                    this.htmlData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.htmlData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.htmlData._htmlUnderlineTextFontColor = this.htmlUnderlineTextFontColor
-                  this.htmlData._htmlUnderlineTextFontSize = this.htmlUnderlineTextFontSize
-                  this.htmlData._htmlUnderlineTextFontStyle = this.htmlUnderlineTextFontStyle
-                  this.htmlData._htmlUnderlineTextFontWeight = this.htmlUnderlineTextFontWeight
-                  this.htmlData._htmlUnderlineTextFontFamily = this.htmlUnderlineTextFontFamily
-                  this.htmlData._htmlUnderlineTextLineHeight = this.htmlUnderlineTextLineHeight
-                  this.htmlData._htmlUnderlineTextLetterSpacing = this.htmlUnderlineTextLetterSpacing
-                  this.htmlData._htmlUnderlineTextDecorationColor = this.htmlUnderlineTextDecorationColor
-                  this.htmlData._htmlUnderlineTextDecorationStyle = this.htmlUnderlineTextDecorationStyle
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/HTMLDetailsPage", params: this.htmlData })
-              })
+                    // ---------- 专有
+                    this.htmlData._htmlUnderlineTextFontColor = this.htmlUnderlineTextFontColor
+                    this.htmlData._htmlUnderlineTextFontSize = this.htmlUnderlineTextFontSize
+                    this.htmlData._htmlUnderlineTextFontStyle = this.htmlUnderlineTextFontStyle
+                    this.htmlData._htmlUnderlineTextFontWeight = this.htmlUnderlineTextFontWeight
+                    this.htmlData._htmlUnderlineTextFontFamily = this.htmlUnderlineTextFontFamily
+                    this.htmlData._htmlUnderlineTextLineHeight = this.htmlUnderlineTextLineHeight
+                    this.htmlData._htmlUnderlineTextLetterSpacing = this.htmlUnderlineTextLetterSpacing
+                    this.htmlData._htmlUnderlineTextDecorationColor = this.htmlUnderlineTextDecorationColor
+                    this.htmlData._htmlUnderlineTextDecorationStyle = this.htmlUnderlineTextDecorationStyle
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/HTMLDetailsPage", params: this.htmlData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -442,10 +444,12 @@ struct HTMLPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

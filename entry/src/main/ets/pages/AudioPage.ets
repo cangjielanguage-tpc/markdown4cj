@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -33,7 +33,7 @@ struct AudioPage {
   // ---------------- 通用
   @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
   // rawfile路径
-  rawFilePath: string = "014_Audio"
+  rawFilePath: string = "016_Audio"
   @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
   // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
@@ -282,116 +282,118 @@ struct AudioPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.audioData._isFull = this.isFull
-                  this.audioData._incrementalAnalysis = this.incrementalAnalysis
-                  this.audioData._enableParseThrottle = this.enableParseThrottle
-                  this.audioData._parseThrottleMs = this.parseThrottleMs
-                  this.audioData._time = this.time
-                  this.audioData._textNumber = this.textNumber
-                  this.audioData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.audioData._isOnCopy = this.isOnCopy
-                  this.audioData._blockMarginTop = this.blockMarginTop
-                  this.audioData._blockMarginRight = this.blockMarginRight
-                  this.audioData._blockMarginBottom = this.blockMarginBottom
-                  this.audioData._blockMarginLeft = this.blockMarginLeft
-                  this.audioData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.audioData._isLineBreak = this.isLineBreak
-                  this.audioData._backgroundColor = this.globalBackgroundColor
-                  this.audioData._openGestureSwipe = this.openGestureSwipe
-                  this.audioData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.audioData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.audioData._isFull = this.isFull
+                    this.audioData._incrementalAnalysis = this.incrementalAnalysis
+                    this.audioData._enableParseThrottle = this.enableParseThrottle
+                    this.audioData._parseThrottleMs = this.parseThrottleMs
+                    this.audioData._time = this.time
+                    this.audioData._textNumber = this.textNumber
+                    this.audioData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.audioData._isOnCopy = this.isOnCopy
+                    this.audioData._blockMarginTop = this.blockMarginTop
+                    this.audioData._blockMarginRight = this.blockMarginRight
+                    this.audioData._blockMarginBottom = this.blockMarginBottom
+                    this.audioData._blockMarginLeft = this.blockMarginLeft
+                    this.audioData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.audioData._isLineBreak = this.isLineBreak
+                    this.audioData._backgroundColor = this.globalBackgroundColor
+                    this.audioData._openGestureSwipe = this.openGestureSwipe
+                    this.audioData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.audioData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.audioData._audioBackgroundColor = this.audioBackgroundColor
-                  this.audioData._audioMarginTop = this.audioMarginTop
-                  this.audioData._audioMarginRight = this.audioMarginRight
-                  this.audioData._audioMarginBottom = this.audioMarginBottom
-                  this.audioData._audioMarginLeft = this.audioMarginLeft
-                  this.audioData._audioPaddingTop = this.audioPaddingTop
-                  this.audioData._audioPaddingRight = this.audioPaddingRight
-                  this.audioData._audioPaddingBottom = this.audioPaddingBottom
-                  this.audioData._audioPaddingLeft = this.audioPaddingLeft
-                  this.audioData._audioBorderStyle = this.audioBorderStyle
-                  this.audioData._audioBorderWidth = this.audioBorderWidth
-                  this.audioData._audioBorderColor = this.audioBorderColor
-                  this.audioData._audioRadiusTopLeft = this.audioRadiusTopLeft
-                  this.audioData._audioRadiusTopRight = this.audioRadiusTopRight
-                  this.audioData._audioRadiusBottomLeft = this.audioRadiusBottomLeft
-                  this.audioData._audioRadiusBottomRight = this.audioRadiusBottomRight
-                  this.audioData._audioShadowRadius = this.audioShadowRadius
-                  this.audioData._audioShadowOffsetX = this.audioShadowOffsetX
-                  this.audioData._audioShadowOffsetY = this.audioShadowOffsetY
-                  this.audioData._audioShadowColor = this.audioShadowColor
-                  this.audioData._audioIcon = this.audioIcon
-                  this.audioData._audioIconWidth = this.audioIconWidth
-                  this.audioData._audioIconHeight = this.audioIconHeight
-                  this.audioData._audioIconRadiusTopLeft = this.audioIconRadiusTopLeft
-                  this.audioData._audioIconRadiusTopRight = this.audioIconRadiusTopRight
-                  this.audioData._audioIconRadiusBottomLeft = this.audioIconRadiusBottomLeft
-                  this.audioData._audioIconRadiusBottomRight = this.audioIconRadiusBottomRight
-                  this.audioData._audioIconFitType = this.audioIconFitType
-                  this.audioData._audioTitleToTypeSpacing = this.audioTitleToTypeSpacing
-                  this.audioData._audioButtonWidth = this.audioButtonWidth
-                  this.audioData._audioButtonHeight = this.audioButtonHeight
-                  this.audioData._audioButtonBackgroundColor = this.audioButtonBackgroundColor
-                  this.audioData._audioButtonBorderStyle = this.audioButtonBorderStyle
-                  this.audioData._audioButtonBorderWidth = this.audioButtonBorderWidth
-                  this.audioData._audioButtonBorderColor = this.audioButtonBorderColor
-                  this.audioData._audioButtonRadiusTopLeft = this.audioButtonRadiusTopLeft
-                  this.audioData._audioButtonRadiusTopRight = this.audioButtonRadiusTopRight
-                  this.audioData._audioButtonRadiusBottomLeft = this.audioButtonRadiusBottomLeft
-                  this.audioData._audioButtonRadiusBottomRight = this.audioButtonRadiusBottomRight
-                  this.audioData._audioButtonText = this.audioButtonText
-                  this.audioData._audioButtonTextFontColor = this.audioButtonTextFontColor
-                  this.audioData._audioButtonTextFontSize = this.audioButtonTextFontSize
-                  this.audioData._audioButtonTextFontStyle = this.audioButtonTextFontStyle
-                  this.audioData._audioButtonTextFontWeight = this.audioButtonTextFontWeight
-                  this.audioData._audioButtonTextFontFamily = this.audioButtonTextFontFamily
-                  this.audioData._audioButtonTextLineHeight = this.audioButtonTextLineHeight
-                  this.audioData._audioTitleTextFontColor = this.audioTitleTextFontColor
-                  this.audioData._audioTitleTextFontSize = this.audioTitleTextFontSize
-                  this.audioData._audioTitleTextFontStyle = this.audioTitleTextFontStyle
-                  this.audioData._audioTitleTextFontWeight = this.audioTitleTextFontWeight
-                  this.audioData._audioTitleTextFontFamily = this.audioTitleTextFontFamily
-                  this.audioData._audioTitleTextLineHeight = this.audioTitleTextLineHeight
-                  this.audioData._audioTypeTextFontColor = this.audioTypeTextFontColor
-                  this.audioData._audioTypeTextFontSize = this.audioTypeTextFontSize
-                  this.audioData._audioTypeTextFontStyle = this.audioTypeTextFontStyle
-                  this.audioData._audioTypeTextFontWeight = this.audioTypeTextFontWeight
-                  this.audioData._audioTypeTextFontFamily = this.audioTypeTextFontFamily
-                  this.audioData._audioTypeTextLineHeight = this.audioTypeTextLineHeight
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/AudioDetailsPage", params: this.audioData })
-              })
+                    // ---------- 专有
+                    this.audioData._audioBackgroundColor = this.audioBackgroundColor
+                    this.audioData._audioMarginTop = this.audioMarginTop
+                    this.audioData._audioMarginRight = this.audioMarginRight
+                    this.audioData._audioMarginBottom = this.audioMarginBottom
+                    this.audioData._audioMarginLeft = this.audioMarginLeft
+                    this.audioData._audioPaddingTop = this.audioPaddingTop
+                    this.audioData._audioPaddingRight = this.audioPaddingRight
+                    this.audioData._audioPaddingBottom = this.audioPaddingBottom
+                    this.audioData._audioPaddingLeft = this.audioPaddingLeft
+                    this.audioData._audioBorderStyle = this.audioBorderStyle
+                    this.audioData._audioBorderWidth = this.audioBorderWidth
+                    this.audioData._audioBorderColor = this.audioBorderColor
+                    this.audioData._audioRadiusTopLeft = this.audioRadiusTopLeft
+                    this.audioData._audioRadiusTopRight = this.audioRadiusTopRight
+                    this.audioData._audioRadiusBottomLeft = this.audioRadiusBottomLeft
+                    this.audioData._audioRadiusBottomRight = this.audioRadiusBottomRight
+                    this.audioData._audioShadowRadius = this.audioShadowRadius
+                    this.audioData._audioShadowOffsetX = this.audioShadowOffsetX
+                    this.audioData._audioShadowOffsetY = this.audioShadowOffsetY
+                    this.audioData._audioShadowColor = this.audioShadowColor
+                    this.audioData._audioIcon = this.audioIcon
+                    this.audioData._audioIconWidth = this.audioIconWidth
+                    this.audioData._audioIconHeight = this.audioIconHeight
+                    this.audioData._audioIconRadiusTopLeft = this.audioIconRadiusTopLeft
+                    this.audioData._audioIconRadiusTopRight = this.audioIconRadiusTopRight
+                    this.audioData._audioIconRadiusBottomLeft = this.audioIconRadiusBottomLeft
+                    this.audioData._audioIconRadiusBottomRight = this.audioIconRadiusBottomRight
+                    this.audioData._audioIconFitType = this.audioIconFitType
+                    this.audioData._audioTitleToTypeSpacing = this.audioTitleToTypeSpacing
+                    this.audioData._audioButtonWidth = this.audioButtonWidth
+                    this.audioData._audioButtonHeight = this.audioButtonHeight
+                    this.audioData._audioButtonBackgroundColor = this.audioButtonBackgroundColor
+                    this.audioData._audioButtonBorderStyle = this.audioButtonBorderStyle
+                    this.audioData._audioButtonBorderWidth = this.audioButtonBorderWidth
+                    this.audioData._audioButtonBorderColor = this.audioButtonBorderColor
+                    this.audioData._audioButtonRadiusTopLeft = this.audioButtonRadiusTopLeft
+                    this.audioData._audioButtonRadiusTopRight = this.audioButtonRadiusTopRight
+                    this.audioData._audioButtonRadiusBottomLeft = this.audioButtonRadiusBottomLeft
+                    this.audioData._audioButtonRadiusBottomRight = this.audioButtonRadiusBottomRight
+                    this.audioData._audioButtonText = this.audioButtonText
+                    this.audioData._audioButtonTextFontColor = this.audioButtonTextFontColor
+                    this.audioData._audioButtonTextFontSize = this.audioButtonTextFontSize
+                    this.audioData._audioButtonTextFontStyle = this.audioButtonTextFontStyle
+                    this.audioData._audioButtonTextFontWeight = this.audioButtonTextFontWeight
+                    this.audioData._audioButtonTextFontFamily = this.audioButtonTextFontFamily
+                    this.audioData._audioButtonTextLineHeight = this.audioButtonTextLineHeight
+                    this.audioData._audioTitleTextFontColor = this.audioTitleTextFontColor
+                    this.audioData._audioTitleTextFontSize = this.audioTitleTextFontSize
+                    this.audioData._audioTitleTextFontStyle = this.audioTitleTextFontStyle
+                    this.audioData._audioTitleTextFontWeight = this.audioTitleTextFontWeight
+                    this.audioData._audioTitleTextFontFamily = this.audioTitleTextFontFamily
+                    this.audioData._audioTitleTextLineHeight = this.audioTitleTextLineHeight
+                    this.audioData._audioTypeTextFontColor = this.audioTypeTextFontColor
+                    this.audioData._audioTypeTextFontSize = this.audioTypeTextFontSize
+                    this.audioData._audioTypeTextFontStyle = this.audioTypeTextFontStyle
+                    this.audioData._audioTypeTextFontWeight = this.audioTypeTextFontWeight
+                    this.audioData._audioTypeTextFontFamily = this.audioTypeTextFontFamily
+                    this.audioData._audioTypeTextLineHeight = this.audioTypeTextLineHeight
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/AudioDetailsPage", params: this.audioData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -1025,11 +1027,13 @@ struct AudioPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
 
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

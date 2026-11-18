@@ -26,6 +26,7 @@ struct ParagraphDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -309,6 +310,12 @@ struct ParagraphDetailsPage {
     hilog.error(1, "paragraphAnimation", `---AnimationEnd`)
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -317,39 +324,35 @@ struct ParagraphDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    globalTheme.setParagraphHeadingAnimationEnabled(this.paragraphHeadingAnimationEnabled)
-    globalTheme.setParagraphHeadingAnimationDuration(this.paragraphHeadingAnimationDuration)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
+    theme.globalTheme.setParagraphHeadingAnimationEnabled(this.paragraphHeadingAnimationEnabled)
+    theme.globalTheme.setParagraphHeadingAnimationDuration(this.paragraphHeadingAnimationDuration)
     
     // ---------- 专有 - Paragraph
-    let paragraphTheme = new ParagraphTheme()
     if (this.paragraphBackgroundColor !== undefined) {
-      paragraphTheme.setParagraphBackgroundColor(this.paragraphBackgroundColor)
+      theme.paragraphTheme.setParagraphBackgroundColor(this.paragraphBackgroundColor)
     }
-    paragraphTheme.setParagraphMargin({top: this.paragraphMarginTop, right: this.paragraphMarginRight, bottom: this.paragraphMarginBottom, left: this.paragraphMarginLeft})
-    paragraphTheme.setParagraphPadding({top: this.paragraphPaddingTop, right: this.paragraphPaddingRight, bottom: this.paragraphPaddingBottom, left: this.paragraphPaddingLeft})
+    theme.paragraphTheme.setParagraphMargin({top: this.paragraphMarginTop, right: this.paragraphMarginRight, bottom: this.paragraphMarginBottom, left: this.paragraphMarginLeft})
+    theme.paragraphTheme.setParagraphPadding({top: this.paragraphPaddingTop, right: this.paragraphPaddingRight, bottom: this.paragraphPaddingBottom, left: this.paragraphPaddingLeft})
     if (this.paragraphTextFontColor !== undefined) {
-      paragraphTheme.setParagraphTextFontColor(this.paragraphTextFontColor)
+      theme.paragraphTheme.setParagraphTextFontColor(this.paragraphTextFontColor)
     }
-    paragraphTheme.setParagraphTextFontSize(this.paragraphTextFontSize)
-    paragraphTheme.setParagraphTextFontStyle(this.paragraphTextFontStyle)
-    paragraphTheme.setParagraphTextFontWeight(this.paragraphTextFontWeight)
-    paragraphTheme.setParagraphTextFontFamily(this.paragraphTextFontFamily)
-    paragraphTheme.setParagraphTextLineHeight(this.paragraphTextLineHeight)
-    paragraphTheme.setParagraphTextLetterSpacing(this.paragraphTextLetterSpacing)
-    theme.setParagraphTheme(paragraphTheme)
+    theme.paragraphTheme.setParagraphTextFontSize(this.paragraphTextFontSize)
+    theme.paragraphTheme.setParagraphTextFontStyle(this.paragraphTextFontStyle)
+    theme.paragraphTheme.setParagraphTextFontWeight(this.paragraphTextFontWeight)
+    theme.paragraphTheme.setParagraphTextFontFamily(this.paragraphTextFontFamily)
+    theme.paragraphTheme.setParagraphTextLineHeight(this.paragraphTextLineHeight)
+    theme.paragraphTheme.setParagraphTextLetterSpacing(this.paragraphTextLetterSpacing)
     
     return theme
   }

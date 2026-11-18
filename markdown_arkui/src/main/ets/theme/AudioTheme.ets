@@ -707,4 +707,75 @@ export class AudioTheme implements MarkdownBaseTheme {
     this.audioButtonTextLineHeight = height
     return this
   }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return AudioTheme
+   */
+  applyFrom(other: AudioTheme): AudioTheme {
+    this.audioBackgroundColor = other.audioBackgroundColor
+    this.audioMarginTop = other.audioMarginTop
+    this.audioMarginRight = other.audioMarginRight
+    this.audioMarginBottom = other.audioMarginBottom
+    this.audioMarginLeft = other.audioMarginLeft
+    this.audioPaddingTop = other.audioPaddingTop
+    this.audioPaddingRight = other.audioPaddingRight
+    this.audioPaddingBottom = other.audioPaddingBottom
+    this.audioPaddingLeft = other.audioPaddingLeft
+    this.audioBorderStyle = other.audioBorderStyle
+    this.audioBorderWidth = other.audioBorderWidth
+    this.audioBorderColor = other.audioBorderColor
+    this.audioRadiusTopLeft = other.audioRadiusTopLeft
+    this.audioRadiusTopRight = other.audioRadiusTopRight
+    this.audioRadiusBottomLeft = other.audioRadiusBottomLeft
+    this.audioRadiusBottomRight = other.audioRadiusBottomRight
+    this.audioShadowRadius = other.audioShadowRadius
+    this.audioShadowColor = other.audioShadowColor
+    this.audioShadowOffsetX = other.audioShadowOffsetX
+    this.audioShadowOffsetY = other.audioShadowOffsetY
+    this.audioIcon = other.audioIcon
+    this.audioIconWidth = other.audioIconWidth
+    this.audioIconHeight = other.audioIconHeight
+    this.audioIconRadiusTopLeft = other.audioIconRadiusTopLeft
+    this.audioIconRadiusTopRight = other.audioIconRadiusTopRight
+    this.audioIconRadiusBottomLeft = other.audioIconRadiusBottomLeft
+    this.audioIconRadiusBottomRight = other.audioIconRadiusBottomRight
+    this.audioIconFitType = other.audioIconFitType
+    this.audioTitleToTypeSpacing = other.audioTitleToTypeSpacing
+    this.audioTitleTextFontColor = other.audioTitleTextFontColor
+    this.audioTitleTextFontSize = other.audioTitleTextFontSize
+    this.audioTitleTextFontStyle = other.audioTitleTextFontStyle
+    this.audioTitleTextFontWeight = other.audioTitleTextFontWeight
+    this.audioTitleTextFontFamily = other.audioTitleTextFontFamily
+    this.audioTitleTextLineHeight = other.audioTitleTextLineHeight
+    this.audioTypeTextFontColor = other.audioTypeTextFontColor
+    this.audioTypeTextFontSize = other.audioTypeTextFontSize
+    this.audioTypeTextFontStyle = other.audioTypeTextFontStyle
+    this.audioTypeTextFontWeight = other.audioTypeTextFontWeight
+    this.audioTypeTextFontFamily = other.audioTypeTextFontFamily
+    this.audioTypeTextLineHeight = other.audioTypeTextLineHeight
+    this.audioButtonBackgroundColor = other.audioButtonBackgroundColor
+    this.audioButtonWidth = other.audioButtonWidth
+    this.audioButtonHeight = other.audioButtonHeight
+    this.audioButtonBorderStyle = other.audioButtonBorderStyle
+    this.audioButtonBorderWidth = other.audioButtonBorderWidth
+    this.audioButtonBorderColor = other.audioButtonBorderColor
+    this.audioButtonRadiusTopLeft = other.audioButtonRadiusTopLeft
+    this.audioButtonRadiusTopRight = other.audioButtonRadiusTopRight
+    this.audioButtonRadiusBottomLeft = other.audioButtonRadiusBottomLeft
+    this.audioButtonRadiusBottomRight = other.audioButtonRadiusBottomRight
+    this.audioButtonText = other.audioButtonText
+    this.audioButtonTextFontColor = other.audioButtonTextFontColor
+    this.audioButtonTextFontSize = other.audioButtonTextFontSize
+    this.audioButtonTextFontStyle = other.audioButtonTextFontStyle
+    this.audioButtonTextFontWeight = other.audioButtonTextFontWeight
+    this.audioButtonTextFontFamily = other.audioButtonTextFontFamily
+    this.audioButtonTextLineHeight = other.audioButtonTextLineHeight
+    return this
+  }
 }

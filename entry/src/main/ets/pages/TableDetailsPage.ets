@@ -22,6 +22,7 @@ struct TableDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -383,6 +384,12 @@ struct TableDetailsPage {
     hilog.error(1, "1", `---elementExposure eventType:${event.eventType} visible:${event.visible} data:${event.data}`)
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -391,83 +398,79 @@ struct TableDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - Table
-    let tableTheme = new TableTheme()
 
     if (this.tableTitleBackgroundColor !== undefined) {
-      tableTheme.setTableTitleBackgroundColor(this.tableTitleBackgroundColor)
+      theme.tableTheme.setTableTitleBackgroundColor(this.tableTitleBackgroundColor)
     }
     if (this.tableContentOddRowBackgroundColor !== undefined) {
-      tableTheme.setTableContentOddRowBackgroundColor(this.tableContentOddRowBackgroundColor)
+      theme.tableTheme.setTableContentOddRowBackgroundColor(this.tableContentOddRowBackgroundColor)
     }
     if (this.tableContentEvenRowBackgroundColor !== undefined) {
-      tableTheme.setTableContentEvenRowBackgroundColor(this.tableContentEvenRowBackgroundColor)
+      theme.tableTheme.setTableContentEvenRowBackgroundColor(this.tableContentEvenRowBackgroundColor)
     }
-    tableTheme.setTableMargin({top: this.tableMarginTop, right: this.tableMarginRight, bottom: this.tableMarginBottom, left: this.tableMarginLeft})
-    tableTheme.setTablePadding({top: this.tablePaddingTop, right: this.tablePaddingRight, bottom: this.tablePaddingBottom, left: this.tablePaddingLeft})
-    tableTheme.setTableCellPadding({top: this.tableCellPaddingTop, right: this.tableCellPaddingRight, bottom: this.tableCellPaddingBottom, left: this.tableCellPaddingLeft})
-    tableTheme.setTableBorderStyle(this.tableBorderStyle)
-    tableTheme.setTableBorderWidth(this.tableBorderWidth)
+    theme.tableTheme.setTableMargin({top: this.tableMarginTop, right: this.tableMarginRight, bottom: this.tableMarginBottom, left: this.tableMarginLeft})
+    theme.tableTheme.setTablePadding({top: this.tablePaddingTop, right: this.tablePaddingRight, bottom: this.tablePaddingBottom, left: this.tablePaddingLeft})
+    theme.tableTheme.setTableCellPadding({top: this.tableCellPaddingTop, right: this.tableCellPaddingRight, bottom: this.tableCellPaddingBottom, left: this.tableCellPaddingLeft})
+    theme.tableTheme.setTableBorderStyle(this.tableBorderStyle)
+    theme.tableTheme.setTableBorderWidth(this.tableBorderWidth)
     if (this.tableBorderColor !== undefined) {
-      tableTheme.setTableBorderColor(this.tableBorderColor)
+      theme.tableTheme.setTableBorderColor(this.tableBorderColor)
     }
-    tableTheme.setTableRadius({topLeft: this.tableRadiusTopLeft, topRight: this.tableRadiusTopRight, bottomLeft: this.tableRadiusBottomLeft, bottomRight: this.tableRadiusBottomRight})
-    tableTheme.setTableScrollBarState(this.tableScrollBarState)
+    theme.tableTheme.setTableRadius({topLeft: this.tableRadiusTopLeft, topRight: this.tableRadiusTopRight, bottomLeft: this.tableRadiusBottomLeft, bottomRight: this.tableRadiusBottomRight})
+    theme.tableTheme.setTableScrollBarState(this.tableScrollBarState)
     if (this.tableScrollBarColor !== undefined) {
-      tableTheme.setTableScrollBarColor(this.tableScrollBarColor.toString())
+      theme.tableTheme.setTableScrollBarColor(this.tableScrollBarColor.toString())
     }
-    tableTheme.setTableMinCellWidth(this.tableMinCellWidth)
-    tableTheme.setTableMaxCellWidth(this.tableMaxCellWidth)
-    tableTheme.setTableFirstColumnIsBold(this.tableFirstColumnIsBold)
+    theme.tableTheme.setTableMinCellWidth(this.tableMinCellWidth)
+    theme.tableTheme.setTableMaxCellWidth(this.tableMaxCellWidth)
+    theme.tableTheme.setTableFirstColumnIsBold(this.tableFirstColumnIsBold)
     if (this.tableTitleTextFontColor !== undefined) {
-      tableTheme.setTableTitleTextFontColor(this.tableTitleTextFontColor)
+      theme.tableTheme.setTableTitleTextFontColor(this.tableTitleTextFontColor)
     }
-    tableTheme.setTableTitleTextFontSize(this.tableTitleTextFontSize)
-    tableTheme.setTableTitleTextFontStyle(this.tableTitleTextFontStyle)
-    tableTheme.setTableTitleTextFontWeight(this.tableTitleTextFontWeight)
-    tableTheme.setTableTitleTextFontFamily(this.tableTitleTextFontFamily)
-    tableTheme.setTableTitleTextLineHeight(this.tableTitleTextLineHeight)
-    tableTheme.setTableTitleTextLetterSpacing(this.tableTitleTextLetterSpacing)
+    theme.tableTheme.setTableTitleTextFontSize(this.tableTitleTextFontSize)
+    theme.tableTheme.setTableTitleTextFontStyle(this.tableTitleTextFontStyle)
+    theme.tableTheme.setTableTitleTextFontWeight(this.tableTitleTextFontWeight)
+    theme.tableTheme.setTableTitleTextFontFamily(this.tableTitleTextFontFamily)
+    theme.tableTheme.setTableTitleTextLineHeight(this.tableTitleTextLineHeight)
+    theme.tableTheme.setTableTitleTextLetterSpacing(this.tableTitleTextLetterSpacing)
     if (this.tableContentTextFontColor !== undefined) {
-      tableTheme.setTableContentTextFontColor(this.tableContentTextFontColor)
+      theme.tableTheme.setTableContentTextFontColor(this.tableContentTextFontColor)
     }
-    tableTheme.setTableContentTextFontSize(this.tableContentTextFontSize)
-    tableTheme.setTableContentTextFontStyle(this.tableContentTextFontStyle)
-    tableTheme.setTableContentTextFontWeight(this.tableContentTextFontWeight)
-    tableTheme.setTableContentTextFontFamily(this.tableContentTextFontFamily)
-    tableTheme.setTableContentTextLineHeight(this.tableContentTextLineHeight)
-    tableTheme.setTableContentTextLetterSpacing(this.tableContentTextLetterSpacing)
+    theme.tableTheme.setTableContentTextFontSize(this.tableContentTextFontSize)
+    theme.tableTheme.setTableContentTextFontStyle(this.tableContentTextFontStyle)
+    theme.tableTheme.setTableContentTextFontWeight(this.tableContentTextFontWeight)
+    theme.tableTheme.setTableContentTextFontFamily(this.tableContentTextFontFamily)
+    theme.tableTheme.setTableContentTextLineHeight(this.tableContentTextLineHeight)
+    theme.tableTheme.setTableContentTextLetterSpacing(this.tableContentTextLetterSpacing)
 
-    tableTheme.setTableStickyHeader(this.tableStickyHeader)
-    tableTheme.setTableHeadIsShow(this.tableHeaderIsShow)
-    tableTheme.setTableHeadTitleTextFontColor(this.tableHeadTitleTextFontColor)
-    tableTheme.setTableHeadTitleTextFontSize(this.tableHeadTitleTextFontSize)
-    tableTheme.setTableHeadTitleTextFontFamily(this.tableHeadTitleTextFontFamily)
-    tableTheme.setTableHeadTitleTextFontWeight(this.tableHeadTitleTextFontWeight)
-    tableTheme.setTableHeadTitleTextFontStyle(this.tableHeadTitleTextFontStyle)
-    tableTheme.setTableHeadTitleTextLineHeight(this.tableHeadTitleTextLineHeight)
-    tableTheme.setTableHeadTitleTextMarginLeft(this.tableHeadTitleTextMarginLeft)
+    theme.tableTheme.setTableStickyHeader(this.tableStickyHeader)
+    theme.tableTheme.setTableHeadIsShow(this.tableHeaderIsShow)
+    theme.tableTheme.setTableHeadTitleTextFontColor(this.tableHeadTitleTextFontColor)
+    theme.tableTheme.setTableHeadTitleTextFontSize(this.tableHeadTitleTextFontSize)
+    theme.tableTheme.setTableHeadTitleTextFontFamily(this.tableHeadTitleTextFontFamily)
+    theme.tableTheme.setTableHeadTitleTextFontWeight(this.tableHeadTitleTextFontWeight)
+    theme.tableTheme.setTableHeadTitleTextFontStyle(this.tableHeadTitleTextFontStyle)
+    theme.tableTheme.setTableHeadTitleTextLineHeight(this.tableHeadTitleTextLineHeight)
+    theme.tableTheme.setTableHeadTitleTextMarginLeft(this.tableHeadTitleTextMarginLeft)
 
-    tableTheme.setTableHeadCopyIcon(this.tableHeadCopyIcon ? $r('app.media.startIcon') : undefined)
-    tableTheme.setTableHeadCopyIconWidth(this.tableHeadCopyIconWidth)
-    tableTheme.setTableHeadCopyIconHeight(this.tableHeadCopyIconHeight)
-    tableTheme.setTableHeadCopyIconMarginRight(this.tableHeadCopyIconMarginRight)
+    theme.tableTheme.setTableHeadCopyIcon(this.tableHeadCopyIcon ? $r('app.media.startIcon') : undefined)
+    theme.tableTheme.setTableHeadCopyIconWidth(this.tableHeadCopyIconWidth)
+    theme.tableTheme.setTableHeadCopyIconHeight(this.tableHeadCopyIconHeight)
+    theme.tableTheme.setTableHeadCopyIconMarginRight(this.tableHeadCopyIconMarginRight)
 
-    theme.setTableTheme(tableTheme)
     
     return theme
   }

@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_FF191919 } from "../base/Constants"
 
 /**
@@ -112,6 +112,28 @@ export class StrikethroughTheme implements MarkdownBaseTheme {
    */
   setStrikethroughTextDecorationStyle(style: TextDecorationStyle): StrikethroughTheme {
     this.strikethroughTextDecorationStyle = style
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return StrikethroughTheme
+   */
+  applyFrom(other: StrikethroughTheme): StrikethroughTheme {
+    this.strikethroughTextFontColor = other.strikethroughTextFontColor
+    this.strikethroughTextFontSize = other.strikethroughTextFontSize
+    this.strikethroughTextFontStyle = other.strikethroughTextFontStyle
+    this.strikethroughTextFontWeight = other.strikethroughTextFontWeight
+    this.strikethroughTextFontFamily = other.strikethroughTextFontFamily
+    this.strikethroughTextLineHeight = other.strikethroughTextLineHeight
+    this.strikethroughTextLetterSpacing = other.strikethroughTextLetterSpacing
+    this.strikethroughTextDecorationColor = other.strikethroughTextDecorationColor
+    this.strikethroughTextDecorationStyle = other.strikethroughTextDecorationStyle
     return this
   }
 }

@@ -15,7 +15,7 @@ struct SduiCardPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "037_SduiCard"
+  rawFilePath: string = "040_SduiCard"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
 
@@ -66,6 +66,6 @@ struct SduiCardPage {
       .backgroundColor('#FFEAEAEA')
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

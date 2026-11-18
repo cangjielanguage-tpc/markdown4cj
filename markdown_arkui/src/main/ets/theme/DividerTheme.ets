@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
 
 /**
@@ -134,6 +134,30 @@ export class DividerTheme implements MarkdownBaseTheme {
    */
   setDividerStyle(style: LineCapStyle): DividerTheme {
     this.dividerStyle = style
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return DividerTheme
+   */
+  applyFrom(other: DividerTheme): DividerTheme {
+    this.dividerMarginTop = other.dividerMarginTop
+    this.dividerMarginRight = other.dividerMarginRight
+    this.dividerMarginBottom = other.dividerMarginBottom
+    this.dividerMarginLeft = other.dividerMarginLeft
+    this.dividerPaddingTop = other.dividerPaddingTop
+    this.dividerPaddingRight = other.dividerPaddingRight
+    this.dividerPaddingBottom = other.dividerPaddingBottom
+    this.dividerPaddingLeft = other.dividerPaddingLeft
+    this.dividerColor = other.dividerColor
+    this.dividerStrokeWidth = other.dividerStrokeWidth
+    this.dividerStyle = other.dividerStyle
     return this
   }
 }

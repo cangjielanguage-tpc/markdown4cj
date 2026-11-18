@@ -87,6 +87,77 @@ export class MarkdownTheme {
   videoTheme: VideoTheme = new VideoTheme() // 视频样式
   highlightTheme: HighlightTheme = new HighlightTheme() // 高亮样式
 
+  // 渲染代次（内存优化方案二：集中观察合并发布）。集中观察器把同批主题变化合并成
+  // 一次发布后递增这里的代次；段落/标题的 onThemeChanged 按代次差分决定是否重建
+  // 派生资源（链接图标像素图/公式像素图/图片显示尺寸），普通样式由声明式链路自动刷新。
+  renderPlainVersion: number = 0 // 普通样式总代次（任一主题变化都推进）
+  renderLinkVersion: number = 0 // 链接图标样式代次
+  renderLatexVersion: number = 0 // 数学公式样式代次
+  renderImageVersion: number = 0 // 图片样式代次
+
+  /**
+   * 集中观察发布入口：按类别递增渲染代次，通知所有聚合主题订阅者。
+   *
+   * @param linkChanged 链接图标样式变化
+   * @param latexChanged 数学公式样式变化
+   * @param imageChanged 图片样式变化
+   */
+  notifyRenderChanged(linkChanged: boolean, latexChanged: boolean, imageChanged: boolean): void {
+    if (linkChanged) {
+      this.renderLinkVersion++
+    }
+    if (latexChanged) {
+      this.renderLatexVersion++
+    }
+    if (imageChanged) {
+      this.renderImageVersion++
+    }
+    this.renderPlainVersion++
+  }
+
+  /**
+   * 原地合并另一主题实例的样式到当前实例（动态换肤通道）。
+   *
+   * 段落/标题等子组件挂在 LazyForEach 内，同 key 复用子组件，整对象替换无法更新其持有的
+   * 聚合/子主题引用；把各子主题属性逐一合并进现有实例，所有持有旧实例引用的组件都能经
+   * @Observed 属性变化通道收到更新（@Watch 回调 + build 声明式重渲染）。合并完成后按
+   * 全类别发布一次渲染代次，驱动派生资源（链接图标/公式/图片）按代次差分重建。
+   *
+   * @param other 来源主题（通常为接入方新建的完整主题）
+   * @return MarkdownTheme
+   */
+  applyFrom(other: MarkdownTheme): MarkdownTheme {
+    // 逐子主题显式字段合并（ArkTS 限制使用 Object.assign，各子主题类自带 applyFrom）
+    this.globalTheme.applyFrom(other.globalTheme)
+    this.audioTheme.applyFrom(other.audioTheme)
+    this.bannerTheme.applyFrom(other.bannerTheme)
+    this.blockQuoteTheme.applyFrom(other.blockQuoteTheme)
+    this.boldTheme.applyFrom(other.boldTheme)
+    this.codeBlockTheme.applyFrom(other.codeBlockTheme)
+    this.definitionListTheme.applyFrom(other.definitionListTheme)
+    this.dividerTheme.applyFrom(other.dividerTheme)
+    this.footnoteDefTheme.applyFrom(other.footnoteDefTheme)
+    this.footnoteRefTheme.applyFrom(other.footnoteRefTheme)
+    this.headingTheme.applyFrom(other.headingTheme)
+    this.htmlUnderlineTheme.applyFrom(other.htmlUnderlineTheme)
+    this.imageTheme.applyFrom(other.imageTheme)
+    this.inlineCodeTheme.applyFrom(other.inlineCodeTheme)
+    this.italicTheme.applyFrom(other.italicTheme)
+    this.latexMathTheme.applyFrom(other.latexMathTheme)
+    this.linkTheme.applyFrom(other.linkTheme)
+    this.orderedListTheme.applyFrom(other.orderedListTheme)
+    this.paragraphTheme.applyFrom(other.paragraphTheme)
+    this.strikethroughTheme.applyFrom(other.strikethroughTheme)
+    this.subTheme.applyFrom(other.subTheme)
+    this.supTheme.applyFrom(other.supTheme)
+    this.tableTheme.applyFrom(other.tableTheme)
+    this.bulletListTheme.applyFrom(other.bulletListTheme)
+    this.videoTheme.applyFrom(other.videoTheme)
+    this.highlightTheme.applyFrom(other.highlightTheme)
+    this.notifyRenderChanged(true, true, true)
+    return this
+  }
+
   /**
    * 设置上下文
    *

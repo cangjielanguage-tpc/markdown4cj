@@ -19,6 +19,7 @@ struct Deprecated4DetailsPage {
   markdownScroller: Scroller = new Scroller()
   @StorageProp('safeTop') safeTop: number = 0
   @StorageProp('currentColorMode')
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State fileStr: string = ""
   @State content: string = ""
@@ -186,6 +187,12 @@ struct Deprecated4DetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -193,13 +200,11 @@ struct Deprecated4DetailsPage {
     } else {
       theme.setDarculaTheme()
     }
-    let globalTheme: GlobalTheme = new GlobalTheme()
-    globalTheme.setGlobalMargin({ top: this.blockTopAndBottomMargins, bottom: this.blockTopAndBottomMargins })
-    globalTheme.setBlockSpacing(this.blockTopAndBottomMargins)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({ top: this.blockTopAndBottomMargins, bottom: this.blockTopAndBottomMargins })
+    theme.globalTheme.setBlockSpacing(this.blockTopAndBottomMargins)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
 
     if (this.imageResource !== undefined) {
       theme.setImageResource(this.imageResource)

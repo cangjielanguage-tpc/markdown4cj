@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -155,69 +155,71 @@ struct ThematicPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.thematicData._isFull = this.isFull
-                  this.thematicData._incrementalAnalysis = this.incrementalAnalysis
-                  this.thematicData._enableParseThrottle = this.enableParseThrottle
-                  this.thematicData._parseThrottleMs = this.parseThrottleMs
-                  this.thematicData._time = this.time
-                  this.thematicData._textNumber = this.textNumber
-                  this.thematicData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.thematicData._isOnCopy = this.isOnCopy
-                  this.thematicData._blockMarginTop = this.blockMarginTop
-                  this.thematicData._blockMarginRight = this.blockMarginRight
-                  this.thematicData._blockMarginBottom = this.blockMarginBottom
-                  this.thematicData._blockMarginLeft = this.blockMarginLeft
-                  this.thematicData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.thematicData._isLineBreak = this.isLineBreak
-                  this.thematicData._backgroundColor = this.globalBackgroundColor
-                  this.thematicData._openGestureSwipe = this.openGestureSwipe
-                  this.thematicData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.thematicData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.thematicData._isFull = this.isFull
+                    this.thematicData._incrementalAnalysis = this.incrementalAnalysis
+                    this.thematicData._enableParseThrottle = this.enableParseThrottle
+                    this.thematicData._parseThrottleMs = this.parseThrottleMs
+                    this.thematicData._time = this.time
+                    this.thematicData._textNumber = this.textNumber
+                    this.thematicData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.thematicData._isOnCopy = this.isOnCopy
+                    this.thematicData._blockMarginTop = this.blockMarginTop
+                    this.thematicData._blockMarginRight = this.blockMarginRight
+                    this.thematicData._blockMarginBottom = this.blockMarginBottom
+                    this.thematicData._blockMarginLeft = this.blockMarginLeft
+                    this.thematicData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.thematicData._isLineBreak = this.isLineBreak
+                    this.thematicData._backgroundColor = this.globalBackgroundColor
+                    this.thematicData._openGestureSwipe = this.openGestureSwipe
+                    this.thematicData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.thematicData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.thematicData._dividerMarginTop = this.dividerMarginTop
-                  this.thematicData._dividerMarginRight = this.dividerMarginRight
-                  this.thematicData._dividerMarginBottom = this.dividerMarginBottom
-                  this.thematicData._dividerMarginLeft = this.dividerMarginLeft
-                  this.thematicData._dividerPaddingTop = this.dividerPaddingTop
-                  this.thematicData._dividerPaddingRight = this.dividerPaddingRight
-                  this.thematicData._dividerPaddingBottom = this.dividerPaddingBottom
-                  this.thematicData._dividerPaddingLeft = this.dividerPaddingLeft
-                  this.thematicData._dividerColor = this.dividerColor
-                  this.thematicData._dividerStrokeWidth = this.dividerStrokeWidth
-                  this.thematicData._dividerStyle = this.dividerStyle
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/ThematicDetailsPage", params: this.thematicData })
-              })
+                    // ---------- 专有
+                    this.thematicData._dividerMarginTop = this.dividerMarginTop
+                    this.thematicData._dividerMarginRight = this.dividerMarginRight
+                    this.thematicData._dividerMarginBottom = this.dividerMarginBottom
+                    this.thematicData._dividerMarginLeft = this.dividerMarginLeft
+                    this.thematicData._dividerPaddingTop = this.dividerPaddingTop
+                    this.thematicData._dividerPaddingRight = this.dividerPaddingRight
+                    this.thematicData._dividerPaddingBottom = this.dividerPaddingBottom
+                    this.thematicData._dividerPaddingLeft = this.dividerPaddingLeft
+                    this.thematicData._dividerColor = this.dividerColor
+                    this.thematicData._dividerStrokeWidth = this.dividerStrokeWidth
+                    this.thematicData._dividerStyle = this.dividerStyle
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/ThematicDetailsPage", params: this.thematicData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -459,10 +461,12 @@ struct ThematicPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

@@ -16,12 +16,12 @@ struct SwitchDataPage {
   scroller: Scroller = new Scroller() // 滑动控制器
   @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
   markdownScroller: Scroller = new Scroller() // Markdown的控制器
-  @StorageProp('currentColorMode') currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT // 深浅色模式
+  @StorageProp('currentColorMode') @Watch('onColorModeChanged') currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT // 深浅色模式
   @State markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration() // markdown配置
   @State markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown主题
   @State markdownPlugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件
   // @State isRefresh: boolean = true // 刷新标志
-  rawFilePath: string = "033_FullTextSwitch" // rawfile路径
+  rawFilePath: string = "039_FullTextSwitch" // rawfile路径
   @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
   @State mdList: Array<string> = new Array<string>() // markdown文档列表
   @State content: string = "" // markdown文本
@@ -101,6 +101,12 @@ struct SwitchDataPage {
     config.setTocIndexCallback(this.tocIndexCallback.bind(this))
     config.setFootnoteCallback(this.footnoteCallback.bind(this))
     return config
+  }
+
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   setMarkdownTheme(): MarkdownTheme {

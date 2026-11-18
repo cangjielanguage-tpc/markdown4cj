@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_FF191919, isMargin, isPadding } from "../base/Constants"
 
 /**
@@ -218,6 +218,37 @@ export class OrderedListTheme implements MarkdownBaseTheme {
    */
   setOrderedListMarkerTextLineHeight(lineHeight: number | string | Resource): OrderedListTheme {
     this.orderedListMarkerTextLineHeight = lineHeight
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return OrderedListTheme
+   */
+  applyFrom(other: OrderedListTheme): OrderedListTheme {
+    this.orderedListBackgroundColor = other.orderedListBackgroundColor
+    this.orderedListMarginTop = other.orderedListMarginTop
+    this.orderedListMarginRight = other.orderedListMarginRight
+    this.orderedListMarginBottom = other.orderedListMarginBottom
+    this.orderedListMarginLeft = other.orderedListMarginLeft
+    this.orderedListPaddingTop = other.orderedListPaddingTop
+    this.orderedListPaddingRight = other.orderedListPaddingRight
+    this.orderedListPaddingBottom = other.orderedListPaddingBottom
+    this.orderedListPaddingLeft = other.orderedListPaddingLeft
+    this.orderedListChildSpacing = other.orderedListChildSpacing
+    this.orderedListChildChildSpacing = other.orderedListChildChildSpacing
+    this.orderedListMarkerSpacing = other.orderedListMarkerSpacing
+    this.orderedListMarkerTextFontColor = other.orderedListMarkerTextFontColor
+    this.orderedListMarkerTextFontSize = other.orderedListMarkerTextFontSize
+    this.orderedListMarkerTextFontStyle = other.orderedListMarkerTextFontStyle
+    this.orderedListMarkerTextFontWeight = other.orderedListMarkerTextFontWeight
+    this.orderedListMarkerTextFontFamily = other.orderedListMarkerTextFontFamily
+    this.orderedListMarkerTextLineHeight = other.orderedListMarkerTextLineHeight
     return this
   }
 }

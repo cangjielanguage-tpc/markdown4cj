@@ -196,4 +196,33 @@ export class GlobalTheme implements MarkdownBaseTheme {
     this.paragraphHeadingAnimationDuration = duration
     return this
   }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return GlobalTheme
+   */
+  applyFrom(other: GlobalTheme): GlobalTheme {
+    this.stageContext = other.stageContext
+    this.uiAbilityContext = other.uiAbilityContext
+    this.isMarkdownParserSync = other.isMarkdownParserSync
+    this.enableParseThrottle = other.enableParseThrottle
+    this.parseThrottleMs = other.parseThrottleMs
+    this.isOnCopy = other.isOnCopy
+    this.blockMarginTop = other.blockMarginTop
+    this.blockMarginRight = other.blockMarginRight
+    this.blockMarginBottom = other.blockMarginBottom
+    this.blockMarginLeft = other.blockMarginLeft
+    this.markdownBlockSpacing = other.markdownBlockSpacing
+    this.isLineBreak = other.isLineBreak
+    this.openGestureSwipe = other.openGestureSwipe
+    this.backgroundColor = other.backgroundColor
+    this.paragraphHeadingAnimationEnabled = other.paragraphHeadingAnimationEnabled
+    this.paragraphHeadingAnimationDuration = other.paragraphHeadingAnimationDuration
+    return this
+  }
 }

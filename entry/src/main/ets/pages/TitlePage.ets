@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -420,167 +420,169 @@ struct TitlePage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.titleData._isFull = this.isFull
-                  this.titleData._incrementalAnalysis = this.incrementalAnalysis
-                  this.titleData._enableParseThrottle = this.enableParseThrottle
-                  this.titleData._parseThrottleMs = this.parseThrottleMs
-                  this.titleData._time = this.time
-                  this.titleData._textNumber = this.textNumber
-                  this.titleData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.titleData._isOnCopy = this.isOnCopy
-                  this.titleData._blockMarginTop = this.blockMarginTop
-                  this.titleData._blockMarginRight = this.blockMarginRight
-                  this.titleData._blockMarginBottom = this.blockMarginBottom
-                  this.titleData._blockMarginLeft = this.blockMarginLeft
-                  this.titleData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.titleData._isLineBreak = this.isLineBreak
-                  this.titleData._backgroundColor = this.globalBackgroundColor
-                  this.titleData._openGestureSwipe = this.openGestureSwipe
-                  this.titleData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.titleData._pagePath = `${this.rawFilePath}/${item}`
-                  this.titleData._showHighlight = this.showHighlight
-                  this.titleData._beforeSelectedParagraphBackgroundColor = this.beforeSelectedParagraphBackgroundColor
-                  this.titleData._selectedParagraphBackgroundColor = this.selectedParagraphBackgroundColor
-                  // ---------- 专有 - 一级标题
-                  this.titleData._heading1BackgroundColor = this.heading1BackgroundColor
-                  this.titleData._heading1MarginTop = this.heading1MarginTop
-                  this.titleData._heading1MarginRight = this.heading1MarginRight
-                  this.titleData._heading1MarginBottom = this.heading1MarginBottom
-                  this.titleData._heading1MarginLeft = this.heading1MarginLeft
-                  this.titleData._heading1PaddingTop = this.heading1PaddingTop
-                  this.titleData._heading1PaddingRight = this.heading1PaddingRight
-                  this.titleData._heading1PaddingBottom = this.heading1PaddingBottom
-                  this.titleData._heading1PaddingLeft = this.heading1PaddingLeft
-                  this.titleData._heading1TextFontColor = this.heading1TextFontColor
-                  this.titleData._heading1TextFontSize = this.heading1TextFontSize
-                  this.titleData._heading1TextFontStyle = this.heading1TextFontStyle
-                  this.titleData._heading1TextFontWeight = this.heading1TextFontWeight
-                  this.titleData._heading1TextFontFamily = this.heading1TextFontFamily
-                  this.titleData._heading1TextLineHeight = this.heading1TextLineHeight
-                  this.titleData._heading1TextLetterSpacing = this.heading1TextLetterSpacing
-                  this.titleData._heading1UnderlineHeight = this.heading1UnderlineHeight
-                  this.titleData._heading1UnderlineColor = this.heading1UnderlineColor
-                  this.titleData._heading1UnderlineSpacing = this.heading1UnderlineSpacing
-                  // ---------- 专有 - 二级标题
-                  this.titleData._heading2BackgroundColor = this.heading2BackgroundColor
-                  this.titleData._heading2MarginTop = this.heading2MarginTop
-                  this.titleData._heading2MarginRight = this.heading2MarginRight
-                  this.titleData._heading2MarginBottom = this.heading2MarginBottom
-                  this.titleData._heading2MarginLeft = this.heading2MarginLeft
-                  this.titleData._heading2PaddingTop = this.heading2PaddingTop
-                  this.titleData._heading2PaddingRight = this.heading2PaddingRight
-                  this.titleData._heading2PaddingBottom = this.heading2PaddingBottom
-                  this.titleData._heading2PaddingLeft = this.heading2PaddingLeft
-                  this.titleData._heading2TextFontColor = this.heading2TextFontColor
-                  this.titleData._heading2TextFontSize = this.heading2TextFontSize
-                  this.titleData._heading2TextFontStyle = this.heading2TextFontStyle
-                  this.titleData._heading2TextFontWeight = this.heading2TextFontWeight
-                  this.titleData._heading2TextFontFamily = this.heading2TextFontFamily
-                  this.titleData._heading2TextLineHeight = this.heading2TextLineHeight
-                  this.titleData._heading2TextLetterSpacing = this.heading2TextLetterSpacing
-                  this.titleData._heading2UnderlineHeight = this.heading2UnderlineHeight
-                  this.titleData._heading2UnderlineColor = this.heading2UnderlineColor
-                  this.titleData._heading2UnderlineSpacing = this.heading2UnderlineSpacing
-                  // ---------- 专有 - 三级标题
-                  this.titleData._heading3BackgroundColor = this.heading3BackgroundColor
-                  this.titleData._heading3MarginTop = this.heading3MarginTop
-                  this.titleData._heading3MarginRight = this.heading3MarginRight
-                  this.titleData._heading3MarginBottom = this.heading3MarginBottom
-                  this.titleData._heading3MarginLeft = this.heading3MarginLeft
-                  this.titleData._heading3PaddingTop = this.heading3PaddingTop
-                  this.titleData._heading3PaddingRight = this.heading3PaddingRight
-                  this.titleData._heading3PaddingBottom = this.heading3PaddingBottom
-                  this.titleData._heading3PaddingLeft = this.heading3PaddingLeft
-                  this.titleData._heading3TextFontColor = this.heading3TextFontColor
-                  this.titleData._heading3TextFontSize = this.heading3TextFontSize
-                  this.titleData._heading3TextFontStyle = this.heading3TextFontStyle
-                  this.titleData._heading3TextFontWeight = this.heading3TextFontWeight
-                  this.titleData._heading3TextFontFamily = this.heading3TextFontFamily
-                  this.titleData._heading3TextLineHeight = this.heading3TextLineHeight
-                  this.titleData._heading3TextLetterSpacing = this.heading3TextLetterSpacing
-                  // ---------- 专有 - 四级标题
-                  this.titleData._heading4BackgroundColor = this.heading4BackgroundColor
-                  this.titleData._heading4MarginTop = this.heading4MarginTop
-                  this.titleData._heading4MarginRight = this.heading4MarginRight
-                  this.titleData._heading4MarginBottom = this.heading4MarginBottom
-                  this.titleData._heading4MarginLeft = this.heading4MarginLeft
-                  this.titleData._heading4PaddingTop = this.heading4PaddingTop
-                  this.titleData._heading4PaddingRight = this.heading4PaddingRight
-                  this.titleData._heading4PaddingBottom = this.heading4PaddingBottom
-                  this.titleData._heading4PaddingLeft = this.heading4PaddingLeft
-                  this.titleData._heading4TextFontColor = this.heading4TextFontColor
-                  this.titleData._heading4TextFontSize = this.heading4TextFontSize
-                  this.titleData._heading4TextFontStyle = this.heading4TextFontStyle
-                  this.titleData._heading4TextFontWeight = this.heading4TextFontWeight
-                  this.titleData._heading4TextFontFamily = this.heading4TextFontFamily
-                  this.titleData._heading4TextLineHeight = this.heading4TextLineHeight
-                  this.titleData._heading4TextLetterSpacing = this.heading4TextLetterSpacing
-                  // ---------- 专有 - 五级标题
-                  this.titleData._heading5BackgroundColor = this.heading5BackgroundColor
-                  this.titleData._heading5MarginTop = this.heading5MarginTop
-                  this.titleData._heading5MarginRight = this.heading5MarginRight
-                  this.titleData._heading5MarginBottom = this.heading5MarginBottom
-                  this.titleData._heading5MarginLeft = this.heading5MarginLeft
-                  this.titleData._heading5PaddingTop = this.heading5PaddingTop
-                  this.titleData._heading5PaddingRight = this.heading5PaddingRight
-                  this.titleData._heading5PaddingBottom = this.heading5PaddingBottom
-                  this.titleData._heading5PaddingLeft = this.heading5PaddingLeft
-                  this.titleData._heading5TextFontColor = this.heading5TextFontColor
-                  this.titleData._heading5TextFontSize = this.heading5TextFontSize
-                  this.titleData._heading5TextFontStyle = this.heading5TextFontStyle
-                  this.titleData._heading5TextFontWeight = this.heading5TextFontWeight
-                  this.titleData._heading5TextFontFamily = this.heading5TextFontFamily
-                  this.titleData._heading5TextLineHeight = this.heading5TextLineHeight
-                  this.titleData._heading5TextLetterSpacing = this.heading5TextLetterSpacing
-                  // ---------- 专有 - 六级标题
-                  this.titleData._heading6BackgroundColor = this.heading6BackgroundColor
-                  this.titleData._heading6MarginTop = this.heading6MarginTop
-                  this.titleData._heading6MarginRight = this.heading6MarginRight
-                  this.titleData._heading6MarginBottom = this.heading6MarginBottom
-                  this.titleData._heading6MarginLeft = this.heading6MarginLeft
-                  this.titleData._heading6PaddingTop = this.heading6PaddingTop
-                  this.titleData._heading6PaddingRight = this.heading6PaddingRight
-                  this.titleData._heading6PaddingBottom = this.heading6PaddingBottom
-                  this.titleData._heading6PaddingLeft = this.heading6PaddingLeft
-                  this.titleData._heading6TextFontColor = this.heading6TextFontColor
-                  this.titleData._heading6TextFontSize = this.heading6TextFontSize
-                  this.titleData._heading6TextFontStyle = this.heading6TextFontStyle
-                  this.titleData._heading6TextFontWeight = this.heading6TextFontWeight
-                  this.titleData._heading6TextFontFamily = this.heading6TextFontFamily
-                  this.titleData._heading6TextLineHeight = this.heading6TextLineHeight
-                  this.titleData._heading6TextLetterSpacing = this.heading6TextLetterSpacing
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/TitleDetailsPage", params: this.titleData })
-              })
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.titleData._isFull = this.isFull
+                    this.titleData._incrementalAnalysis = this.incrementalAnalysis
+                    this.titleData._enableParseThrottle = this.enableParseThrottle
+                    this.titleData._parseThrottleMs = this.parseThrottleMs
+                    this.titleData._time = this.time
+                    this.titleData._textNumber = this.textNumber
+                    this.titleData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.titleData._isOnCopy = this.isOnCopy
+                    this.titleData._blockMarginTop = this.blockMarginTop
+                    this.titleData._blockMarginRight = this.blockMarginRight
+                    this.titleData._blockMarginBottom = this.blockMarginBottom
+                    this.titleData._blockMarginLeft = this.blockMarginLeft
+                    this.titleData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.titleData._isLineBreak = this.isLineBreak
+                    this.titleData._backgroundColor = this.globalBackgroundColor
+                    this.titleData._openGestureSwipe = this.openGestureSwipe
+                    this.titleData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.titleData._pagePath = `${this.rawFilePath}/${item}`
+                    this.titleData._showHighlight = this.showHighlight
+                    this.titleData._beforeSelectedParagraphBackgroundColor = this.beforeSelectedParagraphBackgroundColor
+                    this.titleData._selectedParagraphBackgroundColor = this.selectedParagraphBackgroundColor
+                    // ---------- 专有 - 一级标题
+                    this.titleData._heading1BackgroundColor = this.heading1BackgroundColor
+                    this.titleData._heading1MarginTop = this.heading1MarginTop
+                    this.titleData._heading1MarginRight = this.heading1MarginRight
+                    this.titleData._heading1MarginBottom = this.heading1MarginBottom
+                    this.titleData._heading1MarginLeft = this.heading1MarginLeft
+                    this.titleData._heading1PaddingTop = this.heading1PaddingTop
+                    this.titleData._heading1PaddingRight = this.heading1PaddingRight
+                    this.titleData._heading1PaddingBottom = this.heading1PaddingBottom
+                    this.titleData._heading1PaddingLeft = this.heading1PaddingLeft
+                    this.titleData._heading1TextFontColor = this.heading1TextFontColor
+                    this.titleData._heading1TextFontSize = this.heading1TextFontSize
+                    this.titleData._heading1TextFontStyle = this.heading1TextFontStyle
+                    this.titleData._heading1TextFontWeight = this.heading1TextFontWeight
+                    this.titleData._heading1TextFontFamily = this.heading1TextFontFamily
+                    this.titleData._heading1TextLineHeight = this.heading1TextLineHeight
+                    this.titleData._heading1TextLetterSpacing = this.heading1TextLetterSpacing
+                    this.titleData._heading1UnderlineHeight = this.heading1UnderlineHeight
+                    this.titleData._heading1UnderlineColor = this.heading1UnderlineColor
+                    this.titleData._heading1UnderlineSpacing = this.heading1UnderlineSpacing
+                    // ---------- 专有 - 二级标题
+                    this.titleData._heading2BackgroundColor = this.heading2BackgroundColor
+                    this.titleData._heading2MarginTop = this.heading2MarginTop
+                    this.titleData._heading2MarginRight = this.heading2MarginRight
+                    this.titleData._heading2MarginBottom = this.heading2MarginBottom
+                    this.titleData._heading2MarginLeft = this.heading2MarginLeft
+                    this.titleData._heading2PaddingTop = this.heading2PaddingTop
+                    this.titleData._heading2PaddingRight = this.heading2PaddingRight
+                    this.titleData._heading2PaddingBottom = this.heading2PaddingBottom
+                    this.titleData._heading2PaddingLeft = this.heading2PaddingLeft
+                    this.titleData._heading2TextFontColor = this.heading2TextFontColor
+                    this.titleData._heading2TextFontSize = this.heading2TextFontSize
+                    this.titleData._heading2TextFontStyle = this.heading2TextFontStyle
+                    this.titleData._heading2TextFontWeight = this.heading2TextFontWeight
+                    this.titleData._heading2TextFontFamily = this.heading2TextFontFamily
+                    this.titleData._heading2TextLineHeight = this.heading2TextLineHeight
+                    this.titleData._heading2TextLetterSpacing = this.heading2TextLetterSpacing
+                    this.titleData._heading2UnderlineHeight = this.heading2UnderlineHeight
+                    this.titleData._heading2UnderlineColor = this.heading2UnderlineColor
+                    this.titleData._heading2UnderlineSpacing = this.heading2UnderlineSpacing
+                    // ---------- 专有 - 三级标题
+                    this.titleData._heading3BackgroundColor = this.heading3BackgroundColor
+                    this.titleData._heading3MarginTop = this.heading3MarginTop
+                    this.titleData._heading3MarginRight = this.heading3MarginRight
+                    this.titleData._heading3MarginBottom = this.heading3MarginBottom
+                    this.titleData._heading3MarginLeft = this.heading3MarginLeft
+                    this.titleData._heading3PaddingTop = this.heading3PaddingTop
+                    this.titleData._heading3PaddingRight = this.heading3PaddingRight
+                    this.titleData._heading3PaddingBottom = this.heading3PaddingBottom
+                    this.titleData._heading3PaddingLeft = this.heading3PaddingLeft
+                    this.titleData._heading3TextFontColor = this.heading3TextFontColor
+                    this.titleData._heading3TextFontSize = this.heading3TextFontSize
+                    this.titleData._heading3TextFontStyle = this.heading3TextFontStyle
+                    this.titleData._heading3TextFontWeight = this.heading3TextFontWeight
+                    this.titleData._heading3TextFontFamily = this.heading3TextFontFamily
+                    this.titleData._heading3TextLineHeight = this.heading3TextLineHeight
+                    this.titleData._heading3TextLetterSpacing = this.heading3TextLetterSpacing
+                    // ---------- 专有 - 四级标题
+                    this.titleData._heading4BackgroundColor = this.heading4BackgroundColor
+                    this.titleData._heading4MarginTop = this.heading4MarginTop
+                    this.titleData._heading4MarginRight = this.heading4MarginRight
+                    this.titleData._heading4MarginBottom = this.heading4MarginBottom
+                    this.titleData._heading4MarginLeft = this.heading4MarginLeft
+                    this.titleData._heading4PaddingTop = this.heading4PaddingTop
+                    this.titleData._heading4PaddingRight = this.heading4PaddingRight
+                    this.titleData._heading4PaddingBottom = this.heading4PaddingBottom
+                    this.titleData._heading4PaddingLeft = this.heading4PaddingLeft
+                    this.titleData._heading4TextFontColor = this.heading4TextFontColor
+                    this.titleData._heading4TextFontSize = this.heading4TextFontSize
+                    this.titleData._heading4TextFontStyle = this.heading4TextFontStyle
+                    this.titleData._heading4TextFontWeight = this.heading4TextFontWeight
+                    this.titleData._heading4TextFontFamily = this.heading4TextFontFamily
+                    this.titleData._heading4TextLineHeight = this.heading4TextLineHeight
+                    this.titleData._heading4TextLetterSpacing = this.heading4TextLetterSpacing
+                    // ---------- 专有 - 五级标题
+                    this.titleData._heading5BackgroundColor = this.heading5BackgroundColor
+                    this.titleData._heading5MarginTop = this.heading5MarginTop
+                    this.titleData._heading5MarginRight = this.heading5MarginRight
+                    this.titleData._heading5MarginBottom = this.heading5MarginBottom
+                    this.titleData._heading5MarginLeft = this.heading5MarginLeft
+                    this.titleData._heading5PaddingTop = this.heading5PaddingTop
+                    this.titleData._heading5PaddingRight = this.heading5PaddingRight
+                    this.titleData._heading5PaddingBottom = this.heading5PaddingBottom
+                    this.titleData._heading5PaddingLeft = this.heading5PaddingLeft
+                    this.titleData._heading5TextFontColor = this.heading5TextFontColor
+                    this.titleData._heading5TextFontSize = this.heading5TextFontSize
+                    this.titleData._heading5TextFontStyle = this.heading5TextFontStyle
+                    this.titleData._heading5TextFontWeight = this.heading5TextFontWeight
+                    this.titleData._heading5TextFontFamily = this.heading5TextFontFamily
+                    this.titleData._heading5TextLineHeight = this.heading5TextLineHeight
+                    this.titleData._heading5TextLetterSpacing = this.heading5TextLetterSpacing
+                    // ---------- 专有 - 六级标题
+                    this.titleData._heading6BackgroundColor = this.heading6BackgroundColor
+                    this.titleData._heading6MarginTop = this.heading6MarginTop
+                    this.titleData._heading6MarginRight = this.heading6MarginRight
+                    this.titleData._heading6MarginBottom = this.heading6MarginBottom
+                    this.titleData._heading6MarginLeft = this.heading6MarginLeft
+                    this.titleData._heading6PaddingTop = this.heading6PaddingTop
+                    this.titleData._heading6PaddingRight = this.heading6PaddingRight
+                    this.titleData._heading6PaddingBottom = this.heading6PaddingBottom
+                    this.titleData._heading6PaddingLeft = this.heading6PaddingLeft
+                    this.titleData._heading6TextFontColor = this.heading6TextFontColor
+                    this.titleData._heading6TextFontSize = this.heading6TextFontSize
+                    this.titleData._heading6TextFontStyle = this.heading6TextFontStyle
+                    this.titleData._heading6TextFontWeight = this.heading6TextFontWeight
+                    this.titleData._heading6TextFontFamily = this.heading6TextFontFamily
+                    this.titleData._heading6TextLineHeight = this.heading6TextLineHeight
+                    this.titleData._heading6TextLetterSpacing = this.heading6TextLetterSpacing
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/TitleDetailsPage", params: this.titleData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -1566,10 +1568,12 @@ struct TitlePage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

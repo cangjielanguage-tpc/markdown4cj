@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseMDData } from '../model/BaseMDData'
@@ -26,7 +26,7 @@ struct BoldPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "017_Bold"
+  rawFilePath: string = "019_Bold"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -145,65 +145,67 @@ struct BoldPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.boldData._isFull = this.isFull
-                  this.boldData._incrementalAnalysis = this.incrementalAnalysis
-                  this.boldData._enableParseThrottle = this.enableParseThrottle
-                  this.boldData._parseThrottleMs = this.parseThrottleMs
-                  this.boldData._time = this.time
-                  this.boldData._textNumber = this.textNumber
-                  this.boldData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.boldData._isOnCopy = this.isOnCopy
-                  this.boldData._blockMarginTop = this.blockMarginTop
-                  this.boldData._blockMarginRight = this.blockMarginRight
-                  this.boldData._blockMarginBottom = this.blockMarginBottom
-                  this.boldData._blockMarginLeft = this.blockMarginLeft
-                  this.boldData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.boldData._isLineBreak = this.isLineBreak
-                  this.boldData._backgroundColor = this.globalBackgroundColor
-                  this.boldData._openGestureSwipe = this.openGestureSwipe
-                  this.boldData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.boldData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.boldData._isFull = this.isFull
+                    this.boldData._incrementalAnalysis = this.incrementalAnalysis
+                    this.boldData._enableParseThrottle = this.enableParseThrottle
+                    this.boldData._parseThrottleMs = this.parseThrottleMs
+                    this.boldData._time = this.time
+                    this.boldData._textNumber = this.textNumber
+                    this.boldData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.boldData._isOnCopy = this.isOnCopy
+                    this.boldData._blockMarginTop = this.blockMarginTop
+                    this.boldData._blockMarginRight = this.blockMarginRight
+                    this.boldData._blockMarginBottom = this.blockMarginBottom
+                    this.boldData._blockMarginLeft = this.blockMarginLeft
+                    this.boldData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.boldData._isLineBreak = this.isLineBreak
+                    this.boldData._backgroundColor = this.globalBackgroundColor
+                    this.boldData._openGestureSwipe = this.openGestureSwipe
+                    this.boldData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.boldData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.boldData._boldTextFontColor = this.boldTextFontColor
-                  this.boldData._boldTextFontSize = this.boldTextFontSize
-                  this.boldData._boldTextFontStyle = this.boldTextFontStyle
-                  this.boldData._boldTextFontWeight = this.boldTextFontWeight
-                  this.boldData._boldTextFontFamily = this.boldTextFontFamily
-                  this.boldData._boldTextLineHeight = this.boldTextLineHeight
-                  this.boldData._boldTextLetterSpacing = this.boldTextLetterSpacing
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/BoldDetailsPage", params: this.boldData })
-              })
+                    // ---------- 专有
+                    this.boldData._boldTextFontColor = this.boldTextFontColor
+                    this.boldData._boldTextFontSize = this.boldTextFontSize
+                    this.boldData._boldTextFontStyle = this.boldTextFontStyle
+                    this.boldData._boldTextFontWeight = this.boldTextFontWeight
+                    this.boldData._boldTextFontFamily = this.boldTextFontFamily
+                    this.boldData._boldTextLineHeight = this.boldTextLineHeight
+                    this.boldData._boldTextLetterSpacing = this.boldTextLetterSpacing
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/BoldDetailsPage", params: this.boldData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -421,10 +423,12 @@ struct BoldPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

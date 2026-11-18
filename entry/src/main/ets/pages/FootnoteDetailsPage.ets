@@ -23,6 +23,7 @@ struct FootnoteDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   // 文件文本
   @State
@@ -282,6 +283,12 @@ struct FootnoteDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -290,67 +297,61 @@ struct FootnoteDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - FootnoteDef
-    let footnoteDefTheme = new FootnoteDefTheme()
     if (this.footnoteDefBackgroundColor !== undefined) {
-      footnoteDefTheme.setFootnoteDefBackgroundColor(this.footnoteDefBackgroundColor)
+      theme.footnoteDefTheme.setFootnoteDefBackgroundColor(this.footnoteDefBackgroundColor)
     }
-    footnoteDefTheme.setFootnoteDefMargin({top: this.footnoteDefMarginTop, right: this.footnoteDefMarginRight, bottom: this.footnoteDefMarginBottom, left: this.footnoteDefMarginLeft})
-    footnoteDefTheme.setFootnoteDefPadding({top: this.footnoteDefPaddingTop, right: this.footnoteDefPaddingRight, bottom: this.footnoteDefPaddingBottom, left: this.footnoteDefPaddingLeft})
-    theme.setFootnoteDefTheme(footnoteDefTheme)
+    theme.footnoteDefTheme.setFootnoteDefMargin({top: this.footnoteDefMarginTop, right: this.footnoteDefMarginRight, bottom: this.footnoteDefMarginBottom, left: this.footnoteDefMarginLeft})
+    theme.footnoteDefTheme.setFootnoteDefPadding({top: this.footnoteDefPaddingTop, right: this.footnoteDefPaddingRight, bottom: this.footnoteDefPaddingBottom, left: this.footnoteDefPaddingLeft})
     
     // ---------- 专有 - FootnoteRef
-    let footnoteRefTheme = new FootnoteRefTheme()
     if (this.footnoteRefTextFontColor !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextFontColor(this.footnoteRefTextFontColor)
+      theme.footnoteRefTheme.setFootnoteRefTextFontColor(this.footnoteRefTextFontColor)
     }
     if (this.footnoteRefTextFontSize !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextFontSize(this.footnoteRefTextFontSize)
+      theme.footnoteRefTheme.setFootnoteRefTextFontSize(this.footnoteRefTextFontSize)
     }
     if (this.footnoteRefTextFontStyle !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextFontStyle(this.footnoteRefTextFontStyle)
+      theme.footnoteRefTheme.setFootnoteRefTextFontStyle(this.footnoteRefTextFontStyle)
     }
     if (this.footnoteRefTextFontWeight !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextFontWeight(this.footnoteRefTextFontWeight)
+      theme.footnoteRefTheme.setFootnoteRefTextFontWeight(this.footnoteRefTextFontWeight)
     }
     if (this.footnoteRefTextFontFamily !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextFontFamily(this.footnoteRefTextFontFamily)
+      theme.footnoteRefTheme.setFootnoteRefTextFontFamily(this.footnoteRefTextFontFamily)
     }
     if (this.footnoteRefTextLineHeight !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextLineHeight(this.footnoteRefTextLineHeight)
+      theme.footnoteRefTheme.setFootnoteRefTextLineHeight(this.footnoteRefTextLineHeight)
     }
     if (this.footnoteRefTextLetterSpacing !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextLetterSpacing(this.footnoteRefTextLetterSpacing)
+      theme.footnoteRefTheme.setFootnoteRefTextLetterSpacing(this.footnoteRefTextLetterSpacing)
     }
-    footnoteRefTheme.setFootnoteRefTextDecorationType(this.footnoteRefTextDecorationType)
+    theme.footnoteRefTheme.setFootnoteRefTextDecorationType(this.footnoteRefTextDecorationType)
     if (this.footnoteRefTextDecorationColor !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextDecorationColor(this.footnoteRefTextDecorationColor)
+      theme.footnoteRefTheme.setFootnoteRefTextDecorationColor(this.footnoteRefTextDecorationColor)
     }
-    footnoteRefTheme.setFootnoteRefTextDecorationStyle(this.footnoteRefTextDecorationStyle)
+    theme.footnoteRefTheme.setFootnoteRefTextDecorationStyle(this.footnoteRefTextDecorationStyle)
     if (this.footnoteRefTextBackgroundColor !== undefined) {
-      footnoteRefTheme.setFootnoteRefTextBackgroundColor(this.footnoteRefTextBackgroundColor)
+      theme.footnoteRefTheme.setFootnoteRefTextBackgroundColor(this.footnoteRefTextBackgroundColor)
     }
-    footnoteRefTheme.setFootnoteRefTextBackgroundRadius({
+    theme.footnoteRefTheme.setFootnoteRefTextBackgroundRadius({
       topLeft: this.footnoteRefTextBackgroundRadiusTopLeft,
       topRight: this.footnoteRefTextBackgroundRadiusTopRight,
       bottomLeft: this.footnoteRefTextBackgroundRadiusBottomLeft,
       bottomRight: this.footnoteRefTextBackgroundRadiusBottomRight
     })
-    theme.setFootnoteRefTheme(footnoteRefTheme)
     
     return theme
   }

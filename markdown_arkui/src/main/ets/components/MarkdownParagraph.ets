@@ -10,26 +10,10 @@ import { latexStringToImage, LatexMathColorFormat } from "@cangjie-tpc/formula_h
 import { NodeView } from "../model/NodeView"
 import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
 import { LatexParseQueue } from "../model/LatexParseQueue"
-import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
-import { BoldTheme } from "../theme/BoldTheme"
-import { DefinitionListTheme } from "../theme/DefinitionListTheme"
-import { FootnoteRefTheme } from "../theme/FootnoteRefTheme"
-import { GlobalTheme } from "../theme/GlobalTheme"
-import { HeadingTheme } from "../theme/HeadingTheme"
-import { HighlightTheme } from "../theme/HighlightTheme"
-import { HtmlUnderlineTheme } from "../theme/HtmlUnderlineTheme"
-import { ImageTheme } from "../theme/ImageTheme"
 import { MarkdownImageBlock } from "./MarkdownImageBlock"
-import { InlineCodeTheme } from "../theme/InlineCodeTheme"
-import { ItalicTheme } from "../theme/ItalicTheme"
-import { LatexMathTheme } from "../theme/LatexMathTheme"
 import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
-import { LinkTheme } from "../theme/LinkTheme"
-import { ParagraphTheme } from "../theme/ParagraphTheme"
-import { StrikethroughTheme } from "../theme/StrikethroughTheme"
-import { SubTheme } from "../theme/SubTheme"
-import { SupTheme } from "../theme/SupTheme"
-import { TableTheme } from "../theme/TableTheme"
+import { MarkdownTheme } from "../theme/MarkdownTheme"
+import { SelectionRange } from "../model/SelectionRange"
 import {
   blockFillWidth,
   buildInlineItemKey,
@@ -80,24 +64,7 @@ export struct MarkdownParagraph {
   // 替代整屏高度——避免段落被标题栏/面板/系统栏遮挡时仍判可见（过报）。
   @Consume('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder
   @ObjectLink @Watch('refreshData') node: NodeView // 段落自身节点数据
-  @ObjectLink headingTheme: HeadingTheme // 标题样式
-  @ObjectLink globalTheme: GlobalTheme // 整体样式
-  @ObjectLink blockQuoteTheme: BlockQuoteTheme // 块引用样式
-  @ObjectLink subTheme: SubTheme // 下标样式
-  @ObjectLink supTheme: SupTheme // 上标样式
-  @ObjectLink inlineCodeTheme: InlineCodeTheme // 内联代码样式
-  @ObjectLink boldTheme: BoldTheme // 加粗样式
-  @ObjectLink italicTheme: ItalicTheme // 斜体样式
-  @ObjectLink strikethroughTheme: StrikethroughTheme // 删除线样式
-  @ObjectLink highlightTheme: HighlightTheme // 高亮样式
-  @ObjectLink htmlUnderlineTheme: HtmlUnderlineTheme // 下划线样式
-  @ObjectLink linkTheme: LinkTheme // 链接样式
-  @ObjectLink footnoteRefTheme: FootnoteRefTheme // 内联脚注样式
-  @ObjectLink tableTheme: TableTheme // 表格样式
-  @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
-  @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
-  @ObjectLink imageTheme: ImageTheme // 图片样式
-  @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
+  @ObjectLink @Watch('onThemeChanged') theme: MarkdownTheme // 聚合主题（方案二：18个子主题收敛为1个@ObjectLink，普通样式走声明式链路，派生资源按代次差分分类刷新）
   @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
@@ -133,8 +100,13 @@ export struct MarkdownParagraph {
 
   @State textBackgroundColor: ResourceColor = COLOR_TRANSPARENT // 被长按段落实时背景颜色
   @State selectBackgroundColor: ResourceColor = COLOR_FF4A90E2 // 选中文本的背景颜色
-  @State selectStart: number = 0 // 选中文本的开始位置
-  @State selectEnd: number = 0 // 选中文本的结束位置
+  @State selection: SelectionRange = new SelectionRange(0, 0) // 选中文本起止（方案4.1：两个@State收敛为单状态值，整体替换实例触发一次刷新）
+  private lastTheme: MarkdownTheme | undefined = undefined // 聚合主题实例基线（实例替换时重建代次基线，避免跨实例代次差分误判）
+  private lastPlainVersion: number = -1 // 上次处理的普通样式总代次
+  private lastLinkVersion: number = -1 // 上次处理的链接图标样式代次
+  private lastLatexVersion: number = -1 // 上次处理的公式样式代次
+  private lastImageVersion: number = -1 // 上次处理的图片样式代次
+  private imageNaturalSizes: Map<string, number[]> = new Map() // 图片自然尺寸缓存（url→[宽,高]px），主题变化重算显示尺寸兜底用
   private promptAction: PromptAction = this.getUIContext().getPromptAction()
   private delayTime: number = 300 // 自定义菜单关闭延时时间（毫秒）
   private timerId: number = -1 // 自定义菜单关闭延时定时器 ID
@@ -158,6 +130,12 @@ export struct MarkdownParagraph {
         child.latexIsLoading = false
       }
     }
+    // 聚合主题代次基线：onThemeChanged 按差分判断类别变化，首次建立基线避免把历史代次误判为新变化
+    this.lastTheme = this.theme
+    this.lastPlainVersion = this.theme.renderPlainVersion
+    this.lastLinkVersion = this.theme.renderLinkVersion
+    this.lastLatexVersion = this.theme.renderLatexVersion
+    this.lastImageVersion = this.theme.renderImageVersion
     this.refreshData() // 首次加载
     // 监听器无条件注册：aboutToAppear 时刻 @ObjectLink config 可能尚未与父组件状态同步
     //（详情页在自身 aboutToAppear 才给 markdownConfiguration 赋带回调的新对象），此刻读
@@ -172,6 +150,7 @@ export struct MarkdownParagraph {
 
   aboutToDisappear(): void {
     this.isAlive = false
+    this.imageNaturalSizes.clear() // 图片自然尺寸缓存随组件销毁释放
     // 监听器在 aboutToAppear 无条件注册，故此处无条件移除（removeListener 对未注册者是 no-op，安全）
     this.visibleRectHolder.removeListener(this.visibleRectListener)
     if (this.exposureTimerId !== -1) {
@@ -268,7 +247,7 @@ export struct MarkdownParagraph {
       if (this.node.footnoteID !== undefined) {
         footnotePrefixLen = `[^${this.node.footnoteID}]: `.length
       }
-      this.httpLinks = computeLinkRanges(this.list, this.globalTheme.isLineBreak, footnotePrefixLen)
+      this.httpLinks = computeLinkRanges(this.list, this.theme.globalTheme.isLineBreak, footnotePrefixLen)
       this.httpLinksDirty = false
       this.linkBoxesDirty = true
     }
@@ -373,12 +352,12 @@ export struct MarkdownParagraph {
   @Builder
   paragraphColumn() {
     Column() {
-      if (!this.imageTheme.isImageMixedLayout
+      if (!this.theme.imageTheme.isImageMixedLayout
         && this.list.length === 1
         && (this.list[0].nodeType === "Image" || this.list[0].nodeType === "StyleImage" || this.list[0].nodeType === "ImageHtmlNode")) {
         MarkdownImageBlock({
           item: this.list[0],
-          imageTheme: this.imageTheme,
+          imageTheme: this.theme.imageTheme,
           componentWidth: this.componentWidth,
           imageCallback: this.imageCallback,
           imageDownloadCallback: this.imageDownloadCallback,
@@ -388,9 +367,9 @@ export struct MarkdownParagraph {
         Text(undefined, { controller: this.textController }) {
           if (this.node.footnoteID !== undefined) {
             Span(`[^${this.node.footnoteID}]: `)
-              .fontSize(this.paragraphTheme.paragraphTextFontSize)
-              .fontWeight(this.paragraphTheme.paragraphTextFontWeight)
-              .fontColor(this.paragraphTheme.paragraphTextFontColor)
+              .fontSize(this.theme.paragraphTheme.paragraphTextFontSize)
+              .fontWeight(this.theme.paragraphTheme.paragraphTextFontWeight)
+              .fontColor(this.theme.paragraphTheme.paragraphTextFontColor)
           }
           ForEach(
             this.list,
@@ -402,13 +381,13 @@ export struct MarkdownParagraph {
               // 副作用会导致文本重复累加与O(n²)字符串拷贝）。文本内容改为使用点惰性计算buildTextContent()
               // key改用共享位打包编码（MarkdownUtils.buildInlineItemKey）：字段信息与原20+字段模板等价
               return buildInlineItemKey(index, item, true,
-                this.linkTheme.linkCircleIconMargin, this.linkTheme.linkRectIconMargin, this.linkTheme.linkRectToolIconMargin)
+                this.theme.linkTheme.linkCircleIconMargin, this.theme.linkTheme.linkRectIconMargin, this.theme.linkTheme.linkRectToolIconMargin)
             }
           )
         }
         .textAlign(TextAlign.Start)
         .copyOption(
-          this.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
+          this.theme.globalTheme.isOnCopy ? CopyOptions.LocalDevice : CopyOptions.None
         )
         .onCopy((str) => {
           this.textCopyCallback?.(str)
@@ -419,10 +398,9 @@ export struct MarkdownParagraph {
         .attributeModifier(this.exposureModifier)
         .backgroundColor(this.textBackgroundColor)
         .selectedBackgroundColor(this.selectBackgroundColor)
-        .selection(this.selectStart, this.selectEnd)
+        .selection(this.selection.start, this.selection.end)
         .onTextSelectionChange((selectionStart: number, selectionEnd: number): void => {
-          this.selectStart = selectionStart
-          this.selectEnd = selectionEnd
+          this.updateSelection(selectionStart, selectionEnd)
           this.textBackgroundColor = COLOR_TRANSPARENT
           this.selectBackgroundColor = this.markdownHighlightParagraph.selectedParagraphBackgroundColor
         })
@@ -432,7 +410,7 @@ export struct MarkdownParagraph {
               this.textBackgroundColor = this.markdownHighlightParagraph.beforeSelectedParagraphBackgroundColor
             })
             .onActionEnd((event: GestureEvent) => {
-              if (!this.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
+              if (!this.theme.globalTheme.isOnCopy) { // 不启用长按复制时使用自定义方法
                 this.textBackgroundColor = COLOR_TRANSPARENT
                 this.customLongPressCallback?.(this.buildTextContent()) // 调用用户自定义长按回调方法
               }
@@ -471,44 +449,44 @@ export struct MarkdownParagraph {
     // 自身margin，margin.left右移节点导致右边缘溢出（文本偏移出屏幕右边界），
     // 故用blockFillWidth显式扣除水平margin（margin=0时仍为'100%'，默认主题不变）。
     // Text仍为自适应宽度，曝光快照坐标系、长按背景区域不变。
-    .width(blockFillWidth(this.paragraphTheme.paragraphMarginLeft, this.paragraphTheme.paragraphMarginRight))
+    .width(blockFillWidth(this.theme.paragraphTheme.paragraphMarginLeft, this.theme.paragraphTheme.paragraphMarginRight))
     .backgroundColor(paragraphBackgroundColor(
-      this.globalTheme,
-      this.blockQuoteTheme,
-      this.paragraphTheme,
+      this.theme.globalTheme,
+      this.theme.blockQuoteTheme,
+      this.theme.paragraphTheme,
       this.markdownHighlightParagraph,
       this.node.isQuote,
       this.node.nodeHash
     ))
     .padding({
-      top: this.paragraphTheme.paragraphPaddingTop,
-      right: this.paragraphTheme.paragraphPaddingRight,
-      bottom: this.paragraphTheme.paragraphPaddingBottom,
-      left: this.paragraphTheme.paragraphPaddingLeft
+      top: this.theme.paragraphTheme.paragraphPaddingTop,
+      right: this.theme.paragraphTheme.paragraphPaddingRight,
+      bottom: this.theme.paragraphTheme.paragraphPaddingBottom,
+      left: this.theme.paragraphTheme.paragraphPaddingLeft
     })
     .margin({
-      top: this.paragraphTheme.paragraphMarginTop,
-      right: this.paragraphTheme.paragraphMarginRight,
-      bottom: this.paragraphTheme.paragraphMarginBottom,
-      left: this.paragraphTheme.paragraphMarginLeft
+      top: this.theme.paragraphTheme.paragraphMarginTop,
+      right: this.theme.paragraphTheme.paragraphMarginRight,
+      bottom: this.theme.paragraphTheme.paragraphMarginBottom,
+      left: this.theme.paragraphTheme.paragraphMarginLeft
     })
     .transition(
       TransitionEffect.asymmetric(
-        this.globalTheme.paragraphHeadingAnimationEnabled
-          ? TransitionEffect.opacity(0).animation({ duration: this.globalTheme.paragraphHeadingAnimationDuration })
+        this.theme.globalTheme.paragraphHeadingAnimationEnabled
+          ? TransitionEffect.opacity(0).animation({ duration: this.theme.globalTheme.paragraphHeadingAnimationDuration })
           : TransitionEffect.IDENTITY,
         TransitionEffect.IDENTITY
       ),
       // 官方转场结束回调（@since 12）：transitionIn=true 即出现动画结束，由框架精确触发，
       // 替代 setTimeout 估时（丢帧/动画延迟时估时会误报）
       (transitionIn: boolean) => {
-        if (transitionIn && this.isAlive && this.globalTheme.paragraphHeadingAnimationEnabled) {
+        if (transitionIn && this.isAlive && this.theme.globalTheme.paragraphHeadingAnimationEnabled) {
           this.paragraphHeadingAnimationEnd?.()
         }
       }
     )
     .onAppear(() => {
-      if (this.globalTheme.paragraphHeadingAnimationEnabled) {
+      if (this.theme.globalTheme.paragraphHeadingAnimationEnabled) {
         this.paragraphHeadingAnimationStart?.()
       }
     })
@@ -527,120 +505,120 @@ export struct MarkdownParagraph {
       Span(item.nodeText)
         .fontColor(spanFontColor(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .fontSize(spanFontSize(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .fontStyle(spanFontStyle(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme,
-          this.definitionListTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme,
+          this.theme.definitionListTheme
         ))
         .fontWeight(spanFontWeight(
           item,
           false,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme,
-          this.definitionListTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme,
+          this.theme.definitionListTheme
         ))
         .fontFamily(spanFontFamily(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .letterSpacing(spanLetterSpacing(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .decoration(spanDecoration(
           item,
-          this.strikethroughTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme
+          this.theme.strikethroughTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme
         ))
         .textBackgroundStyle(spanBackgroundColor(
           item,
-          this.inlineCodeTheme,
-          this.highlightTheme,
-          this.linkTheme,
-          this.footnoteRefTheme
+          this.theme.inlineCodeTheme,
+          this.theme.highlightTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme
         ))
         .baselineOffset(spanBaselineOffset(
           item,
-          this.subTheme,
-          this.supTheme
+          this.theme.subTheme,
+          this.theme.supTheme
         ))
         .onClick(() => {
           if (item.footnoteID !== undefined) {
@@ -661,129 +639,129 @@ export struct MarkdownParagraph {
       Span(item.nodeText)
         .fontColor(spanFontColor(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .fontSize(spanFontSize(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .fontStyle(spanFontStyle(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme,
-          this.definitionListTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme,
+          this.theme.definitionListTheme
         ))
         .fontWeight(spanFontWeight(
           item,
           false,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme,
-          this.definitionListTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme,
+          this.theme.definitionListTheme
         ))
         .fontFamily(spanFontFamily(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .letterSpacing(spanLetterSpacing(
           item,
-          this.subTheme,
-          this.supTheme,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.subTheme,
+          this.theme.supTheme,
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .decoration(spanDecoration(
           item,
-          this.strikethroughTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme
+          this.theme.strikethroughTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme
         ))
         .textBackgroundStyle(spanBackgroundColor(
           item,
-          this.inlineCodeTheme,
-          this.highlightTheme,
-          this.linkTheme,
-          this.footnoteRefTheme
+          this.theme.inlineCodeTheme,
+          this.theme.highlightTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme
         ))
         .lineHeight(spanLineHeight(
           item,
-          this.inlineCodeTheme,
-          this.boldTheme,
-          this.italicTheme,
-          this.strikethroughTheme,
-          this.highlightTheme,
-          this.htmlUnderlineTheme,
-          this.linkTheme,
-          this.footnoteRefTheme,
-          this.headingTheme,
-          this.tableTheme,
-          this.paragraphTheme
+          this.theme.inlineCodeTheme,
+          this.theme.boldTheme,
+          this.theme.italicTheme,
+          this.theme.strikethroughTheme,
+          this.theme.highlightTheme,
+          this.theme.htmlUnderlineTheme,
+          this.theme.linkTheme,
+          this.theme.footnoteRefTheme,
+          this.theme.headingTheme,
+          this.theme.tableTheme,
+          this.theme.paragraphTheme
         ))
         .onClick(() => {
           if (item.footnoteID !== undefined) {
@@ -801,15 +779,15 @@ export struct MarkdownParagraph {
         })
     } else if (item.nodeType === "SoftLineBreak") {
       // 软换行
-      Span(spanSoftLineBreak(this.globalTheme.isLineBreak))
+      Span(spanSoftLineBreak(this.theme.globalTheme.isLineBreak))
     } else if (item.nodeType === "HardLineBreak") {
       // 硬换行
       Span("\n")
     } else if (item.nodeType === "Link" || item.nodeType === "HeadLink") {
-      if ((item.isBulletList || item.isOrderedList || item.isQuote || item.isDescList) && this.isSingleLinkNode() && !this.linkTheme.linkListIsIcon) {
+      if ((item.isBulletList || item.isOrderedList || item.isQuote || item.isDescList) && this.isSingleLinkNode() && !this.theme.linkTheme.linkListIsIcon) {
         Span(item.nodeText)
-          .fontColor(this.linkTheme.linkTextFontColor)
-          .fontSize(this.paragraphTheme.paragraphTextFontSize)
+          .fontColor(this.theme.linkTheme.linkTextFontColor)
+          .fontSize(this.theme.paragraphTheme.paragraphTextFontSize)
           .onClick(() => {
             if (item.linkUrl !== undefined) {
               this.linkCallback?.(item.linkUrl)
@@ -832,14 +810,14 @@ export struct MarkdownParagraph {
             })
         } else {
           Span(item.nodeText)
-            .fontColor(this.linkTheme.linkTextFontColor)
-            .fontSize(this.paragraphTheme.paragraphTextFontSize)
+            .fontColor(this.theme.linkTheme.linkTextFontColor)
+            .fontSize(this.theme.paragraphTheme.paragraphTextFontSize)
             .decoration(spanDecoration(
               item,
-              this.strikethroughTheme,
-              this.htmlUnderlineTheme,
-              this.linkTheme,
-              this.footnoteRefTheme
+              this.theme.strikethroughTheme,
+              this.theme.htmlUnderlineTheme,
+              this.theme.linkTheme,
+              this.theme.footnoteRefTheme
             ))
             .onClick(() => {
               if (item.linkUrl !== undefined) {
@@ -854,25 +832,25 @@ export struct MarkdownParagraph {
       ImageSpan(item.imageReplacePixelMap ?? imageUrlHandle(item.imageUrl))
         .alt(this.placeholderPixelMap)
         .margin({
-          top: this.imageTheme.imageMarginTop,
-          right: this.imageTheme.imageMarginRight,
-          bottom: this.imageTheme.imageMarginBottom,
-          left: this.imageTheme.imageMarginLeft
+          top: this.theme.imageTheme.imageMarginTop,
+          right: this.theme.imageTheme.imageMarginRight,
+          bottom: this.theme.imageTheme.imageMarginBottom,
+          left: this.theme.imageTheme.imageMarginLeft
         })
         .borderRadius({
-          topLeft: item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
-          topRight: item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
-          bottomLeft: item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
-          bottomRight: item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
+          topLeft: item.imageRadius ?? this.theme.imageTheme.imageRadiusTopLeft,
+          topRight: item.imageRadius ?? this.theme.imageTheme.imageRadiusTopRight,
+          bottomLeft: item.imageRadius ?? this.theme.imageTheme.imageRadiusBottomLeft,
+          bottomRight: item.imageRadius ?? this.theme.imageTheme.imageRadiusBottomRight
         })
-        .borderWidth(this.imageTheme.imageBorderWidth)
-        .borderColor(this.imageTheme.imageBorderColor)
-        .borderStyle(this.imageTheme.imageBorderStyle)
+        .borderWidth(this.theme.imageTheme.imageBorderWidth)
+        .borderColor(this.theme.imageTheme.imageBorderColor)
+        .borderStyle(this.theme.imageTheme.imageBorderStyle)
         .width(item.imageWidth ?? 0)
         .height(item.imageHeight ?? 0)
-        .objectFit(this.imageTheme.imageFitType)
+        .objectFit(this.theme.imageTheme.imageFitType)
         .verticalAlign(ImageSpanAlignment.CENTER)
-        .constraintSize({ maxWidth: this.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.imageTheme.imageMaxHeight})
+        .constraintSize({ maxWidth: this.theme.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.theme.imageTheme.imageMaxHeight})
         .onClick(()=>{
           if(item.isLink){
             this.linkCallback?.(item.linkUrl ?? "")
@@ -886,6 +864,9 @@ export struct MarkdownParagraph {
           }
           item.imageNaturalWidth = imageLoadResult.width
           item.imageNaturalHeight = imageLoadResult.height
+          if (item.imageUrl !== undefined) {
+            this.imageNaturalSizes.set(item.imageUrl, [imageLoadResult.width, imageLoadResult.height])
+          }
           // 优先用父布局宽度（imageFixedRatioWidth按父宽度计算），父布局未测量时
           // fallback 到 imageLoadResult.width（图片自然宽度，width=0时componentWidth不可用）
           const effectiveWidth: number = this.componentWidth > 0
@@ -896,13 +877,13 @@ export struct MarkdownParagraph {
             imageLoadResult.width,
             imageLoadResult.height,
             (item.imageStyleWidth !== undefined ? vp2px(item.imageStyleWidth) : undefined) ??
-            (this.imageTheme.imageWidth !== undefined ? vp2px(this.imageTheme.imageWidth) : undefined),
+            (this.theme.imageTheme.imageWidth !== undefined ? vp2px(this.theme.imageTheme.imageWidth) : undefined),
             (item.imageStyleHeight !== undefined ? vp2px(item.imageStyleHeight) : undefined) ??
-            (this.imageTheme.imageHeight !== undefined ? vp2px(this.imageTheme.imageHeight) : undefined),
-            this.imageTheme.imageMaxWidth,
-            this.imageTheme.imageMaxHeight,
-            this.imageTheme.imageFixedRatioWidth,
-            this.imageTheme.imageMaximumWidth
+            (this.theme.imageTheme.imageHeight !== undefined ? vp2px(this.theme.imageTheme.imageHeight) : undefined),
+            this.theme.imageTheme.imageMaxWidth,
+            this.theme.imageTheme.imageMaxHeight,
+            this.theme.imageTheme.imageFixedRatioWidth,
+            this.theme.imageTheme.imageMaximumWidth
           )
           if (l[0] > 0 && l[1] > 0) {
             item.imageWidth = px2vp(l[0])
@@ -951,7 +932,7 @@ export struct MarkdownParagraph {
       .onClick(() => {
         // 获取选中文本并复制到剪贴板
         // Hilog.error(1,)
-        let selectedText = this.buildTextContent().substring(this.selectStart, this.selectEnd)
+        let selectedText = this.buildTextContent().substring(this.selection.start, this.selection.end)
         let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, selectedText)
         pasteboard.getSystemPasteboard().setData(pasteData)
         this.textCopyCallback?.(selectedText)
@@ -1057,9 +1038,152 @@ export struct MarkdownParagraph {
       if (this.node.footnoteID !== undefined) {
         footnotePrefixLen = `[^${this.node.footnoteID}]: `.length
       }
-      this.httpLinks = computeLinkRanges(this.list, this.globalTheme.isLineBreak, footnotePrefixLen)
+      this.httpLinks = computeLinkRanges(this.list, this.theme.globalTheme.isLineBreak, footnotePrefixLen)
       this.httpLinksDirty = false
       this.scheduleExposure()
+    }
+  }
+
+  /**
+   * 聚合主题变化回调（方案二：集中观察合并发布）：
+   * 普通样式由声明式链路（spanXXX/paragraphXXX工具函数参数来自this.theme.xxxTheme深层属性）自动刷新，
+   * 此处按代次差分重建需要异步生成的派生资源：链接图标像素图/公式像素图/图片显示尺寸。
+   */
+  onThemeChanged(): void {
+    if (this.theme !== this.lastTheme) {
+      // 主题实例整体替换（接入方切换亮暗主题等）：新实例各代次从0起算，与旧实例代次无对应关系，
+      // 不可做差分；重建基线并把派生资源全类别重建一次
+      const isFirstBinding: boolean = this.lastTheme === undefined
+      this.lastTheme = this.theme
+      this.lastPlainVersion = this.theme.renderPlainVersion
+      this.lastLinkVersion = this.theme.renderLinkVersion
+      this.lastLatexVersion = this.theme.renderLatexVersion
+      this.lastImageVersion = this.theme.renderImageVersion
+      if (!isFirstBinding) {
+        this.refreshLinkIconResources()
+        this.refreshLatexResources()
+        this.refreshImageSizes()
+      }
+      return
+    }
+    const linkChanged: boolean = this.theme.renderLinkVersion !== this.lastLinkVersion
+    const latexChanged: boolean = this.theme.renderLatexVersion !== this.lastLatexVersion
+    const imageChanged: boolean = this.theme.renderImageVersion !== this.lastImageVersion
+    if (!linkChanged && !latexChanged && !imageChanged
+      && this.theme.renderPlainVersion === this.lastPlainVersion) {
+      return
+    }
+    this.lastPlainVersion = this.theme.renderPlainVersion
+    this.lastLinkVersion = this.theme.renderLinkVersion
+    this.lastLatexVersion = this.theme.renderLatexVersion
+    this.lastImageVersion = this.theme.renderImageVersion
+    if (linkChanged) {
+      this.refreshLinkIconResources()
+    }
+    if (latexChanged) {
+      this.refreshLatexResources()
+    }
+    if (imageChanged) {
+      this.refreshImageSizes()
+    }
+  }
+
+  /**
+   * 统一更新选区（方案4.1）：起止坐标一次写入，渲染（.selection）与复制（自定义菜单）
+   * 读取同一对坐标，消除两个@State分两次写入引发的重复刷新与中间状态
+   */
+  private updateSelection(start: number, end: number): void {
+    this.selection = new SelectionRange(start, end)
+  }
+
+  /**
+   * 链接图标样式变化：释放旧图标像素图并重置尝试标志，重新生成
+   */
+  private refreshLinkIconResources(): void {
+    for (const child of this.list) {
+      if ((child.nodeType === "Link" || child.nodeType === "HeadLink") && child.isLinkStyle
+        && child.linkIconPixelMap !== undefined) {
+        try {
+          child.linkIconPixelMap.release()
+        } catch (e) {
+          console.error('Paragraph linkIconPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+        }
+        child.linkIconPixelMap = undefined
+        child.linkIconTried = false
+      }
+    }
+    this.tryGenerateLinkIcons()
+    // 图标尺寸变化会改变文本布局，链接渲染矩形与曝光评估需重算
+    this.linkBoxesDirty = true
+    this.scheduleExposure()
+  }
+
+  /**
+   * 数学公式样式变化：释放旧公式像素图并重新入队加载（按新字号/颜色/格式重新渲染）
+   */
+  private refreshLatexResources(): void {
+    for (const child of this.list) {
+      if (child.nodeType === "LatexMathNode" && child.latexPixelMap !== undefined) {
+        try {
+          child.latexPixelMap.release()
+        } catch (e) {
+          console.error('Paragraph latexPixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
+        }
+        child.latexPixelMap = undefined
+        child.latexIsLoading = false
+      }
+    }
+    this.tryEnqueueLatexLoading()
+  }
+
+  /**
+   * 图片样式变化：按新主题尺寸约束与缓存的图片自然尺寸重算显示宽高
+   */
+  private refreshImageSizes(): void {
+    let changed: boolean = false
+    for (const child of this.list) {
+      if (child.imageUrl === undefined) {
+        continue
+      }
+      // 自然尺寸以onComplete写入节点的值为准，节点重建丢失时用组件缓存兜底
+      const cached: number[] | undefined = this.imageNaturalSizes.get(child.imageUrl)
+      let naturalW: number = child.imageNaturalWidth ?? 0
+      let naturalH: number = child.imageNaturalHeight ?? 0
+      if (naturalW <= 0 && cached !== undefined) {
+        naturalW = cached[0]
+      }
+      if (naturalH <= 0 && cached !== undefined) {
+        naturalH = cached[1]
+      }
+      if (naturalW <= 0 || naturalH <= 0) {
+        continue // 未加载完成：onComplete回调会用新主题重新计算
+      }
+      const effectiveWidth: number = this.componentWidth > 0 ? this.componentWidth : px2vp(naturalW)
+      const l = imageWidthAndHeight(
+        effectiveWidth,
+        naturalW,
+        naturalH,
+        (child.imageStyleWidth !== undefined ? vp2px(child.imageStyleWidth) : undefined) ??
+        (this.theme.imageTheme.imageWidth !== undefined ? vp2px(this.theme.imageTheme.imageWidth) : undefined),
+        (child.imageStyleHeight !== undefined ? vp2px(child.imageStyleHeight) : undefined) ??
+        (this.theme.imageTheme.imageHeight !== undefined ? vp2px(this.theme.imageTheme.imageHeight) : undefined),
+        this.theme.imageTheme.imageMaxWidth,
+        this.theme.imageTheme.imageMaxHeight,
+        this.theme.imageTheme.imageFixedRatioWidth,
+        this.theme.imageTheme.imageMaximumWidth
+      )
+      if (l[0] > 0 && l[1] > 0) {
+        const newWidth: number = px2vp(l[0])
+        const newHeight: number = px2vp(l[1])
+        if (child.imageWidth !== newWidth || child.imageHeight !== newHeight) {
+          child.imageWidth = newWidth
+          child.imageHeight = newHeight
+          changed = true
+        }
+      }
+    }
+    if (changed) {
+      this.list = [...this.list]
     }
   }
 
@@ -1138,11 +1262,11 @@ export struct MarkdownParagraph {
   private getLinkIconMargin(item: NodeView): number {
     const iconType = item.linkIconType
     if (iconType === LINK_ICON_TYPE_CIRCLE) {
-      return this.linkTheme.linkCircleIconMargin
+      return this.theme.linkTheme.linkCircleIconMargin
     } else if (iconType === LINK_ICON_TYPE_RECT) {
-      return this.linkTheme.linkRectIconMargin
+      return this.theme.linkTheme.linkRectIconMargin
     } else {
-      return this.linkTheme.linkRectToolIconMargin
+      return this.theme.linkTheme.linkRectToolIconMargin
     }
   }
 
@@ -1155,7 +1279,7 @@ export struct MarkdownParagraph {
         child.linkIconTried = true
         child.linkIconText = child.nodeText
         child.linkIconType = computeLinkIconInfo(child.linkUrl ?? "", child.nodeText).iconType
-        generateLinkIconPixelMap(child.nodeText, child.linkUrl ?? "", this.linkTheme)
+        generateLinkIconPixelMap(child.nodeText, child.linkUrl ?? "", this.theme.linkTheme)
           .then((result: LinkIconResult | undefined) => {
             if (!this.isAlive || result === undefined) {
               if (result !== undefined) {
@@ -1263,13 +1387,13 @@ export struct MarkdownParagraph {
   private loadLatexImage(item: NodeView): Promise<void> {
     const capturedNodeText: string = item.nodeText
     const strLatexMath: string = this.latexStrCallback(capturedNodeText)
-    const textSize: number = vp2px(this.latexMathTheme.latexMathTextSize)
-    const textColor: number = resourceColorToNumber(this.latexMathTheme.latexMathTextColor)
-    const bgColor: number = resourceColorToNumber(this.latexMathTheme.latexMathBackgroundColor)
-    const colorFormat: LatexMathColorFormat = this.latexMathTheme.latexMathColorFormat === 0
+    const textSize: number = vp2px(this.theme.latexMathTheme.latexMathTextSize)
+    const textColor: number = resourceColorToNumber(this.theme.latexMathTheme.latexMathTextColor)
+    const bgColor: number = resourceColorToNumber(this.theme.latexMathTheme.latexMathBackgroundColor)
+    const colorFormat: LatexMathColorFormat = this.theme.latexMathTheme.latexMathColorFormat === 0
       ? LatexMathColorFormat.COLOR_FORMAT_RGB_565
       : LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-    const resPath: string | undefined = this.latexMathTheme.latexMathResPath
+    const resPath: string | undefined = this.theme.latexMathTheme.latexMathResPath
 
     return latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
       .then((buffer: ArrayBuffer) => {
@@ -1394,7 +1518,7 @@ export struct MarkdownParagraph {
       parts.push(item.nodeText)
     } else if (item.nodeType === "SoftLineBreak") {
       // 软换行
-      parts.push(spanSoftLineBreak(this.globalTheme.isLineBreak))
+      parts.push(spanSoftLineBreak(this.theme.globalTheme.isLineBreak))
     } else if (item.nodeType === "HardLineBreak") {
       // 硬换行
       parts.push("\n")
@@ -1425,8 +1549,7 @@ export struct MarkdownParagraph {
       }
       // 延时到期，再次检查参数状态，参数仍为 true，关闭长按菜单
       if (this.needHideMenu) {
-        this.selectStart = -1
-        this.selectEnd = -1
+        this.updateSelection(-1, -1)
         this.textController.closeSelectionMenu()
       }
     }, this.delayTime)

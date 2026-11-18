@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_RED, COLOR_TRANSPARENT, isBorderRadiuses } from "../base/Constants"
 
 /**
@@ -183,6 +183,34 @@ export class FootnoteRefTheme implements MarkdownBaseTheme {
         this.footnoteRefTextBackgroundRadiusBottomRight = options as Length
       }
     }
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return FootnoteRefTheme
+   */
+  applyFrom(other: FootnoteRefTheme): FootnoteRefTheme {
+    this.footnoteRefTextFontColor = other.footnoteRefTextFontColor
+    this.footnoteRefTextFontSize = other.footnoteRefTextFontSize
+    this.footnoteRefTextFontStyle = other.footnoteRefTextFontStyle
+    this.footnoteRefTextFontWeight = other.footnoteRefTextFontWeight
+    this.footnoteRefTextFontFamily = other.footnoteRefTextFontFamily
+    this.footnoteRefTextLineHeight = other.footnoteRefTextLineHeight
+    this.footnoteRefTextLetterSpacing = other.footnoteRefTextLetterSpacing
+    this.footnoteRefTextDecorationType = other.footnoteRefTextDecorationType
+    this.footnoteRefTextDecorationColor = other.footnoteRefTextDecorationColor
+    this.footnoteRefTextDecorationStyle = other.footnoteRefTextDecorationStyle
+    this.footnoteRefTextBackgroundColor = other.footnoteRefTextBackgroundColor
+    this.footnoteRefTextBackgroundRadiusTopLeft = other.footnoteRefTextBackgroundRadiusTopLeft
+    this.footnoteRefTextBackgroundRadiusTopRight = other.footnoteRefTextBackgroundRadiusTopRight
+    this.footnoteRefTextBackgroundRadiusBottomLeft = other.footnoteRefTextBackgroundRadiusBottomLeft
+    this.footnoteRefTextBackgroundRadiusBottomRight = other.footnoteRefTextBackgroundRadiusBottomRight
     return this
   }
 }

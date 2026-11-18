@@ -1,31 +1,6 @@
 import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
-import { AudioTheme } from "../theme/AudioTheme"
-import { BannerTheme } from "../theme/BannerTheme"
-import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
-import { BoldTheme } from "../theme/BoldTheme"
-import { BulletListTheme } from "../theme/BulletListTheme"
-import { CodeBlockTheme } from "../theme/CodeBlockTheme"
-import { DefinitionListTheme } from "../theme/DefinitionListTheme"
-import { DividerTheme } from "../theme/DividerTheme"
-import { FootnoteDefTheme } from "../theme/FootnoteDefTheme"
-import { FootnoteRefTheme } from "../theme/FootnoteRefTheme"
-import { GlobalTheme } from "../theme/GlobalTheme"
-import { HeadingTheme } from "../theme/HeadingTheme"
-import { HighlightTheme } from "../theme/HighlightTheme"
-import { HtmlUnderlineTheme } from "../theme/HtmlUnderlineTheme"
-import { ImageTheme } from "../theme/ImageTheme"
-import { InlineCodeTheme } from "../theme/InlineCodeTheme"
-import { ItalicTheme } from "../theme/ItalicTheme"
-import { LatexMathTheme } from "../theme/LatexMathTheme"
-import { LinkTheme } from "../theme/LinkTheme"
-import { OrderedListTheme } from "../theme/OrderedListTheme"
-import { ParagraphTheme } from "../theme/ParagraphTheme"
-import { StrikethroughTheme } from "../theme/StrikethroughTheme"
-import { SubTheme } from "../theme/SubTheme"
-import { SupTheme } from "../theme/SupTheme"
-import { TableTheme } from "../theme/TableTheme"
-import { VideoTheme } from "../theme/VideoTheme"
+import { MarkdownTheme } from "../theme/MarkdownTheme"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownHeading } from "./MarkdownHeading"
 import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
@@ -49,32 +24,7 @@ import { safeString } from "../utils/MarkdownUtils"
 @Component
 export struct MarkdownQuote {
   @ObjectLink @Watch('refreshData') node: NodeView // 块引用自身节点数据
-  @ObjectLink blockQuoteTheme: BlockQuoteTheme // 块引用样式
-  @ObjectLink orderedListTheme: OrderedListTheme // 有序列表样式
-  @ObjectLink bulletListTheme: BulletListTheme // 无序列表样式
-  @ObjectLink headingTheme: HeadingTheme // 标题样式
-  @ObjectLink globalTheme: GlobalTheme // 整体样式
-  @ObjectLink subTheme: SubTheme // 下标样式
-  @ObjectLink supTheme: SupTheme // 上标样式
-  @ObjectLink inlineCodeTheme: InlineCodeTheme // 内联代码样式
-  @ObjectLink boldTheme: BoldTheme // 加粗样式
-  @ObjectLink italicTheme: ItalicTheme // 斜体样式
-  @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
-  @ObjectLink strikethroughTheme: StrikethroughTheme // 删除线样式
-  @ObjectLink highlightTheme: HighlightTheme // 高亮样式
-  @ObjectLink htmlUnderlineTheme: HtmlUnderlineTheme // 下划线样式
-  @ObjectLink linkTheme: LinkTheme // 链接样式
-  @ObjectLink footnoteRefTheme: FootnoteRefTheme // 内联脚注样式
-  @ObjectLink tableTheme: TableTheme // 表格样式
-  @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
-  @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
-  @ObjectLink imageTheme: ImageTheme // 图片样式
-  @ObjectLink footnoteDefTheme: FootnoteDefTheme // 脚注样式
-  @ObjectLink codeBlockTheme: CodeBlockTheme // 代码块样式
-  @ObjectLink dividerTheme: DividerTheme // 分割线样式
-  @ObjectLink bannerTheme: BannerTheme // 轮播图样式
-  @ObjectLink videoTheme: VideoTheme // 视频样式
-  @ObjectLink audioTheme: AudioTheme // 音频样式
+  @ObjectLink theme: MarkdownTheme // 聚合主题（透传块，无 @Watch）：子主题变化由根组件集中观察发布，经 this.theme.xxxTheme 读取
   @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   @Prop tableBlockComponentWidth: number = 0.0 // 表格控件宽度
@@ -113,7 +63,7 @@ export struct MarkdownQuote {
   }
 
   build() {
-    List({ scroller: this.scroller, space: this.blockQuoteTheme.blockQuoteChildSpacing }) {
+    List({ scroller: this.scroller, space: this.theme.blockQuoteTheme.blockQuoteChildSpacing }) {
       LazyForEach(
         this.markdownDataSource,
         (item: NodeView, index: number) => {
@@ -124,24 +74,7 @@ export struct MarkdownQuote {
                 // 段落
                 MarkdownParagraph({
                   node: item,
-                  headingTheme: this.headingTheme,
-                  globalTheme: this.globalTheme,
-                  subTheme: this.subTheme,
-                  supTheme: this.supTheme,
-                  inlineCodeTheme: this.inlineCodeTheme,
-                  boldTheme: this.boldTheme,
-                  italicTheme: this.italicTheme,
-                  strikethroughTheme: this.strikethroughTheme,
-                  highlightTheme: this.highlightTheme,
-                  htmlUnderlineTheme: this.htmlUnderlineTheme,
-                  linkTheme: this.linkTheme,
-                  footnoteRefTheme: this.footnoteRefTheme,
-                  tableTheme: this.tableTheme,
-                  paragraphTheme: this.paragraphTheme,
-                  blockQuoteTheme: this.blockQuoteTheme,
-                  definitionListTheme: this.definitionListTheme,
-                  imageTheme: this.imageTheme,
-                  latexMathTheme: this.latexMathTheme,
+                  theme: this.theme,
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   componentWidth: this.componentWidth,
@@ -163,24 +96,7 @@ export struct MarkdownQuote {
                 // 标题/标题ID
                 MarkdownHeading({
                   node: item,
-                  headingTheme: this.headingTheme,
-                  globalTheme: this.globalTheme,
-                  subTheme: this.subTheme,
-                  supTheme: this.supTheme,
-                  inlineCodeTheme: this.inlineCodeTheme,
-                  boldTheme: this.boldTheme,
-                  italicTheme: this.italicTheme,
-                  strikethroughTheme: this.strikethroughTheme,
-                  highlightTheme: this.highlightTheme,
-                  htmlUnderlineTheme: this.htmlUnderlineTheme,
-                  linkTheme: this.linkTheme,
-                  footnoteRefTheme: this.footnoteRefTheme,
-                  tableTheme: this.tableTheme,
-                  paragraphTheme: this.paragraphTheme,
-                  blockQuoteTheme: this.blockQuoteTheme,
-                  definitionListTheme: this.definitionListTheme,
-                  imageTheme: this.imageTheme,
-                  latexMathTheme: this.latexMathTheme,
+                  theme: this.theme,
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   componentWidth: this.componentWidth,
@@ -202,7 +118,7 @@ export struct MarkdownQuote {
                 // 围栏代码块列表
                 MarkdownCodeBlockList({
                   node: item,
-                  codeBlockTheme: this.codeBlockTheme,
+                  codeBlockTheme: this.theme.codeBlockTheme,
                   codeCopyCallback: this.codeCopyCallback,
                   codeFullScreenCallback: this.codeFullScreenCallback
                 })
@@ -210,7 +126,7 @@ export struct MarkdownQuote {
                 // 围栏代码块
                 MarkdownCodeFenced({
                   node: item,
-                  codeBlockTheme: this.codeBlockTheme,
+                  codeBlockTheme: this.theme.codeBlockTheme,
                   codeCopyCallback: this.codeCopyCallback,
                   codeFullScreenCallback: this.codeFullScreenCallback
                 })
@@ -218,7 +134,7 @@ export struct MarkdownQuote {
                 // 缩进代码块
                 MarkdownCodeIndented({
                   node: item,
-                  codeBlockTheme: this.codeBlockTheme,
+                  codeBlockTheme: this.theme.codeBlockTheme,
                   codeCopyCallback: this.codeCopyCallback,
                   codeFullScreenCallback: this.codeFullScreenCallback
                 })
@@ -226,32 +142,7 @@ export struct MarkdownQuote {
                 // 无序列表
                 MarkdownList({
                   node: item,
-                  orderedListTheme: this.orderedListTheme,
-                  bulletListTheme: this.bulletListTheme,
-                  headingTheme: this.headingTheme,
-                  globalTheme: this.globalTheme,
-                  blockQuoteTheme: this.blockQuoteTheme,
-                  subTheme: this.subTheme,
-                  supTheme: this.supTheme,
-                  inlineCodeTheme: this.inlineCodeTheme,
-                  boldTheme: this.boldTheme,
-                  italicTheme: this.italicTheme,
-                  strikethroughTheme: this.strikethroughTheme,
-                  highlightTheme: this.highlightTheme,
-                  htmlUnderlineTheme: this.htmlUnderlineTheme,
-                  linkTheme: this.linkTheme,
-                  footnoteRefTheme: this.footnoteRefTheme,
-                  tableTheme: this.tableTheme,
-                  paragraphTheme: this.paragraphTheme,
-                  definitionListTheme: this.definitionListTheme,
-                  imageTheme: this.imageTheme,
-                  footnoteDefTheme: this.footnoteDefTheme,
-                  codeBlockTheme: this.codeBlockTheme,
-                  dividerTheme: this.dividerTheme,
-                  bannerTheme: this.bannerTheme,
-                  videoTheme: this.videoTheme,
-                  audioTheme: this.audioTheme,
-                  latexMathTheme: this.latexMathTheme,
+                  theme: this.theme,
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   isOrdered: false,
@@ -287,32 +178,7 @@ export struct MarkdownQuote {
                 // 有序列表
                 MarkdownList({
                   node: item,
-                  orderedListTheme: this.orderedListTheme,
-                  bulletListTheme: this.bulletListTheme,
-                  headingTheme: this.headingTheme,
-                  globalTheme: this.globalTheme,
-                  blockQuoteTheme: this.blockQuoteTheme,
-                  subTheme: this.subTheme,
-                  supTheme: this.supTheme,
-                  inlineCodeTheme: this.inlineCodeTheme,
-                  boldTheme: this.boldTheme,
-                  italicTheme: this.italicTheme,
-                  strikethroughTheme: this.strikethroughTheme,
-                  highlightTheme: this.highlightTheme,
-                  htmlUnderlineTheme: this.htmlUnderlineTheme,
-                  linkTheme: this.linkTheme,
-                  footnoteRefTheme: this.footnoteRefTheme,
-                  tableTheme: this.tableTheme,
-                  paragraphTheme: this.paragraphTheme,
-                  definitionListTheme: this.definitionListTheme,
-                  imageTheme: this.imageTheme,
-                  footnoteDefTheme: this.footnoteDefTheme,
-                  codeBlockTheme: this.codeBlockTheme,
-                  dividerTheme: this.dividerTheme,
-                  bannerTheme: this.bannerTheme,
-                  videoTheme: this.videoTheme,
-                  audioTheme: this.audioTheme,
-                  latexMathTheme: this.latexMathTheme,
+                  theme: this.theme,
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   isOrdered: true,
@@ -348,32 +214,7 @@ export struct MarkdownQuote {
                 // 块引用
                 MarkdownQuote({
                   node: item,
-                  blockQuoteTheme: this.blockQuoteTheme,
-                  orderedListTheme: this.orderedListTheme,
-                  bulletListTheme: this.bulletListTheme,
-                  headingTheme: this.headingTheme,
-                  globalTheme: this.globalTheme,
-                  subTheme: this.subTheme,
-                  supTheme: this.supTheme,
-                  inlineCodeTheme: this.inlineCodeTheme,
-                  boldTheme: this.boldTheme,
-                  italicTheme: this.italicTheme,
-                  strikethroughTheme: this.strikethroughTheme,
-                  highlightTheme: this.highlightTheme,
-                  htmlUnderlineTheme: this.htmlUnderlineTheme,
-                  linkTheme: this.linkTheme,
-                  footnoteRefTheme: this.footnoteRefTheme,
-                  tableTheme: this.tableTheme,
-                  paragraphTheme: this.paragraphTheme,
-                  definitionListTheme: this.definitionListTheme,
-                  imageTheme: this.imageTheme,
-                  footnoteDefTheme: this.footnoteDefTheme,
-                  codeBlockTheme: this.codeBlockTheme,
-                  dividerTheme: this.dividerTheme,
-                  bannerTheme: this.bannerTheme,
-                  videoTheme: this.videoTheme,
-                  audioTheme: this.audioTheme,
-                  latexMathTheme: this.latexMathTheme,
+                  theme: this.theme,
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   componentWidth: this.componentWidth,
@@ -409,52 +250,52 @@ export struct MarkdownQuote {
                 if (item.isLatexMathBlockClose) {
                   MarkdownLatexMathBlock({
                     latexMathBlockStr: item.nodeText,
-                    latexMathTheme: this.latexMathTheme,
+                    latexMathTheme: this.theme.latexMathTheme,
                     latexImageCallback: this.latexImageCallback,
                     latexStrCallback: this.latexStrCallback
                   })
-                } else if (this.latexMathTheme.latexMathDefaultText) {
+                } else if (this.theme.latexMathTheme.latexMathDefaultText) {
                   Text(item.nodeText)
-                    .fontFamily(this.latexMathTheme.latexMathDefaultTextFontFamily)
-                    .fontSize(this.latexMathTheme.latexMathDefaultTextFontSize)
-                    .fontWeight(this.latexMathTheme.latexMathDefaultTextFontWeight)
-                    .fontStyle(this.latexMathTheme.latexMathDefaultTextFontStyle)
-                    .fontColor(this.latexMathTheme.latexMathDefaultTextFontColor)
+                    .fontFamily(this.theme.latexMathTheme.latexMathDefaultTextFontFamily)
+                    .fontSize(this.theme.latexMathTheme.latexMathDefaultTextFontSize)
+                    .fontWeight(this.theme.latexMathTheme.latexMathDefaultTextFontWeight)
+                    .fontStyle(this.theme.latexMathTheme.latexMathDefaultTextFontStyle)
+                    .fontColor(this.theme.latexMathTheme.latexMathDefaultTextFontColor)
                     .padding({
-                      top: this.latexMathTheme.latexMathPaddingTop,
-                      right: this.latexMathTheme.latexMathPaddingRight,
-                      bottom: this.latexMathTheme.latexMathPaddingBottom,
-                      left: this.latexMathTheme.latexMathPaddingLeft
+                      top: this.theme.latexMathTheme.latexMathPaddingTop,
+                      right: this.theme.latexMathTheme.latexMathPaddingRight,
+                      bottom: this.theme.latexMathTheme.latexMathPaddingBottom,
+                      left: this.theme.latexMathTheme.latexMathPaddingLeft
                     })
                     .margin({
-                      top: this.latexMathTheme.latexMathMarginTop,
-                      right: this.latexMathTheme.latexMathMarginRight,
-                      bottom: this.latexMathTheme.latexMathMarginBottom,
-                      left: this.latexMathTheme.latexMathMarginLeft
+                      top: this.theme.latexMathTheme.latexMathMarginTop,
+                      right: this.theme.latexMathTheme.latexMathMarginRight,
+                      bottom: this.theme.latexMathTheme.latexMathMarginBottom,
+                      left: this.theme.latexMathTheme.latexMathMarginLeft
                     })
                 }
               } else if (item.nodeType === "TableBlock") {
                 // 表格
                 MarkdownTable({
                   node: item,
-                  headingTheme: this.headingTheme,
-                  globalTheme: this.globalTheme,
-                  blockQuoteTheme: this.blockQuoteTheme,
-                  subTheme: this.subTheme,
-                  supTheme: this.supTheme,
-                  inlineCodeTheme: this.inlineCodeTheme,
-                  boldTheme: this.boldTheme,
-                  italicTheme: this.italicTheme,
-                  strikethroughTheme: this.strikethroughTheme,
-                  highlightTheme: this.highlightTheme,
-                  htmlUnderlineTheme: this.htmlUnderlineTheme,
-                  linkTheme: this.linkTheme,
-                  footnoteRefTheme: this.footnoteRefTheme,
-                  tableTheme: this.tableTheme,
-                  paragraphTheme: this.paragraphTheme,
-                  definitionListTheme: this.definitionListTheme,
-                  imageTheme: this.imageTheme,
-                  latexMathTheme: this.latexMathTheme,
+                  headingTheme: this.theme.headingTheme,
+                  globalTheme: this.theme.globalTheme,
+                  blockQuoteTheme: this.theme.blockQuoteTheme,
+                  subTheme: this.theme.subTheme,
+                  supTheme: this.theme.supTheme,
+                  inlineCodeTheme: this.theme.inlineCodeTheme,
+                  boldTheme: this.theme.boldTheme,
+                  italicTheme: this.theme.italicTheme,
+                  strikethroughTheme: this.theme.strikethroughTheme,
+                  highlightTheme: this.theme.highlightTheme,
+                  htmlUnderlineTheme: this.theme.htmlUnderlineTheme,
+                  linkTheme: this.theme.linkTheme,
+                  footnoteRefTheme: this.theme.footnoteRefTheme,
+                  tableTheme: this.theme.tableTheme,
+                  paragraphTheme: this.theme.paragraphTheme,
+                  definitionListTheme: this.theme.definitionListTheme,
+                  imageTheme: this.theme.imageTheme,
+                  latexMathTheme: this.theme.latexMathTheme,
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   componentWidth: this.tableBlockComponentWidth,
@@ -470,38 +311,13 @@ export struct MarkdownQuote {
               } else if (item.nodeType === "ThematicBreak") {
                 // 分割线
                 MarkdownThematicBreak({
-                  dividerTheme: this.dividerTheme
+                  dividerTheme: this.theme.dividerTheme
                 })
               } else if (item.nodeType === "FootnoteBlock") {
                 // 脚注
                 MarkdownFootnote({
                   node: item,
-                  footnoteDefTheme: this.footnoteDefTheme,
-                  headingTheme: this.headingTheme,
-                  globalTheme: this.globalTheme,
-                  blockQuoteTheme: this.blockQuoteTheme,
-                  orderedListTheme: this.orderedListTheme,
-                  bulletListTheme: this.bulletListTheme,
-                  subTheme: this.subTheme,
-                  supTheme: this.supTheme,
-                  inlineCodeTheme: this.inlineCodeTheme,
-                  boldTheme: this.boldTheme,
-                  italicTheme: this.italicTheme,
-                  strikethroughTheme: this.strikethroughTheme,
-                  highlightTheme: this.highlightTheme,
-                  htmlUnderlineTheme: this.htmlUnderlineTheme,
-                  linkTheme: this.linkTheme,
-                  footnoteRefTheme: this.footnoteRefTheme,
-                  tableTheme: this.tableTheme,
-                  paragraphTheme: this.paragraphTheme,
-                  definitionListTheme: this.definitionListTheme,
-                  imageTheme: this.imageTheme,
-                  codeBlockTheme: this.codeBlockTheme,
-                  dividerTheme: this.dividerTheme,
-                  bannerTheme: this.bannerTheme,
-                  videoTheme: this.videoTheme,
-                  audioTheme: this.audioTheme,
-                  latexMathTheme: this.latexMathTheme,
+                  theme: this.theme,
                   latexImageCallback: this.latexImageCallback,
                   latexStrCallback: this.latexStrCallback,
                   componentWidth: this.componentWidth,
@@ -532,15 +348,15 @@ export struct MarkdownQuote {
                 // 图片幻灯片
                 MarkdownBanner({
                   node: item,
-                  bannerTheme: this.bannerTheme,
-                  imageTheme: this.imageTheme,
+                  bannerTheme: this.theme.bannerTheme,
+                  imageTheme: this.theme.imageTheme,
                   imageCallback: this.imageCallback
                 })
               } else if (item.nodeType === "BlockVideo") {
                 // 视频
                 MarkdownVideo({
                   node: item,
-                  videoTheme: this.videoTheme,
+                  videoTheme: this.theme.videoTheme,
                   videoCallback: this.videoCallback,
                   videoImageCallback: this.videoImageCallback,
                   videoReleaseCallback: this.videoReleaseCallback,
@@ -550,7 +366,7 @@ export struct MarkdownQuote {
                 // 音频
                 MarkdownAudio({
                   node: item,
-                  audioTheme: this.audioTheme,
+                  audioTheme: this.theme.audioTheme,
                   audioCallback: this.audioCallback
                 })
               }else if (item.nodeType === "CustomCardImage") {
@@ -586,7 +402,7 @@ export struct MarkdownQuote {
             return `${index}-${item.nodeHash}-${item.contentHash}`
           }
           if (item.nodeType === "TableBlock") {
-            return `${index}-${item.nodeHash}-${this.tableTheme.tableStickyHeader}`
+            return `${index}-${item.nodeHash}-${this.theme.tableTheme.tableStickyHeader}`
           }
           return `${index}-${item.nodeHash}`
         }
@@ -595,26 +411,26 @@ export struct MarkdownQuote {
     .listDirection(Axis.Vertical)
     .alignListItem(ListItemAlign.Start)
     .sticky(StickyStyle.Header)
-    .backgroundColor(this.blockQuoteTheme.blockQuoteBackgroundColor)
+    .backgroundColor(this.theme.blockQuoteTheme.blockQuoteBackgroundColor)
     .borderRadius({
-      topLeft: this.blockQuoteTheme.blockQuoteRadiusTopLeft,
-      topRight: this.blockQuoteTheme.blockQuoteRadiusTopRight,
-      bottomLeft: this.blockQuoteTheme.blockQuoteRadiusBottomLeft,
-      bottomRight: this.blockQuoteTheme.blockQuoteRadiusBottomRight
+      topLeft: this.theme.blockQuoteTheme.blockQuoteRadiusTopLeft,
+      topRight: this.theme.blockQuoteTheme.blockQuoteRadiusTopRight,
+      bottomLeft: this.theme.blockQuoteTheme.blockQuoteRadiusBottomLeft,
+      bottomRight: this.theme.blockQuoteTheme.blockQuoteRadiusBottomRight
     })
-    .borderWidth({ left: this.blockQuoteTheme.blockQuoteLeftBorderWidth })
-    .borderColor(this.blockQuoteTheme.blockQuoteLeftBorderColor)
+    .borderWidth({ left: this.theme.blockQuoteTheme.blockQuoteLeftBorderWidth })
+    .borderColor(this.theme.blockQuoteTheme.blockQuoteLeftBorderColor)
     .padding({
-      top: this.blockQuoteTheme.blockQuotePaddingTop,
-      right: this.blockQuoteTheme.blockQuotePaddingRight,
-      bottom: this.blockQuoteTheme.blockQuotePaddingBottom,
-      left: this.blockQuoteTheme.blockQuotePaddingLeft
+      top: this.theme.blockQuoteTheme.blockQuotePaddingTop,
+      right: this.theme.blockQuoteTheme.blockQuotePaddingRight,
+      bottom: this.theme.blockQuoteTheme.blockQuotePaddingBottom,
+      left: this.theme.blockQuoteTheme.blockQuotePaddingLeft
     })
     .margin({
-      top: this.blockQuoteTheme.blockQuoteMarginTop,
-      right: this.blockQuoteTheme.blockQuoteMarginRight,
-      bottom: this.blockQuoteTheme.blockQuoteMarginBottom,
-      left: this.blockQuoteTheme.blockQuoteMarginLeft
+      top: this.theme.blockQuoteTheme.blockQuoteMarginTop,
+      right: this.theme.blockQuoteTheme.blockQuoteMarginRight,
+      bottom: this.theme.blockQuoteTheme.blockQuoteMarginBottom,
+      left: this.theme.blockQuoteTheme.blockQuoteMarginLeft
     })
   }
 

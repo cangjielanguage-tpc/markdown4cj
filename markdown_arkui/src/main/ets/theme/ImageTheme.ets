@@ -495,4 +495,58 @@ export class ImageTheme implements MarkdownBaseTheme {
     this.imageDownloadButtonTextLineHeight = lineHeight
     return this
   }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return ImageTheme
+   */
+  applyFrom(other: ImageTheme): ImageTheme {
+    this.imageMarginTop = other.imageMarginTop
+    this.imageMarginRight = other.imageMarginRight
+    this.imageMarginBottom = other.imageMarginBottom
+    this.imageMarginLeft = other.imageMarginLeft
+    this.imageRadiusTopLeft = other.imageRadiusTopLeft
+    this.imageRadiusTopRight = other.imageRadiusTopRight
+    this.imageRadiusBottomLeft = other.imageRadiusBottomLeft
+    this.imageRadiusBottomRight = other.imageRadiusBottomRight
+    this.imageBorderStyle = other.imageBorderStyle
+    this.imageBorderWidth = other.imageBorderWidth
+    this.imageBorderColor = other.imageBorderColor
+    this.imagePlaceholder = other.imagePlaceholder
+    this.imageAutoResize = other.imageAutoResize
+    this.isImageMixedLayout = other.isImageMixedLayout
+    this.imageMaximumWidth = other.imageMaximumWidth
+    this.imageFixedRatioWidth = other.imageFixedRatioWidth
+    this.imageMaxHeight = other.imageMaxHeight
+    this.imageHeight = other.imageHeight
+    this.imageMaxWidth = other.imageMaxWidth
+    this.imageWidth = other.imageWidth
+    this.imageFitType = other.imageFitType
+    this.imageBottomLayoutMarginTop = other.imageBottomLayoutMarginTop
+    this.imageDownloadButtonVisible = other.imageDownloadButtonVisible
+    this.imageDownloadButtonWidth = other.imageDownloadButtonWidth
+    this.imageDownloadButtonHeight = other.imageDownloadButtonHeight
+    this.imageDownloadButtonRadiusTopLeft = other.imageDownloadButtonRadiusTopLeft
+    this.imageDownloadButtonRadiusTopRight = other.imageDownloadButtonRadiusTopRight
+    this.imageDownloadButtonRadiusBottomLeft = other.imageDownloadButtonRadiusBottomLeft
+    this.imageDownloadButtonRadiusBottomRight = other.imageDownloadButtonRadiusBottomRight
+    this.imageDownloadButtonIconTextGap = other.imageDownloadButtonIconTextGap
+    this.imageDownloadButtonIcon = other.imageDownloadButtonIcon
+    this.imageDownloadButtonIconWidth = other.imageDownloadButtonIconWidth
+    this.imageDownloadButtonIconHeight = other.imageDownloadButtonIconHeight
+    this.imageDownloadButtonBackgroundColor = other.imageDownloadButtonBackgroundColor
+    this.imageDownloadButtonText = other.imageDownloadButtonText
+    this.imageDownloadButtonTextFontColor = other.imageDownloadButtonTextFontColor
+    this.imageDownloadButtonTextFontSize = other.imageDownloadButtonTextFontSize
+    this.imageDownloadButtonTextFontStyle = other.imageDownloadButtonTextFontStyle
+    this.imageDownloadButtonTextFontWeight = other.imageDownloadButtonTextFontWeight
+    this.imageDownloadButtonTextFontFamily = other.imageDownloadButtonTextFontFamily
+    this.imageDownloadButtonTextLineHeight = other.imageDownloadButtonTextLineHeight
+    return this
+  }
 }

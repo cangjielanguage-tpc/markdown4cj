@@ -22,6 +22,7 @@ struct LinkDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -296,6 +297,12 @@ struct LinkDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -304,95 +311,91 @@ struct LinkDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - Link
-    let linkTheme = new LinkTheme()
-    linkTheme.setLinkIsIcon(this.linkIsIcon)
-    linkTheme.setLinkListIsIcon(this.linkListIsIcon)
+    theme.linkTheme.setLinkIsIcon(this.linkIsIcon)
+    theme.linkTheme.setLinkListIsIcon(this.linkListIsIcon)
     if (this.linkTextFontColor !== undefined) {
-      linkTheme.setLinkTextFontColor(this.linkTextFontColor)
+      theme.linkTheme.setLinkTextFontColor(this.linkTextFontColor)
     }
     if (this.linkTextFontSize !== undefined) {
-      linkTheme.setLinkTextFontSize(this.linkTextFontSize)
+      theme.linkTheme.setLinkTextFontSize(this.linkTextFontSize)
     }
     if (this.linkTextFontStyle !== undefined) {
-      linkTheme.setLinkTextFontStyle(this.linkTextFontStyle)
+      theme.linkTheme.setLinkTextFontStyle(this.linkTextFontStyle)
     }
     if (this.linkTextFontWeight !== undefined) {
-      linkTheme.setLinkTextFontWeight(this.linkTextFontWeight)
+      theme.linkTheme.setLinkTextFontWeight(this.linkTextFontWeight)
     }
     if (this.linkTextFontFamily !== undefined) {
-      linkTheme.setLinkTextFontFamily(this.linkTextFontFamily)
+      theme.linkTheme.setLinkTextFontFamily(this.linkTextFontFamily)
     }
     if (this.linkTextLineHeight !== undefined) {
-      linkTheme.setLinkTextLineHeight(this.linkTextLineHeight)
+      theme.linkTheme.setLinkTextLineHeight(this.linkTextLineHeight)
     }
     if (this.linkTextLetterSpacing !== undefined) {
-      linkTheme.setLinkTextLetterSpacing(this.linkTextLetterSpacing)
+      theme.linkTheme.setLinkTextLetterSpacing(this.linkTextLetterSpacing)
     }
-    linkTheme.setLinkTextDecorationType(this.linkTextDecorationType)
+    theme.linkTheme.setLinkTextDecorationType(this.linkTextDecorationType)
     if (this.linkTextDecorationColor !== undefined) {
-      linkTheme.setLinkTextDecorationColor(this.linkTextDecorationColor)
+      theme.linkTheme.setLinkTextDecorationColor(this.linkTextDecorationColor)
     }
-    linkTheme.setLinkTextDecorationStyle(this.linkTextDecorationStyle)
+    theme.linkTheme.setLinkTextDecorationStyle(this.linkTextDecorationStyle)
     if (this.linkTextBackgroundColor !== undefined) {
-      linkTheme.setLinkTextBackgroundColor(this.linkTextBackgroundColor)
+      theme.linkTheme.setLinkTextBackgroundColor(this.linkTextBackgroundColor)
     }
-    linkTheme.setLinkTextBackgroundRadius({topLeft: this.linkTextBackgroundRadiusTopLeft, topRight: this.linkTextBackgroundRadiusTopRight, bottomLeft: this.linkTextBackgroundRadiusBottomLeft, bottomRight: this.linkTextBackgroundRadiusBottomRight})
+    theme.linkTheme.setLinkTextBackgroundRadius({topLeft: this.linkTextBackgroundRadiusTopLeft, topRight: this.linkTextBackgroundRadiusTopRight, bottomLeft: this.linkTextBackgroundRadiusBottomLeft, bottomRight: this.linkTextBackgroundRadiusBottomRight})
     if (this.linkCircleIconBackgroundColor !== undefined) {
-      linkTheme.setLinkCircleIconBackgroundColor(this.linkCircleIconBackgroundColor)
+      theme.linkTheme.setLinkCircleIconBackgroundColor(this.linkCircleIconBackgroundColor)
     }
     if (this.linkCircleIconButtonBackgroundColor !== undefined) {
-      linkTheme.setLinkCircleIconButtonBackgroundColor(this.linkCircleIconButtonBackgroundColor)
+      theme.linkTheme.setLinkCircleIconButtonBackgroundColor(this.linkCircleIconButtonBackgroundColor)
     }
-    linkTheme.setLinkCircleIconTextSize(this.linkCircleIconTextSize)
+    theme.linkTheme.setLinkCircleIconTextSize(this.linkCircleIconTextSize)
     if (this.linkCircleIconTextColor !== undefined) {
-      linkTheme.setLinkCircleIconTextColor(this.linkCircleIconTextColor)
+      theme.linkTheme.setLinkCircleIconTextColor(this.linkCircleIconTextColor)
     }
-    linkTheme.setLinkCircleIconRadius(this.linkCircleIconRadius)
-    linkTheme.setLinkCircleIconMargin(this.linkCircleIconMargin)
+    theme.linkTheme.setLinkCircleIconRadius(this.linkCircleIconRadius)
+    theme.linkTheme.setLinkCircleIconMargin(this.linkCircleIconMargin)
     if (this.linkRectIconBackgroundColor !== undefined) {
-      linkTheme.setLinkRectIconBackgroundColor(this.linkRectIconBackgroundColor)
+      theme.linkTheme.setLinkRectIconBackgroundColor(this.linkRectIconBackgroundColor)
     }
     if (this.linkRectIconButtonBackgroundColor !== undefined) {
-      linkTheme.setLinkRectIconButtonBackgroundColor(this.linkRectIconButtonBackgroundColor)
+      theme.linkTheme.setLinkRectIconButtonBackgroundColor(this.linkRectIconButtonBackgroundColor)
     }
-    linkTheme.setLinkRectIconTextSize(this.linkRectIconTextSize)
+    theme.linkTheme.setLinkRectIconTextSize(this.linkRectIconTextSize)
     if (this.linkRectIconTextColor !== undefined) {
-      linkTheme.setLinkRectIconTextColor(this.linkRectIconTextColor)
+      theme.linkTheme.setLinkRectIconTextColor(this.linkRectIconTextColor)
     }
-    linkTheme.setLinkRectIconHeight(this.linkRectIconHeight)
-    linkTheme.setLinkRectIconPadding(this.linkRectIconPadding)
-    linkTheme.setLinkRectIconRadius(this.linkRectIconRadius)
-    linkTheme.setLinkRectIconMargin(this.linkRectIconMargin)
+    theme.linkTheme.setLinkRectIconHeight(this.linkRectIconHeight)
+    theme.linkTheme.setLinkRectIconPadding(this.linkRectIconPadding)
+    theme.linkTheme.setLinkRectIconRadius(this.linkRectIconRadius)
+    theme.linkTheme.setLinkRectIconMargin(this.linkRectIconMargin)
     if (this.linkRectToolIconBackgroundColor !== undefined) {
-      linkTheme.setLinkRectToolIconBackgroundColor(this.linkRectToolIconBackgroundColor)
+      theme.linkTheme.setLinkRectToolIconBackgroundColor(this.linkRectToolIconBackgroundColor)
     }
     if (this.linkRectToolIconButtonBackgroundColor !== undefined) {
-      linkTheme.setLinkRectToolIconButtonBackgroundColor(this.linkRectToolIconButtonBackgroundColor)
+      theme.linkTheme.setLinkRectToolIconButtonBackgroundColor(this.linkRectToolIconButtonBackgroundColor)
     }
-    linkTheme.setLinkRectToolIconTextSize(this.linkRectToolIconTextSize)
-    linkTheme.setLinkRectToolIconHeight(this.linkRectToolIconHeight)
-    linkTheme.setLinkRectToolIconPadding(this.linkRectToolIconPadding)
-    linkTheme.setLinkRectToolIconBorderWidth(this.linkRectToolIconBorderWidth)
-    linkTheme.setLinkRectToolIconDividingLineWidth(this.linkRectToolIconDividingLineWidth)
-    linkTheme.setLinkRectToolIconMargin(this.linkRectToolIconMargin)
-    linkTheme.setLinkRectToolIconLineLeftPadding(this.linkRectToolIconLineLeftPadding)
-    linkTheme.setLinkRectToolIconLineRightPadding(this.linkRectToolIconLineRightPadding)
-    theme.setLinkTheme(linkTheme)
+    theme.linkTheme.setLinkRectToolIconTextSize(this.linkRectToolIconTextSize)
+    theme.linkTheme.setLinkRectToolIconHeight(this.linkRectToolIconHeight)
+    theme.linkTheme.setLinkRectToolIconPadding(this.linkRectToolIconPadding)
+    theme.linkTheme.setLinkRectToolIconBorderWidth(this.linkRectToolIconBorderWidth)
+    theme.linkTheme.setLinkRectToolIconDividingLineWidth(this.linkRectToolIconDividingLineWidth)
+    theme.linkTheme.setLinkRectToolIconMargin(this.linkRectToolIconMargin)
+    theme.linkTheme.setLinkRectToolIconLineLeftPadding(this.linkRectToolIconLineLeftPadding)
+    theme.linkTheme.setLinkRectToolIconLineRightPadding(this.linkRectToolIconLineRightPadding)
 
     return theme
   }

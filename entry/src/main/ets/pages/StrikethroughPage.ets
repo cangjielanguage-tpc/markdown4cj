@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -26,7 +26,7 @@ struct StrikethroughPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "019_Strikethrough"
+  rawFilePath: string = "021_Strikethrough"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -153,67 +153,69 @@ struct StrikethroughPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.strikethroughData._isFull = this.isFull
-                  this.strikethroughData._incrementalAnalysis = this.incrementalAnalysis
-                  this.strikethroughData._enableParseThrottle = this.enableParseThrottle
-                  this.strikethroughData._parseThrottleMs = this.parseThrottleMs
-                  this.strikethroughData._time = this.time
-                  this.strikethroughData._textNumber = this.textNumber
-                  this.strikethroughData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.strikethroughData._isOnCopy = this.isOnCopy
-                  this.strikethroughData._blockMarginTop = this.blockMarginTop
-                  this.strikethroughData._blockMarginRight = this.blockMarginRight
-                  this.strikethroughData._blockMarginBottom = this.blockMarginBottom
-                  this.strikethroughData._blockMarginLeft = this.blockMarginLeft
-                  this.strikethroughData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.strikethroughData._isLineBreak = this.isLineBreak
-                  this.strikethroughData._backgroundColor = this.globalBackgroundColor
-                  this.strikethroughData._openGestureSwipe = this.openGestureSwipe
-                  this.strikethroughData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.strikethroughData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.strikethroughData._isFull = this.isFull
+                    this.strikethroughData._incrementalAnalysis = this.incrementalAnalysis
+                    this.strikethroughData._enableParseThrottle = this.enableParseThrottle
+                    this.strikethroughData._parseThrottleMs = this.parseThrottleMs
+                    this.strikethroughData._time = this.time
+                    this.strikethroughData._textNumber = this.textNumber
+                    this.strikethroughData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.strikethroughData._isOnCopy = this.isOnCopy
+                    this.strikethroughData._blockMarginTop = this.blockMarginTop
+                    this.strikethroughData._blockMarginRight = this.blockMarginRight
+                    this.strikethroughData._blockMarginBottom = this.blockMarginBottom
+                    this.strikethroughData._blockMarginLeft = this.blockMarginLeft
+                    this.strikethroughData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.strikethroughData._isLineBreak = this.isLineBreak
+                    this.strikethroughData._backgroundColor = this.globalBackgroundColor
+                    this.strikethroughData._openGestureSwipe = this.openGestureSwipe
+                    this.strikethroughData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.strikethroughData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.strikethroughData._strikethroughTextFontColor = this.strikethroughTextFontColor
-                  this.strikethroughData._strikethroughTextFontSize = this.strikethroughTextFontSize
-                  this.strikethroughData._strikethroughTextFontStyle = this.strikethroughTextFontStyle
-                  this.strikethroughData._strikethroughTextFontWeight = this.strikethroughTextFontWeight
-                  this.strikethroughData._strikethroughTextFontFamily = this.strikethroughTextFontFamily
-                  this.strikethroughData._strikethroughTextLineHeight = this.strikethroughTextLineHeight
-                  this.strikethroughData._strikethroughTextLetterSpacing = this.strikethroughTextLetterSpacing
-                  this.strikethroughData._strikethroughTextDecorationColor = this.strikethroughTextDecorationColor
-                  this.strikethroughData._strikethroughTextDecorationStyle = this.strikethroughTextDecorationStyle
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/StrikethroughDetailsPage", params: this.strikethroughData })
-              })
+                    // ---------- 专有
+                    this.strikethroughData._strikethroughTextFontColor = this.strikethroughTextFontColor
+                    this.strikethroughData._strikethroughTextFontSize = this.strikethroughTextFontSize
+                    this.strikethroughData._strikethroughTextFontStyle = this.strikethroughTextFontStyle
+                    this.strikethroughData._strikethroughTextFontWeight = this.strikethroughTextFontWeight
+                    this.strikethroughData._strikethroughTextFontFamily = this.strikethroughTextFontFamily
+                    this.strikethroughData._strikethroughTextLineHeight = this.strikethroughTextLineHeight
+                    this.strikethroughData._strikethroughTextLetterSpacing = this.strikethroughTextLetterSpacing
+                    this.strikethroughData._strikethroughTextDecorationColor = this.strikethroughTextDecorationColor
+                    this.strikethroughData._strikethroughTextDecorationStyle = this.strikethroughTextDecorationStyle
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/StrikethroughDetailsPage", params: this.strikethroughData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -443,10 +445,12 @@ struct StrikethroughPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

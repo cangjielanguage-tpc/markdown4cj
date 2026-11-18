@@ -20,6 +20,7 @@ struct CodeListDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -417,6 +418,12 @@ struct CodeListDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -425,176 +432,172 @@ struct CodeListDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
 
     // ---------- 专有 - CodeBlock
-    let codeBlockTheme = new CodeBlockTheme()
-    codeBlockTheme.setCodeBlockIsDark(this.codeBlockIsDark)
-    codeBlockTheme.setCodeBlockIsCodeFormat(this.codeBlockIsCodeFormat)
-    codeBlockTheme.setCodeBlockUseTab(this.codeBlockUseTab)
-    codeBlockTheme.setCodeBlockIndentWidth(this.codeBlockIndentWidth)
-    codeBlockTheme.setCodeBlockParserSync(this.codeBlockParserSync)
+    theme.codeBlockTheme.setCodeBlockIsDark(this.codeBlockIsDark)
+    theme.codeBlockTheme.setCodeBlockIsCodeFormat(this.codeBlockIsCodeFormat)
+    theme.codeBlockTheme.setCodeBlockUseTab(this.codeBlockUseTab)
+    theme.codeBlockTheme.setCodeBlockIndentWidth(this.codeBlockIndentWidth)
+    theme.codeBlockTheme.setCodeBlockParserSync(this.codeBlockParserSync)
     if (this.codeBlockBackgroundColor !== undefined) {
-      codeBlockTheme.setCodeBlockBackgroundColor(this.codeBlockBackgroundColor)
+      theme.codeBlockTheme.setCodeBlockBackgroundColor(this.codeBlockBackgroundColor)
     }
-    codeBlockTheme.setCodeBlockMargin({top: this.codeBlockMarginTop, right: this.codeBlockMarginRight, bottom: this.codeBlockMarginBottom, left: this.codeBlockMarginLeft})
-    codeBlockTheme.setCodeBlockPadding({top: this.codeBlockPaddingTop, right: this.codeBlockPaddingRight, bottom: this.codeBlockPaddingBottom, left: this.codeBlockPaddingLeft})
-    codeBlockTheme.setCodeBlockBorderStyle(this.codeBlockBorderStyle)
-    codeBlockTheme.setCodeBlockBorderWidth(this.codeBlockBorderWidth)
+    theme.codeBlockTheme.setCodeBlockMargin({top: this.codeBlockMarginTop, right: this.codeBlockMarginRight, bottom: this.codeBlockMarginBottom, left: this.codeBlockMarginLeft})
+    theme.codeBlockTheme.setCodeBlockPadding({top: this.codeBlockPaddingTop, right: this.codeBlockPaddingRight, bottom: this.codeBlockPaddingBottom, left: this.codeBlockPaddingLeft})
+    theme.codeBlockTheme.setCodeBlockBorderStyle(this.codeBlockBorderStyle)
+    theme.codeBlockTheme.setCodeBlockBorderWidth(this.codeBlockBorderWidth)
     if (this.codeBlockBorderColor !== undefined) {
-      codeBlockTheme.setCodeBlockBorderColor(this.codeBlockBorderColor)
+      theme.codeBlockTheme.setCodeBlockBorderColor(this.codeBlockBorderColor)
     }
-    codeBlockTheme.setCodeBlockRadius({topLeft: this.codeBlockRadiusTopLeft, topRight: this.codeBlockRadiusTopRight, bottomLeft: this.codeBlockRadiusBottomLeft, bottomRight: this.codeBlockRadiusBottomRight})
-    codeBlockTheme.setCodeBlockTitleLayoutMarginBottom(this.codeBlockTitleLayoutMarginBottom)
-    codeBlockTheme.setCodeBlockTypeTextMarginLeft(this.codeBlockTypeTextMarginLeft)
-    codeBlockTheme.setCodeBlockTypeText(this.codeBlockTypeText)
+    theme.codeBlockTheme.setCodeBlockRadius({topLeft: this.codeBlockRadiusTopLeft, topRight: this.codeBlockRadiusTopRight, bottomLeft: this.codeBlockRadiusBottomLeft, bottomRight: this.codeBlockRadiusBottomRight})
+    theme.codeBlockTheme.setCodeBlockTitleLayoutMarginBottom(this.codeBlockTitleLayoutMarginBottom)
+    theme.codeBlockTheme.setCodeBlockTypeTextMarginLeft(this.codeBlockTypeTextMarginLeft)
+    theme.codeBlockTheme.setCodeBlockTypeText(this.codeBlockTypeText)
     if (this.codeBlockTypeTextFontColor !== undefined) {
-      codeBlockTheme.setCodeBlockTypeTextFontColor(this.codeBlockTypeTextFontColor)
+      theme.codeBlockTheme.setCodeBlockTypeTextFontColor(this.codeBlockTypeTextFontColor)
     }
     if (this.codeBlockTypeTextFontSize !== undefined) {
-      codeBlockTheme.setCodeBlockTypeTextFontSize(this.codeBlockTypeTextFontSize)
+      theme.codeBlockTheme.setCodeBlockTypeTextFontSize(this.codeBlockTypeTextFontSize)
     }
     if (this.codeBlockTypeTextFontStyle !== undefined) {
-      codeBlockTheme.setCodeBlockTypeTextFontStyle(this.codeBlockTypeTextFontStyle)
+      theme.codeBlockTheme.setCodeBlockTypeTextFontStyle(this.codeBlockTypeTextFontStyle)
     }
     if (this.codeBlockTypeTextFontWeight !== undefined) {
-      codeBlockTheme.setCodeBlockTypeTextFontWeight(this.codeBlockTypeTextFontWeight)
+      theme.codeBlockTheme.setCodeBlockTypeTextFontWeight(this.codeBlockTypeTextFontWeight)
     }
     if (this.codeBlockTypeTextFontFamily !== undefined) {
-      codeBlockTheme.setCodeBlockTypeTextFontFamily(this.codeBlockTypeTextFontFamily)
+      theme.codeBlockTheme.setCodeBlockTypeTextFontFamily(this.codeBlockTypeTextFontFamily)
     }
     if (this.codeBlockTypeTextLineHeight !== undefined) {
-      codeBlockTheme.setCodeBlockTypeTextLineHeight(this.codeBlockTypeTextLineHeight)
+      theme.codeBlockTheme.setCodeBlockTypeTextLineHeight(this.codeBlockTypeTextLineHeight)
     }
-    codeBlockTheme.setCodeBlockCopyFullScreenSpacing(this.codeBlockCopyFullScreenSpacing)
-    codeBlockTheme.setCodeBlockCopyButtonIsShow(this.codeBlockCopyButtonIsShow)
-    codeBlockTheme.setCodeBlockCopyTextIsShow(this.codeBlockCopyTextIsShow)
+    theme.codeBlockTheme.setCodeBlockCopyFullScreenSpacing(this.codeBlockCopyFullScreenSpacing)
+    theme.codeBlockTheme.setCodeBlockCopyButtonIsShow(this.codeBlockCopyButtonIsShow)
+    theme.codeBlockTheme.setCodeBlockCopyTextIsShow(this.codeBlockCopyTextIsShow)
     if (this.codeBlockCopyIcon !== undefined) {
-      codeBlockTheme.setCodeBlockCopyIcon(this.codeBlockCopyIcon)
+      theme.codeBlockTheme.setCodeBlockCopyIcon(this.codeBlockCopyIcon)
     }
-    codeBlockTheme.setCodeBlockCopyIconWidth(this.codeBlockCopyIconWidth)
-    codeBlockTheme.setCodeBlockCopyIconHeight(this.codeBlockCopyIconHeight)
-    codeBlockTheme.setCodeBlockCopyIconTextSpacing(this.codeBlockCopyIconTextSpacing)
-    codeBlockTheme.setCodeBlockCopyText(this.codeBlockCopyText)
+    theme.codeBlockTheme.setCodeBlockCopyIconWidth(this.codeBlockCopyIconWidth)
+    theme.codeBlockTheme.setCodeBlockCopyIconHeight(this.codeBlockCopyIconHeight)
+    theme.codeBlockTheme.setCodeBlockCopyIconTextSpacing(this.codeBlockCopyIconTextSpacing)
+    theme.codeBlockTheme.setCodeBlockCopyText(this.codeBlockCopyText)
     if (this.codeBlockCopyTextFontColor !== undefined) {
-      codeBlockTheme.setCodeBlockCopyTextFontColor(this.codeBlockCopyTextFontColor)
+      theme.codeBlockTheme.setCodeBlockCopyTextFontColor(this.codeBlockCopyTextFontColor)
     }
     if (this.codeBlockCopyTextFontSize !== undefined) {
-      codeBlockTheme.setCodeBlockCopyTextFontSize(this.codeBlockCopyTextFontSize)
+      theme.codeBlockTheme.setCodeBlockCopyTextFontSize(this.codeBlockCopyTextFontSize)
     }
     if (this.codeBlockCopyTextFontStyle !== undefined) {
-      codeBlockTheme.setCodeBlockCopyTextFontStyle(this.codeBlockCopyTextFontStyle)
+      theme.codeBlockTheme.setCodeBlockCopyTextFontStyle(this.codeBlockCopyTextFontStyle)
     }
     if (this.codeBlockCopyTextFontWeight !== undefined) {
-      codeBlockTheme.setCodeBlockCopyTextFontWeight(this.codeBlockCopyTextFontWeight)
+      theme.codeBlockTheme.setCodeBlockCopyTextFontWeight(this.codeBlockCopyTextFontWeight)
     }
     if (this.codeBlockCopyTextFontFamily !== undefined) {
-      codeBlockTheme.setCodeBlockCopyTextFontFamily(this.codeBlockCopyTextFontFamily)
+      theme.codeBlockTheme.setCodeBlockCopyTextFontFamily(this.codeBlockCopyTextFontFamily)
     }
     if (this.codeBlockCopyTextLineHeight !== undefined) {
-      codeBlockTheme.setCodeBlockCopyTextLineHeight(this.codeBlockCopyTextLineHeight)
+      theme.codeBlockTheme.setCodeBlockCopyTextLineHeight(this.codeBlockCopyTextLineHeight)
     }
-    codeBlockTheme.setCodeBlockFullScreenButtonIsShow(this.codeBlockFullScreenButtonIsShow)
-    codeBlockTheme.setCodeBlockFullScreenTextIsShow(this.codeBlockFullScreenTextIsShow)
+    theme.codeBlockTheme.setCodeBlockFullScreenButtonIsShow(this.codeBlockFullScreenButtonIsShow)
+    theme.codeBlockTheme.setCodeBlockFullScreenTextIsShow(this.codeBlockFullScreenTextIsShow)
     if (this.codeBlockFullScreenIcon !== undefined) {
-      codeBlockTheme.setCodeBlockFullScreenIcon(this.codeBlockFullScreenIcon)
+      theme.codeBlockTheme.setCodeBlockFullScreenIcon(this.codeBlockFullScreenIcon)
     }
-    codeBlockTheme.setCodeBlockFullScreenIconWidth(this.codeBlockFullScreenIconWidth)
-    codeBlockTheme.setCodeBlockFullScreenIconHeight(this.codeBlockFullScreenIconHeight)
-    codeBlockTheme.setCodeBlockFullScreenIconTextSpacing(this.codeBlockFullScreenIconTextSpacing)
-    codeBlockTheme.setCodeBlockFullScreenText(this.codeBlockFullScreenText)
+    theme.codeBlockTheme.setCodeBlockFullScreenIconWidth(this.codeBlockFullScreenIconWidth)
+    theme.codeBlockTheme.setCodeBlockFullScreenIconHeight(this.codeBlockFullScreenIconHeight)
+    theme.codeBlockTheme.setCodeBlockFullScreenIconTextSpacing(this.codeBlockFullScreenIconTextSpacing)
+    theme.codeBlockTheme.setCodeBlockFullScreenText(this.codeBlockFullScreenText)
     if (this.codeBlockFullScreenTextFontColor !== undefined) {
-      codeBlockTheme.setCodeBlockFullScreenTextFontColor(this.codeBlockFullScreenTextFontColor)
+      theme.codeBlockTheme.setCodeBlockFullScreenTextFontColor(this.codeBlockFullScreenTextFontColor)
     }
     if (this.codeBlockFullScreenTextFontSize !== undefined) {
-      codeBlockTheme.setCodeBlockFullScreenTextFontSize(this.codeBlockFullScreenTextFontSize)
+      theme.codeBlockTheme.setCodeBlockFullScreenTextFontSize(this.codeBlockFullScreenTextFontSize)
     }
     if (this.codeBlockFullScreenTextFontStyle !== undefined) {
-      codeBlockTheme.setCodeBlockFullScreenTextFontStyle(this.codeBlockFullScreenTextFontStyle)
+      theme.codeBlockTheme.setCodeBlockFullScreenTextFontStyle(this.codeBlockFullScreenTextFontStyle)
     }
     if (this.codeBlockFullScreenTextFontWeight !== undefined) {
-      codeBlockTheme.setCodeBlockFullScreenTextFontWeight(this.codeBlockFullScreenTextFontWeight)
+      theme.codeBlockTheme.setCodeBlockFullScreenTextFontWeight(this.codeBlockFullScreenTextFontWeight)
     }
     if (this.codeBlockFullScreenTextFontFamily !== undefined) {
-      codeBlockTheme.setCodeBlockFullScreenTextFontFamily(this.codeBlockFullScreenTextFontFamily)
+      theme.codeBlockTheme.setCodeBlockFullScreenTextFontFamily(this.codeBlockFullScreenTextFontFamily)
     }
     if (this.codeBlockFullScreenTextLineHeight !== undefined) {
-      codeBlockTheme.setCodeBlockFullScreenTextLineHeight(this.codeBlockFullScreenTextLineHeight)
+      theme.codeBlockTheme.setCodeBlockFullScreenTextLineHeight(this.codeBlockFullScreenTextLineHeight)
     }
-    codeBlockTheme.setCodeBlockLineNumberIsShow(this.codeBlockLineNumberIsShow)
-    codeBlockTheme.setCodeBlockLineNumberTextPaddingLeft(this.codeBlockLineNumberTextPaddingLeft)
+    theme.codeBlockTheme.setCodeBlockLineNumberIsShow(this.codeBlockLineNumberIsShow)
+    theme.codeBlockTheme.setCodeBlockLineNumberTextPaddingLeft(this.codeBlockLineNumberTextPaddingLeft)
     if (this.codeBlockLineNumberTextFontColor !== undefined) {
-      codeBlockTheme.setCodeBlockLineNumberTextFontColor(this.codeBlockLineNumberTextFontColor)
+      theme.codeBlockTheme.setCodeBlockLineNumberTextFontColor(this.codeBlockLineNumberTextFontColor)
     }
     if (this.codeBlockLineNumberTextFontSize !== undefined) {
-      codeBlockTheme.setCodeBlockLineNumberTextFontSize(this.codeBlockLineNumberTextFontSize)
+      theme.codeBlockTheme.setCodeBlockLineNumberTextFontSize(this.codeBlockLineNumberTextFontSize)
     }
     if (this.codeBlockLineNumberTextFontStyle !== undefined) {
-      codeBlockTheme.setCodeBlockLineNumberTextFontStyle(this.codeBlockLineNumberTextFontStyle)
+      theme.codeBlockTheme.setCodeBlockLineNumberTextFontStyle(this.codeBlockLineNumberTextFontStyle)
     }
     if (this.codeBlockLineNumberTextFontWeight !== undefined) {
-      codeBlockTheme.setCodeBlockLineNumberTextFontWeight(this.codeBlockLineNumberTextFontWeight)
+      theme.codeBlockTheme.setCodeBlockLineNumberTextFontWeight(this.codeBlockLineNumberTextFontWeight)
     }
     if (this.codeBlockLineNumberTextFontFamily !== undefined) {
-      codeBlockTheme.setCodeBlockLineNumberTextFontFamily(this.codeBlockLineNumberTextFontFamily)
+      theme.codeBlockTheme.setCodeBlockLineNumberTextFontFamily(this.codeBlockLineNumberTextFontFamily)
     }
     if (this.codeBlockLineNumberTextLineHeight !== undefined) {
-      codeBlockTheme.setCodeBlockLineNumberTextLineHeight(this.codeBlockLineNumberTextLineHeight)
+      theme.codeBlockTheme.setCodeBlockLineNumberTextLineHeight(this.codeBlockLineNumberTextLineHeight)
     }
     if (this.codeBlockDividerColor !== undefined) {
-      codeBlockTheme.setCodeBlockDividerColor(this.codeBlockDividerColor)
+      theme.codeBlockTheme.setCodeBlockDividerColor(this.codeBlockDividerColor)
     }
-    codeBlockTheme.setCodeBlockDividerStrokeWidth(this.codeBlockDividerStrokeWidth)
-    codeBlockTheme.setCodeBlockLineNumberDividerSpacing(this.codeBlockLineNumberDividerSpacing)
+    theme.codeBlockTheme.setCodeBlockDividerStrokeWidth(this.codeBlockDividerStrokeWidth)
+    theme.codeBlockTheme.setCodeBlockLineNumberDividerSpacing(this.codeBlockLineNumberDividerSpacing)
     if (this.codeBlockTextFontColor !== undefined) {
-      codeBlockTheme.setCodeBlockTextFontColor(this.codeBlockTextFontColor)
+      theme.codeBlockTheme.setCodeBlockTextFontColor(this.codeBlockTextFontColor)
     }
-    codeBlockTheme.setCodeBlockTextMarginRight(this.codeBlockTextMarginRight)
-    codeBlockTheme.setCodeBlockTextMarginLeft(this.codeBlockTextMarginLeft)
+    theme.codeBlockTheme.setCodeBlockTextMarginRight(this.codeBlockTextMarginRight)
+    theme.codeBlockTheme.setCodeBlockTextMarginLeft(this.codeBlockTextMarginLeft)
     if (this.codeBlockTextFontSize !== undefined) {
-      codeBlockTheme.setCodeBlockTextFontSize(this.codeBlockTextFontSize)
+      theme.codeBlockTheme.setCodeBlockTextFontSize(this.codeBlockTextFontSize)
     }
     if (this.codeBlockTextFontStyle !== undefined) {
-      codeBlockTheme.setCodeBlockTextFontStyle(this.codeBlockTextFontStyle)
+      theme.codeBlockTheme.setCodeBlockTextFontStyle(this.codeBlockTextFontStyle)
     }
     if (this.codeBlockTextFontWeight !== undefined) {
-      codeBlockTheme.setCodeBlockTextFontWeight(this.codeBlockTextFontWeight)
+      theme.codeBlockTheme.setCodeBlockTextFontWeight(this.codeBlockTextFontWeight)
     }
     if (this.codeBlockTextFontFamily !== undefined) {
-      codeBlockTheme.setCodeBlockTextFontFamily(this.codeBlockTextFontFamily)
+      theme.codeBlockTheme.setCodeBlockTextFontFamily(this.codeBlockTextFontFamily)
     }
     if (this.codeBlockTextLineHeight !== undefined) {
-      codeBlockTheme.setCodeBlockTextLineHeight(this.codeBlockTextLineHeight)
+      theme.codeBlockTheme.setCodeBlockTextLineHeight(this.codeBlockTextLineHeight)
     }
-    codeBlockTheme.setCodeBlockTextLetterSpacing(this.codeBlockTextLetterSpacing)
+    theme.codeBlockTheme.setCodeBlockTextLetterSpacing(this.codeBlockTextLetterSpacing)
 
-    codeBlockTheme.setCodeBlockListTitleTextSize(this.codeBlockListTitleTextSize)
-    codeBlockTheme.setCodeBlockListTitleSelectTextSize(this.codeBlockListTitleSelectTextSize)
+    theme.codeBlockTheme.setCodeBlockListTitleTextSize(this.codeBlockListTitleTextSize)
+    theme.codeBlockTheme.setCodeBlockListTitleSelectTextSize(this.codeBlockListTitleSelectTextSize)
     if (this.codeBlockListTitleSelectTextColor !== undefined) {
-      codeBlockTheme.setCodeBlockListTitleSelectTextColor(this.codeBlockListTitleSelectTextColor)
+      theme.codeBlockTheme.setCodeBlockListTitleSelectTextColor(this.codeBlockListTitleSelectTextColor)
     }
     if (this.codeBlockListTitleUnselectTextColor !== undefined) {
-      codeBlockTheme.setCodeBlockListTitleUnselectTextColor(this.codeBlockListTitleUnselectTextColor)
+      theme.codeBlockTheme.setCodeBlockListTitleUnselectTextColor(this.codeBlockListTitleUnselectTextColor)
     }
     if (this.codeBlockListTitleSelectBackgroundColor !== undefined) {
-      codeBlockTheme.setCodeBlockListTitleSelectBackgroundColor(this.codeBlockListTitleSelectBackgroundColor)
+      theme.codeBlockTheme.setCodeBlockListTitleSelectBackgroundColor(this.codeBlockListTitleSelectBackgroundColor)
     }
     if (this.codeBlockListTitleUnselectBackgroundColor !== undefined) {
-      codeBlockTheme.setCodeBlockListTitleUnselectBackgroundColor(this.codeBlockListTitleUnselectBackgroundColor)
+      theme.codeBlockTheme.setCodeBlockListTitleUnselectBackgroundColor(this.codeBlockListTitleUnselectBackgroundColor)
     }
-    theme.setCodeBlockTheme(codeBlockTheme)
     return theme
   }
 

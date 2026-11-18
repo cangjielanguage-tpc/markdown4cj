@@ -24,6 +24,7 @@ struct ListDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -304,6 +305,12 @@ struct ListDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -312,87 +319,81 @@ struct ListDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - OrderedList
-    let orderedListTheme = new OrderedListTheme()
     if (this.orderedListBackgroundColor !== undefined) {
-      orderedListTheme.setOrderedListBackgroundColor(this.orderedListBackgroundColor)
+      theme.orderedListTheme.setOrderedListBackgroundColor(this.orderedListBackgroundColor)
     }
-    orderedListTheme.setOrderedListMargin({top: this.orderedListMarginTop, right: this.orderedListMarginRight, bottom: this.orderedListMarginBottom, left: this.orderedListMarginLeft})
-    orderedListTheme.setOrderedListPadding({top: this.orderedListPaddingTop, right: this.orderedListPaddingRight, bottom: this.orderedListPaddingBottom, left: this.orderedListPaddingLeft})
-    orderedListTheme.setOrderedListChildSpacing(this.orderedListChildSpacing)
-    orderedListTheme.setOrderedListChildChildSpacing(this.orderedListChildChildSpacing)
-    orderedListTheme.setOrderedListMarkerSpacing(this.orderedListMarkerSpacing)
+    theme.orderedListTheme.setOrderedListMargin({top: this.orderedListMarginTop, right: this.orderedListMarginRight, bottom: this.orderedListMarginBottom, left: this.orderedListMarginLeft})
+    theme.orderedListTheme.setOrderedListPadding({top: this.orderedListPaddingTop, right: this.orderedListPaddingRight, bottom: this.orderedListPaddingBottom, left: this.orderedListPaddingLeft})
+    theme.orderedListTheme.setOrderedListChildSpacing(this.orderedListChildSpacing)
+    theme.orderedListTheme.setOrderedListChildChildSpacing(this.orderedListChildChildSpacing)
+    theme.orderedListTheme.setOrderedListMarkerSpacing(this.orderedListMarkerSpacing)
     if (this.orderedListMarkerTextFontColor !== undefined) {
-      orderedListTheme.setOrderedListMarkerTextFontColor(this.orderedListMarkerTextFontColor)
+      theme.orderedListTheme.setOrderedListMarkerTextFontColor(this.orderedListMarkerTextFontColor)
     }
     if (this.orderedListMarkerTextFontSize !== undefined) {
-      orderedListTheme.setOrderedListMarkerTextFontSize(this.orderedListMarkerTextFontSize)
+      theme.orderedListTheme.setOrderedListMarkerTextFontSize(this.orderedListMarkerTextFontSize)
     }
     if (this.orderedListMarkerTextFontStyle !== undefined) {
-      orderedListTheme.setOrderedListMarkerTextFontStyle(this.orderedListMarkerTextFontStyle)
+      theme.orderedListTheme.setOrderedListMarkerTextFontStyle(this.orderedListMarkerTextFontStyle)
     }
     if (this.orderedListMarkerTextFontWeight !== undefined) {
-      orderedListTheme.setOrderedListMarkerTextFontWeight(this.orderedListMarkerTextFontWeight)
+      theme.orderedListTheme.setOrderedListMarkerTextFontWeight(this.orderedListMarkerTextFontWeight)
     }
     if (this.orderedListMarkerTextFontFamily !== undefined) {
-      orderedListTheme.setOrderedListMarkerTextFontFamily(this.orderedListMarkerTextFontFamily)
+      theme.orderedListTheme.setOrderedListMarkerTextFontFamily(this.orderedListMarkerTextFontFamily)
     }
     if (this.orderedListMarkerTextLineHeight !== undefined) {
-      orderedListTheme.setOrderedListMarkerTextLineHeight(this.orderedListMarkerTextLineHeight)
+      theme.orderedListTheme.setOrderedListMarkerTextLineHeight(this.orderedListMarkerTextLineHeight)
     }
-    theme.setOrderedListTheme(orderedListTheme)
     
     // ---------- 专有 - BulletList
-    let bulletListTheme = new BulletListTheme()
     if (this.bulletListBackgroundColor !== undefined) {
-      bulletListTheme.setBulletListBackgroundColor(this.bulletListBackgroundColor)
+      theme.bulletListTheme.setBulletListBackgroundColor(this.bulletListBackgroundColor)
     }
-    bulletListTheme.setBulletListMargin({top: this.bulletListMarginTop, right: this.bulletListMarginRight, bottom: this.bulletListMarginBottom, left: this.bulletListMarginLeft})
-    bulletListTheme.setBulletListPadding({top: this.bulletListPaddingTop, right: this.bulletListPaddingRight, bottom: this.bulletListPaddingBottom, left: this.bulletListPaddingLeft})
-    bulletListTheme.setBulletListChildSpacing(this.bulletListChildSpacing)
-    bulletListTheme.setBulletListChildChildSpacing(this.bulletListChildChildSpacing)
-    bulletListTheme.setBulletListBulletSpacing(this.bulletListBulletSpacing)
-    bulletListTheme.setBulletListBulletIsCircle(this.bulletListBulletIsCircle)
+    theme.bulletListTheme.setBulletListMargin({top: this.bulletListMarginTop, right: this.bulletListMarginRight, bottom: this.bulletListMarginBottom, left: this.bulletListMarginLeft})
+    theme.bulletListTheme.setBulletListPadding({top: this.bulletListPaddingTop, right: this.bulletListPaddingRight, bottom: this.bulletListPaddingBottom, left: this.bulletListPaddingLeft})
+    theme.bulletListTheme.setBulletListChildSpacing(this.bulletListChildSpacing)
+    theme.bulletListTheme.setBulletListChildChildSpacing(this.bulletListChildChildSpacing)
+    theme.bulletListTheme.setBulletListBulletSpacing(this.bulletListBulletSpacing)
+    theme.bulletListTheme.setBulletListBulletIsCircle(this.bulletListBulletIsCircle)
     if (this.bulletListBulletTextFontColor !== undefined) {
-      bulletListTheme.setBulletListBulletTextFontColor(this.bulletListBulletTextFontColor)
+      theme.bulletListTheme.setBulletListBulletTextFontColor(this.bulletListBulletTextFontColor)
     }
     if (this.bulletListBulletTextFontSize !== undefined) {
-      bulletListTheme.setBulletListBulletTextFontSize(this.bulletListBulletTextFontSize)
+      theme.bulletListTheme.setBulletListBulletTextFontSize(this.bulletListBulletTextFontSize)
     }
     if (this.bulletListBulletTextFontStyle !== undefined) {
-      bulletListTheme.setBulletListBulletTextFontStyle(this.bulletListBulletTextFontStyle)
+      theme.bulletListTheme.setBulletListBulletTextFontStyle(this.bulletListBulletTextFontStyle)
     }
     if (this.bulletListBulletTextFontWeight !== undefined) {
-      bulletListTheme.setBulletListBulletTextFontWeight(this.bulletListBulletTextFontWeight)
+      theme.bulletListTheme.setBulletListBulletTextFontWeight(this.bulletListBulletTextFontWeight)
     }
     if (this.bulletListBulletTextFontFamily !== undefined) {
-      bulletListTheme.setBulletListBulletTextFontFamily(this.bulletListBulletTextFontFamily)
+      theme.bulletListTheme.setBulletListBulletTextFontFamily(this.bulletListBulletTextFontFamily)
     }
     if (this.bulletListBulletTextLineHeight !== undefined) {
-      bulletListTheme.setBulletListBulletTextLineHeight(this.bulletListBulletTextLineHeight)
+      theme.bulletListTheme.setBulletListBulletTextLineHeight(this.bulletListBulletTextLineHeight)
     }
-    bulletListTheme.setBulletListCheckboxSpacing(this.bulletListCheckboxSpacing)
-    bulletListTheme.setBulletListCheckboxWidth(this.bulletListCheckboxWidth)
-    bulletListTheme.setBulletListCheckboxHeight(this.bulletListCheckboxHeight)
+    theme.bulletListTheme.setBulletListCheckboxSpacing(this.bulletListCheckboxSpacing)
+    theme.bulletListTheme.setBulletListCheckboxWidth(this.bulletListCheckboxWidth)
+    theme.bulletListTheme.setBulletListCheckboxHeight(this.bulletListCheckboxHeight)
     if (this.bulletListCheckboxSelectedColor !== undefined) {
-      bulletListTheme.setBulletListCheckboxSelectedColor(this.bulletListCheckboxSelectedColor)
+      theme.bulletListTheme.setBulletListCheckboxSelectedColor(this.bulletListCheckboxSelectedColor)
     }
-    bulletListTheme.setBulletListCheckboxShape(this.bulletListCheckboxShape)
-    theme.setBulletListTheme(bulletListTheme)
+    theme.bulletListTheme.setBulletListCheckboxShape(this.bulletListCheckboxShape)
     
     return theme
   }

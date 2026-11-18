@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -28,7 +28,7 @@ struct FootnotePage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "022_Footnote"
+  rawFilePath: string = "024_Footnote"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -215,82 +215,84 @@ struct FootnotePage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.footnoteData._isFull = this.isFull
-                  this.footnoteData._incrementalAnalysis = this.incrementalAnalysis
-                  this.footnoteData._enableParseThrottle = this.enableParseThrottle
-                  this.footnoteData._parseThrottleMs = this.parseThrottleMs
-                  this.footnoteData._time = this.time
-                  this.footnoteData._textNumber = this.textNumber
-                  this.footnoteData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.footnoteData._isOnCopy = this.isOnCopy
-                  this.footnoteData._blockMarginTop = this.blockMarginTop
-                  this.footnoteData._blockMarginRight = this.blockMarginRight
-                  this.footnoteData._blockMarginBottom = this.blockMarginBottom
-                  this.footnoteData._blockMarginLeft = this.blockMarginLeft
-                  this.footnoteData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.footnoteData._isLineBreak = this.isLineBreak
-                  this.footnoteData._backgroundColor = this.globalBackgroundColor
-                  this.footnoteData._openGestureSwipe = this.openGestureSwipe
-                  this.footnoteData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.footnoteData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.footnoteData._isFull = this.isFull
+                    this.footnoteData._incrementalAnalysis = this.incrementalAnalysis
+                    this.footnoteData._enableParseThrottle = this.enableParseThrottle
+                    this.footnoteData._parseThrottleMs = this.parseThrottleMs
+                    this.footnoteData._time = this.time
+                    this.footnoteData._textNumber = this.textNumber
+                    this.footnoteData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.footnoteData._isOnCopy = this.isOnCopy
+                    this.footnoteData._blockMarginTop = this.blockMarginTop
+                    this.footnoteData._blockMarginRight = this.blockMarginRight
+                    this.footnoteData._blockMarginBottom = this.blockMarginBottom
+                    this.footnoteData._blockMarginLeft = this.blockMarginLeft
+                    this.footnoteData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.footnoteData._isLineBreak = this.isLineBreak
+                    this.footnoteData._backgroundColor = this.globalBackgroundColor
+                    this.footnoteData._openGestureSwipe = this.openGestureSwipe
+                    this.footnoteData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.footnoteData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.footnoteData._footnoteDefBackgroundColor = this.footnoteDefBackgroundColor
-                  this.footnoteData._footnoteDefMarginTop = this.footnoteDefMarginTop
-                  this.footnoteData._footnoteDefMarginRight = this.footnoteDefMarginRight
-                  this.footnoteData._footnoteDefMarginBottom = this.footnoteDefMarginBottom
-                  this.footnoteData._footnoteDefMarginLeft = this.footnoteDefMarginLeft
-                  this.footnoteData._footnoteDefPaddingTop = this.footnoteDefPaddingTop
-                  this.footnoteData._footnoteDefPaddingRight = this.footnoteDefPaddingRight
-                  this.footnoteData._footnoteDefPaddingBottom = this.footnoteDefPaddingBottom
-                  this.footnoteData._footnoteDefPaddingLeft = this.footnoteDefPaddingLeft
-                  this.footnoteData._footnoteRefTextFontColor = this.footnoteRefTextFontColor
-                  this.footnoteData._footnoteRefTextFontSize = this.footnoteRefTextFontSize
-                  this.footnoteData._footnoteRefTextFontStyle = this.footnoteRefTextFontStyle
-                  this.footnoteData._footnoteRefTextFontWeight = this.footnoteRefTextFontWeight
-                  this.footnoteData._footnoteRefTextFontFamily = this.footnoteRefTextFontFamily
-                  this.footnoteData._footnoteRefTextLineHeight = this.footnoteRefTextLineHeight
-                  this.footnoteData._footnoteRefTextLetterSpacing = this.footnoteRefTextLetterSpacing
-                  this.footnoteData._footnoteRefTextDecorationType = this.footnoteRefTextDecorationType
-                  this.footnoteData._footnoteRefTextDecorationColor = this.footnoteRefTextDecorationColor
-                  this.footnoteData._footnoteRefTextDecorationStyle = this.footnoteRefTextDecorationStyle
-                  this.footnoteData._footnoteRefTextBackgroundColor = this.footnoteRefTextBackgroundColor
-                  this.footnoteData._footnoteRefTextBackgroundRadiusTopLeft = this.footnoteRefTextBackgroundRadiusTopLeft
-                  this.footnoteData._footnoteRefTextBackgroundRadiusTopRight = this.footnoteRefTextBackgroundRadiusTopRight
-                  this.footnoteData._footnoteRefTextBackgroundRadiusBottomLeft = this.footnoteRefTextBackgroundRadiusBottomLeft
-                  this.footnoteData._footnoteRefTextBackgroundRadiusBottomRight = this.footnoteRefTextBackgroundRadiusBottomRight
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/FootnoteDetailsPage", params: this.footnoteData })
-              })
+                    // ---------- 专有
+                    this.footnoteData._footnoteDefBackgroundColor = this.footnoteDefBackgroundColor
+                    this.footnoteData._footnoteDefMarginTop = this.footnoteDefMarginTop
+                    this.footnoteData._footnoteDefMarginRight = this.footnoteDefMarginRight
+                    this.footnoteData._footnoteDefMarginBottom = this.footnoteDefMarginBottom
+                    this.footnoteData._footnoteDefMarginLeft = this.footnoteDefMarginLeft
+                    this.footnoteData._footnoteDefPaddingTop = this.footnoteDefPaddingTop
+                    this.footnoteData._footnoteDefPaddingRight = this.footnoteDefPaddingRight
+                    this.footnoteData._footnoteDefPaddingBottom = this.footnoteDefPaddingBottom
+                    this.footnoteData._footnoteDefPaddingLeft = this.footnoteDefPaddingLeft
+                    this.footnoteData._footnoteRefTextFontColor = this.footnoteRefTextFontColor
+                    this.footnoteData._footnoteRefTextFontSize = this.footnoteRefTextFontSize
+                    this.footnoteData._footnoteRefTextFontStyle = this.footnoteRefTextFontStyle
+                    this.footnoteData._footnoteRefTextFontWeight = this.footnoteRefTextFontWeight
+                    this.footnoteData._footnoteRefTextFontFamily = this.footnoteRefTextFontFamily
+                    this.footnoteData._footnoteRefTextLineHeight = this.footnoteRefTextLineHeight
+                    this.footnoteData._footnoteRefTextLetterSpacing = this.footnoteRefTextLetterSpacing
+                    this.footnoteData._footnoteRefTextDecorationType = this.footnoteRefTextDecorationType
+                    this.footnoteData._footnoteRefTextDecorationColor = this.footnoteRefTextDecorationColor
+                    this.footnoteData._footnoteRefTextDecorationStyle = this.footnoteRefTextDecorationStyle
+                    this.footnoteData._footnoteRefTextBackgroundColor = this.footnoteRefTextBackgroundColor
+                    this.footnoteData._footnoteRefTextBackgroundRadiusTopLeft = this.footnoteRefTextBackgroundRadiusTopLeft
+                    this.footnoteData._footnoteRefTextBackgroundRadiusTopRight = this.footnoteRefTextBackgroundRadiusTopRight
+                    this.footnoteData._footnoteRefTextBackgroundRadiusBottomLeft = this.footnoteRefTextBackgroundRadiusBottomLeft
+                    this.footnoteData._footnoteRefTextBackgroundRadiusBottomRight = this.footnoteRefTextBackgroundRadiusBottomRight
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/FootnoteDetailsPage", params: this.footnoteData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -648,10 +650,12 @@ struct FootnotePage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

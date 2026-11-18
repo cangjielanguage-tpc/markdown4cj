@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
  * 上标样式配置
@@ -87,6 +87,26 @@ export class SupTheme implements MarkdownBaseTheme {
    */
   setSupTextBaselineOffset(offset: number): SupTheme {
     this.supTextBaselineOffset = offset
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return SupTheme
+   */
+  applyFrom(other: SupTheme): SupTheme {
+    this.supTextFontColor = other.supTextFontColor
+    this.supTextFontSize = other.supTextFontSize
+    this.supTextFontStyle = other.supTextFontStyle
+    this.supTextFontWeight = other.supTextFontWeight
+    this.supTextFontFamily = other.supTextFontFamily
+    this.supTextLetterSpacing = other.supTextLetterSpacing
+    this.supTextBaselineOffset = other.supTextBaselineOffset
     return this
   }
 }

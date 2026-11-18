@@ -1,24 +1,7 @@
 import { MarkdownDataSource } from "../datasource/MarkdownDataSource"
 import { NodeView } from "../model/NodeView"
 import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
-import { GlobalTheme } from "../theme/GlobalTheme"
-import { HeadingTheme } from "../theme/HeadingTheme"
-import { BlockQuoteTheme } from "../theme/BlockQuoteTheme"
-import { BoldTheme } from "../theme/BoldTheme"
-import { DefinitionListTheme } from "../theme/DefinitionListTheme"
-import { FootnoteRefTheme } from "../theme/FootnoteRefTheme"
-import { HighlightTheme } from "../theme/HighlightTheme"
-import { HtmlUnderlineTheme } from "../theme/HtmlUnderlineTheme"
-import { ImageTheme } from "../theme/ImageTheme"
-import { InlineCodeTheme } from "../theme/InlineCodeTheme"
-import { ItalicTheme } from "../theme/ItalicTheme"
-import { LatexMathTheme } from "../theme/LatexMathTheme"
-import { LinkTheme } from "../theme/LinkTheme"
-import { ParagraphTheme } from "../theme/ParagraphTheme"
-import { StrikethroughTheme } from "../theme/StrikethroughTheme"
-import { SubTheme } from "../theme/SubTheme"
-import { SupTheme } from "../theme/SupTheme"
-import { TableTheme } from "../theme/TableTheme"
+import { MarkdownTheme } from "../theme/MarkdownTheme"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagraph"
 
@@ -28,24 +11,7 @@ import { MarkdownHighlightParagraph } from "../configs/MarkdownHighlightParagrap
 @Component
 export struct MarkdownDescDef {
   @ObjectLink @Watch('refreshData') node: NodeView // 定义列表释义自身节点数据
-  @ObjectLink definitionListTheme: DefinitionListTheme // 定义列表样式
-  @ObjectLink headingTheme: HeadingTheme // 标题样式
-  @ObjectLink globalTheme: GlobalTheme // 整体样式
-  @ObjectLink blockQuoteTheme: BlockQuoteTheme // 块引用样式
-  @ObjectLink subTheme: SubTheme // 下标样式
-  @ObjectLink supTheme: SupTheme // 上标样式
-  @ObjectLink inlineCodeTheme: InlineCodeTheme // 内联代码样式
-  @ObjectLink boldTheme: BoldTheme // 加粗样式
-  @ObjectLink italicTheme: ItalicTheme // 斜体样式
-  @ObjectLink latexMathTheme: LatexMathTheme // 数学公式样式
-  @ObjectLink strikethroughTheme: StrikethroughTheme // 删除线样式
-  @ObjectLink highlightTheme: HighlightTheme // 高亮样式
-  @ObjectLink htmlUnderlineTheme: HtmlUnderlineTheme // 下划线样式
-  @ObjectLink linkTheme: LinkTheme // 链接样式
-  @ObjectLink footnoteRefTheme: FootnoteRefTheme // 内联脚注样式
-  @ObjectLink tableTheme: TableTheme // 表格样式
-  @ObjectLink paragraphTheme: ParagraphTheme // 段落样式
-  @ObjectLink imageTheme: ImageTheme // 图片样式
+  @ObjectLink theme: MarkdownTheme // 聚合主题（透传块，无 @Watch）：子主题变化由根组件集中观察发布，经 this.theme.xxxTheme 读取
   @ObjectLink markdownHighlightParagraph: MarkdownHighlightParagraph // 段落高亮配置
   @Prop componentWidth: number = 0.0 // 父布局控件宽度
   textCopyCallback?: (text: string) => void // 文本复制的点击事件
@@ -79,24 +45,7 @@ export struct MarkdownDescDef {
               // 段落
               MarkdownParagraph({
                 node: item,
-                headingTheme: this.headingTheme,
-                globalTheme: this.globalTheme,
-                subTheme: this.subTheme,
-                supTheme: this.supTheme,
-                inlineCodeTheme: this.inlineCodeTheme,
-                boldTheme: this.boldTheme,
-                italicTheme: this.italicTheme,
-                strikethroughTheme: this.strikethroughTheme,
-                highlightTheme: this.highlightTheme,
-                htmlUnderlineTheme: this.htmlUnderlineTheme,
-                linkTheme: this.linkTheme,
-                footnoteRefTheme: this.footnoteRefTheme,
-                tableTheme: this.tableTheme,
-                paragraphTheme: this.paragraphTheme,
-                blockQuoteTheme: this.blockQuoteTheme,
-                definitionListTheme: this.definitionListTheme,
-                imageTheme: this.imageTheme,
-                latexMathTheme: this.latexMathTheme,
+                theme: this.theme,
                 latexImageCallback: this.latexImageCallback,
                 latexStrCallback: this.latexStrCallback,
                 componentWidth: this.componentWidth,
@@ -127,7 +76,7 @@ export struct MarkdownDescDef {
     }
     .alignListItem(ListItemAlign.Start)
     .listDirection(Axis.Vertical)
-    .margin({ left: this.definitionListTheme.definitionListDescriptionIndent })
+    .margin({ left: this.theme.definitionListTheme.definitionListDescriptionIndent })
   }
 
   /**

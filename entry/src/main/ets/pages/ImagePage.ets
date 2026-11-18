@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -33,7 +33,7 @@ struct ImagePage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "016_Image"
+  rawFilePath: string = "018_Image"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -294,100 +294,102 @@ struct ImagePage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.imageDataMD._isFull = this.isFull
-                  this.imageDataMD._incrementalAnalysis = this.incrementalAnalysis
-                  this.imageDataMD._enableParseThrottle = this.enableParseThrottle
-                  this.imageDataMD._parseThrottleMs = this.parseThrottleMs
-                  this.imageDataMD._time = this.time
-                  this.imageDataMD._textNumber = this.textNumber
-                  this.imageDataMD._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.imageDataMD._isOnCopy = this.isOnCopy
-                  this.imageDataMD._blockMarginTop = this.blockMarginTop
-                  this.imageDataMD._blockMarginRight = this.blockMarginRight
-                  this.imageDataMD._blockMarginBottom = this.blockMarginBottom
-                  this.imageDataMD._blockMarginLeft = this.blockMarginLeft
-                  this.imageDataMD._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.imageDataMD._isLineBreak = this.isLineBreak
-                  this.imageDataMD._backgroundColor = this.globalBackgroundColor
-                  this.imageDataMD._openGestureSwipe = this.openGestureSwipe
-                  this.imageDataMD._openGestureSwipeTest = this.openGestureSwipeTest
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.imageDataMD._isFull = this.isFull
+                    this.imageDataMD._incrementalAnalysis = this.incrementalAnalysis
+                    this.imageDataMD._enableParseThrottle = this.enableParseThrottle
+                    this.imageDataMD._parseThrottleMs = this.parseThrottleMs
+                    this.imageDataMD._time = this.time
+                    this.imageDataMD._textNumber = this.textNumber
+                    this.imageDataMD._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.imageDataMD._isOnCopy = this.isOnCopy
+                    this.imageDataMD._blockMarginTop = this.blockMarginTop
+                    this.imageDataMD._blockMarginRight = this.blockMarginRight
+                    this.imageDataMD._blockMarginBottom = this.blockMarginBottom
+                    this.imageDataMD._blockMarginLeft = this.blockMarginLeft
+                    this.imageDataMD._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.imageDataMD._isLineBreak = this.isLineBreak
+                    this.imageDataMD._backgroundColor = this.globalBackgroundColor
+                    this.imageDataMD._openGestureSwipe = this.openGestureSwipe
+                    this.imageDataMD._openGestureSwipeTest = this.openGestureSwipeTest
 
-                  // ---------- 专有
-                  this.imageDataMD._pagePath = `${this.rawFilePath}/${item}`
-                  this.imageDataMD.imageReplace = this.imageReplace
-                  this.imageDataMD.imageAutoResize = this.imageAutoResize
-                  this.imageDataMD.imagePlaceholder = this.imagePlaceholder
-                  this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout
-                  this.imageDataMD.imageMarginTop = this.imageMarginTop
-                  this.imageDataMD.imageMarginRight = this.imageMarginRight
-                  this.imageDataMD.imageMarginBottom = this.imageMarginBottom
-                  this.imageDataMD.imageMarginLeft = this.imageMarginLeft
-                  this.imageDataMD.imageRadiusTopLeft = this.imageRadiusTopLeft
-                  this.imageDataMD.imageRadiusTopRight = this.imageRadiusTopRight
-                  this.imageDataMD.imageRadiusBottomLeft = this.imageRadiusBottomLeft
-                  this.imageDataMD.imageRadiusBottomRight = this.imageRadiusBottomRight
-                  this.imageDataMD.imageBorderStyle = this.imageBorderStyle
-                  this.imageDataMD.imageBorderWidth = this.imageBorderWidth
-                  this.imageDataMD.imageBorderColor = this.imageBorderColor
-                  this.imageDataMD.imageMaximumWidth = this.imageMaximumWidth
-                  this.imageDataMD.imageFixedRatioWidth = this.imageFixedRatioWidth
-                  this.imageDataMD.imageMaxHeight = this.imageMaxHeight
-                  this.imageDataMD.imageHeight = this.imageHeight
-                  this.imageDataMD.imageMaxWidth = this.imageMaxWidth
-                  this.imageDataMD.imageWidth = this.imageWidth
-                  this.imageDataMD.imageFitType = this.imageFitType
-                  this.imageDataMD.imageBottomLayoutMarginTop = this.imageBottomLayoutMarginTop
-                  this.imageDataMD.imageDownloadButtonVisible = this.imageDownloadButtonVisible
-                  this.imageDataMD.imageDownloadButtonWidth = this.imageDownloadButtonWidth
-                  this.imageDataMD.imageDownloadButtonHeight = this.imageDownloadButtonHeight
-                  this.imageDataMD.imageDownloadButtonRadiusTopLeft = this.imageDownloadButtonRadiusTopLeft
-                  this.imageDataMD.imageDownloadButtonRadiusTopRight = this.imageDownloadButtonRadiusTopRight
-                  this.imageDataMD.imageDownloadButtonRadiusBottomLeft = this.imageDownloadButtonRadiusBottomLeft
-                  this.imageDataMD.imageDownloadButtonRadiusBottomRight = this.imageDownloadButtonRadiusBottomRight
-                  this.imageDataMD.imageDownloadButtonIcon = this.imageDownloadButtonIcon
-                  this.imageDataMD.imageDownloadButtonIconWidth = this.imageDownloadButtonIconWidth
-                  this.imageDataMD.imageDownloadButtonIconHeight = this.imageDownloadButtonIconHeight
-                  this.imageDataMD.imageDownloadButtonIconTextGap = this.imageDownloadButtonIconTextGap
-                  this.imageDataMD.imageDownloadButtonBackgroundColor = this.imageDownloadButtonBackgroundColor
-                  this.imageDataMD.imageDownloadButtonText = this.imageDownloadButtonText
-                  this.imageDataMD.imageDownloadButtonTextFontColor = this.imageDownloadButtonTextFontColor
-                  this.imageDataMD.imageDownloadButtonTextFontSize = this.imageDownloadButtonTextFontSize
-                  this.imageDataMD.imageDownloadButtonTextFontStyle = this.imageDownloadButtonTextFontStyle
-                  this.imageDataMD.imageDownloadButtonTextFontWeight = this.imageDownloadButtonTextFontWeight
-                  this.imageDataMD.imageDownloadButtonTextFontFamily = this.imageDownloadButtonTextFontFamily
-                  this.imageDataMD.imageDownloadButtonTextLineHeight = this.imageDownloadButtonTextLineHeight
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/ImageDetailsPage", params: this.imageDataMD })
-              })
+                    // ---------- 专有
+                    this.imageDataMD._pagePath = `${this.rawFilePath}/${item}`
+                    this.imageDataMD.imageReplace = this.imageReplace
+                    this.imageDataMD.imageAutoResize = this.imageAutoResize
+                    this.imageDataMD.imagePlaceholder = this.imagePlaceholder
+                    this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout
+                    this.imageDataMD.imageMarginTop = this.imageMarginTop
+                    this.imageDataMD.imageMarginRight = this.imageMarginRight
+                    this.imageDataMD.imageMarginBottom = this.imageMarginBottom
+                    this.imageDataMD.imageMarginLeft = this.imageMarginLeft
+                    this.imageDataMD.imageRadiusTopLeft = this.imageRadiusTopLeft
+                    this.imageDataMD.imageRadiusTopRight = this.imageRadiusTopRight
+                    this.imageDataMD.imageRadiusBottomLeft = this.imageRadiusBottomLeft
+                    this.imageDataMD.imageRadiusBottomRight = this.imageRadiusBottomRight
+                    this.imageDataMD.imageBorderStyle = this.imageBorderStyle
+                    this.imageDataMD.imageBorderWidth = this.imageBorderWidth
+                    this.imageDataMD.imageBorderColor = this.imageBorderColor
+                    this.imageDataMD.imageMaximumWidth = this.imageMaximumWidth
+                    this.imageDataMD.imageFixedRatioWidth = this.imageFixedRatioWidth
+                    this.imageDataMD.imageMaxHeight = this.imageMaxHeight
+                    this.imageDataMD.imageHeight = this.imageHeight
+                    this.imageDataMD.imageMaxWidth = this.imageMaxWidth
+                    this.imageDataMD.imageWidth = this.imageWidth
+                    this.imageDataMD.imageFitType = this.imageFitType
+                    this.imageDataMD.imageBottomLayoutMarginTop = this.imageBottomLayoutMarginTop
+                    this.imageDataMD.imageDownloadButtonVisible = this.imageDownloadButtonVisible
+                    this.imageDataMD.imageDownloadButtonWidth = this.imageDownloadButtonWidth
+                    this.imageDataMD.imageDownloadButtonHeight = this.imageDownloadButtonHeight
+                    this.imageDataMD.imageDownloadButtonRadiusTopLeft = this.imageDownloadButtonRadiusTopLeft
+                    this.imageDataMD.imageDownloadButtonRadiusTopRight = this.imageDownloadButtonRadiusTopRight
+                    this.imageDataMD.imageDownloadButtonRadiusBottomLeft = this.imageDownloadButtonRadiusBottomLeft
+                    this.imageDataMD.imageDownloadButtonRadiusBottomRight = this.imageDownloadButtonRadiusBottomRight
+                    this.imageDataMD.imageDownloadButtonIcon = this.imageDownloadButtonIcon
+                    this.imageDataMD.imageDownloadButtonIconWidth = this.imageDownloadButtonIconWidth
+                    this.imageDataMD.imageDownloadButtonIconHeight = this.imageDownloadButtonIconHeight
+                    this.imageDataMD.imageDownloadButtonIconTextGap = this.imageDownloadButtonIconTextGap
+                    this.imageDataMD.imageDownloadButtonBackgroundColor = this.imageDownloadButtonBackgroundColor
+                    this.imageDataMD.imageDownloadButtonText = this.imageDownloadButtonText
+                    this.imageDataMD.imageDownloadButtonTextFontColor = this.imageDownloadButtonTextFontColor
+                    this.imageDataMD.imageDownloadButtonTextFontSize = this.imageDownloadButtonTextFontSize
+                    this.imageDataMD.imageDownloadButtonTextFontStyle = this.imageDownloadButtonTextFontStyle
+                    this.imageDataMD.imageDownloadButtonTextFontWeight = this.imageDownloadButtonTextFontWeight
+                    this.imageDataMD.imageDownloadButtonTextFontFamily = this.imageDownloadButtonTextFontFamily
+                    this.imageDataMD.imageDownloadButtonTextLineHeight = this.imageDownloadButtonTextLineHeight
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/ImageDetailsPage", params: this.imageDataMD })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -889,10 +891,12 @@ struct ImagePage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

@@ -24,6 +24,7 @@ struct AudioDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -340,6 +341,12 @@ struct AudioDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -348,86 +355,82 @@ struct AudioDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - Audio
-    let audioTheme = new AudioTheme()
     if (this.audioBackgroundColor !== undefined) {
-      audioTheme.setAudioBackgroundColor(this.audioBackgroundColor)
+      theme.audioTheme.setAudioBackgroundColor(this.audioBackgroundColor)
     }
-    audioTheme.setAudioMargin({top: this.audioMarginTop, right: this.audioMarginRight, bottom: this.audioMarginBottom, left: this.audioMarginLeft})
-    audioTheme.setAudioPadding({top: this.audioPaddingTop, right: this.audioPaddingRight, bottom: this.audioPaddingBottom, left: this.audioPaddingLeft})
-    audioTheme.setAudioBorderStyle(this.audioBorderStyle)
-    audioTheme.setAudioBorderWidth(this.audioBorderWidth)
+    theme.audioTheme.setAudioMargin({top: this.audioMarginTop, right: this.audioMarginRight, bottom: this.audioMarginBottom, left: this.audioMarginLeft})
+    theme.audioTheme.setAudioPadding({top: this.audioPaddingTop, right: this.audioPaddingRight, bottom: this.audioPaddingBottom, left: this.audioPaddingLeft})
+    theme.audioTheme.setAudioBorderStyle(this.audioBorderStyle)
+    theme.audioTheme.setAudioBorderWidth(this.audioBorderWidth)
     if (this.audioBorderColor !== undefined) {
-      audioTheme.setAudioBorderColor(this.audioBorderColor)
+      theme.audioTheme.setAudioBorderColor(this.audioBorderColor)
     }
-    audioTheme.setAudioBorderRadius({topLeft: this.audioRadiusTopLeft, topRight: this.audioRadiusTopRight, bottomLeft: this.audioRadiusBottomLeft, bottomRight: this.audioRadiusBottomRight})
-    audioTheme.setAudioShadowRadius(this.audioShadowRadius)
-    audioTheme.setAudioShadowOffsetX(this.audioShadowOffsetX)
-    audioTheme.setAudioShadowOffsetY(this.audioShadowOffsetY)
+    theme.audioTheme.setAudioBorderRadius({topLeft: this.audioRadiusTopLeft, topRight: this.audioRadiusTopRight, bottomLeft: this.audioRadiusBottomLeft, bottomRight: this.audioRadiusBottomRight})
+    theme.audioTheme.setAudioShadowRadius(this.audioShadowRadius)
+    theme.audioTheme.setAudioShadowOffsetX(this.audioShadowOffsetX)
+    theme.audioTheme.setAudioShadowOffsetY(this.audioShadowOffsetY)
     if (this.audioShadowColor !== undefined) {
-      audioTheme.setAudioShadowColor(this.audioShadowColor)
+      theme.audioTheme.setAudioShadowColor(this.audioShadowColor)
     }
     if (this.audioIcon !== undefined) {
-      audioTheme.setAudioIcon(this.audioIcon)
+      theme.audioTheme.setAudioIcon(this.audioIcon)
     }
-    audioTheme.setAudioIconWidth(this.audioIconWidth)
-    audioTheme.setAudioIconHeight(this.audioIconHeight)
-    audioTheme.setAudioIconRadius({topLeft: this.audioIconRadiusTopLeft, topRight: this.audioIconRadiusTopRight, bottomLeft: this.audioIconRadiusBottomLeft, bottomRight: this.audioIconRadiusBottomRight})
+    theme.audioTheme.setAudioIconWidth(this.audioIconWidth)
+    theme.audioTheme.setAudioIconHeight(this.audioIconHeight)
+    theme.audioTheme.setAudioIconRadius({topLeft: this.audioIconRadiusTopLeft, topRight: this.audioIconRadiusTopRight, bottomLeft: this.audioIconRadiusBottomLeft, bottomRight: this.audioIconRadiusBottomRight})
     if (this.audioIconFitType !== undefined) {
-      audioTheme.setAudioIconFitType(this.audioIconFitType)
+      theme.audioTheme.setAudioIconFitType(this.audioIconFitType)
     }
-    audioTheme.setAudioTitleToTypeSpacing(this.audioTitleToTypeSpacing)
-    audioTheme.setAudioButtonWidth(this.audioButtonWidth)
-    audioTheme.setAudioButtonHeight(this.audioButtonHeight)
+    theme.audioTheme.setAudioTitleToTypeSpacing(this.audioTitleToTypeSpacing)
+    theme.audioTheme.setAudioButtonWidth(this.audioButtonWidth)
+    theme.audioTheme.setAudioButtonHeight(this.audioButtonHeight)
     if (this.audioButtonBackgroundColor !== undefined) {
-      audioTheme.setAudioButtonBackgroundColor(this.audioButtonBackgroundColor)
+      theme.audioTheme.setAudioButtonBackgroundColor(this.audioButtonBackgroundColor)
     }
-    audioTheme.setAudioButtonBorderStyle(this.audioButtonBorderStyle)
-    audioTheme.setAudioButtonBorderWidth(this.audioButtonBorderWidth)
+    theme.audioTheme.setAudioButtonBorderStyle(this.audioButtonBorderStyle)
+    theme.audioTheme.setAudioButtonBorderWidth(this.audioButtonBorderWidth)
     if (this.audioButtonBorderColor !== undefined) {
-      audioTheme.setAudioButtonBorderColor(this.audioButtonBorderColor)
+      theme.audioTheme.setAudioButtonBorderColor(this.audioButtonBorderColor)
     }
-    audioTheme.setAudioButtonRadius({topLeft: this.audioButtonRadiusTopLeft, topRight: this.audioButtonRadiusTopRight, bottomLeft: this.audioButtonRadiusBottomLeft, bottomRight: this.audioButtonRadiusBottomRight})
-    audioTheme.setAudioButtonText(this.audioButtonText)
+    theme.audioTheme.setAudioButtonRadius({topLeft: this.audioButtonRadiusTopLeft, topRight: this.audioButtonRadiusTopRight, bottomLeft: this.audioButtonRadiusBottomLeft, bottomRight: this.audioButtonRadiusBottomRight})
+    theme.audioTheme.setAudioButtonText(this.audioButtonText)
     if (this.audioButtonTextFontColor !== undefined) {
-      audioTheme.setAudioButtonTextFontColor(this.audioButtonTextFontColor)
+      theme.audioTheme.setAudioButtonTextFontColor(this.audioButtonTextFontColor)
     }
-    audioTheme.setAudioButtonTextFontSize(this.audioButtonTextFontSize)
-    audioTheme.setAudioButtonTextFontStyle(this.audioButtonTextFontStyle)
-    audioTheme.setAudioButtonTextFontWeight(this.audioButtonTextFontWeight)
-    audioTheme.setAudioButtonTextFontFamily(this.audioButtonTextFontFamily)
-    audioTheme.setAudioButtonTextLineHeight(this.audioButtonTextLineHeight)
+    theme.audioTheme.setAudioButtonTextFontSize(this.audioButtonTextFontSize)
+    theme.audioTheme.setAudioButtonTextFontStyle(this.audioButtonTextFontStyle)
+    theme.audioTheme.setAudioButtonTextFontWeight(this.audioButtonTextFontWeight)
+    theme.audioTheme.setAudioButtonTextFontFamily(this.audioButtonTextFontFamily)
+    theme.audioTheme.setAudioButtonTextLineHeight(this.audioButtonTextLineHeight)
     if (this.audioTitleTextFontColor !== undefined) {
-      audioTheme.setAudioTitleTextFontColor(this.audioTitleTextFontColor)
+      theme.audioTheme.setAudioTitleTextFontColor(this.audioTitleTextFontColor)
     }
-    audioTheme.setAudioTitleTextFontSize(this.audioTitleTextFontSize)
-    audioTheme.setAudioTitleTextFontStyle(this.audioTitleTextFontStyle)
-    audioTheme.setAudioTitleTextFontWeight(this.audioTitleTextFontWeight)
-    audioTheme.setAudioTitleTextFontFamily(this.audioTitleTextFontFamily)
-    audioTheme.setAudioTitleTextLineHeight(this.audioTitleTextLineHeight)
+    theme.audioTheme.setAudioTitleTextFontSize(this.audioTitleTextFontSize)
+    theme.audioTheme.setAudioTitleTextFontStyle(this.audioTitleTextFontStyle)
+    theme.audioTheme.setAudioTitleTextFontWeight(this.audioTitleTextFontWeight)
+    theme.audioTheme.setAudioTitleTextFontFamily(this.audioTitleTextFontFamily)
+    theme.audioTheme.setAudioTitleTextLineHeight(this.audioTitleTextLineHeight)
     if (this.audioTypeTextFontColor !== undefined) {
-      audioTheme.setAudioTypeTextFontColor(this.audioTypeTextFontColor)
+      theme.audioTheme.setAudioTypeTextFontColor(this.audioTypeTextFontColor)
     }
-    audioTheme.setAudioTypeTextFontSize(this.audioTypeTextFontSize)
-    audioTheme.setAudioTypeTextFontStyle(this.audioTypeTextFontStyle)
-    audioTheme.setAudioTypeTextFontWeight(this.audioTypeTextFontWeight)
-    audioTheme.setAudioTypeTextFontFamily(this.audioTypeTextFontFamily)
-    audioTheme.setAudioTypeTextLineHeight(this.audioTypeTextLineHeight)
-    theme.setAudioTheme(audioTheme)
+    theme.audioTheme.setAudioTypeTextFontSize(this.audioTypeTextFontSize)
+    theme.audioTheme.setAudioTypeTextFontStyle(this.audioTypeTextFontStyle)
+    theme.audioTheme.setAudioTypeTextFontWeight(this.audioTypeTextFontWeight)
+    theme.audioTheme.setAudioTypeTextFontFamily(this.audioTypeTextFontFamily)
+    theme.audioTheme.setAudioTypeTextLineHeight(this.audioTypeTextLineHeight)
     
     return theme
   }

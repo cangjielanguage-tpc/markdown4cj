@@ -1,4 +1,4 @@
-﻿import { isMargin, isPadding } from "../base/Constants"
+import { isMargin, isPadding } from "../base/Constants"
 import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 
 /**
@@ -109,6 +109,28 @@ export class BannerTheme implements MarkdownBaseTheme {
    */
   setBannerPlaceholder(resource: Resource): BannerTheme {
     this.bannerPlaceholder = resource
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return BannerTheme
+   */
+  applyFrom(other: BannerTheme): BannerTheme {
+    this.bannerMarginTop = other.bannerMarginTop
+    this.bannerMarginRight = other.bannerMarginRight
+    this.bannerMarginBottom = other.bannerMarginBottom
+    this.bannerMarginLeft = other.bannerMarginLeft
+    this.bannerPaddingTop = other.bannerPaddingTop
+    this.bannerPaddingRight = other.bannerPaddingRight
+    this.bannerPaddingBottom = other.bannerPaddingBottom
+    this.bannerPaddingLeft = other.bannerPaddingLeft
+    this.bannerPlaceholder = other.bannerPlaceholder
     return this
   }
 }

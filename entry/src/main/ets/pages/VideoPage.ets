@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -29,7 +29,7 @@ struct VideoPage {
   // ---------------- 通用
   @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
   // rawfile路径
-  rawFilePath: string = "015_Video"
+  rawFilePath: string = "017_Video"
   @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
   // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
@@ -317,131 +317,133 @@ struct VideoPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.videoData._isFull = this.isFull
-                  this.videoData._incrementalAnalysis = this.incrementalAnalysis
-                  this.videoData._enableParseThrottle = this.enableParseThrottle
-                  this.videoData._parseThrottleMs = this.parseThrottleMs
-                  this.videoData._time = this.time
-                  this.videoData._textNumber = this.textNumber
-                  this.videoData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.videoData._isOnCopy = this.isOnCopy
-                  this.videoData._blockMarginTop = this.blockMarginTop
-                  this.videoData._blockMarginRight = this.blockMarginRight
-                  this.videoData._blockMarginBottom = this.blockMarginBottom
-                  this.videoData._blockMarginLeft = this.blockMarginLeft
-                  this.videoData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.videoData._isLineBreak = this.isLineBreak
-                  this.videoData._backgroundColor = this.globalBackgroundColor
-                  this.videoData._openGestureSwipe = this.openGestureSwipe
-                  this.videoData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.videoData._pagePath = `${this.rawFilePath}/${item}`
-                  // ---------- 专有 - 视频基本属性
-                  this.videoData._videoBackgroundColor = this.videoBackgroundColor
-                  this.videoData._videoMarginTop = this.videoMarginTop
-                  this.videoData._videoMarginRight = this.videoMarginRight
-                  this.videoData._videoMarginBottom = this.videoMarginBottom
-                  this.videoData._videoMarginLeft = this.videoMarginLeft
-                  this.videoData._videoPaddingTop = this.videoPaddingTop
-                  this.videoData._videoPaddingRight = this.videoPaddingRight
-                  this.videoData._videoPaddingBottom = this.videoPaddingBottom
-                  this.videoData._videoPaddingLeft = this.videoPaddingLeft
-                  this.videoData._videoRadiusTopLeft = this.videoRadiusTopLeft
-                  this.videoData._videoRadiusTopRight = this.videoRadiusTopRight
-                  this.videoData._videoRadiusBottomLeft = this.videoRadiusBottomLeft
-                  this.videoData._videoRadiusBottomRight = this.videoRadiusBottomRight
-                  this.videoData._videoBorderStyle = this.videoBorderStyle
-                  this.videoData._videoBorderWidth = this.videoBorderWidth
-                  this.videoData._videoBorderColor = this.videoBorderColor
-                  this.videoData._videoPlaceholder = this.videoPlaceholder
-                  this.videoData._videoImageFitType = this.videoImageFitType
-                  this.videoData._videoPlayIcon = this.videoPlayIcon
-                  this.videoData._videoPlayIconWidth = this.videoPlayIconWidth
-                  this.videoData._videoPlayIconHeight = this.videoPlayIconHeight
-                  this.videoData._videoPlayIconFitType = this.videoPlayIconFitType
-                  // ---------- 专有 - 视频时间文本
-                  this.videoData._videoTimeTextFontColor = this.videoTimeTextFontColor
-                  this.videoData._videoTimeTextFontSize = this.videoTimeTextFontSize
-                  this.videoData._videoTimeTextFontStyle = this.videoTimeTextFontStyle
-                  this.videoData._videoTimeTextFontWeight = this.videoTimeTextFontWeight
-                  this.videoData._videoTimeTextFontFamily = this.videoTimeTextFontFamily
-                  this.videoData._videoTimeTextLineHeight = this.videoTimeTextLineHeight
-                  this.videoData._videoTimeTextMarginRight = this.videoTimeTextMarginRight
-                  this.videoData._videoTimeTextMarginBottom = this.videoTimeTextMarginBottom
-                  // ---------- 专有 - 底部布局
-                  this.videoData._videoBottomLayoutVisible = this.videoBottomLayoutVisible
-                  this.videoData._videoBottomLayoutMarginTop = this.videoBottomLayoutMarginTop
-                  // ---------- 专有 - 发布按钮
-                  this.videoData._videoReleaseButtonVisible = this.videoReleaseButtonVisible
-                  this.videoData._videoReleaseButtonBackgroundColor = this.videoReleaseButtonBackgroundColor
-                  this.videoData._videoReleaseButtonWidth = this.videoReleaseButtonWidth
-                  this.videoData._videoReleaseButtonHeight = this.videoReleaseButtonHeight
-                  this.videoData._videoReleaseButtonRadiusTopLeft = this.videoReleaseButtonRadiusTopLeft
-                  this.videoData._videoReleaseButtonRadiusTopRight = this.videoReleaseButtonRadiusTopRight
-                  this.videoData._videoReleaseButtonRadiusBottomLeft = this.videoReleaseButtonRadiusBottomLeft
-                  this.videoData._videoReleaseButtonRadiusBottomRight = this.videoReleaseButtonRadiusBottomRight
-                  this.videoData._videoReleaseButtonIconTextGap = this.videoReleaseButtonIconTextGap
-                  this.videoData._videoReleaseButtonIcon = this.videoReleaseButtonIcon
-                  this.videoData._videoReleaseButtonIconWidth = this.videoReleaseButtonIconWidth
-                  this.videoData._videoReleaseButtonIconHeight = this.videoReleaseButtonIconHeight
-                  this.videoData._videoReleaseButtonText = this.videoReleaseButtonText
-                  this.videoData._videoReleaseButtonTextFontColor = this.videoReleaseButtonTextFontColor
-                  this.videoData._videoReleaseButtonTextFontSize = this.videoReleaseButtonTextFontSize
-                  this.videoData._videoReleaseButtonTextFontStyle = this.videoReleaseButtonTextFontStyle
-                  this.videoData._videoReleaseButtonTextFontWeight = this.videoReleaseButtonTextFontWeight
-                  this.videoData._videoReleaseButtonTextFontFamily = this.videoReleaseButtonTextFontFamily
-                  this.videoData._videoReleaseButtonTextLineHeight = this.videoReleaseButtonTextLineHeight
-                  // ---------- 专有 - 下载按钮
-                  this.videoData._videoDownloadButtonVisible = this.videoDownloadButtonVisible
-                  this.videoData._videoDownloadButtonBackgroundColor = this.videoDownloadButtonBackgroundColor
-                  this.videoData._videoDownloadButtonWidth = this.videoDownloadButtonWidth
-                  this.videoData._videoDownloadButtonHeight = this.videoDownloadButtonHeight
-                  this.videoData._videoDownloadButtonRadiusTopLeft = this.videoDownloadButtonRadiusTopLeft
-                  this.videoData._videoDownloadButtonRadiusTopRight = this.videoDownloadButtonRadiusTopRight
-                  this.videoData._videoDownloadButtonRadiusBottomLeft = this.videoDownloadButtonRadiusBottomLeft
-                  this.videoData._videoDownloadButtonRadiusBottomRight = this.videoDownloadButtonRadiusBottomRight
-                  this.videoData._videoDownloadButtonIconTextGap = this.videoDownloadButtonIconTextGap
-                  this.videoData._videoDownloadButtonIcon = this.videoDownloadButtonIcon
-                  this.videoData._videoDownloadButtonIconWidth = this.videoDownloadButtonIconWidth
-                  this.videoData._videoDownloadButtonIconHeight = this.videoDownloadButtonIconHeight
-                  this.videoData._videoDownloadButtonText = this.videoDownloadButtonText
-                  this.videoData._videoDownloadButtonTextFontColor = this.videoDownloadButtonTextFontColor
-                  this.videoData._videoDownloadButtonTextFontSize = this.videoDownloadButtonTextFontSize
-                  this.videoData._videoDownloadButtonTextFontStyle = this.videoDownloadButtonTextFontStyle
-                  this.videoData._videoDownloadButtonTextFontWeight = this.videoDownloadButtonTextFontWeight
-                  this.videoData._videoDownloadButtonTextFontFamily = this.videoDownloadButtonTextFontFamily
-                  this.videoData._videoDownloadButtonTextLineHeight = this.videoDownloadButtonTextLineHeight
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/VideoDetailsPage", params: this.videoData })
-              })
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.videoData._isFull = this.isFull
+                    this.videoData._incrementalAnalysis = this.incrementalAnalysis
+                    this.videoData._enableParseThrottle = this.enableParseThrottle
+                    this.videoData._parseThrottleMs = this.parseThrottleMs
+                    this.videoData._time = this.time
+                    this.videoData._textNumber = this.textNumber
+                    this.videoData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.videoData._isOnCopy = this.isOnCopy
+                    this.videoData._blockMarginTop = this.blockMarginTop
+                    this.videoData._blockMarginRight = this.blockMarginRight
+                    this.videoData._blockMarginBottom = this.blockMarginBottom
+                    this.videoData._blockMarginLeft = this.blockMarginLeft
+                    this.videoData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.videoData._isLineBreak = this.isLineBreak
+                    this.videoData._backgroundColor = this.globalBackgroundColor
+                    this.videoData._openGestureSwipe = this.openGestureSwipe
+                    this.videoData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.videoData._pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有 - 视频基本属性
+                    this.videoData._videoBackgroundColor = this.videoBackgroundColor
+                    this.videoData._videoMarginTop = this.videoMarginTop
+                    this.videoData._videoMarginRight = this.videoMarginRight
+                    this.videoData._videoMarginBottom = this.videoMarginBottom
+                    this.videoData._videoMarginLeft = this.videoMarginLeft
+                    this.videoData._videoPaddingTop = this.videoPaddingTop
+                    this.videoData._videoPaddingRight = this.videoPaddingRight
+                    this.videoData._videoPaddingBottom = this.videoPaddingBottom
+                    this.videoData._videoPaddingLeft = this.videoPaddingLeft
+                    this.videoData._videoRadiusTopLeft = this.videoRadiusTopLeft
+                    this.videoData._videoRadiusTopRight = this.videoRadiusTopRight
+                    this.videoData._videoRadiusBottomLeft = this.videoRadiusBottomLeft
+                    this.videoData._videoRadiusBottomRight = this.videoRadiusBottomRight
+                    this.videoData._videoBorderStyle = this.videoBorderStyle
+                    this.videoData._videoBorderWidth = this.videoBorderWidth
+                    this.videoData._videoBorderColor = this.videoBorderColor
+                    this.videoData._videoPlaceholder = this.videoPlaceholder
+                    this.videoData._videoImageFitType = this.videoImageFitType
+                    this.videoData._videoPlayIcon = this.videoPlayIcon
+                    this.videoData._videoPlayIconWidth = this.videoPlayIconWidth
+                    this.videoData._videoPlayIconHeight = this.videoPlayIconHeight
+                    this.videoData._videoPlayIconFitType = this.videoPlayIconFitType
+                    // ---------- 专有 - 视频时间文本
+                    this.videoData._videoTimeTextFontColor = this.videoTimeTextFontColor
+                    this.videoData._videoTimeTextFontSize = this.videoTimeTextFontSize
+                    this.videoData._videoTimeTextFontStyle = this.videoTimeTextFontStyle
+                    this.videoData._videoTimeTextFontWeight = this.videoTimeTextFontWeight
+                    this.videoData._videoTimeTextFontFamily = this.videoTimeTextFontFamily
+                    this.videoData._videoTimeTextLineHeight = this.videoTimeTextLineHeight
+                    this.videoData._videoTimeTextMarginRight = this.videoTimeTextMarginRight
+                    this.videoData._videoTimeTextMarginBottom = this.videoTimeTextMarginBottom
+                    // ---------- 专有 - 底部布局
+                    this.videoData._videoBottomLayoutVisible = this.videoBottomLayoutVisible
+                    this.videoData._videoBottomLayoutMarginTop = this.videoBottomLayoutMarginTop
+                    // ---------- 专有 - 发布按钮
+                    this.videoData._videoReleaseButtonVisible = this.videoReleaseButtonVisible
+                    this.videoData._videoReleaseButtonBackgroundColor = this.videoReleaseButtonBackgroundColor
+                    this.videoData._videoReleaseButtonWidth = this.videoReleaseButtonWidth
+                    this.videoData._videoReleaseButtonHeight = this.videoReleaseButtonHeight
+                    this.videoData._videoReleaseButtonRadiusTopLeft = this.videoReleaseButtonRadiusTopLeft
+                    this.videoData._videoReleaseButtonRadiusTopRight = this.videoReleaseButtonRadiusTopRight
+                    this.videoData._videoReleaseButtonRadiusBottomLeft = this.videoReleaseButtonRadiusBottomLeft
+                    this.videoData._videoReleaseButtonRadiusBottomRight = this.videoReleaseButtonRadiusBottomRight
+                    this.videoData._videoReleaseButtonIconTextGap = this.videoReleaseButtonIconTextGap
+                    this.videoData._videoReleaseButtonIcon = this.videoReleaseButtonIcon
+                    this.videoData._videoReleaseButtonIconWidth = this.videoReleaseButtonIconWidth
+                    this.videoData._videoReleaseButtonIconHeight = this.videoReleaseButtonIconHeight
+                    this.videoData._videoReleaseButtonText = this.videoReleaseButtonText
+                    this.videoData._videoReleaseButtonTextFontColor = this.videoReleaseButtonTextFontColor
+                    this.videoData._videoReleaseButtonTextFontSize = this.videoReleaseButtonTextFontSize
+                    this.videoData._videoReleaseButtonTextFontStyle = this.videoReleaseButtonTextFontStyle
+                    this.videoData._videoReleaseButtonTextFontWeight = this.videoReleaseButtonTextFontWeight
+                    this.videoData._videoReleaseButtonTextFontFamily = this.videoReleaseButtonTextFontFamily
+                    this.videoData._videoReleaseButtonTextLineHeight = this.videoReleaseButtonTextLineHeight
+                    // ---------- 专有 - 下载按钮
+                    this.videoData._videoDownloadButtonVisible = this.videoDownloadButtonVisible
+                    this.videoData._videoDownloadButtonBackgroundColor = this.videoDownloadButtonBackgroundColor
+                    this.videoData._videoDownloadButtonWidth = this.videoDownloadButtonWidth
+                    this.videoData._videoDownloadButtonHeight = this.videoDownloadButtonHeight
+                    this.videoData._videoDownloadButtonRadiusTopLeft = this.videoDownloadButtonRadiusTopLeft
+                    this.videoData._videoDownloadButtonRadiusTopRight = this.videoDownloadButtonRadiusTopRight
+                    this.videoData._videoDownloadButtonRadiusBottomLeft = this.videoDownloadButtonRadiusBottomLeft
+                    this.videoData._videoDownloadButtonRadiusBottomRight = this.videoDownloadButtonRadiusBottomRight
+                    this.videoData._videoDownloadButtonIconTextGap = this.videoDownloadButtonIconTextGap
+                    this.videoData._videoDownloadButtonIcon = this.videoDownloadButtonIcon
+                    this.videoData._videoDownloadButtonIconWidth = this.videoDownloadButtonIconWidth
+                    this.videoData._videoDownloadButtonIconHeight = this.videoDownloadButtonIconHeight
+                    this.videoData._videoDownloadButtonText = this.videoDownloadButtonText
+                    this.videoData._videoDownloadButtonTextFontColor = this.videoDownloadButtonTextFontColor
+                    this.videoData._videoDownloadButtonTextFontSize = this.videoDownloadButtonTextFontSize
+                    this.videoData._videoDownloadButtonTextFontStyle = this.videoDownloadButtonTextFontStyle
+                    this.videoData._videoDownloadButtonTextFontWeight = this.videoDownloadButtonTextFontWeight
+                    this.videoData._videoDownloadButtonTextFontFamily = this.videoDownloadButtonTextFontFamily
+                    this.videoData._videoDownloadButtonTextLineHeight = this.videoDownloadButtonTextLineHeight
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/VideoDetailsPage", params: this.videoData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -1176,10 +1178,12 @@ struct VideoPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

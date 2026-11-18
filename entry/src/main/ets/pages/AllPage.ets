@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseMDData } from '../model/BaseMDData'
@@ -19,7 +19,7 @@ struct AllPage {
   // ---------------- 通用
   @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
   // rawfile路径
-  rawFilePath: string = "029_Comprehensive"
+  rawFilePath: string = "033_Comprehensive"
   @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
   // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
@@ -94,58 +94,60 @@ struct AllPage {
         this.safeTop
       )
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.allData._isFull = this.isFull
-                  this.allData._incrementalAnalysis = this.incrementalAnalysis
-                  this.allData._enableParseThrottle = this.enableParseThrottle
-                  this.allData._parseThrottleMs = this.parseThrottleMs
-                  this.allData._time = this.time
-                  this.allData._textNumber = this.textNumber
-                  this.allData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.allData._isOnCopy = this.isOnCopy
-                  this.allData._blockMarginTop = this.blockMarginTop
-                  this.allData._blockMarginRight = this.blockMarginRight
-                  this.allData._blockMarginBottom = this.blockMarginBottom
-                  this.allData._blockMarginLeft = this.blockMarginLeft
-                  this.allData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.allData._isLineBreak = this.isLineBreak
-                  this.allData._backgroundColor = this.globalBackgroundColor
-                  this.allData._openGestureSwipe = this.openGestureSwipe
-                  this.allData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.allData._pagePath = `${this.rawFilePath}/${item}`
-                  // ---------- 专有
-                  this.allData._isDark = this.isDark
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/AllDetailsPage", params: this.allData })
-              })
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.allData._isFull = this.isFull
+                    this.allData._incrementalAnalysis = this.incrementalAnalysis
+                    this.allData._enableParseThrottle = this.enableParseThrottle
+                    this.allData._parseThrottleMs = this.parseThrottleMs
+                    this.allData._time = this.time
+                    this.allData._textNumber = this.textNumber
+                    this.allData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.allData._isOnCopy = this.isOnCopy
+                    this.allData._blockMarginTop = this.blockMarginTop
+                    this.allData._blockMarginRight = this.blockMarginRight
+                    this.allData._blockMarginBottom = this.blockMarginBottom
+                    this.allData._blockMarginLeft = this.blockMarginLeft
+                    this.allData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.allData._isLineBreak = this.isLineBreak
+                    this.allData._backgroundColor = this.globalBackgroundColor
+                    this.allData._openGestureSwipe = this.openGestureSwipe
+                    this.allData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.allData._pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.allData._isDark = this.isDark
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/AllDetailsPage", params: this.allData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -328,10 +330,12 @@ struct AllPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor($r('app.color.page_background'))
-    .height("90%")
+    .height("100%")
   }
 }

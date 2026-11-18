@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -21,7 +21,7 @@ struct DescListPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "023_DefinitionList"
+  rawFilePath: string = "025_DefinitionList"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -167,72 +167,74 @@ struct DescListPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.descListData._isFull = this.isFull
-                  this.descListData._incrementalAnalysis = this.incrementalAnalysis
-                  this.descListData._enableParseThrottle = this.enableParseThrottle
-                  this.descListData._parseThrottleMs = this.parseThrottleMs
-                  this.descListData._time = this.time
-                  this.descListData._textNumber = this.textNumber
-                  this.descListData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.descListData._isOnCopy = this.isOnCopy
-                  this.descListData._blockMarginTop = this.blockMarginTop
-                  this.descListData._blockMarginRight = this.blockMarginRight
-                  this.descListData._blockMarginBottom = this.blockMarginBottom
-                  this.descListData._blockMarginLeft = this.blockMarginLeft
-                  this.descListData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.descListData._isLineBreak = this.isLineBreak
-                  this.descListData._backgroundColor = this.globalBackgroundColor
-                  this.descListData._openGestureSwipe = this.openGestureSwipe
-                  this.descListData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.descListData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.descListData._isFull = this.isFull
+                    this.descListData._incrementalAnalysis = this.incrementalAnalysis
+                    this.descListData._enableParseThrottle = this.enableParseThrottle
+                    this.descListData._parseThrottleMs = this.parseThrottleMs
+                    this.descListData._time = this.time
+                    this.descListData._textNumber = this.textNumber
+                    this.descListData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.descListData._isOnCopy = this.isOnCopy
+                    this.descListData._blockMarginTop = this.blockMarginTop
+                    this.descListData._blockMarginRight = this.blockMarginRight
+                    this.descListData._blockMarginBottom = this.blockMarginBottom
+                    this.descListData._blockMarginLeft = this.blockMarginLeft
+                    this.descListData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.descListData._isLineBreak = this.isLineBreak
+                    this.descListData._backgroundColor = this.globalBackgroundColor
+                    this.descListData._openGestureSwipe = this.openGestureSwipe
+                    this.descListData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.descListData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.descListData._definitionListBackgroundColor = this.definitionListBackgroundColor
-                  this.descListData._definitionListMarginTop = this.definitionListMarginTop
-                  this.descListData._definitionListMarginRight = this.definitionListMarginRight
-                  this.descListData._definitionListMarginBottom = this.definitionListMarginBottom
-                  this.descListData._definitionListMarginLeft = this.definitionListMarginLeft
-                  this.descListData._definitionListPaddingTop = this.definitionListPaddingTop
-                  this.descListData._definitionListPaddingRight = this.definitionListPaddingRight
-                  this.descListData._definitionListPaddingBottom = this.definitionListPaddingBottom
-                  this.descListData._definitionListPaddingLeft = this.definitionListPaddingLeft
-                  this.descListData._definitionListTermToDescriptionSpacing = this.definitionListTermToDescriptionSpacing
-                  this.descListData._definitionListTermTextFontWeight = this.definitionListTermTextFontWeight
-                  this.descListData._definitionListTermTextFontStyle = this.definitionListTermTextFontStyle
-                  this.descListData._definitionListDescriptionItemSpacing = this.definitionListDescriptionItemSpacing
-                  this.descListData._definitionListDescriptionIndent = this.definitionListDescriptionIndent
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/DescListDetailsPage", params: this.descListData })
-              })
+                    // ---------- 专有
+                    this.descListData._definitionListBackgroundColor = this.definitionListBackgroundColor
+                    this.descListData._definitionListMarginTop = this.definitionListMarginTop
+                    this.descListData._definitionListMarginRight = this.definitionListMarginRight
+                    this.descListData._definitionListMarginBottom = this.definitionListMarginBottom
+                    this.descListData._definitionListMarginLeft = this.definitionListMarginLeft
+                    this.descListData._definitionListPaddingTop = this.definitionListPaddingTop
+                    this.descListData._definitionListPaddingRight = this.definitionListPaddingRight
+                    this.descListData._definitionListPaddingBottom = this.definitionListPaddingBottom
+                    this.descListData._definitionListPaddingLeft = this.definitionListPaddingLeft
+                    this.descListData._definitionListTermToDescriptionSpacing = this.definitionListTermToDescriptionSpacing
+                    this.descListData._definitionListTermTextFontWeight = this.definitionListTermTextFontWeight
+                    this.descListData._definitionListTermTextFontStyle = this.definitionListTermTextFontStyle
+                    this.descListData._definitionListDescriptionItemSpacing = this.definitionListDescriptionItemSpacing
+                    this.descListData._definitionListDescriptionIndent = this.definitionListDescriptionIndent
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/DescListDetailsPage", params: this.descListData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -486,10 +488,12 @@ struct DescListPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

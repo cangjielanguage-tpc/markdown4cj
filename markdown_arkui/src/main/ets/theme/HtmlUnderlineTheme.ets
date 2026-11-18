@@ -1,4 +1,4 @@
-﻿import { MarkdownBaseTheme } from './MarkdownBaseTheme'
+import { MarkdownBaseTheme } from './MarkdownBaseTheme'
 import { COLOR_FF191919 } from "../base/Constants"
 
 /**
@@ -112,6 +112,28 @@ export class HtmlUnderlineTheme implements MarkdownBaseTheme {
    */
   setHtmlUnderlineTextDecorationStyle(style: TextDecorationStyle): HtmlUnderlineTheme {
     this.htmlUnderlineTextDecorationStyle = style
+    return this
+  }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return HtmlUnderlineTheme
+   */
+  applyFrom(other: HtmlUnderlineTheme): HtmlUnderlineTheme {
+    this.htmlUnderlineTextFontColor = other.htmlUnderlineTextFontColor
+    this.htmlUnderlineTextFontSize = other.htmlUnderlineTextFontSize
+    this.htmlUnderlineTextFontStyle = other.htmlUnderlineTextFontStyle
+    this.htmlUnderlineTextFontWeight = other.htmlUnderlineTextFontWeight
+    this.htmlUnderlineTextFontFamily = other.htmlUnderlineTextFontFamily
+    this.htmlUnderlineTextLineHeight = other.htmlUnderlineTextLineHeight
+    this.htmlUnderlineTextLetterSpacing = other.htmlUnderlineTextLetterSpacing
+    this.htmlUnderlineTextDecorationColor = other.htmlUnderlineTextDecorationColor
+    this.htmlUnderlineTextDecorationStyle = other.htmlUnderlineTextDecorationStyle
     return this
   }
 }

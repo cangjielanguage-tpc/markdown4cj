@@ -22,6 +22,7 @@ struct HTMLDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   // 文件文本
   @State
@@ -220,6 +221,12 @@ struct HTMLDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -228,48 +235,44 @@ struct HTMLDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - HtmlUnderline
-    let htmlUnderlineTheme = new HtmlUnderlineTheme()
     if (this.htmlUnderlineTextFontColor !== undefined) {
-      htmlUnderlineTheme.setHtmlUnderlineTextFontColor(this.htmlUnderlineTextFontColor)
+      theme.htmlUnderlineTheme.setHtmlUnderlineTextFontColor(this.htmlUnderlineTextFontColor)
     }
     if (this.htmlUnderlineTextFontSize !== undefined) {
-      htmlUnderlineTheme.setHtmlUnderlineTextFontSize(this.htmlUnderlineTextFontSize)
+      theme.htmlUnderlineTheme.setHtmlUnderlineTextFontSize(this.htmlUnderlineTextFontSize)
     }
     if (this.htmlUnderlineTextFontStyle !== undefined) {
-      htmlUnderlineTheme.setHtmlUnderlineTextFontStyle(this.htmlUnderlineTextFontStyle)
+      theme.htmlUnderlineTheme.setHtmlUnderlineTextFontStyle(this.htmlUnderlineTextFontStyle)
     }
     if (this.htmlUnderlineTextFontWeight !== undefined) {
-      htmlUnderlineTheme.setHtmlUnderlineTextFontWeight(this.htmlUnderlineTextFontWeight)
+      theme.htmlUnderlineTheme.setHtmlUnderlineTextFontWeight(this.htmlUnderlineTextFontWeight)
     }
     if (this.htmlUnderlineTextFontFamily !== undefined) {
-      htmlUnderlineTheme.setHtmlUnderlineTextFontFamily(this.htmlUnderlineTextFontFamily)
+      theme.htmlUnderlineTheme.setHtmlUnderlineTextFontFamily(this.htmlUnderlineTextFontFamily)
     }
     if (this.htmlUnderlineTextLineHeight !== undefined) {
-      htmlUnderlineTheme.setHtmlUnderlineTextLineHeight(this.htmlUnderlineTextLineHeight)
+      theme.htmlUnderlineTheme.setHtmlUnderlineTextLineHeight(this.htmlUnderlineTextLineHeight)
     }
     if (this.htmlUnderlineTextLetterSpacing !== undefined) {
-      htmlUnderlineTheme.setHtmlUnderlineTextLetterSpacing(this.htmlUnderlineTextLetterSpacing)
+      theme.htmlUnderlineTheme.setHtmlUnderlineTextLetterSpacing(this.htmlUnderlineTextLetterSpacing)
     }
     if (this.htmlUnderlineTextDecorationColor !== undefined) {
-      htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(this.htmlUnderlineTextDecorationColor)
+      theme.htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(this.htmlUnderlineTextDecorationColor)
     }
-    htmlUnderlineTheme.setHtmlUnderlineTextDecorationStyle(this.htmlUnderlineTextDecorationStyle)
-    theme.setHtmlUnderlineTheme(htmlUnderlineTheme)
+    theme.htmlUnderlineTheme.setHtmlUnderlineTextDecorationStyle(this.htmlUnderlineTextDecorationStyle)
     
     return theme
   }

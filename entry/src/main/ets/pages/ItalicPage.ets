@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -24,7 +24,7 @@ struct ItalicPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "018_Italic"
+  rawFilePath: string = "020_Italic"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -139,56 +139,58 @@ struct ItalicPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.italicData._isFull = this.isFull
-                  this.italicData._incrementalAnalysis = this.incrementalAnalysis
-                  this.italicData._enableParseThrottle = this.enableParseThrottle
-                  this.italicData._parseThrottleMs = this.parseThrottleMs
-                  this.italicData._time = this.time
-                  this.italicData._textNumber = this.textNumber
-                  this.italicData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.italicData._isOnCopy = this.isOnCopy
-                  this.italicData._blockMarginTop = this.blockMarginTop
-                  this.italicData._blockMarginRight = this.blockMarginRight
-                  this.italicData._blockMarginBottom = this.blockMarginBottom
-                  this.italicData._blockMarginLeft = this.blockMarginLeft
-                  this.italicData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.italicData._isLineBreak = this.isLineBreak
-                  this.italicData._backgroundColor = this.globalBackgroundColor
-                  this.italicData._openGestureSwipe = this.openGestureSwipe
-                  this.italicData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.italicData._pagePath = `${this.rawFilePath}/${item}`
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/ItalicDetailsPage", params: this.italicData })
-              })
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.italicData._isFull = this.isFull
+                    this.italicData._incrementalAnalysis = this.incrementalAnalysis
+                    this.italicData._enableParseThrottle = this.enableParseThrottle
+                    this.italicData._parseThrottleMs = this.parseThrottleMs
+                    this.italicData._time = this.time
+                    this.italicData._textNumber = this.textNumber
+                    this.italicData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.italicData._isOnCopy = this.isOnCopy
+                    this.italicData._blockMarginTop = this.blockMarginTop
+                    this.italicData._blockMarginRight = this.blockMarginRight
+                    this.italicData._blockMarginBottom = this.blockMarginBottom
+                    this.italicData._blockMarginLeft = this.blockMarginLeft
+                    this.italicData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.italicData._isLineBreak = this.isLineBreak
+                    this.italicData._backgroundColor = this.globalBackgroundColor
+                    this.italicData._openGestureSwipe = this.openGestureSwipe
+                    this.italicData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.italicData._pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/ItalicDetailsPage", params: this.italicData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -400,10 +402,12 @@ struct ItalicPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

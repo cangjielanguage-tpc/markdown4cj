@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -26,7 +26,7 @@ struct SupPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "027_Sup"
+  rawFilePath: string = "029_Sup"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -145,65 +145,67 @@ struct SupPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.supData._isFull = this.isFull
-                  this.supData._incrementalAnalysis = this.incrementalAnalysis
-                  this.supData._enableParseThrottle = this.enableParseThrottle
-                  this.supData._parseThrottleMs = this.parseThrottleMs
-                  this.supData._time = this.time
-                  this.supData._textNumber = this.textNumber
-                  this.supData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.supData._isOnCopy = this.isOnCopy
-                  this.supData._blockMarginTop = this.blockMarginTop
-                  this.supData._blockMarginRight = this.blockMarginRight
-                  this.supData._blockMarginBottom = this.blockMarginBottom
-                  this.supData._blockMarginLeft = this.blockMarginLeft
-                  this.supData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.supData._isLineBreak = this.isLineBreak
-                  this.supData._backgroundColor = this.globalBackgroundColor
-                  this.supData._openGestureSwipe = this.openGestureSwipe
-                  this.supData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.supData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.supData._isFull = this.isFull
+                    this.supData._incrementalAnalysis = this.incrementalAnalysis
+                    this.supData._enableParseThrottle = this.enableParseThrottle
+                    this.supData._parseThrottleMs = this.parseThrottleMs
+                    this.supData._time = this.time
+                    this.supData._textNumber = this.textNumber
+                    this.supData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.supData._isOnCopy = this.isOnCopy
+                    this.supData._blockMarginTop = this.blockMarginTop
+                    this.supData._blockMarginRight = this.blockMarginRight
+                    this.supData._blockMarginBottom = this.blockMarginBottom
+                    this.supData._blockMarginLeft = this.blockMarginLeft
+                    this.supData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.supData._isLineBreak = this.isLineBreak
+                    this.supData._backgroundColor = this.globalBackgroundColor
+                    this.supData._openGestureSwipe = this.openGestureSwipe
+                    this.supData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.supData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.supData._supTextFontColor = this.supTextFontColor
-                  this.supData._supTextFontSize = this.supTextFontSize
-                  this.supData._supTextFontStyle = this.supTextFontStyle
-                  this.supData._supTextFontWeight = this.supTextFontWeight
-                  this.supData._supTextFontFamily = this.supTextFontFamily
-                  this.supData._supTextLetterSpacing = this.supTextLetterSpacing
-                  this.supData._supTextBaselineOffset = this.supTextBaselineOffset
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/SupDetailsPage", params: this.supData })
-              })
+                    // ---------- 专有
+                    this.supData._supTextFontColor = this.supTextFontColor
+                    this.supData._supTextFontSize = this.supTextFontSize
+                    this.supData._supTextFontStyle = this.supTextFontStyle
+                    this.supData._supTextFontWeight = this.supTextFontWeight
+                    this.supData._supTextFontFamily = this.supTextFontFamily
+                    this.supData._supTextLetterSpacing = this.supTextLetterSpacing
+                    this.supData._supTextBaselineOffset = this.supTextBaselineOffset
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/SupDetailsPage", params: this.supData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -421,10 +423,12 @@ struct SupPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

@@ -854,4 +854,87 @@ export class VideoTheme implements MarkdownBaseTheme {
     this.videoDownloadButtonTextLineHeight = height
     return this
   }
+
+  /**
+   * 原地合并另一实例的字段到当前实例（动态换肤通道）。
+   *
+   * MarkdownTheme.applyFrom 逐子主题调用本方法完成样式合并；字段逐一显式赋值，
+   * ArkTS 限制使用 Object.assign 等受限标准库 API；新增字段时需同步维护本方法。
+   *
+   * @param other 来源实例
+   * @return VideoTheme
+   */
+  applyFrom(other: VideoTheme): VideoTheme {
+    this.videoBackgroundColor = other.videoBackgroundColor
+    this.videoMarginTop = other.videoMarginTop
+    this.videoMarginRight = other.videoMarginRight
+    this.videoMarginBottom = other.videoMarginBottom
+    this.videoMarginLeft = other.videoMarginLeft
+    this.videoPaddingTop = other.videoPaddingTop
+    this.videoPaddingRight = other.videoPaddingRight
+    this.videoPaddingBottom = other.videoPaddingBottom
+    this.videoPaddingLeft = other.videoPaddingLeft
+    this.videoRadiusTopLeft = other.videoRadiusTopLeft
+    this.videoRadiusTopRight = other.videoRadiusTopRight
+    this.videoRadiusBottomLeft = other.videoRadiusBottomLeft
+    this.videoRadiusBottomRight = other.videoRadiusBottomRight
+    this.videoBorderStyle = other.videoBorderStyle
+    this.videoBorderWidth = other.videoBorderWidth
+    this.videoBorderColor = other.videoBorderColor
+    this.videoPlaceholder = other.videoPlaceholder
+    this.videoImageFitType = other.videoImageFitType
+    this.videoPlayIcon = other.videoPlayIcon
+    this.videoPlayIconWidth = other.videoPlayIconWidth
+    this.videoPlayIconHeight = other.videoPlayIconHeight
+    this.videoPlayIconFitType = other.videoPlayIconFitType
+    this.videoTimeTextFontColor = other.videoTimeTextFontColor
+    this.videoTimeTextFontSize = other.videoTimeTextFontSize
+    this.videoTimeTextFontStyle = other.videoTimeTextFontStyle
+    this.videoTimeTextFontWeight = other.videoTimeTextFontWeight
+    this.videoTimeTextFontFamily = other.videoTimeTextFontFamily
+    this.videoTimeTextLineHeight = other.videoTimeTextLineHeight
+    this.videoTimeTextMarginRight = other.videoTimeTextMarginRight
+    this.videoTimeTextMarginBottom = other.videoTimeTextMarginBottom
+    this.videoBottomLayoutVisible = other.videoBottomLayoutVisible
+    this.videoBottomLayoutMarginTop = other.videoBottomLayoutMarginTop
+    this.videoReleaseButtonVisible = other.videoReleaseButtonVisible
+    this.videoReleaseButtonBackgroundColor = other.videoReleaseButtonBackgroundColor
+    this.videoReleaseButtonWidth = other.videoReleaseButtonWidth
+    this.videoReleaseButtonHeight = other.videoReleaseButtonHeight
+    this.videoReleaseButtonRadiusTopLeft = other.videoReleaseButtonRadiusTopLeft
+    this.videoReleaseButtonRadiusTopRight = other.videoReleaseButtonRadiusTopRight
+    this.videoReleaseButtonRadiusBottomLeft = other.videoReleaseButtonRadiusBottomLeft
+    this.videoReleaseButtonRadiusBottomRight = other.videoReleaseButtonRadiusBottomRight
+    this.videoReleaseButtonIconTextGap = other.videoReleaseButtonIconTextGap
+    this.videoReleaseButtonIcon = other.videoReleaseButtonIcon
+    this.videoReleaseButtonIconWidth = other.videoReleaseButtonIconWidth
+    this.videoReleaseButtonIconHeight = other.videoReleaseButtonIconHeight
+    this.videoReleaseButtonText = other.videoReleaseButtonText
+    this.videoReleaseButtonTextFontColor = other.videoReleaseButtonTextFontColor
+    this.videoReleaseButtonTextFontSize = other.videoReleaseButtonTextFontSize
+    this.videoReleaseButtonTextFontStyle = other.videoReleaseButtonTextFontStyle
+    this.videoReleaseButtonTextFontWeight = other.videoReleaseButtonTextFontWeight
+    this.videoReleaseButtonTextFontFamily = other.videoReleaseButtonTextFontFamily
+    this.videoReleaseButtonTextLineHeight = other.videoReleaseButtonTextLineHeight
+    this.videoDownloadButtonVisible = other.videoDownloadButtonVisible
+    this.videoDownloadButtonBackgroundColor = other.videoDownloadButtonBackgroundColor
+    this.videoDownloadButtonWidth = other.videoDownloadButtonWidth
+    this.videoDownloadButtonHeight = other.videoDownloadButtonHeight
+    this.videoDownloadButtonRadiusTopLeft = other.videoDownloadButtonRadiusTopLeft
+    this.videoDownloadButtonRadiusTopRight = other.videoDownloadButtonRadiusTopRight
+    this.videoDownloadButtonRadiusBottomLeft = other.videoDownloadButtonRadiusBottomLeft
+    this.videoDownloadButtonRadiusBottomRight = other.videoDownloadButtonRadiusBottomRight
+    this.videoDownloadButtonIconTextGap = other.videoDownloadButtonIconTextGap
+    this.videoDownloadButtonIcon = other.videoDownloadButtonIcon
+    this.videoDownloadButtonIconWidth = other.videoDownloadButtonIconWidth
+    this.videoDownloadButtonIconHeight = other.videoDownloadButtonIconHeight
+    this.videoDownloadButtonText = other.videoDownloadButtonText
+    this.videoDownloadButtonTextFontColor = other.videoDownloadButtonTextFontColor
+    this.videoDownloadButtonTextFontSize = other.videoDownloadButtonTextFontSize
+    this.videoDownloadButtonTextFontStyle = other.videoDownloadButtonTextFontStyle
+    this.videoDownloadButtonTextFontWeight = other.videoDownloadButtonTextFontWeight
+    this.videoDownloadButtonTextFontFamily = other.videoDownloadButtonTextFontFamily
+    this.videoDownloadButtonTextLineHeight = other.videoDownloadButtonTextLineHeight
+    return this
+  }
 }

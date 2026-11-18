@@ -28,11 +28,13 @@ import { MarkdownScrollController } from "../controller/MarkdownScrollController
 import { StickyScrollYHolder } from "../model/StickyScrollYHolder"
 import { ArrayList } from "@kit.ArkTS"
 import { MarkdownVisibleRectHolder } from "../model/MarkdownVisibleRectHolder"
+import { MarkdownTheme } from "../theme/MarkdownTheme"
+import { MarkdownThemeHost } from "../theme/MarkdownThemeHost"
 
 @Component
 export struct CJMarkdown {
   @Prop @Watch('refreshData') content: string // 外部传入的Markdown文档
-  @ObjectLink config: MarkdownConfiguration // markdown配置项
+  @ObjectLink @Watch('onConfigChanged') config: MarkdownConfiguration // markdown配置项
   @Provide placeholderPixelMap: PixelMap | undefined = undefined // 图片占位图
   @Provide isLatexMathEnabled: boolean = false // 数学公式插件是否启用（控制是否调用latexStringToImage）
   @Provide('mdStickyHolder') stickyHolder: StickyScrollYHolder = new StickyScrollYHolder() // 引用不变，不触发build()；通过setY+监听器通知MarkdownTable
@@ -44,6 +46,11 @@ export struct CJMarkdown {
   @Provide('mdVisibleRectHolder') visibleRectHolder: MarkdownVisibleRectHolder = new MarkdownVisibleRectHolder()
   private lastRatio: number = 0 // onVisibleAreaChange 最近一次 ratio（onAreaChange 喂 rect 时与 rect 一起传给 holder）
   @State componentWidth: number = 0.0 // markdown控件宽度
+  // 聚合主题（内存优化方案二）：组件生命周期内始终为同一个私有实例（不随 config.markdownTheme
+  // 整对象替换而换引用），段落/标题/列表等统一从这里取主题；子主题变化由
+  // MarkdownThemeHost/Observer 集中观察合并发布，动态换肤经 applyFrom 原地合并。
+  @State renderTheme: MarkdownTheme = new MarkdownTheme()
+  private lastLinkIsIcon: number = -1 // 上次检测时 linkIsIcon 取值（-1=未初始化；翻转时重建结构）
   scroller: Scroller = new Scroller() // list控制器
   scrollController?: MarkdownScrollController // 外层滚动控制器（不固定高度模式由页面传入）
   markdownDataSource: MarkdownDataSource = new MarkdownDataSource([]) // markdown页面数据源
@@ -72,6 +79,7 @@ export struct CJMarkdown {
 
   @BuilderParam blockImageCardComponent: (desc:string, imageSrc:string, title:string) => void = this.CustomBlockImageBuilder  //自定义卡片布局块级图片
   @BuilderParam blockLinkCardComponent: (desc:string, link:string, title:string) => void = this.CustomBlockLinkBuilder  //自定义卡片布局行内链接
+
 
   @Builder
   CustomTagViewBuilder(tag: string, attrs: Record<string, string>, content: string) { /* cjlint-ignore !G.FUN.02 */
@@ -124,6 +132,33 @@ export struct CJMarkdown {
   }
 
   /**
+   * 配置对象属性变化（含 markdownTheme 整对象替换）：把新主题原地合并进现有聚合主题。
+   *
+   * 段落/标题等子组件挂在 LazyForEach 内，同 key（index-nodeHash）复用子组件、itemGenerator
+   * 不重跑，整对象替换无法把新实例传给已挂载的子组件——它们始终持有旧实例引用，新实例上的
+   * 任何发布都触达不到。故改为 applyFrom 原地合并：子主题属性变化经 @Observed 属性变化通道
+   * （@Watch 回调 + build 声明式重渲染）可靠触达全部持有者。
+   */
+  onConfigChanged(): void {
+    if (this.config.markdownTheme === this.renderTheme) {
+      return
+    }
+    this.renderTheme.applyFrom(this.config.markdownTheme)
+    // linkIsIcon 翻转意味着链接渲染结构变化，需调用已有 refreshData() 重建结构
+    const current: number = this.renderTheme.linkTheme.linkIsIcon ? 1 : 0
+    if (this.lastLinkIsIcon === -1) {
+      // 首次回调仅建立基线，不触发重建
+      this.lastLinkIsIcon = current
+      return
+    }
+    if (this.lastLinkIsIcon === current) {
+      return
+    }
+    this.lastLinkIsIcon = current
+    this.refreshData()
+  }
+
+  /**
    * 根 List 布局事件喂 holder（替代旧版轮询 getRectangleById）：
    * - onAreaChange：页面矩形变化（外层滚动/自身尺寸变化）时框架逐帧推送，是 rectTop 采样的主来源；
    * - onVisibleAreaChange：ratio 变化时补喂一次（feedHolderWithRatio），兜住「ratio 回升/离屏但无新布局事件」的窗口。
@@ -163,6 +198,7 @@ export struct CJMarkdown {
 
   aboutToAppear(): void {
     this.isLatexMathEnabled = this.plugin.isLatexMathPlugin
+    this.renderTheme.applyFrom(this.config.markdownTheme) // 聚合主题合并配置初始主题（aboutToAppear 先于首次 build，此后 renderTheme 引用不再变化）
     if (this.scrollController) {
       this.stickyHolder.enabled = true
       this.scrollController.setListener((yOffset: number) => {
@@ -228,673 +264,527 @@ export struct CJMarkdown {
   }
 
   build() {
-    if (this.config.markdownTheme.codeBlockTheme.codeBlockIsSeparate) {
-      List({
-        scroller: this.scroller,
-        space: this.config.markdownTheme.globalTheme.markdownBlockSpacing
-      }) {
-        LazyForEach(
-          this.markdownDataSource,
-          (item: NodeView, index: number) => {
-            ListItem() {
-              if (index === 0 && (item.nodeType === "FencedCodeBlock" || item.nodeType === "IndentedCodeBlock")) {
-                MarkdownCodeSeparate({
-                  node: item,
-                  codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
-                  codeCopyCallback: this.config.codeCopyCallback,
-                  codeFullScreenCallback: this.config.codeFullScreenCallback
-                })
-              } else {
-                Text("")
-              }
-            }
-          },
-          (item: NodeView, index: number) => {
-            return `${index}-${item.nodeHash}`
-          }
-        )
-      }
-      .margin(
-        {
-          top: this.config.markdownTheme.globalTheme.blockMarginTop,
-          right: this.config.markdownTheme.globalTheme.blockMarginRight,
-          bottom: this.config.markdownTheme.globalTheme.blockMarginBottom,
-          left: this.config.markdownTheme.globalTheme.blockMarginLeft
-        }
-      )
-      .backgroundColor(this.config.markdownTheme.globalTheme.backgroundColor)
-      .listDirection(Axis.Vertical)
-      .alignListItem(ListItemAlign.Start)
-      .scrollBar(BarState.Off)
-      .enableScrollInteraction(this.config.markdownTheme.globalTheme.openGestureSwipe)
-      .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, currentRatio: number) => {
-        if (!this.isExposureEnabled()) {
-          return
-        }
-        // 缓存 ratio 供 onAreaChange 喂 rect 时一起传给 holder；并用缓存矩形补喂一次：
-        // - 回屏（ratio>0）：走 holder 重新初始化分支，否则 vis 卡在 0；
-        // - 离屏（ratio==0）：走 ratioDown 收缩分支，visHeight 归零。
-        this.lastRatio = currentRatio
-        this.feedHolderWithRatio(currentRatio)
-      })
-      .onAreaChange((_oldArea: Area, newArea: Area) => {
-        // 页面矩形逐帧推送（外层滚动/尺寸变化），曝光 rectTop 采样的主来源。
-        this.feedHolderFromArea(newArea)
-      })
-      .onSizeChange((oldValue, newValue) => {
-        let newWidth: number = 0
-        if (typeof newValue.width === 'number') {
-          newWidth = newValue.width
-        }
-        if (this.componentWidth !== newWidth) {
-          this.componentWidth = newWidth
-        }
-      })
-    } else {
-      List({
-        scroller: this.scroller,
-        space: this.config.markdownTheme.globalTheme.markdownBlockSpacing
-      }) {
-        LazyForEach(
-          this.markdownDataSource,
-          (item: NodeView, index: number) => {
-            if (item.nodeType === "TableBlock" && this.config.markdownTheme.tableTheme.tableStickyHeader) {
-              // sticky 模式：表格以 ListItemGroup 形式直接作为 List 子节点，标题行天然吸顶
-              MarkdownTable({
-                node: item,
-                headingTheme: this.config.markdownTheme.headingTheme,
-                globalTheme: this.config.markdownTheme.globalTheme,
-                subTheme: this.config.markdownTheme.subTheme,
-                supTheme: this.config.markdownTheme.supTheme,
-                inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                boldTheme: this.config.markdownTheme.boldTheme,
-                italicTheme: this.config.markdownTheme.italicTheme,
-                strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                highlightTheme: this.config.markdownTheme.highlightTheme,
-                htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                linkTheme: this.config.markdownTheme.linkTheme,
-                footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                tableTheme: this.config.markdownTheme.tableTheme,
-                paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                imageTheme: this.config.markdownTheme.imageTheme,
-                latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                latexImageCallback: this.config.latexImageCallback,
-                latexStrCallback: this.config.latexStrCallback,
-                componentWidth: this.componentWidth,
-                textCopyCallback: this.config.textCopyCallback,
-                footnoteCallback: this.footnoteCallback,
-                tocCallback: this.tocCallback,
-                linkCallback: this.config.linkCallback,
-                elementExposureCallback: this.config.elementExposureCallback,
-                exposureThreshold: this.config.exposureThreshold,
-                imageCallback: this.imageCallback,
-                imageDownloadCallback: this.config.imageDownloadCallback,
-                imageReplaceCallback: this.config.imageReplaceCallback,
-                markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                customLongPressCallback: this.config.customLongPressCallback,
-                blockImageCardComponent:this.blockImageCardComponent,
-                blockLinkCardComponent:this.blockLinkCardComponent
-              })
-            } else {
+    Stack() {
+      // 纯观察宿主：直接挂载不经过 overlay，避免浮层内容随父组件刷新销毁重建、观察链反复断连
+      MarkdownThemeHost({ theme: this.renderTheme })
+
+      if (this.renderTheme.codeBlockTheme.codeBlockIsSeparate) {
+        List({
+          scroller: this.scroller,
+          space: this.renderTheme.globalTheme.markdownBlockSpacing
+        }) {
+          LazyForEach(
+            this.markdownDataSource,
+            (item: NodeView, index: number) => {
               ListItem() {
-                if (item.nodeType === "Heading" || item.nodeType === "IdHeading") {
-                  // 标题/标题ID
-                  MarkdownHeading({
+                if (index === 0 && (item.nodeType === "FencedCodeBlock" || item.nodeType === "IndentedCodeBlock")) {
+                  MarkdownCodeSeparate({
                     node: item,
-                    headingTheme: this.config.markdownTheme.headingTheme,
-                    globalTheme: this.config.markdownTheme.globalTheme,
-                    subTheme: this.config.markdownTheme.subTheme,
-                    supTheme: this.config.markdownTheme.supTheme,
-                    inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                    boldTheme: this.config.markdownTheme.boldTheme,
-                    italicTheme: this.config.markdownTheme.italicTheme,
-                    strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                    highlightTheme: this.config.markdownTheme.highlightTheme,
-                    htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                    linkTheme: this.config.markdownTheme.linkTheme,
-                    footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                    tableTheme: this.config.markdownTheme.tableTheme,
-                    paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                    blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                    definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                    latexImageCallback: this.config.latexImageCallback,
-                    latexStrCallback: this.config.latexStrCallback,
-                    componentWidth: this.componentWidth,
-                    textCopyCallback: this.config.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    linkCallback: this.config.linkCallback,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.config.imageDownloadCallback,
-                    imageReplaceCallback: this.config.imageReplaceCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback,
-                    elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold,
-                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
-                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd
-                  })
-                } else if (item.nodeType === "Paragraph") {
-                  // 段落
-                  MarkdownParagraph({
-                    node: item,
-                    headingTheme: this.config.markdownTheme.headingTheme,
-                    globalTheme: this.config.markdownTheme.globalTheme,
-                    subTheme: this.config.markdownTheme.subTheme,
-                    supTheme: this.config.markdownTheme.supTheme,
-                    inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                    boldTheme: this.config.markdownTheme.boldTheme,
-                    italicTheme: this.config.markdownTheme.italicTheme,
-                    strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                    highlightTheme: this.config.markdownTheme.highlightTheme,
-                    htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                    linkTheme: this.config.markdownTheme.linkTheme,
-                    footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                    tableTheme: this.config.markdownTheme.tableTheme,
-                    paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                    blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                    definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                    latexImageCallback: this.config.latexImageCallback,
-                    latexStrCallback: this.config.latexStrCallback,
-                    componentWidth: this.componentWidth,
-                    textCopyCallback: this.config.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    linkCallback: this.config.linkCallback,
-                    elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.config.imageDownloadCallback,
-                    imageReplaceCallback: this.config.imageReplaceCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
-                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
-                  })
-                } else if (item.nodeType === "FencedCodeBlockListBlock") {
-                  // 围栏代码块列表
-                  MarkdownCodeBlockList({
-                    node: item,
-                    codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
+                    codeBlockTheme: this.renderTheme.codeBlockTheme,
                     codeCopyCallback: this.config.codeCopyCallback,
                     codeFullScreenCallback: this.config.codeFullScreenCallback
                   })
-                } else if (item.nodeType === "FencedCodeBlock") {
-                  // 围栏代码块
-                  MarkdownCodeFenced({
-                    node: item,
-                    codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
-                    codeCopyCallback: this.config.codeCopyCallback,
-                    codeFullScreenCallback: this.config.codeFullScreenCallback
-                  })
-                } else if (item.nodeType === "IndentedCodeBlock") {
-                  // 缩进代码块
-                  MarkdownCodeIndented({
-                    node: item,
-                    codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
-                    codeCopyCallback: this.config.codeCopyCallback,
-                    codeFullScreenCallback: this.config.codeFullScreenCallback
-                  })
-                } else if (item.nodeType === "BulletList") {
-                  // 无序/任务列表
-                  MarkdownList({
-                    node: item,
-                    blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                    orderedListTheme: this.config.markdownTheme.orderedListTheme,
-                    bulletListTheme: this.config.markdownTheme.bulletListTheme,
-                    headingTheme: this.config.markdownTheme.headingTheme,
-                    globalTheme: this.config.markdownTheme.globalTheme,
-                    subTheme: this.config.markdownTheme.subTheme,
-                    supTheme: this.config.markdownTheme.supTheme,
-                    inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                    boldTheme: this.config.markdownTheme.boldTheme,
-                    italicTheme: this.config.markdownTheme.italicTheme,
-                    strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                    highlightTheme: this.config.markdownTheme.highlightTheme,
-                    htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                    linkTheme: this.config.markdownTheme.linkTheme,
-                    footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                    tableTheme: this.config.markdownTheme.tableTheme,
-                    paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                    definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    footnoteDefTheme: this.config.markdownTheme.footnoteDefTheme,
-                    codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
-                    dividerTheme: this.config.markdownTheme.dividerTheme,
-                    bannerTheme: this.config.markdownTheme.bannerTheme,
-                    videoTheme: this.config.markdownTheme.videoTheme,
-                    audioTheme: this.config.markdownTheme.audioTheme,
-                    latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                    latexImageCallback: this.config.latexImageCallback,
-                    latexStrCallback: this.config.latexStrCallback,
-                    isOrdered: false,
-                    listDepth: 0,
-                    componentWidth: this.componentWidth,
-                    tableBlockComponentWidth: this.componentWidth,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.config.imageDownloadCallback,
-                    imageReplaceCallback: this.config.imageReplaceCallback,
-                    videoCallback: this.videoCallback,
-                    videoImageCallback: this.config.videoImageCallback,
-                    videoReleaseCallback: this.config.videoReleaseCallback,
-                    videoDownloadCallback: this.config.videoDownloadCallback,
-                    audioCallback: this.config.audioCallback,
-                    codeCopyCallback: this.config.codeCopyCallback,
-                    codeFullScreenCallback: this.config.codeFullScreenCallback,
-                    linkCallback: this.config.linkCallback,
-                    elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold,
-                    textCopyCallback: this.config.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    tableCopyCallback: this.config.tableCopyCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
-                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
-                    blockImageCardComponent:this.blockImageCardComponent,
-                    blockLinkCardComponent:this.blockLinkCardComponent,
-                    customTagViewComponent: this.customTagViewComponent
-                  })
-                } else if (item.nodeType === "OrderedList") {
-                  // 有序列表
-                  MarkdownList({
-                    node: item,
-                    blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                    orderedListTheme: this.config.markdownTheme.orderedListTheme,
-                    bulletListTheme: this.config.markdownTheme.bulletListTheme,
-                    headingTheme: this.config.markdownTheme.headingTheme,
-                    globalTheme: this.config.markdownTheme.globalTheme,
-                    subTheme: this.config.markdownTheme.subTheme,
-                    supTheme: this.config.markdownTheme.supTheme,
-                    inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                    boldTheme: this.config.markdownTheme.boldTheme,
-                    italicTheme: this.config.markdownTheme.italicTheme,
-                    strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                    highlightTheme: this.config.markdownTheme.highlightTheme,
-                    htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                    linkTheme: this.config.markdownTheme.linkTheme,
-                    footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                    tableTheme: this.config.markdownTheme.tableTheme,
-                    paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                    definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    footnoteDefTheme: this.config.markdownTheme.footnoteDefTheme,
-                    codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
-                    dividerTheme: this.config.markdownTheme.dividerTheme,
-                    bannerTheme: this.config.markdownTheme.bannerTheme,
-                    videoTheme: this.config.markdownTheme.videoTheme,
-                    audioTheme: this.config.markdownTheme.audioTheme,
-                    latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                    latexImageCallback: this.config.latexImageCallback,
-                    latexStrCallback: this.config.latexStrCallback,
-                    isOrdered: true,
-                    listDepth: 0,
-                    componentWidth: this.componentWidth,
-                    tableBlockComponentWidth: this.componentWidth,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.config.imageDownloadCallback,
-                    imageReplaceCallback: this.config.imageReplaceCallback,
-                    videoCallback: this.videoCallback,
-                    videoImageCallback: this.config.videoImageCallback,
-                    videoReleaseCallback: this.config.videoReleaseCallback,
-                    videoDownloadCallback: this.config.videoDownloadCallback,
-                    audioCallback: this.config.audioCallback,
-                    codeCopyCallback: this.config.codeCopyCallback,
-                    codeFullScreenCallback: this.config.codeFullScreenCallback,
-                    linkCallback: this.config.linkCallback,
-                    elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold,
-                    textCopyCallback: this.config.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    tableCopyCallback: this.config.tableCopyCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
-                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
-                    blockImageCardComponent:this.blockImageCardComponent,
-                    blockLinkCardComponent:this.blockLinkCardComponent,
-                    customTagViewComponent: this.customTagViewComponent
-                  })
-                } else if (item.nodeType === "BlockQuote") {
-                  // 块引用
-                  MarkdownQuote({
-                    node: item,
-                    blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                    orderedListTheme: this.config.markdownTheme.orderedListTheme,
-                    bulletListTheme: this.config.markdownTheme.bulletListTheme,
-                    headingTheme: this.config.markdownTheme.headingTheme,
-                    globalTheme: this.config.markdownTheme.globalTheme,
-                    subTheme: this.config.markdownTheme.subTheme,
-                    supTheme: this.config.markdownTheme.supTheme,
-                    inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                    boldTheme: this.config.markdownTheme.boldTheme,
-                    italicTheme: this.config.markdownTheme.italicTheme,
-                    strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                    highlightTheme: this.config.markdownTheme.highlightTheme,
-                    htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                    linkTheme: this.config.markdownTheme.linkTheme,
-                    footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                    tableTheme: this.config.markdownTheme.tableTheme,
-                    paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                    definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    footnoteDefTheme: this.config.markdownTheme.footnoteDefTheme,
-                    codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
-                    dividerTheme: this.config.markdownTheme.dividerTheme,
-                    bannerTheme: this.config.markdownTheme.bannerTheme,
-                    videoTheme: this.config.markdownTheme.videoTheme,
-                    audioTheme: this.config.markdownTheme.audioTheme,
-                    latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                    latexImageCallback: this.config.latexImageCallback,
-                    latexStrCallback: this.config.latexStrCallback,
-                    componentWidth: this.componentWidth,
-                    tableBlockComponentWidth: this.componentWidth,
-                    listDepth: 0,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.config.imageDownloadCallback,
-                    imageReplaceCallback: this.config.imageReplaceCallback,
-                    videoCallback: this.videoCallback,
-                    videoImageCallback: this.config.videoImageCallback,
-                    videoReleaseCallback: this.config.videoReleaseCallback,
-                    videoDownloadCallback: this.config.videoDownloadCallback,
-                    audioCallback: this.config.audioCallback,
-                    codeCopyCallback: this.config.codeCopyCallback,
-                    codeFullScreenCallback: this.config.codeFullScreenCallback,
-                    linkCallback: this.config.linkCallback,
-                    elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold,
-                    textCopyCallback: this.config.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    tableCopyCallback: this.config.tableCopyCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
-                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
-                    blockImageCardComponent:this.blockImageCardComponent,
-                    blockLinkCardComponent:this.blockLinkCardComponent,
-                    customTagViewComponent: this.customTagViewComponent
-                  })
-                } else if (item.nodeType === "LatexMathBlock") {
-                  // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本
-                  if (this.isLatexMathEnabled && item.isLatexMathBlockClose) {
-                    MarkdownLatexMathBlock({
-                      latexMathBlockStr: item.nodeText,
-                      latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                      latexImageCallback: this.config.latexImageCallback,
-                      latexStrCallback: this.config.latexStrCallback
-                    })
-                  } else if (this.config.markdownTheme.latexMathTheme.latexMathDefaultText) {
-                    Text(item.nodeText)
-                      .fontFamily(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
-                      .fontSize(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
-                      .fontWeight(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
-                      .fontStyle(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
-                      .fontColor(this.config.markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
-                      .padding({
-                        top: this.config.markdownTheme.latexMathTheme.latexMathPaddingTop,
-                        right: this.config.markdownTheme.latexMathTheme.latexMathPaddingRight,
-                        bottom: this.config.markdownTheme.latexMathTheme.latexMathPaddingBottom,
-                        left: this.config.markdownTheme.latexMathTheme.latexMathPaddingLeft
-                      })
-                      .margin({
-                        top: this.config.markdownTheme.latexMathTheme.latexMathMarginTop,
-                        right: this.config.markdownTheme.latexMathTheme.latexMathMarginRight,
-                        bottom: this.config.markdownTheme.latexMathTheme.latexMathMarginBottom,
-                        left: this.config.markdownTheme.latexMathTheme.latexMathMarginLeft
-                      })
-                  }
-                } else if (item.nodeType === "TableBlock") {
-                  // 表格
-                  MarkdownTable({
-                    node: item,
-                    headingTheme: this.config.markdownTheme.headingTheme,
-                    globalTheme: this.config.markdownTheme.globalTheme,
-                    subTheme: this.config.markdownTheme.subTheme,
-                    supTheme: this.config.markdownTheme.supTheme,
-                    inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                    boldTheme: this.config.markdownTheme.boldTheme,
-                    italicTheme: this.config.markdownTheme.italicTheme,
-                    strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                    highlightTheme: this.config.markdownTheme.highlightTheme,
-                    htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                    linkTheme: this.config.markdownTheme.linkTheme,
-                    footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                    tableTheme: this.config.markdownTheme.tableTheme,
-                    paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                    blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                    definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                    latexImageCallback: this.config.latexImageCallback,
-                    latexStrCallback: this.config.latexStrCallback,
-                    componentWidth: this.componentWidth,
-                    textCopyCallback: this.config.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    linkCallback: this.config.linkCallback,
-                    elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.config.imageDownloadCallback,
-                    imageReplaceCallback: this.config.imageReplaceCallback,
-                    tableCopyCallback: this.config.tableCopyCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback,
-                    blockImageCardComponent:this.blockImageCardComponent,
-                    blockLinkCardComponent:this.blockLinkCardComponent
-                  })
-                } else if (item.nodeType === "ThematicBreak") {
-                  // 分割线
-                  MarkdownThematicBreak({
-                    dividerTheme: this.config.markdownTheme.dividerTheme
-                  })
-                } else if (item.nodeType === "FootnoteBlock") {
-                  // 脚注
-                  MarkdownFootnote({
-                    node: item,
-                    headingTheme: this.config.markdownTheme.headingTheme,
-                    globalTheme: this.config.markdownTheme.globalTheme,
-                    subTheme: this.config.markdownTheme.subTheme,
-                    supTheme: this.config.markdownTheme.supTheme,
-                    inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                    boldTheme: this.config.markdownTheme.boldTheme,
-                    italicTheme: this.config.markdownTheme.italicTheme,
-                    strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                    highlightTheme: this.config.markdownTheme.highlightTheme,
-                    htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                    linkTheme: this.config.markdownTheme.linkTheme,
-                    footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                    tableTheme: this.config.markdownTheme.tableTheme,
-                    paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                    blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                    definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    footnoteDefTheme: this.config.markdownTheme.footnoteDefTheme,
-                    orderedListTheme: this.config.markdownTheme.orderedListTheme,
-                    bulletListTheme: this.config.markdownTheme.bulletListTheme,
-                    codeBlockTheme: this.config.markdownTheme.codeBlockTheme,
-                    dividerTheme: this.config.markdownTheme.dividerTheme,
-                    bannerTheme: this.config.markdownTheme.bannerTheme,
-                    videoTheme: this.config.markdownTheme.videoTheme,
-                    audioTheme: this.config.markdownTheme.audioTheme,
-                    latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                    latexImageCallback: this.config.latexImageCallback,
-                    latexStrCallback: this.config.latexStrCallback,
-                    componentWidth: this.componentWidth,
-                    tableBlockComponentWidth: this.componentWidth,
-                    listDepth: 0,
-                    textCopyCallback: this.config.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    linkCallback: this.config.linkCallback,
-                    elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.config.imageDownloadCallback,
-                    imageReplaceCallback: this.config.imageReplaceCallback,
-                    videoCallback: this.videoCallback,
-                    videoImageCallback: this.config.videoImageCallback,
-                    videoReleaseCallback: this.config.videoReleaseCallback,
-                    videoDownloadCallback: this.config.videoDownloadCallback,
-                    audioCallback: this.config.audioCallback,
-                    codeCopyCallback: this.config.codeCopyCallback,
-                    codeFullScreenCallback: this.config.codeFullScreenCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
-                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
-                  })
-                } else if (item.nodeType === "DescList") {
-                  // 定义列表
-                  MarkdownDesc({
-                    node: item,
-                    headingTheme: this.config.markdownTheme.headingTheme,
-                    globalTheme: this.config.markdownTheme.globalTheme,
-                    subTheme: this.config.markdownTheme.subTheme,
-                    supTheme: this.config.markdownTheme.supTheme,
-                    inlineCodeTheme: this.config.markdownTheme.inlineCodeTheme,
-                    boldTheme: this.config.markdownTheme.boldTheme,
-                    italicTheme: this.config.markdownTheme.italicTheme,
-                    strikethroughTheme: this.config.markdownTheme.strikethroughTheme,
-                    highlightTheme: this.config.markdownTheme.highlightTheme,
-                    htmlUnderlineTheme: this.config.markdownTheme.htmlUnderlineTheme,
-                    linkTheme: this.config.markdownTheme.linkTheme,
-                    footnoteRefTheme: this.config.markdownTheme.footnoteRefTheme,
-                    tableTheme: this.config.markdownTheme.tableTheme,
-                    paragraphTheme: this.config.markdownTheme.paragraphTheme,
-                    blockQuoteTheme: this.config.markdownTheme.blockQuoteTheme,
-                    definitionListTheme: this.config.markdownTheme.definitionListTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    latexMathTheme: this.config.markdownTheme.latexMathTheme,
-                    latexImageCallback: this.config.latexImageCallback,
-                    latexStrCallback: this.config.latexStrCallback,
-                    componentWidth: this.componentWidth,
-                    textCopyCallback: this.config.textCopyCallback,
-                    footnoteCallback: this.footnoteCallback,
-                    tocCallback: this.tocCallback,
-                    linkCallback: this.config.linkCallback,
-                    elementExposureCallback: this.config.elementExposureCallback,
-                    exposureThreshold: this.config.exposureThreshold,
-                    imageCallback: this.imageCallback,
-                    imageDownloadCallback: this.config.imageDownloadCallback,
-                    imageReplaceCallback: this.config.imageReplaceCallback,
-                    markdownHighlightParagraph: this.config.markdownHighlightParagraph,
-                    customLongPressCallback: this.config.customLongPressCallback,
-                    paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
-                    paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
-                  })
-                } else if (item.nodeType === "SlideBlock") {
-                  // 图片幻灯片
-                  MarkdownBanner({
-                    node: item,
-                    bannerTheme: this.config.markdownTheme.bannerTheme,
-                    imageTheme: this.config.markdownTheme.imageTheme,
-                    imageCallback: this.imageCallback
-                  })
-                } else if (item.nodeType === "BlockVideo") {
-                  // 视频
-                  MarkdownVideo({
-                    node: item,
-                    videoTheme: this.config.markdownTheme.videoTheme,
-                    videoCallback: this.videoCallback,
-                    videoImageCallback: this.config.videoImageCallback,
-                    videoReleaseCallback: this.config.videoReleaseCallback,
-                    videoDownloadCallback: this.config.videoDownloadCallback
-                  })
-                } else if (item.nodeType === "BlockAudio") {
-                  // 音频
-                  MarkdownAudio({
-                    node: item,
-                    audioTheme: this.config.markdownTheme.audioTheme,
-                    audioCallback: this.config.audioCallback
-                  })
-                } else if (item.nodeType === "CustomCardImage") {
-                  // 音频
-                  this.blockImageCardComponent(
-                    safeString(item.imageAltText),
-                    safeString(item.imageUrl),
-                    safeString(item.imageTitle)
-                  )
-                } else if (item.nodeType === "CustomCardLink") {
-                  // 音频
-                  this.blockLinkCardComponent(
-                    safeString(item.nodeText),
-                    safeString(item.linkUrl),
-                    safeString(item.linkTitle)
-                  )
-                } else if (item.customTag !== undefined) {
-                  // 已注册的自定义标签块级视图（如 <sdui data='...'></sdui>），回调宿主Builder渲染
-                  // 来源可能是块级 HtmlBlock，也可能是提升后的行内 HtmlInline（nodeType 不限定）
-                  this.customTagViewComponent(
-                    item.customTag,
-                    item.customAttrs ?? {},
-                    item.customContent ?? ""
-                  )
-                } else if (item.nodeType === "BlockAD") {
-                  // 广告
                 } else {
-                  // 其他
+                  Text("")
                 }
               }
+            },
+            (item: NodeView, index: number) => {
+              return `${index}-${item.nodeHash}`
             }
-          },
-          (item: NodeView, index: number) => {
-            if (item.nodeType === "LatexMathBlock") {
-              return `${index}-${item.nodeHash}-${item.contentHash}`
-            }
-            if (item.nodeType === "TableBlock") {
-              return `${index}-${item.nodeHash}-${this.config.markdownTheme.tableTheme.tableStickyHeader}`
-            }
-            return `${index}-${item.nodeHash}`
+          )
+        }
+        .margin(
+          {
+            top: this.renderTheme.globalTheme.blockMarginTop,
+            right: this.renderTheme.globalTheme.blockMarginRight,
+            bottom: this.renderTheme.globalTheme.blockMarginBottom,
+            left: this.renderTheme.globalTheme.blockMarginLeft
           }
         )
+        .backgroundColor(this.renderTheme.globalTheme.backgroundColor)
+        .listDirection(Axis.Vertical)
+        .alignListItem(ListItemAlign.Start)
+        .scrollBar(BarState.Off)
+        .enableScrollInteraction(this.renderTheme.globalTheme.openGestureSwipe)
+        .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, currentRatio: number) => {
+          if (!this.isExposureEnabled()) {
+            return
+          }
+          // 缓存 ratio 供 onAreaChange 喂 rect 时一起传给 holder；并用缓存矩形补喂一次：
+          // - 回屏（ratio>0）：走 holder 重新初始化分支，否则 vis 卡在 0；
+          // - 离屏（ratio==0）：走 ratioDown 收缩分支，visHeight 归零。
+          this.lastRatio = currentRatio
+          this.feedHolderWithRatio(currentRatio)
+        })
+        .onAreaChange((_oldArea: Area, newArea: Area) => {
+          // 页面矩形逐帧推送（外层滚动/尺寸变化），曝光 rectTop 采样的主来源。
+          this.feedHolderFromArea(newArea)
+        })
+        .onSizeChange((oldValue, newValue) => {
+          let newWidth: number = 0
+          if (typeof newValue.width === 'number') {
+            newWidth = newValue.width
+          }
+          if (this.componentWidth !== newWidth) {
+            this.componentWidth = newWidth
+          }
+        })
+      } else {
+        List({
+          scroller: this.scroller,
+          space: this.renderTheme.globalTheme.markdownBlockSpacing
+        }) {
+          LazyForEach(
+            this.markdownDataSource,
+            (item: NodeView, index: number) => {
+              if (item.nodeType === "TableBlock" && this.renderTheme.tableTheme.tableStickyHeader) {
+                // sticky 模式：表格以 ListItemGroup 形式直接作为 List 子节点，标题行天然吸顶
+                MarkdownTable({
+                  node: item,
+                  headingTheme: this.renderTheme.headingTheme,
+                  globalTheme: this.renderTheme.globalTheme,
+                  subTheme: this.renderTheme.subTheme,
+                  supTheme: this.renderTheme.supTheme,
+                  inlineCodeTheme: this.renderTheme.inlineCodeTheme,
+                  boldTheme: this.renderTheme.boldTheme,
+                  italicTheme: this.renderTheme.italicTheme,
+                  strikethroughTheme: this.renderTheme.strikethroughTheme,
+                  highlightTheme: this.renderTheme.highlightTheme,
+                  htmlUnderlineTheme: this.renderTheme.htmlUnderlineTheme,
+                  linkTheme: this.renderTheme.linkTheme,
+                  footnoteRefTheme: this.renderTheme.footnoteRefTheme,
+                  tableTheme: this.renderTheme.tableTheme,
+                  paragraphTheme: this.renderTheme.paragraphTheme,
+                  blockQuoteTheme: this.renderTheme.blockQuoteTheme,
+                  definitionListTheme: this.renderTheme.definitionListTheme,
+                  imageTheme: this.renderTheme.imageTheme,
+                  latexMathTheme: this.renderTheme.latexMathTheme,
+                  latexImageCallback: this.config.latexImageCallback,
+                  latexStrCallback: this.config.latexStrCallback,
+                  componentWidth: this.componentWidth,
+                  textCopyCallback: this.config.textCopyCallback,
+                  footnoteCallback: this.footnoteCallback,
+                  tocCallback: this.tocCallback,
+                  linkCallback: this.config.linkCallback,
+                  elementExposureCallback: this.config.elementExposureCallback,
+                  exposureThreshold: this.config.exposureThreshold,
+                  imageCallback: this.imageCallback,
+                  imageDownloadCallback: this.config.imageDownloadCallback,
+                  imageReplaceCallback: this.config.imageReplaceCallback,
+                  markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                  customLongPressCallback: this.config.customLongPressCallback,
+                  blockImageCardComponent:this.blockImageCardComponent,
+                  blockLinkCardComponent:this.blockLinkCardComponent
+                })
+              } else {
+                ListItem() {
+                  if (item.nodeType === "Heading" || item.nodeType === "IdHeading") {
+                    // 标题/标题ID
+                    MarkdownHeading({
+                      node: item,
+                      theme: this.renderTheme,
+                      latexImageCallback: this.config.latexImageCallback,
+                      latexStrCallback: this.config.latexStrCallback,
+                      componentWidth: this.componentWidth,
+                      textCopyCallback: this.config.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      linkCallback: this.config.linkCallback,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.config.imageDownloadCallback,
+                      imageReplaceCallback: this.config.imageReplaceCallback,
+                      markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                      customLongPressCallback: this.config.customLongPressCallback,
+                      elementExposureCallback: this.config.elementExposureCallback,
+                      exposureThreshold: this.config.exposureThreshold,
+                      paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                      paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd
+                    })
+                  } else if (item.nodeType === "Paragraph") {
+                    // 段落
+                    MarkdownParagraph({
+                      node: item,
+                      theme: this.renderTheme,
+                      latexImageCallback: this.config.latexImageCallback,
+                      latexStrCallback: this.config.latexStrCallback,
+                      componentWidth: this.componentWidth,
+                      textCopyCallback: this.config.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      linkCallback: this.config.linkCallback,
+                      elementExposureCallback: this.config.elementExposureCallback,
+                      exposureThreshold: this.config.exposureThreshold,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.config.imageDownloadCallback,
+                      imageReplaceCallback: this.config.imageReplaceCallback,
+                      markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                      customLongPressCallback: this.config.customLongPressCallback,
+                      paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                      paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                    })
+                  } else if (item.nodeType === "FencedCodeBlockListBlock") {
+                    // 围栏代码块列表
+                    MarkdownCodeBlockList({
+                      node: item,
+                      codeBlockTheme: this.renderTheme.codeBlockTheme,
+                      codeCopyCallback: this.config.codeCopyCallback,
+                      codeFullScreenCallback: this.config.codeFullScreenCallback
+                    })
+                  } else if (item.nodeType === "FencedCodeBlock") {
+                    // 围栏代码块
+                    MarkdownCodeFenced({
+                      node: item,
+                      codeBlockTheme: this.renderTheme.codeBlockTheme,
+                      codeCopyCallback: this.config.codeCopyCallback,
+                      codeFullScreenCallback: this.config.codeFullScreenCallback
+                    })
+                  } else if (item.nodeType === "IndentedCodeBlock") {
+                    // 缩进代码块
+                    MarkdownCodeIndented({
+                      node: item,
+                      codeBlockTheme: this.renderTheme.codeBlockTheme,
+                      codeCopyCallback: this.config.codeCopyCallback,
+                      codeFullScreenCallback: this.config.codeFullScreenCallback
+                    })
+                  } else if (item.nodeType === "BulletList") {
+                    // 无序/任务列表
+                    MarkdownList({
+                      node: item,
+                      theme: this.renderTheme,
+                      latexImageCallback: this.config.latexImageCallback,
+                      latexStrCallback: this.config.latexStrCallback,
+                      isOrdered: false,
+                      listDepth: 0,
+                      componentWidth: this.componentWidth,
+                      tableBlockComponentWidth: this.componentWidth,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.config.imageDownloadCallback,
+                      imageReplaceCallback: this.config.imageReplaceCallback,
+                      videoCallback: this.videoCallback,
+                      videoImageCallback: this.config.videoImageCallback,
+                      videoReleaseCallback: this.config.videoReleaseCallback,
+                      videoDownloadCallback: this.config.videoDownloadCallback,
+                      audioCallback: this.config.audioCallback,
+                      codeCopyCallback: this.config.codeCopyCallback,
+                      codeFullScreenCallback: this.config.codeFullScreenCallback,
+                      linkCallback: this.config.linkCallback,
+                      elementExposureCallback: this.config.elementExposureCallback,
+                      exposureThreshold: this.config.exposureThreshold,
+                      textCopyCallback: this.config.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      tableCopyCallback: this.config.tableCopyCallback,
+                      markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                      customLongPressCallback: this.config.customLongPressCallback,
+                      paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                      paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                      blockImageCardComponent:this.blockImageCardComponent,
+                      blockLinkCardComponent:this.blockLinkCardComponent,
+                      customTagViewComponent: this.customTagViewComponent
+                    })
+                  } else if (item.nodeType === "OrderedList") {
+                    // 有序列表
+                    MarkdownList({
+                      node: item,
+                      theme: this.renderTheme,
+                      latexImageCallback: this.config.latexImageCallback,
+                      latexStrCallback: this.config.latexStrCallback,
+                      isOrdered: true,
+                      listDepth: 0,
+                      componentWidth: this.componentWidth,
+                      tableBlockComponentWidth: this.componentWidth,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.config.imageDownloadCallback,
+                      imageReplaceCallback: this.config.imageReplaceCallback,
+                      videoCallback: this.videoCallback,
+                      videoImageCallback: this.config.videoImageCallback,
+                      videoReleaseCallback: this.config.videoReleaseCallback,
+                      videoDownloadCallback: this.config.videoDownloadCallback,
+                      audioCallback: this.config.audioCallback,
+                      codeCopyCallback: this.config.codeCopyCallback,
+                      codeFullScreenCallback: this.config.codeFullScreenCallback,
+                      linkCallback: this.config.linkCallback,
+                      elementExposureCallback: this.config.elementExposureCallback,
+                      exposureThreshold: this.config.exposureThreshold,
+                      textCopyCallback: this.config.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      tableCopyCallback: this.config.tableCopyCallback,
+                      markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                      customLongPressCallback: this.config.customLongPressCallback,
+                      paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                      paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                      blockImageCardComponent:this.blockImageCardComponent,
+                      blockLinkCardComponent:this.blockLinkCardComponent,
+                      customTagViewComponent: this.customTagViewComponent
+                    })
+                  } else if (item.nodeType === "BlockQuote") {
+                    // 块引用
+                    MarkdownQuote({
+                      node: item,
+                      theme: this.renderTheme,
+                      latexImageCallback: this.config.latexImageCallback,
+                      latexStrCallback: this.config.latexStrCallback,
+                      componentWidth: this.componentWidth,
+                      tableBlockComponentWidth: this.componentWidth,
+                      listDepth: 0,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.config.imageDownloadCallback,
+                      imageReplaceCallback: this.config.imageReplaceCallback,
+                      videoCallback: this.videoCallback,
+                      videoImageCallback: this.config.videoImageCallback,
+                      videoReleaseCallback: this.config.videoReleaseCallback,
+                      videoDownloadCallback: this.config.videoDownloadCallback,
+                      audioCallback: this.config.audioCallback,
+                      codeCopyCallback: this.config.codeCopyCallback,
+                      codeFullScreenCallback: this.config.codeFullScreenCallback,
+                      linkCallback: this.config.linkCallback,
+                      elementExposureCallback: this.config.elementExposureCallback,
+                      exposureThreshold: this.config.exposureThreshold,
+                      textCopyCallback: this.config.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      tableCopyCallback: this.config.tableCopyCallback,
+                      markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                      customLongPressCallback: this.config.customLongPressCallback,
+                      paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                      paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                      blockImageCardComponent:this.blockImageCardComponent,
+                      blockLinkCardComponent:this.blockLinkCardComponent,
+                      customTagViewComponent: this.customTagViewComponent
+                    })
+                  } else if (item.nodeType === "LatexMathBlock") {
+                    // 数学公式块：isLatexMathBlockClose为true时才渲染图片，否则显示纯文本
+                    if (this.isLatexMathEnabled && item.isLatexMathBlockClose) {
+                      MarkdownLatexMathBlock({
+                        latexMathBlockStr: item.nodeText,
+                        latexMathTheme: this.renderTheme.latexMathTheme,
+                        latexImageCallback: this.config.latexImageCallback,
+                        latexStrCallback: this.config.latexStrCallback
+                      })
+                    } else if (this.renderTheme.latexMathTheme.latexMathDefaultText) {
+                      Text(item.nodeText)
+                        .fontFamily(this.renderTheme.latexMathTheme.latexMathDefaultTextFontFamily)
+                        .fontSize(this.renderTheme.latexMathTheme.latexMathDefaultTextFontSize)
+                        .fontWeight(this.renderTheme.latexMathTheme.latexMathDefaultTextFontWeight)
+                        .fontStyle(this.renderTheme.latexMathTheme.latexMathDefaultTextFontStyle)
+                        .fontColor(this.renderTheme.latexMathTheme.latexMathDefaultTextFontColor)
+                        .padding({
+                          top: this.renderTheme.latexMathTheme.latexMathPaddingTop,
+                          right: this.renderTheme.latexMathTheme.latexMathPaddingRight,
+                          bottom: this.renderTheme.latexMathTheme.latexMathPaddingBottom,
+                          left: this.renderTheme.latexMathTheme.latexMathPaddingLeft
+                        })
+                        .margin({
+                          top: this.renderTheme.latexMathTheme.latexMathMarginTop,
+                          right: this.renderTheme.latexMathTheme.latexMathMarginRight,
+                          bottom: this.renderTheme.latexMathTheme.latexMathMarginBottom,
+                          left: this.renderTheme.latexMathTheme.latexMathMarginLeft
+                        })
+                    }
+                  } else if (item.nodeType === "TableBlock") {
+                    // 表格
+                    MarkdownTable({
+                      node: item,
+                      headingTheme: this.renderTheme.headingTheme,
+                      globalTheme: this.renderTheme.globalTheme,
+                      subTheme: this.renderTheme.subTheme,
+                      supTheme: this.renderTheme.supTheme,
+                      inlineCodeTheme: this.renderTheme.inlineCodeTheme,
+                      boldTheme: this.renderTheme.boldTheme,
+                      italicTheme: this.renderTheme.italicTheme,
+                      strikethroughTheme: this.renderTheme.strikethroughTheme,
+                      highlightTheme: this.renderTheme.highlightTheme,
+                      htmlUnderlineTheme: this.renderTheme.htmlUnderlineTheme,
+                      linkTheme: this.renderTheme.linkTheme,
+                      footnoteRefTheme: this.renderTheme.footnoteRefTheme,
+                      tableTheme: this.renderTheme.tableTheme,
+                      paragraphTheme: this.renderTheme.paragraphTheme,
+                      blockQuoteTheme: this.renderTheme.blockQuoteTheme,
+                      definitionListTheme: this.renderTheme.definitionListTheme,
+                      imageTheme: this.renderTheme.imageTheme,
+                      latexMathTheme: this.renderTheme.latexMathTheme,
+                      latexImageCallback: this.config.latexImageCallback,
+                      latexStrCallback: this.config.latexStrCallback,
+                      componentWidth: this.componentWidth,
+                      textCopyCallback: this.config.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      linkCallback: this.config.linkCallback,
+                      elementExposureCallback: this.config.elementExposureCallback,
+                      exposureThreshold: this.config.exposureThreshold,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.config.imageDownloadCallback,
+                      imageReplaceCallback: this.config.imageReplaceCallback,
+                      tableCopyCallback: this.config.tableCopyCallback,
+                      markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                      customLongPressCallback: this.config.customLongPressCallback,
+                      blockImageCardComponent:this.blockImageCardComponent,
+                      blockLinkCardComponent:this.blockLinkCardComponent
+                    })
+                  } else if (item.nodeType === "ThematicBreak") {
+                    // 分割线
+                    MarkdownThematicBreak({
+                      dividerTheme: this.renderTheme.dividerTheme
+                    })
+                  } else if (item.nodeType === "FootnoteBlock") {
+                    // 脚注
+                    MarkdownFootnote({
+                      node: item,
+                      theme: this.renderTheme,
+                      latexImageCallback: this.config.latexImageCallback,
+                      latexStrCallback: this.config.latexStrCallback,
+                      componentWidth: this.componentWidth,
+                      tableBlockComponentWidth: this.componentWidth,
+                      listDepth: 0,
+                      textCopyCallback: this.config.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      linkCallback: this.config.linkCallback,
+                      elementExposureCallback: this.config.elementExposureCallback,
+                      exposureThreshold: this.config.exposureThreshold,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.config.imageDownloadCallback,
+                      imageReplaceCallback: this.config.imageReplaceCallback,
+                      videoCallback: this.videoCallback,
+                      videoImageCallback: this.config.videoImageCallback,
+                      videoReleaseCallback: this.config.videoReleaseCallback,
+                      videoDownloadCallback: this.config.videoDownloadCallback,
+                      audioCallback: this.config.audioCallback,
+                      codeCopyCallback: this.config.codeCopyCallback,
+                      codeFullScreenCallback: this.config.codeFullScreenCallback,
+                      markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                      customLongPressCallback: this.config.customLongPressCallback,
+                      paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                      paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                    })
+                  } else if (item.nodeType === "DescList") {
+                    // 定义列表
+                    MarkdownDesc({
+                      node: item,
+                      theme: this.renderTheme,
+                      latexImageCallback: this.config.latexImageCallback,
+                      latexStrCallback: this.config.latexStrCallback,
+                      componentWidth: this.componentWidth,
+                      textCopyCallback: this.config.textCopyCallback,
+                      footnoteCallback: this.footnoteCallback,
+                      tocCallback: this.tocCallback,
+                      linkCallback: this.config.linkCallback,
+                      elementExposureCallback: this.config.elementExposureCallback,
+                      exposureThreshold: this.config.exposureThreshold,
+                      imageCallback: this.imageCallback,
+                      imageDownloadCallback: this.config.imageDownloadCallback,
+                      imageReplaceCallback: this.config.imageReplaceCallback,
+                      markdownHighlightParagraph: this.config.markdownHighlightParagraph,
+                      customLongPressCallback: this.config.customLongPressCallback,
+                      paragraphHeadingAnimationStart: this.config.paragraphHeadingAnimationStart,
+                      paragraphHeadingAnimationEnd: this.config.paragraphHeadingAnimationEnd,
+                    })
+                  } else if (item.nodeType === "SlideBlock") {
+                    // 图片幻灯片
+                    MarkdownBanner({
+                      node: item,
+                      bannerTheme: this.renderTheme.bannerTheme,
+                      imageTheme: this.renderTheme.imageTheme,
+                      imageCallback: this.imageCallback
+                    })
+                  } else if (item.nodeType === "BlockVideo") {
+                    // 视频
+                    MarkdownVideo({
+                      node: item,
+                      videoTheme: this.renderTheme.videoTheme,
+                      videoCallback: this.videoCallback,
+                      videoImageCallback: this.config.videoImageCallback,
+                      videoReleaseCallback: this.config.videoReleaseCallback,
+                      videoDownloadCallback: this.config.videoDownloadCallback
+                    })
+                  } else if (item.nodeType === "BlockAudio") {
+                    // 音频
+                    MarkdownAudio({
+                      node: item,
+                      audioTheme: this.renderTheme.audioTheme,
+                      audioCallback: this.config.audioCallback
+                    })
+                  } else if (item.nodeType === "CustomCardImage") {
+                    // 音频
+                    this.blockImageCardComponent(
+                      safeString(item.imageAltText),
+                      safeString(item.imageUrl),
+                      safeString(item.imageTitle)
+                    )
+                  } else if (item.nodeType === "CustomCardLink") {
+                    // 音频
+                    this.blockLinkCardComponent(
+                      safeString(item.nodeText),
+                      safeString(item.linkUrl),
+                      safeString(item.linkTitle)
+                    )
+                  } else if (item.customTag !== undefined) {
+                    // 已注册的自定义标签块级视图（如 <sdui data='...'></sdui>），回调宿主Builder渲染
+                    // 来源可能是块级 HtmlBlock，也可能是提升后的行内 HtmlInline（nodeType 不限定）
+                    this.customTagViewComponent(
+                      item.customTag,
+                      item.customAttrs ?? {},
+                      item.customContent ?? ""
+                    )
+                  } else if (item.nodeType === "BlockAD") {
+                    // 广告
+                  } else {
+                    // 其他
+                  }
+                }
+              }
+            },
+            (item: NodeView, index: number) => {
+              if (item.nodeType === "LatexMathBlock") {
+                return `${index}-${item.nodeHash}-${item.contentHash}`
+              }
+              if (item.nodeType === "TableBlock") {
+                return `${index}-${item.nodeHash}-${this.renderTheme.tableTheme.tableStickyHeader}`
+              }
+              return `${index}-${item.nodeHash}`
+            }
+          )
+        }
+        .margin(
+          {
+            top: this.renderTheme.globalTheme.blockMarginTop,
+            right: this.renderTheme.globalTheme.blockMarginRight,
+            bottom: this.renderTheme.globalTheme.blockMarginBottom,
+            left: this.renderTheme.globalTheme.blockMarginLeft
+          }
+        )
+        .backgroundColor(this.renderTheme.globalTheme.backgroundColor)
+        .listDirection(Axis.Vertical)
+        .alignListItem(ListItemAlign.Start)
+        .scrollBar(BarState.Off)
+        .enableScrollInteraction(this.renderTheme.globalTheme.openGestureSwipe)
+        .sticky(StickyStyle.Header)
+        .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, currentRatio: number) => {
+          if (!this.isExposureEnabled()) {
+            return
+          }
+          // 缓存 ratio 供 onAreaChange 喂 rect 时一起传给 holder；并用缓存矩形补喂一次：
+          // - 回屏（ratio>0）：走 holder 重新初始化分支，否则 vis 卡在 0；
+          // - 离屏（ratio==0）：走 ratioDown 收缩分支，visHeight 归零。
+          this.lastRatio = currentRatio
+          this.feedHolderWithRatio(currentRatio)
+        })
+        .onAreaChange((_oldArea: Area, newArea: Area) => {
+          // 页面矩形逐帧推送（外层滚动/尺寸变化），曝光 rectTop 采样的主来源。
+          this.feedHolderFromArea(newArea)
+        })
+        .onSizeChange((oldValue, newValue) => {
+          let newWidth: number = 0
+          if (typeof newValue.width === 'number') {
+            newWidth = newValue.width
+          }
+          if (this.componentWidth !== newWidth) {
+            this.componentWidth = newWidth
+          }
+        })
       }
-      .margin(
-        {
-          top: this.config.markdownTheme.globalTheme.blockMarginTop,
-          right: this.config.markdownTheme.globalTheme.blockMarginRight,
-          bottom: this.config.markdownTheme.globalTheme.blockMarginBottom,
-          left: this.config.markdownTheme.globalTheme.blockMarginLeft
-        }
-      )
-      .backgroundColor(this.config.markdownTheme.globalTheme.backgroundColor)
-      .listDirection(Axis.Vertical)
-      .alignListItem(ListItemAlign.Start)
-      .scrollBar(BarState.Off)
-      .enableScrollInteraction(this.config.markdownTheme.globalTheme.openGestureSwipe)
-      .sticky(StickyStyle.Header)
-      .onVisibleAreaChange([0.0, 0.01, 0.1, 0.25, 0.5, 0.75, 1.0], (_isVisible: boolean, currentRatio: number) => {
-        if (!this.isExposureEnabled()) {
-          return
-        }
-        // 缓存 ratio 供 onAreaChange 喂 rect 时一起传给 holder；并用缓存矩形补喂一次：
-        // - 回屏（ratio>0）：走 holder 重新初始化分支，否则 vis 卡在 0；
-        // - 离屏（ratio==0）：走 ratioDown 收缩分支，visHeight 归零。
-        this.lastRatio = currentRatio
-        this.feedHolderWithRatio(currentRatio)
-      })
-      .onAreaChange((_oldArea: Area, newArea: Area) => {
-        // 页面矩形逐帧推送（外层滚动/尺寸变化），曝光 rectTop 采样的主来源。
-        this.feedHolderFromArea(newArea)
-      })
-      .onSizeChange((oldValue, newValue) => {
-        let newWidth: number = 0
-        if (typeof newValue.width === 'number') {
-          newWidth = newValue.width
-        }
-        if (this.componentWidth !== newWidth) {
-          this.componentWidth = newWidth
-        }
-      })
     }
   }
 
@@ -904,7 +794,7 @@ export struct CJMarkdown {
    * enableParseThrottle为false时，直接触发解析，由调用方自行控制节流
    */
   refreshData() {
-    if (!this.config.markdownTheme.globalTheme.enableParseThrottle) {
+    if (!this.renderTheme.globalTheme.enableParseThrottle) {
       this.executeRefresh()
       return
     }
@@ -915,7 +805,7 @@ export struct CJMarkdown {
     this.isThrottled = true
     this.hasPendingRefresh = false
     this.executeRefresh()
-    const throttleMs = this.config.markdownTheme.globalTheme.parseThrottleMs
+    const throttleMs = this.renderTheme.globalTheme.parseThrottleMs
     if (throttleMs > 0) {
       this.throttleTimerId = setTimeout(() => {
         this.throttleTimerId = -1
@@ -936,7 +826,7 @@ export struct CJMarkdown {
    * 执行实际解析与数据更新
    */
   private executeRefresh(): void {
-    if (this.config.markdownTheme.globalTheme.isMarkdownParserSync) {
+    if (this.renderTheme.globalTheme.isMarkdownParserSync) {
       this.refreshSyncData()
     } else {
       this.refreshAsyncData()
@@ -1008,7 +898,7 @@ export struct CJMarkdown {
     }
     let nodeView: NodeView = new NodeView()
     let highlightSelectedList: ArrayList<string> = new ArrayList<string>()
-    nodeView.isLinkStyle = this.config.markdownTheme.linkTheme.linkIsIcon
+    nodeView.isLinkStyle = this.renderTheme.linkTheme.linkIsIcon
     let parseOk: boolean = false
     try {
       nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, highlightSelectedList)
@@ -1026,14 +916,14 @@ export struct CJMarkdown {
     if (nodeView.children.length === 0) {
       this.markdownDataSource.clear()
       this.buildIndexMaps()
-      this.config.markdownNodeViewString.setRoot(nodeView, this.config.markdownTheme.codeBlockTheme.codeBlockIsSeparate)
+      this.config.markdownNodeViewString.setRoot(nodeView, this.renderTheme.codeBlockTheme.codeBlockIsSeparate)
       this.appliedVersion = currentVersion
       return
     }
     this.markdownDataSource.smartUpdateDataArray(nodeView.children)
     this.buildIndexMaps()
     this.config.markdownHighlightParagraph.setAllParagraphItems(highlightSelectedList)
-    this.config.markdownNodeViewString.setRoot(nodeView, this.config.markdownTheme.codeBlockTheme.codeBlockIsSeparate)
+    this.config.markdownNodeViewString.setRoot(nodeView, this.renderTheme.codeBlockTheme.codeBlockIsSeparate)
     this.appliedVersion = currentVersion
   }
 
@@ -1115,13 +1005,13 @@ export struct CJMarkdown {
    * 异步处理图片占位图（可等待）
    */
   async loadPlaceholderImage(): Promise<void> {
-    if (this.config.markdownTheme.imageTheme.imagePlaceholder !== undefined) {
+    if (this.renderTheme.imageTheme.imagePlaceholder !== undefined) {
       let imageSource: image.ImageSource | undefined = undefined
       try {
         const hostContext = this.getUIContext().getHostContext()
         if (hostContext !== undefined) {
           const resourceMgr = hostContext.resourceManager
-          const fileData = await resourceMgr.getMediaContent(this.config.markdownTheme.imageTheme.imagePlaceholder)
+          const fileData = await resourceMgr.getMediaContent(this.renderTheme.imageTheme.imagePlaceholder)
           if (!this.isAlive) {
             return
           }
@@ -1151,3 +1041,4 @@ export struct CJMarkdown {
     }
   }
 }
+

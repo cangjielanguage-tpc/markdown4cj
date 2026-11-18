@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -21,12 +21,12 @@ import { ListData } from '../model/ListData'
 
 @Entry
 @Component
-struct ListPage {
+struct TaskListPage {
   // ---------------- 通用
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "009_OrderedUnorderedTaskList"
+  rawFilePath: string = "011_TaskList"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -281,107 +281,109 @@ struct ListPage {
   build() {
     Column() {
       titleComponent(
-        "有序、无序、任务列表配置页面",
+        "任务列表配置页面",
         0xFF317AFF,
         true,
         this.safeTop
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.listData._isFull = this.isFull
-                  this.listData._incrementalAnalysis = this.incrementalAnalysis
-                  this.listData._enableParseThrottle = this.enableParseThrottle
-                  this.listData._parseThrottleMs = this.parseThrottleMs
-                  this.listData._time = this.time
-                  this.listData._textNumber = this.textNumber
-                  this.listData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.listData._isOnCopy = this.isOnCopy
-                  this.listData._blockMarginTop = this.blockMarginTop
-                  this.listData._blockMarginRight = this.blockMarginRight
-                  this.listData._blockMarginBottom = this.blockMarginBottom
-                  this.listData._blockMarginLeft = this.blockMarginLeft
-                  this.listData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.listData._isLineBreak = this.isLineBreak
-                  this.listData._backgroundColor = this.globalBackgroundColor
-                  this.listData._openGestureSwipe = this.openGestureSwipe
-                  this.listData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.listData._pagePath = `${this.rawFilePath}/${item}`
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.listData._isFull = this.isFull
+                    this.listData._incrementalAnalysis = this.incrementalAnalysis
+                    this.listData._enableParseThrottle = this.enableParseThrottle
+                    this.listData._parseThrottleMs = this.parseThrottleMs
+                    this.listData._time = this.time
+                    this.listData._textNumber = this.textNumber
+                    this.listData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.listData._isOnCopy = this.isOnCopy
+                    this.listData._blockMarginTop = this.blockMarginTop
+                    this.listData._blockMarginRight = this.blockMarginRight
+                    this.listData._blockMarginBottom = this.blockMarginBottom
+                    this.listData._blockMarginLeft = this.blockMarginLeft
+                    this.listData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.listData._isLineBreak = this.isLineBreak
+                    this.listData._backgroundColor = this.globalBackgroundColor
+                    this.listData._openGestureSwipe = this.openGestureSwipe
+                    this.listData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.listData._pagePath = `${this.rawFilePath}/${item}`
 
-                  // ---------- 专有
-                  this.listData._orderedListBackgroundColor = this.orderedListBackgroundColor
-                  this.listData._orderedListMarginTop = this.orderedListMarginTop
-                  this.listData._orderedListMarginRight = this.orderedListMarginRight
-                  this.listData._orderedListMarginBottom = this.orderedListMarginBottom
-                  this.listData._orderedListMarginLeft = this.orderedListMarginLeft
-                  this.listData._orderedListPaddingTop = this.orderedListPaddingTop
-                  this.listData._orderedListPaddingRight = this.orderedListPaddingRight
-                  this.listData._orderedListPaddingBottom = this.orderedListPaddingBottom
-                  this.listData._orderedListPaddingLeft = this.orderedListPaddingLeft
-                  this.listData._orderedListChildSpacing = this.orderedListChildSpacing
-                  this.listData._orderedListChildChildSpacing = this.orderedListChildChildSpacing
-                  this.listData._orderedListMarkerSpacing = this.orderedListMarkerSpacing
-                  this.listData._orderedListMarkerTextFontColor = this.orderedListMarkerTextFontColor
-                  this.listData._orderedListMarkerTextFontSize = this.orderedListMarkerTextFontSize
-                  this.listData._orderedListMarkerTextFontStyle = this.orderedListMarkerTextFontStyle
-                  this.listData._orderedListMarkerTextFontWeight = this.orderedListMarkerTextFontWeight
-                  this.listData._orderedListMarkerTextFontFamily = this.orderedListMarkerTextFontFamily
-                  this.listData._orderedListMarkerTextLineHeight = this.orderedListMarkerTextLineHeight
-                  this.listData._bulletListBackgroundColor = this.bulletListBackgroundColor
-                  this.listData._bulletListMarginTop = this.bulletListMarginTop
-                  this.listData._bulletListMarginRight = this.bulletListMarginRight
-                  this.listData._bulletListMarginBottom = this.bulletListMarginBottom
-                  this.listData._bulletListMarginLeft = this.bulletListMarginLeft
-                  this.listData._bulletListPaddingTop = this.bulletListPaddingTop
-                  this.listData._bulletListPaddingRight = this.bulletListPaddingRight
-                  this.listData._bulletListPaddingBottom = this.bulletListPaddingBottom
-                  this.listData._bulletListPaddingLeft = this.bulletListPaddingLeft
-                  this.listData._bulletListChildSpacing = this.bulletListChildSpacing
-                  this.listData._bulletListChildChildSpacing = this.bulletListChildChildSpacing
-                  this.listData._bulletListBulletSpacing = this.bulletListBulletSpacing
-                  this.listData._bulletListBulletIsCircle = this.bulletListBulletIsCircle
-                  this.listData._bulletListBulletTextFontColor = this.bulletListBulletTextFontColor
-                  this.listData._bulletListBulletTextFontSize = this.bulletListBulletTextFontSize
-                  this.listData._bulletListBulletTextFontStyle = this.bulletListBulletTextFontStyle
-                  this.listData._bulletListBulletTextFontWeight = this.bulletListBulletTextFontWeight
-                  this.listData._bulletListBulletTextFontFamily = this.bulletListBulletTextFontFamily
-                  this.listData._bulletListBulletTextLineHeight = this.bulletListBulletTextLineHeight
-                  this.listData._bulletListCheckboxSpacing = this.bulletListCheckboxSpacing
-                  this.listData._bulletListCheckboxWidth = this.bulletListCheckboxWidth
-                  this.listData._bulletListCheckboxHeight = this.bulletListCheckboxHeight
-                  this.listData._bulletListCheckboxSelectedColor = this.bulletListCheckboxSelectedColor
-                  this.listData._bulletListCheckboxShape = this.bulletListCheckboxShape
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/ListDetailsPage", params: this.listData })
-              })
+                    // ---------- 专有
+                    this.listData._orderedListBackgroundColor = this.orderedListBackgroundColor
+                    this.listData._orderedListMarginTop = this.orderedListMarginTop
+                    this.listData._orderedListMarginRight = this.orderedListMarginRight
+                    this.listData._orderedListMarginBottom = this.orderedListMarginBottom
+                    this.listData._orderedListMarginLeft = this.orderedListMarginLeft
+                    this.listData._orderedListPaddingTop = this.orderedListPaddingTop
+                    this.listData._orderedListPaddingRight = this.orderedListPaddingRight
+                    this.listData._orderedListPaddingBottom = this.orderedListPaddingBottom
+                    this.listData._orderedListPaddingLeft = this.orderedListPaddingLeft
+                    this.listData._orderedListChildSpacing = this.orderedListChildSpacing
+                    this.listData._orderedListChildChildSpacing = this.orderedListChildChildSpacing
+                    this.listData._orderedListMarkerSpacing = this.orderedListMarkerSpacing
+                    this.listData._orderedListMarkerTextFontColor = this.orderedListMarkerTextFontColor
+                    this.listData._orderedListMarkerTextFontSize = this.orderedListMarkerTextFontSize
+                    this.listData._orderedListMarkerTextFontStyle = this.orderedListMarkerTextFontStyle
+                    this.listData._orderedListMarkerTextFontWeight = this.orderedListMarkerTextFontWeight
+                    this.listData._orderedListMarkerTextFontFamily = this.orderedListMarkerTextFontFamily
+                    this.listData._orderedListMarkerTextLineHeight = this.orderedListMarkerTextLineHeight
+                    this.listData._bulletListBackgroundColor = this.bulletListBackgroundColor
+                    this.listData._bulletListMarginTop = this.bulletListMarginTop
+                    this.listData._bulletListMarginRight = this.bulletListMarginRight
+                    this.listData._bulletListMarginBottom = this.bulletListMarginBottom
+                    this.listData._bulletListMarginLeft = this.bulletListMarginLeft
+                    this.listData._bulletListPaddingTop = this.bulletListPaddingTop
+                    this.listData._bulletListPaddingRight = this.bulletListPaddingRight
+                    this.listData._bulletListPaddingBottom = this.bulletListPaddingBottom
+                    this.listData._bulletListPaddingLeft = this.bulletListPaddingLeft
+                    this.listData._bulletListChildSpacing = this.bulletListChildSpacing
+                    this.listData._bulletListChildChildSpacing = this.bulletListChildChildSpacing
+                    this.listData._bulletListBulletSpacing = this.bulletListBulletSpacing
+                    this.listData._bulletListBulletIsCircle = this.bulletListBulletIsCircle
+                    this.listData._bulletListBulletTextFontColor = this.bulletListBulletTextFontColor
+                    this.listData._bulletListBulletTextFontSize = this.bulletListBulletTextFontSize
+                    this.listData._bulletListBulletTextFontStyle = this.bulletListBulletTextFontStyle
+                    this.listData._bulletListBulletTextFontWeight = this.bulletListBulletTextFontWeight
+                    this.listData._bulletListBulletTextFontFamily = this.bulletListBulletTextFontFamily
+                    this.listData._bulletListBulletTextLineHeight = this.bulletListBulletTextLineHeight
+                    this.listData._bulletListCheckboxSpacing = this.bulletListCheckboxSpacing
+                    this.listData._bulletListCheckboxWidth = this.bulletListCheckboxWidth
+                    this.listData._bulletListCheckboxHeight = this.bulletListCheckboxHeight
+                    this.listData._bulletListCheckboxSelectedColor = this.bulletListCheckboxSelectedColor
+                    this.listData._bulletListCheckboxShape = this.bulletListCheckboxShape
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/ListDetailsPage", params: this.listData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -919,10 +921,12 @@ struct ListPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

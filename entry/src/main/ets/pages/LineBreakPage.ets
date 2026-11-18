@@ -1,4 +1,4 @@
-﻿import { titleComponent } from '../component/BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 import { BaseTabComponent } from '../component/BaseTabComponent'
@@ -110,56 +110,58 @@ struct LineBreakPage {
       )
 
       // md文档展示部分
-      Scroll() {
-        Grid() {
-          ForEach(this.folderList, (item: string, index: number) => {
-          GridItem() {
-            Text(`${item}`)
-              .fontSize(12)
-              .fontColor('#FFFFFFFF')
-              .backgroundColor('#FF2196F3')
-              .height(25)
-              .padding(5)
-              .borderRadius(5)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Clip })
-              .onClick(() => {
-                // ---------- 通用
-                  this.lineBreakData._isFull = this.isFull
-                  this.lineBreakData._incrementalAnalysis = this.incrementalAnalysis
-                  this.lineBreakData._enableParseThrottle = this.enableParseThrottle
-                  this.lineBreakData._parseThrottleMs = this.parseThrottleMs
-                  this.lineBreakData._time = this.time
-                  this.lineBreakData._textNumber = this.textNumber
-                  this.lineBreakData._isMarkdownParserSync = this.isMarkdownParserSync
-                  this.lineBreakData._isOnCopy = this.isOnCopy
-                  this.lineBreakData._blockMarginTop = this.blockMarginTop
-                  this.lineBreakData._blockMarginRight = this.blockMarginRight
-                  this.lineBreakData._blockMarginBottom = this.blockMarginBottom
-                  this.lineBreakData._blockMarginLeft = this.blockMarginLeft
-                  this.lineBreakData._markdownBlockSpacing = this.markdownBlockSpacing
-                  this.lineBreakData._isLineBreak = this.isLineBreak
-                  this.lineBreakData._backgroundColor = this.globalBackgroundColor
-                  this.lineBreakData._openGestureSwipe = this.openGestureSwipe
-                  this.lineBreakData._openGestureSwipeTest = this.openGestureSwipeTest
-                  this.lineBreakData._pagePath = `${this.rawFilePath}/${item}`
-                  // ---------- 跳转到详情
-                  router.pushUrl({ url: "pages/LineBreakDetailsPage", params: this.lineBreakData })
-              })
+      Column() {
+        Scroll() {
+          Grid() {
+            ForEach(this.folderList, (item: string, index: number) => {
+            GridItem() {
+              Text(`${item}`)
+                .fontSize(12)
+                .fontColor('#FFFFFFFF')
+                .backgroundColor('#FF2196F3')
+                .height(25)
+                .padding(5)
+                .borderRadius(5)
+                .maxLines(1)
+                .textOverflow({ overflow: TextOverflow.Clip })
+                .onClick(() => {
+                  // ---------- 通用
+                    this.lineBreakData._isFull = this.isFull
+                    this.lineBreakData._incrementalAnalysis = this.incrementalAnalysis
+                    this.lineBreakData._enableParseThrottle = this.enableParseThrottle
+                    this.lineBreakData._parseThrottleMs = this.parseThrottleMs
+                    this.lineBreakData._time = this.time
+                    this.lineBreakData._textNumber = this.textNumber
+                    this.lineBreakData._isMarkdownParserSync = this.isMarkdownParserSync
+                    this.lineBreakData._isOnCopy = this.isOnCopy
+                    this.lineBreakData._blockMarginTop = this.blockMarginTop
+                    this.lineBreakData._blockMarginRight = this.blockMarginRight
+                    this.lineBreakData._blockMarginBottom = this.blockMarginBottom
+                    this.lineBreakData._blockMarginLeft = this.blockMarginLeft
+                    this.lineBreakData._markdownBlockSpacing = this.markdownBlockSpacing
+                    this.lineBreakData._isLineBreak = this.isLineBreak
+                    this.lineBreakData._backgroundColor = this.globalBackgroundColor
+                    this.lineBreakData._openGestureSwipe = this.openGestureSwipe
+                    this.lineBreakData._openGestureSwipeTest = this.openGestureSwipeTest
+                    this.lineBreakData._pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 跳转到详情
+                    router.pushUrl({ url: "pages/LineBreakDetailsPage", params: this.lineBreakData })
+                })
+            }
+            })
           }
-          })
+          .columnsGap(5)
+          .rowsGap(5)
+          .maxCount(5)
+          .minCount(1)
+          .cellLength(30)
+          .layoutDirection(GridDirection.Row)
+          .padding(5)
         }
-        .columnsGap(5)
-        .rowsGap(5)
-        .maxCount(5)
-        .minCount(1)
-        .cellLength(30)
-        .layoutDirection(GridDirection.Row)
-        .padding(5)
+        .constraintSize({ maxHeight: 200 })
+        .width('100%')
+        .backgroundColor(0xFFEAEAEA)
       }
-      .constraintSize({ maxHeight: 200 })
-      .width('100%')
-      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -300,10 +302,12 @@ struct LineBreakPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor('#FFEAEAEA')
-    .height("90%")
+    .height("100%")
   }
 }

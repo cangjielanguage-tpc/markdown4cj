@@ -26,6 +26,7 @@ struct SduiCardDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // markdown文本
   content: string = ""
@@ -163,6 +164,12 @@ struct SduiCardDetailsPage {
       .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
+  }
+
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   setMarkdownTheme(): MarkdownTheme {

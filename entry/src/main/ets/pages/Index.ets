@@ -1,5 +1,6 @@
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_arkui'
 import { COLOR_RED } from '../base/Constants';
+import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
@@ -8,6 +9,10 @@ struct DemoPage {
    * 顶部导航栏高度
    */
   @StorageProp('safeTop') safeTop: number = 0
+  /**
+   * 深浅色模式
+   */
+  @StorageProp('currentColorMode') @Watch('onColorModeChanged') currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   /**
    * md文本
    */
@@ -70,7 +75,19 @@ struct DemoPage {
   @State indexCount: number = 0
 
   aboutToAppear(): void {
-    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+    this.onColorModeChanged()
+  }
+
+  // 系统深浅色切换：重建markdown主题并重新下发
+  onColorModeChanged(): void {
+    const theme = new MarkdownTheme()
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      theme.setDefaultTheme()
+    } else {
+      theme.setDarculaTheme()
+    }
+    this.markdownTheme = theme
+    this.markdownConfiguration.setMarkdownTheme(theme)
   }
 
   build() {

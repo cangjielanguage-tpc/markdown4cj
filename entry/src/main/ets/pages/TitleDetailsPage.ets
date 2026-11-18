@@ -24,6 +24,7 @@ struct TitleDetailsPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode') // 深浅色模式
+  @Watch('onColorModeChanged') // 系统深浅色切换：重建markdown主题并重新下发
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State // 文件文本
   fileStr: string = ""
@@ -558,6 +559,12 @@ struct TitleDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -566,123 +573,119 @@ struct TitleDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
-      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+      theme.globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
-    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
-    globalTheme.setIsLineBreak(this.isLineBreak)
-    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
-    globalTheme.setIsOnCopy(this.isOnCopy)
-    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    globalTheme.setEnableParseThrottle(this.enableParseThrottle)
-    globalTheme.setParseThrottleMs(this.parseThrottleMs)
-    theme.setGlobalTheme(globalTheme)
+    theme.globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
+    theme.globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    theme.globalTheme.setIsLineBreak(this.isLineBreak)
+    theme.globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    theme.globalTheme.setIsOnCopy(this.isOnCopy)
+    theme.globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.globalTheme.setEnableParseThrottle(this.enableParseThrottle)
+    theme.globalTheme.setParseThrottleMs(this.parseThrottleMs)
     
     // ---------- 专有 - Heading
-    let headingTheme = new HeadingTheme()
     // 一级标题
     if (this.heading1BackgroundColor !== undefined) {
-      headingTheme.setBackgroundColorForDesignateHeading(1, this.heading1BackgroundColor)
+      theme.headingTheme.setBackgroundColorForDesignateHeading(1, this.heading1BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(1, {top: this.heading1MarginTop, right: this.heading1MarginRight, bottom: this.heading1MarginBottom, left: this.heading1MarginLeft})
-    headingTheme.setPaddingForDesignateHeading(1, {top: this.heading1PaddingTop, right: this.heading1PaddingRight, bottom: this.heading1PaddingBottom, left: this.heading1PaddingLeft})
+    theme.headingTheme.setMarginForDesignateHeading(1, {top: this.heading1MarginTop, right: this.heading1MarginRight, bottom: this.heading1MarginBottom, left: this.heading1MarginLeft})
+    theme.headingTheme.setPaddingForDesignateHeading(1, {top: this.heading1PaddingTop, right: this.heading1PaddingRight, bottom: this.heading1PaddingBottom, left: this.heading1PaddingLeft})
     if (this.heading1TextFontColor !== undefined) {
-      headingTheme.setTextFontColorForDesignateHeading(1, this.heading1TextFontColor)
+      theme.headingTheme.setTextFontColorForDesignateHeading(1, this.heading1TextFontColor)
     }
-    headingTheme.setTextFontSizeForDesignateHeading(1, this.heading1TextFontSize)
-    headingTheme.setTextFontStyleForDesignateHeading(1, this.heading1TextFontStyle)
-    headingTheme.setTextFontWeightForDesignateHeading(1, this.heading1TextFontWeight)
-    headingTheme.setTextFontFamilyForDesignateHeading(1, this.heading1TextFontFamily)
-    headingTheme.setTextLineHeightForDesignateHeading(1, this.heading1TextLineHeight)
-    headingTheme.setTextLetterSpacingForDesignateHeading(1, this.heading1TextLetterSpacing)
-    headingTheme.setUnderlineHeightForDesignateHeading(1, this.heading1UnderlineHeight)
+    theme.headingTheme.setTextFontSizeForDesignateHeading(1, this.heading1TextFontSize)
+    theme.headingTheme.setTextFontStyleForDesignateHeading(1, this.heading1TextFontStyle)
+    theme.headingTheme.setTextFontWeightForDesignateHeading(1, this.heading1TextFontWeight)
+    theme.headingTheme.setTextFontFamilyForDesignateHeading(1, this.heading1TextFontFamily)
+    theme.headingTheme.setTextLineHeightForDesignateHeading(1, this.heading1TextLineHeight)
+    theme.headingTheme.setTextLetterSpacingForDesignateHeading(1, this.heading1TextLetterSpacing)
+    theme.headingTheme.setUnderlineHeightForDesignateHeading(1, this.heading1UnderlineHeight)
     if (this.heading1UnderlineColor !== undefined) {
-      headingTheme.setUnderlineColorForDesignateHeading(1, this.heading1UnderlineColor)
+      theme.headingTheme.setUnderlineColorForDesignateHeading(1, this.heading1UnderlineColor)
     }
-    headingTheme.setUnderlineSpacingForDesignateHeading(1, this.heading1UnderlineSpacing)
+    theme.headingTheme.setUnderlineSpacingForDesignateHeading(1, this.heading1UnderlineSpacing)
     // 二级标题
     if (this.heading2BackgroundColor !== undefined) {
-      headingTheme.setBackgroundColorForDesignateHeading(2, this.heading2BackgroundColor)
+      theme.headingTheme.setBackgroundColorForDesignateHeading(2, this.heading2BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(2, {top: this.heading2MarginTop, right: this.heading2MarginRight, bottom: this.heading2MarginBottom, left: this.heading2MarginLeft})
-    headingTheme.setPaddingForDesignateHeading(2, {top: this.heading2PaddingTop, right: this.heading2PaddingRight, bottom: this.heading2PaddingBottom, left: this.heading2PaddingLeft})
+    theme.headingTheme.setMarginForDesignateHeading(2, {top: this.heading2MarginTop, right: this.heading2MarginRight, bottom: this.heading2MarginBottom, left: this.heading2MarginLeft})
+    theme.headingTheme.setPaddingForDesignateHeading(2, {top: this.heading2PaddingTop, right: this.heading2PaddingRight, bottom: this.heading2PaddingBottom, left: this.heading2PaddingLeft})
     if (this.heading2TextFontColor !== undefined) {
-      headingTheme.setTextFontColorForDesignateHeading(2, this.heading2TextFontColor)
+      theme.headingTheme.setTextFontColorForDesignateHeading(2, this.heading2TextFontColor)
     }
-    headingTheme.setTextFontSizeForDesignateHeading(2, this.heading2TextFontSize)
-    headingTheme.setTextFontStyleForDesignateHeading(2, this.heading2TextFontStyle)
-    headingTheme.setTextFontWeightForDesignateHeading(2, this.heading2TextFontWeight)
-    headingTheme.setTextFontFamilyForDesignateHeading(2, this.heading2TextFontFamily)
-    headingTheme.setTextLineHeightForDesignateHeading(2, this.heading2TextLineHeight)
-    headingTheme.setTextLetterSpacingForDesignateHeading(2, this.heading2TextLetterSpacing)
-    headingTheme.setUnderlineHeightForDesignateHeading(2, this.heading2UnderlineHeight)
+    theme.headingTheme.setTextFontSizeForDesignateHeading(2, this.heading2TextFontSize)
+    theme.headingTheme.setTextFontStyleForDesignateHeading(2, this.heading2TextFontStyle)
+    theme.headingTheme.setTextFontWeightForDesignateHeading(2, this.heading2TextFontWeight)
+    theme.headingTheme.setTextFontFamilyForDesignateHeading(2, this.heading2TextFontFamily)
+    theme.headingTheme.setTextLineHeightForDesignateHeading(2, this.heading2TextLineHeight)
+    theme.headingTheme.setTextLetterSpacingForDesignateHeading(2, this.heading2TextLetterSpacing)
+    theme.headingTheme.setUnderlineHeightForDesignateHeading(2, this.heading2UnderlineHeight)
     if (this.heading2UnderlineColor !== undefined) {
-      headingTheme.setUnderlineColorForDesignateHeading(2, this.heading2UnderlineColor)
+      theme.headingTheme.setUnderlineColorForDesignateHeading(2, this.heading2UnderlineColor)
     }
-    headingTheme.setUnderlineSpacingForDesignateHeading(2, this.heading2UnderlineSpacing)
+    theme.headingTheme.setUnderlineSpacingForDesignateHeading(2, this.heading2UnderlineSpacing)
     // 三级标题
     if (this.heading3BackgroundColor !== undefined) {
-      headingTheme.setBackgroundColorForDesignateHeading(3, this.heading3BackgroundColor)
+      theme.headingTheme.setBackgroundColorForDesignateHeading(3, this.heading3BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(3, {top: this.heading3MarginTop, right: this.heading3MarginRight, bottom: this.heading3MarginBottom, left: this.heading3MarginLeft})
-    headingTheme.setPaddingForDesignateHeading(3, {top: this.heading3PaddingTop, right: this.heading3PaddingRight, bottom: this.heading3PaddingBottom, left: this.heading3PaddingLeft})
+    theme.headingTheme.setMarginForDesignateHeading(3, {top: this.heading3MarginTop, right: this.heading3MarginRight, bottom: this.heading3MarginBottom, left: this.heading3MarginLeft})
+    theme.headingTheme.setPaddingForDesignateHeading(3, {top: this.heading3PaddingTop, right: this.heading3PaddingRight, bottom: this.heading3PaddingBottom, left: this.heading3PaddingLeft})
     if (this.heading3TextFontColor !== undefined) {
-      headingTheme.setTextFontColorForDesignateHeading(3, this.heading3TextFontColor)
+      theme.headingTheme.setTextFontColorForDesignateHeading(3, this.heading3TextFontColor)
     }
-    headingTheme.setTextFontSizeForDesignateHeading(3, this.heading3TextFontSize)
-    headingTheme.setTextFontStyleForDesignateHeading(3, this.heading3TextFontStyle)
-    headingTheme.setTextFontWeightForDesignateHeading(3, this.heading3TextFontWeight)
-    headingTheme.setTextFontFamilyForDesignateHeading(3, this.heading3TextFontFamily)
-    headingTheme.setTextLineHeightForDesignateHeading(3, this.heading3TextLineHeight)
-    headingTheme.setTextLetterSpacingForDesignateHeading(3, this.heading3TextLetterSpacing)
+    theme.headingTheme.setTextFontSizeForDesignateHeading(3, this.heading3TextFontSize)
+    theme.headingTheme.setTextFontStyleForDesignateHeading(3, this.heading3TextFontStyle)
+    theme.headingTheme.setTextFontWeightForDesignateHeading(3, this.heading3TextFontWeight)
+    theme.headingTheme.setTextFontFamilyForDesignateHeading(3, this.heading3TextFontFamily)
+    theme.headingTheme.setTextLineHeightForDesignateHeading(3, this.heading3TextLineHeight)
+    theme.headingTheme.setTextLetterSpacingForDesignateHeading(3, this.heading3TextLetterSpacing)
     // 四级标题
     if (this.heading4BackgroundColor !== undefined) {
-      headingTheme.setBackgroundColorForDesignateHeading(4, this.heading4BackgroundColor)
+      theme.headingTheme.setBackgroundColorForDesignateHeading(4, this.heading4BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(4, {top: this.heading4MarginTop, right: this.heading4MarginRight, bottom: this.heading4MarginBottom, left: this.heading4MarginLeft})
-    headingTheme.setPaddingForDesignateHeading(4, {top: this.heading4PaddingTop, right: this.heading4PaddingRight, bottom: this.heading4PaddingBottom, left: this.heading4PaddingLeft})
+    theme.headingTheme.setMarginForDesignateHeading(4, {top: this.heading4MarginTop, right: this.heading4MarginRight, bottom: this.heading4MarginBottom, left: this.heading4MarginLeft})
+    theme.headingTheme.setPaddingForDesignateHeading(4, {top: this.heading4PaddingTop, right: this.heading4PaddingRight, bottom: this.heading4PaddingBottom, left: this.heading4PaddingLeft})
     if (this.heading4TextFontColor !== undefined) {
-      headingTheme.setTextFontColorForDesignateHeading(4, this.heading4TextFontColor)
+      theme.headingTheme.setTextFontColorForDesignateHeading(4, this.heading4TextFontColor)
     }
-    headingTheme.setTextFontSizeForDesignateHeading(4, this.heading4TextFontSize)
-    headingTheme.setTextFontStyleForDesignateHeading(4, this.heading4TextFontStyle)
-    headingTheme.setTextFontWeightForDesignateHeading(4, this.heading4TextFontWeight)
-    headingTheme.setTextFontFamilyForDesignateHeading(4, this.heading4TextFontFamily)
-    headingTheme.setTextLineHeightForDesignateHeading(4, this.heading4TextLineHeight)
-    headingTheme.setTextLetterSpacingForDesignateHeading(4, this.heading4TextLetterSpacing)
+    theme.headingTheme.setTextFontSizeForDesignateHeading(4, this.heading4TextFontSize)
+    theme.headingTheme.setTextFontStyleForDesignateHeading(4, this.heading4TextFontStyle)
+    theme.headingTheme.setTextFontWeightForDesignateHeading(4, this.heading4TextFontWeight)
+    theme.headingTheme.setTextFontFamilyForDesignateHeading(4, this.heading4TextFontFamily)
+    theme.headingTheme.setTextLineHeightForDesignateHeading(4, this.heading4TextLineHeight)
+    theme.headingTheme.setTextLetterSpacingForDesignateHeading(4, this.heading4TextLetterSpacing)
     // 五级标题
     if (this.heading5BackgroundColor !== undefined) {
-      headingTheme.setBackgroundColorForDesignateHeading(5, this.heading5BackgroundColor)
+      theme.headingTheme.setBackgroundColorForDesignateHeading(5, this.heading5BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(5, {top: this.heading5MarginTop, right: this.heading5MarginRight, bottom: this.heading5MarginBottom, left: this.heading5MarginLeft})
-    headingTheme.setPaddingForDesignateHeading(5, {top: this.heading5PaddingTop, right: this.heading5PaddingRight, bottom: this.heading5PaddingBottom, left: this.heading5PaddingLeft})
+    theme.headingTheme.setMarginForDesignateHeading(5, {top: this.heading5MarginTop, right: this.heading5MarginRight, bottom: this.heading5MarginBottom, left: this.heading5MarginLeft})
+    theme.headingTheme.setPaddingForDesignateHeading(5, {top: this.heading5PaddingTop, right: this.heading5PaddingRight, bottom: this.heading5PaddingBottom, left: this.heading5PaddingLeft})
     if (this.heading5TextFontColor !== undefined) {
-      headingTheme.setTextFontColorForDesignateHeading(5, this.heading5TextFontColor)
+      theme.headingTheme.setTextFontColorForDesignateHeading(5, this.heading5TextFontColor)
     }
-    headingTheme.setTextFontSizeForDesignateHeading(5, this.heading5TextFontSize)
-    headingTheme.setTextFontStyleForDesignateHeading(5, this.heading5TextFontStyle)
-    headingTheme.setTextFontWeightForDesignateHeading(5, this.heading5TextFontWeight)
-    headingTheme.setTextFontFamilyForDesignateHeading(5, this.heading5TextFontFamily)
-    headingTheme.setTextLineHeightForDesignateHeading(5, this.heading5TextLineHeight)
-    headingTheme.setTextLetterSpacingForDesignateHeading(5, this.heading5TextLetterSpacing)
+    theme.headingTheme.setTextFontSizeForDesignateHeading(5, this.heading5TextFontSize)
+    theme.headingTheme.setTextFontStyleForDesignateHeading(5, this.heading5TextFontStyle)
+    theme.headingTheme.setTextFontWeightForDesignateHeading(5, this.heading5TextFontWeight)
+    theme.headingTheme.setTextFontFamilyForDesignateHeading(5, this.heading5TextFontFamily)
+    theme.headingTheme.setTextLineHeightForDesignateHeading(5, this.heading5TextLineHeight)
+    theme.headingTheme.setTextLetterSpacingForDesignateHeading(5, this.heading5TextLetterSpacing)
     // 六级标题
     if (this.heading6BackgroundColor !== undefined) {
-      headingTheme.setBackgroundColorForDesignateHeading(6, this.heading6BackgroundColor)
+      theme.headingTheme.setBackgroundColorForDesignateHeading(6, this.heading6BackgroundColor)
     }
-    headingTheme.setMarginForDesignateHeading(6, {top: this.heading6MarginTop, right: this.heading6MarginRight, bottom: this.heading6MarginBottom, left: this.heading6MarginLeft})
-    headingTheme.setPaddingForDesignateHeading(6, {top: this.heading6PaddingTop, right: this.heading6PaddingRight, bottom: this.heading6PaddingBottom, left: this.heading6PaddingLeft})
+    theme.headingTheme.setMarginForDesignateHeading(6, {top: this.heading6MarginTop, right: this.heading6MarginRight, bottom: this.heading6MarginBottom, left: this.heading6MarginLeft})
+    theme.headingTheme.setPaddingForDesignateHeading(6, {top: this.heading6PaddingTop, right: this.heading6PaddingRight, bottom: this.heading6PaddingBottom, left: this.heading6PaddingLeft})
     if (this.heading6TextFontColor !== undefined) {
-      headingTheme.setTextFontColorForDesignateHeading(6, this.heading6TextFontColor)
+      theme.headingTheme.setTextFontColorForDesignateHeading(6, this.heading6TextFontColor)
     }
-    headingTheme.setTextFontSizeForDesignateHeading(6, this.heading6TextFontSize)
-    headingTheme.setTextFontStyleForDesignateHeading(6, this.heading6TextFontStyle)
-    headingTheme.setTextFontWeightForDesignateHeading(6, this.heading6TextFontWeight)
-    headingTheme.setTextFontFamilyForDesignateHeading(6, this.heading6TextFontFamily)
-    headingTheme.setTextLineHeightForDesignateHeading(6, this.heading6TextLineHeight)
-    headingTheme.setTextLetterSpacingForDesignateHeading(6, this.heading6TextLetterSpacing)
-    theme.setHeadingTheme(headingTheme)
+    theme.headingTheme.setTextFontSizeForDesignateHeading(6, this.heading6TextFontSize)
+    theme.headingTheme.setTextFontStyleForDesignateHeading(6, this.heading6TextFontStyle)
+    theme.headingTheme.setTextFontWeightForDesignateHeading(6, this.heading6TextFontWeight)
+    theme.headingTheme.setTextFontFamilyForDesignateHeading(6, this.heading6TextFontFamily)
+    theme.headingTheme.setTextLineHeightForDesignateHeading(6, this.heading6TextLineHeight)
+    theme.headingTheme.setTextLetterSpacingForDesignateHeading(6, this.heading6TextLetterSpacing)
     
     return theme
   }

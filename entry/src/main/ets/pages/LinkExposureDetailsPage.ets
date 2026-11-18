@@ -30,7 +30,7 @@ struct LinkExposureDetailsPage {
   markdownScroller: Scroller = new Scroller() // Markdown的控制器
   eventScroller: Scroller = new Scroller() // 屏幕事件列表控制器
   @StorageProp('safeTop') safeTop: number = 0
-  @StorageProp('currentColorMode') currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
+  @StorageProp('currentColorMode') @Watch('onColorModeChanged') currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   @State fileStr: string = ""
   @State content: string = ""
   @State markdownTheme: MarkdownTheme = new MarkdownTheme()
@@ -120,6 +120,12 @@ struct LinkExposureDetailsPage {
     return config
   }
 
+  // 系统深浅色切换：重建markdown主题并重新下发（CJMarkdown onConfigChanged 同步 renderTheme，按代次分类刷新）
+  onColorModeChanged(): void {
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+  }
+
   setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
@@ -128,9 +134,7 @@ struct LinkExposureDetailsPage {
       theme.setDarculaTheme()
     }
     // 表格吸顶（曝光测试关键开关）
-    let tableTheme = new TableTheme()
-    tableTheme.setTableStickyHeader(this.tableStickyHeader)
-    theme.setTableTheme(tableTheme)
+    theme.tableTheme.setTableStickyHeader(this.tableStickyHeader)
     return theme
   }
 
