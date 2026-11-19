@@ -11,19 +11,19 @@
 
 ## 介绍
 
-`@cangjie-tpc/markdown_parser_hybrid` 是一个仓颉与 ArkTS 互操作（hybrid）的 Markdown 解析库。
+`@cangjie-tpc/markdown_parser_hybrid` 是一个仓颉与 ArkTS 互操作（hybrid）的 Markdown **解析库**。
 
-解析核心由仓颉语言实现（基于 commonmark4cj 引擎与插件体系），通过 ArkTS 侧的 `MarkdownParser` 接口对外暴露，解析结果以 `JsNode` 节点树返回，方便 ArkTS 侧应用（如 Markdown 渲染组件、AI 流式输出场景）直接消费。
+本项目只做解析、不做渲染：解析核心由仓颉语言实现（基于 commonmark4cj 引擎与插件体系），通过 ArkTS 侧的 `MarkdownParser` 接口对外暴露，输入 Markdown 文本，输出 `JsNode` 节点树。节点树的消费（UI 渲染、AI 流式输出等场景）由使用方自行实现。
 
-解析器设计参考了 [Markwon v4.6.2](https://github.com/noties/Markwon)（Android Markdown 库）。
+解析器设计参考了 [Markwon v4.6.2](https://github.com/noties/Markwon)（Android Markdown 解析库）。
 
 ## 优势
 
 - 仓颉侧解析性能好，ArkTS 侧接入简单
 - 插件化架构，可按需开启语法扩展
-- 解析结果为标准 `JsNode` 节点树，可自行遍历构建 UI
+- 解析结果为标准 `JsNode` 节点树，不绑定任何 UI 实现
 - 支持 SourceSpan 位置信息，可用于增量解析等场景
-- 支持 JS 节点工厂复用，降低高频解析（流式输出）时的对象分配
+- 支持节点树构建器复用与 `buildNodes` 批量建树，降低高频解析（流式输出）时的跨语言回调与对象分配开销
 
 ### 特性
 
@@ -52,7 +52,7 @@
 23. 支持自定义卡片（BlockCustomCardPlugin）自定义解析
 24. 支持自定义正则实现自定义自动链接
 25. 支持宽松/严格/白名单限定符设置
-26. 支持同步/异步（Promise）解析接口
+26. 支持异步（Promise）解析接口
 27. 支持 SourceSpan 信息（不包含/仅 Block 节点/全部节点）
 28. 支持 UTF-8 与 UTF-16 字符索引互相转换
 
@@ -66,7 +66,7 @@
           │  ├─loader           # ark_interop 加载器
           │  ├─types            # 仓颉 so 的 TS 类型声明
           │  ├─hybrid_parser.cj # 仓颉侧解析入口与插件装配
-          │  ├─js_node_builder.cj # 仓颉节点树 -> JsNode 节点树构建
+          │  ├─js_node_builder.cj # 仓颉节点树 -> JsNode 节点树构建（含批量事件分块）
           │  └─custom_card_util.cj # 自定义卡片插件工具
           └─ets
               ├─MarkdownParser.ts   # ArkTS 侧解析器入口
@@ -74,7 +74,7 @@
               ├─JsNode.ts           # JsNode 节点树接口
               ├─JsNodeImpl.ts       # JsNode 默认实现
               ├─JsNodeSendable.ets  # 可跨线程传递的节点实现
-              ├─JsNodeTreeBuilder.ts # 节点树构建器（含 buildNodes 批量建树接口）
+              ├─JsNodeTreeBuilder.ts # 节点树构建器（逐事件 + buildNodes 批量建树）
               ├─interop.ts          # 仓颉 so 互操作封装
               └─util.ts             # printNode 与索引转换工具
 ```
@@ -90,11 +90,12 @@
 | 接口 | 说明 |
 |----|----|
 | `MarkdownParser` | 解析器入口，`new MarkdownParser(opt: Options)`，`parse(md: string): Promise<JsNode>` |
-| `Options` | 解析初始化选项（节点工厂、SourceSpan、插件开关） |
+| `Options` | 解析初始化选项（节点树构建器、SourceSpan、批量分块阈值、插件开关） |
 | `JsNode` / `SourceSpan` | 解析结果节点树接口与位置信息 |
 | `JsNodeImpl` | `JsNode` 的默认实现类 |
 | `JsNodeSendableImpl` | 可跨线程（@Sendable）使用的节点实现类 |
-| `JsNodeTreeBuilder` | 节点树构建器：逐节点方法 + `buildNodes` 批量建树接口（扁平事件数组单次推送；自定义 builder 不含该接口时仓颉侧自动退回逐事件回调） |
+| `JsNodeTreeBuilder` | 逐事件节点树构建器（默认实现，可复用，`reset()` 重置状态） |
+| `JsNodeTreeBuilderBatch` | 批量建树构建器：继承 `JsNodeTreeBuilder`，仓颉侧每个分片将整棵子树序列化为扁平事件数组单次推送（`buildNodes` 接口）；自定义 builder 不含该接口时仓颉侧自动退回逐事件回调 |
 | `printNode` | 将节点树打印为字符串，用于调试 |
 | `utf8Index2utf16Index` / `utf16Index2utf8Index` | UTF-8 与 UTF-16 字符索引互相转换 |
 
@@ -102,8 +103,9 @@
 
 | 字段 | 说明 |
 |----|----|
-| `jsNodeFactory` | JsNode 复用工厂，一般传 `() => new JsNodeImpl()` |
+| `jsNodeTreeBuilder` | 必填。节点树构建器实例，由调用方创建并传入，一般传 `new JsNodeTreeBuilderBatch()`（批量建树）或 `new JsNodeTreeBuilder()`（逐事件建树） |
 | `includeSourceSpans` | 是否包含 SourceSpan 信息，`0`:不包含（默认） `1`:仅 Block 节点 `2`:全部节点 |
+| `buildNodesChunkSize` | 可选。批量建树单次推送的事件实参上限（在事件边界分块，单事件不拆分；仅对含 `buildNodes` 的批量 builder 生效）。默认 200，非正值时仓颉侧回退默认值 |
 | 各类 `xxxPlugin` | 语法扩展插件开关，详见下方插件列表 |
 | `LinkifyPlugin_regs` | 自定义自动链接正则数组 |
 | `WhitelistLooseDelimiterPlugin_DelimiterFilterMode` | 限定符过滤模式：`"Permissive"` / `"Strict"` / 白名单数组 |
@@ -165,11 +167,12 @@
 ### 功能示例
 
 ```typescript
-import { MarkdownParser, Options, JsNode, JsNodeImpl, printNode } from "@cangjie-tpc/markdown_parser_hybrid"
+import { MarkdownParser, Options, JsNode, JsNodeTreeBuilderBatch, printNode } from "@cangjie-tpc/markdown_parser_hybrid"
 
-// 1. 初始化解析选项：按需开启插件
+// 1. 创建节点树构建器并初始化解析选项：按需开启插件
+const builder = new JsNodeTreeBuilderBatch()
 const opt: Options = {
-  jsNodeFactory: () => new JsNodeImpl(),
+  jsNodeTreeBuilder: builder,
   includeSourceSpans: 0,
   TablePlugin: true,
   TaskListPlugin: true,
@@ -184,7 +187,7 @@ const parser = new MarkdownParser(opt)
 // 3. 异步解析 markdown 文本，得到节点树
 const md = "# 标题\n\n**加粗** 与 *斜体*\n\n| 列1 | 列2 |\n|----|----|\n| a  | b  |"
 parser.parse(md).then((doc: JsNode) => {
-  // 遍历 doc 节点树，自行构建 UI
+  // 节点树的消费（渲染 UI 等）由使用方自行实现
   console.info(printNode(doc))
 })
 ```
