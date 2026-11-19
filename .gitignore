@@ -24,6 +24,5 @@ target
 .vscode
 test_temp
 ci_test
-/test/
 .trae/
 tmp
