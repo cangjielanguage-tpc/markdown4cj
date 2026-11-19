@@ -2,6 +2,73 @@ import { JsNode } from "./JsNode"
 import { JsNodeImpl } from "./JsNodeImpl"
 
 /*
+ * 节点类型数字 ID: 与仓颉 js_node_builder.cj 的 NODE_TYPE_IDS 一一对应。
+ * 未登记的插件类型由仓颉侧回退为字符串, 这里直接透传, 因此新增类型无需改本表。
+ */
+function resolveNodeType(value: string | number): string {
+  if (typeof value === 'string') {
+    return value
+  }
+  switch (value) {
+    case 1: return "Document"
+    case 2: return "Paragraph"
+    case 3: return "Heading"
+    case 4: return "Text"
+    case 5: return "Code"
+    case 6: return "HtmlInline"
+    case 7: return "HtmlBlock"
+    case 8: return "IndentedCodeBlock"
+    case 9: return "FencedCodeBlock"
+    case 10: return "Link"
+    case 11: return "Image"
+    case 12: return "Emphasis"
+    case 13: return "StrongEmphasis"
+    case 14: return "BlockQuote"
+    case 15: return "BulletList"
+    case 16: return "OrderedList"
+    case 17: return "ListItem"
+    case 18: return "ThematicBreak"
+    case 19: return "SoftLineBreak"
+    case 20: return "HardLineBreak"
+    case 21: return "LinkReferenceDefinition"
+    case 22: return "ListBlock"
+    case 23: return "TableBlock"
+    case 24: return "TableHead"
+    case 25: return "TableBody"
+    case 26: return "TableRow"
+    case 27: return "TableCell"
+    case 28: return "StyleImage"
+    case 29: return "ImageHtmlNode"
+    case 30: return "SpanNode"
+    case 31: return "FontNode"
+    case 32: return "CardNode"
+    case 33: return "LatexMathBlock"
+    case 34: return "LatexMathNode"
+    case 35: return "TaskListItem"
+    case 36: return "Footnote"
+    case 37: return "FootnoteBlock"
+    case 38: return "IdHeading"
+    case 39: return "HeadLink"
+    case 40: return "TocBlock"
+    case 41: return "ImgVideo"
+    case 42: return "Strikethrough"
+    case 43: return "DescList"
+    case 44: return "DescTerm"
+    case 45: return "DescDef"
+    case 46: return "SubNode"
+    case 47: return "SupNode"
+    case 48: return "UnderlineNode"
+    case 49: return "SubHtmlNode"
+    case 50: return "SupHtmlNode"
+    case 51: return "IgnoreBlockNode"
+    case 52: return "IgnoreInlineNode"
+    case 53: return "FencedCodeBlockListBlock"
+    default:
+      throw new Error(`resolveNodeType: unknown node type id ${value}`)
+  }
+}
+
+/*
  * 单一 JS 对象形式的节点树构建器。
  * cangjie 端只持有本对象一个互操作引用, 通过调用其方法驱动节点树的构建,
  * 从而避免为每个节点创建 js/cangjie 双向绑定的互操作对象。
@@ -320,9 +387,9 @@ export class JsNodeTreeBuilder {
 export class JsNodeTreeBuilderBatch extends JsNodeTreeBuilder {
   /*
    * 批量构建节点树: 解析仓颉侧一次性推送的扁平事件数组, 分发到上述逐节点方法。
-   * 事件协议(位置确定性: 仅命令位置读取标记, 数据位置不会误判; 标记为数字 1~8,
+   * 事件协议(位置确定性: 仅命令位置读取标记, 数据位置不会误判; 标记为数字 1~9,
    * 避免每事件的字符串分配与比较开销, 与仓颉侧 js_node_builder.cj 的 emitEvent/emitVarEvent 对应):
-   *   1 nodeType              -> beginNode(节点在此入栈, 类型随之确定)
+   *   1 nodeType              -> beginNode(数字 ID, 未登记类型为字符串)
    *   2                       -> endNode
    *   3 id value              -> setField(id 为字段数字 ID, 29=toStr, 仅 debug 时出现)
    *   4 k v                   -> putProp
@@ -330,6 +397,7 @@ export class JsNodeTreeBuilderBatch extends JsNodeTreeBuilder {
    *   6 k v                   -> putSpanNodeStyle
    *   7 count v1..vN          -> putImageStyles
    *   8 count n1..nN          -> addSourceSpans(数字按 line/column/index/length 四个一组)
+   *   9 nodeType literal      -> beginNode + literal 字段 + endNode(叶子快速路径)
    * 除 7/8 外均为定长事件, 事件大小不随节点内容变化。
    * 注意: 必须用 rest 参数接收——仓颉侧 callMethod('buildNodes', events) 把数组展开为逐个实参
    * (与 addSourceSpans/putImageStyles 的既有模式一致), 非 rest 单参数只会收到第一个事件元素。
@@ -341,7 +409,7 @@ export class JsNodeTreeBuilderBatch extends JsNodeTreeBuilder {
         switch (items[i]) {
           case 1: {
             // toStr 走字段事件(id=29)传输, 解码到该字段时再写入节点。
-            this.beginNode(items[i + 1] as string)
+            this.beginNode(resolveNodeType(items[i + 1] as string | number))
             i += 2
             break
           }
@@ -378,6 +446,14 @@ export class JsNodeTreeBuilderBatch extends JsNodeTreeBuilder {
             i += 2 + count
             break
           }
+          case 9:
+            // 叶子快速路径: 等价于 beginNode + setField('literal') + endNode,
+            // 仍走可覆写方法, 自定义 builder 的埋点/空实现语义不变。
+            this.beginNode(resolveNodeType(items[i + 1] as string | number))
+            this.setFieldById(6, items[i + 2])
+            this.endNode()
+            i += 3
+            break
           default:
             throw new Error(`buildNodes: unknown event marker at ${i}: ${items[i]}`)
         }

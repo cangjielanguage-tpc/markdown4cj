@@ -33,6 +33,28 @@ const F_DATA: Int64 = 28
 // toStr 是 debug 开启才有的可选内容, 作为一个普通字段事件传输(debug 关闭时不产生任何事件)。
 const F_TOSTR: Int64 = 29
 
+/*
+ * 节点类型数字 ID: 批量协议里用数字替代 nodeType 字符串, 省掉每节点一次
+ * context.string(...) 的跨语言字符串构造。必须与 ArkTS 侧 resolveNodeType 的 case 一一对应。
+ * 未登记的类型(新插件)自动回退为字符串传输, 因此新增类型无需改协议即可工作。
+ */
+let NODE_TYPE_IDS = HashMap<String, Int64>([
+    ("Document", 1), ("Paragraph", 2), ("Heading", 3), ("Text", 4), ("Code", 5),
+    ("HtmlInline", 6), ("HtmlBlock", 7), ("IndentedCodeBlock", 8), ("FencedCodeBlock", 9),
+    ("Link", 10), ("Image", 11), ("Emphasis", 12), ("StrongEmphasis", 13), ("BlockQuote", 14),
+    ("BulletList", 15), ("OrderedList", 16), ("ListItem", 17), ("ThematicBreak", 18),
+    ("SoftLineBreak", 19), ("HardLineBreak", 20), ("LinkReferenceDefinition", 21),
+    ("ListBlock", 22), ("TableBlock", 23), ("TableHead", 24), ("TableBody", 25),
+    ("TableRow", 26), ("TableCell", 27), ("StyleImage", 28), ("ImageHtmlNode", 29),
+    ("SpanNode", 30), ("FontNode", 31), ("CardNode", 32), ("LatexMathBlock", 33),
+    ("LatexMathNode", 34), ("TaskListItem", 35), ("Footnote", 36), ("FootnoteBlock", 37),
+    ("IdHeading", 38), ("HeadLink", 39), ("TocBlock", 40), ("ImgVideo", 41),
+    ("Strikethrough", 42), ("DescList", 43), ("DescTerm", 44), ("DescDef", 45),
+    ("SubNode", 46), ("SupNode", 47), ("UnderlineNode", 48), ("SubHtmlNode", 49),
+    ("SupHtmlNode", 50), ("IgnoreBlockNode", 51), ("IgnoreInlineNode", 52),
+    ("FencedCodeBlockListBlock", 53)
+])
+
 // 帧的发射阶段: beginNode -> 字段 -> sourceSpans -> custom props -> 附加事件 -> 子节点 -> endNode。
 const PHASE_BEGIN: Int64 = 0
 const PHASE_FIELDS: Int64 = 1
@@ -82,7 +104,11 @@ const PHASE_END: Int64 = 6
  *   6     putSpanNodeStyle  [6, key, value]                    3
  *   7     putImageStyles    [7, count, v1..vN]                 2+N
  *   8     addSourceSpans    [8, 4, line, col, inputIdx, len]   6
+ *   9     leafNode         [9, nodeType, literal]              3
  *
+ *   - 9 是批量路径的叶子快速事件(Text/HtmlInline/Code/HtmlBlock/IndentedCodeBlock 且无插件属性):
+ *     等价于 1 + 3(literal) + 2, 仅 debug=false 且 includeSourceSpans=0 时发射;
+ *     不满足条件时仍走通用序列, 两条路径产出的节点树完全一致。
  *   - 除 7/8 外全部定长, 因此 chunkSize 是每个事件的硬上限;
  *     7 的样式数由发送端按 max(1, min(chunkSize-2, 253)) 分片, 保证单次调用实参不超过 255。
  *   - 3/4/5/6/7/8 都作用于"最近一个 1 打开的节点", 事件顺序即语义, 不能跨节点重排。
@@ -187,12 +213,28 @@ abstract class JsNodeBuilder {
      * 字段(含仅 debug 才有的 toStr)全部由随后阶段 1 的每个字段一个 [3, id, value] 事件完成,
      * 保证所有事件大小固定, chunkSize 对每个事件都是硬上限。
      */
-    func phaseBegin(frame: Frame): Bool {
+    // 批量子类会覆盖此阶段以启用叶子快速路径; 基类实现保持原样供非批量路径使用。
+    protected open func phaseBegin(frame: Frame): Bool {
         if (!beginNodeEvent(frame.node)) {
             return false
         }
         frame.phase = PHASE_FIELDS
         return true
+    }
+
+    /*
+     * 只有 literal 字段、且必然是叶子的节点类型; 批量路径可用单个事件 9 完成建节点+赋 literal+出栈。
+     * 新增此类叶子时在这里扩展; 其他类型返回 None, 始终回落到通用的 1/3/2 序列(保证正确性)。
+     */
+    protected func simpleLeafLiteral(node: Node): ?String {
+        match (node) {
+            case v: Text => return Some(v.getLiteral())
+            case v: HtmlInline => return Some(v.getLiteral())
+            case v: Code => return Some(v.getLiteral())
+            case v: HtmlBlock => return Some(v.getLiteral())
+            case v: IndentedCodeBlock => return Some(v.getLiteral())
+            case _ => return None
+        }
     }
 
     /*
@@ -568,19 +610,64 @@ class JsNodeBuilderBatch <: JsNodeBuilder {
         batchChunkSize = if (chunkSize <= 0) { 200 } else { chunkSize }
     }
 
+    /*
+     * 阶段 0 覆盖: 先尝试叶子单事件快速路径。
+     * 条件: debug 关闭(无 toStr/span)、节点无插件自定义属性、类型属于只有 literal 字段的叶子。
+     * 不满足任一条件时与基类完全一致(1/3/.../2), 因此非批量路径不受影响(仍用基类实现)。
+     * 文本类文档中叶子占多数, 这一步把每叶子的 3 个事件(7 个实参)压成 1 个事件(3 个实参)。
+     */
+    protected override func phaseBegin(frame: Frame): Bool {
+        if (debug || includeSourceSpans > 0 || frame.node.custom.isSome()) {
+            return generalBegin(frame)
+        }
+        match (simpleLeafLiteral(frame.node)) {
+            case Some(literal) =>
+                if (!ensureRoom(3)) {
+                    return false
+                }
+                emitEvent(9, nodeTypeValue(frame.node), context.string(literal).toJSValue())
+                let poppedDepth = frame.depth
+                frames.remove(at: frames.size - 1)
+                yieldRequested = yieldAfterNodeEnd(poppedDepth)
+                return true
+            case None => return generalBegin(frame)
+        }
+    }
+
+    // 通用阶段 0: beginNode 后进入字段阶段。
+    func generalBegin(frame: Frame): Bool {
+        if (!beginNodeEvent(frame.node)) {
+            return false
+        }
+        frame.phase = PHASE_FIELDS
+        return true
+    }
+
     protected override func beginNodeEvent(node: Node): Bool {
         if (!ensureRoom(2)) {
             return false
         }
-        emitEvent(1, [context.string(node.getNodeType()).toJSValue()])
+        emitEvent(1, nodeTypeValue(node))
         return true
+    }
+
+    /*
+     * 节点类型传参: 已登记类型走数字 ID(省一次跨语言字符串构造), 未登记类型回退为字符串,
+     * 因此新增插件类型无需同步协议表即可正常工作。
+     */
+    func nodeTypeValue(node: Node): JSValue {
+        let nodeType = node.getNodeType()
+        match (NODE_TYPE_IDS.get(nodeType)) {
+            case Some(id) => return context.number(Float64(id)).toJSValue()
+            case None => return context.string(nodeType).toJSValue()
+        }
     }
 
     protected override func fieldEvent(id: Int64, value: JSValue): Bool {
         if (!ensureRoom(3)) {
             return false
         }
-        emitEvent(3, [context.number(Float64(id)).toJSValue(), value])
+        emitEvent(3, context.number(Float64(id)).toJSValue(), value)
         return true
     }
 
@@ -603,7 +690,7 @@ class JsNodeBuilderBatch <: JsNodeBuilder {
         if (!ensureRoom(3)) {
             return false
         }
-        emitEvent(4, [context.string(k).toJSValue(), context.string(v).toJSValue()])
+        emitEvent(4, context.string(k).toJSValue(), context.string(v).toJSValue())
         return true
     }
 
@@ -612,7 +699,7 @@ class JsNodeBuilderBatch <: JsNodeBuilder {
         if (!ensureRoom(3)) {
             return false
         }
-        emitEvent(code, [context.string(k).toJSValue(), context.string(v).toJSValue()])
+        emitEvent(code, context.string(k).toJSValue(), context.string(v).toJSValue())
         return true
     }
 
@@ -643,7 +730,7 @@ class JsNodeBuilderBatch <: JsNodeBuilder {
         if (!ensureRoom(1)) {
             return false
         }
-        emitEvent(2, [])
+        emitEvent(2)
         return true
     }
 
@@ -680,12 +767,22 @@ class JsNodeBuilderBatch <: JsNodeBuilder {
      * 标记须与 JsNodeTreeBuilder.buildNodes 的数字 case 协议一致。
      * 用数字而非字符串标记: 每个事件省一次 context.string 的 JS 字符串分配与 ArkTS switch 字符串比较。
      * 容量由调用方在发射前用 ensureRoom 检查, 因此这里不再做 flush 判定。
+     *
+     * 按实参个数重载而不是收 Array<JSValue>: 每个事件省一次临时数组分配。
      */
-    func emitEvent(code: Int64, args: Array<JSValue>): Unit {
+    func emitEvent(code: Int64): Unit {
         events.add(context.number(Float64(code)).toJSValue())
-        for (a in args) {
-            events.add(a)
-        }
+    }
+
+    func emitEvent(code: Int64, a: JSValue): Unit {
+        events.add(context.number(Float64(code)).toJSValue())
+        events.add(a)
+    }
+
+    func emitEvent(code: Int64, a: JSValue, b: JSValue): Unit {
+        events.add(context.number(Float64(code)).toJSValue())
+        events.add(a)
+        events.add(b)
     }
 
     /*

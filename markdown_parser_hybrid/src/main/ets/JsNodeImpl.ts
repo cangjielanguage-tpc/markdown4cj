@@ -49,7 +49,8 @@ export class JsNodeImpl implements JsNode {
   data: string | undefined = undefined
 
   props: Map<string, string> | undefined = undefined // 用于存放Js行内自定义解析插件所产生的数据
-  sourceSpans: SourceSpanImpl[] = []
+  // 默认(不开 span)为 undefined, 不分配数组; 首次 addSourceSpans 时才创建。
+  sourceSpans: SourceSpanImpl[] | undefined = undefined
   tagName: string | undefined = undefined
 
   appendChild(child: JsNodeImpl) {
@@ -120,16 +121,31 @@ export class JsNodeImpl implements JsNode {
   }
 
   getSourceSpans(): SourceSpanImpl[] {
-    return this.sourceSpans
+    // 保持既有接口契约(始终返回数组): 首次读取时才为该节点懒建私有空数组,
+    // 默认路径不读取, 因此不开 span 时不产生任何分配; 也避免跨节点共享数组。
+    let spans = this.sourceSpans
+    if (!spans) {
+      spans = []
+      this.sourceSpans = spans
+    }
+    return spans
   }
 
   addSourceSpans(...numbers: Array<number>): void {
+    if (numbers.length <= 3) {
+      return
+    }
+    let spans = this.sourceSpans
+    if (!spans) {
+      spans = []
+      this.sourceSpans = spans
+    }
     for (let i = 3; i < numbers.length; i += 4) {
       let line: number = numbers[i-3]
       let column: number = numbers[i-2]
       let index: number = numbers[i-1]
       let length: number = numbers[i]
-      this.sourceSpans.push(new SourceSpanImpl(line, column, index, length))
+      spans.push(new SourceSpanImpl(line, column, index, length))
     }
   }
 
@@ -177,7 +193,7 @@ export class JsNodeImpl implements JsNode {
     this.data = undefined
 
     this.props = undefined
-    this.sourceSpans = []
+    this.sourceSpans = undefined
 
     this.tagName = undefined
     this.ImageStyles = undefined

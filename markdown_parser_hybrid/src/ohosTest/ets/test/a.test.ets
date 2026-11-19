@@ -531,6 +531,31 @@ https://www.wanuxi.com/为美好的世界献上祝福第三季主视觉图公开
       expect(spans[1].getInputIndex()).assertEqual(10)
       expect(spans[1].getLength()).assertEqual(3)
     })
+    it('buildNodesFastPath', 0, () => {
+      // 事件 9(叶子快速路径)等价于 beginNode + literal 字段 + endNode;
+      // 事件 1/9 的 nodeType 支持数字 ID(4=Text), 未登记类型回退为字符串传输。
+      let events: Array<string | number | boolean> = [
+        1, 1,                     // Document(数字 ID)
+          1, 'paragraph',         // 字符串类型直传(不在数字表内)
+            9, 4, 'hi',           // Text(数字 ID)+ literal
+            9, 'NewPluginType', 'x', // 未登记类型回退为字符串
+          2,
+        2
+      ]
+      let builder = new JsNodeTreeBuilderBatch()
+      builder.buildNodes(...events)
+      let root = builder.getRoot()
+      expect(root.nodeType).assertEqual('Document')
+      let para = root.firstChild as JsNodeImpl
+      expect(para.nodeType).assertEqual('paragraph')
+      let t1 = para.firstChild as JsNodeImpl
+      expect(t1.nodeType).assertEqual('Text')
+      expect(t1.literal).assertEqual('hi')
+      let t2 = t1.next as JsNodeImpl
+      expect(t2.nodeType).assertEqual('NewPluginType')
+      expect(t2.literal).assertEqual('x')
+      expect(root.getSourceSpans().length).assertEqual(0)
+    })
     it('debugOption', 0, async () => {
       // debug 选项: 默认关闭时 toStr 为空串, 开启后输出 Node.toString() 的完整文本。
       let md = '## 标题\n\n正文 **加粗** 内容'
