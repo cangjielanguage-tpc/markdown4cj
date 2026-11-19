@@ -1,4 +1,4 @@
-// scripts/pre_install_utils.mjs —— pre_stdx_install / pre_har_install 共享工具
+// scripts/pre_install_utils.mjs —— pre_har_install 共享工具
 import { execFileSync } from 'child_process';
 import crypto from 'crypto';
 import fs from 'fs';

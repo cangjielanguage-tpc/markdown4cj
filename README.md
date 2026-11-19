@@ -135,10 +135,10 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       git checkout markdown4cj_cangjie-plugin-6.1.1_compatibility
       ```
 
-      首次编译前执行依赖下载脚本，自动下载 stdx 二进制库与 formula har 包（ohpm install 时也会通过 preInstall 钩子自动执行）：
+      首次编译前执行依赖下载脚本，自动下载 formula har 包（ohpm install 时也会通过 preInstall 钩子自动执行）：
 
       ```sh
-      node ./scripts/pre_stdx_install.mjs
+      node ./scripts/pre_har_install.mjs
       ```
 
       配置 formula 原生库环境变量（cjpm.toml 通过 `${cangjie_tpc_formula}` 引用 formula 原生 cjbins）。克隆 formula-ffi 仓库并切换到 v1.4.1 标签：

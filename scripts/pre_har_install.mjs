@@ -1,4 +1,4 @@
-// scripts/pre_har_install.mjs —— 仅负责 formula-ffi har 包下载（stdx 下载见 pre_stdx_install.mjs）
+// scripts/pre_har_install.mjs —— 仅负责 formula-ffi har 包下载
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
