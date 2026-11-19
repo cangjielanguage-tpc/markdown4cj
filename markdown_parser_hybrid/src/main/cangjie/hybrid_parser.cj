@@ -1,5 +1,9 @@
 package markdown_parser_hybrid
 
+// 仓颉调用 ArkTS 的互操作方法(JS 函数)最多支持 255 个实参, 超过会直接崩溃。
+// buildNodes 是变长参数方法, 其单次调用的实参个数必须严格受此约束。
+const MAX_BUILD_NODES_ARGS: Int64 = 255
+
 public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
     static init() {
         JSModule.registerClass("HybridParser") {
@@ -10,12 +14,24 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         }
     }
 
-    public HybridParser(chunkSize: Int64, let parser: Markdown, let jsNodeTreeBuilder: JSObject) {
-        // 参数合法性校验: 非正值(含 undefined→0)回退默认 200(对齐旧协议实证安全的最大实参数量)。
-        buildNodesChunkSize = if (chunkSize <= 0) { 200 } else { chunkSize }
+    // debug 来自 Options.debug: 开启时把每个节点的 toString() 一并传给 builder(供 printNode 等调试输出),
+    // 关闭时传空串。默认关闭, 省掉每个节点一次含文本的完整字符串构造与跨语言拷贝。
+    public HybridParser(chunkSize: Int64, let includeSourceSpans: Int64, let debug: Bool, let parser: Markdown,
+        let jsNodeTreeBuilder: JSObject) {
+        // 参数合法性校验:
+        // - 非正值(含 undefined→0)回退默认 200(对齐旧协议实证安全的最大实参数量);
+        // - 超过 255 时钳制到 255: 仓颉调用 ArkTS 的互操作方法最多支持 255 个实参, 再多会直接崩溃。
+        buildNodesChunkSize = if (chunkSize <= 0) {
+            200
+        } else if (chunkSize > MAX_BUILD_NODES_ARGS) {
+            MAX_BUILD_NODES_ARGS
+        } else {
+            chunkSize
+        }
     }
 
     // 批量建树单次推送的事件实参上限(事件边界分块, 单事件不拆分), 来自 Options.buildNodesChunkSize。
+    // 同时作为单个 postJSTask 内累积的事件实参上限: task 边界跟随包边界, 推送次数可预估。
     let buildNodesChunkSize: Int64
 
     public static func jsConstructor(context: JSContext, callInfo: JSCallInfo): JSValue {
@@ -23,6 +39,11 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         let opt = callInfo[0].asObject()
         let jsNodeTreeBuilder = opt['jsNodeTreeBuilder'].asObject()
         let includeSourceSpans = Int64.fromJSValue(context, opt['includeSourceSpans'])
+        let debug = opt.get('debug', false, context)
+        // SourceSpan 归入 debug 选项管理: 只在 debug 开启时才生成并传输, 默认(debug 关闭)整体跳过。
+        // 关闭时解析器按 includeSourceSpans=0 建 AST(不做 span 构造), builder 也不会读取/发射 span 事件,
+        // 同时省掉解析期每条输入行的 SourceSpan 分配与序列化期每 span 4 个数字的跨语言传输。
+        let effectiveSpans = if (debug) { includeSourceSpans } else { 0 }
         // 批量建树分块阈值(可选): 字段未配置时为 undefined/null, 直接回退默认 200;
         // 已配置时才做数值转换(Int64.fromJSValue 不接受 undefined, 需先判空)。
         let chunkSizeValue = opt['buildNodesChunkSize']
@@ -31,7 +52,7 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         } else {
             Int64.fromJSValue(context, chunkSizeValue)
         }
-        let builder = Markdown.builder().includeSourceSpans(includeSourceSpans)
+        let builder = Markdown.builder().includeSourceSpans(effectiveSpans)
         if (opt.get('ADPlugin', false, context)) {
             builder.usePlugin(ADPlugin.create())
         }
@@ -132,7 +153,7 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
         }
 
         let parser = builder.build()
-        let clazz = HybridParser(buildNodesChunkSize, parser, jsNodeTreeBuilder)
+        let clazz = HybridParser(buildNodesChunkSize, effectiveSpans, debug, parser, jsNodeTreeBuilder)
 
         JSCurrentJSContext.unset()
         let thisArg = callInfo.thisArg
@@ -149,10 +170,13 @@ public class HybridParser <: SharedObject & JSInteropType<HybridParser> {
                 let doc: Node = parser.toMarkdown(md)
                 context.postJSTask {
                     try {
-                        // 分片构建: 只对 Root 的第一层 children 分片, 每个 postJSTask 处理一个 child 及其整棵子树。
+                        // 分片构建: 批量路径在任意节点的事件边界累积实参, 达到 buildNodesChunkSize(一个包)
+                        // 即 flush 并让出; 非批量兜底在 Root 第一层子节点结束时让出。
                         // onDone 在构造函数中注入(无异常参数): 构建完成后 resolve undefined;
                         // 构建结果(根节点)由 ArkTS 侧通过 jsNodeTreeBuilder.getRoot() 获取, 异常由本 try/catch 捕获。
-                        let nodeBuilder = JsNodeBuilder(buildNodesChunkSize, jsNodeTreeBuilder, context) {
+                        // createJsNodeBuilder 按 builder 是否提供 buildNodes 选择批量/非批量实现。
+                        let nodeBuilder = createJsNodeBuilder(buildNodesChunkSize, includeSourceSpans, debug,
+                            jsNodeTreeBuilder, context) {
                             promise.resolve(context.undefined().toJSValue())
                         }
                         nodeBuilder.start(doc)

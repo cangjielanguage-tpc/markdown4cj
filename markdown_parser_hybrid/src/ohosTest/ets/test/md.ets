@@ -62,9 +62,6 @@ export function getParser(opt?: Options): MarkdownParser {
       includeSourceSpans: 2
     }
   }
-  if (!opt.includeSourceSpans) {
-    opt.includeSourceSpans = 2
-  }
   let parser = new MarkdownParser(opt)
   return parser
 }

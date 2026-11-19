@@ -15,7 +15,7 @@
 
 [dependencies]
   [dependencies.markdown_parser]
-    branch = "markdown_parser"
+    tag = "v1.0.0-markdown-parser"
     git = "https://gitcode.com/Cangjie-TPC/markdown4cj.git"
   [dependencies.commonmark4cj]
     tag = "v1.1.1"

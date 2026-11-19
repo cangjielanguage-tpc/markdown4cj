@@ -104,12 +104,15 @@
 | 字段 | 说明 |
 |----|----|
 | `jsNodeTreeBuilder` | 必填。节点树构建器实例，由调用方创建并传入，一般传 `new JsNodeTreeBuilderBatch()`（批量建树）或 `new JsNodeTreeBuilder()`（逐事件建树） |
-| `includeSourceSpans` | 是否包含 SourceSpan 信息，`0`:不包含（默认） `1`:仅 Block 节点 `2`:全部节点 |
-| `buildNodesChunkSize` | 可选。批量建树单次推送的事件实参上限（在事件边界分块，单事件不拆分；仅对含 `buildNodes` 的批量 builder 生效）。默认 200，非正值时仓颉侧回退默认值 |
+| `includeSourceSpans` | 是否包含 SourceSpan 信息，`0`:不包含（默认） `1`:仅 Block 节点 `2`:全部节点。**仅在 `debug: true` 时生效**，debug 关闭时不生成也不传输 span |
+| `debug` | 调试信息开关（默认 `false`）。开启后才传输 `toStr`（节点字符串）并允许 `includeSourceSpans` 生效；性能敏感场景保持关闭 |
+| `buildNodesChunkSize` | 可选。批量建树单次推送的事件实参上限（在事件边界分块，单事件不拆分；仅对含 `buildNodes` 的批量 builder 生效）。默认 200，非正值时回退默认，超过 255 时钳制为 255 |
 | 各类 `xxxPlugin` | 语法扩展插件开关，详见下方插件列表 |
 | `LinkifyPlugin_regs` | 自定义自动链接正则数组 |
 | `WhitelistLooseDelimiterPlugin_DelimiterFilterMode` | 限定符过滤模式：`"Permissive"` / `"Strict"` / 白名单数组 |
 | `blockImageCard` / `blockLinkCard` | 自定义卡片回调：图片卡片 / 链接卡片是否命中 |
+
+> `buildNodes` 是仓颉侧与内置 `JsNodeTreeBuilderBatch` 之间的内部批量协议（数字标记 + 字段 ID），不属于对外扩展接口；自定义 builder 请勿自行实现同名方法，未提供该方法时会自动退回逐事件回调。
 
 支持开启的插件：
 
@@ -178,7 +181,10 @@ const opt: Options = {
   TaskListPlugin: true,
   StrikethroughPlugin: true,
   LinkifyPlugin: true,
-  HtmlPlugin: true
+  HtmlPlugin: true,
+  // 调试场景需要 printNode 输出节点内容或需要 SourceSpan 时打开;
+  // debug=false 时 toStr 为空、includeSourceSpans 不生效(默认配置, 性能最优)。
+  debug: true
 }
 
 // 2. 创建解析器
@@ -205,7 +211,7 @@ parser.parse(md).then((doc: JsNode) => {
 
 1. 互操作项目支持 API12 及以上版本
 2. `NodeIdPlugin` 自定义设置时需要最后添加
-3. 增量解析场景插件需要追加 `includeSourceSpans: 2` 配置，且需要最后添加
+3. 增量解析场景插件需要追加 `includeSourceSpans: 2` 与 `debug: true` 配置（debug 关闭时 span 不生效），且需要最后添加
 4. 增量解析会导致上下文前后文失效（Toc/脚注/标题 ID/引用链接）
 
 ## 开源协议

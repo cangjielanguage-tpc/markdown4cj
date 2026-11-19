@@ -20,3 +20,5 @@ oh-package-lock.json5
 cjpm.lock
 BuildProfile.ets
 IDL_Custom_Type_Whitelist~
+.vscode/
+tmp/

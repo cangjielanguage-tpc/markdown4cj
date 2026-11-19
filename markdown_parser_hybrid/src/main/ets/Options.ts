@@ -10,13 +10,24 @@ export interface Options {
   jsNodeTreeBuilder: JsNodeTreeBuilder
   /*
    * 是否包含SourceSpan信息 0:不包含(默认) 1:仅Block节点 2:全部节点
+   * 仅在 debug=true 时生效; debug 关闭时按 0 处理(不生成、不传输 span)。
    */
   includeSourceSpans: 0 | 1 | 2
   /*
    * 批量建树单次推送的事件实参上限(在事件边界分块, 单事件不拆分; 仅对含 buildNodes 的批量 builder 生效)。
-   * 默认 200 对齐旧协议实证安全的最大实参数量; 非正值时仓颉侧回退默认 200。
+   * 同时作为单个 postJSTask 的累积上限: task 边界跟随包边界, 推送次数 ≈ ceil(总事件实参 / 该值), 与设备性能无关。
+   * 默认 200 对齐旧协议实证安全的最大实参数量; 非正值时回退 200, 超过 255 时钳制到 255
+   * (仓颉调用 ArkTS 的互操作方法最多 255 个实参, 再多会直接崩溃)。
    */
   buildNodesChunkSize?: number
+  /*
+   * 调试选项, 默认关闭。
+   * 开启: 每个节点输出 toStr(Node.toString() 的完整文本)并生成/传输 SourceSpan,
+   *       此时 includeSourceSpans(0/1/2) 才生效;
+   * 关闭: toStr 为空串且不生成、不传输 SourceSpan, 省掉每节点一次完整字符串构造、
+   *       解析期每行一次 SourceSpan 分配与序列化期每 span 4 个数字的跨语言传输。
+   */
+  debug?: boolean
   ADPlugin?: boolean
   BlockAudioPlugin?: boolean
   BlockVideoPlugin?: boolean

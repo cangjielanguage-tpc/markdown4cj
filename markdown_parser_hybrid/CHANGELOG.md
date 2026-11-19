@@ -4,6 +4,8 @@
 2. 批量能力自动探测：builder 不含 `buildNodes` 时（自定义鸭子类型实现）自动退回旧逐事件回调路径，行为与旧版一致
 3. 修复 parse 阶段异常时 Promise 永不 settle 的问题（catch 块中 throw 使 reject 不可达，ArkTS 侧 await 永久挂死）
 4. 修复 `JsNodeImpl.putImageStyles` 在节点未持有图片样式时把 `undefined` 拼入 `ImageStyles` 数组的问题（与 `JsNodeSendableImpl` 行为对齐）
+5. **行为变更**：`toStr` 与 `SourceSpan` 统一由 `debug` 开关控制（默认 `false`）。`debug` 关闭时 `includeSourceSpans` 不再生效、`toStr` 为空串，需要节点内容或位置信息（如 `printNode`、增量解析）时必须显式传 `debug: true`
+6. 修复图片样式（变长事件 `7`）超过仓颉→ArkTS 单次调用 255 实参上限的问题：批量路径按 `max(1, min(chunkSize-2, 253))` 个样式分片，非批量路径按 255 个值分片多次调用 `putImageStyles`；新增 300 样式回归用例与 `buildNodes` 实参上限断言
 
 # 2.0.0
 
