@@ -1,5 +1,7 @@
 package markdown_parser.plugin
 
+import std.collection.*
+
 /* public class Debuger {
     static var _logger: ?Logger = None
     mut static prop logger: Logger {
@@ -27,9 +29,19 @@ public func printTag(tag: HtmlTag): Unit {
 }
 
 public func printTag(tag: HtmlTag, depth: Int, appender: StringBuilder): Unit {
-    appender.append("${" " * depth}${tag} ${tag.isClosed()}\n")
-    for (child in tag.getChildren()) {
-        printTag(child, depth + 1, appender)
+    // 显式栈迭代，避免深嵌套标签树递归栈溢出
+    let stack = ArrayList<(HtmlTag, Int)>()
+    stack.add((tag, depth))
+    while (!stack.isEmpty()) {
+        let (t, d) = stack.remove(at: stack.size - 1)
+        appender.append("${" " * d}${t} ${t.isClosed()}\n")
+        // 逆序入栈保证输出顺序与递归版一致
+        let children = t.getChildren()
+        var i = children.size - 1
+        while (i >= 0) {
+            stack.add((children[i], d + 1))
+            i--
+        }
     }
 }
 
@@ -46,12 +58,27 @@ public func printNode(node: ?Node): Unit {
 }
 
 public func printNode(node: ?Node, depth: Int, builder: StringBuilder): Unit {
+    // 调试输出大小上限：防御超大 AST 输出无界增长导致 OOM
+    let MAX_DEBUG_PRINT_SIZE: Int64 = 4 * 1024 * 1024
+    // 显式栈迭代，避免深 AST 双向递归导致栈溢出
+    let stack = ArrayList<(Node, Int)>()
     if (let Some(v) <- node) {
-        let str = v.toString().replace("\n", "\\n")
-        builder.append("${" " * depth}${str}\n")
-        let child = v.getFirstChild()
-        printNode(child, depth + 4, builder)
-        let next = v.getNext()
-        printNode(next, depth, builder)
+        stack.add((v, depth))
+    }
+    while (!stack.isEmpty()) {
+        if (builder.size >= MAX_DEBUG_PRINT_SIZE) {
+            builder.append("... (output truncated)\n")
+            break
+        }
+        let (n, d) = stack.remove(at: stack.size - 1)
+        let str = n.toString().replace("\n", "\\n")
+        builder.append("${" " * d}${str}\n")
+        // 先压入后继兄弟再压入首孩子，保证出栈顺序与递归版一致
+        if (let Some(next) <- n.getNext()) {
+            stack.add((next, d))
+        }
+        if (let Some(child) <- n.getFirstChild()) {
+            stack.add((child, d + 4))
+        }
     }
 }

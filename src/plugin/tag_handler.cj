@@ -350,15 +350,17 @@ public class OrderedListHandler <: TagHandler {
     public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let attributes: Map<String, String> = tag.attributes()
         let start: ?String = attributes.get("start")
+        var startValue: Int64 = 0
         if (let Some(v) <- start) {
-            let orderedList: OrderedList = OrderedList(Int64.parse(v), r'-')
-            visitChildren(visitor, renderer, tag, orderedList)
-            return orderedList
-        } else {
-            let orderedList: OrderedList = OrderedList(0, r'-')
-            visitChildren(visitor, renderer, tag, orderedList)
-            return orderedList
+            try {
+                startValue = Int64.parse(v)
+            } catch (_: Exception) {
+                startValue = 0
+            }
         }
+        let orderedList: OrderedList = OrderedList(startValue, r'-')
+        visitChildren(visitor, renderer, tag, orderedList)
+        return orderedList
     }
 
     public override func supportedTags(): Collection<String> {
