@@ -237,6 +237,97 @@ function createPerfParser(batch: boolean, chunkSize?: number): MarkdownParser {
 }
 
 /*
+ * 非批量计时器: 与 TimedBatchBuilder 对应, 走逐事件跨语言调用路径。
+ * reset 由仓颉侧 JsNodeBuilder.start() 在建树前调用, 因此 resetAt 仍可用来切分"解析"与"建树"。
+ */
+class TimedLegacyBuilder extends JsNodeTreeBuilder {
+  resetAt: number = 0
+
+  constructor(nodeFactory?: () => JsNode) {
+    super(nodeFactory)
+  }
+
+  reset(): void {
+    super.reset()
+    this.resetAt = Date.now()
+  }
+}
+
+/*
+ * 下游(UI 应用层)真实配置的性能剖面。
+ * 对齐 markdown_arkui/MarkdownPlugin.buildOptions():
+ *   batchMode 默认 true; includeSourceSpans 恒传 2; NodeIdPlugin 恒开;
+ *   ADPlugin / ImageSinglePlugin / ImageVideoPlugin 恒关;
+ *   其余插件由页面开关控制, 这里取"全开"作为下游最重负载。
+ * 注意: 当前实现 span 受 debug 门控, 下游未传 debug, 因此 span2 实际不生成/不传输;
+ * 这里仍按下游原样传入, 保证模型与下游调用完全一致。
+ */
+interface PerfArm {
+  label: string
+  batch: boolean
+  plugins: boolean
+  emoji: boolean
+  emojiLight: boolean
+  spans: 0 | 1 | 2
+}
+
+function createArmOptions(arm: PerfArm, builder: JsNodeTreeBuilder): Options {
+  let opt: Options = {
+    jsNodeTreeBuilder: builder,
+    includeSourceSpans: arm.spans,
+    buildNodesChunkSize: 200
+  }
+  if (arm.plugins) {
+    opt.ADPlugin = false
+    opt.BlockAudioPlugin = true
+    opt.BlockVideoPlugin = true
+    opt.CodeListPlugin = true
+    opt.DescListPlugin = true
+    opt.EmojiPlugin = arm.emoji
+    opt.EmojiPlugin_light = arm.emojiLight
+    opt.FootnotePlugin = true
+    opt.HighlightDelimeterPlugin = true
+    opt.HtmlPlugin = true
+    opt.IdHeadingPlugin = true
+    opt.ImageCollectPlugin = true
+    opt.ImageSinglePlugin = false
+    opt.ImageSlidePlugin = true
+    opt.ImageStylePlugin = true
+    opt.ImageTextMixPlugin = true
+    opt.ImageVideoPlugin = false
+    opt.LatexMathPluginV2 = true
+    opt.LinkifyPlugin = true
+    opt.LinkifyPlugin_regs = undefined
+    opt.LinkViewPlugin = true
+    opt.NodeIdPlugin = true
+    opt.StrikethroughPlugin = true
+    opt.SubPlugin = true
+    opt.SupPlugin = true
+    opt.TablePlugin = true
+    opt.TaskListPlugin = true
+    opt.TocPlugin = true
+  }
+  return opt
+}
+
+/*
+ * 按单个剖面解析一次, 返回"解析"与"总耗时"两段计时。
+ */
+async function measureArm(arm: PerfArm, md: string): Promise<PhaseTiming> {
+  // 下游 MarkdownPlugin 使用 new JsNodeTreeBuilderBatch(), 即默认的 JsNodeImpl 工厂;
+  // 这里保持一致, 避免 Sendable 节点实现差异污染"下游真实"口径。
+  let builder: TimedBatchBuilder | TimedLegacyBuilder = arm.batch
+    ? new TimedBatchBuilder()
+    : new TimedLegacyBuilder()
+  let start = Date.now()
+  await new MarkdownParser(createArmOptions(arm, builder)).parse(md)
+  let totalMs = Date.now() - start
+  let parseMs = builder.resetAt > 0 ? builder.resetAt - start : 0
+  let timing: PhaseTiming = { parseMs: parseMs, totalMs: totalMs }
+  return timing
+}
+
+/*
  * 单次解析耗时(毫秒, 不含 parser 构造开销)。
  */
 async function measureOnce(batch: boolean, md: string, chunkSize?: number): Promise<number> {
@@ -255,6 +346,16 @@ function medianOf(values: Array<number>): number {
   sorted.sort((a: number, b: number): number => a - b)
   let mid = Math.floor(sorted.length / 2)
   return sorted.length % 2 === 1 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
+}
+
+function minOf(values: Array<number>): number {
+  let min = values[0]
+  for (let v of values) {
+    if (v < min) {
+      min = v
+    }
+  }
+  return min
 }
 
 /*
@@ -1187,6 +1288,75 @@ https://www.wanuxi.com/为美好的世界献上祝福第三季主视觉图公开
             `相对基准=${(legacyMs / batchMs).toFixed(2)}`)
         }
       }
+    })
+    it('perfDownstreamRealistic', 0, async () => {
+      if (!RUN_PERF_TESTS) {
+        return
+      }
+      // 端到端模型修正: 以"下游真实配置"为主口径。
+      // 下游 markdown_arkui 默认 Batch + includeSourceSpans=2 + NodeIdPlugin 恒开, 并按页面开启插件;
+      // 此前性能用例只测 core(无插件), 漏掉了插件这一数量级热点。
+      // 同轮交替测量, 每档取 7 轮中位数与最小值; 文档用全量综合大文档, 与下游 BigData 页一致。
+      let doc = loadComprehensiveMarkdown()
+      let md = doc
+      let arms: Array<PerfArm> = [
+        { label: 'A 非batch基线(无插件,span0)', batch: false, plugins: false, emoji: false, emojiLight: false,
+          spans: 0 },
+        { label: 'B batch基线(无插件,span0)', batch: true, plugins: false, emoji: false, emojiLight: false,
+          spans: 0 },
+        { label: 'C 下游全插件(Emoji全量)', batch: true, plugins: true, emoji: true, emojiLight: false, spans: 2 },
+        { label: 'D 下游全插件(Emoji light)', batch: true, plugins: true, emoji: true, emojiLight: true,
+          spans: 2 },
+        { label: 'E 下游全插件(去Emoji)', batch: true, plugins: true, emoji: false, emojiLight: false, spans: 2 }
+      ]
+      console.error(`[perf][下游模型] 文档=${md.length}字符, chunkSize=200, ` +
+        `span2 受 debug 门控(下游未传 debug, 实际不生成/不传输)`)
+      // 预热: 每个 arm 先跑一次, 让插件初始化/正则编译/JIT 进入稳定状态。
+      for (let arm of arms) {
+        await measureArm(arm, md)
+      }
+      let rounds = 7
+      let totals: Array<Array<number>> = [[], [], [], [], []]
+      let parses: Array<Array<number>> = [[], [], [], [], []]
+      let nonParses: Array<Array<number>> = [[], [], [], [], []]
+      let emojiDelta: Array<number> = []
+      for (let r = 0; r < rounds; r++) {
+        // 每轮轮换起始档位: 固定顺序会让最后一个档位长期承担前面档位累积的 GC 债务,
+        // 出现"去 Emoji 反而总耗时最大"的假象。
+        let line = `[perf][下游模型] 轮次${r}`
+        for (let k = 0; k < arms.length; k++) {
+          let i = (k + r) % arms.length
+          let t = await measureArm(arms[i], md)
+          totals[i].push(t.totalMs)
+          parses[i].push(t.parseMs)
+          nonParses[i].push(Math.max(0, t.totalMs - t.parseMs))
+          line += ` ${String.fromCharCode(65 + i)}=${t.totalMs}/${t.parseMs}`
+        }
+        // 同一轮内 C(Emoji 全量) 与 E(去 Emoji) 的解析差, 抵消跨轮 GC/频率波动。
+        emojiDelta.push(parses[2][r] - parses[4][r])
+        console.error(line)
+      }
+      let baseMs = 0
+      for (let i = 0; i < arms.length; i++) {
+        let totalMs = Math.round(medianOf(totals[i]))
+        let minMs = Math.round(minOf(totals[i]))
+        let parseMs = Math.round(medianOf(parses[i]))
+        let parseMinMs = Math.round(minOf(parses[i]))
+        let nonParseMs = Math.round(medianOf(nonParses[i]))
+        if (i === 1) {
+          baseMs = totalMs
+        }
+        console.error(`[perf][下游模型] ${arms[i].label}: 总耗时=${totalMs}ms(最小${minMs}ms), ` +
+          `解析=${parseMs}ms(最小${parseMinMs}ms), 非解析=${nonParseMs}ms`)
+        expect(totalMs > 0).assertTrue()
+      }
+      console.error(`[perf][下游模型] Emoji 全量 vs 去Emoji 的逐轮解析差: ` +
+        `中位数=${Math.round(medianOf(emojiDelta))}ms(最小${Math.round(minOf(emojiDelta))}ms)`)
+      let allMs = Math.round(medianOf(totals[2]))
+      console.error(`[perf][下游模型] 插件增量: batch 基线 ${baseMs}ms → 下游全插件 ${allMs}ms, ` +
+        `倍数=${baseMs > 0 ? (allMs / baseMs).toFixed(2) : 'N/A'}x`)
+      // 模型校验: 下游配置必须真的加载了插件, 解析耗时应显著高于无插件基线。
+      expect(allMs > baseMs).assertTrue()
     })
   })
 }

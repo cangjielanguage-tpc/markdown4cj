@@ -617,7 +617,7 @@ class JsNodeBuilderBatch <: JsNodeBuilder {
      * 文本类文档中叶子占多数, 这一步把每叶子的 3 个事件(7 个实参)压成 1 个事件(3 个实参)。
      */
     protected override func phaseBegin(frame: Frame): Bool {
-        if (debug || includeSourceSpans > 0 || frame.node.custom.isSome()) {
+        if (debug || includeSourceSpans > 0 || frame.node.custom is HashMap<String, Any>) {
             return generalBegin(frame)
         }
         match (simpleLeafLiteral(frame.node)) {
