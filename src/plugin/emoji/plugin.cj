@@ -5,8 +5,10 @@ package markdown_parser.plugin.emoji
  */
 public class EmojiPlugin <: AbstractMarkdownPlugin {
     let opts: Options
+    private let matcher: EmojiMatcher
     init(defaults: Options) {
         opts = normalize_opts(defaults)
+        matcher = EmojiMatcher(opts.shortcuts.getOrThrow())
     }
     /*
      * create emoji plugin 精简
@@ -34,7 +36,7 @@ public class EmojiPlugin <: AbstractMarkdownPlugin {
     }
 
     public func configureParser(parser: ParserBuilder): Unit {
-        parser.postProcessor(EmojiPostProcessor(opts))
+        parser.postProcessor(EmojiPostProcessor(opts, matcher))
     }
 
     public func getClassType(): String {
@@ -43,9 +45,9 @@ public class EmojiPlugin <: AbstractMarkdownPlugin {
 }
 
 class EmojiPostProcessor <: PostProcessor {
-    EmojiPostProcessor(let options: Options) {}
+    EmojiPostProcessor(let options: Options, let matcher: EmojiMatcher) {}
     public func process(node: Node): Node {
-        node.accept(EmojiVisitor(options))
+        node.accept(EmojiVisitor(options, matcher))
         node
     }
 }
@@ -65,61 +67,84 @@ let ucm_Cc = "[\\0-\\x1F\\x7F-\\x9F]"
 let ZPCc = Regex("${ucm_Z}|${ucm_P}|${ucm_Cc}", RegexFlag.Unicode)
 
 class EmojiVisitor <: AbstractVisitor {
-    EmojiVisitor(let options: Options) {}
+    EmojiVisitor(let options: Options, let matcher: EmojiMatcher) {}
     /* 
      * Emojies & shortcuts replacement logic.
-     * Note: In theory, it could be faster to parse :smile: in inline chain and
-     * leave only shortcuts here. But, who care...
+     * 单次扫描: 同一位置取最长前缀候选(与降序 alternation 等价),
+     * 再按原有规则校验快捷方式的左右边界。
      */
     public func visit(node: Text): Unit {
-        let src = node.getLiteral()
-
-        let datas = options.regex.getOrThrow().findAll(src)
-        if (datas.size == 0) {
+        let emojies = options.defs.getOrThrow()
+        if (emojies.size == 0) {
             return
         }
-
-        let emojies = options.defs.getOrThrow()
+        let src = node.getLiteral()
+        if (src.isEmpty()) {
+            return
+        }
         let shortcuts = options.shortcuts.getOrThrow()
+        let bytes = src.toArray()
+
         var newNodeLiteral = StringBuilder()
-        var last_pos = 0
-        for (data in datas) {
-            let matchStr = data.matchString()
-            let pos = data.matchPosition()
-            let offset = pos.start
+        var last_pos: Int64 = 0
+        var changed = false
+        var i: Int64 = 0
+        while (i < bytes.size) {
+            // 快捷方式候选: 最长前缀匹配
+            var end = matcher.matchEnd(bytes, i)
+            // emoji 名候选: :name:
+            if (bytes[i] == b':') {
+                var j = i + 1
+                while (j < bytes.size && bytes[j] != b':') {
+                    j += 1
+                }
+                if (j < bytes.size && j > i + 1 && j + 1 > end) {
+                    let name = String.fromUtf8(bytes[i + 1..j])
+                    if (emojies.contains(name)) {
+                        end = j + 1
+                    }
+                }
+            }
+            if (end <= i) {
+                i += 1
+                continue
+            }
 
-            let emoji_name: String
-            // Validate emoji name
+            let matchStr = String.fromUtf8(bytes[i..end])
+            let emojiName: String
+            // 与原实现一致: 命中串若同时是快捷方式, 优先按快捷方式处理
             if (shortcuts.contains(matchStr)) {
-                // replace shortcut with full name
-                emoji_name = shortcuts[matchStr]
-
                 // Don't allow letters before any shortcut (as in no ":/" in http://)
                 // find codepoint at offset - 1 in utf8 string : src
-                if (offset > 0 && !ZPCc.matches(src.codePointAt(offset - 1))) {
+                if (i > 0 && !ZPCc.matches(src.codePointAt(i - 1))) {
+                    i = end
                     continue
                 }
-
                 // Don't allow letters after any shortcut
-                if (pos.end < src.size && !ZPCc.matches(src.codePointAt(pos.end))) {
+                if (end < bytes.size && !ZPCc.matches(src.codePointAt(end))) {
+                    i = end
                     continue
                 }
+                emojiName = shortcuts[matchStr]
             } else {
-                emoji_name = matchStr[1..matchStr.size - 1]
+                emojiName = matchStr[1..matchStr.size - 1]
             }
 
             // Add tokens to pending list
-            if (offset > last_pos) {
-                newNodeLiteral.append(src[last_pos..offset])
+            if (i > last_pos) {
+                newNodeLiteral.append(String.fromUtf8(bytes[last_pos..i]))
             }
-
-            newNodeLiteral.append(emojies[emoji_name])
-
-            last_pos = pos.end
+            newNodeLiteral.append(emojies[emojiName])
+            last_pos = end
+            changed = true
+            i = end
         }
 
-        if (last_pos < src.size) {
-            newNodeLiteral.append(src[last_pos..])
+        if (!changed) {
+            return
+        }
+        if (last_pos < bytes.size) {
+            newNodeLiteral.append(String.fromUtf8(bytes[last_pos..]))
         }
 
         node.setLiteral(newNodeLiteral.toString())

@@ -70,6 +70,10 @@ class FootnoteBlockParserFactory <: AbstractBlockParserFactory {
     public func tryStart(state: ParserState, _: MatchedBlockParser): ?BlockStart {
         let sl = state.getLine()
         let sline = sl.getContent()
+        // 脚注定义必须以 "[^" 开头，先做廉价前缀预判，避免对每一行都执行正则与切片
+        if (!sline.contains("[^")) {
+            return BlockStart.none()
+        }
         let line: String = sline[state.getIndex()..]
         if (let Some(pos) <- FOOTNOTE_BLOCK.find(line)?.matchPosition()) {
             return BlockStart
@@ -116,6 +120,13 @@ class FootnoteVisitor <: AbstractVisitor {
     }
     public func visit(n: Text): Unit {
         let line = n.getLiteral()
+        // 脚注引用必含 "[^"，无该片段时无需执行正则；保持原有空文本 unlink 行为
+        if (!line.contains("[^")) {
+            if (line.isEmpty()) {
+                n.unlink()
+            }
+            return
+        }
         var i = 0
         for (data in FOOTNOTE.findAll(line)) {
             let pos = data.matchPosition()
