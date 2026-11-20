@@ -5,7 +5,7 @@ import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
 import { MarkdownPlugin } from '../plugin/MarkdownPlugin'
 import { CustomViewRegistry } from '../plugin/CustomViewRegistry'
 import { NodeView } from "../model/NodeView"
-import { nodeToNodeView, liftCustomTagBlocks } from "../utils/MarkdownParserUtils"
+import { nodeToNodeView, liftCustomTagBlocks, setActiveLinkUrlFilter } from "../utils/MarkdownParserUtils"
 import { safeString } from "../utils/MarkdownUtils"
 import { MarkdownParagraph } from "./MarkdownParagraph"
 import { MarkdownThematicBreak } from "./MarkdownThematicBreak"
@@ -899,6 +899,8 @@ export struct CJMarkdown {
     let nodeView: NodeView = new NodeView()
     let highlightSelectedList: ArrayList<string> = new ArrayList<string>()
     nodeView.isLinkStyle = this.renderTheme.linkTheme.linkIsIcon
+    // 解析前注入链接URL过滤器（单线程同步解析，注入与使用无并发竞争）
+    setActiveLinkUrlFilter(this.config.linkUrlFilter)
     let parseOk: boolean = false
     try {
       nodeToNodeView(node, nodeView, nodeView, this.markdownDataSource.dataArray, highlightSelectedList)

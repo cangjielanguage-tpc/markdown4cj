@@ -6,6 +6,7 @@
 #include <native_drawing/drawing_bitmap.h>
 
 #include "utils.h"
+#include <cmath>
 #include <cstring>
 #include <iostream>
 #include <native_drawing/drawing_brush.h>
@@ -30,20 +31,30 @@
 extern "C" {
 #endif
 
-void safe_memcpy(void *dest, uint32_t dest_size, const void *src, uint32_t src_size)
+// safe_*系列返回错误码（0成功/负数失败），禁止在extern "C"/napi边界内抛C++异常，
+// 异常穿越FFI边界行为未定义（典型结局std::terminate进程崩溃）
+int safe_memcpy(void *dest, size_t dest_size, const void *src, size_t src_size)
 {
+    if (dest == NULL || src == NULL) {
+        return -1;
+    }
     if (dest_size < src_size) {
-        throw std::runtime_error("Insufficient space in the target buffer.");
+        return -1;
     }
     std::memcpy(dest, src, src_size);
+    return 0;
 }
 
-void safe_memset(void *dest, uint32_t destSize, int value, uint32_t count)
+int safe_memset(void *dest, size_t destSize, int value, size_t count)
 {
+    if (dest == NULL) {
+        return -1;
+    }
     if (count > destSize) {
-        throw std::runtime_error("The number of bytes to be set exceeds the buffer size.");
+        return -1;
     }
     std::memset(dest, value, count);
+    return 0;
 }
 
 const int PLANES = 1;
@@ -64,6 +75,12 @@ const int COLOR_0X000000FF = 0x000000FF;
 const int COLOR_0XFF000000 = 0xFF000000;
 const int COLOR_0X73524742 = 0x73524742;
 
+// 单张位图像素量硬上限：异常尺寸输入下限制内存分配放大（DoS/整数回绕防护）
+const uint64_t MAX_BITMAP_PIXELS = 100000000ULL;
+// 绘制尺寸硬上限（px）：位图宽高钳制，防止异常数值放大到位图分配失控
+const float MAX_DRAW_DIMENSION = 8192.0f;
+const float MIN_DRAW_DIMENSION = 1.0f;
+
 typedef struct {
     uint8_t *data;
     int64_t len;
@@ -71,11 +88,34 @@ typedef struct {
     int32_t height;
 } UInt8Data;
 
+// 绘制尺寸钳制：NaN/负值回落最小值，超大值钳到上限
+static float clampDrawSize(float v)
+{
+    if (std::isnan(v) || v < MIN_DRAW_DIMENSION) {
+        return MIN_DRAW_DIMENSION;
+    }
+    if (v > MAX_DRAW_DIMENSION) {
+        return MAX_DRAW_DIMENSION;
+    }
+    return v;
+}
+
+// 位图像素量合法性校验：uint64计算防回绕，超上限返回false
+static bool isPixelCountValid(uint64_t w, uint64_t h)
+{
+    return w * h <= MAX_BITMAP_PIXELS;
+}
+
 static UInt8Data toRawPixelData(OH_Drawing_Bitmap *bitmap)
 {
     uint32_t w = OH_Drawing_BitmapGetWidth(bitmap);
     uint32_t h = OH_Drawing_BitmapGetHeight(bitmap);
     uint8_t *bitmapAddr = (uint8_t *)OH_Drawing_BitmapGetPixels(bitmap);
+    // 位图构建失败/无效时GetPixels返回NULL，判空防对NULL源memcpy段错误
+    if (bitmapAddr == NULL) {
+        UInt8Data empty = {NULL, 0, 0, 0};
+        return empty;
+    }
     int64_t dataLen = (int64_t)w * (int64_t)h * 4;
 
     uint8_t *data = (uint8_t *)malloc(dataLen);
@@ -103,6 +143,22 @@ static UInt8Data toBitmapRGB565(OH_Drawing_Bitmap *bitmap)
     uint32_t w = OH_Drawing_BitmapGetWidth(bitmap);
     uint32_t h = OH_Drawing_BitmapGetHeight(bitmap);
     uint8_t *bitmapAddr = (uint8_t *)OH_Drawing_BitmapGetPixels(bitmap);
+    // 位图构建失败/无效时GetPixels返回NULL，判空防对NULL源memcpy段错误
+    if (bitmapAddr == NULL) {
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+
+    // 像素量与字节数用uint64计算并校验上限，防止uint32回绕导致后续空间校验符号反转失效
+    uint64_t rowBytes = ((uint64_t)w + (uint64_t)(w % TWO)) * TWO; // 含行尾padding的每行字节数
+    uint64_t pixelDataBytes = rowBytes * (uint64_t)h;
+    uint64_t headerBytes = (uint64_t)sizeof(BitMapFileHeader) + (uint64_t)sizeof(BitMapInfoHeader) +
+                           (uint64_t)sizeof(bmiClr);
+    uint64_t totalBytes = headerBytes + pixelDataBytes;
+    if (!isPixelCountValid((uint64_t)w, (uint64_t)h) || totalBytes > 0xFFFFFFFFULL) {
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
 
     bmiHdr.biSize = sizeof(BitMapInfoHeader);
     bmiHdr.biWidth = w;                       // 指定图像的宽度，单位是像素
@@ -110,7 +166,7 @@ static UInt8Data toBitmapRGB565(OH_Drawing_Bitmap *bitmap)
     bmiHdr.biPlanes = PLANES;                      // 目标设备的级别，必须是1
     bmiHdr.biBitCount = BIT_COUNT_16;                   // 表示用到颜色时用到的位数 16位表示高彩色图
     bmiHdr.biCompression = BI_BITFIELDS;      // RGB565格式
-    bmiHdr.biSizeImage = (w + w % TWO) * h * TWO; // 指定实际位图所占字节数
+    bmiHdr.biSizeImage = (DWORD)pixelDataBytes; // 指定实际位图所占字节数
     bmiHdr.biXPelsPerMeter = ZERO;               // 水平分辨率，单位长度内的像素数
     bmiHdr.biYPelsPerMeter = ZERO;               // 垂直分辨率，单位长度内的像素数
     bmiHdr.biClrUsed = ZERO; // 位图实际使用的彩色表中的颜色索引数（设为0的话，则说明使用所有调色板项）
@@ -133,35 +189,55 @@ static UInt8Data toBitmapRGB565(OH_Drawing_Bitmap *bitmap)
     bmiClr[TWO].rgbReserved = ZERO;
 
     bmfHdr.bfType = (WORD)COLOR_0X4D42; // 文件类型，0x4D42也就是字符'BM'
-    bmfHdr.bfSize =
-        (DWORD)(sizeof(BitMapFileHeader) + sizeof(BitMapInfoHeader) + sizeof(bmiClr) + bmiHdr.biSizeImage); // 文件大小
+    bmfHdr.bfSize = (DWORD)totalBytes; // 文件大小
     bmfHdr.bfReserved1 = ZERO; // 保留，必须为0
     bmfHdr.bfReserved2 = ZERO; // 保留，必须为0
-    bmfHdr.bfOffBits =
-        (DWORD)(sizeof(BitMapFileHeader) + sizeof(BitMapInfoHeader) + sizeof(bmiClr)); // 实际图像数据偏移量
+    bmfHdr.bfOffBits = (DWORD)headerBytes; // 实际图像数据偏移量
 
-    uint8_t *data = (uint8_t *)malloc(bmfHdr.bfSize);
-    safe_memset(data, bmfHdr.bfSize, ZERO, bmfHdr.bfOffBits);
-    uint8_t *start = data;
-    int32_t destsz = bmfHdr.bfSize;
-    safe_memcpy(start, destsz, &bmfHdr, sizeof(BitMapFileHeader));
-    start += sizeof(BitMapFileHeader);
-    destsz -= sizeof(BitMapFileHeader);
-    safe_memcpy(start, destsz, &bmiHdr, sizeof(BitMapInfoHeader));
-    start += sizeof(BitMapInfoHeader);
-    destsz -= sizeof(BitMapInfoHeader);
-    safe_memcpy(start, destsz, &bmiClr, sizeof(bmiClr));
-    start += sizeof(bmiClr);
-    destsz -= sizeof(bmiClr);
-    for (int i = 0; i < h; i++) {
-        safe_memcpy(start, destsz, bitmapAddr + (w * (h - i - ONE) * TWO), w * TWO);
-        start += (w + w % TWO) * TWO;
-        destsz -= (w + w % TWO) * TWO;
+    uint8_t *data = (uint8_t *)malloc((size_t)totalBytes);
+    // malloc失败返回空结果（与toRawPixelData防护一致），禁止对NULL写入
+    if (data == NULL) {
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+    // 整块清零：奇数宽度行尾padding不再携带未初始化堆内存（信息泄漏防护）
+    if (safe_memset(data, (size_t)totalBytes, ZERO, (size_t)totalBytes) != 0) {
+        free(data);
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+    size_t offset = 0;
+    if (safe_memcpy(data + offset, totalBytes - offset, &bmfHdr, sizeof(BitMapFileHeader)) != 0) {
+        free(data);
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+    offset += sizeof(BitMapFileHeader);
+    if (safe_memcpy(data + offset, totalBytes - offset, &bmiHdr, sizeof(BitMapInfoHeader)) != 0) {
+        free(data);
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+    offset += sizeof(BitMapInfoHeader);
+    if (safe_memcpy(data + offset, totalBytes - offset, &bmiClr, sizeof(bmiClr)) != 0) {
+        free(data);
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+    offset += sizeof(bmiClr);
+    for (uint32_t i = 0; i < h; i++) {
+        if (safe_memcpy(data + offset, totalBytes - offset,
+                        bitmapAddr + ((uint64_t)w * (h - i - ONE) * TWO), (size_t)(w * TWO)) != 0) {
+            free(data);
+            UInt8Data empty = {NULL, ZERO, 0, 0};
+            return empty;
+        }
+        offset += (size_t)rowBytes;
     }
 
     UInt8Data u8data;
     u8data.data = data;
-    u8data.len = bmfHdr.bfSize;
+    u8data.len = (int64_t)totalBytes;
     return u8data;
 }
 
@@ -209,6 +285,19 @@ static UInt8Data toBitmapBGRA8888(OH_Drawing_Bitmap *bitmap)
     uint32_t w = OH_Drawing_BitmapGetWidth(bitmap);
     uint32_t h = OH_Drawing_BitmapGetHeight(bitmap);
     uint8_t *bitmapAddr = (uint8_t *)OH_Drawing_BitmapGetPixels(bitmap);
+    // 位图构建失败/无效时GetPixels返回NULL，判空防对NULL源memcpy段错误
+    if (bitmapAddr == NULL) {
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+
+    // 像素量与字节数用uint64计算并校验上限，防止uint32回绕
+    uint64_t pixelDataBytes = (uint64_t)w * (uint64_t)h * FOUR;
+    uint64_t totalBytes = (uint64_t)sizeof(BitMapFileHeader) + (uint64_t)sizeof(BitMapV4Header) + pixelDataBytes;
+    if (!isPixelCountValid((uint64_t)w, (uint64_t)h) || totalBytes > 0xFFFFFFFFULL) {
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
 
     // 初始化BITMAPV4HEADER
     memset(&bmiHdr, ZERO, sizeof(BitMapV4Header));
@@ -218,7 +307,7 @@ static UInt8Data toBitmapBGRA8888(OH_Drawing_Bitmap *bitmap)
     bmiHdr.bV4Planes = PLANES;
     bmiHdr.bV4BitCount = BIT_COUNT_32;
     bmiHdr.bV4Compression = BI_BITFIELDS;
-    bmiHdr.bV4SizeImage = w * h * FOUR;
+    bmiHdr.bV4SizeImage = (DWORD)pixelDataBytes;
     bmiHdr.bV4XPelsPerMeter = ZERO;
     bmiHdr.bV4YPelsPerMeter = ZERO;
     bmiHdr.bV4ClrUsed = ZERO;
@@ -235,42 +324,49 @@ static UInt8Data toBitmapBGRA8888(OH_Drawing_Bitmap *bitmap)
 
     // 设置文件头
     bmfHdr.bfType = (WORD)COLOR_0X4D42;
-    bmfHdr.bfSize = (DWORD)(sizeof(BitMapFileHeader) + sizeof(BitMapV4Header) + bmiHdr.bV4SizeImage);
+    bmfHdr.bfSize = (DWORD)totalBytes;
     bmfHdr.bfReserved1 = ZERO;
     bmfHdr.bfReserved2 = ZERO;
     bmfHdr.bfOffBits = (DWORD)(sizeof(BitMapFileHeader) + sizeof(BitMapV4Header));
 
     // 分配内存
-    uint8_t *data = (uint8_t *)malloc(bmfHdr.bfSize);
+    uint8_t *data = (uint8_t *)malloc((size_t)totalBytes);
     if (!data) {
         UInt8Data empty = {NULL, ZERO, 0, 0};
         return empty;
     }
 
-    uint8_t *start = data;
-    int32_t destsz = bmfHdr.bfSize;
-
-    // 复制文件头
-    safe_memcpy(start, destsz, &bmfHdr, sizeof(BitMapFileHeader));
-    start += sizeof(BitMapFileHeader);
-    destsz -= sizeof(BitMapFileHeader);
+    size_t offset = 0;
+    // 复制文件头（safe_*失败时释放缓冲返回空结果，杜绝泄漏）
+    if (safe_memcpy(data + offset, totalBytes - offset, &bmfHdr, sizeof(BitMapFileHeader)) != 0) {
+        free(data);
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+    offset += sizeof(BitMapFileHeader);
 
     // 复制信息头
-    safe_memcpy(start, destsz, &bmiHdr, sizeof(BitMapV4Header));
-    start += sizeof(BitMapV4Header);
-    destsz -= sizeof(BitMapV4Header);
+    if (safe_memcpy(data + offset, totalBytes - offset, &bmiHdr, sizeof(BitMapV4Header)) != 0) {
+        free(data);
+        UInt8Data empty = {NULL, ZERO, 0, 0};
+        return empty;
+    }
+    offset += sizeof(BitMapV4Header);
 
     // 复制像素数据（BMP是从下到上存储的）
-    for (int i = 0; i < h; i++) {
-        uint8_t *srcLine = bitmapAddr + (w * (h - i - ONE) * FOUR);
-        safe_memcpy(start, destsz, srcLine, w * FOUR);
-        start += w * FOUR;
-        destsz -= w * FOUR;
+    for (uint32_t i = 0; i < h; i++) {
+        uint8_t *srcLine = bitmapAddr + ((uint64_t)w * (h - i - ONE) * FOUR);
+        if (safe_memcpy(data + offset, totalBytes - offset, srcLine, (size_t)((uint64_t)w * FOUR)) != 0) {
+            free(data);
+            UInt8Data empty = {NULL, ZERO, 0, 0};
+            return empty;
+        }
+        offset += (size_t)((uint64_t)w * FOUR);
     }
 
     UInt8Data u8data;
     u8data.data = data;
-    u8data.len = bmfHdr.bfSize;
+    u8data.len = (int64_t)totalBytes;
     return u8data;
 }
 
@@ -323,14 +419,15 @@ OH_Drawing_Bitmap *initGraphics2D(uint32_t w, uint32_t h, OH_Drawing_ColorFormat
 UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_t fontBackgroundColor,
                           uint32_t backgroundColor, float textHeight, OH_Drawing_ColorFormat colorFormat)
 {
-    OH_Drawing_Bitmap *bitmap = initGraphics2D(textHeight, textHeight, colorFormat); // 初始化bitmap
+    float drawHeight = clampDrawSize(textHeight); // 位图边长钳制，防异常尺寸放大内存分配
+    OH_Drawing_Bitmap *bitmap = initGraphics2D(drawHeight, drawHeight, colorFormat); // 初始化bitmap
     OH_Drawing_Canvas *bitmapCanvas = OH_Drawing_CanvasCreate();                     // 创建一个画布对象
     OH_Drawing_CanvasBind(bitmapCanvas, bitmap); // 将Canvas与bitmap绑定，Canvas绘制的内容会输出到绑定的bitmap内存中
     OH_Drawing_CanvasClear(bitmapCanvas, backgroundColor); // 使用透明色去清空画布
     // 画圆和背景颜色
-    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, textHeight, textHeight); // 创建矩形对象
+    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, drawHeight, drawHeight); // 创建矩形对象
     OH_Drawing_RoundRect *roundRect =
-        OH_Drawing_RoundRectCreate(rect, textHeight / 2, textHeight / 2); // 创建圆角矩形对象
+        OH_Drawing_RoundRectCreate(rect, drawHeight / 2, drawHeight / 2); // 创建圆角矩形对象
     OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                   // 创建画刷对象
     OH_Drawing_BrushSetAntiAlias(brush, true);                            // 设置画刷抗锯齿
     OH_Drawing_BrushSetColor(brush, fontBackgroundColor);                  // 设置画刷颜色
@@ -345,9 +442,9 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
     OH_Drawing_FontMeasureText(font, str, strlen(str), TEXT_ENCODING_UTF8, bounds, textWidth); // 获取文本宽度和边界
     float h = OH_Drawing_RectGetHeight(bounds);                                                // 文本真实高度
     float top = OH_Drawing_RectGetTop(bounds);   // 文本真实高度基于基线上边界高度
-    float imageTopHeight = (textHeight - h) / 2; // 居中文本距离图片上边界高度
+    float imageTopHeight = (drawHeight - h) / 2; // 居中文本距离图片上边界高度
     float textY = imageTopHeight - top;          // 居中文本左下角Y坐标
-    float textX = (textHeight - w) / 2;          // 居中文本左下角X坐标
+    float textX = (drawHeight - w) / 2;          // 居中文本左下角X坐标
     OH_Drawing_TextBlob *textBlob =
         OH_Drawing_TextBlobCreateFromString(str, font, TEXT_ENCODING_UTF8); // 通过字符串创建文本对象
     OH_Drawing_BrushSetColor(brush, fontColor);                             // 设置画刷颜色
@@ -394,12 +491,13 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     float *textWidth = &w;                                                                     // 文本宽度
     OH_Drawing_FontMeasureText(font, str, strlen(str), TEXT_ENCODING_UTF8, bounds, textWidth); // 获取文本宽度和边界
     // 画圆和背景颜色
-    float rectWidth = w + 2 * padding;                                              // 矩形宽度
-    OH_Drawing_Bitmap *bitmap = initGraphics2D(rectWidth, textHeight, colorFormat); // 初始化bitmap
+    float drawHeight = clampDrawSize(textHeight);           // 位图高度钳制，防异常尺寸放大内存分配
+    float rectWidth = clampDrawSize(w + 2 * padding);       // 矩形宽度钳制（文本宽度可能因超长文本放大）
+    OH_Drawing_Bitmap *bitmap = initGraphics2D(rectWidth, drawHeight, colorFormat); // 初始化bitmap
     OH_Drawing_Canvas *bitmapCanvas = OH_Drawing_CanvasCreate();                    // 创建一个画布对象
     OH_Drawing_CanvasBind(bitmapCanvas, bitmap); // 将Canvas与bitmap绑定，Canvas绘制的内容会输出到绑定的bitmap内存中
     OH_Drawing_CanvasClear(bitmapCanvas, backgroundColor);                           // 使用透明色去清空画布
-    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, rectWidth, textHeight); // 创建矩形对象
+    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, rectWidth, drawHeight); // 创建矩形对象
     OH_Drawing_RoundRect *roundRect = OH_Drawing_RoundRectCreate(rect, radius, radius); // 创建圆角矩形对象
     OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                                 // 创建画刷对象
     OH_Drawing_BrushSetAntiAlias(brush, true);                                          // 设置画刷抗锯齿
@@ -408,7 +506,7 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, roundRect);                            // 画圆角矩形
     float h = OH_Drawing_RectGetHeight(bounds);                                         // 文本真实高度
     float top = OH_Drawing_RectGetTop(bounds);   // 文本真实高度基于基线上边界高度
-    float imageTopHeight = (textHeight - h) / 2; // 居中文本距离图片上边界高度
+    float imageTopHeight = (drawHeight - h) / 2; // 居中文本距离图片上边界高度
     float textY = imageTopHeight - top;          // 居中文本左下角Y坐标
     float textX = padding;                       // 居中文本左下角X坐标
     OH_Drawing_TextBlob *textBlob =
@@ -473,18 +571,19 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_FontMeasureText(font2, str2, strlen(str2), TEXT_ENCODING_UTF8, bounds2,
                                textWidth2); // 获取文本宽度和边界
     // 画圆和背景颜色
-    float rectWidth = borderWidth + padding + w1 + lineLeftPadding + dividingLineWidth + lineRightPadding + w2 +
-                      padding + borderWidth; // 矩形宽度
+    float drawHeight = clampDrawSize(textHeight); // 位图高度钳制，防异常尺寸放大内存分配
+    float rectWidth = clampDrawSize(borderWidth + padding + w1 + lineLeftPadding + dividingLineWidth +
+                                    lineRightPadding + w2 + padding + borderWidth); // 矩形宽度钳制
     float internalRectWidth =
         padding + w1 + lineLeftPadding + dividingLineWidth + lineRightPadding + w2 + padding; // 内部矩形宽度
-    float internalRectHeight = textHeight - 2 * borderWidth;                                  // 内部矩形高度
-    OH_Drawing_Bitmap *bitmap = initGraphics2D(rectWidth, textHeight, colorFormat);           // 初始化bitmap
+    float internalRectHeight = drawHeight - 2 * borderWidth;                                  // 内部矩形高度
+    OH_Drawing_Bitmap *bitmap = initGraphics2D(rectWidth, drawHeight, colorFormat);           // 初始化bitmap
     OH_Drawing_Canvas *bitmapCanvas = OH_Drawing_CanvasCreate(); // 创建一个画布对象
     OH_Drawing_CanvasBind(bitmapCanvas, bitmap); // 将Canvas与bitmap绑定，Canvas绘制的内容会输出到绑定的bitmap内存中
     OH_Drawing_CanvasClear(bitmapCanvas, backgroundColor);                           // 使用透明色去清空画布
-    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, rectWidth, textHeight); // 创建矩形对象
+    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, rectWidth, drawHeight); // 创建矩形对象
     OH_Drawing_RoundRect *roundRect =
-        OH_Drawing_RoundRectCreate(rect, textHeight / 2, textHeight / 2); // 创建圆角矩形对象
+        OH_Drawing_RoundRectCreate(rect, drawHeight / 2, drawHeight / 2); // 创建圆角矩形对象
     OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                   // 创建画刷对象
     OH_Drawing_BrushSetAntiAlias(brush, true);                            // 设置画刷抗锯齿
     OH_Drawing_BrushSetColor(brush, borderColor);                         // 设置画刷颜色
@@ -499,7 +598,7 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, internalRoundRect);                              // 画圆角矩形
     float h1 = OH_Drawing_RectGetHeight(bounds1);                                                 // 文本真实高度
     float top1 = OH_Drawing_RectGetTop(bounds1);   // 文本真实高度基于基线上边界高度
-    float imageTopHeight1 = (textHeight - h1) / 2; // 居中文本距离图片上边界高度
+    float imageTopHeight1 = (drawHeight - h1) / 2; // 居中文本距离图片上边界高度
     float textY1 = imageTopHeight1 - top1;         // 居中文本左下角Y坐标
     float textX1 = padding + borderWidth;          // 居中文本左下角X坐标
     OH_Drawing_TextBlob *textBlob1 =
@@ -513,7 +612,7 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                        // 画背景
     float h2 = OH_Drawing_RectGetHeight(bounds2);                             // 文本真实高度
     float top2 = OH_Drawing_RectGetTop(bounds2);   // 文本真实高度基于基线上边界高度
-    float imageTopHeight2 = (textHeight - h2) / 2; // 居中文本距离图片上边界高度
+    float imageTopHeight2 = (drawHeight - h2) / 2; // 居中文本距离图片上边界高度
     float textY2 = imageTopHeight2 - top2;         // 居中文本左下角Y坐标
     float textX2 =
         borderWidth + padding + w1 + lineLeftPadding + dividingLineWidth + lineRightPadding; // 居中文本左下角X坐标
@@ -521,7 +620,7 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     float lineX1 = borderWidth + padding + w1 + lineLeftPadding;
     float lineX2 = borderWidth + padding + w1 + lineLeftPadding + dividingLineWidth;
     float lineY1 = borderWidth + padding;
-    float lineY2 = textHeight - padding - borderWidth;
+    float lineY2 = drawHeight - padding - borderWidth;
     OH_Drawing_Rect *lineRect = OH_Drawing_RectCreate(lineX1, lineY1, lineX2, lineY2); // 创建矩形对象
     OH_Drawing_BrushSetColor(brush, dividingLineColor);                                // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                 // 画背景

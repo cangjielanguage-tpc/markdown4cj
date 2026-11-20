@@ -50,7 +50,7 @@ export struct MarkdownLatexMathBlock {
   /**
    * 将解析任务加入全局队列
    * isQueued去重：避免@Watch高频触发时重复入队
-   * task 返回 Promise<void>：LatexParseQueue.processNext 会自动挂 .then/.catch，
+   * task 返回 Promise<void>：LatexParseQueue 在promise上自动挂 .then/.catch，
    * 即便 task 内部 promise 链丢 rejection 也能兜底推进队列，避免永久卡死。
    */
   private enqueueParse(): void {
@@ -145,7 +145,7 @@ export struct MarkdownLatexMathBlock {
   /**
    * 将数学公式文本解析成图片
    * 全局队列保证同一时间只有一个latexStringToImage调用
-   * 返回 Promise<void>：让 processNext 自动接管 .then/.catch，确保任何异步 rejection 都能推进队列
+   * 返回 Promise<void>：让 LatexParseQueue 在promise上自动接管 .then/.catch，确保任何异步 rejection 都能推进队列
    */
   private latexMathBlockParser(): Promise<void> {
     if (this.pixelMap !== undefined) {
@@ -170,7 +170,6 @@ export struct MarkdownLatexMathBlock {
     return latexStringToImage(strLatexMath, textSize, textColor, bgColor, colorFormat, resPath)
       .then((buffer: ArrayBuffer) => {
         if (!this.isAlive) {
-          LatexParseQueue.notifyDone()
           return
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
@@ -186,20 +185,17 @@ export struct MarkdownLatexMathBlock {
             } catch (e) {
               console.error('PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
             }
-            LatexParseQueue.notifyDone()
             return
           }
           this.pixelMap = pm
           this.imageData = buffer
           return pm.getImageInfo().then((info: image.ImageInfo) => {
             if (!this.isAlive) {
-              LatexParseQueue.notifyDone()
               return
             }
             this.imageWidth = info.size.width
             this.imageHeight = info.size.height
             this.isParserEnd = true
-            LatexParseQueue.notifyDone()
           }).catch((e: Error) => {
             console.error('latexMathBlockParser getImageInfo failed: '
               + (e instanceof Error ? e.stack : String(e)))
@@ -212,7 +208,6 @@ export struct MarkdownLatexMathBlock {
             if (this.isAlive) {
               this.isParserEnd = true
             }
-            LatexParseQueue.notifyDone()
           })
         }).catch((e: Error) => {
           console.error('latexMathBlockParser createPixelMap failed: '
@@ -225,7 +220,6 @@ export struct MarkdownLatexMathBlock {
           if (this.isAlive) {
             this.isParserEnd = true
           }
-          LatexParseQueue.notifyDone()
         })
       })
       .catch((e: Error) => {
@@ -234,7 +228,6 @@ export struct MarkdownLatexMathBlock {
         if (this.isAlive) {
           this.isParserEnd = true
         }
-        LatexParseQueue.notifyDone()
       })
   }
 }

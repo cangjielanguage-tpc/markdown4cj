@@ -3,119 +3,118 @@
  * 一次只处理一个公式，避免原生库并发调用导致卡死
  * 用于MarkdownLatexMathInline和MarkdownLatexMathBlock
  *
- * 容错策略（三层保护，避免队列永久卡死）：
- * 1. 同步异常：processNext 的 try/catch 捕获，清看门狗并 notifyDone
- * 2. 异步 rejection：task 若返回 Promise，自动 .then/.catch，捕获后清看门狗并 notifyDone
- * 3. 看门狗兜底：task 启动时挂 WATCHDOG_TIMEOUT_MS 定时器，
- *    task 内部正常调 notifyDone 时会先 clearWatchdog；
- *    若 task 内部 promise 链丢 rejection / 异步卡死 / 忘记调 notifyDone，
- *    看门狗超时强制 notifyDone 推进队列，保证 isRunning 不被永久占住。
+ * 完成契约：task返回Promise<void>，Promise resolve/reject即任务完成信号，
+ * 队列在promise上挂 .then/.catch 统一推进（推进发生在微任务，天然解栈，
+ * 无需setTimeout宏任务调度）。task内部不得自行通知完成。
  *
- * 向后兼容：现有调用方传入的 task 类型为 () => void（不返回 Promise），
- * 走"依赖 task 内部 notifyDone + 看门狗兜底"分支，行为与旧版一致。
+ * 容错策略（三层保护，避免队列永久卡死）：
+ * 1. 同步异常：task同步抛出时包装为Promise.reject，统一走异步catch路径
+ * 2. 异步 rejection：.catch捕获后推进队列
+ * 3. 看门狗兜底（唯一保留的定时器）：task启动时挂WATCHDOG_TIMEOUT_MS定时器，
+ *    promise链丢rejection / 异步卡死时超时强制推进队列，保证不被永久占住
+ *
+ * 并发约定（防竞态）：ArkTS单线程事件循环下不存在抢占式并发；
+ * 「检查isRunning+置位+取任务」收拢在pump的同一同步段（无await间隙）。
+ * 每个任务持有唯一序号，完成回调finish闭包绑定该序号：
+ * 看门狗强制推进或dispose后，迟到的promise完成因序号不匹配被丢弃，
+ * 不会误触新一轮任务状态（防双任务并发执行/漏调度）。
  */
 export class LatexParseQueue {
-  private static queue: Array<() => void | Promise<void>> = []
+  private static queue: Array<() => Promise<void>> = []
   private static isRunning: boolean = false
-  private static isNotifyScheduled: boolean = false
-  private static notifyTimerId: number = -1
   private static watchdogTimerId: number = -1
   private static readonly WATCHDOG_TIMEOUT_MS: number = 15000
+  // 任务流水号：每次启动任务递增；runningTaskId标识当前执行中的任务（-1表示无）
+  private static taskSeq: number = 0
+  private static runningTaskId: number = -1
 
   /**
    * 将LaTeX解析任务加入队列，若当前无任务在执行则立即开始
    *
-   * @param task LaTeX解析任务，可同步（() => void）或异步（() => Promise<void>）
+   * @param task LaTeX解析任务，返回Promise<void>，resolve/reject即完成信号
    */
-  static enqueue(task: () => void | Promise<void>): void {
+  static enqueue(task: () => Promise<void>): void {
     LatexParseQueue.queue.push(task)
-    if (!LatexParseQueue.isRunning) {
-      LatexParseQueue.processNext()
-    }
+    // 「检查isRunning+置位+取任务」在同一同步段内完成（pump无await间隙，
+    // ArkTS单线程事件循环内不可分割），消除判定与置位交错的竞争窗口
+    LatexParseQueue.pump()
   }
 
   /**
-   * 通知当前任务已完成，触发下一个任务
-   * 内部会先清看门狗，避免 task 正常完成后看门狗误触发
-   */
-  static notifyDone(): void {
-    LatexParseQueue.clearWatchdog()
-    if (LatexParseQueue.isNotifyScheduled) {
-      return
-    }
-    LatexParseQueue.isNotifyScheduled = true
-    LatexParseQueue.notifyTimerId = setTimeout(() => {
-      LatexParseQueue.notifyTimerId = -1
-      LatexParseQueue.isNotifyScheduled = false
-      LatexParseQueue.processNext()
-    }, 0)
-  }
-
-  /**
-   * 取消待执行的notify定时器与看门狗定时器并清空队列
-   * 用于应用退出或页面销毁时清理残留任务
+   * 取消看门狗定时器并清空队列
+   * 用于应用退出或页面销毁时清理残留任务；
+   * dispose后迟到的promise完成因runningTaskId=-1被finish丢弃
    */
   static dispose(): void {
     LatexParseQueue.clearWatchdog()
-    if (LatexParseQueue.notifyTimerId !== -1) {
-      clearTimeout(LatexParseQueue.notifyTimerId)
-      LatexParseQueue.notifyTimerId = -1
-    }
-    LatexParseQueue.isNotifyScheduled = false
     LatexParseQueue.isRunning = false
+    LatexParseQueue.runningTaskId = -1
     LatexParseQueue.queue = []
   }
 
   /**
-   * 取出并执行队列中的下一个任务
-   * 同步异常走 try/catch；异步异常走 .then/.catch；二者皆无时由看门狗兜底
+   * 队列泵：从队列头取任务并执行
+   * 检查isRunning+置位+shift取任务收拢在同一同步段（无await间隙）；
+   * 同步异常包装为Promise.reject统一走异步catch，推进只发生在微任务，无栈内嵌套
    */
-  private static processNext(): void {
-    if (LatexParseQueue.queue.length === 0) {
-      LatexParseQueue.isRunning = false
+  private static pump(): void {
+    // 有任务在执行则等其完成回调推进，避免双任务并发执行
+    if (LatexParseQueue.isRunning || LatexParseQueue.queue.length === 0) {
+      return
+    }
+    const task = LatexParseQueue.queue.shift()
+    if (task === undefined) {
       return
     }
     LatexParseQueue.isRunning = true
-    const task = LatexParseQueue.queue.shift()
-    if (task === undefined) {
+    LatexParseQueue.taskSeq++
+    LatexParseQueue.runningTaskId = LatexParseQueue.taskSeq
+    const taskId = LatexParseQueue.taskSeq
+    // 完成回调绑定本任务序号：看门狗强制推进或dispose后，
+    // 迟到的promise完成因序号不匹配被丢弃，不触碰新一轮任务状态
+    const finish = (): void => {
+      if (taskId !== LatexParseQueue.runningTaskId) {
+        return
+      }
+      LatexParseQueue.clearWatchdog()
       LatexParseQueue.isRunning = false
-      return
+      LatexParseQueue.runningTaskId = -1
+      LatexParseQueue.pump()
     }
     LatexParseQueue.startWatchdog()
-    let maybePromise: void | Promise<void>
+    let promise: Promise<void>
     try {
-      maybePromise = task()
+      promise = task()
     } catch (e) {
-      LatexParseQueue.clearWatchdog()
       console.error('LatexParseQueue task sync error: ' + (e instanceof Error ? e.stack : String(e)))
-      LatexParseQueue.notifyDone()
-      return
+      promise = Promise.reject(e as Error)
     }
-    if (maybePromise instanceof Promise) {
-      maybePromise.then(() => {
-        LatexParseQueue.clearWatchdog()
-        LatexParseQueue.notifyDone()
-      }).catch((e: Error) => {
-        LatexParseQueue.clearWatchdog()
-        console.error('LatexParseQueue task async error: ' + (e instanceof Error ? e.stack : String(e)))
-        LatexParseQueue.notifyDone()
-      })
-    }
-    // 若 task 不返回 Promise（现有调用方）：依赖 task 内部自行调用 notifyDone，
-    // 看门狗会在 WATCHDOG_TIMEOUT_MS 后兜底，防止 promise 链丢 rejection 或忘调 notifyDone
+    promise.then(() => {
+      finish()
+    }).catch((e: Error) => {
+      console.error('LatexParseQueue task async error: ' + (e instanceof Error ? e.stack : String(e)))
+      finish()
+    })
   }
 
   /**
    * 启动看门狗定时器（先清掉上一个，避免叠加）
-   * 超时后强制 notifyDone，保证队列在 task 异常丢失 notifyDone 时仍能推进
+   * 超时说明promise链丢rejection或异步卡死，强制推进队列防止永久卡死；
+   * 原任务的迟到完成由finish的序号校验拦截
    */
   private static startWatchdog(): void {
     LatexParseQueue.clearWatchdog()
     LatexParseQueue.watchdogTimerId = setTimeout(() => {
       LatexParseQueue.watchdogTimerId = -1
-      console.error('LatexParseQueue watchdog: task did not notify done within '
+      if (LatexParseQueue.runningTaskId === -1) {
+        // 任务已正常完成或已dispose：看门狗无需介入
+        return
+      }
+      console.error('LatexParseQueue watchdog: task did not finish within '
         + LatexParseQueue.WATCHDOG_TIMEOUT_MS + 'ms, forcing queue advance')
-      LatexParseQueue.notifyDone()
+      LatexParseQueue.isRunning = false
+      LatexParseQueue.runningTaskId = -1
+      LatexParseQueue.pump()
     }, LatexParseQueue.WATCHDOG_TIMEOUT_MS)
   }
 

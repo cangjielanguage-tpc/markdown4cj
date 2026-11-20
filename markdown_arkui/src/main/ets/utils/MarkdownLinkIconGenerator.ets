@@ -49,6 +49,29 @@ interface TypeColorPairNum {
   background: number
 }
 
+// 链接图标位图尺寸硬上限：文本码点数与预估位图宽度(px)。
+// 链接文本（外部Markdown内容、长度无上限）会按 字号×字符数 放大native位图分配，
+// 数MB文本即触发数百MB级native分配（native OOM属进程崩溃，ArkTS无法兜底），
+// 超限直接降级为Text/Span渲染（generateLinkIconPixelMap返回undefined，调用方不生成图标）
+const MAX_LINK_ICON_RUNE_COUNT = 64
+const MAX_LINK_ICON_WIDTH_PX = 4096
+
+/**
+ * 判断文本是否超出链接图标绘制上限
+ *
+ * @param str 待绘制文本
+ * @param fontSize 字号(px)
+ * @return true表示超限，应降级为Text渲染
+ */
+function isLinkIconTextTooLong(str: string, fontSize: number): boolean {
+  const runeCount = Array.from(str).length
+  if (runeCount > MAX_LINK_ICON_RUNE_COUNT) {
+    return true
+  }
+  // 预估位图宽度：单字符宽度上界≈字号（CJK全宽），超宽即超限
+  return fontSize * runeCount > MAX_LINK_ICON_WIDTH_PX
+}
+
 /**
  * ResourceColor转number（ARGB uint32）
  * 处理三种情况：
@@ -203,6 +226,9 @@ export function generateLinkIconPixelMap(
   if (iconInfo.iconType === LINK_ICON_TYPE_CIRCLE) {
     const textHeight = vp2px(linkTheme.linkCircleIconRadius)
     const fontSize = vp2px(linkTheme.linkCircleIconTextSize)
+    if (isLinkIconTextTooLong(trimmedText, fontSize)) {
+      return Promise.resolve(undefined)
+    }
     const fontColor = resourceColorToNumber(linkTheme.linkCircleIconTextColor)
     const fontBgColor = resourceColorToNumber(linkTheme.linkCircleIconButtonBackgroundColor)
     const bgColor = resourceColorToNumber(linkTheme.linkCircleIconBackgroundColor)
@@ -210,6 +236,9 @@ export function generateLinkIconPixelMap(
   } else if (iconInfo.iconType === LINK_ICON_TYPE_RECT) {
     const textHeight = vp2px(lengthToNumber(linkTheme.linkRectIconHeight))
     const fontSize = vp2px(linkTheme.linkRectIconTextSize)
+    if (isLinkIconTextTooLong(trimmedText, fontSize)) {
+      return Promise.resolve(undefined)
+    }
     const fontColor = resourceColorToNumber(linkTheme.linkRectIconTextColor)
     const fontBgColor = resourceColorToNumber(linkTheme.linkRectIconButtonBackgroundColor)
     const bgColor = resourceColorToNumber(linkTheme.linkRectIconBackgroundColor)
@@ -222,6 +251,10 @@ export function generateLinkIconPixelMap(
     const colors = typeStringColorNum(iconInfo.typeStr)
     const textHeight = vp2px(lengthToNumber(linkTheme.linkRectToolIconHeight))
     const fontSize = vp2px(linkTheme.linkRectToolIconTextSize)
+    // TOOL类型：链接文本与类型字符串都会参与绘制与位图宽度计算，双双校验
+    if (isLinkIconTextTooLong(trimmedText, fontSize) || isLinkIconTextTooLong(iconInfo.typeStr, fontSize)) {
+      return Promise.resolve(undefined)
+    }
     const fontColor = colors.foreground
     const fontBgColor = resourceColorToNumber(linkTheme.linkRectToolIconButtonBackgroundColor)
     const bgColor = resourceColorToNumber(linkTheme.linkRectToolIconBackgroundColor)

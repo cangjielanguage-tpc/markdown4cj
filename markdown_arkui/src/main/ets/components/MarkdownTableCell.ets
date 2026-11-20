@@ -935,8 +935,8 @@ export struct MarkdownTableCell {
             maxHeight: this.imageTheme.imageMaxHeight
           })
           .onClick(() => {
-            if (item.isLink) {
-              this.linkCallback?.(item.linkUrl ?? "")
+            if (item.isLink && item.linkUrl !== undefined) {
+              this.linkCallback?.(item.linkUrl)
             } else {
               this.imageCallback?.(item.imageUrl ?? "")
             }
@@ -1278,7 +1278,7 @@ export struct MarkdownTableCell {
 
   /**
    * 数学公式异步加载入队（从onListChanged提取，refreshData直接调用，不依赖@Watch链）
-   * task 返回 Promise<void>：LatexParseQueue.processNext 会自动挂 .then/.catch，
+   * task 返回 Promise<void>：LatexParseQueue 在promise上自动挂 .then/.catch，
    * 即便 task 内部 promise 链丢 rejection 也能兜底推进队列，避免永久卡死。
    */
   private tryEnqueueLatexLoading(): void {
@@ -1459,7 +1459,7 @@ export struct MarkdownTableCell {
    * 异步加载数学公式图片（通过全局队列串行调用latexStringToImage）
    * 流式输出时latex文本可能增长，需捕获调用时的文本，回调中校验是否已过期，
    * 避免旧文本的图片覆盖新状态（旧图片闪烁/内存泄漏）。
-   * 返回 Promise<void>：让 processNext 自动接管 .then/.catch，确保任何异步 rejection 都能推进队列。
+   * 返回 Promise<void>：让 LatexParseQueue 在promise上自动接管 .then/.catch，确保任何异步 rejection 都能推进队列。
    *
    * @param item 节点视图
    */
@@ -1479,7 +1479,6 @@ export struct MarkdownTableCell {
         .then((buffer: ArrayBuffer) => {
           if (!this.isAlive) {
             item.latexIsLoading = false
-            LatexParseQueue.notifyDone()
             return
           }
           const imageSource: image.ImageSource = image.createImageSource(buffer)
@@ -1496,7 +1495,6 @@ export struct MarkdownTableCell {
                 console.error('TableCell PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
               }
               item.latexIsLoading = false
-              LatexParseQueue.notifyDone()
               return
             }
             return pm.getImageInfo().then((info: image.ImageInfo) => {
@@ -1507,7 +1505,6 @@ export struct MarkdownTableCell {
                   console.error('TableCell PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
                 }
                 item.latexIsLoading = false
-                LatexParseQueue.notifyDone()
                 return
               }
               // 流式输出中文本可能已变化，丢弃过期结果
@@ -1518,7 +1515,6 @@ export struct MarkdownTableCell {
                 } catch (e) {
                   console.error('TableCell PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
                 }
-                LatexParseQueue.notifyDone()
                 this.list = [...this.list]
                 return
               }
@@ -1538,7 +1534,6 @@ export struct MarkdownTableCell {
               this.cellWidthTracker.clearCellWidth(this.tableBlockCellRow, this.tableBlockCellCell)
               this.cellWidthTracker.setFallback(this.tableBlockCellRow, this.tableBlockCellCell, this.latexSpanWidth(item))
               this.list = [...this.list] // 触发重渲染
-              LatexParseQueue.notifyDone()
             }).catch((e: Error) => {
               console.error('TableCell loadLatexImage getImageInfo failed: '
                 + (e instanceof Error ? e.stack : String(e)))
@@ -1551,7 +1546,6 @@ export struct MarkdownTableCell {
               if (item.nodeText === capturedNodeText) {
                 item.latexIsLoading = false
               }
-              LatexParseQueue.notifyDone()
             })
           }).catch((e: Error) => {
             console.error('TableCell loadLatexImage createPixelMap failed: '
@@ -1564,7 +1558,6 @@ export struct MarkdownTableCell {
             if (item.nodeText === capturedNodeText) {
               item.latexIsLoading = false
             }
-            LatexParseQueue.notifyDone()
           })
         })
         .catch((e: Error) => {
@@ -1573,12 +1566,10 @@ export struct MarkdownTableCell {
           if (item.nodeText === capturedNodeText) {
             item.latexIsLoading = false
           }
-          LatexParseQueue.notifyDone()
         })
     } catch (e) {
       console.error('TableCell loadLatexImage sync error: ' + (e instanceof Error ? e.stack : String(e)))
       item.latexIsLoading = false
-      LatexParseQueue.notifyDone()
       return Promise.resolve()
     }
   }

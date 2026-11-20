@@ -32,6 +32,17 @@ export class MarkdownConfiguration {
   setLinkCallback(cb: (url: string) => void): MarkdownConfiguration
 
   /**
+   * 设置链接URL过滤器（渲染与点击回调前统一过滤，全量/增量解析路径均生效）
+   * 默认实现拦截 javascript:/vbscript:/data:/file: 等危险协议（返回undefined=拦截，
+   * 该链接不下发URL、点击回调不触发、曝光不上报），其余URL（http/https/mailto、
+   * 页内锚点、业务侧base64伪协议等）原样放行；
+   * 被拦截的链接仍参与渲染（linkIsIcon开启时会显示图标），但URL与点击回调均不下发
+   * @param cb 过滤器(url：原始链接URL 返回值：放行的URL（可改写），返回undefined表示拦截。
+   *            可复用导出函数defaultLinkUrlFilter实现叠加过滤)
+   */
+  setLinkUrlFilter(cb: (url: string | undefined) => string | undefined): MarkdownConfiguration
+
+  /**
    * 设置元素曝光回调
    * @param cb 曝光回调(event：{ eventType, visible, data })
    */
@@ -182,6 +193,40 @@ export class MarkdownConfiguration {
    */
   getMarkdownHighlightParagraph(): MarkdownHighlightParagraph
 }
+```
+
+### function defaultLinkUrlFilter
+
+链接URL默认过滤器（MarkdownConfiguration#setLinkUrlFilter 的默认实现，已导出供宿主复用）。
+拦截 javascript:/vbscript:/data:/file: 等危险协议（返回undefined=拦截），
+其余URL（http/https/mailto、页内锚点、业务侧base64伪协议等）原样放行。
+
+```ets
+export function defaultLinkUrlFilter(url: string | undefined): string | undefined
+```
+
+用法示例：
+
+```ets
+// 场景一：默认黑名单之上追加自定义拦截规则（跟随库版本升级默认黑名单）
+config.setLinkUrlFilter((url: string | undefined): string | undefined => {
+  const filtered = defaultLinkUrlFilter(url)
+  if (filtered === undefined) {
+    return undefined
+  }
+  if (filtered.includes('evil-site.com')) {
+    return undefined // 自定义拦截规则
+  }
+  return filtered
+})
+
+// 场景二：整体替换为严格白名单（仅放行http/https/mailto与页内锚点）
+config.setLinkUrlFilter((url: string | undefined): string | undefined => {
+  const allow = url !== undefined && url.length > 0 &&
+    (url.toLowerCase().startsWith('http://') || url.toLowerCase().startsWith('https://') ||
+    url.toLowerCase().startsWith('mailto:') || url.startsWith('#'))
+  return allow ? url : undefined
+})
 ```
 
 ### class MarkdownPlugin

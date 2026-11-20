@@ -741,8 +741,8 @@ export struct MarkdownHeading {
         .verticalAlign(ImageSpanAlignment.CENTER)
         .constraintSize({ maxWidth: this.theme.imageTheme.imageMaxWidth ?? '100%', maxHeight: this.theme.imageTheme.imageMaxHeight})
         .onClick(()=>{
-          if(item.isLink){
-            this.linkCallback?.(item.linkUrl ?? "")
+          if (item.isLink && item.linkUrl !== undefined) {
+            this.linkCallback?.(item.linkUrl)
           }else{
             this.imageCallback?.(item.imageUrl ?? "")
           }
@@ -1266,7 +1266,7 @@ export struct MarkdownHeading {
 
   /**
    * 数学公式异步加载入队（从onListChanged提取，refreshData直接调用，不依赖@Watch链）
-   * task 返回 Promise<void>：LatexParseQueue.processNext 会自动挂 .then/.catch，
+   * task 返回 Promise<void>：LatexParseQueue 在promise上自动挂 .then/.catch，
    * 即便 task 内部 promise 链丢 rejection 也能兜底推进队列，避免永久卡死。
    */
   private tryEnqueueLatexLoading(): void {
@@ -1432,7 +1432,7 @@ export struct MarkdownHeading {
    * 异步加载数学公式图片
    * 流式输出时latex文本可能增长，需捕获调用时的文本，回调中校验是否已过期，
    * 避免旧文本的图片覆盖新状态（旧图片闪烁/内存泄漏）。
-   * 返回 Promise<void>：让 processNext 自动接管 .then/.catch，确保任何异步 rejection 都能推进队列。
+   * 返回 Promise<void>：让 LatexParseQueue 在promise上自动接管 .then/.catch，确保任何异步 rejection 都能推进队列。
    *
    * @param item 节点视图
    */
@@ -1451,7 +1451,6 @@ export struct MarkdownHeading {
       .then((buffer: ArrayBuffer) => {
         if (!this.isAlive) {
           item.latexIsLoading = false
-          LatexParseQueue.notifyDone()
           return
         }
         const imageSource: image.ImageSource = image.createImageSource(buffer)
@@ -1468,7 +1467,6 @@ export struct MarkdownHeading {
               console.error('Heading PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
             }
             item.latexIsLoading = false
-            LatexParseQueue.notifyDone()
             return
           }
           return pm.getImageInfo().then((info: image.ImageInfo) => {
@@ -1479,7 +1477,6 @@ export struct MarkdownHeading {
                 console.error('Heading PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
               }
               item.latexIsLoading = false
-              LatexParseQueue.notifyDone()
               return
             }
             // 流式输出中文本可能已变化，丢弃过期结果
@@ -1490,7 +1487,6 @@ export struct MarkdownHeading {
               } catch (e) {
                 console.error('Heading PixelMap release failed: ' + (e instanceof Error ? e.stack : String(e)))
               }
-              LatexParseQueue.notifyDone()
               this.list = [...this.list]
               return
             }
@@ -1508,7 +1504,6 @@ export struct MarkdownHeading {
             item.latexImageHeight = info.size.height
             item.latexIsLoading = false
             this.list = [...this.list]
-            LatexParseQueue.notifyDone()
           }).catch((e: Error) => {
             console.error('Heading loadLatexImage getImageInfo failed: '
               + (e instanceof Error ? e.stack : String(e)))
@@ -1521,7 +1516,6 @@ export struct MarkdownHeading {
             if (item.nodeText === capturedNodeText) {
               item.latexIsLoading = false
             }
-            LatexParseQueue.notifyDone()
           })
         }).catch((e: Error) => {
           console.error('Heading loadLatexImage createPixelMap failed: '
@@ -1534,7 +1528,6 @@ export struct MarkdownHeading {
           if (item.nodeText === capturedNodeText) {
             item.latexIsLoading = false
           }
-          LatexParseQueue.notifyDone()
         })
       })
       .catch((e: Error) => {
@@ -1543,7 +1536,6 @@ export struct MarkdownHeading {
         if (item.nodeText === capturedNodeText) {
           item.latexIsLoading = false
         }
-        LatexParseQueue.notifyDone()
       })
   }
 

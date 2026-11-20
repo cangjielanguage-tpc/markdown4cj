@@ -1032,6 +1032,33 @@ function parseStyleLength(value: string): number | undefined {
 }
 
 /**
+ * 链接URL默认过滤器（纵深防御）
+ *
+ * 拦截 javascript:/vbscript:/data:/file: 等可执行/本地访问协议的链接，
+ * 命中拦截返回undefined（链接点击回调不触发、曝光不上报）；
+ * 其余URL（http/https/mailto、页内锚点、业务侧base64伪协议等）原样放行，
+ * 保证既有链接图标（TOOL类型）与锚点跳转场景不受影响。
+ *
+ * 宿主契约：组件将过滤后的linkUrl下发渲染与linkCallback；如需更严格的
+ * 白名单策略（仅放行http/https/mailto），可通过
+ * MarkdownConfiguration#setLinkUrlFilter 覆盖默认实现。
+ *
+ * @param url 原始链接URL（undefined原样透传）
+ * @return 放行的URL；被拦截返回undefined
+ */
+export function defaultLinkUrlFilter(url: string | undefined): string | undefined {
+  if (url === undefined || url.length === 0) {
+    return url
+  }
+  const lowerUrl = url.toLowerCase()
+  if (lowerUrl.startsWith('javascript:') || lowerUrl.startsWith('vbscript:') ||
+    lowerUrl.startsWith('data:') || lowerUrl.startsWith('file:')) {
+    return undefined
+  }
+  return url
+}
+
+/**
  * URL-safe Base64解码
  *
  * 将URL-safe Base64（使用_和-）转换为标准Base64后解码为UTF-8字符串。

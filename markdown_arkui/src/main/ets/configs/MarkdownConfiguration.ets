@@ -2,6 +2,7 @@ import { MarkdownTheme } from "../theme/MarkdownTheme"
 import { MarkdownHighlightParagraph } from "./MarkdownHighlightParagraph"
 import { MarkdownNodeViewString } from "./MarkdownNodeViewString"
 import { MarkdownExposureEvent } from "../model/MarkdownExposureEvent"
+import { defaultLinkUrlFilter } from "../utils/MarkdownUtils"
 
 /**
  * markdown配置
@@ -28,6 +29,7 @@ export class MarkdownConfiguration {
   customLongPressCallback?: (str: string) => void = undefined // 自定义长按事件
   paragraphHeadingAnimationStart?: () => void = undefined // 段落动画开始回调
   paragraphHeadingAnimationEnd?: () => void = undefined // 段落动画结束回调
+  linkUrlFilter: (url: string | undefined) => string | undefined = defaultLinkUrlFilter // 链接URL过滤器（默认拦截javascript:/vbscript:/data:/file:，返回undefined表示拦截）
 
   markdownHighlightParagraph: MarkdownHighlightParagraph = new MarkdownHighlightParagraph() // 高亮段落设置
   markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString() // 获取全局文本
@@ -47,6 +49,19 @@ export class MarkdownConfiguration {
    */
   setLinkCallback(cb: (url: string) => void): MarkdownConfiguration {
     this.linkCallback = cb
+    return this
+  }
+
+  /**
+   * 设置链接URL过滤器（渲染与点击回调前统一过滤）
+   * 默认实现拦截 javascript:/vbscript:/data:/file: 等危险协议（返回undefined=拦截，点击回调不触发）。
+   * 如需更严格策略（如仅放行http/https/mailto），可覆盖此过滤器；
+   * 被拦截的链接仍参与渲染（linkIsIcon开启时会显示图标），但URL与点击回调均不下发。
+   *
+   * @param cb 过滤器(url：原始链接URL 返回值：放行的URL，返回undefined表示拦截)
+   */
+  setLinkUrlFilter(cb: (url: string | undefined) => string | undefined): MarkdownConfiguration {
+    this.linkUrlFilter = cb
     return this
   }
 

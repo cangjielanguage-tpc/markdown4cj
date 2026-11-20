@@ -6,11 +6,83 @@ import {
   colorStringToColor,
   fontWeightToValue,
   strToLengthNumber,
-  parsePicStyle
+  parsePicStyle,
+  defaultLinkUrlFilter
 } from "./MarkdownUtils"
 import { computeLinkIconInfo } from "./MarkdownLinkIconGenerator"
 import { CustomViewRegistry } from "../plugin/CustomViewRegistry"
 import { ArrayList } from "@kit.ArkTS"
+
+/**
+ * 当前生效的链接URL过滤器
+ * 解析前由组件（MarkdownComponent.applyParseResult）注入 MarkdownConfiguration.linkUrlFilter，
+ * 解析与回调前统一过滤：Link/HeadLink/CustomCardLink 的 linkUrl 赋值处均经过此过滤器。
+ * 组件侧为单线程同步解析，注入与使用不存在并发竞争。
+ */
+let activeLinkUrlFilter: (url: string | undefined) => string | undefined = defaultLinkUrlFilter
+
+/**
+ * 注入链接URL过滤器（每次解析前调用）
+ *
+ * @param filter 过滤器（undefined入参原样透传，非白名单URL应返回undefined表示拦截）
+ */
+export function setActiveLinkUrlFilter(filter: (url: string | undefined) => string | undefined): void {
+  activeLinkUrlFilter = filter
+}
+
+// nodeToNodeView递归深度上限：输入树来自markdown_parser_hybrid解析结果（外部输入），
+// 深嵌套（数万层引用/强调/列表嵌套）会触发ArkTS栈溢出导致进程崩溃（CWE-674）。
+// 超限子树降级为纯文本（显式栈迭代收集，不再递归）
+const NODE_TO_VIEW_MAX_DEPTH = 256
+let nodeToViewCurrentDepth = 0
+
+/**
+ * 超限降级：显式栈迭代收集子树中的文本（Text/Code字面量），拼接为单个Text节点追加
+ * 避免深嵌套子树继续递归；顺序按文档序（子节点逆序入栈保证弹出顺序一致）
+ */
+function appendSubtreeAsText(
+  sourceJsNode: JsNodeImpl,
+  targetParentView: NodeView,
+  inheritedStyleView: NodeView
+): void {
+  const parts: string[] = []
+  const stack: JsNodeImpl[] = []
+  let child = sourceJsNode.firstChild
+  while (child !== undefined) {
+    stack.push(child)
+    child = child.next
+  }
+  // 栈反转使弹出顺序与文档顺序一致
+  stack.reverse()
+  while (stack.length > 0) {
+    const node = stack.pop()
+    if (node === undefined) {
+      break
+    }
+    const nodeType = node.nodeType
+    if (nodeType === 'Text' || nodeType === 'Code') {
+      parts.push(node.literal ?? "")
+    } else if (nodeType === 'SoftLineBreak') {
+      parts.push(" ")
+    } else if (nodeType === 'HardLineBreak') {
+      parts.push("\n")
+    }
+    const subChildren: JsNodeImpl[] = []
+    let sub = node.firstChild
+    while (sub !== undefined) {
+      subChildren.push(sub)
+      sub = sub.next
+    }
+    for (let i = subChildren.length - 1; i >= 0; i--) {
+      stack.push(subChildren[i])
+    }
+  }
+  const textView = new NodeView()
+  textView.nodeType = 'Text'
+  textView.copyStyleFrom(inheritedStyleView)
+  textView.nodeText = parts.join("")
+  targetParentView.children.push(textView)
+}
 
 /**
  * 递归查找节点所有子节点中第一个Image节点的destination
@@ -324,7 +396,8 @@ function updateReusedLinkNode(
   currentJsNode: JsNodeImpl,
   nodeType: string
 ): void {
-  const newUrl: string | undefined = currentJsNode.destination
+  // linkUrl统一过滤：复用路径与新构建路径走同一过滤器，保证增量更新前后契约一致
+  const newUrl: string | undefined = activeLinkUrlFilter(currentJsNode.destination)
   const newText: string = getLinkText(currentJsNode)
   if (prevChild.linkUrl !== newUrl || prevChild.nodeText !== newText) {
     prevChild.linkUrl = newUrl
@@ -431,7 +504,8 @@ function updateReusedLeafNode(
 }
 
 /**
- * 解析处理，将JsNode转换成NodeView
+ * 解析处理，将JsNode转换成NodeView（带递归深度防护的对外入口）
+ * 深度超限时子树降级为纯文本，防止外部输入深嵌套触发ArkTS栈溢出
  *
  * @param sourceJsNode 源节点JsNode
  * @param targetParentView 目标父节点View - 子节点将添加到此节点
@@ -439,6 +513,30 @@ function updateReusedLeafNode(
  * @param previousChildren 上一轮的children，用于增量复用
  */
 export function nodeToNodeView(
+  sourceJsNode: JsNodeImpl,
+  targetParentView: NodeView,
+  inheritedStyleView: NodeView,
+  previousChildren?: NodeView[],
+  highlightSelectedList?: ArrayList<string>,
+  inheritedUsedIndices?: Set<number>
+): void {
+  if (nodeToViewCurrentDepth >= NODE_TO_VIEW_MAX_DEPTH) {
+    appendSubtreeAsText(sourceJsNode, targetParentView, inheritedStyleView)
+    return
+  }
+  nodeToViewCurrentDepth++
+  try {
+    nodeToNodeViewInternal(sourceJsNode, targetParentView, inheritedStyleView, previousChildren,
+      highlightSelectedList, inheritedUsedIndices)
+  } finally {
+    nodeToViewCurrentDepth--
+  }
+}
+
+/**
+ * nodeToNodeView的实际实现（内部递归统一走带深度防护的nodeToNodeView入口）
+ */
+function nodeToNodeViewInternal(
   sourceJsNode: JsNodeImpl,
   targetParentView: NodeView,
   inheritedStyleView: NodeView,
@@ -504,7 +602,7 @@ export function nodeToNodeView(
       // ===== 链接（块状化时作为叶子，否则平铺子节点） =====
       case 'Link': // 链接
         currentView.isLink = true
-        currentView.linkUrl = currentJsNode.destination
+        currentView.linkUrl = activeLinkUrlFilter(currentJsNode.destination) // 统一过滤后再下发渲染与回调
         currentView.linkTitle = currentJsNode.title
         if (inheritedStyleView.isLinkStyle) {
           currentView.nodeText = getLinkText(currentJsNode)
@@ -518,7 +616,7 @@ export function nodeToNodeView(
         break
       case 'HeadLink': // 标题链接
         currentView.isLink = true
-        currentView.linkUrl = currentJsNode.destination
+        currentView.linkUrl = activeLinkUrlFilter(currentJsNode.destination) // 统一过滤后再下发渲染与回调
         currentView.linkTitle = currentJsNode.title
         currentView.headLinkIndex = currentJsNode.headIndex
         if (inheritedStyleView.isLinkStyle) {
@@ -841,7 +939,7 @@ export function nodeToNodeView(
         while (cclChild !== undefined) {
           const childType = cclChild.nodeType
           if (childType === 'Link' || childType === 'HeadLink') {
-            currentView.linkUrl = cclChild.destination
+            currentView.linkUrl = activeLinkUrlFilter(cclChild.destination) // 统一过滤后再下发渲染与回调
             currentView.linkTitle = cclChild.title
             currentView.nodeText = getLinkText(cclChild)
           }
