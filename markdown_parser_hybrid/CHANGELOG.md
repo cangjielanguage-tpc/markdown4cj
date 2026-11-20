@@ -1,11 +1,16 @@
 # 2.0.1
 
-1. 性能优化: 新增 `JsNodeTreeBuilder.buildNodes` 批量建树接口，仓颉侧每个分片将整棵子树序列化为扁平事件数组单次跨语言调用推送（rest 参数接收，单次调用实参接近 200 时在事件边界自动分块），跨语言回调次数从每节点 4~10 次降为每分片 1 次
-2. 批量能力自动探测：builder 不含 `buildNodes` 时（自定义鸭子类型实现）自动退回旧逐事件回调路径，行为与旧版一致
-3. 修复 parse 阶段异常时 Promise 永不 settle 的问题（catch 块中 throw 使 reject 不可达，ArkTS 侧 await 永久挂死）
-4. 修复 `JsNodeImpl.putImageStyles` 在节点未持有图片样式时把 `undefined` 拼入 `ImageStyles` 数组的问题（与 `JsNodeSendableImpl` 行为对齐）
-5. **行为变更**：`toStr` 与 `SourceSpan` 统一由 `debug` 开关控制（默认 `false`）。`debug` 关闭时 `includeSourceSpans` 不再生效、`toStr` 为空串，需要节点内容或位置信息（如 `printNode`、增量解析）时必须显式传 `debug: true`
-6. 修复图片样式（变长事件 `7`）超过仓颉→ArkTS 单次调用 255 实参上限的问题：批量路径按 `max(1, min(chunkSize-2, 253))` 个样式分片，非批量路径按 255 个值分片多次调用 `putImageStyles`；新增 300 样式回归用例与 `buildNodes` 实参上限断言
+1. 性能优化：新增批量建树协议 `buildNodes` 与批量构建器 `JsNodeTreeBuilderBatch`（已从 `Index.ets` 导出）。仓颉侧把节点树序列化为扁平数字事件数组，在事件边界累积到 `buildNodesChunkSize`（默认 200）后单次跨语言调用推送，一个 `postJSTask` 对应一个包，推送次数 ≈ `ceil(总事件实参 / chunkSize)`；跨语言回调次数由每节点 4~10 次降为每分片 1 次。release 构建端到端实测（全量 202690 字符 / 6460 节点）批量较逐事件建树快约 1.5~1.7 倍
+2. 新增 `Options.buildNodesChunkSize`：批量建树单次推送的事件实参上限，同时作为单个 `postJSTask` 的累积上限（task 边界跟随包边界）；非正值回退 200，超过 255 钳制为 255（仓颉调用 ArkTS 互操作方法最多 255 个实参）
+3. 批量能力自动探测：builder 不含 `buildNodes` 时（自定义鸭子类型实现）自动退回逐事件回调路径，行为与旧版一致
+4. 批量协议优化：节点类型与字段改为数字 ID 传输（字段 1~29，其中 `29=toStr`；未登记的节点类型回退字符串），ArkTS 侧按 ID 直接分发、不再经字段名映射；新增事件 `9` 叶子快速路径，把 `beginNode + literal + endNode` 合并为单事件（仅 `debug` 关闭且无插件自定义属性的 Text/Code/Html 等 literal 叶子生效，不满足条件时回落通用事件序列，产出节点树完全一致）；`emitEvent` 按实参个数重载，去掉每事件临时数组分配
+5. 修复图片样式事件（标记 `7`）超过仓颉→ArkTS 单次调用 255 实参上限的问题：批量路径按 `max(1, min(chunkSize-2, 253))` 个样式分片，非批量路径按 255 个值分片多次调用 `putImageStyles`；新增 300 样式回归用例与 `buildNodes` 实参上限断言
+6. 修复 parse 阶段异常时 Promise 永不 settle 的问题（catch 块中 throw 使 reject 不可达，ArkTS 侧 await 永久挂死）
+7. **行为变更**：`toStr` 与 `SourceSpan` 统一由 `debug` 开关控制（默认 `false`）。`debug` 关闭时 `includeSourceSpans` 不生效、`toStr` 为空串，且解析期不生成 span、序列化期不传输 span；需要节点内容或位置信息（如 `printNode`、增量解析）时必须显式传 `debug: true`
+8. 修复 `JsNodeImpl.putImageStyles` 在节点未持有图片样式时把 `undefined` 拼入 `ImageStyles` 数组的问题（与 `JsNodeSendableImpl` 行为对齐）
+9. `JsNodeImpl.sourceSpans` 改为懒分配（默认 `undefined`，首次写入或读取时才创建数组，`reset()` 时复原），`getSourceSpans()` 仍始终返回数组；`addSourceSpans` 实参数不足一组（4 个）时直接忽略
+10. 构建配置：`cjpm.toml` 版本升至 2.0.1，release 编译选项追加 `--discard-eh-frame --disable-reflection --stack-trace-format=simple --link-options=--pack-dyn-relocs=relr`；`build-profile.json5` 增加 `strictCheckDependencies: false`；`markdown_parser` 依赖由分支改为 tag `v1.0.0-markdown-parser`
+11. 测试与文档：新增 6197 行综合测试文档 `001_Comprehensive_6000Lines.md`；补充批量/非批量等价、分片不变量（不同 `chunkSize` 下总实参与结构一致）、255 实参上限、下游真实配置（批量/非批量 × 插件 × span）性能用例；同步更新 README 与 `Options` 注释
 
 # 2.0.0
 
