@@ -26,7 +26,7 @@ struct ItalicPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "018_Italic"
+  rawFilePath: string = "020_Italic"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -116,7 +116,6 @@ struct ItalicPage {
   italicTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 斜体文本字符间距
   italicTextLetterSpacing: number | undefined = undefined
-  heightMD: number = 30 * 1 // 乘以行数
   @State isExpanded1: boolean = false // 控制展开/折叠状态
   @State isExpanded2: boolean = false // 控制展开/折叠状态
 
@@ -134,23 +133,15 @@ struct ItalicPage {
       )
 
       // md文档展示部分
-      Column() {
-        GridRow({
-          columns: 3,
-          gutter: { x: 5, y: 5 },
-          breakpoints: {
-            value: ['400vp', '600vp', '800vp'],
-            reference: BreakpointsReference.ComponentSize
-          },
-          direction: GridRowDirection.Row
-        }) {
+      Scroll() {
+        Grid() {
           ForEach(this.folderList, (item: string, index: number) => {
-            GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 }, offset: 0, order: 0 }) {
+            GridItem() {
               Text(`${item}`)
                 .fontSize(12)
                 .fontColor(0xFFFFFFFF)
                 .backgroundColor(0xFF2196F3)
-                .height(25).width('100%')
+                .height(25)
                 .padding(5)
                 .borderRadius(5)
                 .maxLines(1)
@@ -178,8 +169,18 @@ struct ItalicPage {
                 })
             }
           })
-        }.width('100%').height('100%')
-      }.padding({ top: 5, bottom: 5 }).width('100%').height(this.heightMD)
+        }
+        .columnsGap(5)
+        .rowsGap(5)
+        .maxCount(5)
+        .minCount(1)
+        .cellLength(30)
+        .layoutDirection(GridDirection.Row)
+        .padding(5)
+      }
+      .constraintSize({ maxHeight: 200 })
+      .width('100%')
+      .backgroundColor(0xFFEAEAEA)
 
       Scroll() {
         Column() {
@@ -379,10 +380,12 @@ struct ItalicPage {
           .borderRadius(5)
           .backgroundColor(0xFF317AFF)
         }
-        .padding({ top: 10, bottom: 100 })
+        .padding({ top: 10, bottom: 10 })
       }
+      .layoutWeight(1)
+      .align(Alignment.TopStart)
     }
     .backgroundColor(0xFFEAEAEA)
-    .height("90%")
+    .height("100%")
   }
 }

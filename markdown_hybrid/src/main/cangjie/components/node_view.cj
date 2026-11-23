@@ -58,6 +58,61 @@ public class NodeView {
     var cardName: Option<String> = Option<String>.None // 卡片名称
     var cardData: Option<String> = Option<String>.None // 卡片内容
     var commonmarkNode: Option<CommonmarkNode> = Option<CommonmarkNode>.None // Node
+    // ===== 以下为行内Span异步解析结果字段（参照ArkTS NodeView.ets：由Text容器组件统一解析后写回）=====
+    var spanRenderVersion: Int64 = 0 // 行内Span解析写回版本号（写回时自增，进入ForEach key使仅数据变化的item重建，对齐ArkTS @Observed原地更新效果）
+    var linkIconPixelMap: Option<PixelMap> = Option<PixelMap>.None // 链接图标PixelMap
+    var linkIconWidth: Float64 = 0.0 // 链接图标宽度 - 单位px
+    var linkIconHeight: Float64 = 0.0 // 链接图标高度 - 单位px
+    var linkIconTried: Bool = false // 链接图标是否已发起解析
+    var latexPixelMap: Option<PixelMap> = Option<PixelMap>.None // 行内数学公式PixelMap
+    var latexImageWidth: Float64 = 0.0 // 行内数学公式宽度 - 单位px
+    var latexImageHeight: Float64 = 0.0 // 行内数学公式高度 - 单位px
+    var latexImageData: Option<Array<UInt8>> = Option<Array<UInt8>>.None // 行内数学公式数据
+    var latexParserEnd: Bool = false // 行内数学公式解析是否结束
+    var latexTried: Bool = false // 行内数学公式是否已发起解析
+    var spanImageComponentWidth: Float64 = 0.0 // 行内图片最大宽度 - 单位px
+    var spanImageRadiusTopLeft: Float64 = 0.0 // 行内图片左上圆角
+    var spanImageRadiusTopRight: Float64 = 0.0 // 行内图片右上圆角
+    var spanImageRadiusBottomLeft: Float64 = 0.0 // 行内图片左下圆角
+    var spanImageRadiusBottomRight: Float64 = 0.0 // 行内图片右下圆角
+    var spanImageThemeWidth: Option<Float64> = Option<Float64>.None // 行内图片设置宽度 - 单位px
+    var spanImageThemeHeight: Option<Float64> = Option<Float64>.None // 行内图片设置高度 - 单位px
+    var spanImagePlaceholderWidth: Float64 = 0.0 // 行内图片占位图宽度 - 单位px
+    var spanImagePlaceholderHeight: Float64 = 0.0 // 行内图片占位图高度 - 单位px
+    var spanImagePixelMap: Option<PixelMap> = Option<PixelMap>.None // 行内图片PixelMap
+    var spanImageWidth: Float64 = 0.0 // 行内图片最终宽度 - 单位px
+    var spanImageHeight: Float64 = 0.0 // 行内图片最终高度 - 单位px
+    var spanImageLoadType: Int64 = 0 // 行内图片加载 0：开始加载。1：加载成功完成。2：加载失败
+    var spanImageTried: Bool = false // 行内图片是否已发起解析
+    var imageReplacePixelMap: Option<PixelMap> = Option<PixelMap>.None // 行内图片替换之后的PixelMap
+    var imageReplaceWidth: Option<Float64> = Option<Float64>.None // 行内图片替换之后的宽度 - 单位px
+    var imageReplaceHeight: Option<Float64> = Option<Float64>.None // 行内图片替换之后的高度 - 单位px
+    var imageReplaceTried: Bool = false // 行内图片替换图是否已发起解析
+    var spanImageAltPixelMap: Option<PixelMap> = Option<PixelMap>.None // 行内图片占位图PixelMap
+    var spanImageAltTried: Bool = false // 行内图片占位图是否已发起解析
+
+    /**
+     * 释放行内Span异步解析持有的PixelMap并重置解析状态（UI销毁或数据替换时调用，节点复用时重新解析）
+     */
+    public func releaseSpanPixelMaps(): Unit {
+        linkIconPixelMap?.Release()
+        linkIconPixelMap = Option<PixelMap>.None
+        linkIconTried = false
+        latexPixelMap?.Release()
+        latexPixelMap = Option<PixelMap>.None
+        latexTried = false
+        latexParserEnd = false
+        spanImagePixelMap?.Release()
+        spanImagePixelMap = Option<PixelMap>.None
+        spanImageTried = false
+        spanImageLoadType = 0
+        imageReplacePixelMap?.Release()
+        imageReplacePixelMap = Option<PixelMap>.None
+        imageReplaceTried = false
+        spanImageAltPixelMap?.Release()
+        spanImageAltPixelMap = Option<PixelMap>.None
+        spanImageAltTried = false
+    }
 }
 
 public func nodeToNodeView(

@@ -17,6 +17,16 @@ export class ParagraphData extends BaseMDData {
   _paragraphTextFontFamily: string = 'HarmonyOS Sans' // 段落文本字体
   _paragraphTextLineHeight: number = 22 // 段落文本行高
   _paragraphTextLetterSpacing: number = 0 // 段落文本字符间距
+  _paragraphHeadingAnimationEnabled: boolean = false // 是否启用段落出现动画
+  _paragraphHeadingAnimationDuration: number = 300 // 段落出现动画时长（毫秒）
+
+  public set paragraphHeadingAnimationEnabled(value: boolean) {
+    this._paragraphHeadingAnimationEnabled = value
+  }
+
+  public set paragraphHeadingAnimationDuration(value: number) {
+    this._paragraphHeadingAnimationDuration = value
+  }
 
   public set paragraphBackgroundColor(value: number | undefined) {
     this._paragraphBackgroundColor = value

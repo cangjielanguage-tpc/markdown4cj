@@ -22,6 +22,8 @@ class MarkdownHeadingComponent {
     @State
     var isOneLink: Bool = false // 是否只有一条链接数据
     @State
+    var spanRenderSerial: Int64 = 0 // Span异步资源刷新触发器（触发build重跑后ForEach按节点spanRenderVersion逐项diff，仅数据变化的item重建）
+    @State
     var headingNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
@@ -39,6 +41,8 @@ class MarkdownHeadingComponent {
         } else {
             headingComponents.remove(headingNodeView.nodeHash)
         }
+        // 释放列表中各节点持有的行内Span异步PixelMap
+        releaseSpanListPixelMaps(headingNodeViewList)
     }
 
     func build() {
@@ -169,7 +173,6 @@ class MarkdownHeadingComponent {
                 markdownSpanListComponent(
                     headingNodeViewList,
                     headingMarkdownConfiguration,
-                    headingComponentWidth,
                     Option<(Int64) -> Unit>.None,
                     headingImageCallback,
                     headingFootnoteCallback
@@ -200,7 +203,6 @@ class MarkdownHeadingComponent {
                 markdownSpanListComponent(
                     headingNodeViewList,
                     headingMarkdownConfiguration,
-                    headingComponentWidth,
                     Option<(Int64) -> Unit>.None,
                     headingImageCallback,
                     headingFootnoteCallback
@@ -226,7 +228,6 @@ class MarkdownHeadingComponent {
      *
      * @param spanListNodeViewList NodeView列表
      * @param spanListMarkdownConfiguration markdown配置
-     * @param spanListComponentWidth 最大宽度
      * @param spanListTocListOnClick TOC点击事件
      * @param spanListImageCallback 图片点击事件
      * @param spanListFootnoteCallback 脚注点击事件
@@ -235,7 +236,6 @@ class MarkdownHeadingComponent {
     func markdownSpanListComponent(
         spanListNodeViewList: ObservedArrayList<NodeView>,
         spanListMarkdownConfiguration: MarkdownConfiguration,
-        spanListComponentWidth: Float64,
         spanListTocListOnClick: ?(Int64) -> Unit,
         spanListImageCallback: (String) -> Unit,
         spanListFootnoteCallback: (String) -> Unit
@@ -254,16 +254,7 @@ class MarkdownHeadingComponent {
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
                     // 数学公式
-                    MarkdownLatexMathInLineComponent(
-                        markdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                        latexMathInLineStr: spanListNodeView.nodeText,
-                        latexMathInLineComponentWidth: spanListComponentWidth,
-                        latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
-                        latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
-                        latexMathInLineLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                        latexMathInLineIsLink: spanListNodeView.isLink,
-                        latexMathInLineLinkUrl: spanListNodeView.linkUrl
-                    )
+                    spanLatexMathComponent(spanListNodeView, spanListMarkdownConfiguration)
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     // 软换行
                     Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
@@ -272,30 +263,22 @@ class MarkdownHeadingComponent {
                     Span("\n")
                 } else if (spanListNodeView.nodeType == "Link" || spanListNodeView.nodeType == "HeadLink") {
                     // 链接, TOC列表链接
-                    if (isOneLink) {
-                        spanLinkComponent(
-                            spanListNodeView,
-                            spanListMarkdownConfiguration,
-                            spanListTocListOnClick,
-                            spanListFootnoteCallback,
-                            true
-                        )
-                    } else {
-                        spanLinkComponent(
-                            spanListNodeView,
-                            spanListMarkdownConfiguration,
-                            spanListTocListOnClick,
-                            spanListFootnoteCallback,
-                            false
-                        )
-                    }
+                    spanLinkComponent(
+                        spanListNodeView,
+                        spanListMarkdownConfiguration,
+                        spanListTocListOnClick,
+                        spanListFootnoteCallback,
+                        isOneLink
+                    )
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
                     spanImageComponent(
                         spanListNodeView,
                         spanListMarkdownConfiguration,
-                        spanListComponentWidth,
-                        spanListImageCallback
+                        spanListImageCallback,
+                        {
+                            => refreshSpanDatasAfterAsync()
+                        }
                     )
                 } else {
                     // 其他节点
@@ -303,7 +286,7 @@ class MarkdownHeadingComponent {
                 }
             },
             keyGeneratorFunc: {
-                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}-${spanListNodeView.spanRenderVersion}"
             }
         )
     }
@@ -319,6 +302,7 @@ class MarkdownHeadingComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let headingNodeViewListSize: Int64 = headingNodeViewList.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            releaseSpanListPixelMaps(headingNodeViewList)
             headingNodeViewList.clear()
             return
         }
@@ -340,6 +324,7 @@ class MarkdownHeadingComponent {
             refreshHeadingDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环删除多余的旧数据
             for (i in headingNodeViewListSize - 1..=refreshNodeViewSize : -1) {
+                headingNodeViewList[i].releaseSpanPixelMaps()
                 headingNodeViewList.remove(i)
             }
         }
@@ -348,6 +333,23 @@ class MarkdownHeadingComponent {
         } else {
             isOneLink = false
         }
+        // 刷新行内Span异步资源（链接图标、数学公式、行内图片），结果写回后通过spanRenderSerial触发build重跑，由ForEach按节点spanRenderVersion逐项diff仅重建数据变化的item
+        refreshSpanAsyncResources(headingNodeViewList, headingMarkdownConfiguration, headingComponentWidth, isOneLink, {
+            => refreshSpanDatasAfterAsync()
+        })
+    }
+
+    /**
+     * Span异步资源写回后的刷新（重新赋值数据源触发ForEach全量diff，spanRenderVersion仅变化的item重建）
+     */
+    protected func refreshSpanDatasAfterAsync(): Unit {
+        spanRenderSerial += 1
+        let oldList = headingNodeViewList
+        let newList = ObservedArrayList<NodeView>()
+        for (i in 0..oldList.size) {
+            newList.append(oldList[i])
+        }
+        headingNodeViewList = newList
     }
 
     /**
@@ -367,6 +369,7 @@ class MarkdownHeadingComponent {
             if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
                 // 自身节点唯一ID不相同需要刷新数据
                 // 子节点唯一ID不相同需要刷新子节点数据
+                dataSourceNode.releaseSpanPixelMaps() // 释放被替换节点持有的行内异步PixelMap
                 headingNodeViewList[i] = refreshNodeView
             }
         }

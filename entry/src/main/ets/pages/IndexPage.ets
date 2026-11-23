@@ -112,15 +112,31 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "9、有序、无序、任务列表",
+              "9、有序",
               0xFFFF0000,
-              "pages/ListPage"
+              "pages/OrderedListPage"
             )
           }
 
           ListItem() {
             itemListComponent(
-              "10、内联代码",
+              "10、无序",
+              0xFFFF0000,
+              "pages/UnorderedListPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "11、任务",
+              0xFFFF0000,
+              "pages/TaskListPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "12、内联代码",
               0xFFFF0000,
               "pages/CodeLinePage"
             )
@@ -128,7 +144,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "11、代码块",
+              "13、代码块",
               0xFFFF0000,
               "pages/CodeBlockPage"
             )
@@ -136,7 +152,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "12、组合代码块",
+              "14、组合代码块",
               0xFFFF0000,
               "pages/CodeListPage"
             )
@@ -144,7 +160,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "13、单独代码块",
+              "15、单独代码块",
               0xFFFF0000,
               "pages/CodeSeparatePage"
             )
@@ -152,7 +168,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "14、音频",
+              "16、音频",
               0xFFFF0000,
               "pages/AudioPage"
             )
@@ -160,7 +176,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "15、视频",
+              "17、视频",
               0xFFFF0000,
               "pages/VideoPage"
             )
@@ -168,7 +184,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "16、图片",
+              "18、图片",
               0xFFFF0000,
               "pages/ImagePage"
             )
@@ -176,7 +192,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "17、加粗",
+              "19、加粗",
               0xFFFF0000,
               "pages/BoldPage"
             )
@@ -184,7 +200,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "18、斜体",
+              "20、斜体",
               0xFFFF0000,
               "pages/ItalicPage"
             )
@@ -192,7 +208,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "19、删除线",
+              "21、删除线",
               0xFFFF0000,
               "pages/StrikethroughPage"
             )
@@ -200,7 +216,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "20、图片style",
+              "22、图片style",
               0xFFFF0000,
               "pages/ImageStylePage"
             )
@@ -208,7 +224,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "21、Toc目录",
+              "23、Toc目录",
               0xFFFF0000,
               "pages/TocPage"
             )
@@ -216,7 +232,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "22、脚注",
+              "24、脚注",
               0xFFFF0000,
               "pages/FootnotePage"
             )
@@ -224,7 +240,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "23、定义列表",
+              "25、定义列表",
               0xFFFF0000,
               "pages/DescListPage"
             )
@@ -232,7 +248,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "24、标题ID",
+              "26、标题ID",
               0xFFFF0000,
               "pages/HeadIDPage"
             )
@@ -240,7 +256,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "25、HTML",
+              "27、HTML",
               0xFFFF0000,
               "pages/HTMLPage"
             )
@@ -248,7 +264,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "26、下标",
+              "28、下标",
               0xFFFF0000,
               "pages/SubPage"
             )
@@ -256,7 +272,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "27、上标",
+              "29、上标",
               0xFFFF0000,
               "pages/SupPage"
             )
@@ -264,45 +280,30 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "28、Emoji",
+              "30、Emoji",
               0xFFFF0000,
               "pages/EmojiPage"
             )
           }
-
           ListItem() {
             itemListComponent(
-              "29、综合",
-              0xFFFF0000,
-              "pages/AllPage"
-            )
-          }
-          ListItem() {
-            itemListComponent(
-              "30、Banner",
+              "31、Banner",
               0xFFFF0000,
               "pages/BannerPage"
             )
           }
           ListItem() {
             itemListComponent(
-              "31、AB方案",
+              "32、高亮文本",
               0xFFFF0000,
-              "pages/ABCustomPage"
+              "pages/HighlightPage"
             )
           }
           ListItem() {
             itemListComponent(
-              "32、AI聊天懒加载",
+              "33、综合",
               0xFFFF0000,
-              "pages/AIChatPage"
-            )
-          }
-          ListItem() {
-            itemListComponent(
-              "33、文本全量切换",
-              0xFFFF0000,
-              "pages/SwitchDataPage"
+              "pages/AllPage"
             )
           }
           ListItem() {
@@ -314,19 +315,39 @@ struct IndexPage {
           }
           ListItem() {
             itemListComponent(
-              "35、高亮文本",
+              "36、全文复制能力",
               0xFFFF0000,
-              "pages/HighlightPage"
+              "pages/AllPageCopyPage"
             )
           }
           ListItem() {
             itemListComponent(
-              "36、card",
+              "38、AI聊天懒加载",
+              0xFFFF0000,
+              "pages/AIChatPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "39、文本全量切换",
+              0xFFFF0000,
+              "pages/SwitchDataPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "41、card",
               0xFFFF0000,
               "pages/CardPage"
             )
           }
-
+          ListItem() {
+            itemListComponent(
+              "42、AB方案",
+              0xFFFF0000,
+              "pages/ABCustomPage"
+            )
+          }
           ListItem() {
             itemListComponent(
               "【已废弃接口】",

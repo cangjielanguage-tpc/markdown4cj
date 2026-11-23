@@ -141,6 +141,24 @@ struct BannerDetailsPage {
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    // 点击动作触发该方法调用
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr[index]
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index === this.fileStr.length - 1) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        index++
+      }, this.time)
+    }
   }
 
   build() {
@@ -151,36 +169,6 @@ struct BannerDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
-        .onClick(
-          () => {
-            // 点击动作触发该方法调用
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                index++
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
         if (this.isRefresh) {
           if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%

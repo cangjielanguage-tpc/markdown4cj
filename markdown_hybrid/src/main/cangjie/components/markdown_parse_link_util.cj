@@ -262,3 +262,14 @@ class LinkLoadLimiter <: Resource {
         closed.store(true)
     }
 }
+
+func typeStringColor(str: String): (Color, Color) {
+    match (str) {
+        case "PDF" => return (Color(0xFFB41700), Color(180, 23, 0, alpha: 0.2))
+        case "DOC" => return (Color(0xFF3D73CF), Color(61, 115, 207, alpha: 0.2))
+        case "DOCX" => return (Color(0xFF3D73CF), Color(61, 115, 207, alpha: 0.2))
+        case "TXT" => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
+        case "DEFAULT" => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
+        case _ => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
+    }
+}

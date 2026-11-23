@@ -27,7 +27,8 @@ class MarkdownParseCodeUtil {
                             return
                         }
                         if (let Some(v) <- psh) {
-                            let res: ArrayList<PrismNodesParseResUI> = v.highlight((node as FencedCodeBlock)().getInfo(), (node as FencedCodeBlock)().getLiteral())
+                            // 注意：nodeView.children 存的是 NodeView，不能强转 commonmark 的 FencedCodeBlock（会抛异常走无高亮兜底）
+                            let res: ArrayList<PrismNodesParseResUI> = v.highlight(node.codeInfo, node.nodeText)
                             prismNodesParseResLists.add(res)
                         }
                     }

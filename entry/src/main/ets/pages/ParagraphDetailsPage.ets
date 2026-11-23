@@ -94,6 +94,10 @@ struct ParagraphDetailsPage {
   paragraphTextLineHeight: number = 22
   @State // 段落文本字符间距
   paragraphTextLetterSpacing: number = 0
+  @State // 是否启用段落出现动画
+  paragraphAnimationEnabled: boolean = false
+  @State // 段落出现动画时长
+  paragraphAnimationDuration: number = 300
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -157,12 +161,35 @@ struct ParagraphDetailsPage {
       this.paragraphTextFontFamily = paragraphData._paragraphTextFontFamily
       this.paragraphTextLineHeight = paragraphData._paragraphTextLineHeight
       this.paragraphTextLetterSpacing = paragraphData._paragraphTextLetterSpacing
+      this.paragraphAnimationEnabled = paragraphData._paragraphHeadingAnimationEnabled
+      this.paragraphAnimationDuration = paragraphData._paragraphHeadingAnimationDuration
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
     this.markdownTheme = this.setMarkdownTheme()
     this.markdownConfiguration = this.setMarkdownConfig()
     this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+
+    if (this.isFull) {
+      this.isInputEnded = true
+      this.content = this.fileStr
+    } else {
+      this.isInputEnded = false
+      let index = 0
+      let id = setInterval(() => {
+        this.content = this.content + this.fileStr.substring(this.content.length, index)
+        this.scroller.scrollEdge(Edge.Bottom)
+        if (index >= this.fileStr.length) {
+          this.isInputEnded = true
+          clearInterval(id)
+        }
+        if (this.fileStr.length > index + this.textNumber) {
+          index = index + this.textNumber
+        } else {
+          index = this.fileStr.length
+        }
+      }, this.time)
+    }
   }
 
   build() {
@@ -173,39 +200,6 @@ struct ParagraphDetailsPage {
         true,
         this.safeTop
       )
-      Button("点击加载markdown")
-        .height(40)
-        .width("80%")
-        .type(ButtonType.Capsule)
-        .margin({ top: 5, bottom: 5 })
-        .fontColor(0xFFFFFFFF)
-        .backgroundColor(0xFF317AFF)
-        .align(Alignment.Center)
-        .fontSize(16)
-        .onClick(
-          () => {
-            if (this.isFull) {
-              this.isInputEnded = true
-              this.content = this.fileStr
-            } else {
-              this.isInputEnded = false
-              let index = 0
-              let id = setInterval(() => {
-                this.content = this.content + this.fileStr.substring(this.content.length, index)
-                this.scroller.scrollEdge(Edge.Bottom)
-                if (index >= this.fileStr.length) {
-                  this.isInputEnded = true
-                  clearInterval(id)
-                }
-                if (this.fileStr.length > index + this.textNumber) {
-                  index = index + this.textNumber
-                } else {
-                  index = this.fileStr.length
-                }
-              }, this.time)
-            }
-          }
-        )
       Scroll(this.scroller) {
         if (this.isRefresh) {
           if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%

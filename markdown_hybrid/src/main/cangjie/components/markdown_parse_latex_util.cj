@@ -1,5 +1,7 @@
 package markdown.components
 
+import ohos.hilog.Hilog
+
 class MarkdownParseLatexUtil {
     private static let latexReentrantMutex: Mutex = Mutex() // 全局锁
 
@@ -193,11 +195,19 @@ class MarkdownParseLatexUtil {
                             } else {
                                 componentWidth
                             }
-                            height = width() * aspectRatio
-                            p.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
+                            if (width() > 0.0) {
+                                // 宽度有效时按容器宽度等比缩放
+                                height = width() * aspectRatio
+                                p.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
+                            } else {
+                                // 容器宽度无效时保留原始尺寸，避免scale(0,0)导致公式无法显示
+                                width = sizeWidth
+                                height = sizeHeight
+                            }
                         }
                     }
                 } catch (e: Exception) {
+                    Hilog.error(1, "MDDBG", "latexRow EXC=${e.message}")
                     pixelMap?.Release()
                     pixelMap = Option<PixelMap>.None
                 } finally {
@@ -215,6 +225,7 @@ class MarkdownParseLatexUtil {
                         return
                     }
                 }
+                Hilog.error(1, "MDDBG", "latexRow cb pm=${pixelMap.isSome()} w=${width} h=${height}")
                 callback(pixelMap, height, width, arr)
             }
         }
