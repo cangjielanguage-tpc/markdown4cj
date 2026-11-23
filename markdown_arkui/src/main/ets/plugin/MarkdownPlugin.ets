@@ -1,5 +1,5 @@
 import { DelimiterFilterMode } from "../enum/DelimiterFilterMode"
-import { Options, JsNodeTreeBuilder } from "@cangjie-tpc/markdown_parser_hybrid"
+import { Options, JsNodeTreeBuilderBatch } from "@cangjie-tpc/markdown_parser_hybrid"
 
 /**
  * Markdown插件配置
@@ -375,8 +375,10 @@ export class MarkdownPlugin {
    */
   buildOptions(): Options {
     return {
-      jsNodeTreeBuilder: new JsNodeTreeBuilder(),
+      // 批量构建器: 节点树经 buildNodes 协议按 chunkSize 分片推送, 跨语言回调次数由每节点4~10次降为每分片1次
+      jsNodeTreeBuilder: new JsNodeTreeBuilderBatch(),
       includeSourceSpans: 2,
+      debug: false,
       ADPlugin: false,
       BlockAudioPlugin: this.isBlockAudioPlugin,
       BlockVideoPlugin: this.isBlockVideoPlugin,
