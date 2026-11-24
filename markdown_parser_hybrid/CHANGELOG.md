@@ -1,3 +1,9 @@
+# 2.0.2
+
+1. `markdown_parser` 依赖升级至 tag `v1.0.1-markdown-parser`
+2. `commonmark4cj` 依赖同步为 `v1.1.4-alpha.01`（与 `markdown_parser` `v1.0.1-markdown-parser` 声明一致）
+3. 版本号升至 2.0.2，`cjpm.toml`、`oh-package.json5` 与 README 徽章同步
+
 # 2.0.1
 
 1. 性能优化：新增批量建树协议 `buildNodes` 与批量构建器 `JsNodeTreeBuilderBatch`（已从 `Index.ets` 导出）。仓颉侧把节点树序列化为扁平数字事件数组，在事件边界累积到 `buildNodesChunkSize`（默认 200）后单次跨语言调用推送，一个 `postJSTask` 对应一个包，推送次数 ≈ `ceil(总事件实参 / chunkSize)`；跨语言回调次数由每节点 4~10 次降为每分片 1 次。release 构建端到端实测（全量 202690 字符 / 6460 节点）批量较逐事件建树快约 1.5~1.7 倍
