@@ -1,14 +1,21 @@
-# 2.0.0
+# 2.0.1
 
 1. 修复行内 ImageSpan 组件父子关系编译错误，重构为 NodeView 数据驱动渲染，删除 12 个独立行内组件（图片链接、行内数学公式、链接图片化等），Text 容器内直接渲染 Span/ImageSpan，异步解析统一由容器侧管理
 2. 移除 API 14/15 兼容判断逻辑及互操作层对应死代码，仅支持 API 19 及以上版本
 3. 新增行内 Span 异步解析 PixelMap 释放机制，在 UI 销毁、数据清空、数据删除、数据替换时统一释放
 4. 行内 Span 异步解析写回按节点版本号增量刷新，修复增量/全量加载场景下图片闪屏
 5. 迁移链接文件类型颜色函数 typeStringColor 至公共工具，支持 PDF/DOC/DOCX/TXT 颜色映射
-6. 优化 pre_stdx_install.mjs 下载脚本：新增 ZIP SHA256 校验与 stdx 文件清单完整性校验，命令改用参数数组执行，修复 X64 压缩包文件名错误
-7. 版本号升级至 2.0.0，README 中版本号与 cjc 版本标识同步更新
-8. 应用 compatibleSdkVersion 由 5.0.3(15) 提升至 6.0.0(20)
-9. 移除示例源码与测试数据中的 Copyright 文件头
+6. 预安装脚本拆分：stdx 与 formula har 下载拆分为 pre_stdx_install.mjs 和 pre_har_install.mjs，共享工具抽至 pre_install_utils.mjs，下载与 SHA256 校验统一为 downloadVerified
+7. 下载脚本增加文件占用重试：解压、改名、删除临时文件被占用时自动重试，清理临时文件失败不再覆盖原始错误
+8. 版本号升级至 2.0.1，README 中版本号同步更新
+9. 修正 oh-package.json5 中的仓库地址为 6.1.1 分支
+
+# 2.0.0
+
+1. 优化 pre_stdx_install.mjs 下载脚本：新增 ZIP SHA256 校验与 stdx 文件清单完整性校验，命令改用参数数组执行，修复 X64 压缩包文件名错误
+2. 版本号升级至 2.0.0，README 中版本号与 cjc 版本标识同步更新
+3. 应用 compatibleSdkVersion 由 5.0.3(15) 提升至 6.0.0(20)
+4. 移除示例源码与测试数据中的 Copyright 文件头
 
 # 1.4.0
 
