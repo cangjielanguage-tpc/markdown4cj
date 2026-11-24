@@ -1,9 +1,9 @@
 package markdown_parser.plugin
 
 internal import markdown_parser.core.*
-// internal import commonmark4cj.commonmark.*
-public import commonmark4cj.strikethrough.*
-public import commonmark4cj.table.*
+internal import commonmark4cj.commonmark.*
+internal import commonmark4cj.strikethrough.*
+internal import commonmark4cj.table.*
 internal import std.collection.ArrayList
 internal import std.collection.LinkedList
 internal import std.collection.LinkedListNode

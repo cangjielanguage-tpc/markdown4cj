@@ -1,6 +1,6 @@
 package markdown_parser.core
 
-public import commonmark4cj.commonmark.* // 重导出commonmark公共api
+internal import commonmark4cj.commonmark.*
 internal import std.collection.ArrayList
 internal import std.collection.HashMap
 internal import std.collection.HashSet
