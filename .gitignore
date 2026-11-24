@@ -26,3 +26,4 @@ test_temp
 ci_test
 .trae/
 tmp
+log/
