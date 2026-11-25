@@ -7,6 +7,8 @@ package markdown_parser_hybrid
 internal import markdown_parser.core.*
 internal import markdown_parser.plugin.*
 internal import markdown_parser.plugin.emoji.*
+internal import commonmark4cj.commonmark.*
+internal import commonmark4cj.table.*
 internal import std.collection.*
 internal import ohos.ark_interop.*
 internal import ohos.hilog.Hilog
