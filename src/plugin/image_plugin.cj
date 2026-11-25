@@ -41,14 +41,15 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
      */
     func process(opener: Text, closer: Text): Bool {
         // 处理style
-        var str = ""
+        let strBuilder = StringBuilder()
         for (n in Nodes.between(opener, closer)) {
             if (let n: Text <- n) {
-                str += n.getLiteral()
+                strBuilder.append(n.getLiteral())
             } else {
                 return false
             }
         }
+        let str = strBuilder.toString()
         if (reg.matches(str)) {
             // 处理style前的Image
             if (let Some(image: Image) <- opener.getPrevious()) {

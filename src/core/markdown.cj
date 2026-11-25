@@ -232,6 +232,7 @@ class MarkdownBuilderImpl <: MarkdownBuilder {
     private var _includeSourceSpans: Int = 0
 
     public override func usePlugin(plugin: MarkdownPlugin): MarkdownBuilder {
+        this.plugins.removeIf{p: MarkdownPlugin => p.getClassType() == plugin.getClassType()}
         this.plugins.add(plugin)
         return this
     }
