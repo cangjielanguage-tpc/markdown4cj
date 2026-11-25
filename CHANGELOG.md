@@ -1,8 +1,12 @@
 # 2.0.0
 
 1. deveco版本从5.1.1升级到6.1.1
-2. formula依赖从cjpm git依赖(v1.5.2)调整为本地har包(v1.4.1)引入，由preInstall脚本自动下载
+2. formula依赖从cjpm git依赖(v1.5.2)调整为本地har包(v2.0.0)引入，由preInstall脚本自动下载
 3. codeformat依赖版本从v1.0.4升级到v1.0.7
+4. 依赖下载脚本重构：stdx下载增加SHA256校验与解压完整性检测，stdx与formula har下载拆分为独立preInstall脚本
+5. 解析器代码调整为markdown_parser依赖(tag v1.0.1-markdown-parser)引入，commonmark4cj从v1.1.1升级到v1.1.4-alpha.01
+6. 行内渲染重构：行内链接图标、行内图片、行内公式从独立组件迁移至markdown_base_component内的@Builder实现，由段落、标题、表格单元格三个宿主统一异步解析刷新，删除8个旧行内组件
+7. 问题修复：修复代码块高亮按行渲染对齐、行号错位、跨行注释/字符串丢色、段落高亮、html span颜色解析、任务列表渲染、表格标题样式等问题
 
 # 1.4.0
 

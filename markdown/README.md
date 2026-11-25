@@ -86,11 +86,8 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
   └─src
       └─main
           ├─cangjie
-          │  └─src
-          │      ├─components
-          │      ├─core
-          │      ├─texttoimg4cj
-          │      └─plugin
+          │    ├─components
+          │    └─texttoimg4cj
           ├─cpp
           └─resources
 
@@ -102,10 +99,9 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 - `markdown src main cangjie` 仓颉代码目录
 - `markdown src main cpp` cpp代码目录
 - `markdown src main resources` 资源文件目录
-- `markdown src main cangjie src components` markdown UI页面目录
-- `markdown src main cangjie src core` markdown 数据解析处理目录
-- `markdown src main cangjie src texttoimg4cj` markdown 文本转图片模块
-- `markdown src main cangjie src plugin` markdown 插件化目录
+- `markdown src main cangjie components` markdown UI页面目录
+- `markdown src main cangjie texttoimg4cj` markdown 文本转图片模块
+- markdown 数据解析与插件由 markdown_parser 依赖提供（tag v1.0.1-markdown-parser，基于 commonmark4cj）
 
 ### 接口说明
 
@@ -135,20 +131,14 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       git checkout markdown4cj_cangjie-plugin-6.1.1_compatibility
       ```
 
-      首次编译前执行依赖下载脚本，自动下载 formula har 包（ohpm install 时也会通过 preInstall 钩子自动执行）：
+      首次编译前执行依赖下载脚本，自动下载 stdx 二进制库与 formula har 包（ohpm install 时也会通过 preInstall 钩子自动执行）：
 
       ```sh
+      node ./scripts/pre_stdx_install.mjs
       node ./scripts/pre_har_install.mjs
       ```
 
-      配置 formula 原生库环境变量（cjpm.toml 通过 `${cangjie_tpc_formula}` 引用 formula 原生 cjbins）。克隆 formula-ffi 仓库并切换到 v1.4.1 标签：
-
-      ```git
-      git clone https://gitcode.com/Cangjie-TPC/formula-ffi.git
-      git checkout v1.4.1
-      ```
-
-      并设置环境变量 `cangjie_tpc_formula` 指向 formula-ffi 仓库根目录。
+      formula 原生库由下载脚本自动获取（formula har v2.0.0，包内已包含 formula 原生 cjbins）。DevEco Studio 编译时会自动将环境变量 `cangjie_tpc_formula` 指向 oh_modules 中解包后的 formula 目录（cjpm.toml 通过 `${cangjie_tpc_formula}` 引用 formula 原生 cjbins）；仅手动使用 cjpm 编译 markdown 时，需要自行设置该变量指向该目录。
 
       编译markdown
       build -> Make Module `markdown`
@@ -260,13 +250,14 @@ Heading level 2
 
 markdown依赖三方库：
 
-| 编号 | 依赖三方库         | 版本号      |
-|----|---------------|----------|
-| 1  | stdx          | v1.1.3.1 |
-| 2  | commonmark4cj | v1.1.1   |
-| 3  | prism4cj      | v1.0.6   |
-| 4  | formula       | v1.4.1   |
-| 5  | codeformat    | v1.0.7   |
+| 编号 | 依赖三方库      | 版本号           |
+|----|--------------|----------------|
+| 1  | stdx         | v1.1.3.1       |
+| 2  | commonmark4cj | v1.1.4-alpha.01 |
+| 3  | prism4cj     | v1.0.6         |
+| 4  | formula      | v2.0.0         |
+| 5  | codeformat   | v1.0.7         |
+| 6  | markdown_parser | v1.0.1      |
 
 1、三方库静态链接和动态链接区别
 

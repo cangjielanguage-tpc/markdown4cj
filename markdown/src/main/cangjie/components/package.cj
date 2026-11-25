@@ -21,10 +21,14 @@ internal import stdx.encoding.base64.fromBase64String
 internal import stdx.encoding.url.URL
 
 // 内部其他包
-internal import markdown.core.*
-internal import markdown.plugin.*
 internal import markdown.texttoimg4cj.*
 internal import markdown.components.theme.*
+
+// markdown_parser
+// 不用通配导入：markdown_parser.core/plugin 通过 public import 重导出了 commonmark，
+// 其中 Text/Image/Alignment/ListItem 会与 ohos.component 同名类型产生歧义，故逐项显式导入
+internal import markdown_parser.core.*
+internal import markdown_parser.plugin.*
 
 // codeformat
 internal import codeformat.codeFormat

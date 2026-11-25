@@ -16,6 +16,9 @@
 [dependencies]
   [dependencies.markdown]
     path = "${cangjie_tpc_markdown}"
+  [dependencies.markdown_parser]
+    tag = "v1.0.1-markdown-parser"
+    git = "https://gitcode.com/Cangjie-TPC/markdown4cj.git"
 
 [package]
   cjc-version = "1.1.3"

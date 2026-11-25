@@ -42,6 +42,8 @@ class MarkdownParagraphComponent {
     var paragraphIsLongPressed: Bool = false // 当前是否处于长按状态
     @State
     var needHideMenu: Bool = false // 是否需要隐藏菜单，同时关闭划选文字效果
+    @State
+    var spanRenderSerial: Int64 = 0 // Span异步资源刷新触发器（触发build重跑后ForEach按节点spanRenderVersion逐项diff，仅数据变化的item重建）
     var paragraphSelectionMenuTimer: ?Timer = None // 选区菜单自动隐藏定时器
     // 链接曝光：URL列表缓存 + 当前可见状态
     // onVisibleAreaChange(ratio阈值回调) 缓存 lastVisibleRatio + 触发 scheduleExposure，
@@ -79,6 +81,8 @@ class MarkdownParagraphComponent {
 
     protected override func aboutToDisappear(): Unit {
         isAlive = false
+        // 释放span异步资源（链接图标/行内图片/行内公式的PixelMap）
+        releaseSpanListPixelMaps(paragraphNodeViewList)
         MarkdownRefreshRegistry.unregister(paragraphNodeView.nodeHash)
         // 组件销毁时若仍处于可见状态，补 unregister 保证显示/消失成对
         if (paragraphExposureVisible) {
@@ -91,6 +95,19 @@ class MarkdownParagraphComponent {
             paragraphSelectionMenuTimer.getOrThrow().cancel()
             paragraphSelectionMenuTimer = None
         }
+    }
+
+    /**
+     * span异步资源写回后的刷新（重新赋值数据源触发ForEach全量diff，spanRenderVersion仅变化的item重建）
+     */
+    func onSpanAsyncUpdated(): Unit {
+        spanRenderSerial += 1
+        let oldList = paragraphNodeViewList
+        let newList = ObservedArrayList<NodeView>()
+        for (i in 0..oldList.size) {
+            newList.append(oldList[i])
+        }
+        paragraphNodeViewList = newList
     }
 
     /**
@@ -632,17 +649,7 @@ class MarkdownParagraphComponent {
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
                     // 数学公式
-                    MarkdownLatexMathInLineComponent(
-                        markdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                        latexMathInLineStr: spanListNodeView.nodeText,
-                        nodeHash: spanListNodeView.nodeHash,
-                        latexMathInLineComponentWidth: spanListComponentWidth,
-                        latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
-                        latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
-                        latexMathInLineLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                        latexMathInLineIsLink: spanListNodeView.isLink,
-                        latexMathInLineLinkUrl: spanListNodeView.linkUrl
-                    )
+                    spanLatexMathComponent(spanListNodeView, spanListMarkdownConfiguration)
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     // 软换行
                     Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
@@ -670,14 +677,15 @@ class MarkdownParagraphComponent {
                     }
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
-                        spanImageComponent(
+                    spanImageComponent(
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
                         spanListImageCallback,
                         Option<(Float64) -> Unit>.None,
-                        Option<Float64>.None
-                        )
+                        Option<Float64>.None,
+                        onSpanAsyncUpdated
+                    )
                 } else {
                     // 其他节点
                     paragraphCustomParagraphLineBuilder(spanListNodeView, index)
@@ -685,10 +693,8 @@ class MarkdownParagraphComponent {
             },
             keyGeneratorFunc: {
                 spanListNodeView: NodeView, idx: Int64 =>
-                    if (spanListNodeView.nodeType == "LatexMathNode") {
-                        return "${idx}-${spanListNodeView.nodeHash}"
-                    }
-                    return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                    // contentHash变化触发item重建（新节点重新解析），spanRenderVersion变化触发异步资源写回后的重建
+                    "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}-${spanListNodeView.spanRenderVersion}"
             }
         )
     }
@@ -703,6 +709,7 @@ class MarkdownParagraphComponent {
         this.paragraphNodeView = newNodeView
         let refreshNodeViewChildren = paragraphNodeView.children // 子节点数据
         if (refreshNodeViewChildren.size == 0) {
+            releaseSpanListPixelMaps(paragraphNodeViewList)
             paragraphNodeViewList.clear()
             return
         }
@@ -717,10 +724,9 @@ class MarkdownParagraphComponent {
             if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
                 // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
                 carryOverImageSizeCache(oldNode, newNode)
+                // 释放旧节点的span异步资源（链接图标/行内图片/行内公式的PixelMap）
+                oldNode.releaseSpanPixelMaps()
                 paragraphNodeViewList[i] = newNode
-                if (newNode.nodeType == "LatexMathNode" && oldNode.nodeHash == newNode.nodeHash) {
-                    MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)
-                }
             }
         }
         // 新增部分
@@ -731,6 +737,7 @@ class MarkdownParagraphComponent {
         } else if (existingLen > newLen) {
             // 删除多余部分（从后往前删）
             for (i in existingLen - 1..=newLen : -1) {
+                paragraphNodeViewList[i].releaseSpanPixelMaps()
                 paragraphNodeViewList.remove(i)
             }
         }
@@ -741,6 +748,18 @@ class MarkdownParagraphComponent {
         }
         // 更新段落纯文本内容，供长按回调与划选复制使用
         paragraphTextContent = getParagraphTextContent(paragraphNodeView)
+        // span异步资源（链接图标/行内图片/行内公式）统一由容器发起解析，写回NodeView后通过onSpanAsyncUpdated触发刷新
+        refreshSpanAsyncResources(
+            paragraphNodeViewList,
+            paragraphMarkdownConfiguration,
+            paragraphComponentWidth,
+            isOneLink,
+            paragraphImageCallback,
+            Option<(Float64) -> Unit>.None,
+            Option<Float64>.None,
+            Option<(Float64) -> Unit>.None,
+            onSpanAsyncUpdated
+        )
     }
 
     // 启动弹窗关闭判断延时

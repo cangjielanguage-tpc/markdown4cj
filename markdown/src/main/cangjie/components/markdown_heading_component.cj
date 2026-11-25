@@ -27,6 +27,8 @@ class MarkdownHeadingComponent {
     var headingHighlightColor: Color = COLOR_TRANSPARENT // 标题高亮颜色
     @State
     var hasHeadingHighlight: Bool = false // 标题是否处于高亮状态
+    @State
+    var spanRenderSerial: Int64 = 0 // Span异步资源刷新触发器（触发build重跑后ForEach按节点spanRenderVersion逐项diff，仅数据变化的item重建）
     // 链接曝光：URL列表缓存 + 当前可见状态（与MarkdownParagraphComponent同款）
     // onVisibleAreaChange 缓存 ratio + scheduleExposure，evaluateExposure 用 ratio 判定可见性
     var headingExposureUrls: ArrayList<String> = ArrayList<String>()
@@ -59,12 +61,27 @@ class MarkdownHeadingComponent {
 
     protected override func aboutToDisappear(): Unit {
         isAlive = false
+        // 释放span异步资源（链接图标/行内图片/行内公式的PixelMap）
+        releaseSpanListPixelMaps(headingNodeViewList)
         MarkdownRefreshRegistry.unregister(headingNodeView.nodeHash)
         if (headingExposureVisible) {
             MarkdownLinkExposureRegistry.unregister(headingNodeView.nodeHash)
             headingExposureVisible = false
         }
         MarkdownHighlightRegistry.unregister(headingNodeView.nodeHash)
+    }
+
+    /**
+     * span异步资源写回后的刷新（重新赋值数据源触发ForEach全量diff，spanRenderVersion仅变化的item重建）
+     */
+    func onSpanAsyncUpdated(): Unit {
+        spanRenderSerial += 1
+        let oldList = headingNodeViewList
+        let newList = ObservedArrayList<NodeView>()
+        for (i in 0..oldList.size) {
+            newList.append(oldList[i])
+        }
+        headingNodeViewList = newList
     }
 
     /**
@@ -345,17 +362,7 @@ class MarkdownHeadingComponent {
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
                     // 数学公式
-                    MarkdownLatexMathInLineComponent(
-                        markdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                        latexMathInLineStr: spanListNodeView.nodeText,
-                        nodeHash: spanListNodeView.nodeHash,
-                        latexMathInLineComponentWidth: spanListComponentWidth,
-                        latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
-                        latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
-                        latexMathInLineLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                        latexMathInLineIsLink: spanListNodeView.isLink,
-                        latexMathInLineLinkUrl: spanListNodeView.linkUrl
-                    )
+                    spanLatexMathComponent(spanListNodeView, spanListMarkdownConfiguration)
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     // 软换行
                     Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
@@ -383,14 +390,15 @@ class MarkdownHeadingComponent {
                     }
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
-                        spanImageComponent(
+                    spanImageComponent(
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
                         spanListImageCallback,
                         Option<(Float64) -> Unit>.None,
-                        Option<Float64>.None
-                        )
+                        Option<Float64>.None,
+                        onSpanAsyncUpdated
+                    )
                 } else {
                     // 其他节点
                     headingCustomHeadingLineBuilder(spanListNodeView, index)
@@ -398,10 +406,8 @@ class MarkdownHeadingComponent {
             },
             keyGeneratorFunc: {
                 spanListNodeView: NodeView, idx: Int64 =>
-                    if (spanListNodeView.nodeType == "LatexMathNode") {
-                        return "${idx}-${spanListNodeView.nodeHash}"
-                    }
-                    return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                    // contentHash变化触发item重建（新节点重新解析），spanRenderVersion变化触发异步资源写回后的重建
+                    "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}-${spanListNodeView.spanRenderVersion}"
             }
         )
     }
@@ -417,6 +423,7 @@ class MarkdownHeadingComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let headingNodeViewListSize: Int64 = headingNodeViewList.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            releaseSpanListPixelMaps(headingNodeViewList)
             headingNodeViewList.clear()
             return
         }
@@ -438,10 +445,9 @@ class MarkdownHeadingComponent {
                     // 子节点唯一ID不相同需要刷新子节点数据
                     // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
                     carryOverImageSizeCache(dataSourceNode, refreshNodeView)
+                    // 释放旧节点的span异步资源（链接图标/行内图片/行内公式的PixelMap）
+                    dataSourceNode.releaseSpanPixelMaps()
                     headingNodeViewList[i] = refreshNodeView
-                    if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
-                        MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)
-                    }
                 }
             }
             // 循环添加新数据
@@ -463,10 +469,9 @@ class MarkdownHeadingComponent {
                     // 子节点唯一ID不相同需要刷新子节点数据
                     // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
                     carryOverImageSizeCache(dataSourceNode, refreshNodeView)
+                    // 释放旧节点的span异步资源（链接图标/行内图片/行内公式的PixelMap）
+                    dataSourceNode.releaseSpanPixelMaps()
                     headingNodeViewList[i] = refreshNodeView
-                    if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
-                        MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)
-                    }
                 }
             }
         } else {
@@ -484,14 +489,14 @@ class MarkdownHeadingComponent {
                     // 子节点唯一ID不相同需要刷新子节点数据
                     // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
                     carryOverImageSizeCache(dataSourceNode, refreshNodeView)
+                    // 释放旧节点的span异步资源（链接图标/行内图片/行内公式的PixelMap）
+                    dataSourceNode.releaseSpanPixelMaps()
                     headingNodeViewList[i] = refreshNodeView
-                    if (refreshNodeView.nodeType == "LatexMathNode" && oldNodeHash == newNodeHash) {
-                        MarkdownRefreshRegistry.refresh(refreshNodeView.nodeHash, refreshNodeView)
-                    }
                 }
             }
             // 循环删除多余的旧数据
             for (i in headingNodeViewListSize - 1..=refreshNodeViewSize : -1) {
+                headingNodeViewList[i].releaseSpanPixelMaps()
                 headingNodeViewList.remove(i)
             }
         }
@@ -500,5 +505,17 @@ class MarkdownHeadingComponent {
         } else {
             isOneLink = false
         }
+        // span异步资源（链接图标/行内图片/行内公式）统一由容器发起解析，写回NodeView后通过onSpanAsyncUpdated触发刷新
+        refreshSpanAsyncResources(
+            headingNodeViewList,
+            headingMarkdownConfiguration,
+            headingComponentWidth,
+            isOneLink,
+            headingImageCallback,
+            Option<(Float64) -> Unit>.None,
+            Option<Float64>.None,
+            Option<(Float64) -> Unit>.None,
+            onSpanAsyncUpdated
+        )
     }
 }

@@ -33,4 +33,5 @@ code-linter.json5
 log.txt
 **/IDL_Dependencies_List~
 **/build-script-cache
+/markdown/stdx_bin/
 /markdown/har/

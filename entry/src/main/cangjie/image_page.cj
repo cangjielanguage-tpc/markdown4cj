@@ -124,7 +124,10 @@ class ImagePage {
 
     func imageCallbackCallback(str: String): ?Array<UInt8> {
         var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
-        if (str == "https://markdown.com.cn/images/philly-magic-garden.jpg") {
+        if (str == "https://markdown.com.cn/images/philly-magic-garden.jpg" ||
+            str == "https://this-image-does-not-exist.com" || // 错误的网络图片地址也走替换
+            str == "./1111.jpg" ||
+            str == "./11111.jpg") { // rawfile 里不存在的本地图片也走替换
             let a =  @r(app.media.app_icon)
             if (let Some(w) <- GlobalContext.getContext()) {
                 var resourceManager = ResourceManager.getResourceManager(w)

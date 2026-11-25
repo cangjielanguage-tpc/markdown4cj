@@ -15,7 +15,6 @@
     "Latex"
   ],
   "dependencies": {
-    "@cangjie/stdx-compat": "1.1.3",
     "@cangjie-tpc/formula": "file:./har/formula.har"
   }
 }

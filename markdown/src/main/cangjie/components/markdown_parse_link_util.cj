@@ -262,3 +262,17 @@ class LinkLoadLimiter <: Resource {
         closed.store(true)
     }
 }
+
+/**
+ * 根据文件类型字符串获取链接图标的前景色与背景色
+ */
+func typeStringColor(str: String): (Color, Color) { /* cjlint-ignore !G.FUN.02 */
+    match (str) {
+        case "PDF" => return (Color(0xFFB41700), Color(180, 23, 0, alpha: 0.2))
+        case "DOC" => return (Color(0xFF3D73CF), Color(61, 115, 207, alpha: 0.2))
+        case "DOCX" => return (Color(0xFF3D73CF), Color(61, 115, 207, alpha: 0.2))
+        case "TXT" => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
+        case "DEFAULT" => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
+        case _ => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
+    }
+}

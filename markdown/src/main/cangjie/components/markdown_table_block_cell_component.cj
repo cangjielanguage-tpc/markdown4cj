@@ -45,6 +45,8 @@ class MarkdownTableBlockCellComponent {
     var exposureScheduled: Bool = false // 曝光评估是否已调度（防抖标志，避免onVisibleAreaChange多次阈值回调每次都spawn协程）
     var lastVisibleRatio: Float64 = 0.0 // onVisibleAreaChange 最近一次回调的可见比例（0=完全不可见，1=完全可见，已考虑所有祖先裁剪）
     var prevTextLength: Int64 = 0 // 上次刷新时的子节点文本总长度（内容缩短检测用）
+    @State
+    var spanRenderSerial: Int64 = 0 // Span异步资源刷新触发器（触发build重跑后ForEach按节点spanRenderVersion逐项diff，仅数据变化的item重建）
 
     @BuilderParam
     var blockImageCardComponent: (String, String, String) -> Unit = CustomBlockImageBuilder  //自定义卡片布局块级图片
@@ -67,11 +69,26 @@ class MarkdownTableBlockCellComponent {
 
     protected override func aboutToDisappear(): Unit {
         isAlive = false
+        // 释放span异步资源（链接图标/行内图片/行内公式的PixelMap，含TableCellPart嵌套span）
+        releaseTableCellSpanPixelMaps(tableBlockCellNodeViewList)
         MarkdownRefreshRegistry.unregister(tableBlockCellNodeView.nodeHash)
         if (tableBlockCellExposureVisible) {
             MarkdownLinkExposureRegistry.unregister(tableBlockCellNodeView.nodeHash)
             tableBlockCellExposureVisible = false
         }
+    }
+
+    /**
+     * span异步资源写回后的刷新（重新赋值数据源触发ForEach全量diff，spanRenderVersion仅变化的item重建）
+     */
+    func onSpanAsyncUpdated(): Unit {
+        spanRenderSerial += 1
+        let oldList = tableBlockCellNodeViewList
+        let newList = ObservedArrayList<NodeView>()
+        for (i in 0..oldList.size) {
+            newList.append(oldList[i])
+        }
+        tableBlockCellNodeViewList = newList
     }
 
     /**
@@ -224,7 +241,8 @@ class MarkdownTableBlockCellComponent {
             },
             keyGeneratorFunc: {
                 spanListNodeView: NodeView, idx: Int64 =>
-                   return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                    // TableCellPart嵌套span写回后聚合版本变化，驱动item重建（CustomCard无children恒为0）
+                    "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}-${spanNestedRenderVersion(spanListNodeView)}"
             }
         )
     }
@@ -342,59 +360,43 @@ class MarkdownTableBlockCellComponent {
                         tableBlockCellCell == 0 && spanListMarkdownConfiguration.markdownTheme.tableTheme.tableFirstColumnIsBold
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
-                    MarkdownLatexMathInLineComponent(
-                        markdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                        latexMathInLineStr: spanListNodeView.nodeText,
-                        nodeHash: spanListNodeView.nodeHash,
-                        latexMathInLineComponentWidth: spanListComponentWidth,
-                        latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
-                        latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
-                        latexMathInLineLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                        latexMathInLineIsLink: spanListNodeView.isLink,
-                        latexMathInLineLinkUrl: spanListNodeView.linkUrl,
-                        latexMathInLineWidthCallback: { width: Float64 =>
-                            // LaTeX图片解析完成后：先清除该单元格的列宽记录，再记录imageFallback
-                            // 防止列宽在旧测量值与图片宽度之间抖动
-                            cellWidthTracker.clearCellWidth(tableBlockCellRow, tableBlockCellCell)
-                            cellWidthTracker.setFallback(tableBlockCellRow, tableBlockCellCell, width)
-                        }
-                    )
+                    // 数学公式
+                    spanLatexMathComponent(spanListNodeView, spanListMarkdownConfiguration)
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
                 } else if (spanListNodeView.nodeType == "HardLineBreak") {
                     Span("\n")
                 } else if (spanListNodeView.nodeType == "Link" || spanListNodeView.nodeType == "HeadLink") {
-                        // 链接, TOC列表链接
-                        spanLinkComponent(
+                    // 链接, TOC列表链接
+                    spanLinkComponent(
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListTocListOnClick,
                         spanListFootnoteCallback,
                         false
-                        )
+                    )
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
-                        spanImageComponent(
+                    spanImageComponent(
                         spanListNodeView,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
                         spanListImageCallback,
-                        { width: Float64 =>
-                            // 图片加载完成后记录imageFallback，防止列宽收缩到图片宽度以下
+                        // 图片加载完成后记录imageFallback，防止列宽收缩到图片宽度以下
+                        Option<(Float64) -> Unit>.Some({ width: Float64 =>
                             cellWidthTracker.setFallback(tableBlockCellRow, tableBlockCellCell, width)
-                        },
+                        }),
                         // 表格场景：以单元格最大宽度为图片宽度计算基准与约束宽度（对齐ArkUI tableMaxCellWidth逻辑）
-                        spanListMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth
-                        )
+                        spanListMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth,
+                        onSpanAsyncUpdated
+                    )
                 } else {
                     tableBlockCellCustomTableLineBuilder(spanListNodeView, index)
                 }
             },
             keyGeneratorFunc: {
                 spanListNodeView: NodeView, idx: Int64 =>
-                    if (spanListNodeView.nodeType == "LatexMathNode") {
-                        return "${idx}-${spanListNodeView.nodeHash}"
-                    }
-                    return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                    // contentHash变化触发item重建（新节点重新解析），spanRenderVersion变化触发异步资源写回后的重建
+                    "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}-${spanListNodeView.spanRenderVersion}"
             }
         )
     }
@@ -444,6 +446,7 @@ class MarkdownTableBlockCellComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size
         let tableBlockCellNodeViewListSize: Int64 = tableBlockCellNodeViewList.size
         if (refreshNodeViewSize == 0) {
+            releaseTableCellSpanPixelMaps(tableBlockCellNodeViewList)
             tableBlockCellNodeViewList.clear()
             useCustomCellLogic = false
             return
@@ -458,10 +461,9 @@ class MarkdownTableBlockCellComponent {
             if (oldNode.nodeHash != newNode.nodeHash || oldNode.contentHash != newNode.contentHash) {
                 // 图片节点：同URL时保留旧节点的尺寸缓存（对齐ArkUI oldImageSizes保留逻辑）
                 carryOverImageSizeCache(oldNode, newNode)
+                // 释放旧节点的span异步资源（含TableCellPart嵌套span）
+                releaseCellNodeSpanPixelMaps(oldNode)
                 tableBlockCellNodeViewList[i] = newNode
-                if (newNode.nodeType == "LatexMathNode" && oldNode.nodeHash == newNode.nodeHash) {
-                    MarkdownRefreshRegistry.refresh(newNode.nodeHash, newNode)
-                }
             }
         }
         if (refreshNodeViewSize > tableBlockCellNodeViewListSize) {
@@ -470,6 +472,8 @@ class MarkdownTableBlockCellComponent {
             }
         } else if (tableBlockCellNodeViewListSize > refreshNodeViewSize) {
             for (i in tableBlockCellNodeViewListSize - 1..=refreshNodeViewSize : -1) {
+                // 释放被删节点的span异步资源（含TableCellPart嵌套span）
+                releaseCellNodeSpanPixelMaps(tableBlockCellNodeViewList[i])
                 tableBlockCellNodeViewList.remove(i)
             }
         }
@@ -489,5 +493,81 @@ class MarkdownTableBlockCellComponent {
         if (newUseCustomCellLogic != useCustomCellLogic) {
             useCustomCellLogic = newUseCustomCellLogic
         }
+        // span异步资源（链接图标/行内图片/行内公式）统一由容器发起解析，写回NodeView后通过onSpanAsyncUpdated触发刷新
+        // 表格场景传列宽跟踪回调与cellMaxWidth（对齐ArkUI tableMaxCellWidth优先逻辑）
+        let imageWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.Some({ width: Float64 =>
+            // 图片加载完成后记录imageFallback，防止列宽收缩到图片宽度以下
+            cellWidthTracker.setFallback(tableBlockCellRow, tableBlockCellCell, width)
+        })
+        let latexWidthCallback: ?(Float64) -> Unit = Option<(Float64) -> Unit>.Some({ width: Float64 =>
+            // LaTeX图片解析完成后：先清除该单元格的列宽记录，再记录imageFallback
+            // 防止列宽在旧测量值与图片宽度之间抖动
+            cellWidthTracker.clearCellWidth(tableBlockCellRow, tableBlockCellCell)
+            cellWidthTracker.setFallback(tableBlockCellRow, tableBlockCellCell, width)
+        })
+        if (useCustomCellLogic) {
+            // 自定义Cell（TableCellPart）：span节点嵌套在TableCellPart的children里
+            for (i in 0..tableBlockCellNodeViewList.size) {
+                let node = tableBlockCellNodeViewList[i]
+                if (node.nodeType == "TableCellPart") {
+                    refreshSpanAsyncResources(
+                        ObservedArrayList(node.children),
+                        tableBlockCellMarkdownConfiguration,
+                        tableBlockCellComponentWidth,
+                        false,
+                        tableBlockCellImageCallback,
+                        imageWidthCallback,
+                        tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth,
+                        latexWidthCallback,
+                        onSpanAsyncUpdated
+                    )
+                }
+            }
+        } else {
+            refreshSpanAsyncResources(
+                tableBlockCellNodeViewList,
+                tableBlockCellMarkdownConfiguration,
+                tableBlockCellComponentWidth,
+                false,
+                tableBlockCellImageCallback,
+                imageWidthCallback,
+                tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth,
+                latexWidthCallback,
+                onSpanAsyncUpdated
+            )
+        }
+    }
+}
+
+/**
+ * 计算Cell节点的嵌套span异步资源版本聚合值（TableCellPart场景）
+ * 任一嵌套span写回后聚合值变化，驱动外层ForEach item重建（CustomCard无children恒为0）
+ */
+func spanNestedRenderVersion(cellNode: NodeView): Int64 {
+    var version: Int64 = 0
+    for (i in 0..cellNode.children.size) {
+        version += cellNode.children[i].spanRenderVersion
+    }
+    return version
+}
+
+/**
+ * 释放单个Cell节点的span异步资源（链接图标/行内图片/行内公式的PixelMap，含TableCellPart嵌套span）
+ */
+func releaseCellNodeSpanPixelMaps(cellNode: NodeView): Unit {
+    cellNode.releaseSpanPixelMaps()
+    if (cellNode.nodeType == "TableCellPart") {
+        for (j in 0..cellNode.children.size) {
+            cellNode.children[j].releaseSpanPixelMaps()
+        }
+    }
+}
+
+/**
+ * 表格Cell场景批量释放span异步资源（链接图标/行内图片/行内公式的PixelMap，含TableCellPart嵌套span）
+ */
+func releaseTableCellSpanPixelMaps(cellNodes: ObservedArrayList<NodeView>): Unit {
+    for (i in 0..cellNodes.size) {
+        releaseCellNodeSpanPixelMaps(cellNodes[i])
     }
 }
