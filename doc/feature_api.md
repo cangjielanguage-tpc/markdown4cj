@@ -3042,7 +3042,7 @@ export class LinkTheme {
    *
    * @param size 链接文本尺寸
    */
-  setLinkTextFontSize(size: number): LinkTheme
+  setLinkTextFontSize(size: number | undefined): LinkTheme
 
   /**
    * 设置链接文本字体样式

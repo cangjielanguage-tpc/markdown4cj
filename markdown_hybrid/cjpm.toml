@@ -31,7 +31,7 @@
 
 [package]
   cjc-version = "1.1.3"
-  compile-option = "--dy-std --disable-reflection"
+  compile-option = "--dy-std --discard-eh-frame --disable-reflection --stack-trace-format=simple --link-options=--pack-dyn-relocs=relr"
   description = "CangjieUI Application"
   link-option = ""
   name = "markdown"
