@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v2.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v2.0.2-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.1.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -82,7 +82,7 @@ Markdown_arkui是一个用arkts语言编写的适用于鸿蒙系统的Markdown�
 
 ## 软件架构
 
-![](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown_arkui-6.1.1/doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown_arkui-6.1.1/doc/assets/img.png)
 
 ### 源码目录
 
@@ -712,7 +712,7 @@ struct DemoPage {
 
 ### 显示效果
 
-![](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown_arkui-6.1.1/doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown_arkui-6.1.1/doc/assets/img1.png)
 
 ## 编译构建
 
@@ -722,7 +722,7 @@ struct DemoPage {
    git clone -b markdown_arkui-6.1.1 https://gitcode.com/Cangjie-TPC/markdown4cj.git
    ```
 
-2. 下载依赖 HAR：`ohpm install` 时由 `oh-package.json5` 的 `hooks.preInstall` 自动执行 `scripts/pre_har_install.mjs`，从 OBS 下载 4 个预编译依赖 HAR（`prism_hybrid` / `codeformat_hybrid` / `markdown_parser_hybrid` / `formula_hybrid`，版本 v2.0.0）到 `markdown_arkui/har` 目录，并按 SHA256 校验；已存在且校验通过的文件自动跳过。也可以手动执行：
+2. 下载依赖 HAR：`ohpm install` 时由 `oh-package.json5` 的 `hooks.preInstall` 自动执行 `scripts/pre_har_install.mjs`，从 GitCode 下载 4 个预编译依赖 HAR（`prism_hybrid` v2.0.2 / `markdown_parser_hybrid` v2.0.2 / `codeformat_hybrid` v2.0.1 / `formula_hybrid` v2.0.1）到 `markdown_arkui/har` 目录，并按 SHA256 校验；已存在且校验通过的文件自动跳过。也可以手动执行：
 
    ```bash
    node ./scripts/pre_har_install.mjs
@@ -749,6 +749,24 @@ struct DemoPage {
   - `003_SduiCard.md`：卡片按钮点击交互（callback 弹框 / link 跳转）与状态栏计数验证
 
 ## 约束与限制
+
+在下述版本验证通过:
+
+| 编号 | 依赖构建工具                                       | 版本号       |
+|----|----------------------------------------------|-----------|
+| 1  | **DevEco Studio**                            | 6.1.1.280 |
+| 2  | **cjc**                                      | v1.1.3    |
+| 3  | **DevEco Studio-Cangjie Plugin 6.1.1 Beta1** | 6.1.1.280 |
+| 4  | **compatibility-sdk-6.1.1.280**              | 6.1.1.280 |
+
+markdown依赖三方库：
+
+| 编号 | 依赖三方库                | 版本号            |
+|----|----------------------|----------------|
+| 1  | **prism_hybrid**     | v2.0.2-hybrid  |
+| 2  | **codeformat_hybrid**| v2.0.1-hybrid  |
+| 3  | **markdown_parser_hybrid** | v2.0.2-hybrid |
+| 4  | **formula_hybrid**   | v2.0.1-hybrid  |
 
 当前基于 DevEco Studio for Windows 6.1.1.280 版本实现的
 

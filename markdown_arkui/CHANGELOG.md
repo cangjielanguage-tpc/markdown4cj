@@ -1,3 +1,11 @@
+# 2.0.2
+
+1. 解析性能优化：节点树构建接入 markdown_parser_hybrid v2.0.2 的 JsNodeTreeBuilderBatch 批量构建器，节点树按 chunkSize 分片推送，跨语言回调次数由每节点 4~10 次降为每分片 1 次
+2. markdown_parser_hybrid 预编译依赖升级至 v2.0.2-hybrid，SHA256 重新锁定校验
+3. 安装脚本重构：抽取共享工具脚本 pre_install_utils.mjs（下载校验/文件占用重试/临时文件清理），pre_har_install.mjs 仅保留依赖清单与下载流程
+4. 安装脚本并发加固：preInstall 临时文件名带进程 pid，避免 DevEco 并发触发 ohpm install 时互相改写；下载落位与失败清理增加文件占用重试
+5. README 软件架构图与显示效果图的 GitCode 链接由 blob 页面链接修复为 raw 直链（原链接无法显示），并更新架构图
+
 # 2.0.1
 
 1. 新增链接URL协议过滤配置接口（setLinkUrlFilter，默认拦截javascript:/vbscript:/data:/file:等危险协议）
