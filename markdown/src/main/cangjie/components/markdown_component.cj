@@ -20,6 +20,11 @@ public class MarkdownComponent {
     var incrementalAnalysis: Bool // markdown是否增量解析(true:增量解析,false:全量解析)
     @Prop
     var markdownConfiguration: MarkdownConfiguration // markdown配置
+    // markdown插件链（解析器）
+    // 【线程安全】Markdown解析器实例非线程安全：本组件会在worker线程调用该实例解析。
+    // 同一实例不可再从其他线程使用（如主线程调preMarkwonHeightByNode做高度估算），
+    // 否则并发解析会损坏插件内部状态导致随机SIGSEGV。
+    // 需要在别处解析时，请为该用途单独构建一份插件链（配置一致即可）。
     var markdownPlugin: Markdown = Markdown
         .builder()
         .usePlugin(HtmlPlugin.create()) // HTML插件

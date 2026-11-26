@@ -674,18 +674,22 @@ func spanImageUrlLoadComponent(
  *
  * @param spanLatexNodeView 数学公式节点
  * @param spanLatexMarkdownConfiguration markdown配置
+ * @param spanLatexCellMaxWidth 表格单元格最大宽度 - 单位vp（非表格场景传None）
+ * @param spanLatexComponentWidth 控件宽度 - 单位vp
  */
 @Builder
 func spanLatexMathComponent(
     spanLatexNodeView: NodeView,
-    spanLatexMarkdownConfiguration: MarkdownConfiguration
+    spanLatexMarkdownConfiguration: MarkdownConfiguration,
+    spanLatexCellMaxWidth: ?Float64,
+    spanLatexComponentWidth: Float64
 ) {
     if (spanLatexNodeView.latexParserEnd) {
         if (spanLatexNodeView.latexPixelMap.isSome() && spanLatexNodeView.latexImageHeight > 0.0 && spanLatexNodeView.latexImageWidth > 0.0 && spanLatexNodeView.latexImageData.isSome()) {
-            // 数学公式图片
+            // 数学公式图片（表格单元格场景：宽度超过单元格可用宽度时等比缩小，对齐ArkUI latexSpanWidth/latexSpanHeight）
             ImageSpan(spanLatexNodeView.latexPixelMap())
-                .width(spanLatexNodeView.latexImageWidth.px)
-                .height(spanLatexNodeView.latexImageHeight.px)
+                .width(spanLatexRenderWidth(spanLatexNodeView, spanLatexCellMaxWidth, spanLatexComponentWidth, spanLatexMarkdownConfiguration))
+                .height(spanLatexRenderHeight(spanLatexNodeView, spanLatexCellMaxWidth, spanLatexComponentWidth, spanLatexMarkdownConfiguration))
                 .objectFit(ImageFit.Contain)
                 .constraintSize(maxWidth: 100.percent)
                 .verticalAlign(ImageSpanAlignment.CENTER)
@@ -729,6 +733,63 @@ func spanLatexDefaultTextComponent(
         .fontWeight(spanLatexDefaultMarkdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
         .fontStyle(spanLatexDefaultMarkdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
         .fontColor(spanLatexDefaultMarkdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
+}
+
+/**
+ * 行内数学公式ImageSpan显示宽度上限 - 单位vp（表格单元格场景）
+ * 取单元格内容区可用宽度与控件宽度中较小者，确保公式完整落在内容区内（对齐ArkUI latexSpanMaxWidth）
+ *
+ * @param spanLatexMaxCellWidth 表格单元格内容区可用宽度（已扣除左右内边距） - 单位vp
+ * @param spanLatexMaxComponentWidth 控件宽度 - 单位vp
+ * @param spanLatexMaxConfiguration markdown配置（预留）
+ */
+func spanLatexMaxWidth(spanLatexMaxCellWidth: ?Float64, spanLatexMaxComponentWidth: Float64, spanLatexMaxConfiguration: MarkdownConfiguration): Float64 {
+    var maxWidth = 0.0
+    if (let Some(cellMaxWidth) <- spanLatexMaxCellWidth) {
+        maxWidth = cellMaxWidth
+    }
+    if (maxWidth <= 0.0) {
+        return 0.0
+    }
+    if (spanLatexMaxComponentWidth > 0.0 && spanLatexMaxComponentWidth < maxWidth) {
+        return spanLatexMaxComponentWidth
+    }
+    return maxWidth
+}
+
+/**
+ * 行内数学公式ImageSpan显示宽度：按位图实际尺寸显示，宽度超过上限时等比缩小（对齐ArkUI latexSpanWidth）
+ *
+ * @param spanRenderLatexNodeView 数学公式节点
+ * @param spanRenderCellMaxWidth 单元格最大宽度 - 单位vp（非表格场景传None）
+ */
+func spanLatexRenderWidth(spanRenderLatexNodeView: NodeView, spanRenderCellMaxWidth: ?Float64, spanRenderComponentWidth: Float64, spanRenderConfiguration: MarkdownConfiguration): Length {
+    let maxWidth = spanLatexMaxWidth(spanRenderCellMaxWidth, spanRenderComponentWidth, spanRenderConfiguration)
+    if (maxWidth > 0.0) {
+        let imgWidth = px2vp(spanRenderLatexNodeView.latexImageWidth.px).getOrThrow().value
+        if (imgWidth > maxWidth) {
+            return maxWidth.vp
+        }
+    }
+    return spanRenderLatexNodeView.latexImageWidth.px
+}
+
+/**
+ * 行内数学公式ImageSpan显示高度：与spanLatexRenderWidth保持同一等比缩放比例，避免宽高比失真（对齐ArkUI latexSpanHeight）
+ *
+ * @param spanRenderLatexNodeView 数学公式节点
+ * @param spanRenderCellMaxWidth 单元格最大宽度 - 单位vp（非表格场景传None）
+ */
+func spanLatexRenderHeight(spanRenderLatexNodeView: NodeView, spanRenderCellMaxWidth: ?Float64, spanRenderComponentWidth: Float64, spanRenderConfiguration: MarkdownConfiguration): Length {
+    let maxWidth = spanLatexMaxWidth(spanRenderCellMaxWidth, spanRenderComponentWidth, spanRenderConfiguration)
+    if (maxWidth > 0.0) {
+        let imgWidth = px2vp(spanRenderLatexNodeView.latexImageWidth.px).getOrThrow().value
+        if (imgWidth > maxWidth) {
+            let imgHeight = px2vp(spanRenderLatexNodeView.latexImageHeight.px).getOrThrow().value
+            return (imgHeight * (maxWidth / imgWidth)).vp
+        }
+    }
+    return spanRenderLatexNodeView.latexImageHeight.px
 }
 
 /**

@@ -1,4 +1,4 @@
-﻿package ohos_app_cangjie_entry
+package ohos_app_cangjie_entry
 
 import ohos.state_macro_manage.*
 import ohos.hybrid_base.*
@@ -29,12 +29,32 @@ class SwitchDataPage {
         .usePlugin(ImageCollectPlugin.create())
         .usePlugin(NodeIdPlugin.create())
         .build()
+    // 高度估算专用插件链：配置与渲染插件链一致，nodeId按内容哈希计算，与渲染结果一致
+    // 主线程高度解析与worker渲染解析使用不同实例，避免并发共享插件内部状态导致解析树损坏闪退
+    var markdownHeightPlugin: Markdown = Markdown
+        .builder()
+        .usePlugin(HtmlPlugin.create())
+        .usePlugin(TaskListPlugin.create())
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(TablePlugin.create())
+        .usePlugin(LatexMathPluginV2.create())
+        .usePlugin(BlockAudioPlugin.create())
+        .usePlugin(BlockVideoPlugin.create())
+        .usePlugin(LinkifyPlugin.create([]))
+        .usePlugin(ImageSlidePlugin.create())
+        .usePlugin(ImageStylePlugin.create())
+        .usePlugin(CodeListPlugin.create())
+        .usePlugin(FootnotePlugin.create())
+        .usePlugin(TocPlugin.create())
+        .usePlugin(ImageCollectPlugin.create())
+        .usePlugin(NodeIdPlugin.create())
+        .build()
     @State
     var estimatedHeightByNode: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
         markdownConfiguration.setMarkdownTheme(MarkdownTheme.createDefault())
-        estimatedHeightByNode = preMarkwonHeightByNode(mdStr, markdownConfiguration, markdownPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
+        estimatedHeightByNode = preMarkwonHeightByNode(mdStr, markdownConfiguration, markdownHeightPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
     }
     var mdStr: String = getGlobalString("markdownContent")
 

@@ -8,7 +8,7 @@ package markdown.components
  *
  * - 直接使用 commonmark4cj 解析出的节点树（不走正则）
  * - setext 标题、ATX 标题都由解析器统一识别为 Heading 节点
- * - markdownPlugin 由调用方传入，确保与渲染时使用的插件链一致
+ * - markdownPlugin 由调用方传入，插件链配置需与渲染组件一致，但【必须是独立实例】
  * - 所有块类型均计算 margin + padding + borderWidth + 内容高度
  * - BlockAD / CardNode / HtmlBlock 高度依赖外部渲染或不可见，返回 0
  */
@@ -16,9 +16,16 @@ package markdown.components
 /**
  * 预计算 Markdown 渲染高度（基于解析节点树和主题样式的估算）
  *
+ * 【线程安全】Markdown 解析器实例非线程安全。本函数在调用方线程同步解析，
+ * 而 MarkdownComponent 在 worker 线程解析。两者严禁共用同一 Markdown 实例，
+ * 否则并发解析会损坏插件内部状态/解析树，导致随机 SIGSEGV 崩溃
+ * （典型触发：全量加载时 loadFile 先设 output 触发 worker 解析，紧接本函数在主线程解析）。
+ * 正确用法：为高度估算单独构建一份插件链（配置与渲染组件一致，nodeId 按内容哈希计算，
+ * 独立实例算出的 id 与渲染一致，高度缓存依然有效）。
+ *
  * @param content Markdown文本
  * @param config Markdown配置（含主题样式）
- * @param markdownPlugin Markdown解析器实例（需与渲染组件使用的插件链一致）
+ * @param markdownPlugin 高度估算专用 Markdown 解析器实例（插件链配置与渲染组件一致，但不可与 MarkdownComponent 共用）
  * @param componentWidth 控件宽度（vp），<=0 时自动取屏幕宽度（与 MarkdownComponent 初始化一致）
  * @return 估算高度（vp）
  */

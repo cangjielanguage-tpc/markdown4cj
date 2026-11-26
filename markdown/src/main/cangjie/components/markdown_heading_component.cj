@@ -362,7 +362,7 @@ class MarkdownHeadingComponent {
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
                     // 数学公式
-                    spanLatexMathComponent(spanListNodeView, spanListMarkdownConfiguration)
+                    spanLatexMathComponent(spanListNodeView, spanListMarkdownConfiguration, Option<Float64>.None, spanListComponentWidth)
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     // 软换行
                     Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))

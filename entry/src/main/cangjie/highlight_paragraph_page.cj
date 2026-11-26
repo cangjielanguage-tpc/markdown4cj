@@ -43,6 +43,7 @@ class HighlightParagraphPage {
     @State @Watch[onConfigChanged] var cfg_isDark: String = "false"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    var loadGeneration: Int64 = 0 // 流式加载世代计数：切换文件时使旧的流式循环失效，防止旧内容追加到新文件内容上
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
     var markdownPlugin: Markdown = Markdown
@@ -96,6 +97,8 @@ class HighlightParagraphPage {
         incrementalAnalysis = incremental
         arr = fullContent.toRuneArray()
         isInputEnded = isFull
+        // 世代计数：无论哪种模式都使进行中的流式循环失效，防止旧文件内容继续追加
+        loadGeneration += 1
         if (isFull) {
             mdStr = fullContent
         } else {
@@ -103,10 +106,17 @@ class HighlightParagraphPage {
             let number = textNumber
             let time = timeMs
             let total = arr.size
+            let generation = loadGeneration
             spawn {
                 for (i in 0..total : number) {
+                    if (generation != loadGeneration) {
+                        break // 文件已切换，终止旧的流式追加
+                    }
                     sleep(Duration.millisecond * time)
                     launch {
+                        if (generation != loadGeneration) {
+                            return // 文件已切换，丢弃过期的追加任务
+                        }
                         let size = if (total > i + number) {
                             i + number
                         } else {

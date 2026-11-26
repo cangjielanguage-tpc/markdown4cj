@@ -54,9 +54,12 @@ class HeightDefPage {
     @State @Watch[onConfigChanged] var cfg_definitionListDescriptionIndent: String = "8"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    var loadGeneration: Int64 = 0 // 流式加载世代计数：切换文件时使旧的流式循环失效，防止旧内容追加到新文件内容上
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
     var markdownPlugin: Markdown = setAllPlugin()
+    // 高度估算专用插件链：主线程高度解析与worker渲染解析使用不同实例，避免并发共享插件内部状态导致解析树损坏闪退
+    var markdownHeightPlugin: Markdown = setAllPlugin()
     @State
     var estimatedHeightByNode: Float64 = 0.0
     @State
@@ -94,20 +97,29 @@ class HeightDefPage {
         incrementalAnalysis = incremental
         arr = fullContent.toRuneArray()
         isInputEnded = isFull
+        // 世代计数：无论哪种模式都使进行中的流式循环失效，防止旧文件内容继续追加
+        loadGeneration += 1
         if (isFull) {
             mdStr = fullContent
             let pw = getMarkdownComponentWidth(paddingH: 5.0)
             precomputeWidthUsed = pw
-            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin, componentWidth: pw)
+            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownHeightPlugin, componentWidth: pw)
         } else {
             mdStr = ""
             let number = textNumber
             let time = timeMs
             let total = arr.size
+            let generation = loadGeneration
             spawn {
                 for (i in 0..total : number) {
+                    if (generation != loadGeneration) {
+                        break // 文件已切换，终止旧的流式追加
+                    }
                     sleep(Duration.millisecond * time)
                     launch {
+                        if (generation != loadGeneration) {
+                            return // 文件已切换，丢弃过期的追加任务
+                        }
                         let size = if (total > i + number) {
                             i + number
                         } else {
@@ -220,7 +232,7 @@ class HeightDefPage {
                         if (estimatedHeightByNode > 0.0 && actualContentWidth > 0.0) {
                             let diff = actualContentWidth - precomputeWidthUsed
                             if (diff > 0.5 || diff < -0.5) {
-                                estimatedHeightByNode = preMarkwonHeightByNode(mdStr, markdownConfiguration, markdownPlugin, componentWidth: actualContentWidth)
+                                estimatedHeightByNode = preMarkwonHeightByNode(mdStr, markdownConfiguration, markdownHeightPlugin, componentWidth: actualContentWidth)
                                 precomputeWidthUsed = actualContentWidth
                             }
                         }

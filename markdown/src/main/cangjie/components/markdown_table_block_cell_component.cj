@@ -201,6 +201,21 @@ class MarkdownTableBlockCellComponent {
         return 0.0
     }
 
+    /**
+     * 单元格内容区可用宽度上限 - 单位vp
+     * tableMaxCellWidth扣除左右内边距，作为行内图片/数学公式ImageSpan的缩放基准与约束宽度，
+     * 防止按外宽渲染时被单元格内边距裁剪；扣除后非正时退回tableMaxCellWidth兜底
+     */
+    func spanCellContentMaxWidth(): Float64 {
+        let tableTheme = tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme
+        let contentMaxWidth = tableTheme.tableMaxCellWidth - tableTheme.tableCellPaddingLeft - tableTheme.tableCellPaddingRight
+        return if (contentMaxWidth > 0.0) {
+            contentMaxWidth
+        } else {
+            tableTheme.tableMaxCellWidth
+        }
+    }
+
 
 
     /**
@@ -360,8 +375,13 @@ class MarkdownTableBlockCellComponent {
                         tableBlockCellCell == 0 && spanListMarkdownConfiguration.markdownTheme.tableTheme.tableFirstColumnIsBold
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
-                    // 数学公式
-                    spanLatexMathComponent(spanListNodeView, spanListMarkdownConfiguration)
+                    // 数学公式（单元格最大宽度约束：公式图片超宽时等比缩小，防止溢出单元格）
+                    spanLatexMathComponent(
+                        spanListNodeView,
+                        spanListMarkdownConfiguration,
+                        Option<Float64>.Some(spanCellContentMaxWidth()),
+                        spanListComponentWidth
+                    )
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
                 } else if (spanListNodeView.nodeType == "HardLineBreak") {
@@ -385,8 +405,9 @@ class MarkdownTableBlockCellComponent {
                         Option<(Float64) -> Unit>.Some({ width: Float64 =>
                             cellWidthTracker.setFallback(tableBlockCellRow, tableBlockCellCell, width)
                         }),
-                        // 表格场景：以单元格最大宽度为图片宽度计算基准与约束宽度（对齐ArkUI tableMaxCellWidth逻辑）
-                        spanListMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth,
+                        // 表格场景：以单元格内容区可用宽度（spanCellContentMaxWidth，与spanLatexMathComponent口径一致）
+                        // 为图片宽度计算基准与约束宽度，防止图片宽度超出单元格内容区被裁剪
+                        spanCellContentMaxWidth(),
                         onSpanAsyncUpdated
                     )
                 } else {

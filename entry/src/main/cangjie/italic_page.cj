@@ -45,9 +45,30 @@ class ItalicPage {
     @State @Watch[onConfigChanged] var cfg_italicTextLetterSpacing: String = "undefined"
     var arr: Array<Rune> = Array<Rune>()
     var scroller: Scroller = Scroller()
+    var loadGeneration: Int64 = 0 // 流式加载世代计数：切换文件时使旧的流式循环失效，防止旧内容追加到新文件内容上
     @State
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.createEmpty()
     var markdownPlugin: Markdown = Markdown
+        .builder()
+        .usePlugin(HtmlPlugin.create())
+        .usePlugin(TaskListPlugin.create())
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(TablePlugin.create())
+        .usePlugin(LatexMathPluginV2.create())
+        .usePlugin(BlockAudioPlugin.create())
+        .usePlugin(BlockVideoPlugin.create())
+        .usePlugin(LinkifyPlugin.create([]))
+        .usePlugin(ImageSlidePlugin.create())
+        .usePlugin(ImageStylePlugin.create())
+        .usePlugin(CodeListPlugin.create())
+        .usePlugin(FootnotePlugin.create())
+        .usePlugin(TocPlugin.create())
+        .usePlugin(ImageCollectPlugin.create())
+        .usePlugin(NodeIdPlugin.create())
+        .build()
+    // 高度估算专用插件链：配置与渲染插件链一致，nodeId按内容哈希计算，与渲染结果一致
+    // 主线程高度解析与worker渲染解析使用不同实例，避免并发共享插件内部状态导致解析树损坏闪退
+    var markdownHeightPlugin: Markdown = Markdown
         .builder()
         .usePlugin(HtmlPlugin.create())
         .usePlugin(TaskListPlugin.create())
@@ -97,18 +118,27 @@ class ItalicPage {
         incrementalAnalysis = incremental
         arr = fullContent.toRuneArray()
         isInputEnded = isFull
+        // 世代计数：无论哪种模式都使进行中的流式循环失效，防止旧文件内容继续追加
+        loadGeneration += 1
         if (isFull) {
             mdStr = fullContent
-            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
+            estimatedHeightByNode = preMarkwonHeightByNode(fullContent, markdownConfiguration, markdownHeightPlugin, componentWidth: getMarkdownComponentWidth(paddingH: 5.0))
         } else {
             mdStr = ""
             let number = textNumber
             let time = timeMs
             let total = arr.size
+            let generation = loadGeneration
             spawn {
                 for (i in 0..total : number) {
+                    if (generation != loadGeneration) {
+                        break // 文件已切换，终止旧的流式追加
+                    }
                     sleep(Duration.millisecond * time)
                     launch {
+                        if (generation != loadGeneration) {
+                            return // 文件已切换，丢弃过期的追加任务
+                        }
                         let size = if (total > i + number) {
                             i + number
                         } else {
