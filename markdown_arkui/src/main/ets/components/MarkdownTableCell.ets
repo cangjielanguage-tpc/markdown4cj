@@ -947,14 +947,18 @@ export struct MarkdownTableCell {
             }
             item.imageNaturalWidth = imageLoadResult.width
             item.imageNaturalHeight = imageLoadResult.height
-            // 优先 tableMaxCellWidth，其次父布局宽度，都没有时 fallback 到图片自然宽度
+            // 优先 tableMaxCellWidth，其次父布局宽度，都没有时 fallback 到图片自然宽度；
+            // 再扣除单元格左右内边距与图片左右外边距，确保显示宽度≤内容区宽度（不扣除会被单元格裁剪）
             const cellMaxWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth)
               ?? (this.componentWidth > 0 ? this.componentWidth : px2vp(imageLoadResult.width))
-            if (cellMaxWidth <= 0) {
+            const marginH: number = (lengthToVpNumber(this.imageTheme.imageMarginLeft) ?? 0)
+              + (lengthToVpNumber(this.imageTheme.imageMarginRight) ?? 0)
+            const availableWidth: number = cellMaxWidth - this.cellPaddingHorizontal() - marginH
+            if (availableWidth <= 0) {
               return
             }
             const l = imageWidthAndHeight(
-              cellMaxWidth,
+              availableWidth,
               imageLoadResult.width,
               imageLoadResult.height,
               (item.imageStyleWidth !== undefined ? vp2px(item.imageStyleWidth) : undefined) ??
@@ -1239,14 +1243,27 @@ export struct MarkdownTableCell {
 
   /**
    * 行内数学公式ImageSpan显示宽度上限（vp）
-   * 取表格单元格最大宽度与父布局宽度中较小者，确保公式不超出表格
+   * 取表格单元格最大宽度与父布局宽度中较小者，再扣除单元格左右内边距，
+   * 确保公式显示宽度≤单元格内容区宽度（maxWidth含内边距，不扣除会被裁剪）
    */
   private latexSpanMaxWidth(): number {
     const maxCellWidth: number = lengthToVpNumber(this.tableTheme.tableMaxCellWidth) ?? 300
+    let available: number = maxCellWidth
     if (this.componentWidth > 0 && this.componentWidth < maxCellWidth) {
-      return this.componentWidth
+      available = this.componentWidth
     }
-    return maxCellWidth
+    return Math.max(available - this.cellPaddingHorizontal(), 0)
+  }
+
+  /**
+   * 单元格左右内边距之和（vp）
+   * 格内ImageSpan（图片/行内数学公式）宽度约束需扣除内边距，
+   * 否则ImageSpan宽度会超出单元格内容区（cell maxWidth - padding）被裁剪
+   */
+  private cellPaddingHorizontal(): number {
+    const padLeft: number = lengthToVpNumber(this.tableTheme.tableCellPaddingLeft) ?? 0
+    const padRight: number = lengthToVpNumber(this.tableTheme.tableCellPaddingRight) ?? 0
+    return padLeft + padRight
   }
 
   /**
