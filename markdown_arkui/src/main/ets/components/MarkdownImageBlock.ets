@@ -146,81 +146,10 @@ export struct MarkdownImageBlock {
 
   build() {
     Column() {
-      if (this.replacePixelMap !== undefined) {
-        Image(this.replacePixelMap)
-          .alt(this.placeholderPixelMap)
-          .margin({
-            top: this.imageTheme.imageMarginTop,
-            right: this.imageTheme.imageMarginRight,
-            bottom: this.imageTheme.imageMarginBottom,
-            left: this.imageTheme.imageMarginLeft
-          })
-          .borderRadius({
-            topLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
-            topRight: this.item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
-            bottomLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
-            bottomRight: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
-          })
-          .borderWidth(this.imageTheme.imageBorderWidth)
-          .borderColor(this.imageTheme.imageBorderColor)
-          .borderStyle(this.imageTheme.imageBorderStyle)
-          .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
-          .height(this.item.imageHeight)
-          .objectFit(this.imageTheme.imageFitType)
-          .autoResize(this.imageTheme.imageAutoResize)
-          .constraintSize({
-            maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
-            maxHeight: this.imageTheme.imageMaxHeight
-          })
-          .onClick(() => {
-            this.imageCallback?.(this.item.imageUrl ?? "")
-          })
-          .onComplete((imageLoadResult) => {
-            if (imageLoadResult === undefined || imageLoadResult === null) {
-              return
-            }
-            this.applyImageDimensions(imageLoadResult.width, imageLoadResult.height, imageLoadResult.componentWidth)
-          })
-      } else if (this.imageReplaceCallback === undefined || this.replaceFailed) {
-        // 未配置图片替换 或 替换失败 → 直接用URL加载
-        Image(imageUrlHandle(this.item.imageUrl))
-          .alt(this.placeholderPixelMap)
-          .margin({
-            top: this.imageTheme.imageMarginTop,
-            right: this.imageTheme.imageMarginRight,
-            bottom: this.imageTheme.imageMarginBottom,
-            left: this.imageTheme.imageMarginLeft
-          })
-          .borderRadius({
-            topLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
-            topRight: this.item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
-            bottomLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
-            bottomRight: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
-          })
-          .borderWidth(this.imageTheme.imageBorderWidth)
-          .borderColor(this.imageTheme.imageBorderColor)
-          .borderStyle(this.imageTheme.imageBorderStyle)
-          .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
-          .height(this.item.imageHeight)
-          .objectFit(this.imageTheme.imageFitType)
-          .autoResize(this.imageTheme.imageAutoResize)
-          .constraintSize({
-            maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
-            maxHeight: this.imageTheme.imageMaxHeight
-          })
-          .onClick(() => {
-            this.imageCallback?.(this.item.imageUrl ?? "")
-          })
-          .onComplete((imageLoadResult) => {
-            if (imageLoadResult === undefined || imageLoadResult === null) {
-              return
-            }
-            this.applyImageDimensions(imageLoadResult.width, imageLoadResult.height, imageLoadResult.componentWidth)
-          })
-      } else {
-        // 图片替换中 → 仅显示占位图，避免先渲染URL图片再切换导致闪屏
-        if (this.placeholderPixelMap !== undefined) {
-          Image(this.placeholderPixelMap)
+      Column() {
+        if (this.replacePixelMap !== undefined) {
+          Image(this.replacePixelMap)
+            .alt(this.placeholderPixelMap)
             .margin({
               top: this.imageTheme.imageMarginTop,
               right: this.imageTheme.imageMarginRight,
@@ -239,18 +168,93 @@ export struct MarkdownImageBlock {
             .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
             .height(this.item.imageHeight)
             .objectFit(this.imageTheme.imageFitType)
+            .autoResize(this.imageTheme.imageAutoResize)
             .constraintSize({
               maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
               maxHeight: this.imageTheme.imageMaxHeight
             })
+            .onClick(() => {
+              this.imageCallback?.(this.item.imageUrl ?? "")
+            })
+            .onComplete((imageLoadResult) => {
+              if (imageLoadResult === undefined || imageLoadResult === null) {
+                return
+              }
+              this.applyImageDimensions(imageLoadResult.width, imageLoadResult.height, imageLoadResult.componentWidth)
+            })
+        } else if (this.imageReplaceCallback === undefined || this.replaceFailed) {
+          // 未配置图片替换 或 替换失败 → 直接用URL加载
+          Image(imageUrlHandle(this.item.imageUrl))
+            .alt(this.placeholderPixelMap)
+            .margin({
+              top: this.imageTheme.imageMarginTop,
+              right: this.imageTheme.imageMarginRight,
+              bottom: this.imageTheme.imageMarginBottom,
+              left: this.imageTheme.imageMarginLeft
+            })
+            .borderRadius({
+              topLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
+              topRight: this.item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
+              bottomLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
+              bottomRight: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
+            })
+            .borderWidth(this.imageTheme.imageBorderWidth)
+            .borderColor(this.imageTheme.imageBorderColor)
+            .borderStyle(this.imageTheme.imageBorderStyle)
+            .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
+            .height(this.item.imageHeight)
+            .objectFit(this.imageTheme.imageFitType)
+            .autoResize(this.imageTheme.imageAutoResize)
+            .constraintSize({
+              maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
+              maxHeight: this.imageTheme.imageMaxHeight
+            })
+            .onClick(() => {
+              this.imageCallback?.(this.item.imageUrl ?? "")
+            })
+            .onComplete((imageLoadResult) => {
+              if (imageLoadResult === undefined || imageLoadResult === null) {
+                return
+              }
+              this.applyImageDimensions(imageLoadResult.width, imageLoadResult.height, imageLoadResult.componentWidth)
+            })
+        } else {
+          // 图片替换中 → 仅显示占位图，避免先渲染URL图片再切换导致闪屏
+          if (this.placeholderPixelMap !== undefined) {
+            Image(this.placeholderPixelMap)
+              .margin({
+                top: this.imageTheme.imageMarginTop,
+                right: this.imageTheme.imageMarginRight,
+                bottom: this.imageTheme.imageMarginBottom,
+                left: this.imageTheme.imageMarginLeft
+              })
+              .borderRadius({
+                topLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusTopLeft,
+                topRight: this.item.imageRadius ?? this.imageTheme.imageRadiusTopRight,
+                bottomLeft: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomLeft,
+                bottomRight: this.item.imageRadius ?? this.imageTheme.imageRadiusBottomRight
+              })
+              .borderWidth(this.imageTheme.imageBorderWidth)
+              .borderColor(this.imageTheme.imageBorderColor)
+              .borderStyle(this.imageTheme.imageBorderStyle)
+              .width(this.item.imageWidth ?? (this.componentWidth > 0 ? this.componentWidth * this.imageTheme.imageMaximumWidth : undefined))
+              .height(this.item.imageHeight)
+              .objectFit(this.imageTheme.imageFitType)
+              .constraintSize({
+                maxWidth: this.imageTheme.imageMaxWidth ?? '100%',
+                maxHeight: this.imageTheme.imageMaxHeight
+              })
+          }
         }
+
       }
+      .alignItems(this.item.imageAlign ?? HorizontalAlign.Start) // 图片对齐：节点值优先，未设置时默认Start（对齐仓颉内层图片容器 urlHorizontalAlign）
 
       if (this.imageTheme.imageDownloadButtonVisible) {
         this.downloadButtonComponent()
       }
     }
-    .alignItems(this.item.imageAlign ?? HorizontalAlign.Start) // 图片对齐：节点值优先，未设置时默认Start（对齐仓颉 urlCallbackHorizontalAlign）
+    .alignItems(HorizontalAlign.Center) // 对齐仓颉：外层Column默认Center，下载按钮相对图片水平居中
   }
 
   /**
@@ -293,6 +297,7 @@ export struct MarkdownImageBlock {
     .backgroundColor(this.imageTheme.imageDownloadButtonBackgroundColor)
     .margin({ top: this.imageTheme.imageBottomLayoutMarginTop })
     .justifyContent(FlexAlign.Center)
+    .alignItems(VerticalAlign.Center)
     .onClick(() => {
       this.imageDownloadCallback?.(this.item.imageUrl ?? "")
     })
