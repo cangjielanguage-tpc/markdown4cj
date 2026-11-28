@@ -1,5 +1,5 @@
 import { image } from "@kit.ImageKit"
-import { resourceColorToNumber, LINK_ICON_TYPE_CIRCLE, LINK_ICON_TYPE_RECT, COLOR_FFE0E0E0,
+import { resourceColorToNumber, LINK_ICON_TYPE_CIRCLE, LINK_ICON_TYPE_RECT, LINK_ICON_TYPE_NONE, COLOR_FFE0E0E0,
   COLOR_FF4A90E2,
   COLOR_FFF5F2F0,
   COLOR_WHITE,
@@ -794,7 +794,9 @@ export struct MarkdownParagraph {
             }
           })
       } else {
-        if (item.linkIconPixelMap !== undefined && item.linkIconWidth > 0 && item.linkIconHeight > 0) {
+        if (item.linkIconType === LINK_ICON_TYPE_NONE) {
+          // 链接类型为空时渲染空（对齐仓颉库行为）
+        } else if (item.linkIconPixelMap !== undefined && item.linkIconWidth > 0 && item.linkIconHeight > 0) {
           ImageSpan(item.linkIconPixelMap)
             .width(px2vp(item.linkIconWidth))
             .height(px2vp(item.linkIconHeight))

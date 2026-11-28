@@ -21,7 +21,8 @@ import {
   NUM_FFFFC0CB,
   LINK_ICON_TYPE_CIRCLE,
   LINK_ICON_TYPE_RECT,
-  LINK_ICON_TYPE_TOOL
+  LINK_ICON_TYPE_TOOL,
+  LINK_ICON_TYPE_NONE
 } from "../base/Constants"
 
 /**
@@ -196,7 +197,8 @@ export function computeLinkIconInfo(url: string, text: string): LinkIconInfo {
   } else {
     const typeStr = urlSafeBase64Decode(url)
     if (typeStr.length === 0) {
-      const result: LinkIconInfo = { iconType: LINK_ICON_TYPE_RECT, typeStr: '' }
+      // 对齐仓颉库：非http链接且类型字符串为空时渲染空（业务约定，后续增加开关）
+      const result: LinkIconInfo = { iconType: LINK_ICON_TYPE_NONE, typeStr: '' }
       return result
     }
     const result: LinkIconInfo = { iconType: LINK_ICON_TYPE_TOOL, typeStr: typeStr }
@@ -220,6 +222,11 @@ export function generateLinkIconPixelMap(
   const iconInfo = computeLinkIconInfo(url, text)
   const trimmedText = text.trim()
   const colorFormat = 5
+
+  if (iconInfo.iconType === LINK_ICON_TYPE_NONE) {
+    // 对齐仓颉库：链接类型为空时渲染空，不生成图标
+    return Promise.resolve(undefined)
+  }
 
   let buffer: ArrayBuffer | undefined = undefined
 

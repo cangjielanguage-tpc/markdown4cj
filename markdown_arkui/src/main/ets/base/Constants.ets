@@ -359,6 +359,8 @@ export const LINK_ICON_TYPE_RECT = 1 // 圆角矩形
 
 export const LINK_ICON_TYPE_TOOL = 2 // 空心圆角矩形
 
+export const LINK_ICON_TYPE_NONE = 3 // 渲染空（非http链接且类型字符串为空时不渲染，对齐仓颉库行为）
+
 /**
  * 判断是否是Margin对象
  * @param obj obj
